@@ -25,7 +25,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -531,12 +530,9 @@ public class RecipeManagerGC
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
 
-        for (int i = 3; i < 6; i++)
-        {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), "ingotAluminum", "ingotAluminum");
-        }
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), "ingotAluminum", "ingotAluminum");
 
 /*        // Support for all the spellings of Aluminum
         for (ItemStack stack : aluminumIngots)
@@ -649,33 +645,6 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:iron,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:glass,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:tin,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-
-        try
-        {
-            ItemStack copperDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "copper");
-            Class<?> clazz2 =
-                    Class.forName("ic2.api.recipe.RecipeInputItemStack");
-            Object o = clazz2.getConstructor(ItemStack.class).newInstance(new
-                    ItemStack(GCBlocks.blockMoon, 1, 0));
-            Method addRecipe =
-                    Class.forName("ic2.api.recipe.IMachineRecipeManager").getMethod("addRecipe",
-                            Class.forName("ic2.api.recipe.IRecipeInput"), NBTTagCompound.class, Boolean.TYPE,
-                            ItemStack[].class);
-            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-                    o, null, false, new ItemStack[] { new ItemStack(copperDustItemStack.getItem(), 2,
-                            copperDustItemStack.getItemDamage()) });
-
-            ItemStack tinDustItemStack = (ItemStack) RecipeUtil.getIndustrialCraftItem("crushed", "tin");
-            o = clazz2.getConstructor(ItemStack.class).newInstance(new
-                    ItemStack(GCBlocks.blockMoon, 1, 1));
-            addRecipe.invoke(Class.forName("ic2.api.recipe.Recipes").getField("macerator").get(null),
-                    o, null, false, new ItemStack[] { new ItemStack(tinDustItemStack.getItem(),
-                            2, tinDustItemStack.getItemDamage()) });
-        }
-        catch (Throwable e)
-        {
-            e.printStackTrace();
-        }
     }
 
     private static void addAppEngRecipes()

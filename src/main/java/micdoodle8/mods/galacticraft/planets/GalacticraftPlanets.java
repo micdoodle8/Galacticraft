@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
@@ -18,7 +19,6 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -96,10 +96,9 @@ public class GalacticraftPlanets
     {
         GalacticraftPlanets.proxy.postInit(event);
         try {
-        	if (Loader.isModLoaded("MineFactoryReloaded"))
+        	if (CompatibilityManager.isMFRLoaded)
         	{
         		FactoryRegistry.sendMessage("registerSpawnHandler", new MFRSpawnHandlerSlimeling());
-                GCLog.info("Galacticraft: activating MFR compatibility feature.");
         	}
         } catch (Exception e)
         {

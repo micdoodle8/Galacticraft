@@ -100,7 +100,7 @@ public class GCPlayerHandler
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event)
     {
-        if (event.wasDeath)
+        if (event.wasDeath)  //TODO: why only on death?  we could copy the stats capability on all cloning events
         {
             GCPlayerStats oldStats = GCPlayerStats.get(event.original);
             GCPlayerStats newStats = GCPlayerStats.get(event.entityPlayer);
@@ -1176,6 +1176,7 @@ public class GCPlayerHandler
                 worldOld.updateAllPlayersSleepingFlag();
                 worldOld.loadedEntityList.remove(player);
                 worldOld.onEntityRemoved(player);
+                worldOld.getEntityTracker().untrackEntity(player);
                 if (player.addedToChunk && worldOld.getChunkProvider().chunkExists(player.chunkCoordX, player.chunkCoordZ))
                 {
                     Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);

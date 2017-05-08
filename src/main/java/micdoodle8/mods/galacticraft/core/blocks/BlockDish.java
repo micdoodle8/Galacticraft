@@ -87,12 +87,7 @@ public class BlockDish extends BlockTileGC implements IShiftDescription, IPartia
 
         worldIn.setBlockState(pos, state.getBlock().getStateFromMeta(change), 3);
 
-        TileEntity tile = worldIn.getTileEntity(pos);
-
-        if (tile instanceof TileEntityDish)
-        {
-            ((TileEntityDish) tile).onCreate(worldIn, pos);
-        }
+        BlockMulti.onPlacement(worldIn, pos, placer, this);
     }
 
     @Override

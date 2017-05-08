@@ -188,6 +188,13 @@ public class EnergyUtil
                         Class clazz = tileEntity.getClass();
                         if (clazz.getName().startsWith("ic2"))
                         {
+                            //Special case: IC2's transformers don't seem to setup their sink and source directions in Energy clientside
+                            if (clazz.getName().startsWith("ic2.core.block.wiring.TileEntityTransformer"))
+                            {
+                                adjacentConnections[direction.ordinal()] = tileEntity;
+                                continue;
+                            }
+                            
                             Field energyField = null;
                             fieldLoop:
                             while (energyField == null && clazz != null)

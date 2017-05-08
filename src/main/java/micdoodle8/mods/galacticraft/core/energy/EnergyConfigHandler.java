@@ -3,10 +3,9 @@ package micdoodle8.mods.galacticraft.core.energy;
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasRegistry;
 import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
-
 import java.io.File;
 import java.util.ArrayList;
 
@@ -90,15 +89,9 @@ public class EnergyConfigHandler
     public static boolean displayEnergyUnitsMek = false;
     public static boolean displayEnergyUnitsRF = false;
 
-    private static boolean cachedIC2Loaded = false;
-    private static boolean cachedIC2LoadedValue = false;
     private static boolean cachedBCLoaded = false;
     private static boolean cachedBCLoadedValue = false;
-    private static boolean cachedBCReallyLoaded = false;
-    private static boolean cachedBCReallyLoadedValue = false;
     private static int cachedBCVersion = -1;
-    private static boolean cachedMekLoaded = false;
-    private static boolean cachedMekLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
     private static boolean cachedRF1LoadedValue = false;
@@ -218,24 +211,12 @@ public class EnergyConfigHandler
      */
     public static boolean isIndustrialCraft2Loaded()
     {
-        if (!cachedIC2Loaded)
-        {
-            cachedIC2Loaded = true;
-            cachedIC2LoadedValue = Loader.isModLoaded("IC2");
-        }
-
-        return cachedIC2LoadedValue;
+        return CompatibilityManager.isIc2Loaded();
     }
 
     public static boolean isBuildcraftReallyLoaded()
     {
-        if (!cachedBCReallyLoaded)
-        {
-            cachedBCReallyLoaded = true;
-            cachedBCReallyLoadedValue = Loader.isModLoaded("BuildCraft|Energy");
-        }
-
-        return cachedBCReallyLoadedValue;
+        return CompatibilityManager.isBCraftEnergyLoaded();
     }
 
     public static int getBuildcraftVersion()
@@ -357,17 +338,7 @@ public class EnergyConfigHandler
 
     public static boolean isMekanismLoaded()
     {
-        if (!cachedMekLoaded)
-        {
-            cachedMekLoaded = true;
-            cachedMekLoadedValue = Loader.isModLoaded("Mekanism");
-            if (cachedMekLoadedValue)
-            {
-                GCLog.info("Galacticraft: activating Mekanism compatibility.");
-            }
-        }
-
-        return cachedMekLoadedValue;
+        return CompatibilityManager.isMekanismLoaded();
     }
 
     private static void updateRatios()

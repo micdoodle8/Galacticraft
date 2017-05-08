@@ -70,7 +70,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
             itemstacks.init(j, true, 21 + j % 3 * 18, 26 + j / 3 * 18);
         }
 
-        itemstacks.init(9, true, 140, 46);
+        itemstacks.init(9, false, 140, 46);
 
         if (recipeWrapper instanceof IngotCompressorShapedRecipeWrapper)
         {

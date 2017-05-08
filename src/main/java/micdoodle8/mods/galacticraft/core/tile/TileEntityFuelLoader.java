@@ -221,7 +221,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     {
         int used = 0;
 
-        if (this.getPipeInputDirection().equals(from))
+        if (this.getPipeInputDirection().equals(from) && resource != null)
         {
             if (FluidUtil.testFuel(FluidRegistry.getFluidName(resource)))
             {
@@ -351,10 +351,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
     
     @Override

@@ -100,6 +100,17 @@ public class BlockBrightBreathableAir extends BlockAir
     @Override
     public int getLightValue(IBlockAccess world, BlockPos pos)
     {
-        return 15;  //TODO - getMetadata;
+        return 15;
+    }
+    
+    @Override
+    public int getLightOpacity()
+    {
+        return 0;
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos vec, IBlockState state)
+    {
     }
 }

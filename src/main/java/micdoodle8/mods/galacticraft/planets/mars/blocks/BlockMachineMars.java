@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
@@ -122,26 +123,26 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
         worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
 
-        TileEntity var8 = worldIn.getTileEntity(pos);
-
-        if (var8 instanceof IMultiBlock)
+        switch (metadata & 12)
         {
-            ((IMultiBlock) var8).onCreate(worldIn, pos);
-        }
-
-        if (metadata >= BlockMachineMars.LAUNCH_CONTROLLER_METADATA)
-        {
+        
+        case BlockMachineMars.CRYOGENIC_CHAMBER_METADATA:
+            BlockMulti.onPlacement(worldIn, pos, placer, this);
+            break;
+            
+        case BlockMachineMars.LAUNCH_CONTROLLER_METADATA:
             WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
-        }
-
-        if (var8 instanceof IChunkLoader && !var8.getWorld().isRemote && ConfigManagerMars.launchControllerChunkLoad && placer instanceof EntityPlayer)
-        {
-            ((IChunkLoader) var8).setOwnerName(((EntityPlayer) placer).getGameProfile().getName());
-            ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.getWorld(), Type.NORMAL), true);
-        }
-        else if (var8 instanceof TileEntityLaunchController && placer instanceof EntityPlayer)
-        {
-            ((TileEntityLaunchController) var8).setOwnerName(((EntityPlayer) placer).getGameProfile().getName());
+            TileEntity var8 = worldIn.getTileEntity(pos);
+            if (var8 instanceof IChunkLoader && !worldIn.isRemote && ConfigManagerMars.launchControllerChunkLoad && placer instanceof EntityPlayer)
+            {
+                ((IChunkLoader) var8).setOwnerName(((EntityPlayer) placer).getName());
+                ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.getWorld(), Type.NORMAL), true);
+            }
+            else if (var8 instanceof TileEntityLaunchController && placer instanceof EntityPlayer)
+            {
+                ((TileEntityLaunchController) var8).setOwnerName(((EntityPlayer) placer).getName());
+            }
+            break;
         }
     }
 

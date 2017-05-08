@@ -57,7 +57,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         case NORMAL : difficulty = 1D;
             break;
         }
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.96D + 0.05D * difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.26D + 0.04D * difficulty);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3D + difficulty);
         this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16D + difficulty * 2D);
     }

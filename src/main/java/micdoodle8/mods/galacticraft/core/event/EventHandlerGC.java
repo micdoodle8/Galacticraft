@@ -51,6 +51,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemFireball;
 import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
@@ -316,7 +317,7 @@ public class EventHandlerGC
             return;
         }
 
-        if (entityLiving.ticksExisted % 100 == 0)
+        if (entityLiving.ticksExisted % ConfigManagerCore.suffocationCooldown == 0)
         {
             if (entityLiving.worldObj.provider instanceof IGalacticraftWorldProvider)
             {
@@ -337,7 +338,7 @@ public class EventHandlerGC
                             return;
                         }
 
-                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, 1);
+                        entityLiving.attackEntityFrom(DamageSourceGC.oxygenSuffocation, Math.max(ConfigManagerCore.suffocationDamage / 2, 1));
 
                         GCCoreOxygenSuffocationEvent suffocationEventPost = new GCCoreOxygenSuffocationEvent.Post(entityLiving);
                         MinecraftForge.EVENT_BUS.post(suffocationEventPost);
@@ -379,6 +380,10 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
+        if (event.current == null || !(event.current.getItem() instanceof ItemBucket))
+        {
+            return;
+        }
         MovingObjectPosition pos = event.target;
         ItemStack ret = fillBucket(event.world, pos);
 

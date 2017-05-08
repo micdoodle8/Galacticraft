@@ -88,6 +88,7 @@ public class TeleportTypeMars implements ITeleportType
 
                 if (!newWorld.isRemote)
                 {
+                    lander.forceSpawn = true;
                     newWorld.spawnEntityInWorld(lander);
                 }
 

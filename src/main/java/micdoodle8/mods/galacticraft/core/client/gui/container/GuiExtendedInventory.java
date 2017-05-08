@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.Loader;
 
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
@@ -48,7 +47,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiLeft += this.getPotionOffset();
-        this.potionOffsetLast = getPotionOffsetNEI();
+        this.potionOffsetLast = this.getPotionOffsetNEI();
 
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
@@ -147,13 +146,14 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
+    //Instanced method of this to have the instance field initWithPotion
     public int getPotionOffset()
     {
         // If at least one potion is active...
         if (!Minecraft.getMinecraft().thePlayer.getActivePotionEffects().isEmpty())
         {
             this.initWithPotion = true;
-            return 60 + getPotionOffsetNEI();
+            return 60 + TabRegistry.getPotionOffsetJEI() + getPotionOffsetNEI();
         }
 
         // No potions, no offset needed
@@ -161,16 +161,16 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         return 0;
     }
 
+    //Instanced method of this to use the instance field initWithPotion
     public int getPotionOffsetNEI()
     {
-        if (this.initWithPotion && Loader.isModLoaded("NotEnoughItems"))
+        if (initWithPotion && TabRegistry.clazzNEIConfig != null)
         {
             try
             {
                 // Check whether NEI is hidden and enabled
-                Class<?> c = Class.forName("codechicken.nei.NEIClientConfig");
-                Object hidden = c.getMethod("isHidden").invoke(null);
-                Object enabled = c.getMethod("isEnabled").invoke(null);
+                Object hidden = TabRegistry.clazzNEIConfig.getMethod("isHidden").invoke(null);
+                Object enabled = TabRegistry.clazzNEIConfig.getMethod("isEnabled").invoke(null);
                 if (hidden instanceof Boolean && enabled instanceof Boolean)
                 {
                     if ((Boolean) hidden || !((Boolean) enabled))

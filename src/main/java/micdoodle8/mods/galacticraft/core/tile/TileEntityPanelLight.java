@@ -172,9 +172,9 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        if (this.worldObj != null && this.worldObj.isRemote)
+        if (this.worldObj.isRemote)
         {
             //Request any networked information from server on first client update
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));

@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -27,6 +28,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -62,6 +64,17 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public int linkCountDown = 0;
     public static Map<Integer, List<BlockPos>> newMinerBases = new HashMap<Integer, List<BlockPos>>();
     private AxisAlignedBB renderAABB;
+    @NetworkedField(targetSide=Side.CLIENT)
+    public int linkedMinerDataAIState;
+    @NetworkedField(targetSide=Side.CLIENT)
+    public int linkedMinerDataDX;
+    @NetworkedField(targetSide=Side.CLIENT)
+    public int linkedMinerDataDY;
+    @NetworkedField(targetSide=Side.CLIENT)
+    public int linkedMinerDataDZ;
+    @NetworkedField(targetSide=Side.CLIENT)
+    public int linkedMinerDataCount;
+    
     
     public static void checkNewMinerBases()
     {
@@ -214,6 +227,38 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
             this.linkCountDown--;
         }
+        
+        if (this.isMaster && !this.worldObj.isRemote)
+        {
+            this.updateGUIstate();
+            //System.out.println("Miner base state " + this.linkedMinerDataAIState);
+        }
+    }
+
+    public void updateGUIstate()
+    {
+        if (this.linkedMinerID == null)
+        {
+            this.linkedMinerDataAIState = -3;
+            return;
+        }
+        EntityAstroMiner miner = this.linkedMiner;
+        if (miner == null || miner.isDead)
+        {
+            this.linkedMinerDataAIState = -3;
+            return;
+        }
+        if (this.linkCountDown > 0)
+        {
+            this.linkedMinerDataAIState = -2;
+            return;
+        }
+
+        this.linkedMinerDataAIState = miner.AIstate;
+        this.linkedMinerDataDX = (MathHelper.floor_double(this.linkedMiner.posX) - this.getPos().getX() - 1);
+        this.linkedMinerDataDY = (MathHelper.floor_double(this.linkedMiner.posY) - this.getPos().getY() - 1);
+        this.linkedMinerDataDZ = (MathHelper.floor_double(this.linkedMiner.posZ) - this.getPos().getZ() - 1);
+        this.linkedMinerDataCount = miner.mineCount;
     }
 
     //TODO - currently unused, the master position replaces this?
@@ -447,10 +492,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
 
     /**
@@ -1013,7 +1057,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     /**
      * This would normally be used by IMachineSides
-     * but here it's overridden for the MinerBase's own purposes
+     * but here it's overridden to get at the same facing packet for the MinerBase's own purposes
      * (IMachineSides won't be using it because as implemented
      * here, extending TileEntityElectricBlock, sides are not configurable)
      */

@@ -42,7 +42,8 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 {
     public static Item[] pipeItemsBC = new Item[6];
     public static Block blockPipeBC = null;
-    public static Method onBlockNeighbourChangeIC2 = null;
+    public static Method onBlockNeighbourChangeIC2a = null;
+    public static Method onBlockNeighbourChangeIC2b = null;
 
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
 
@@ -243,12 +244,18 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 try
                 {
-                    onBlockNeighbourChangeIC2.invoke(tileEntity, block);
+                    if (onBlockNeighbourChangeIC2a != null)
+                    {
+                        onBlockNeighbourChangeIC2a.invoke(tileEntity, block);
+                    }
+                    else if (onBlockNeighbourChangeIC2b != null)
+                    {
+                        onBlockNeighbourChangeIC2b.invoke(tileEntity, block, pos);
+                    }
                     return;
                 }
-                catch (Exception e)
+                catch (Exception ignore)
                 {
-                    e.printStackTrace();
                 }
             }
         }

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
+import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -15,16 +16,26 @@ import java.lang.reflect.Method;
 
 public class CompatibilityManager
 {
-    private static boolean modIc2Loaded;
-	private static boolean modBCraftEnergyLoaded;
+    public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
+    public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
+
+    private static boolean modIc2Loaded = Loader.isModLoaded("IC2");
+	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("BuildCraft|Energy");
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
-    private static boolean modTELoaded;
+    private static boolean modTELoaded = Loader.isModLoaded("ThermalExpansion");
+    private static boolean modMekLoaded = Loader.isModLoaded("Mekanism");
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
-    private static boolean modBOPLoaded;
+    private static boolean modBOPLoaded = Loader.isModLoaded("BiomesOPlenty");
+    private static boolean wailaLoaded;
+    public static boolean isMFRLoaded = Loader.isModLoaded("MineFactoryReloaded");
+    public static boolean isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
+    public static boolean isTConstructLoaded = Loader.isModLoaded("tconstruct");
+    public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
+
 	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
@@ -49,22 +60,40 @@ public class CompatibilityManager
             }
         }
 
-        if (Loader.isModLoaded("ThermalExpansion"))
+        if (CompatibilityManager.modMekLoaded)
         {
-            CompatibilityManager.modTELoaded = true;
-            GCLog.info("Galacticraft: activating ThermalExpansion compatibility features.");
+            GCLog.info("Galacticraft: activating Mekanism compatibility.");
         }
 
-        if (Loader.isModLoaded("IC2"))
+        if (CompatibilityManager.isMFRLoaded)
         {
-            CompatibilityManager.modIc2Loaded = true;
+            GCLog.info("Galacticraft: activating MFR compatibility feature.");
+        }
 
+        if (CompatibilityManager.modTELoaded)
+        {
+            GCLog.info("Galacticraft: activating ThermalExpansion compatibility features.");
+        }
+        
+        if (CompatibilityManager.isTConstructLoaded)
+        {
+            GCLog.info("Galacticraft: activating Tinker's Construct compatibility features.");
+        }
+
+        if (CompatibilityManager.modIc2Loaded)
+        {
             try
             {
                 Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
                 if (clazz != null)
                 {
-                    BlockEnclosed.onBlockNeighbourChangeIC2 = clazz.getMethod("onNeighborChange", Block.class);
+                    try {
+                        BlockEnclosed.onBlockNeighbourChangeIC2a = clazz.getMethod("onNeighborChange", Block.class);
+                    }
+                    catch (NoSuchMethodException e)
+                    {
+                        BlockEnclosed.onBlockNeighbourChangeIC2b = clazz.getMethod("onNeighborChange", Block.class, BlockPos.class);
+                    }
                 }
                 GCLog.info("Galacticraft: activating IndustrialCraft2 compatibility features.");
             }
@@ -75,9 +104,8 @@ public class CompatibilityManager
 
         }
 
-        if (Loader.isModLoaded("BuildCraft|Energy"))
+        if (CompatibilityManager.modBCraftEnergyLoaded)
         {
-            CompatibilityManager.modBCraftEnergyLoaded = true;
             GCLog.info("Galacticraft: activating BuildCraft Oil compatibility features.");
         }
 
@@ -116,9 +144,8 @@ public class CompatibilityManager
             }
         }
 
-        if (Loader.isModLoaded("BiomesOPlenty"))
+        if (CompatibilityManager.modBOPLoaded)
         {
-            CompatibilityManager.modBOPLoaded = true;
             GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
         }
 
@@ -144,6 +171,12 @@ public class CompatibilityManager
             CompatibilityManager.modPneumaticCraftLoaded = true;
             GCLog.info("Galacticraft: activating PneumaticCraft compatibility features.");
         }
+
+        if (Loader.isModLoaded("Waila"))
+        {
+            CompatibilityManager.wailaLoaded = true;
+            GCLog.info("Galacticraft: activating WAILA compatibility features.");
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -164,6 +197,11 @@ public class CompatibilityManager
     public static boolean isTELoaded()
     {
         return CompatibilityManager.modTELoaded;
+    }
+
+    public static boolean isMekanismLoaded()
+    {
+        return CompatibilityManager.modMekLoaded;
     }
 
     public static boolean isGTLoaded()
@@ -194,6 +232,11 @@ public class CompatibilityManager
     public static boolean isPneumaticCraftLoaded()
     {
         return CompatibilityManager.modPneumaticCraftLoaded;
+    }
+
+    public static boolean isWailaLoaded()
+    {
+        return CompatibilityManager.wailaLoaded;
     }
 
     public static void registerMicroBlocks()

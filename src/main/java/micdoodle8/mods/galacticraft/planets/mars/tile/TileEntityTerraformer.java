@@ -640,7 +640,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return fluid != null && "water".equals(fluid.getName()) && from != this.getElectricInputDirection();
+        return (fluid == null || "water".equals(fluid.getName())) && from != this.getElectricInputDirection();
     }
 
     @Override

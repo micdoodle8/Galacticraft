@@ -28,7 +28,6 @@ import org.apache.logging.log4j.LogManager;
 public class ConnectionEvents
 {
     private static boolean clientConnected = false;
-    public static boolean initialisedJEI = true;
 
     static
     {
@@ -115,7 +114,6 @@ public class ConnectionEvents
             ConnectionEvents.clientConnected = true;
         }
         MapUtil.resetClient();
-        initialisedJEI = false;
     }
 
     @SubscribeEvent

@@ -120,7 +120,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid)
     {
-        return fluidTank.getFluid() == null || fluidTank.getFluid().getFluid() == null || fluidTank.getFluid().getFluid() == fluid;
+        return fluidTank.getFluid() == null || fluidTank.getFluid().getFluid() == null || fluid == null || fluidTank.getFluid().getFluid() == fluid;
     }
 
     @Override

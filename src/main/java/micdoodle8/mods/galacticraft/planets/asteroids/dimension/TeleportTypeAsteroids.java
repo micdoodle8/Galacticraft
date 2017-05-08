@@ -325,6 +325,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 {
                     EntityEntryPod entryPod = new EntityEntryPod(player);
 
+                    entryPod.forceSpawn = true;
                     newWorld.spawnEntityInWorld(entryPod);
                 }
 
