@@ -373,10 +373,9 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
     
     @Override

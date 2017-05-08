@@ -28,11 +28,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-
-        if (this.worldObj != null && this.worldObj.isRemote)
+        if (this.worldObj.isRemote)
         {
             //Request size + contents information from server
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));

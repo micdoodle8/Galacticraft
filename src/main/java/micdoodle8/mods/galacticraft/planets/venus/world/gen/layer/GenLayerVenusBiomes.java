@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
+import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerVenusBiomes extends GenLayer
 {
