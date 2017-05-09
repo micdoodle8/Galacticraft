@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
+import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 
 public class IntCache
 {
@@ -19,17 +21,8 @@ public class IntCache
     private static List<int[]> freeLargeArrays2 = Lists.<int[]>newArrayList();
     private static List<int[]> inUseLargeArrays2 = Lists.<int[]>newArrayList();
 
+    @RuntimeInterface(clazz = "micdoodle8.mods.galacticraft.core.world.gen.IIntCache", modID = Constants.MOD_ID_CORE, deobfName = "func_76445_a")
     public static int[] getIntCache(int p_76445_0_)
-    {
-        if (MapUtil.backgroundMapping(Thread.currentThread()))
-        {
-            return getIntCacheGC(p_76445_0_);
-        }
-        return getIntCacheVanilla(p_76445_0_);
-    }
-
-    //Obfuscated method name for use by mods, because this won't be processed by the SRG renamer
-    public static int[] func_76445_a(int p_76445_0_)
     {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
@@ -131,18 +124,8 @@ public class IntCache
         }
     }
 
+    @RuntimeInterface(clazz = "micdoodle8.mods.galacticraft.core.world.gen.IIntCache", modID = Constants.MOD_ID_CORE, deobfName = "func_76446_b")
     public static void resetIntCache()
-    {
-        if (MapUtil.backgroundMapping(Thread.currentThread()))
-        {
-            resetIntCacheGC();
-            return;
-        }
-        resetIntCacheVanilla();
-    }
-
-    //Obfuscated method name for use by mods, because this won't be processed by the SRG renamer
-    public static void func_76446_a()
     {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
@@ -202,18 +185,20 @@ public class IntCache
         inUseSmallArrays2.clear();
     }
 
-    public static String func_85144_b()
+    @RuntimeInterface(clazz = "micdoodle8.mods.galacticraft.core.world.gen.IIntCache", modID = Constants.MOD_ID_CORE, deobfName = "func_85144_b")
+    public static String getCacheSizes()
     {
-        return getCacheSizes();
+        return getCacheSizesVanilla();
     }
 
+    //Obfuscated method name for use by vanilla, because this won't be processed by the deobfuscators
     public static String b()
     {
-        return getCacheSizes();
+        return getCacheSizesVanilla();
     }
 
     //No GC version of this, because we don't call it - note that vanilla CrashReport calls this (but will be redirected here only in a deobf dev environment, for reasons... basically CrashReport gets called in game startup before Forge and Forge mods have even loaded)
-    public synchronized static String getCacheSizes()
+    public synchronized static String getCacheSizesVanilla()
     {
         return "cache: " + freeLargeArrays.size() + ", tcache: " + freeSmallArrays.size() + ", allocated: " + inUseLargeArrays.size() + ", tallocated: " + inUseSmallArrays.size();
     }
