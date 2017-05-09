@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import micdoodle8.mods.miccore.IntCache;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
-import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;

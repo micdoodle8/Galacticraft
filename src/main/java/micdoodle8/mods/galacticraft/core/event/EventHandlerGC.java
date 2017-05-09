@@ -882,7 +882,7 @@ public class EventHandlerGC
             MinecraftForge.EVENT_BUS.post(event0);
             player.wakeUpPlayer(true, true, false);
 
-            if (player.world.isRemote)
+            if (player.world.isRemote && GalacticraftCore.isPlanetsLoaded)
             {
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(PacketSimpleMars.EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(player.world), new Object[] {}));
             }

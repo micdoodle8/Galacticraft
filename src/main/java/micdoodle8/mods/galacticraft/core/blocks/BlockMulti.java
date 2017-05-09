@@ -336,7 +336,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 	        if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
                 IBlockState mainState = world.getBlockState(mainBlockPosition);
-                return mainState.getBlock().getBedDirection(mainState, world, pos);
+                return mainState.getBlock().getBedDirection(mainState, world, mainBlockPosition);
             }
         }
 
@@ -375,6 +375,61 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         {
             super.setBedOccupied(world, pos, player, occupied);
         }
+    }
+    
+    @Override
+    public BlockPos getBedSpawnPosition(IBlockState state, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    {
+        if (!(world instanceof World))
+        {
+            return null;
+        }
+        int tries = 3;
+        World worldIn = (World) world;
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
+        IBlockState cryoChamber = worldIn.getBlockState(mainBlockPosition);
+        EnumFacing enumfacing = EnumFacing.NORTH;
+        if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.machine)
+        {
+            enumfacing = (EnumFacing)cryoChamber.getValue(BlockMachineMars.FACING);
+        }
+        int i = pos.getX();
+        int j = pos.getY();
+        int k = pos.getZ();
+
+        for (int l = 0; l <= 1; ++l)
+        {
+            int i1 = i - enumfacing.getFrontOffsetX() * l - 1;
+            int j1 = k - enumfacing.getFrontOffsetZ() * l - 1;
+            int k1 = i1 + 2;
+            int l1 = j1 + 2;
+
+            for (int i2 = i1; i2 <= k1; ++i2)
+            {
+                for (int j2 = j1; j2 <= l1; ++j2)
+                {
+                    BlockPos blockpos = new BlockPos(i2, j, j2);
+
+                    if (hasRoomForPlayer(worldIn, blockpos))
+                    {
+                        if (tries <= 0)
+                        {
+                            return blockpos;
+                        }
+
+                        --tries;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private static boolean hasRoomForPlayer(World worldIn, BlockPos pos)
+    {
+        return worldIn.getBlockState(pos.down()).isFullyOpaque() && !worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos.up()).getMaterial().isSolid();
     }
 
     @Override
