@@ -19,18 +19,38 @@ public class IntCache
     private static List<int[]> freeLargeArrays2 = Lists.<int[]>newArrayList();
     private static List<int[]> inUseLargeArrays2 = Lists.<int[]>newArrayList();
 
-    public synchronized static int[] getIntCache(int p_76445_0_)
-    {
-        return a(p_76445_0_);
-    }
-
-    //Obfuscated method name, because this won't be processed by deobfuscators
-    public synchronized static int[] a(int p_76445_0_)
+    public static int[] getIntCache(int p_76445_0_)
     {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
             return getIntCacheGC(p_76445_0_);
         }
+        return getIntCacheVanilla(p_76445_0_);
+    }
+
+    //Obfuscated method name for use by mods, because this won't be processed by the SRG renamer
+    public static int[] func_76445_a(int p_76445_0_)
+    {
+        if (MapUtil.backgroundMapping(Thread.currentThread()))
+        {
+            return getIntCacheGC(p_76445_0_);
+        }
+        return getIntCacheVanilla(p_76445_0_);
+    }
+    
+    //Obfuscated method name for use by vanilla, because this won't be processed by the deobfuscators
+    public static int[] a(int p_76445_0_)
+    {
+        if (MapUtil.backgroundMapping(Thread.currentThread()))
+        {
+            return getIntCacheGC(p_76445_0_);
+        }
+        return getIntCacheVanilla(p_76445_0_);
+    }
+        
+    //Vanilla method needs to be synchronized
+    public synchronized static int[] getIntCacheVanilla(int p_76445_0_)
+    {
         if (p_76445_0_ <= 256)
         {
             if (freeSmallArrays.isEmpty())
@@ -69,6 +89,8 @@ public class IntCache
         }
     }
 
+    //GC version does not need to be synchonised because we've already tested that it is called from
+    //our own background mapping thread, and those are tightly controlled so only one can be running
     public static int[] getIntCacheGC(int size)
     {
         if (size <= 256)
@@ -109,19 +131,41 @@ public class IntCache
         }
     }
 
-    public synchronized static void resetIntCache()
-    {
-        a();
-    }
-
-    //Obfuscated method name, because this won't be processed by deobfuscators
-    public synchronized static void a()
+    public static void resetIntCache()
     {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
             resetIntCacheGC();
             return;
         }
+        resetIntCacheVanilla();
+    }
+
+    //Obfuscated method name for use by mods, because this won't be processed by the SRG renamer
+    public static void func_76446_a()
+    {
+        if (MapUtil.backgroundMapping(Thread.currentThread()))
+        {
+            resetIntCacheGC();
+            return;
+        }
+        resetIntCacheVanilla();
+    }
+
+    //Obfuscated method name for use by vanilla, because this won't be processed by the deobfuscators
+    public static void a()
+    {
+        if (MapUtil.backgroundMapping(Thread.currentThread()))
+        {
+            resetIntCacheGC();
+            return;
+        }
+        resetIntCacheVanilla();
+    }
+    
+    //Vanilla method needs to be synchronized
+    public synchronized static void resetIntCacheVanilla()
+    {
         if (!freeLargeArrays.isEmpty())
         {
             freeLargeArrays.remove(freeLargeArrays.size() - 1);
@@ -138,6 +182,8 @@ public class IntCache
         inUseSmallArrays.clear();
     }
 
+    //GC version does not need to be synchonised because we've already tested that it is called from
+    //our own background mapping thread, and those are tightly controlled so only one can be running
     public static void resetIntCacheGC()
     {
         if (!freeLargeArrays2.isEmpty())
@@ -156,13 +202,18 @@ public class IntCache
         inUseSmallArrays2.clear();
     }
 
-    public synchronized static String getCacheSizes()
+    public static String func_85144_b()
     {
-        return b();
+        return getCacheSizes();
     }
 
-    //Obfuscated method name, because this won't be processed by deobfuscators
-    public synchronized static String b()
+    public static String b()
+    {
+        return getCacheSizes();
+    }
+
+    //No GC version of this, because we don't call it - note that vanilla CrashReport calls this (but will be redirected here only in a deobf dev environment, for reasons... basically CrashReport gets called in game startup before Forge and Forge mods have even loaded)
+    public synchronized static String getCacheSizes()
     {
         return "cache: " + freeLargeArrays.size() + ", tcache: " + freeSmallArrays.size() + ", allocated: " + inUseLargeArrays.size() + ", tallocated: " + inUseSmallArrays.size();
     }
