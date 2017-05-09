@@ -1,16 +1,17 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.GenLayerGCMap;
-import micdoodle8.mods.galacticraft.core.world.gen.layer_mapping.IntCache;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.MathHelper;
+import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.gen.ChunkProviderSettings;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.layer.GenLayer;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -55,6 +56,9 @@ public class MapGen extends BiomeProvider implements Runnable
     private int[] heights = null;
     private double[] heighttemp = null;
     private WorldType worldType;
+    private World world;
+    private ChunkProviderSettings settings = null;
+    
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private Biome[] biomesGridHeights = null;
     private int[] biomeCount = null;
@@ -72,9 +76,9 @@ public class MapGen extends BiomeProvider implements Runnable
         }
     }
 
-    public MapGen(World world, int sx, int sz, int cx, int cz, int scale, File file)
+    public MapGen(World worldIn, int sx, int sz, int cx, int cz, int scale, File file)
     {
-        this.dimID = GCCoreUtil.getDimensionID(world);
+        this.dimID = GCCoreUtil.getDimensionID(worldIn);
         if (MapGen.disabled)
         {
             this.mapNeedsCalculating = false;
@@ -111,28 +115,14 @@ public class MapGen extends BiomeProvider implements Runnable
         this.biomeMapZ = this.biomeMap0;
         this.progressX = new AtomicInteger();
         this.progressZ = 0;
-        long seed = world.getSeed();
-        this.biomeCache = new BiomeCache(this);
-        this.worldType = world.getWorldInfo().getTerrainType();
-        GenLayer[] agenlayerOrig = GenLayerGCMap.initializeAllBiomeGenerators(seed, worldType, world.getWorldInfo().getGeneratorOptions());
-        GenLayer[] agenlayer;
-        try {
-            agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
-        }
-        catch (Exception e)
+        this.world = worldIn;
+        this.worldType = worldIn.getWorldInfo().getTerrainType();
+        if (this.worldType == WorldType.CUSTOMIZED && !worldIn.getWorldInfo().getGeneratorOptions().isEmpty())
         {
-            GCLog.severe("Galacticraft background map image generator not able to run (probably a mod conflict?)");
-            GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
-            e.printStackTrace();
-            this.mapNeedsCalculating = false;
-            MapGen.disabled = true;
-            return;
+            this.settings = ChunkProviderSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
         }
-        this.genBiomes = agenlayer[0];
-        this.biomeIndexLayer = agenlayer[1];
 
         GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
-        this.initialise(seed);
         if (progress > 0)
         {
             this.resumeProgress(progress);
@@ -211,6 +201,26 @@ public class MapGen extends BiomeProvider implements Runnable
 			Thread.currentThread().sleep(90);
 		} catch (InterruptedException e) {}
 
+        long seed = world.getSeed();
+        this.biomeCache = new BiomeCache(this);
+        GenLayer[] agenlayerOrig = GenLayer.initializeAllBiomeGenerators(seed, worldType, this.settings);
+        GenLayer[] agenlayer;
+        try {
+            agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayerOrig);
+        }
+        catch (Exception e)
+        {
+            GCLog.severe("Galacticraft background map image generator not able to run (probably a mod conflict?)");
+            GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
+            e.printStackTrace();
+            this.mapNeedsCalculating = false;
+            MapGen.disabled = true;
+            return;
+        }
+        this.genBiomes = agenlayer[0];
+        this.biomeIndexLayer = agenlayer[1];
+        this.initialise(seed);
+    	
     	//Generate this map from start to finish within the thread
     	while (!this.aborted.get())
     	{
@@ -667,7 +677,7 @@ public class MapGen extends BiomeProvider implements Runnable
     @Override
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
-        IntCache.resetIntCache();
+        IntCache.resetIntCacheGC();
         int[] aint = this.genBiomes.getInts(x, z, width, height);
 
         int size = width * height;
@@ -694,7 +704,7 @@ public class MapGen extends BiomeProvider implements Runnable
      */
     public int[] getBiomeGenAt(int[] listToReuse, int x, int z, int width, int height)
     {
-        IntCache.resetIntCache();
+        IntCache.resetIntCacheGC();
         int[] aint = this.biomeIndexLayer.getInts(x, z, width, height);
 
         int size = width * height;

@@ -188,20 +188,16 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        if (this.world != null)
+        if (this.world.isRemote)
         {
-            if (this.world.isRemote)
-            {
-                //Request any networked information from server on first client update
-                GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
-            }
-            else
-            {
-                this.getLoadedTiles(this.world).add(new BlockVec3(this.pos));
-            }
+            //Request any networked information from server on first client update
+            GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
+        }
+        else
+        {
+            this.getLoadedTiles(this.world).add(new BlockVec3(this.pos));
         }
     }
 

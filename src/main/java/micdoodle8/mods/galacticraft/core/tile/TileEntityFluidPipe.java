@@ -78,21 +78,6 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 //    }
 
     @Override
-    public void update()
-    {
-        super.update();
-
-        if (this.world.isRemote)
-        {
-            if (!this.dataRequest)
-            {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[] { GCCoreUtil.getDimensionID(this.world), this.getPos() }));
-                this.dataRequest = true;
-            }
-        }
-    }
-
-    @Override
     public double getPacketRange()
     {
         return 12.0D;
@@ -111,13 +96,12 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-
-        if (this.world != null && this.world.isRemote)
+        if (this.world.isRemote)
         {
             this.world.notifyLightSet(getPos());
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_DATA, GCCoreUtil.getDimensionID(this.world), new Object[] { GCCoreUtil.getDimensionID(this.world), this.getPos() }));
         }
     }
 

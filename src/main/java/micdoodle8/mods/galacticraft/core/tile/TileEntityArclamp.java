@@ -203,15 +203,14 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
         this.thisPos = new Vec3d(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D);
         this.ticks = 0;
         this.thisAABB = null;
         if (this.world.isRemote)
         {
-            this.clientValidate();
+            this.clientOnLoad();
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
         else

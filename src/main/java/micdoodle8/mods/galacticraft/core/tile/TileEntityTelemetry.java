@@ -56,9 +56,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     private int ticks = 0;
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
         if (this.world.isRemote)
         {
             loadedList.add(new BlockVec3Dim(this));

@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
+import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
-import net.minecraft.world.gen.layer.IntCache;
 
 public class GenLayerVenusBiomes extends GenLayer
 {
@@ -23,7 +23,7 @@ public class GenLayerVenusBiomes extends GenLayer
     @Override
     public int[] getInts(int x, int z, int width, int depth)
     {
-        int[] dest = IntCache.getIntCache(width * depth);
+        int[] dest = IntCache.a(width * depth);
 
         for (int k = 0; k < depth; ++k)
         {

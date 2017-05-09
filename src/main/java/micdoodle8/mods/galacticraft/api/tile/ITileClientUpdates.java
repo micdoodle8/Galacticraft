@@ -38,7 +38,7 @@ public interface ITileClientUpdates
     /**
      * Implement validate() in the tile and call this!
      */
-    public default void clientValidate()
+    public default void clientOnLoad()
     {
         TileEntity tile = (TileEntity)this;
         if (tile.getWorld().isRemote)

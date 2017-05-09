@@ -494,10 +494,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
 
     /**

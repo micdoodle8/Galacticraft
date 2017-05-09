@@ -401,10 +401,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
     
     @Override
