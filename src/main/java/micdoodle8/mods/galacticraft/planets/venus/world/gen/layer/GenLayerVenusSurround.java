@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
-import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
+import micdoodle8.mods.miccore.IntCache;
 import net.minecraft.world.gen.layer.GenLayer;
 
 public class GenLayerVenusSurround extends GenLayer
@@ -24,7 +24,7 @@ public class GenLayerVenusSurround extends GenLayer
         int nwidth = width + 2;
         int ndepth = depth + 2;
         int input[] = parent.getInts(nx, nz, nwidth, ndepth);
-        int output[] = IntCache.a(width * depth);
+        int output[] = IntCache.getIntCache(width * depth);
         for (int dz = 0; dz < depth; dz++)
         {
             for (int dx = 0; dx < width; dx++)

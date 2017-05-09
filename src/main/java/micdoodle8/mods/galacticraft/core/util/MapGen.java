@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.world.gen.IntCache;
+import micdoodle8.mods.miccore.IntCache;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
