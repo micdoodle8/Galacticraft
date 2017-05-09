@@ -295,7 +295,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        return world.getBlockState(pos).getValue(FACING);
+        return state.getValue(FACING);
     }
 
     @Override
