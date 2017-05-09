@@ -86,11 +86,11 @@ public class EventHandlerMars
 
         if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
-            if (!event.flag1 && event.flag2 && event.flag3)
+            if (!event.immediately && event.updateWorld && event.setSpawn)
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
             }
-            else if (!event.flag1 && !event.flag2 && event.flag3)
+            else if (event.immediately && event.updateWorld && !event.setSpawn)
             {
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
