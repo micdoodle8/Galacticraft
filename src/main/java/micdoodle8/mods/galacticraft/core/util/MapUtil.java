@@ -486,7 +486,18 @@ public class MapUtil
             
             return;
         }
-            		
+
+        if (!queuedMaps.isEmpty())
+        {
+            if (slowMap != null)
+            {
+                slowMap.pause();
+            }
+
+            currentMap = queuedMaps.removeFirst();
+            return;
+        }
+
         if (slowMap != null)
         {
             if (threadSlowMap == null)
