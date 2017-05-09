@@ -669,7 +669,7 @@ public class MapGen extends BiomeProvider implements Runnable
     @Override
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
-        IntCache.resetIntCache();
+        IntCache.resetIntCacheGC();
         int[] aint = this.genBiomes.getInts(x, z, width, height);
 
         int size = width * height;
@@ -696,7 +696,7 @@ public class MapGen extends BiomeProvider implements Runnable
      */
     public int[] getBiomeGenAt(int[] listToReuse, int x, int z, int width, int height)
     {
-        IntCache.resetIntCache();
+        IntCache.resetIntCacheGC();
         int[] aint = this.biomeIndexLayer.getInts(x, z, width, height);
 
         int size = width * height;

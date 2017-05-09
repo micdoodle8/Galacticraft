@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
+import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockGravel;
 import net.minecraft.block.BlockLiquid;
@@ -877,9 +878,14 @@ public class EventHandlerGC
 
         if (c != null)
         {
-            EventWakePlayer event0 = new EventWakePlayer(player, c, false, true, true, true);
+            EventWakePlayer event0 = new EventWakePlayer(player, c, true, true, false, true);
             MinecraftForge.EVENT_BUS.post(event0);
-            player.wakeUpPlayer(false, true, true);
+            player.wakeUpPlayer(true, true, false);
+
+            if (player.worldObj.isRemote)
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(PacketSimpleMars.EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}));
+            }
         }
     }
 
