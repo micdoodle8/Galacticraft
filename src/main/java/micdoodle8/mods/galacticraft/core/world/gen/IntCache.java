@@ -21,6 +21,12 @@ public class IntCache
 
     public synchronized static int[] getIntCache(int p_76445_0_)
     {
+        return a(p_76445_0_);
+    }
+
+    //Obfuscated method name, because this won't be processed by deobfuscators
+    public synchronized static int[] a(int p_76445_0_)
+    {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
             return getIntCacheGC(p_76445_0_);
@@ -105,6 +111,12 @@ public class IntCache
 
     public synchronized static void resetIntCache()
     {
+        a();
+    }
+
+    //Obfuscated method name, because this won't be processed by deobfuscators
+    public synchronized static void a()
+    {
         if (MapUtil.backgroundMapping(Thread.currentThread()))
         {
             resetIntCacheGC();
@@ -126,7 +138,7 @@ public class IntCache
         inUseSmallArrays.clear();
     }
 
-    public synchronized static void resetIntCacheGC()
+    public static void resetIntCacheGC()
     {
         if (!freeLargeArrays2.isEmpty())
         {
@@ -145,6 +157,12 @@ public class IntCache
     }
 
     public synchronized static String getCacheSizes()
+    {
+        return b();
+    }
+
+    //Obfuscated method name, because this won't be processed by deobfuscators
+    public synchronized static String b()
     {
         return "cache: " + freeLargeArrays.size() + ", tcache: " + freeSmallArrays.size() + ", allocated: " + inUseLargeArrays.size() + ", tallocated: " + inUseSmallArrays.size();
     }
