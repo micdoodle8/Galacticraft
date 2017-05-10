@@ -1142,7 +1142,7 @@ public class MapUtil
                 rv = Material.snow.getMaterialMapColor().colorValue;
             }
         }
-        float factor = (height - 68F) / 114F;
+        float factor = (height - 68F) / 94F;
         return ColorUtil.lighten(rv, factor);
     }
 
