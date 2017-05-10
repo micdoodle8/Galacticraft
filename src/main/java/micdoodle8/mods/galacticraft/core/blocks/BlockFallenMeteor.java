@@ -229,7 +229,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, Ite
         }
         else
         {
-            return player.getBreakSpeed(this, false, metadata, x, y, z) / hardness / 60F;
+            return player.getBreakSpeed(this, false, metadata, x, y, z) / hardness / 30F;
         }
     }
 

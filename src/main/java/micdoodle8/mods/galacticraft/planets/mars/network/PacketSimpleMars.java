@@ -241,9 +241,9 @@ public class PacketSimpleMars implements IPacket
 
             if (c != null)
             {
-                EventWakePlayer event = new EventWakePlayer(playerBase, c.posX, c.posY, c.posZ, false, true, true, true);
+                EventWakePlayer event = new EventWakePlayer(playerBase, c.posX, c.posY, c.posZ, true, true, false, true);
                 MinecraftForge.EVENT_BUS.post(event);
-                playerBase.wakeUpPlayer(false, true, true);
+                playerBase.wakeUpPlayer(true, true, false);
             }
             break;
         case S_UPDATE_ADVANCED_GUI:

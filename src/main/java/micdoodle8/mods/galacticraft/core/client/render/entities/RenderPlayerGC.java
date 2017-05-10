@@ -4,9 +4,14 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -15,6 +20,8 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -176,9 +183,54 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 super.rotateCorpse(par1AbstractClientPlayer, par2, par3, par4);
             }
-            else if (event.shouldRotate == null || event.shouldRotate)
+            else if (event.shouldRotate == null)
             {
                 GL11.glRotatef(par1AbstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+            }
+            else if (event.shouldRotate)
+            {
+                float rotation = 0.0F;
+
+                ChunkCoordinates pos = par1AbstractClientPlayer.playerLocation;
+                if (pos != null)
+                {
+                    Block bed = par1AbstractClientPlayer.worldObj.getBlock(pos.posX, pos.posY, pos.posZ);
+                    int meta = par1AbstractClientPlayer.worldObj.getBlockMetadata(pos.posX, pos.posY, pos.posZ);
+
+                    if (bed.isBed(par1AbstractClientPlayer.worldObj, pos.posX, pos.posY, pos.posZ, par1AbstractClientPlayer))
+                    {
+                        if (bed == GCBlocks.fakeBlock && meta == 5)
+                        {
+                            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(pos.posX, pos.posY, pos.posZ);
+                            if (tile instanceof TileEntityMulti)
+                            {
+                                bed = ((TileEntityMulti) tile).mainBlockPosition.getBlock(event.entityPlayer.worldObj);
+                                meta = ((TileEntityMulti) tile).mainBlockPosition.getBlockMetadata(event.entityPlayer.worldObj);
+                            }
+                        }
+
+                        if (bed == MarsBlocks.machine && (meta & 12) == BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+                        {
+                            switch (meta & 3)
+                            {
+                            case 3:
+                                rotation = 0.0F;
+                                break;
+                            case 1:
+                                rotation = 270.0F;
+                                break;
+                            case 2:
+                                rotation = 180.0F;
+                                break;
+                            case 0:
+                                rotation = 90.0F;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                GL11.glRotatef(rotation, 0.0F, 1.0F, 0.0F);
             }
         }
         else

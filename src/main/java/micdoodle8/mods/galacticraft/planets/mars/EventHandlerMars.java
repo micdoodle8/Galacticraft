@@ -6,7 +6,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC.RotatePlayerEvent;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
@@ -17,14 +16,11 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
-import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
-import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenEggs;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
@@ -89,13 +85,8 @@ public class EventHandlerMars
             if (!event.flag1 && event.flag2 && event.flag3)
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
-
-                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityClientPlayerMP)
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, new Object[] { }));
-                }
             }
-            else if (!event.flag1 && !event.flag2 && event.flag3)
+            else if (event.flag1 && event.flag2 && !event.flag3)
             {
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
@@ -116,14 +107,22 @@ public class EventHandlerMars
     public void onPlayerRotate(RotatePlayerEvent event)
     {
         ChunkCoordinates c = event.entityPlayer.playerLocation;
-        Block block = event.entityPlayer.worldObj.getBlock(c.posX, c.posY - 2, c.posZ);
-        int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX, c.posY - 2, c.posZ);
-
-        if (block == MarsBlocks.machine && metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
-        {
-            event.shouldRotate = true;
-        	event.vanillaOverride = true;
-        }
+        for (int x = -1; x < 2; x++)
+            for (int z = -1; z < 2; z++)
+            {
+                if (x * z != 0) continue;
+                Block block = event.entityPlayer.worldObj.getBlock(c.posX + x, c.posY, c.posZ + z);
+                if (block == MarsBlocks.machine)
+                {
+                    int metadata = event.entityPlayer.worldObj.getBlockMetadata(c.posX + x, c.posY, c.posZ + z);
+                    if (metadata >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA)
+                    {
+                        event.shouldRotate = true;
+                        event.vanillaOverride = true;
+                        return;
+                    }
+                }
+            }
     }
 
     private WorldGenerator eggGenerator;
