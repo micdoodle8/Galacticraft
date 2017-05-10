@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.client;
 
 import java.io.*;
@@ -57,16 +75,16 @@ public final class ClientPlayerAPI
 				String[] errorMessageParts = new String[]
 				{
 					"========================================",
-					"The API \"Client Player\" version 1.0 of the mod \"Player API core 1.0\" can not be created!",
+					"The API \"Client Player\" version " + api.player.forge.PlayerAPIPlugin.Version + " of the mod \"Player API Core " + api.player.forge.PlayerAPIPlugin.Version + "\" can not be created!",
 					"----------------------------------------",
 					"Mandatory member method \"{0} getClientPlayerBase({3})\" not found in class \"{1}\".",
 					"There are three scenarios this can happen:",
-					"* Minecraft Forge is missing a Player API core which Minecraft version matches its own.",
-					"  Download and install the latest Player API core for the Minecraft version you were trying to run.",
-					"* The code of the class \"{2}\" of Player API core has been modified beyond recognition by another Minecraft Forge coremod.",
+					"* Minecraft Forge is missing a Player API Core which Minecraft version matches its own.",
+					"  Download and install the latest Player API Core for the Minecraft version you were trying to run.",
+					"* The code of the class \"{2}\" of Player API Core has been modified beyond recognition by another Minecraft Forge coremod.",
 					"  Try temporary deinstallation of other core mods to find the culprit and deinstall it permanently to fix this specific problem.",
-					"* Player API core has not been installed correctly.",
-					"  Deinstall Player API core and install it again following the installation instructions in the readme file.",
+					"* Player API Core has not been installed correctly.",
+					"  Deinstall Player API Core and install it again following the installation instructions in the readme file.",
 					"========================================"
 				};
 
@@ -91,7 +109,7 @@ public final class ClientPlayerAPI
 				throw new RuntimeException(errorMessage, exception);
 			}
 
-			log("Client Player 1.0 Created");
+			log("Client Player " + api.player.forge.PlayerAPIPlugin.Version + " Created");
 			isCreated = true;
 		}
 
@@ -297,6 +315,13 @@ public final class ClientPlayerAPI
 			addSorting(id, allBaseOverrideGetAIMoveSpeedInferiors, baseSorting.getOverrideGetAIMoveSpeedInferiors());
 			addSorting(id, allBaseAfterGetAIMoveSpeedSuperiors, baseSorting.getAfterGetAIMoveSpeedSuperiors());
 			addSorting(id, allBaseAfterGetAIMoveSpeedInferiors, baseSorting.getAfterGetAIMoveSpeedInferiors());
+
+			addSorting(id, allBaseBeforeGetBedOrientationInDegreesSuperiors, baseSorting.getBeforeGetBedOrientationInDegreesSuperiors());
+			addSorting(id, allBaseBeforeGetBedOrientationInDegreesInferiors, baseSorting.getBeforeGetBedOrientationInDegreesInferiors());
+			addSorting(id, allBaseOverrideGetBedOrientationInDegreesSuperiors, baseSorting.getOverrideGetBedOrientationInDegreesSuperiors());
+			addSorting(id, allBaseOverrideGetBedOrientationInDegreesInferiors, baseSorting.getOverrideGetBedOrientationInDegreesInferiors());
+			addSorting(id, allBaseAfterGetBedOrientationInDegreesSuperiors, baseSorting.getAfterGetBedOrientationInDegreesSuperiors());
+			addSorting(id, allBaseAfterGetBedOrientationInDegreesInferiors, baseSorting.getAfterGetBedOrientationInDegreesInferiors());
 
 			addSorting(id, allBaseBeforeGetBrightnessSuperiors, baseSorting.getBeforeGetBrightnessSuperiors());
 			addSorting(id, allBaseBeforeGetBrightnessInferiors, baseSorting.getBeforeGetBrightnessInferiors());
@@ -606,6 +631,13 @@ public final class ClientPlayerAPI
 			addSorting(id, allBaseAfterUpdateRiddenSuperiors, baseSorting.getAfterUpdateRiddenSuperiors());
 			addSorting(id, allBaseAfterUpdateRiddenInferiors, baseSorting.getAfterUpdateRiddenInferiors());
 
+			addSorting(id, allBaseBeforeWakeUpPlayerSuperiors, baseSorting.getBeforeWakeUpPlayerSuperiors());
+			addSorting(id, allBaseBeforeWakeUpPlayerInferiors, baseSorting.getBeforeWakeUpPlayerInferiors());
+			addSorting(id, allBaseOverrideWakeUpPlayerSuperiors, baseSorting.getOverrideWakeUpPlayerSuperiors());
+			addSorting(id, allBaseOverrideWakeUpPlayerInferiors, baseSorting.getOverrideWakeUpPlayerInferiors());
+			addSorting(id, allBaseAfterWakeUpPlayerSuperiors, baseSorting.getAfterWakeUpPlayerSuperiors());
+			addSorting(id, allBaseAfterWakeUpPlayerInferiors, baseSorting.getAfterWakeUpPlayerInferiors());
+
 			addSorting(id, allBaseBeforeWriteEntityToNBTSuperiors, baseSorting.getBeforeWriteEntityToNBTSuperiors());
 			addSorting(id, allBaseBeforeWriteEntityToNBTInferiors, baseSorting.getBeforeWriteEntityToNBTInferiors());
 			addSorting(id, allBaseOverrideWriteEntityToNBTSuperiors, baseSorting.getOverrideWriteEntityToNBTSuperiors());
@@ -710,6 +742,10 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, beforeGetAIMoveSpeedHookTypes, "beforeGetAIMoveSpeed");
 		addMethod(id, baseClass, overrideGetAIMoveSpeedHookTypes, "getAIMoveSpeed");
 		addMethod(id, baseClass, afterGetAIMoveSpeedHookTypes, "afterGetAIMoveSpeed");
+
+		addMethod(id, baseClass, beforeGetBedOrientationInDegreesHookTypes, "beforeGetBedOrientationInDegrees");
+		addMethod(id, baseClass, overrideGetBedOrientationInDegreesHookTypes, "getBedOrientationInDegrees");
+		addMethod(id, baseClass, afterGetBedOrientationInDegreesHookTypes, "afterGetBedOrientationInDegrees");
 
 		addMethod(id, baseClass, beforeGetBrightnessHookTypes, "beforeGetBrightness", float.class);
 		addMethod(id, baseClass, overrideGetBrightnessHookTypes, "getBrightness", float.class);
@@ -886,6 +922,10 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, beforeUpdateRiddenHookTypes, "beforeUpdateRidden");
 		addMethod(id, baseClass, overrideUpdateRiddenHookTypes, "updateRidden");
 		addMethod(id, baseClass, afterUpdateRiddenHookTypes, "afterUpdateRidden");
+
+		addMethod(id, baseClass, beforeWakeUpPlayerHookTypes, "beforeWakeUpPlayer", boolean.class, boolean.class, boolean.class);
+		addMethod(id, baseClass, overrideWakeUpPlayerHookTypes, "wakeUpPlayer", boolean.class, boolean.class, boolean.class);
+		addMethod(id, baseClass, afterWakeUpPlayerHookTypes, "afterWakeUpPlayer", boolean.class, boolean.class, boolean.class);
 
 		addMethod(id, baseClass, beforeWriteEntityToNBTHookTypes, "beforeWriteEntityToNBT", net.minecraft.nbt.NBTTagCompound.class);
 		addMethod(id, baseClass, overrideWriteEntityToNBTHookTypes, "writeEntityToNBT", net.minecraft.nbt.NBTTagCompound.class);
@@ -1176,6 +1216,17 @@ public final class ClientPlayerAPI
 		beforeGetAIMoveSpeedHookTypes.remove(id);
 		overrideGetAIMoveSpeedHookTypes.remove(id);
 		afterGetAIMoveSpeedHookTypes.remove(id);
+
+		allBaseBeforeGetBedOrientationInDegreesSuperiors.remove(id);
+		allBaseBeforeGetBedOrientationInDegreesInferiors.remove(id);
+		allBaseOverrideGetBedOrientationInDegreesSuperiors.remove(id);
+		allBaseOverrideGetBedOrientationInDegreesInferiors.remove(id);
+		allBaseAfterGetBedOrientationInDegreesSuperiors.remove(id);
+		allBaseAfterGetBedOrientationInDegreesInferiors.remove(id);
+
+		beforeGetBedOrientationInDegreesHookTypes.remove(id);
+		overrideGetBedOrientationInDegreesHookTypes.remove(id);
+		afterGetBedOrientationInDegreesHookTypes.remove(id);
 
 		allBaseBeforeGetBrightnessSuperiors.remove(id);
 		allBaseBeforeGetBrightnessInferiors.remove(id);
@@ -1661,6 +1712,17 @@ public final class ClientPlayerAPI
 		overrideUpdateRiddenHookTypes.remove(id);
 		afterUpdateRiddenHookTypes.remove(id);
 
+		allBaseBeforeWakeUpPlayerSuperiors.remove(id);
+		allBaseBeforeWakeUpPlayerInferiors.remove(id);
+		allBaseOverrideWakeUpPlayerSuperiors.remove(id);
+		allBaseOverrideWakeUpPlayerInferiors.remove(id);
+		allBaseAfterWakeUpPlayerSuperiors.remove(id);
+		allBaseAfterWakeUpPlayerInferiors.remove(id);
+
+		beforeWakeUpPlayerHookTypes.remove(id);
+		overrideWakeUpPlayerHookTypes.remove(id);
+		afterWakeUpPlayerHookTypes.remove(id);
+
 		allBaseBeforeWriteEntityToNBTSuperiors.remove(id);
 		allBaseBeforeWriteEntityToNBTInferiors.remove(id);
 		allBaseOverrideWriteEntityToNBTSuperiors.remove(id);
@@ -1672,6 +1734,8 @@ public final class ClientPlayerAPI
 		overrideWriteEntityToNBTHookTypes.remove(id);
 		afterWriteEntityToNBTHookTypes.remove(id);
 
+		for(IClientPlayerAPI instance : getAllInstancesList())
+			instance.getClientPlayerAPI().updateClientPlayerBases();
 
 		Iterator<String> iterator = keysToVirtualIds.keySet().iterator();
 		while(iterator.hasNext())
@@ -2001,6 +2065,10 @@ public final class ClientPlayerAPI
 		sortBases(overrideGetAIMoveSpeedHookTypes, allBaseOverrideGetAIMoveSpeedSuperiors, allBaseOverrideGetAIMoveSpeedInferiors, "overrideGetAIMoveSpeed");
 		sortBases(afterGetAIMoveSpeedHookTypes, allBaseAfterGetAIMoveSpeedSuperiors, allBaseAfterGetAIMoveSpeedInferiors, "afterGetAIMoveSpeed");
 
+		sortBases(beforeGetBedOrientationInDegreesHookTypes, allBaseBeforeGetBedOrientationInDegreesSuperiors, allBaseBeforeGetBedOrientationInDegreesInferiors, "beforeGetBedOrientationInDegrees");
+		sortBases(overrideGetBedOrientationInDegreesHookTypes, allBaseOverrideGetBedOrientationInDegreesSuperiors, allBaseOverrideGetBedOrientationInDegreesInferiors, "overrideGetBedOrientationInDegrees");
+		sortBases(afterGetBedOrientationInDegreesHookTypes, allBaseAfterGetBedOrientationInDegreesSuperiors, allBaseAfterGetBedOrientationInDegreesInferiors, "afterGetBedOrientationInDegrees");
+
 		sortBases(beforeGetBrightnessHookTypes, allBaseBeforeGetBrightnessSuperiors, allBaseBeforeGetBrightnessInferiors, "beforeGetBrightness");
 		sortBases(overrideGetBrightnessHookTypes, allBaseOverrideGetBrightnessSuperiors, allBaseOverrideGetBrightnessInferiors, "overrideGetBrightness");
 		sortBases(afterGetBrightnessHookTypes, allBaseAfterGetBrightnessSuperiors, allBaseAfterGetBrightnessInferiors, "afterGetBrightness");
@@ -2176,6 +2244,10 @@ public final class ClientPlayerAPI
 		sortBases(beforeUpdateRiddenHookTypes, allBaseBeforeUpdateRiddenSuperiors, allBaseBeforeUpdateRiddenInferiors, "beforeUpdateRidden");
 		sortBases(overrideUpdateRiddenHookTypes, allBaseOverrideUpdateRiddenSuperiors, allBaseOverrideUpdateRiddenInferiors, "overrideUpdateRidden");
 		sortBases(afterUpdateRiddenHookTypes, allBaseAfterUpdateRiddenSuperiors, allBaseAfterUpdateRiddenInferiors, "afterUpdateRidden");
+
+		sortBases(beforeWakeUpPlayerHookTypes, allBaseBeforeWakeUpPlayerSuperiors, allBaseBeforeWakeUpPlayerInferiors, "beforeWakeUpPlayer");
+		sortBases(overrideWakeUpPlayerHookTypes, allBaseOverrideWakeUpPlayerSuperiors, allBaseOverrideWakeUpPlayerInferiors, "overrideWakeUpPlayer");
+		sortBases(afterWakeUpPlayerHookTypes, allBaseAfterWakeUpPlayerSuperiors, allBaseAfterWakeUpPlayerInferiors, "afterWakeUpPlayer");
 
 		sortBases(beforeWriteEntityToNBTHookTypes, allBaseBeforeWriteEntityToNBTSuperiors, allBaseBeforeWriteEntityToNBTInferiors, "beforeWriteEntityToNBT");
 		sortBases(overrideWriteEntityToNBTHookTypes, allBaseOverrideWriteEntityToNBTSuperiors, allBaseOverrideWriteEntityToNBTInferiors, "overrideWriteEntityToNBT");
@@ -2530,6 +2602,14 @@ public final class ClientPlayerAPI
 			overrideGetAIMoveSpeedHooks != null ||
 			afterGetAIMoveSpeedHooks != null;
 
+		beforeGetBedOrientationInDegreesHooks = create(beforeGetBedOrientationInDegreesHookTypes);
+		overrideGetBedOrientationInDegreesHooks = create(overrideGetBedOrientationInDegreesHookTypes);
+		afterGetBedOrientationInDegreesHooks = create(afterGetBedOrientationInDegreesHookTypes);
+		isGetBedOrientationInDegreesModded =
+			beforeGetBedOrientationInDegreesHooks != null ||
+			overrideGetBedOrientationInDegreesHooks != null ||
+			afterGetBedOrientationInDegreesHooks != null;
+
 		beforeGetBrightnessHooks = create(beforeGetBrightnessHookTypes);
 		overrideGetBrightnessHooks = create(overrideGetBrightnessHookTypes);
 		afterGetBrightnessHooks = create(afterGetBrightnessHookTypes);
@@ -2882,6 +2962,14 @@ public final class ClientPlayerAPI
 			overrideUpdateRiddenHooks != null ||
 			afterUpdateRiddenHooks != null;
 
+		beforeWakeUpPlayerHooks = create(beforeWakeUpPlayerHookTypes);
+		overrideWakeUpPlayerHooks = create(overrideWakeUpPlayerHookTypes);
+		afterWakeUpPlayerHooks = create(afterWakeUpPlayerHookTypes);
+		isWakeUpPlayerModded =
+			beforeWakeUpPlayerHooks != null ||
+			overrideWakeUpPlayerHooks != null ||
+			afterWakeUpPlayerHooks != null;
+
 		beforeWriteEntityToNBTHooks = create(beforeWriteEntityToNBTHookTypes);
 		overrideWriteEntityToNBTHooks = create(overrideWriteEntityToNBTHookTypes);
 		afterWriteEntityToNBTHooks = create(afterWriteEntityToNBTHookTypes);
@@ -2906,7 +2994,6 @@ public final class ClientPlayerAPI
 		ClientPlayerBase toDetach = allBaseObjects.get(id);
 		toDetach.beforeBaseDetach(true);
 		allBaseObjects.remove(id);
-		updateClientPlayerBases();
 		toDetach.afterBaseDetach(true);
 	}
 
@@ -2991,7 +3078,7 @@ public final class ClientPlayerAPI
 			return null;
 
 		Method method = methods.get(key);
-		if(methods == null)
+		if(method == null)
 			return null;
 
 		return execute(getClientPlayerBase(id), method, parameters);
@@ -3061,6 +3148,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenAddExhaustion(ClientPlayerBase overWriter)
 	{
+		if (overrideAddExhaustionHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddExhaustionHooks.length; i++)
 			if(overrideAddExhaustionHooks[i] == overWriter)
 				if(i == 0)
@@ -3116,6 +3206,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenAddMovementStat(ClientPlayerBase overWriter)
 	{
+		if (overrideAddMovementStatHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddMovementStatHooks.length; i++)
 			if(overrideAddMovementStatHooks[i] == overWriter)
 				if(i == 0)
@@ -3171,6 +3264,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenAddStat(ClientPlayerBase overWriter)
 	{
+		if (overrideAddStatHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddStatHooks.length; i++)
 			if(overrideAddStatHooks[i] == overWriter)
 				if(i == 0)
@@ -3230,6 +3326,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenAttackEntityFrom(ClientPlayerBase overWriter)
 	{
+		if (overrideAttackEntityFromHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAttackEntityFromHooks.length; i++)
 			if(overrideAttackEntityFromHooks[i] == overWriter)
 				if(i == 0)
@@ -3285,6 +3384,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenAttackTargetEntityWithCurrentItem(ClientPlayerBase overWriter)
 	{
+		if (overrideAttackTargetEntityWithCurrentItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAttackTargetEntityWithCurrentItemHooks.length; i++)
 			if(overrideAttackTargetEntityWithCurrentItemHooks[i] == overWriter)
 				if(i == 0)
@@ -3344,6 +3446,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenCanBreatheUnderwater(ClientPlayerBase overWriter)
 	{
+		if (overrideCanBreatheUnderwaterHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanBreatheUnderwaterHooks.length; i++)
 			if(overrideCanBreatheUnderwaterHooks[i] == overWriter)
 				if(i == 0)
@@ -3403,6 +3508,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenCanHarvestBlock(ClientPlayerBase overWriter)
 	{
+		if (overrideCanHarvestBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanHarvestBlockHooks.length; i++)
 			if(overrideCanHarvestBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -3462,6 +3570,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenCanPlayerEdit(ClientPlayerBase overWriter)
 	{
+		if (overrideCanPlayerEditHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanPlayerEditHooks.length; i++)
 			if(overrideCanPlayerEditHooks[i] == overWriter)
 				if(i == 0)
@@ -3521,6 +3632,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenCanTriggerWalking(ClientPlayerBase overWriter)
 	{
+		if (overrideCanTriggerWalkingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanTriggerWalkingHooks.length; i++)
 			if(overrideCanTriggerWalkingHooks[i] == overWriter)
 				if(i == 0)
@@ -3576,6 +3690,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenCloseScreen(ClientPlayerBase overWriter)
 	{
+		if (overrideCloseScreenHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCloseScreenHooks.length; i++)
 			if(overrideCloseScreenHooks[i] == overWriter)
 				if(i == 0)
@@ -3631,6 +3748,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDamageEntity(ClientPlayerBase overWriter)
 	{
+		if (overrideDamageEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDamageEntityHooks.length; i++)
 			if(overrideDamageEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -3686,6 +3806,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIBrewingStand(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIBrewingStandHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIBrewingStandHooks.length; i++)
 			if(overrideDisplayGUIBrewingStandHooks[i] == overWriter)
 				if(i == 0)
@@ -3741,6 +3864,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIChest(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIChestHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIChestHooks.length; i++)
 			if(overrideDisplayGUIChestHooks[i] == overWriter)
 				if(i == 0)
@@ -3796,6 +3922,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIDispenser(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIDispenserHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIDispenserHooks.length; i++)
 			if(overrideDisplayGUIDispenserHooks[i] == overWriter)
 				if(i == 0)
@@ -3851,6 +3980,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIEditSign(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIEditSignHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIEditSignHooks.length; i++)
 			if(overrideDisplayGUIEditSignHooks[i] == overWriter)
 				if(i == 0)
@@ -3906,6 +4038,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIEnchantment(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIEnchantmentHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIEnchantmentHooks.length; i++)
 			if(overrideDisplayGUIEnchantmentHooks[i] == overWriter)
 				if(i == 0)
@@ -3961,6 +4096,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIFurnace(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIFurnaceHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIFurnaceHooks.length; i++)
 			if(overrideDisplayGUIFurnaceHooks[i] == overWriter)
 				if(i == 0)
@@ -4016,6 +4154,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDisplayGUIWorkbench(ClientPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIWorkbenchHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIWorkbenchHooks.length; i++)
 			if(overrideDisplayGUIWorkbenchHooks[i] == overWriter)
 				if(i == 0)
@@ -4075,6 +4216,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDropOneItem(ClientPlayerBase overWriter)
 	{
+		if (overrideDropOneItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDropOneItemHooks.length; i++)
 			if(overrideDropOneItemHooks[i] == overWriter)
 				if(i == 0)
@@ -4134,6 +4278,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDropPlayerItem(ClientPlayerBase overWriter)
 	{
+		if (overrideDropPlayerItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDropPlayerItemHooks.length; i++)
 			if(overrideDropPlayerItemHooks[i] == overWriter)
 				if(i == 0)
@@ -4193,6 +4340,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenDropPlayerItemWithRandomChoice(ClientPlayerBase overWriter)
 	{
+		if (overrideDropPlayerItemWithRandomChoiceHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDropPlayerItemWithRandomChoiceHooks.length; i++)
 			if(overrideDropPlayerItemWithRandomChoiceHooks[i] == overWriter)
 				if(i == 0)
@@ -4248,6 +4398,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenFall(ClientPlayerBase overWriter)
 	{
+		if (overrideFallHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideFallHooks.length; i++)
 			if(overrideFallHooks[i] == overWriter)
 				if(i == 0)
@@ -4307,6 +4460,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetAIMoveSpeed(ClientPlayerBase overWriter)
 	{
+		if (overrideGetAIMoveSpeedHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetAIMoveSpeedHooks.length; i++)
 			if(overrideGetAIMoveSpeedHooks[i] == overWriter)
 				if(i == 0)
@@ -4333,6 +4489,68 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseOverrideGetAIMoveSpeedInferiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetAIMoveSpeedSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetAIMoveSpeedInferiors = new Hashtable<String, String[]>(0);
+
+	public static float getBedOrientationInDegrees(IClientPlayerAPI target)
+	{
+		float _result;
+		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
+		if(clientPlayerAPI != null && clientPlayerAPI.isGetBedOrientationInDegreesModded)
+			_result = clientPlayerAPI.getBedOrientationInDegrees();
+		else
+			_result = target.localGetBedOrientationInDegrees();
+		return _result;
+	}
+
+	private float getBedOrientationInDegrees()
+	{
+		if(beforeGetBedOrientationInDegreesHooks != null)
+			for(int i = beforeGetBedOrientationInDegreesHooks.length - 1; i >= 0 ; i--)
+				beforeGetBedOrientationInDegreesHooks[i].beforeGetBedOrientationInDegrees();
+
+		float _result;
+		if(overrideGetBedOrientationInDegreesHooks != null)
+			_result = overrideGetBedOrientationInDegreesHooks[overrideGetBedOrientationInDegreesHooks.length - 1].getBedOrientationInDegrees();
+		else
+			_result = player.localGetBedOrientationInDegrees();
+
+		if(afterGetBedOrientationInDegreesHooks != null)
+			for(int i = 0; i < afterGetBedOrientationInDegreesHooks.length; i++)
+				afterGetBedOrientationInDegreesHooks[i].afterGetBedOrientationInDegrees();
+
+		return _result;
+	}
+
+	protected ClientPlayerBase GetOverwrittenGetBedOrientationInDegrees(ClientPlayerBase overWriter)
+	{
+		if (overrideGetBedOrientationInDegreesHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideGetBedOrientationInDegreesHooks.length; i++)
+			if(overrideGetBedOrientationInDegreesHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideGetBedOrientationInDegreesHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeGetBedOrientationInDegreesHookTypes = new LinkedList<String>();
+	private final static List<String> overrideGetBedOrientationInDegreesHookTypes = new LinkedList<String>();
+	private final static List<String> afterGetBedOrientationInDegreesHookTypes = new LinkedList<String>();
+
+	private ClientPlayerBase[] beforeGetBedOrientationInDegreesHooks;
+	private ClientPlayerBase[] overrideGetBedOrientationInDegreesHooks;
+	private ClientPlayerBase[] afterGetBedOrientationInDegreesHooks;
+
+	public boolean isGetBedOrientationInDegreesModded;
+
+	private static final Map<String, String[]> allBaseBeforeGetBedOrientationInDegreesSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeGetBedOrientationInDegreesInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideGetBedOrientationInDegreesSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideGetBedOrientationInDegreesInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterGetBedOrientationInDegreesSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterGetBedOrientationInDegreesInferiors = new Hashtable<String, String[]>(0);
 
 	public static float getBrightness(IClientPlayerAPI target, float paramFloat)
 	{
@@ -4366,6 +4584,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetBrightness(ClientPlayerBase overWriter)
 	{
+		if (overrideGetBrightnessHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetBrightnessHooks.length; i++)
 			if(overrideGetBrightnessHooks[i] == overWriter)
 				if(i == 0)
@@ -4425,6 +4646,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetBrightnessForRender(ClientPlayerBase overWriter)
 	{
+		if (overrideGetBrightnessForRenderHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetBrightnessForRenderHooks.length; i++)
 			if(overrideGetBrightnessForRenderHooks[i] == overWriter)
 				if(i == 0)
@@ -4484,6 +4708,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetCurrentPlayerStrVsBlock(ClientPlayerBase overWriter)
 	{
+		if (overrideGetCurrentPlayerStrVsBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetCurrentPlayerStrVsBlockHooks.length; i++)
 			if(overrideGetCurrentPlayerStrVsBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -4543,6 +4770,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetCurrentPlayerStrVsBlockForge(ClientPlayerBase overWriter)
 	{
+		if (overrideGetCurrentPlayerStrVsBlockForgeHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetCurrentPlayerStrVsBlockForgeHooks.length; i++)
 			if(overrideGetCurrentPlayerStrVsBlockForgeHooks[i] == overWriter)
 				if(i == 0)
@@ -4602,6 +4832,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetDistanceSq(ClientPlayerBase overWriter)
 	{
+		if (overrideGetDistanceSqHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetDistanceSqHooks.length; i++)
 			if(overrideGetDistanceSqHooks[i] == overWriter)
 				if(i == 0)
@@ -4661,6 +4894,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetDistanceSqToEntity(ClientPlayerBase overWriter)
 	{
+		if (overrideGetDistanceSqToEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetDistanceSqToEntityHooks.length; i++)
 			if(overrideGetDistanceSqToEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -4720,6 +4956,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetFOVMultiplier(ClientPlayerBase overWriter)
 	{
+		if (overrideGetFOVMultiplierHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetFOVMultiplierHooks.length; i++)
 			if(overrideGetFOVMultiplierHooks[i] == overWriter)
 				if(i == 0)
@@ -4779,6 +5018,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetHurtSound(ClientPlayerBase overWriter)
 	{
+		if (overrideGetHurtSoundHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetHurtSoundHooks.length; i++)
 			if(overrideGetHurtSoundHooks[i] == overWriter)
 				if(i == 0)
@@ -4838,6 +5080,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetItemIcon(ClientPlayerBase overWriter)
 	{
+		if (overrideGetItemIconHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetItemIconHooks.length; i++)
 			if(overrideGetItemIconHooks[i] == overWriter)
 				if(i == 0)
@@ -4897,6 +5142,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenGetSleepTimer(ClientPlayerBase overWriter)
 	{
+		if (overrideGetSleepTimerHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetSleepTimerHooks.length; i++)
 			if(overrideGetSleepTimerHooks[i] == overWriter)
 				if(i == 0)
@@ -4956,6 +5204,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenHandleLavaMovement(ClientPlayerBase overWriter)
 	{
+		if (overrideHandleLavaMovementHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideHandleLavaMovementHooks.length; i++)
 			if(overrideHandleLavaMovementHooks[i] == overWriter)
 				if(i == 0)
@@ -5015,6 +5266,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenHandleWaterMovement(ClientPlayerBase overWriter)
 	{
+		if (overrideHandleWaterMovementHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideHandleWaterMovementHooks.length; i++)
 			if(overrideHandleWaterMovementHooks[i] == overWriter)
 				if(i == 0)
@@ -5070,6 +5324,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenHeal(ClientPlayerBase overWriter)
 	{
+		if (overrideHealHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideHealHooks.length; i++)
 			if(overrideHealHooks[i] == overWriter)
 				if(i == 0)
@@ -5129,6 +5386,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsEntityInsideOpaqueBlock(ClientPlayerBase overWriter)
 	{
+		if (overrideIsEntityInsideOpaqueBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsEntityInsideOpaqueBlockHooks.length; i++)
 			if(overrideIsEntityInsideOpaqueBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -5188,6 +5448,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsInWater(ClientPlayerBase overWriter)
 	{
+		if (overrideIsInWaterHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsInWaterHooks.length; i++)
 			if(overrideIsInWaterHooks[i] == overWriter)
 				if(i == 0)
@@ -5247,6 +5510,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsInsideOfMaterial(ClientPlayerBase overWriter)
 	{
+		if (overrideIsInsideOfMaterialHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsInsideOfMaterialHooks.length; i++)
 			if(overrideIsInsideOfMaterialHooks[i] == overWriter)
 				if(i == 0)
@@ -5306,6 +5572,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsOnLadder(ClientPlayerBase overWriter)
 	{
+		if (overrideIsOnLadderHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsOnLadderHooks.length; i++)
 			if(overrideIsOnLadderHooks[i] == overWriter)
 				if(i == 0)
@@ -5365,6 +5634,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsPlayerSleeping(ClientPlayerBase overWriter)
 	{
+		if (overrideIsPlayerSleepingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsPlayerSleepingHooks.length; i++)
 			if(overrideIsPlayerSleepingHooks[i] == overWriter)
 				if(i == 0)
@@ -5424,6 +5696,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsSneaking(ClientPlayerBase overWriter)
 	{
+		if (overrideIsSneakingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsSneakingHooks.length; i++)
 			if(overrideIsSneakingHooks[i] == overWriter)
 				if(i == 0)
@@ -5483,6 +5758,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenIsSprinting(ClientPlayerBase overWriter)
 	{
+		if (overrideIsSprintingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsSprintingHooks.length; i++)
 			if(overrideIsSprintingHooks[i] == overWriter)
 				if(i == 0)
@@ -5538,6 +5816,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenJump(ClientPlayerBase overWriter)
 	{
+		if (overrideJumpHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideJumpHooks.length; i++)
 			if(overrideJumpHooks[i] == overWriter)
 				if(i == 0)
@@ -5593,6 +5874,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenKnockBack(ClientPlayerBase overWriter)
 	{
+		if (overrideKnockBackHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideKnockBackHooks.length; i++)
 			if(overrideKnockBackHooks[i] == overWriter)
 				if(i == 0)
@@ -5648,6 +5932,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenMoveEntity(ClientPlayerBase overWriter)
 	{
+		if (overrideMoveEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveEntityHooks.length; i++)
 			if(overrideMoveEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -5703,6 +5990,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenMoveEntityWithHeading(ClientPlayerBase overWriter)
 	{
+		if (overrideMoveEntityWithHeadingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveEntityWithHeadingHooks.length; i++)
 			if(overrideMoveEntityWithHeadingHooks[i] == overWriter)
 				if(i == 0)
@@ -5758,6 +6048,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenMoveFlying(ClientPlayerBase overWriter)
 	{
+		if (overrideMoveFlyingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveFlyingHooks.length; i++)
 			if(overrideMoveFlyingHooks[i] == overWriter)
 				if(i == 0)
@@ -5813,6 +6106,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenOnDeath(ClientPlayerBase overWriter)
 	{
+		if (overrideOnDeathHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnDeathHooks.length; i++)
 			if(overrideOnDeathHooks[i] == overWriter)
 				if(i == 0)
@@ -5868,6 +6164,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenOnLivingUpdate(ClientPlayerBase overWriter)
 	{
+		if (overrideOnLivingUpdateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnLivingUpdateHooks.length; i++)
 			if(overrideOnLivingUpdateHooks[i] == overWriter)
 				if(i == 0)
@@ -5923,6 +6222,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenOnKillEntity(ClientPlayerBase overWriter)
 	{
+		if (overrideOnKillEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnKillEntityHooks.length; i++)
 			if(overrideOnKillEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -5978,6 +6280,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenOnStruckByLightning(ClientPlayerBase overWriter)
 	{
+		if (overrideOnStruckByLightningHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnStruckByLightningHooks.length; i++)
 			if(overrideOnStruckByLightningHooks[i] == overWriter)
 				if(i == 0)
@@ -6033,6 +6338,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenOnUpdate(ClientPlayerBase overWriter)
 	{
+		if (overrideOnUpdateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnUpdateHooks.length; i++)
 			if(overrideOnUpdateHooks[i] == overWriter)
 				if(i == 0)
@@ -6088,6 +6396,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenPlayStepSound(ClientPlayerBase overWriter)
 	{
+		if (overridePlayStepSoundHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overridePlayStepSoundHooks.length; i++)
 			if(overridePlayStepSoundHooks[i] == overWriter)
 				if(i == 0)
@@ -6147,6 +6458,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenPushOutOfBlocks(ClientPlayerBase overWriter)
 	{
+		if (overridePushOutOfBlocksHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overridePushOutOfBlocksHooks.length; i++)
 			if(overridePushOutOfBlocksHooks[i] == overWriter)
 				if(i == 0)
@@ -6206,6 +6520,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenRayTrace(ClientPlayerBase overWriter)
 	{
+		if (overrideRayTraceHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideRayTraceHooks.length; i++)
 			if(overrideRayTraceHooks[i] == overWriter)
 				if(i == 0)
@@ -6261,6 +6578,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenReadEntityFromNBT(ClientPlayerBase overWriter)
 	{
+		if (overrideReadEntityFromNBTHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideReadEntityFromNBTHooks.length; i++)
 			if(overrideReadEntityFromNBTHooks[i] == overWriter)
 				if(i == 0)
@@ -6316,6 +6636,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenRespawnPlayer(ClientPlayerBase overWriter)
 	{
+		if (overrideRespawnPlayerHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideRespawnPlayerHooks.length; i++)
 			if(overrideRespawnPlayerHooks[i] == overWriter)
 				if(i == 0)
@@ -6371,6 +6694,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSetDead(ClientPlayerBase overWriter)
 	{
+		if (overrideSetDeadHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetDeadHooks.length; i++)
 			if(overrideSetDeadHooks[i] == overWriter)
 				if(i == 0)
@@ -6426,6 +6752,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSetPlayerSPHealth(ClientPlayerBase overWriter)
 	{
+		if (overrideSetPlayerSPHealthHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetPlayerSPHealthHooks.length; i++)
 			if(overrideSetPlayerSPHealthHooks[i] == overWriter)
 				if(i == 0)
@@ -6481,6 +6810,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSetPositionAndRotation(ClientPlayerBase overWriter)
 	{
+		if (overrideSetPositionAndRotationHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetPositionAndRotationHooks.length; i++)
 			if(overrideSetPositionAndRotationHooks[i] == overWriter)
 				if(i == 0)
@@ -6536,6 +6868,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSetSneaking(ClientPlayerBase overWriter)
 	{
+		if (overrideSetSneakingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetSneakingHooks.length; i++)
 			if(overrideSetSneakingHooks[i] == overWriter)
 				if(i == 0)
@@ -6591,6 +6926,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSetSprinting(ClientPlayerBase overWriter)
 	{
+		if (overrideSetSprintingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetSprintingHooks.length; i++)
 			if(overrideSetSprintingHooks[i] == overWriter)
 				if(i == 0)
@@ -6650,6 +6988,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSleepInBedAt(ClientPlayerBase overWriter)
 	{
+		if (overrideSleepInBedAtHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSleepInBedAtHooks.length; i++)
 			if(overrideSleepInBedAtHooks[i] == overWriter)
 				if(i == 0)
@@ -6705,6 +7046,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenSwingItem(ClientPlayerBase overWriter)
 	{
+		if (overrideSwingItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSwingItemHooks.length; i++)
 			if(overrideSwingItemHooks[i] == overWriter)
 				if(i == 0)
@@ -6760,6 +7104,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenUpdateEntityActionState(ClientPlayerBase overWriter)
 	{
+		if (overrideUpdateEntityActionStateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideUpdateEntityActionStateHooks.length; i++)
 			if(overrideUpdateEntityActionStateHooks[i] == overWriter)
 				if(i == 0)
@@ -6815,6 +7162,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenUpdateRidden(ClientPlayerBase overWriter)
 	{
+		if (overrideUpdateRiddenHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideUpdateRiddenHooks.length; i++)
 			if(overrideUpdateRiddenHooks[i] == overWriter)
 				if(i == 0)
@@ -6841,6 +7191,64 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseOverrideUpdateRiddenInferiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterUpdateRiddenSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterUpdateRiddenInferiors = new Hashtable<String, String[]>(0);
+
+	public static void wakeUpPlayer(IClientPlayerAPI target, boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
+		if(clientPlayerAPI != null && clientPlayerAPI.isWakeUpPlayerModded)
+			clientPlayerAPI.wakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+		else
+			target.localWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+	}
+
+	private void wakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+		if(beforeWakeUpPlayerHooks != null)
+			for(int i = beforeWakeUpPlayerHooks.length - 1; i >= 0 ; i--)
+				beforeWakeUpPlayerHooks[i].beforeWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+		if(overrideWakeUpPlayerHooks != null)
+			overrideWakeUpPlayerHooks[overrideWakeUpPlayerHooks.length - 1].wakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+		else
+			player.localWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+		if(afterWakeUpPlayerHooks != null)
+			for(int i = 0; i < afterWakeUpPlayerHooks.length; i++)
+				afterWakeUpPlayerHooks[i].afterWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+	}
+
+	protected ClientPlayerBase GetOverwrittenWakeUpPlayer(ClientPlayerBase overWriter)
+	{
+		if (overrideWakeUpPlayerHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideWakeUpPlayerHooks.length; i++)
+			if(overrideWakeUpPlayerHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideWakeUpPlayerHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeWakeUpPlayerHookTypes = new LinkedList<String>();
+	private final static List<String> overrideWakeUpPlayerHookTypes = new LinkedList<String>();
+	private final static List<String> afterWakeUpPlayerHookTypes = new LinkedList<String>();
+
+	private ClientPlayerBase[] beforeWakeUpPlayerHooks;
+	private ClientPlayerBase[] overrideWakeUpPlayerHooks;
+	private ClientPlayerBase[] afterWakeUpPlayerHooks;
+
+	public boolean isWakeUpPlayerModded;
+
+	private static final Map<String, String[]> allBaseBeforeWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
 
 	public static void writeEntityToNBT(IClientPlayerAPI target, net.minecraft.nbt.NBTTagCompound paramNBTTagCompound)
 	{
@@ -6870,6 +7278,9 @@ public final class ClientPlayerAPI
 
 	protected ClientPlayerBase GetOverwrittenWriteEntityToNBT(ClientPlayerBase overWriter)
 	{
+		if (overrideWriteEntityToNBTHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideWriteEntityToNBTHooks.length; i++)
 			if(overrideWriteEntityToNBTHooks[i] == overWriter)
 				if(i == 0)

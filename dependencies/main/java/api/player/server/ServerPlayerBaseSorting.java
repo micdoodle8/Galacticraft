@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.server;
 
 import java.util.*;
@@ -233,6 +251,13 @@ public final class ServerPlayerBaseSorting
 	private String[] afterIsPlayerSleepingSuperiors = null;
 	private String[] afterIsPlayerSleepingInferiors = null;
 
+	private String[] beforeIsSneakingSuperiors = null;
+	private String[] beforeIsSneakingInferiors = null;
+	private String[] overrideIsSneakingSuperiors = null;
+	private String[] overrideIsSneakingInferiors = null;
+	private String[] afterIsSneakingSuperiors = null;
+	private String[] afterIsSneakingInferiors = null;
+
 	private String[] beforeJumpSuperiors = null;
 	private String[] beforeJumpInferiors = null;
 	private String[] overrideJumpSuperiors = null;
@@ -246,6 +271,13 @@ public final class ServerPlayerBaseSorting
 	private String[] overrideKnockBackInferiors = null;
 	private String[] afterKnockBackSuperiors = null;
 	private String[] afterKnockBackInferiors = null;
+
+	private String[] beforeMountEntitySuperiors = null;
+	private String[] beforeMountEntityInferiors = null;
+	private String[] overrideMountEntitySuperiors = null;
+	private String[] overrideMountEntityInferiors = null;
+	private String[] afterMountEntitySuperiors = null;
+	private String[] afterMountEntityInferiors = null;
 
 	private String[] beforeMoveEntitySuperiors = null;
 	private String[] beforeMoveEntityInferiors = null;
@@ -372,6 +404,20 @@ public final class ServerPlayerBaseSorting
 	private String[] overrideUpdatePotionEffectsInferiors = null;
 	private String[] afterUpdatePotionEffectsSuperiors = null;
 	private String[] afterUpdatePotionEffectsInferiors = null;
+
+	private String[] beforeUpdateRiddenSuperiors = null;
+	private String[] beforeUpdateRiddenInferiors = null;
+	private String[] overrideUpdateRiddenSuperiors = null;
+	private String[] overrideUpdateRiddenInferiors = null;
+	private String[] afterUpdateRiddenSuperiors = null;
+	private String[] afterUpdateRiddenInferiors = null;
+
+	private String[] beforeWakeUpPlayerSuperiors = null;
+	private String[] beforeWakeUpPlayerInferiors = null;
+	private String[] overrideWakeUpPlayerSuperiors = null;
+	private String[] overrideWakeUpPlayerInferiors = null;
+	private String[] afterWakeUpPlayerSuperiors = null;
+	private String[] afterWakeUpPlayerInferiors = null;
 
 	private String[] beforeWriteEntityToNBTSuperiors = null;
 	private String[] beforeWriteEntityToNBTInferiors = null;
@@ -2360,6 +2406,66 @@ public final class ServerPlayerBaseSorting
 		afterIsPlayerSleepingInferiors = value;
 	}
 
+	public String[] getBeforeIsSneakingSuperiors()
+	{
+		return beforeIsSneakingSuperiors;
+	}
+
+	public String[] getBeforeIsSneakingInferiors()
+	{
+		return beforeIsSneakingInferiors;
+	}
+
+	public String[] getOverrideIsSneakingSuperiors()
+	{
+		return overrideIsSneakingSuperiors;
+	}
+
+	public String[] getOverrideIsSneakingInferiors()
+	{
+		return overrideIsSneakingInferiors;
+	}
+
+	public String[] getAfterIsSneakingSuperiors()
+	{
+		return afterIsSneakingSuperiors;
+	}
+
+	public String[] getAfterIsSneakingInferiors()
+	{
+		return afterIsSneakingInferiors;
+	}
+
+	public void setBeforeIsSneakingSuperiors(String[] value)
+	{
+		beforeIsSneakingSuperiors = value;
+	}
+
+	public void setBeforeIsSneakingInferiors(String[] value)
+	{
+		beforeIsSneakingInferiors = value;
+	}
+
+	public void setOverrideIsSneakingSuperiors(String[] value)
+	{
+		overrideIsSneakingSuperiors = value;
+	}
+
+	public void setOverrideIsSneakingInferiors(String[] value)
+	{
+		overrideIsSneakingInferiors = value;
+	}
+
+	public void setAfterIsSneakingSuperiors(String[] value)
+	{
+		afterIsSneakingSuperiors = value;
+	}
+
+	public void setAfterIsSneakingInferiors(String[] value)
+	{
+		afterIsSneakingInferiors = value;
+	}
+
 	public String[] getBeforeJumpSuperiors()
 	{
 		return beforeJumpSuperiors;
@@ -2478,6 +2584,66 @@ public final class ServerPlayerBaseSorting
 	public void setAfterKnockBackInferiors(String[] value)
 	{
 		afterKnockBackInferiors = value;
+	}
+
+	public String[] getBeforeMountEntitySuperiors()
+	{
+		return beforeMountEntitySuperiors;
+	}
+
+	public String[] getBeforeMountEntityInferiors()
+	{
+		return beforeMountEntityInferiors;
+	}
+
+	public String[] getOverrideMountEntitySuperiors()
+	{
+		return overrideMountEntitySuperiors;
+	}
+
+	public String[] getOverrideMountEntityInferiors()
+	{
+		return overrideMountEntityInferiors;
+	}
+
+	public String[] getAfterMountEntitySuperiors()
+	{
+		return afterMountEntitySuperiors;
+	}
+
+	public String[] getAfterMountEntityInferiors()
+	{
+		return afterMountEntityInferiors;
+	}
+
+	public void setBeforeMountEntitySuperiors(String[] value)
+	{
+		beforeMountEntitySuperiors = value;
+	}
+
+	public void setBeforeMountEntityInferiors(String[] value)
+	{
+		beforeMountEntityInferiors = value;
+	}
+
+	public void setOverrideMountEntitySuperiors(String[] value)
+	{
+		overrideMountEntitySuperiors = value;
+	}
+
+	public void setOverrideMountEntityInferiors(String[] value)
+	{
+		overrideMountEntityInferiors = value;
+	}
+
+	public void setAfterMountEntitySuperiors(String[] value)
+	{
+		afterMountEntitySuperiors = value;
+	}
+
+	public void setAfterMountEntityInferiors(String[] value)
+	{
+		afterMountEntityInferiors = value;
 	}
 
 	public String[] getBeforeMoveEntitySuperiors()
@@ -3558,6 +3724,126 @@ public final class ServerPlayerBaseSorting
 	public void setAfterUpdatePotionEffectsInferiors(String[] value)
 	{
 		afterUpdatePotionEffectsInferiors = value;
+	}
+
+	public String[] getBeforeUpdateRiddenSuperiors()
+	{
+		return beforeUpdateRiddenSuperiors;
+	}
+
+	public String[] getBeforeUpdateRiddenInferiors()
+	{
+		return beforeUpdateRiddenInferiors;
+	}
+
+	public String[] getOverrideUpdateRiddenSuperiors()
+	{
+		return overrideUpdateRiddenSuperiors;
+	}
+
+	public String[] getOverrideUpdateRiddenInferiors()
+	{
+		return overrideUpdateRiddenInferiors;
+	}
+
+	public String[] getAfterUpdateRiddenSuperiors()
+	{
+		return afterUpdateRiddenSuperiors;
+	}
+
+	public String[] getAfterUpdateRiddenInferiors()
+	{
+		return afterUpdateRiddenInferiors;
+	}
+
+	public void setBeforeUpdateRiddenSuperiors(String[] value)
+	{
+		beforeUpdateRiddenSuperiors = value;
+	}
+
+	public void setBeforeUpdateRiddenInferiors(String[] value)
+	{
+		beforeUpdateRiddenInferiors = value;
+	}
+
+	public void setOverrideUpdateRiddenSuperiors(String[] value)
+	{
+		overrideUpdateRiddenSuperiors = value;
+	}
+
+	public void setOverrideUpdateRiddenInferiors(String[] value)
+	{
+		overrideUpdateRiddenInferiors = value;
+	}
+
+	public void setAfterUpdateRiddenSuperiors(String[] value)
+	{
+		afterUpdateRiddenSuperiors = value;
+	}
+
+	public void setAfterUpdateRiddenInferiors(String[] value)
+	{
+		afterUpdateRiddenInferiors = value;
+	}
+
+	public String[] getBeforeWakeUpPlayerSuperiors()
+	{
+		return beforeWakeUpPlayerSuperiors;
+	}
+
+	public String[] getBeforeWakeUpPlayerInferiors()
+	{
+		return beforeWakeUpPlayerInferiors;
+	}
+
+	public String[] getOverrideWakeUpPlayerSuperiors()
+	{
+		return overrideWakeUpPlayerSuperiors;
+	}
+
+	public String[] getOverrideWakeUpPlayerInferiors()
+	{
+		return overrideWakeUpPlayerInferiors;
+	}
+
+	public String[] getAfterWakeUpPlayerSuperiors()
+	{
+		return afterWakeUpPlayerSuperiors;
+	}
+
+	public String[] getAfterWakeUpPlayerInferiors()
+	{
+		return afterWakeUpPlayerInferiors;
+	}
+
+	public void setBeforeWakeUpPlayerSuperiors(String[] value)
+	{
+		beforeWakeUpPlayerSuperiors = value;
+	}
+
+	public void setBeforeWakeUpPlayerInferiors(String[] value)
+	{
+		beforeWakeUpPlayerInferiors = value;
+	}
+
+	public void setOverrideWakeUpPlayerSuperiors(String[] value)
+	{
+		overrideWakeUpPlayerSuperiors = value;
+	}
+
+	public void setOverrideWakeUpPlayerInferiors(String[] value)
+	{
+		overrideWakeUpPlayerInferiors = value;
+	}
+
+	public void setAfterWakeUpPlayerSuperiors(String[] value)
+	{
+		afterWakeUpPlayerSuperiors = value;
+	}
+
+	public void setAfterWakeUpPlayerInferiors(String[] value)
+	{
+		afterWakeUpPlayerInferiors = value;
 	}
 
 	public String[] getBeforeWriteEntityToNBTSuperiors()

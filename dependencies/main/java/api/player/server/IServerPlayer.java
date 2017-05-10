@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.server;
 
 public interface IServerPlayer
@@ -194,6 +212,12 @@ public interface IServerPlayer
 
 	boolean localIsPlayerSleeping();
 
+	boolean realIsSneaking();
+
+	boolean superIsSneaking();
+
+	boolean localIsSneaking();
+
 	void realJump();
 
 	void superJump();
@@ -205,6 +229,12 @@ public interface IServerPlayer
 	void superKnockBack(net.minecraft.entity.Entity paramEntity, float paramFloat, double paramDouble1, double paramDouble2);
 
 	void localKnockBack(net.minecraft.entity.Entity paramEntity, float paramFloat, double paramDouble1, double paramDouble2);
+
+	void realMountEntity(net.minecraft.entity.Entity paramEntity);
+
+	void superMountEntity(net.minecraft.entity.Entity paramEntity);
+
+	void localMountEntity(net.minecraft.entity.Entity paramEntity);
 
 	void realMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
 
@@ -309,6 +339,18 @@ public interface IServerPlayer
 	void superUpdatePotionEffects();
 
 	void localUpdatePotionEffects();
+
+	void realUpdateRidden();
+
+	void superUpdateRidden();
+
+	void localUpdateRidden();
+
+	void realWakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3);
+
+	void superWakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3);
+
+	void localWakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3);
 
 	void realWriteEntityToNBT(net.minecraft.nbt.NBTTagCompound paramNBTTagCompound);
 

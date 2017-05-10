@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.server;
 
 import java.io.*;
@@ -57,16 +75,16 @@ public final class ServerPlayerAPI
 				String[] errorMessageParts = new String[]
 				{
 					"========================================",
-					"The API \"Server Player\" version 1.0 of the mod \"Player API core 1.0\" can not be created!",
+					"The API \"Server Player\" version " + api.player.forge.PlayerAPIPlugin.Version + " of the mod \"Player API Core " + api.player.forge.PlayerAPIPlugin.Version + "\" can not be created!",
 					"----------------------------------------",
 					"Mandatory member method \"{0} getServerPlayerBase({3})\" not found in class \"{1}\".",
 					"There are three scenarios this can happen:",
-					"* Minecraft Forge is missing a Player API core which Minecraft version matches its own.",
-					"  Download and install the latest Player API core for the Minecraft version you were trying to run.",
-					"* The code of the class \"{2}\" of Player API core has been modified beyond recognition by another Minecraft Forge coremod.",
+					"* Minecraft Forge is missing a Player API Core which Minecraft version matches its own.",
+					"  Download and install the latest Player API Core for the Minecraft version you were trying to run.",
+					"* The code of the class \"{2}\" of Player API Core has been modified beyond recognition by another Minecraft Forge coremod.",
 					"  Try temporary deinstallation of other core mods to find the culprit and deinstall it permanently to fix this specific problem.",
-					"* Player API core has not been installed correctly.",
-					"  Deinstall Player API core and install it again following the installation instructions in the readme file.",
+					"* Player API Core has not been installed correctly.",
+					"  Deinstall Player API Core and install it again following the installation instructions in the readme file.",
 					"========================================"
 				};
 
@@ -91,7 +109,7 @@ public final class ServerPlayerAPI
 				throw new RuntimeException(errorMessage, exception);
 			}
 
-			log("Server Player 1.0 Created");
+			log("Server Player " + api.player.forge.PlayerAPIPlugin.Version + " Created");
 			isCreated = true;
 		}
 
@@ -354,6 +372,13 @@ public final class ServerPlayerAPI
 			addSorting(id, allBaseAfterIsPlayerSleepingSuperiors, baseSorting.getAfterIsPlayerSleepingSuperiors());
 			addSorting(id, allBaseAfterIsPlayerSleepingInferiors, baseSorting.getAfterIsPlayerSleepingInferiors());
 
+			addSorting(id, allBaseBeforeIsSneakingSuperiors, baseSorting.getBeforeIsSneakingSuperiors());
+			addSorting(id, allBaseBeforeIsSneakingInferiors, baseSorting.getBeforeIsSneakingInferiors());
+			addSorting(id, allBaseOverrideIsSneakingSuperiors, baseSorting.getOverrideIsSneakingSuperiors());
+			addSorting(id, allBaseOverrideIsSneakingInferiors, baseSorting.getOverrideIsSneakingInferiors());
+			addSorting(id, allBaseAfterIsSneakingSuperiors, baseSorting.getAfterIsSneakingSuperiors());
+			addSorting(id, allBaseAfterIsSneakingInferiors, baseSorting.getAfterIsSneakingInferiors());
+
 			addSorting(id, allBaseBeforeJumpSuperiors, baseSorting.getBeforeJumpSuperiors());
 			addSorting(id, allBaseBeforeJumpInferiors, baseSorting.getBeforeJumpInferiors());
 			addSorting(id, allBaseOverrideJumpSuperiors, baseSorting.getOverrideJumpSuperiors());
@@ -367,6 +392,13 @@ public final class ServerPlayerAPI
 			addSorting(id, allBaseOverrideKnockBackInferiors, baseSorting.getOverrideKnockBackInferiors());
 			addSorting(id, allBaseAfterKnockBackSuperiors, baseSorting.getAfterKnockBackSuperiors());
 			addSorting(id, allBaseAfterKnockBackInferiors, baseSorting.getAfterKnockBackInferiors());
+
+			addSorting(id, allBaseBeforeMountEntitySuperiors, baseSorting.getBeforeMountEntitySuperiors());
+			addSorting(id, allBaseBeforeMountEntityInferiors, baseSorting.getBeforeMountEntityInferiors());
+			addSorting(id, allBaseOverrideMountEntitySuperiors, baseSorting.getOverrideMountEntitySuperiors());
+			addSorting(id, allBaseOverrideMountEntityInferiors, baseSorting.getOverrideMountEntityInferiors());
+			addSorting(id, allBaseAfterMountEntitySuperiors, baseSorting.getAfterMountEntitySuperiors());
+			addSorting(id, allBaseAfterMountEntityInferiors, baseSorting.getAfterMountEntityInferiors());
 
 			addSorting(id, allBaseBeforeMoveEntitySuperiors, baseSorting.getBeforeMoveEntitySuperiors());
 			addSorting(id, allBaseBeforeMoveEntityInferiors, baseSorting.getBeforeMoveEntityInferiors());
@@ -493,6 +525,20 @@ public final class ServerPlayerAPI
 			addSorting(id, allBaseOverrideUpdatePotionEffectsInferiors, baseSorting.getOverrideUpdatePotionEffectsInferiors());
 			addSorting(id, allBaseAfterUpdatePotionEffectsSuperiors, baseSorting.getAfterUpdatePotionEffectsSuperiors());
 			addSorting(id, allBaseAfterUpdatePotionEffectsInferiors, baseSorting.getAfterUpdatePotionEffectsInferiors());
+
+			addSorting(id, allBaseBeforeUpdateRiddenSuperiors, baseSorting.getBeforeUpdateRiddenSuperiors());
+			addSorting(id, allBaseBeforeUpdateRiddenInferiors, baseSorting.getBeforeUpdateRiddenInferiors());
+			addSorting(id, allBaseOverrideUpdateRiddenSuperiors, baseSorting.getOverrideUpdateRiddenSuperiors());
+			addSorting(id, allBaseOverrideUpdateRiddenInferiors, baseSorting.getOverrideUpdateRiddenInferiors());
+			addSorting(id, allBaseAfterUpdateRiddenSuperiors, baseSorting.getAfterUpdateRiddenSuperiors());
+			addSorting(id, allBaseAfterUpdateRiddenInferiors, baseSorting.getAfterUpdateRiddenInferiors());
+
+			addSorting(id, allBaseBeforeWakeUpPlayerSuperiors, baseSorting.getBeforeWakeUpPlayerSuperiors());
+			addSorting(id, allBaseBeforeWakeUpPlayerInferiors, baseSorting.getBeforeWakeUpPlayerInferiors());
+			addSorting(id, allBaseOverrideWakeUpPlayerSuperiors, baseSorting.getOverrideWakeUpPlayerSuperiors());
+			addSorting(id, allBaseOverrideWakeUpPlayerInferiors, baseSorting.getOverrideWakeUpPlayerInferiors());
+			addSorting(id, allBaseAfterWakeUpPlayerSuperiors, baseSorting.getAfterWakeUpPlayerSuperiors());
+			addSorting(id, allBaseAfterWakeUpPlayerInferiors, baseSorting.getAfterWakeUpPlayerInferiors());
 
 			addSorting(id, allBaseBeforeWriteEntityToNBTSuperiors, baseSorting.getBeforeWriteEntityToNBTSuperiors());
 			addSorting(id, allBaseBeforeWriteEntityToNBTInferiors, baseSorting.getBeforeWriteEntityToNBTInferiors());
@@ -631,6 +677,10 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideIsPlayerSleepingHookTypes, "isPlayerSleeping");
 		addMethod(id, baseClass, afterIsPlayerSleepingHookTypes, "afterIsPlayerSleeping");
 
+		addMethod(id, baseClass, beforeIsSneakingHookTypes, "beforeIsSneaking");
+		addMethod(id, baseClass, overrideIsSneakingHookTypes, "isSneaking");
+		addMethod(id, baseClass, afterIsSneakingHookTypes, "afterIsSneaking");
+
 		addMethod(id, baseClass, beforeJumpHookTypes, "beforeJump");
 		addMethod(id, baseClass, overrideJumpHookTypes, "jump");
 		addMethod(id, baseClass, afterJumpHookTypes, "afterJump");
@@ -638,6 +688,10 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, beforeKnockBackHookTypes, "beforeKnockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 		addMethod(id, baseClass, overrideKnockBackHookTypes, "knockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 		addMethod(id, baseClass, afterKnockBackHookTypes, "afterKnockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
+
+		addMethod(id, baseClass, beforeMountEntityHookTypes, "beforeMountEntity", net.minecraft.entity.Entity.class);
+		addMethod(id, baseClass, overrideMountEntityHookTypes, "mountEntity", net.minecraft.entity.Entity.class);
+		addMethod(id, baseClass, afterMountEntityHookTypes, "afterMountEntity", net.minecraft.entity.Entity.class);
 
 		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", double.class, double.class, double.class);
 		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", double.class, double.class, double.class);
@@ -710,6 +764,14 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, beforeUpdatePotionEffectsHookTypes, "beforeUpdatePotionEffects");
 		addMethod(id, baseClass, overrideUpdatePotionEffectsHookTypes, "updatePotionEffects");
 		addMethod(id, baseClass, afterUpdatePotionEffectsHookTypes, "afterUpdatePotionEffects");
+
+		addMethod(id, baseClass, beforeUpdateRiddenHookTypes, "beforeUpdateRidden");
+		addMethod(id, baseClass, overrideUpdateRiddenHookTypes, "updateRidden");
+		addMethod(id, baseClass, afterUpdateRiddenHookTypes, "afterUpdateRidden");
+
+		addMethod(id, baseClass, beforeWakeUpPlayerHookTypes, "beforeWakeUpPlayer", boolean.class, boolean.class, boolean.class);
+		addMethod(id, baseClass, overrideWakeUpPlayerHookTypes, "wakeUpPlayer", boolean.class, boolean.class, boolean.class);
+		addMethod(id, baseClass, afterWakeUpPlayerHookTypes, "afterWakeUpPlayer", boolean.class, boolean.class, boolean.class);
 
 		addMethod(id, baseClass, beforeWriteEntityToNBTHookTypes, "beforeWriteEntityToNBT", net.minecraft.nbt.NBTTagCompound.class);
 		addMethod(id, baseClass, overrideWriteEntityToNBTHookTypes, "writeEntityToNBT", net.minecraft.nbt.NBTTagCompound.class);
@@ -1089,6 +1151,17 @@ public final class ServerPlayerAPI
 		overrideIsPlayerSleepingHookTypes.remove(id);
 		afterIsPlayerSleepingHookTypes.remove(id);
 
+		allBaseBeforeIsSneakingSuperiors.remove(id);
+		allBaseBeforeIsSneakingInferiors.remove(id);
+		allBaseOverrideIsSneakingSuperiors.remove(id);
+		allBaseOverrideIsSneakingInferiors.remove(id);
+		allBaseAfterIsSneakingSuperiors.remove(id);
+		allBaseAfterIsSneakingInferiors.remove(id);
+
+		beforeIsSneakingHookTypes.remove(id);
+		overrideIsSneakingHookTypes.remove(id);
+		afterIsSneakingHookTypes.remove(id);
+
 		allBaseBeforeJumpSuperiors.remove(id);
 		allBaseBeforeJumpInferiors.remove(id);
 		allBaseOverrideJumpSuperiors.remove(id);
@@ -1110,6 +1183,17 @@ public final class ServerPlayerAPI
 		beforeKnockBackHookTypes.remove(id);
 		overrideKnockBackHookTypes.remove(id);
 		afterKnockBackHookTypes.remove(id);
+
+		allBaseBeforeMountEntitySuperiors.remove(id);
+		allBaseBeforeMountEntityInferiors.remove(id);
+		allBaseOverrideMountEntitySuperiors.remove(id);
+		allBaseOverrideMountEntityInferiors.remove(id);
+		allBaseAfterMountEntitySuperiors.remove(id);
+		allBaseAfterMountEntityInferiors.remove(id);
+
+		beforeMountEntityHookTypes.remove(id);
+		overrideMountEntityHookTypes.remove(id);
+		afterMountEntityHookTypes.remove(id);
 
 		allBaseBeforeMoveEntitySuperiors.remove(id);
 		allBaseBeforeMoveEntityInferiors.remove(id);
@@ -1309,6 +1393,28 @@ public final class ServerPlayerAPI
 		overrideUpdatePotionEffectsHookTypes.remove(id);
 		afterUpdatePotionEffectsHookTypes.remove(id);
 
+		allBaseBeforeUpdateRiddenSuperiors.remove(id);
+		allBaseBeforeUpdateRiddenInferiors.remove(id);
+		allBaseOverrideUpdateRiddenSuperiors.remove(id);
+		allBaseOverrideUpdateRiddenInferiors.remove(id);
+		allBaseAfterUpdateRiddenSuperiors.remove(id);
+		allBaseAfterUpdateRiddenInferiors.remove(id);
+
+		beforeUpdateRiddenHookTypes.remove(id);
+		overrideUpdateRiddenHookTypes.remove(id);
+		afterUpdateRiddenHookTypes.remove(id);
+
+		allBaseBeforeWakeUpPlayerSuperiors.remove(id);
+		allBaseBeforeWakeUpPlayerInferiors.remove(id);
+		allBaseOverrideWakeUpPlayerSuperiors.remove(id);
+		allBaseOverrideWakeUpPlayerInferiors.remove(id);
+		allBaseAfterWakeUpPlayerSuperiors.remove(id);
+		allBaseAfterWakeUpPlayerInferiors.remove(id);
+
+		beforeWakeUpPlayerHookTypes.remove(id);
+		overrideWakeUpPlayerHookTypes.remove(id);
+		afterWakeUpPlayerHookTypes.remove(id);
+
 		allBaseBeforeWriteEntityToNBTSuperiors.remove(id);
 		allBaseBeforeWriteEntityToNBTInferiors.remove(id);
 		allBaseOverrideWriteEntityToNBTSuperiors.remove(id);
@@ -1320,6 +1426,8 @@ public final class ServerPlayerAPI
 		overrideWriteEntityToNBTHookTypes.remove(id);
 		afterWriteEntityToNBTHookTypes.remove(id);
 
+		for(IServerPlayerAPI instance : getAllInstancesList())
+			instance.getServerPlayerAPI().updateServerPlayerBases();
 
 		Iterator<String> iterator = keysToVirtualIds.keySet().iterator();
 		while(iterator.hasNext())
@@ -1681,6 +1789,10 @@ public final class ServerPlayerAPI
 		sortBases(overrideIsPlayerSleepingHookTypes, allBaseOverrideIsPlayerSleepingSuperiors, allBaseOverrideIsPlayerSleepingInferiors, "overrideIsPlayerSleeping");
 		sortBases(afterIsPlayerSleepingHookTypes, allBaseAfterIsPlayerSleepingSuperiors, allBaseAfterIsPlayerSleepingInferiors, "afterIsPlayerSleeping");
 
+		sortBases(beforeIsSneakingHookTypes, allBaseBeforeIsSneakingSuperiors, allBaseBeforeIsSneakingInferiors, "beforeIsSneaking");
+		sortBases(overrideIsSneakingHookTypes, allBaseOverrideIsSneakingSuperiors, allBaseOverrideIsSneakingInferiors, "overrideIsSneaking");
+		sortBases(afterIsSneakingHookTypes, allBaseAfterIsSneakingSuperiors, allBaseAfterIsSneakingInferiors, "afterIsSneaking");
+
 		sortBases(beforeJumpHookTypes, allBaseBeforeJumpSuperiors, allBaseBeforeJumpInferiors, "beforeJump");
 		sortBases(overrideJumpHookTypes, allBaseOverrideJumpSuperiors, allBaseOverrideJumpInferiors, "overrideJump");
 		sortBases(afterJumpHookTypes, allBaseAfterJumpSuperiors, allBaseAfterJumpInferiors, "afterJump");
@@ -1688,6 +1800,10 @@ public final class ServerPlayerAPI
 		sortBases(beforeKnockBackHookTypes, allBaseBeforeKnockBackSuperiors, allBaseBeforeKnockBackInferiors, "beforeKnockBack");
 		sortBases(overrideKnockBackHookTypes, allBaseOverrideKnockBackSuperiors, allBaseOverrideKnockBackInferiors, "overrideKnockBack");
 		sortBases(afterKnockBackHookTypes, allBaseAfterKnockBackSuperiors, allBaseAfterKnockBackInferiors, "afterKnockBack");
+
+		sortBases(beforeMountEntityHookTypes, allBaseBeforeMountEntitySuperiors, allBaseBeforeMountEntityInferiors, "beforeMountEntity");
+		sortBases(overrideMountEntityHookTypes, allBaseOverrideMountEntitySuperiors, allBaseOverrideMountEntityInferiors, "overrideMountEntity");
+		sortBases(afterMountEntityHookTypes, allBaseAfterMountEntitySuperiors, allBaseAfterMountEntityInferiors, "afterMountEntity");
 
 		sortBases(beforeMoveEntityHookTypes, allBaseBeforeMoveEntitySuperiors, allBaseBeforeMoveEntityInferiors, "beforeMoveEntity");
 		sortBases(overrideMoveEntityHookTypes, allBaseOverrideMoveEntitySuperiors, allBaseOverrideMoveEntityInferiors, "overrideMoveEntity");
@@ -1760,6 +1876,14 @@ public final class ServerPlayerAPI
 		sortBases(beforeUpdatePotionEffectsHookTypes, allBaseBeforeUpdatePotionEffectsSuperiors, allBaseBeforeUpdatePotionEffectsInferiors, "beforeUpdatePotionEffects");
 		sortBases(overrideUpdatePotionEffectsHookTypes, allBaseOverrideUpdatePotionEffectsSuperiors, allBaseOverrideUpdatePotionEffectsInferiors, "overrideUpdatePotionEffects");
 		sortBases(afterUpdatePotionEffectsHookTypes, allBaseAfterUpdatePotionEffectsSuperiors, allBaseAfterUpdatePotionEffectsInferiors, "afterUpdatePotionEffects");
+
+		sortBases(beforeUpdateRiddenHookTypes, allBaseBeforeUpdateRiddenSuperiors, allBaseBeforeUpdateRiddenInferiors, "beforeUpdateRidden");
+		sortBases(overrideUpdateRiddenHookTypes, allBaseOverrideUpdateRiddenSuperiors, allBaseOverrideUpdateRiddenInferiors, "overrideUpdateRidden");
+		sortBases(afterUpdateRiddenHookTypes, allBaseAfterUpdateRiddenSuperiors, allBaseAfterUpdateRiddenInferiors, "afterUpdateRidden");
+
+		sortBases(beforeWakeUpPlayerHookTypes, allBaseBeforeWakeUpPlayerSuperiors, allBaseBeforeWakeUpPlayerInferiors, "beforeWakeUpPlayer");
+		sortBases(overrideWakeUpPlayerHookTypes, allBaseOverrideWakeUpPlayerSuperiors, allBaseOverrideWakeUpPlayerInferiors, "overrideWakeUpPlayer");
+		sortBases(afterWakeUpPlayerHookTypes, allBaseAfterWakeUpPlayerSuperiors, allBaseAfterWakeUpPlayerInferiors, "afterWakeUpPlayer");
 
 		sortBases(beforeWriteEntityToNBTHookTypes, allBaseBeforeWriteEntityToNBTSuperiors, allBaseBeforeWriteEntityToNBTInferiors, "beforeWriteEntityToNBT");
 		sortBases(overrideWriteEntityToNBTHookTypes, allBaseOverrideWriteEntityToNBTSuperiors, allBaseOverrideWriteEntityToNBTInferiors, "overrideWriteEntityToNBT");
@@ -2181,6 +2305,14 @@ public final class ServerPlayerAPI
 			overrideIsPlayerSleepingHooks != null ||
 			afterIsPlayerSleepingHooks != null;
 
+		beforeIsSneakingHooks = create(beforeIsSneakingHookTypes);
+		overrideIsSneakingHooks = create(overrideIsSneakingHookTypes);
+		afterIsSneakingHooks = create(afterIsSneakingHookTypes);
+		isIsSneakingModded =
+			beforeIsSneakingHooks != null ||
+			overrideIsSneakingHooks != null ||
+			afterIsSneakingHooks != null;
+
 		beforeJumpHooks = create(beforeJumpHookTypes);
 		overrideJumpHooks = create(overrideJumpHookTypes);
 		afterJumpHooks = create(afterJumpHookTypes);
@@ -2196,6 +2328,14 @@ public final class ServerPlayerAPI
 			beforeKnockBackHooks != null ||
 			overrideKnockBackHooks != null ||
 			afterKnockBackHooks != null;
+
+		beforeMountEntityHooks = create(beforeMountEntityHookTypes);
+		overrideMountEntityHooks = create(overrideMountEntityHookTypes);
+		afterMountEntityHooks = create(afterMountEntityHookTypes);
+		isMountEntityModded =
+			beforeMountEntityHooks != null ||
+			overrideMountEntityHooks != null ||
+			afterMountEntityHooks != null;
 
 		beforeMoveEntityHooks = create(beforeMoveEntityHookTypes);
 		overrideMoveEntityHooks = create(overrideMoveEntityHookTypes);
@@ -2341,6 +2481,22 @@ public final class ServerPlayerAPI
 			overrideUpdatePotionEffectsHooks != null ||
 			afterUpdatePotionEffectsHooks != null;
 
+		beforeUpdateRiddenHooks = create(beforeUpdateRiddenHookTypes);
+		overrideUpdateRiddenHooks = create(overrideUpdateRiddenHookTypes);
+		afterUpdateRiddenHooks = create(afterUpdateRiddenHookTypes);
+		isUpdateRiddenModded =
+			beforeUpdateRiddenHooks != null ||
+			overrideUpdateRiddenHooks != null ||
+			afterUpdateRiddenHooks != null;
+
+		beforeWakeUpPlayerHooks = create(beforeWakeUpPlayerHookTypes);
+		overrideWakeUpPlayerHooks = create(overrideWakeUpPlayerHookTypes);
+		afterWakeUpPlayerHooks = create(afterWakeUpPlayerHookTypes);
+		isWakeUpPlayerModded =
+			beforeWakeUpPlayerHooks != null ||
+			overrideWakeUpPlayerHooks != null ||
+			afterWakeUpPlayerHooks != null;
+
 		beforeWriteEntityToNBTHooks = create(beforeWriteEntityToNBTHookTypes);
 		overrideWriteEntityToNBTHooks = create(overrideWriteEntityToNBTHookTypes);
 		afterWriteEntityToNBTHooks = create(afterWriteEntityToNBTHookTypes);
@@ -2365,7 +2521,6 @@ public final class ServerPlayerAPI
 		ServerPlayerBase toDetach = allBaseObjects.get(id);
 		toDetach.beforeBaseDetach(true);
 		allBaseObjects.remove(id);
-		updateServerPlayerBases();
 		toDetach.afterBaseDetach(true);
 	}
 
@@ -2450,7 +2605,7 @@ public final class ServerPlayerAPI
 			return null;
 
 		Method method = methods.get(key);
-		if(methods == null)
+		if(method == null)
 			return null;
 
 		return execute(getServerPlayerBase(id), method, parameters);
@@ -2520,6 +2675,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAddExhaustion(ServerPlayerBase overWriter)
 	{
+		if (overrideAddExhaustionHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddExhaustionHooks.length; i++)
 			if(overrideAddExhaustionHooks[i] == overWriter)
 				if(i == 0)
@@ -2575,6 +2733,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAddExperience(ServerPlayerBase overWriter)
 	{
+		if (overrideAddExperienceHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddExperienceHooks.length; i++)
 			if(overrideAddExperienceHooks[i] == overWriter)
 				if(i == 0)
@@ -2630,6 +2791,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAddExperienceLevel(ServerPlayerBase overWriter)
 	{
+		if (overrideAddExperienceLevelHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddExperienceLevelHooks.length; i++)
 			if(overrideAddExperienceLevelHooks[i] == overWriter)
 				if(i == 0)
@@ -2685,6 +2849,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAddMovementStat(ServerPlayerBase overWriter)
 	{
+		if (overrideAddMovementStatHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAddMovementStatHooks.length; i++)
 			if(overrideAddMovementStatHooks[i] == overWriter)
 				if(i == 0)
@@ -2744,6 +2911,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAttackEntityFrom(ServerPlayerBase overWriter)
 	{
+		if (overrideAttackEntityFromHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAttackEntityFromHooks.length; i++)
 			if(overrideAttackEntityFromHooks[i] == overWriter)
 				if(i == 0)
@@ -2799,6 +2969,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenAttackTargetEntityWithCurrentItem(ServerPlayerBase overWriter)
 	{
+		if (overrideAttackTargetEntityWithCurrentItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideAttackTargetEntityWithCurrentItemHooks.length; i++)
 			if(overrideAttackTargetEntityWithCurrentItemHooks[i] == overWriter)
 				if(i == 0)
@@ -2858,6 +3031,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenCanBreatheUnderwater(ServerPlayerBase overWriter)
 	{
+		if (overrideCanBreatheUnderwaterHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanBreatheUnderwaterHooks.length; i++)
 			if(overrideCanBreatheUnderwaterHooks[i] == overWriter)
 				if(i == 0)
@@ -2917,6 +3093,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenCanHarvestBlock(ServerPlayerBase overWriter)
 	{
+		if (overrideCanHarvestBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanHarvestBlockHooks.length; i++)
 			if(overrideCanHarvestBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -2976,6 +3155,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenCanPlayerEdit(ServerPlayerBase overWriter)
 	{
+		if (overrideCanPlayerEditHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanPlayerEditHooks.length; i++)
 			if(overrideCanPlayerEditHooks[i] == overWriter)
 				if(i == 0)
@@ -3035,6 +3217,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenCanTriggerWalking(ServerPlayerBase overWriter)
 	{
+		if (overrideCanTriggerWalkingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideCanTriggerWalkingHooks.length; i++)
 			if(overrideCanTriggerWalkingHooks[i] == overWriter)
 				if(i == 0)
@@ -3090,6 +3275,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenClonePlayer(ServerPlayerBase overWriter)
 	{
+		if (overrideClonePlayerHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideClonePlayerHooks.length; i++)
 			if(overrideClonePlayerHooks[i] == overWriter)
 				if(i == 0)
@@ -3145,6 +3333,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDamageEntity(ServerPlayerBase overWriter)
 	{
+		if (overrideDamageEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDamageEntityHooks.length; i++)
 			if(overrideDamageEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -3200,6 +3391,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDisplayGUIChest(ServerPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIChestHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIChestHooks.length; i++)
 			if(overrideDisplayGUIChestHooks[i] == overWriter)
 				if(i == 0)
@@ -3255,6 +3449,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDisplayGUIDispenser(ServerPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIDispenserHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIDispenserHooks.length; i++)
 			if(overrideDisplayGUIDispenserHooks[i] == overWriter)
 				if(i == 0)
@@ -3310,6 +3507,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDisplayGUIFurnace(ServerPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIFurnaceHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIFurnaceHooks.length; i++)
 			if(overrideDisplayGUIFurnaceHooks[i] == overWriter)
 				if(i == 0)
@@ -3365,6 +3565,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDisplayGUIWorkbench(ServerPlayerBase overWriter)
 	{
+		if (overrideDisplayGUIWorkbenchHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDisplayGUIWorkbenchHooks.length; i++)
 			if(overrideDisplayGUIWorkbenchHooks[i] == overWriter)
 				if(i == 0)
@@ -3424,6 +3627,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDropOneItem(ServerPlayerBase overWriter)
 	{
+		if (overrideDropOneItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDropOneItemHooks.length; i++)
 			if(overrideDropOneItemHooks[i] == overWriter)
 				if(i == 0)
@@ -3483,6 +3689,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenDropPlayerItem(ServerPlayerBase overWriter)
 	{
+		if (overrideDropPlayerItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideDropPlayerItemHooks.length; i++)
 			if(overrideDropPlayerItemHooks[i] == overWriter)
 				if(i == 0)
@@ -3538,6 +3747,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenFall(ServerPlayerBase overWriter)
 	{
+		if (overrideFallHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideFallHooks.length; i++)
 			if(overrideFallHooks[i] == overWriter)
 				if(i == 0)
@@ -3597,6 +3809,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetAIMoveSpeed(ServerPlayerBase overWriter)
 	{
+		if (overrideGetAIMoveSpeedHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetAIMoveSpeedHooks.length; i++)
 			if(overrideGetAIMoveSpeedHooks[i] == overWriter)
 				if(i == 0)
@@ -3656,6 +3871,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetCurrentPlayerStrVsBlock(ServerPlayerBase overWriter)
 	{
+		if (overrideGetCurrentPlayerStrVsBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetCurrentPlayerStrVsBlockHooks.length; i++)
 			if(overrideGetCurrentPlayerStrVsBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -3715,6 +3933,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetCurrentPlayerStrVsBlockForge(ServerPlayerBase overWriter)
 	{
+		if (overrideGetCurrentPlayerStrVsBlockForgeHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetCurrentPlayerStrVsBlockForgeHooks.length; i++)
 			if(overrideGetCurrentPlayerStrVsBlockForgeHooks[i] == overWriter)
 				if(i == 0)
@@ -3774,6 +3995,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetDistanceSq(ServerPlayerBase overWriter)
 	{
+		if (overrideGetDistanceSqHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetDistanceSqHooks.length; i++)
 			if(overrideGetDistanceSqHooks[i] == overWriter)
 				if(i == 0)
@@ -3833,6 +4057,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetBrightness(ServerPlayerBase overWriter)
 	{
+		if (overrideGetBrightnessHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetBrightnessHooks.length; i++)
 			if(overrideGetBrightnessHooks[i] == overWriter)
 				if(i == 0)
@@ -3892,6 +4119,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenGetEyeHeight(ServerPlayerBase overWriter)
 	{
+		if (overrideGetEyeHeightHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideGetEyeHeightHooks.length; i++)
 			if(overrideGetEyeHeightHooks[i] == overWriter)
 				if(i == 0)
@@ -3947,6 +4177,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenHeal(ServerPlayerBase overWriter)
 	{
+		if (overrideHealHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideHealHooks.length; i++)
 			if(overrideHealHooks[i] == overWriter)
 				if(i == 0)
@@ -4006,6 +4239,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenIsEntityInsideOpaqueBlock(ServerPlayerBase overWriter)
 	{
+		if (overrideIsEntityInsideOpaqueBlockHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsEntityInsideOpaqueBlockHooks.length; i++)
 			if(overrideIsEntityInsideOpaqueBlockHooks[i] == overWriter)
 				if(i == 0)
@@ -4065,6 +4301,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenIsInWater(ServerPlayerBase overWriter)
 	{
+		if (overrideIsInWaterHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsInWaterHooks.length; i++)
 			if(overrideIsInWaterHooks[i] == overWriter)
 				if(i == 0)
@@ -4124,6 +4363,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenIsInsideOfMaterial(ServerPlayerBase overWriter)
 	{
+		if (overrideIsInsideOfMaterialHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsInsideOfMaterialHooks.length; i++)
 			if(overrideIsInsideOfMaterialHooks[i] == overWriter)
 				if(i == 0)
@@ -4183,6 +4425,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenIsOnLadder(ServerPlayerBase overWriter)
 	{
+		if (overrideIsOnLadderHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsOnLadderHooks.length; i++)
 			if(overrideIsOnLadderHooks[i] == overWriter)
 				if(i == 0)
@@ -4242,6 +4487,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenIsPlayerSleeping(ServerPlayerBase overWriter)
 	{
+		if (overrideIsPlayerSleepingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideIsPlayerSleepingHooks.length; i++)
 			if(overrideIsPlayerSleepingHooks[i] == overWriter)
 				if(i == 0)
@@ -4268,6 +4516,68 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseOverrideIsPlayerSleepingInferiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterIsPlayerSleepingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterIsPlayerSleepingInferiors = new Hashtable<String, String[]>(0);
+
+	public static boolean isSneaking(IServerPlayerAPI target)
+	{
+		boolean _result;
+		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
+		if(serverPlayerAPI != null && serverPlayerAPI.isIsSneakingModded)
+			_result = serverPlayerAPI.isSneaking();
+		else
+			_result = target.localIsSneaking();
+		return _result;
+	}
+
+	private boolean isSneaking()
+	{
+		if(beforeIsSneakingHooks != null)
+			for(int i = beforeIsSneakingHooks.length - 1; i >= 0 ; i--)
+				beforeIsSneakingHooks[i].beforeIsSneaking();
+
+		boolean _result;
+		if(overrideIsSneakingHooks != null)
+			_result = overrideIsSneakingHooks[overrideIsSneakingHooks.length - 1].isSneaking();
+		else
+			_result = player.localIsSneaking();
+
+		if(afterIsSneakingHooks != null)
+			for(int i = 0; i < afterIsSneakingHooks.length; i++)
+				afterIsSneakingHooks[i].afterIsSneaking();
+
+		return _result;
+	}
+
+	protected ServerPlayerBase GetOverwrittenIsSneaking(ServerPlayerBase overWriter)
+	{
+		if (overrideIsSneakingHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideIsSneakingHooks.length; i++)
+			if(overrideIsSneakingHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideIsSneakingHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeIsSneakingHookTypes = new LinkedList<String>();
+	private final static List<String> overrideIsSneakingHookTypes = new LinkedList<String>();
+	private final static List<String> afterIsSneakingHookTypes = new LinkedList<String>();
+
+	private ServerPlayerBase[] beforeIsSneakingHooks;
+	private ServerPlayerBase[] overrideIsSneakingHooks;
+	private ServerPlayerBase[] afterIsSneakingHooks;
+
+	public boolean isIsSneakingModded;
+
+	private static final Map<String, String[]> allBaseBeforeIsSneakingSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeIsSneakingInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideIsSneakingSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideIsSneakingInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterIsSneakingSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterIsSneakingInferiors = new Hashtable<String, String[]>(0);
 
 	public static void jump(IServerPlayerAPI target)
 	{
@@ -4297,6 +4607,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenJump(ServerPlayerBase overWriter)
 	{
+		if (overrideJumpHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideJumpHooks.length; i++)
 			if(overrideJumpHooks[i] == overWriter)
 				if(i == 0)
@@ -4352,6 +4665,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenKnockBack(ServerPlayerBase overWriter)
 	{
+		if (overrideKnockBackHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideKnockBackHooks.length; i++)
 			if(overrideKnockBackHooks[i] == overWriter)
 				if(i == 0)
@@ -4378,6 +4694,64 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseOverrideKnockBackInferiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterKnockBackSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterKnockBackInferiors = new Hashtable<String, String[]>(0);
+
+	public static void mountEntity(IServerPlayerAPI target, net.minecraft.entity.Entity paramEntity)
+	{
+		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
+		if(serverPlayerAPI != null && serverPlayerAPI.isMountEntityModded)
+			serverPlayerAPI.mountEntity(paramEntity);
+		else
+			target.localMountEntity(paramEntity);
+	}
+
+	private void mountEntity(net.minecraft.entity.Entity paramEntity)
+	{
+		if(beforeMountEntityHooks != null)
+			for(int i = beforeMountEntityHooks.length - 1; i >= 0 ; i--)
+				beforeMountEntityHooks[i].beforeMountEntity(paramEntity);
+
+		if(overrideMountEntityHooks != null)
+			overrideMountEntityHooks[overrideMountEntityHooks.length - 1].mountEntity(paramEntity);
+		else
+			player.localMountEntity(paramEntity);
+
+		if(afterMountEntityHooks != null)
+			for(int i = 0; i < afterMountEntityHooks.length; i++)
+				afterMountEntityHooks[i].afterMountEntity(paramEntity);
+
+	}
+
+	protected ServerPlayerBase GetOverwrittenMountEntity(ServerPlayerBase overWriter)
+	{
+		if (overrideMountEntityHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideMountEntityHooks.length; i++)
+			if(overrideMountEntityHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideMountEntityHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeMountEntityHookTypes = new LinkedList<String>();
+	private final static List<String> overrideMountEntityHookTypes = new LinkedList<String>();
+	private final static List<String> afterMountEntityHookTypes = new LinkedList<String>();
+
+	private ServerPlayerBase[] beforeMountEntityHooks;
+	private ServerPlayerBase[] overrideMountEntityHooks;
+	private ServerPlayerBase[] afterMountEntityHooks;
+
+	public boolean isMountEntityModded;
+
+	private static final Map<String, String[]> allBaseBeforeMountEntitySuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeMountEntityInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideMountEntitySuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideMountEntityInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterMountEntitySuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterMountEntityInferiors = new Hashtable<String, String[]>(0);
 
 	public static void moveEntity(IServerPlayerAPI target, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
@@ -4407,6 +4781,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenMoveEntity(ServerPlayerBase overWriter)
 	{
+		if (overrideMoveEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveEntityHooks.length; i++)
 			if(overrideMoveEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -4462,6 +4839,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenMoveEntityWithHeading(ServerPlayerBase overWriter)
 	{
+		if (overrideMoveEntityWithHeadingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveEntityWithHeadingHooks.length; i++)
 			if(overrideMoveEntityWithHeadingHooks[i] == overWriter)
 				if(i == 0)
@@ -4517,6 +4897,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenMoveFlying(ServerPlayerBase overWriter)
 	{
+		if (overrideMoveFlyingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideMoveFlyingHooks.length; i++)
 			if(overrideMoveFlyingHooks[i] == overWriter)
 				if(i == 0)
@@ -4572,6 +4955,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnDeath(ServerPlayerBase overWriter)
 	{
+		if (overrideOnDeathHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnDeathHooks.length; i++)
 			if(overrideOnDeathHooks[i] == overWriter)
 				if(i == 0)
@@ -4627,6 +5013,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnLivingUpdate(ServerPlayerBase overWriter)
 	{
+		if (overrideOnLivingUpdateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnLivingUpdateHooks.length; i++)
 			if(overrideOnLivingUpdateHooks[i] == overWriter)
 				if(i == 0)
@@ -4682,6 +5071,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnKillEntity(ServerPlayerBase overWriter)
 	{
+		if (overrideOnKillEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnKillEntityHooks.length; i++)
 			if(overrideOnKillEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -4737,6 +5129,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnStruckByLightning(ServerPlayerBase overWriter)
 	{
+		if (overrideOnStruckByLightningHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnStruckByLightningHooks.length; i++)
 			if(overrideOnStruckByLightningHooks[i] == overWriter)
 				if(i == 0)
@@ -4792,6 +5187,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnUpdate(ServerPlayerBase overWriter)
 	{
+		if (overrideOnUpdateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnUpdateHooks.length; i++)
 			if(overrideOnUpdateHooks[i] == overWriter)
 				if(i == 0)
@@ -4847,6 +5245,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenOnUpdateEntity(ServerPlayerBase overWriter)
 	{
+		if (overrideOnUpdateEntityHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideOnUpdateEntityHooks.length; i++)
 			if(overrideOnUpdateEntityHooks[i] == overWriter)
 				if(i == 0)
@@ -4902,6 +5303,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenReadEntityFromNBT(ServerPlayerBase overWriter)
 	{
+		if (overrideReadEntityFromNBTHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideReadEntityFromNBTHooks.length; i++)
 			if(overrideReadEntityFromNBTHooks[i] == overWriter)
 				if(i == 0)
@@ -4957,6 +5361,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSetDead(ServerPlayerBase overWriter)
 	{
+		if (overrideSetDeadHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetDeadHooks.length; i++)
 			if(overrideSetDeadHooks[i] == overWriter)
 				if(i == 0)
@@ -5012,6 +5419,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSetEntityActionState(ServerPlayerBase overWriter)
 	{
+		if (overrideSetEntityActionStateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetEntityActionStateHooks.length; i++)
 			if(overrideSetEntityActionStateHooks[i] == overWriter)
 				if(i == 0)
@@ -5067,6 +5477,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSetPosition(ServerPlayerBase overWriter)
 	{
+		if (overrideSetPositionHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetPositionHooks.length; i++)
 			if(overrideSetPositionHooks[i] == overWriter)
 				if(i == 0)
@@ -5122,6 +5535,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSetSneaking(ServerPlayerBase overWriter)
 	{
+		if (overrideSetSneakingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetSneakingHooks.length; i++)
 			if(overrideSetSneakingHooks[i] == overWriter)
 				if(i == 0)
@@ -5177,6 +5593,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSetSprinting(ServerPlayerBase overWriter)
 	{
+		if (overrideSetSprintingHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSetSprintingHooks.length; i++)
 			if(overrideSetSprintingHooks[i] == overWriter)
 				if(i == 0)
@@ -5232,6 +5651,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenSwingItem(ServerPlayerBase overWriter)
 	{
+		if (overrideSwingItemHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideSwingItemHooks.length; i++)
 			if(overrideSwingItemHooks[i] == overWriter)
 				if(i == 0)
@@ -5287,6 +5709,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenUpdateEntityActionState(ServerPlayerBase overWriter)
 	{
+		if (overrideUpdateEntityActionStateHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideUpdateEntityActionStateHooks.length; i++)
 			if(overrideUpdateEntityActionStateHooks[i] == overWriter)
 				if(i == 0)
@@ -5342,6 +5767,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenUpdatePotionEffects(ServerPlayerBase overWriter)
 	{
+		if (overrideUpdatePotionEffectsHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideUpdatePotionEffectsHooks.length; i++)
 			if(overrideUpdatePotionEffectsHooks[i] == overWriter)
 				if(i == 0)
@@ -5368,6 +5796,122 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseOverrideUpdatePotionEffectsInferiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterUpdatePotionEffectsSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterUpdatePotionEffectsInferiors = new Hashtable<String, String[]>(0);
+
+	public static void updateRidden(IServerPlayerAPI target)
+	{
+		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
+		if(serverPlayerAPI != null && serverPlayerAPI.isUpdateRiddenModded)
+			serverPlayerAPI.updateRidden();
+		else
+			target.localUpdateRidden();
+	}
+
+	private void updateRidden()
+	{
+		if(beforeUpdateRiddenHooks != null)
+			for(int i = beforeUpdateRiddenHooks.length - 1; i >= 0 ; i--)
+				beforeUpdateRiddenHooks[i].beforeUpdateRidden();
+
+		if(overrideUpdateRiddenHooks != null)
+			overrideUpdateRiddenHooks[overrideUpdateRiddenHooks.length - 1].updateRidden();
+		else
+			player.localUpdateRidden();
+
+		if(afterUpdateRiddenHooks != null)
+			for(int i = 0; i < afterUpdateRiddenHooks.length; i++)
+				afterUpdateRiddenHooks[i].afterUpdateRidden();
+
+	}
+
+	protected ServerPlayerBase GetOverwrittenUpdateRidden(ServerPlayerBase overWriter)
+	{
+		if (overrideUpdateRiddenHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideUpdateRiddenHooks.length; i++)
+			if(overrideUpdateRiddenHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideUpdateRiddenHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeUpdateRiddenHookTypes = new LinkedList<String>();
+	private final static List<String> overrideUpdateRiddenHookTypes = new LinkedList<String>();
+	private final static List<String> afterUpdateRiddenHookTypes = new LinkedList<String>();
+
+	private ServerPlayerBase[] beforeUpdateRiddenHooks;
+	private ServerPlayerBase[] overrideUpdateRiddenHooks;
+	private ServerPlayerBase[] afterUpdateRiddenHooks;
+
+	public boolean isUpdateRiddenModded;
+
+	private static final Map<String, String[]> allBaseBeforeUpdateRiddenSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeUpdateRiddenInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideUpdateRiddenSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideUpdateRiddenInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterUpdateRiddenSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterUpdateRiddenInferiors = new Hashtable<String, String[]>(0);
+
+	public static void wakeUpPlayer(IServerPlayerAPI target, boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
+		if(serverPlayerAPI != null && serverPlayerAPI.isWakeUpPlayerModded)
+			serverPlayerAPI.wakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+		else
+			target.localWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+	}
+
+	private void wakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+		if(beforeWakeUpPlayerHooks != null)
+			for(int i = beforeWakeUpPlayerHooks.length - 1; i >= 0 ; i--)
+				beforeWakeUpPlayerHooks[i].beforeWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+		if(overrideWakeUpPlayerHooks != null)
+			overrideWakeUpPlayerHooks[overrideWakeUpPlayerHooks.length - 1].wakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+		else
+			player.localWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+		if(afterWakeUpPlayerHooks != null)
+			for(int i = 0; i < afterWakeUpPlayerHooks.length; i++)
+				afterWakeUpPlayerHooks[i].afterWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+	}
+
+	protected ServerPlayerBase GetOverwrittenWakeUpPlayer(ServerPlayerBase overWriter)
+	{
+		if (overrideWakeUpPlayerHooks == null)
+			return overWriter;
+
+		for(int i = 0; i < overrideWakeUpPlayerHooks.length; i++)
+			if(overrideWakeUpPlayerHooks[i] == overWriter)
+				if(i == 0)
+					return null;
+				else
+					return overrideWakeUpPlayerHooks[i - 1];
+
+		return overWriter;
+	}
+
+	private final static List<String> beforeWakeUpPlayerHookTypes = new LinkedList<String>();
+	private final static List<String> overrideWakeUpPlayerHookTypes = new LinkedList<String>();
+	private final static List<String> afterWakeUpPlayerHookTypes = new LinkedList<String>();
+
+	private ServerPlayerBase[] beforeWakeUpPlayerHooks;
+	private ServerPlayerBase[] overrideWakeUpPlayerHooks;
+	private ServerPlayerBase[] afterWakeUpPlayerHooks;
+
+	public boolean isWakeUpPlayerModded;
+
+	private static final Map<String, String[]> allBaseBeforeWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseBeforeWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseOverrideWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterWakeUpPlayerSuperiors = new Hashtable<String, String[]>(0);
+	private static final Map<String, String[]> allBaseAfterWakeUpPlayerInferiors = new Hashtable<String, String[]>(0);
 
 	public static void writeEntityToNBT(IServerPlayerAPI target, net.minecraft.nbt.NBTTagCompound paramNBTTagCompound)
 	{
@@ -5397,6 +5941,9 @@ public final class ServerPlayerAPI
 
 	protected ServerPlayerBase GetOverwrittenWriteEntityToNBT(ServerPlayerBase overWriter)
 	{
+		if (overrideWriteEntityToNBTHooks == null)
+			return overWriter;
+
 		for(int i = 0; i < overrideWriteEntityToNBTHooks.length; i++)
 			if(overrideWriteEntityToNBTHooks[i] == overWriter)
 				if(i == 0)

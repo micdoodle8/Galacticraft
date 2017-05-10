@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.client;
 
 import java.io.*;
@@ -31,6 +49,7 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 	private boolean hadLocalDropPlayerItemWithRandomChoice;
 	private boolean hadLocalFall;
 	private boolean hadLocalGetAIMoveSpeed;
+	private boolean hadLocalGetBedOrientationInDegrees;
 	private boolean hadLocalGetBrightness;
 	private boolean hadLocalGetBrightnessForRender;
 	private boolean hadLocalGetCurrentPlayerStrVsBlock;
@@ -75,6 +94,7 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 	private boolean hadLocalSwingItem;
 	private boolean hadLocalUpdateEntityActionState;
 	private boolean hadLocalUpdateRidden;
+	private boolean hadLocalWakeUpPlayer;
 	private boolean hadLocalWriteEntityToNBT;
 
 	public static byte[] transform(byte[] bytes, boolean isObfuscated)
@@ -256,6 +276,12 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 		{
 			hadLocalGetAIMoveSpeed = true;
 			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localGetAIMoveSpeed", desc, signature, exceptions);
+		}
+
+		if(name.equals(isObfuscated ? "bK" : "getBedOrientationInDegrees") && desc.equals("()F"))
+		{
+			hadLocalGetBedOrientationInDegrees = true;
+			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localGetBedOrientationInDegrees", desc, signature, exceptions);
 		}
 
 		if(name.equals(isObfuscated ? "d" : "getBrightness") && desc.equals("(F)F"))
@@ -520,6 +546,12 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 		{
 			hadLocalUpdateRidden = true;
 			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localUpdateRidden", desc, signature, exceptions);
+		}
+
+		if(name.equals(isObfuscated ? "a" : "wakeUpPlayer") && desc.equals("(ZZZ)V"))
+		{
+			hadLocalWakeUpPlayer = true;
+			return super.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localWakeUpPlayer", desc, signature, exceptions);
 		}
 
 		if(name.equals(isObfuscated ? "b" : "writeEntityToNBT") && desc.equals(isObfuscated ? "(Ldh;)V" : "(Lnet/minecraft/nbt/NBTTagCompound;)V"))
@@ -1387,6 +1419,37 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 			mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localGetAIMoveSpeed", "()F", null, null);
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "bl" : "getAIMoveSpeed", "()F");
+			mv.visitInsn(Opcodes.FRETURN);
+			mv.visitMaxs(0, 0);
+			mv.visitEnd();
+		}
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC, isObfuscated ? "bK" : "getBedOrientationInDegrees", "()F", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "getBedOrientationInDegrees", "(Lapi/player/client/IClientPlayerAPI;)F");
+		mv.visitInsn(Opcodes.FRETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "realGetBedOrientationInDegrees", "()F", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, isObfuscated ? "blk" : "net/minecraft/client/entity/EntityPlayerSP", isObfuscated ? "bK" : "getBedOrientationInDegrees", "()F");
+		mv.visitInsn(Opcodes.FRETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "superGetBedOrientationInDegrees", "()F", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "bK" : "getBedOrientationInDegrees", "()F");
+		mv.visitInsn(Opcodes.FRETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		if(!hadLocalGetBedOrientationInDegrees)
+		{
+			mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localGetBedOrientationInDegrees", "()F", null, null);
+			mv.visitVarInsn(Opcodes.ALOAD, 0);
+			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "bK" : "getBedOrientationInDegrees", "()F");
 			mv.visitInsn(Opcodes.FRETURN);
 			mv.visitMaxs(0, 0);
 			mv.visitEnd();
@@ -2955,6 +3018,49 @@ public final class ClientPlayerClassVisitor extends ClassVisitor
 			mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localUpdateRidden", "()V", null, null);
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "ab" : "updateRidden", "()V");
+			mv.visitInsn(Opcodes.RETURN);
+			mv.visitMaxs(0, 0);
+			mv.visitEnd();
+		}
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC, isObfuscated ? "a" : "wakeUpPlayer", "(ZZZ)V", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitVarInsn(Opcodes.ILOAD, 1);
+		mv.visitVarInsn(Opcodes.ILOAD, 2);
+		mv.visitVarInsn(Opcodes.ILOAD, 3);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "wakeUpPlayer", "(Lapi/player/client/IClientPlayerAPI;ZZZ)V");
+		mv.visitInsn(Opcodes.RETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "realWakeUpPlayer", "(ZZZ)V", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitVarInsn(Opcodes.ILOAD, 1);
+		mv.visitVarInsn(Opcodes.ILOAD, 2);
+		mv.visitVarInsn(Opcodes.ILOAD, 3);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, isObfuscated ? "blk" : "net/minecraft/client/entity/EntityPlayerSP", isObfuscated ? "a" : "wakeUpPlayer", "(ZZZ)V");
+		mv.visitInsn(Opcodes.RETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "superWakeUpPlayer", "(ZZZ)V", null, null);
+		mv.visitVarInsn(Opcodes.ALOAD, 0);
+		mv.visitVarInsn(Opcodes.ILOAD, 1);
+		mv.visitVarInsn(Opcodes.ILOAD, 2);
+		mv.visitVarInsn(Opcodes.ILOAD, 3);
+		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "a" : "wakeUpPlayer", "(ZZZ)V");
+		mv.visitInsn(Opcodes.RETURN);
+		mv.visitMaxs(0, 0);
+		mv.visitEnd();
+
+		if(!hadLocalWakeUpPlayer)
+		{
+			mv = cv.visitMethod(Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL, "localWakeUpPlayer", "(ZZZ)V", null, null);
+			mv.visitVarInsn(Opcodes.ALOAD, 0);
+			mv.visitVarInsn(Opcodes.ILOAD, 1);
+			mv.visitVarInsn(Opcodes.ILOAD, 2);
+			mv.visitVarInsn(Opcodes.ILOAD, 3);
+			mv.visitMethodInsn(Opcodes.INVOKESPECIAL, isObfuscated ? "blg" : "net/minecraft/client/entity/AbstractClientPlayer", isObfuscated ? "a" : "wakeUpPlayer", "(ZZZ)V");
 			mv.visitInsn(Opcodes.RETURN);
 			mv.visitMaxs(0, 0);
 			mv.visitEnd();

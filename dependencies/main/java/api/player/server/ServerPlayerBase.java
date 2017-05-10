@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.server;
 
 public abstract class ServerPlayerBase
@@ -704,6 +722,29 @@ public abstract class ServerPlayerBase
 	{
 	}
 
+	public void beforeIsSneaking()
+	{
+	}
+
+	public boolean isSneaking()
+	{
+		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenIsSneaking(this);
+
+		boolean _result;
+		if(overwritten == null)
+			_result = playerAPI.localIsSneaking();
+		else if(overwritten != this)
+			_result = overwritten.isSneaking();
+		else
+			_result = false;
+
+		return _result;
+	}
+
+	public void afterIsSneaking()
+	{
+	}
+
 	public void beforeJump()
 	{
 	}
@@ -739,6 +780,25 @@ public abstract class ServerPlayerBase
 	}
 
 	public void afterKnockBack(net.minecraft.entity.Entity paramEntity, float paramFloat, double paramDouble1, double paramDouble2)
+	{
+	}
+
+	public void beforeMountEntity(net.minecraft.entity.Entity paramEntity)
+	{
+	}
+
+	public void mountEntity(net.minecraft.entity.Entity paramEntity)
+	{
+		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMountEntity(this);
+
+		if(overwritten == null)
+			playerAPI.localMountEntity(paramEntity);
+		else if(overwritten != this)
+			overwritten.mountEntity(paramEntity);
+
+	}
+
+	public void afterMountEntity(net.minecraft.entity.Entity paramEntity)
 	{
 	}
 
@@ -1081,6 +1141,44 @@ public abstract class ServerPlayerBase
 	}
 
 	public void afterUpdatePotionEffects()
+	{
+	}
+
+	public void beforeUpdateRidden()
+	{
+	}
+
+	public void updateRidden()
+	{
+		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenUpdateRidden(this);
+
+		if(overwritten == null)
+			playerAPI.localUpdateRidden();
+		else if(overwritten != this)
+			overwritten.updateRidden();
+
+	}
+
+	public void afterUpdateRidden()
+	{
+	}
+
+	public void beforeWakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+	}
+
+	public void wakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
+	{
+		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenWakeUpPlayer(this);
+
+		if(overwritten == null)
+			playerAPI.localWakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+		else if(overwritten != this)
+			overwritten.wakeUpPlayer(paramBoolean1, paramBoolean2, paramBoolean3);
+
+	}
+
+	public void afterWakeUpPlayer(boolean paramBoolean1, boolean paramBoolean2, boolean paramBoolean3)
 	{
 	}
 

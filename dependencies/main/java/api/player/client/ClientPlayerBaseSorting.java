@@ -1,3 +1,21 @@
+// ==================================================================
+// This file is part of Player API.
+//
+// Player API is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Lesser General Public License as
+// published by the Free Software Foundation, either version 3 of the
+// License, or (at your option) any later version.
+//
+// Player API is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License and the GNU General Public License along with Player API.
+// If not, see <http://www.gnu.org/licenses/>.
+// ==================================================================
+
 package api.player.client;
 
 import java.util.*;
@@ -176,6 +194,13 @@ public final class ClientPlayerBaseSorting
 	private String[] overrideGetAIMoveSpeedInferiors = null;
 	private String[] afterGetAIMoveSpeedSuperiors = null;
 	private String[] afterGetAIMoveSpeedInferiors = null;
+
+	private String[] beforeGetBedOrientationInDegreesSuperiors = null;
+	private String[] beforeGetBedOrientationInDegreesInferiors = null;
+	private String[] overrideGetBedOrientationInDegreesSuperiors = null;
+	private String[] overrideGetBedOrientationInDegreesInferiors = null;
+	private String[] afterGetBedOrientationInDegreesSuperiors = null;
+	private String[] afterGetBedOrientationInDegreesInferiors = null;
 
 	private String[] beforeGetBrightnessSuperiors = null;
 	private String[] beforeGetBrightnessInferiors = null;
@@ -484,6 +509,13 @@ public final class ClientPlayerBaseSorting
 	private String[] overrideUpdateRiddenInferiors = null;
 	private String[] afterUpdateRiddenSuperiors = null;
 	private String[] afterUpdateRiddenInferiors = null;
+
+	private String[] beforeWakeUpPlayerSuperiors = null;
+	private String[] beforeWakeUpPlayerInferiors = null;
+	private String[] overrideWakeUpPlayerSuperiors = null;
+	private String[] overrideWakeUpPlayerInferiors = null;
+	private String[] afterWakeUpPlayerSuperiors = null;
+	private String[] afterWakeUpPlayerInferiors = null;
 
 	private String[] beforeWriteEntityToNBTSuperiors = null;
 	private String[] beforeWriteEntityToNBTInferiors = null;
@@ -1990,6 +2022,66 @@ public final class ClientPlayerBaseSorting
 	public void setAfterGetAIMoveSpeedInferiors(String[] value)
 	{
 		afterGetAIMoveSpeedInferiors = value;
+	}
+
+	public String[] getBeforeGetBedOrientationInDegreesSuperiors()
+	{
+		return beforeGetBedOrientationInDegreesSuperiors;
+	}
+
+	public String[] getBeforeGetBedOrientationInDegreesInferiors()
+	{
+		return beforeGetBedOrientationInDegreesInferiors;
+	}
+
+	public String[] getOverrideGetBedOrientationInDegreesSuperiors()
+	{
+		return overrideGetBedOrientationInDegreesSuperiors;
+	}
+
+	public String[] getOverrideGetBedOrientationInDegreesInferiors()
+	{
+		return overrideGetBedOrientationInDegreesInferiors;
+	}
+
+	public String[] getAfterGetBedOrientationInDegreesSuperiors()
+	{
+		return afterGetBedOrientationInDegreesSuperiors;
+	}
+
+	public String[] getAfterGetBedOrientationInDegreesInferiors()
+	{
+		return afterGetBedOrientationInDegreesInferiors;
+	}
+
+	public void setBeforeGetBedOrientationInDegreesSuperiors(String[] value)
+	{
+		beforeGetBedOrientationInDegreesSuperiors = value;
+	}
+
+	public void setBeforeGetBedOrientationInDegreesInferiors(String[] value)
+	{
+		beforeGetBedOrientationInDegreesInferiors = value;
+	}
+
+	public void setOverrideGetBedOrientationInDegreesSuperiors(String[] value)
+	{
+		overrideGetBedOrientationInDegreesSuperiors = value;
+	}
+
+	public void setOverrideGetBedOrientationInDegreesInferiors(String[] value)
+	{
+		overrideGetBedOrientationInDegreesInferiors = value;
+	}
+
+	public void setAfterGetBedOrientationInDegreesSuperiors(String[] value)
+	{
+		afterGetBedOrientationInDegreesSuperiors = value;
+	}
+
+	public void setAfterGetBedOrientationInDegreesInferiors(String[] value)
+	{
+		afterGetBedOrientationInDegreesInferiors = value;
 	}
 
 	public String[] getBeforeGetBrightnessSuperiors()
@@ -4630,6 +4722,66 @@ public final class ClientPlayerBaseSorting
 	public void setAfterUpdateRiddenInferiors(String[] value)
 	{
 		afterUpdateRiddenInferiors = value;
+	}
+
+	public String[] getBeforeWakeUpPlayerSuperiors()
+	{
+		return beforeWakeUpPlayerSuperiors;
+	}
+
+	public String[] getBeforeWakeUpPlayerInferiors()
+	{
+		return beforeWakeUpPlayerInferiors;
+	}
+
+	public String[] getOverrideWakeUpPlayerSuperiors()
+	{
+		return overrideWakeUpPlayerSuperiors;
+	}
+
+	public String[] getOverrideWakeUpPlayerInferiors()
+	{
+		return overrideWakeUpPlayerInferiors;
+	}
+
+	public String[] getAfterWakeUpPlayerSuperiors()
+	{
+		return afterWakeUpPlayerSuperiors;
+	}
+
+	public String[] getAfterWakeUpPlayerInferiors()
+	{
+		return afterWakeUpPlayerInferiors;
+	}
+
+	public void setBeforeWakeUpPlayerSuperiors(String[] value)
+	{
+		beforeWakeUpPlayerSuperiors = value;
+	}
+
+	public void setBeforeWakeUpPlayerInferiors(String[] value)
+	{
+		beforeWakeUpPlayerInferiors = value;
+	}
+
+	public void setOverrideWakeUpPlayerSuperiors(String[] value)
+	{
+		overrideWakeUpPlayerSuperiors = value;
+	}
+
+	public void setOverrideWakeUpPlayerInferiors(String[] value)
+	{
+		overrideWakeUpPlayerInferiors = value;
+	}
+
+	public void setAfterWakeUpPlayerSuperiors(String[] value)
+	{
+		afterWakeUpPlayerSuperiors = value;
+	}
+
+	public void setAfterWakeUpPlayerInferiors(String[] value)
+	{
+		afterWakeUpPlayerInferiors = value;
 	}
 
 	public String[] getBeforeWriteEntityToNBTSuperiors()
