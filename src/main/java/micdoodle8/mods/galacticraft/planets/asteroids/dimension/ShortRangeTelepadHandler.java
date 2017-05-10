@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.nbt.NBTTagCompound;
@@ -94,18 +93,14 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     {
         if (!telepad.getWorld().isRemote)
         {
-            GCLog.debug("Adding telepad with address " + telepad.address);
             if (telepad.addressValid)
             {
                 TelepadEntry newEntry = new TelepadEntry(GCCoreUtil.getDimensionID(telepad.getWorld()), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
-                GCLog.debug("Added telepad.");
 
                 if (previous == null || !previous.equals(newEntry))
                 {
                     AsteroidsTickHandlerServer.spaceRaceData.setDirty(true);
-                    GCLog.debug("Marked dirty.");
-
                 }
             }
         }
