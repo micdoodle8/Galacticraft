@@ -7,6 +7,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -43,7 +44,10 @@ public class CompatibilityManager
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
     private static Method spongeOverride = null;
-
+	public static Class classBOPWorldType = null;
+	public static Class classBOPws = null;
+    public static Class classBOPwcm = null;
+	
     public static void checkForCompatibleMods()
     {
         if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("GregTech_Addon") || Loader.isModLoaded("GregTech"))
@@ -150,7 +154,12 @@ public class CompatibilityManager
 
         if (CompatibilityManager.modBOPLoaded)
         {
-            GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
+            try {
+                classBOPWorldType = Class.forName("biomesoplenty.common.world.WorldTypeBOP");
+                classBOPws = Class.forName("biomesoplenty.common.world.BOPWorldSettings");
+                classBOPwcm = Class.forName("biomesoplenty.common.world.BiomeProviderBOP");
+                GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
+            } catch (Exception e) { e.printStackTrace(); }
         }
 
         if (Loader.isModLoaded("AetherII"))
@@ -239,6 +248,15 @@ public class CompatibilityManager
     public static boolean isBOPLoaded()
     {
         return CompatibilityManager.modBOPLoaded;
+    }
+
+    public static boolean isBOPWorld(WorldType worldType)
+    {
+        if (modBOPLoaded && classBOPWorldType != null && classBOPws != null && classBOPwcm != null)
+        {
+            return classBOPWorldType.isInstance(worldType);
+        }
+        return false;
     }
 
     public static boolean isPneumaticCraftLoaded()
