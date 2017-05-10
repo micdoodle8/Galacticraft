@@ -55,6 +55,8 @@ minecraft {
 ext.dependencies = ['codechicken/**',
 					'**/nei_at.cfg',
 					'api/**',
+					'appeng/**',
+					'biomesoplenty/**',
 					'buildcraft/**',
 					'cofh/**',
 					'ic2/**',
