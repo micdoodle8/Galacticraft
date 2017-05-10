@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
@@ -26,7 +27,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.EntityDamageSource;
@@ -86,16 +86,18 @@ public class EventHandlerMars
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
             }
-            else if (event.flag1 && event.flag2 && !event.flag3)
+            else if (!event.flag1 && !event.flag2 && event.flag3)
             {
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
                     event.entityPlayer.heal(5.0F);
                     GCPlayerStats.get((EntityPlayerMP) event.entityPlayer).cryogenicChamberCooldown = 6000;
 
-                    for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
+                    WorldServer ws = (WorldServer)event.entityPlayer.worldObj;
+                    ws.updateAllPlayersSleepingFlag();
+                    if (ws.areAllPlayersAsleep() && ws.getGameRules().getGameRuleBooleanValue("doDaylightCycle"))
                     {
-                        worldServer.setWorldTime(0);
+                        WorldUtil.setNextMorning(ws);
                     }
                 }
             }

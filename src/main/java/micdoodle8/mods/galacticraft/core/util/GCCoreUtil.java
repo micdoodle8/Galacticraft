@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.StatCollector;
 
 import java.util.Arrays;
@@ -28,7 +29,25 @@ import java.util.List;
 public class GCCoreUtil
 {
 	public static int nextID = 0;
-	
+    private static boolean deobfuscated;
+
+    static
+    {
+        try
+        {
+            deobfuscated = Launch.classLoader.getClassBytes("net.minecraft.world.World") != null;
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isDeobfuscated()
+    {
+        return deobfuscated;
+    }
+
 	public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
     {
         player.getNextWindowId();
