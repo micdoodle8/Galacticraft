@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -27,7 +28,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
 import java.util.Random;
 
 public class BlockFallenMeteor extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
@@ -37,7 +37,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     public BlockFallenMeteor(String assetName)
     {
         super(Material.ROCK);
-        this.setHardness(50.0F);
+        this.setHardness(40.0F);
         this.setSoundType(SoundType.STONE);
         this.setUnlocalizedName(assetName);
     }
@@ -69,7 +69,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     @Override
     public int quantityDroppedWithBonus(int par1, Random par2Random)
     {
-        return 1;
+        return 1 + (int) (par2Random.nextFloat() + 0.75F);
     }
 
     @Override
@@ -208,6 +208,44 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         return true;
+    }
+
+    @Override
+    public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos)
+    {
+        float hardness = this.getBlockHardness(state, world, pos);
+        if (hardness < 0.0F)
+        {
+            return 0.0F;
+        }
+
+        int power = canHarvestBlock(this, player, state);
+        if (power > 0)
+        {
+            return power * player.getDigSpeed(state, pos) / hardness / 30F;
+        }
+        else
+        {
+            return player.getDigSpeed(state, pos) / hardness / 30F;
+        }
+    }
+
+    public int canHarvestBlock(Block block, EntityPlayer player, IBlockState state)
+    {
+        ItemStack stack = player.inventory.getCurrentItem();
+        String tool = block.getHarvestTool(state);
+        if (stack == null || tool == null)
+        {
+            return player.canHarvestBlock(state) ? 1 : 0;
+        }
+
+        int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state) - block.getHarvestLevel(state) + 1;
+        if (toolLevel < 1)
+        {
+            return player.canHarvestBlock(state) ? 1 : 0;
+        }
+
+        return toolLevel;
     }
 
     @Override

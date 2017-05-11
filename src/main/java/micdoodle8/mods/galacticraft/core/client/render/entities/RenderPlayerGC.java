@@ -139,7 +139,11 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 super.applyRotations(abstractClientPlayer, par2, par3, par4);
             }
-            else if (event.shouldRotate == null || event.shouldRotate)
+            else if (event.shouldRotate == null)
+            {
+                GL11.glRotatef(abstractClientPlayer.getBedOrientationInDegrees(), 0.0F, 1.0F, 0.0F);
+            }
+            else if (event.shouldRotate)
             {
                 float rotation = 0.0F;
 

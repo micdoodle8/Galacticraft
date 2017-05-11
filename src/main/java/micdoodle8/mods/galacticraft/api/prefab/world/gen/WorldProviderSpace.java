@@ -4,11 +4,13 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.village.VillageCollection;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeProvider;
@@ -18,10 +20,26 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
 {
+    long timeCurrentOffset = 0L;
+    long preTickTime = Long.MIN_VALUE;
+    static Field tickCounter;
+    
+    static
+    {
+        try
+        {
+            tickCounter = VillageCollection.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "tickCounter" : "field_75553_e");
+        } catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+    }
+    
     /**
      * The fog color in this dimension
      */
@@ -79,6 +97,33 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public void updateWeather()
     {
+        if (!this.world.isRemote)
+        {
+            long newTime = world.getWorldInfo().getWorldTime();
+            if (this.preTickTime == Long.MIN_VALUE)
+            {
+                //First tick: get the timeCurrentOffset from saved ticks in villages.dat :)
+                int savedTick = 0;
+                try {
+                    tickCounter.setAccessible(true);
+                    savedTick = tickCounter.getInt(this.world.villageCollectionObj);
+                    if (savedTick < 0) savedTick = 0;
+                } catch (Exception ignore) { }
+                this.timeCurrentOffset = savedTick - newTime;
+            }
+            else
+            {
+                //Detect jumps in world time (e.g. because of bed use on Overworld) and reverse them for this world
+                long diff = (newTime - this.preTickTime);
+                if (diff > 1L)
+                {
+                    this.timeCurrentOffset -= diff - 1L;
+                    this.saveTime();
+                }
+            }
+            this.preTickTime = newTime;
+        }
+        
         if (this.shouldDisablePrecipitation())
         {
             this.world.getWorldInfo().setRainTime(0);
@@ -139,6 +184,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
+        par1 = this.getWorldTime();
         int j = (int) (par1 % this.getDayLength());
         float f1 = (j + par3) / this.getDayLength() - 0.25F;
 
@@ -317,5 +363,54 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public float getSolarSize()
     {
         return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
+    }
+
+    //Work around vanilla feature: worlds which are not the Overworld cannot change the time, as the worldInfo is a DerivedWorldInfo
+    //Therefore each Galacticraft dimension maintains its own timeCurrentOffset
+    @Override
+    public void setWorldTime(long time)
+    {
+        world.getWorldInfo().setWorldTime(time);
+        long diff = - this.timeCurrentOffset;
+        this.timeCurrentOffset = time - world.getWorldInfo().getWorldTime();
+        diff += this.timeCurrentOffset;
+        this.preTickTime += diff;
+        if (diff != 0L)
+        {
+            this.saveTime();
+        }
+    }
+
+    @Override
+    public long getWorldTime()
+    {
+        return world.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
+    }
+    
+    /**
+     * Adjust time offset on Galacticraft worlds when the Overworld time jumps and you don't want the time
+     * on all the other Galacticraft worlds to jump also - see WorldUtil.setNextMorning() for example
+     */
+    public void adjustTimeOffset(long diff)
+    {
+        this.timeCurrentOffset -= diff;
+        this.preTickTime += diff;
+        if (diff != 0L)
+        {
+            this.saveTime();
+        }
+    }
+    
+    /**
+     * Save this world's custom time (from timeCurrentOffset) into this world's villages.dat :)
+     */
+    private void saveTime()
+    {
+        try {
+            VillageCollection vc = this.world.villageCollectionObj;
+            tickCounter.setAccessible(true);
+            tickCounter.setInt(vc, (int) (this.getWorldTime()));
+            vc.markDirty();
+        } catch (Exception ignore) { }
     }
 }
