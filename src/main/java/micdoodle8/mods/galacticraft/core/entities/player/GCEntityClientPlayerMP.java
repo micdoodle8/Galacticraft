@@ -3,11 +3,13 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatFileWriter;
@@ -27,6 +29,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     private boolean lastIsFlying;
     private boolean sneakLast;
     private int lastLandingTicks;
+    private boolean checkedCape = false;
+    private ResourceLocation galacticraftCape = null;
 
     public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
     {
@@ -476,4 +480,24 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     		super.setInPortal();
     	}
     } TODO Fix disable of portal */
+
+    @Override
+    public ResourceLocation getLocationCape()
+    {
+        ResourceLocation vanillaCape = super.getLocationCape();
+
+        if (!this.checkedCape)
+        {
+            NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
+            this.galacticraftCape = ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getName());
+            this.checkedCape = true;
+        }
+
+        if ((ConfigManagerCore.overrideCapes || vanillaCape == null) && galacticraftCape != null)
+        {
+            return galacticraftCape;
+        }
+
+        return vanillaCape;
+    }
 }
