@@ -155,15 +155,6 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        if (biped instanceof ModelPlayer)
-        {
-            copyModelAngles(biped.bipedLeftLeg, ((ModelPlayer) biped).bipedLeftLegwear);
-            copyModelAngles(biped.bipedRightLeg, ((ModelPlayer) biped).bipedRightLegwear);
-            copyModelAngles(biped.bipedLeftArm, ((ModelPlayer) biped).bipedLeftArmwear);
-            copyModelAngles(biped.bipedRightArm, ((ModelPlayer) biped).bipedRightArmwear);
-            copyModelAngles(biped.bipedBody, ((ModelPlayer) biped).bipedBodyWear);
-        }
-
         if (player.isPlayerSleeping() && GalacticraftCore.isPlanetsLoaded)
         {
             RenderPlayerGC.RotatePlayerEvent event = new RenderPlayerGC.RotatePlayerEvent((AbstractClientPlayer) player);
@@ -181,6 +172,16 @@ public class ModelBipedGC extends ModelBiped
                 biped.bipedRightArm.rotateAngleY = 0.0F;
                 biped.bipedRightArm.rotateAngleZ = 0.0F;
             }
+        }
+
+        if (biped instanceof ModelPlayer)
+        {
+            copyModelAngles(biped.bipedLeftLeg, ((ModelPlayer) biped).bipedLeftLegwear);
+            copyModelAngles(biped.bipedRightLeg, ((ModelPlayer) biped).bipedRightLegwear);
+            copyModelAngles(biped.bipedLeftArm, ((ModelPlayer) biped).bipedLeftArmwear);
+            copyModelAngles(biped.bipedRightArm, ((ModelPlayer) biped).bipedRightArmwear);
+            copyModelAngles(biped.bipedBody, ((ModelPlayer) biped).bipedBodyWear);
+            copyModelAngles(biped.bipedHead, ((ModelPlayer) biped).bipedHeadwear);
         }
     }
 

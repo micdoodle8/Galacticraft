@@ -173,34 +173,28 @@ public class EventHandlerMars
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
-                entity.rotationPitch = 75;
+                GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
 
                 switch (tile.getBlockMetadata() & 3)
                 {
                 case 0:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(-0.4F, -0.5F, 4.1F);
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 case 1:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 case 2:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 case 3:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -0.5F, 4.1F);
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     break;
                 }
 
-                GL11.glRotatef(-50 + FMLClientHandler.instance().getClientPlayerEntity().sleepTimer, 0.0F, 1.0F, 0.0F);
-                GL11.glTranslatef(0.0F, 0.8F, 0.0F);
+                GL11.glRotatef(-180, 0.0F, 1.0F, 0.0F);
+
+                GL11.glRotatef(FMLClientHandler.instance().getClientPlayerEntity().sleepTimer - 50, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.3F, 0.0F);
             }
         }
     }

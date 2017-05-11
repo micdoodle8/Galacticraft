@@ -122,7 +122,7 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 entitylivingbaseIn.rotationYawHead = 0;
                 entitylivingbaseIn.prevRotationYawHead = 0;
-                GL11.glTranslatef(0.0F, 0.8F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.3F, 0.0F);
             }
         }
     }
