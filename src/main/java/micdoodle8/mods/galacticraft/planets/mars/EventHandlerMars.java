@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -78,8 +79,9 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        BlockPos c = event.getEntityPlayer().bedLocation;
-        IBlockState state = event.getEntityPlayer().getEntityWorld().getBlockState(c);
+        EntityPlayer player = event.getEntityPlayer(); 
+        BlockPos c = player.bedLocation;
+        IBlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
 
         if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
@@ -88,16 +90,18 @@ public class EventHandlerMars
             {
                 event.result = EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
             }
-            else if (event.immediately && event.updateWorld && !event.setSpawn)
+            else if (!event.immediately && !event.updateWorld && event.setSpawn)
             {
-                if (!event.getEntityPlayer().worldObj.isRemote)
+                if (!player.worldObj.isRemote)
                 {
-                    event.getEntityPlayer().heal(5.0F);
-                    GCPlayerStats.get(event.getEntityPlayer()).setCryogenicChamberCooldown(6000);
+                    player.heal(5.0F);
+                    GCPlayerStats.get(player).setCryogenicChamberCooldown(6000);
 
-                    for (WorldServer worldServer : event.getEntity().getServer().worldServers)
+                    WorldServer ws = (WorldServer)player.worldObj;
+                    ws.updateAllPlayersSleepingFlag();
+                    if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
                     {
-                        worldServer.setWorldTime(0);
+                        WorldUtil.setNextMorning(ws);
                     }
                 }
             }

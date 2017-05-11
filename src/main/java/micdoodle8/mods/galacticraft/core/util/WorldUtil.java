@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -1521,5 +1522,28 @@ public class WorldUtil
                 }
             }
         }
+    }
+
+    public static void setNextMorning(WorldServer world)
+    {
+        long current = world.getWorldInfo().getWorldTime();
+        long dayLength = 24000L;
+        long newTime = current - current % dayLength + dayLength;
+        if (world.provider instanceof WorldProviderSpace)
+        {
+            dayLength = ((WorldProviderSpace)world.provider).getDayLength();
+            newTime = current - current % dayLength + dayLength;
+        }
+        else
+        {
+            long diff = newTime - current;
+            for (WorldServer worldServer : world.getMinecraftServer().worldServers)
+            {
+                if (worldServer == world) continue;
+                if (worldServer.provider instanceof WorldProviderSpace)
+                    ((WorldProviderSpace)worldServer.provider).adjustTimeOffset(diff);
+            }
+        }
+        world.provider.setWorldTime(newTime);
     }
 }

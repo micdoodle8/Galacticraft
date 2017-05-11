@@ -46,7 +46,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     @Override
     public long getDayLength()
     {
-        return 24000L;
+        return 24660L;
     }
 
     @Override
