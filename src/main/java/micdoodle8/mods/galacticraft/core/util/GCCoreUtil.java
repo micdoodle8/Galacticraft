@@ -37,10 +37,23 @@ import java.util.Random;
 public class GCCoreUtil
 {
     public static int nextID = 0;
+    private static boolean deobfuscated;
+
+    static
+    {
+        try
+        {
+            deobfuscated = Launch.classLoader.getClassBytes("net.minecraft.world.World") != null;
+        }
+        catch (final Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     public static boolean isDeobfuscated()
     {
-        return Launch.blackboard.get("fml.deobfuscatedEnvironment") == Boolean.TRUE;
+        return deobfuscated;
     }
 
     public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
