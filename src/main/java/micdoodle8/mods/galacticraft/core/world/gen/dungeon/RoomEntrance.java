@@ -23,7 +23,6 @@ public class RoomEntrance extends SizedPiece
         this.coordBaseMode = EnumFacing.SOUTH;
 
         this.boundingBox = new StructureBoundingBox(blockPosX - range, configuration.getYPosition(), blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
-        System.out.println("Generating dungeon at " + blockPosX + " " + configuration.getYPosition() + " " + blockPosZ);
     }
 
     @Override

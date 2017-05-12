@@ -347,4 +347,10 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     {
         return false;
     }
+
+    @Override
+    public int getDungeonSpacing()
+    {
+        return 704;
+    }
 }

@@ -237,4 +237,10 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     {
         return true;
     }
+    
+    @Override
+    public int getDungeonSpacing()
+    {
+        return 704;
+    }
 }

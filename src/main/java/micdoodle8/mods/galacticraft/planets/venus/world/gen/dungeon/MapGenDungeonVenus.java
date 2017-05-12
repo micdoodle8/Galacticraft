@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -57,29 +59,10 @@ public class MapGenDungeonVenus extends MapGenStructure
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        final byte numChunks = 44;
-        int i = chunkX;
-        int j = chunkZ;
-
-        if (chunkX < 0)
-        {
-            chunkX -= numChunks - 1;
-        }
-
-        if (chunkZ < 0)
-        {
-            chunkZ -= numChunks - 1;
-        }
-
-        int k = chunkX / numChunks;
-        int l = chunkZ / numChunks;
-        Random random = this.worldObj.setRandomSeed(k, l, 10387312);
-        k = k * numChunks;
-        l = l * numChunks;
-        k = k + random.nextInt(numChunks);
-        l = l + random.nextInt(numChunks);
-
-        return i == k && j == l;
+        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.worldObj, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.worldObj.provider).getDungeonSpacing());
+        int i = (int) (dungeonPos >> 32);
+        int j = (int) dungeonPos;
+        return i == chunkX && j == chunkZ;
     }
 
     @Override

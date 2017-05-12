@@ -562,4 +562,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     {
         return false;
     }
+
+    @Override
+    public int getDungeonSpacing()
+    {
+        return 800;
+        //Used for generating Abandoned Base 
+    }
 }

@@ -131,4 +131,12 @@ public interface IGalacticraftWorldProvider
      * @return true if armor should be corroded, false if not
      */
     public boolean shouldCorrodeArmor();
+    
+    /**
+     * The size (in blocks) of the average spacing between dungeons
+     * For example, on the Moon it's 704 blocks, meaning one dungeon in each (704 x 704) square in the (x, z) plane
+     * <p/>
+     * If your world has no dungeons you can safely return 0 here.
+     */
+    public int getDungeonSpacing();
 }

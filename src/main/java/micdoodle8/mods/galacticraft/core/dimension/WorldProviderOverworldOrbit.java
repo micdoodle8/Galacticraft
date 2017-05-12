@@ -278,4 +278,10 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
         if (this.getCloudRenderer() == null)
             this.setCloudRenderer(new CloudRenderer());
     }
+    
+    @Override
+    public int getDungeonSpacing()
+    {
+        return 0;
+    }
 }

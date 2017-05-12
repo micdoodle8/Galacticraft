@@ -1,11 +1,10 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
-import net.minecraftforge.fml.common.FMLLog;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -84,7 +83,7 @@ public class MapGenVillageMoon extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int par1, int par2)
     {
-        FMLLog.info("Generating Moon Village at x" + par1 * 16 + " z" + par2 * 16);
+        GCLog.debug("Generating Moon Village at x" + par1 * 16 + " z" + par2 * 16);
         return new StructureVillageStartMoon(this.worldObj, this.rand, par1, par2, this.terrainType);
     }
 
