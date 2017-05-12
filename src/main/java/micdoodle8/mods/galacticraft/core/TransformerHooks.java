@@ -146,7 +146,7 @@ public class TransformerHooks
     {
         if (e.worldObj.provider instanceof IGalacticraftWorldProvider)
         {
-            return 0.005F;
+            return ((IGalacticraftWorldProvider)e.worldObj.provider).getArrowGravity();
         }
         else
         {

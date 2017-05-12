@@ -13,6 +13,14 @@ public interface IGalacticraftWorldProvider
      */
     public float getGravity();
 
+    
+    /**
+     * Gets custom arrow gravity, overriding the vanilla gravity for arrows
+     * 
+     * @return added y-motion per tick for arrows 
+     */
+    public float getArrowGravity();
+    
     /**
      * Determines the rate to spawn meteors in this planet. Lower means MORE
      * meteors.

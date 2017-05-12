@@ -185,9 +185,9 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         {
             return 20.0F;
         }
-        if (d > 10.0F)
+        if (d > 5.0F)
         {
-            return 0.1F;
+            return 0.2F;
         }
         return 1.0F / d;
     }
@@ -347,6 +347,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return false;
     }
 
+    @Override
+    public float getArrowGravity()
+    {
+        return 0.005F;
+    }
+    
     @Override
     public IChunkProvider createChunkGenerator()
     {
