@@ -53,7 +53,6 @@ public class CompatibilityManager
     public static Class classIC2tileEventUnload;
     public static Class classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
-    public static Class<?> itemElectricMek;
 	
     public static void checkForCompatibleMods()
     {
@@ -77,15 +76,6 @@ public class CompatibilityManager
 
         if (CompatibilityManager.modMekLoaded)
         {
-            try
-            {
-                itemElectricMek = Class.forName("mekanism.api.energy.IEnergizedItem");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
             GCLog.info("Galacticraft: activating Mekanism compatibility.");
         }
 

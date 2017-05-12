@@ -109,8 +109,6 @@ public class EnergyConfigHandler
     public static boolean disableMekanismInput = false;
     public static boolean disableMekanismOutput = false;
 
-    public static Class<?> itemElectricRF;
-
     /**
      * You must call this function to enable the Universal Network module.
      */
@@ -332,14 +330,6 @@ public class EnergyConfigHandler
             cachedRFLoadedValue = true;
             cachedRF1LoadedValue = (count == 3);
             cachedRF2LoadedValue = (count2 == 2);
-            
-            try
-            {
-                itemElectricRF = Class.forName("cofh.api.energy.IEnergyContainerItem");
-            } catch (ClassNotFoundException e)
-            {
-                e.printStackTrace();
-            }
         }
         else if (count > 0 || count2 > 0)
         {

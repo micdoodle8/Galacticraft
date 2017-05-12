@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -41,10 +40,10 @@ public class SlotSpecific extends Slot
         {
             try
             {
-                if (EnergyConfigHandler.itemElectricRF != null)
+                if (EnergyConfigHandler.isRFAPILoaded())
                 {
                     ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-                    existing.add(EnergyConfigHandler.itemElectricRF);
+                    existing.add(cofh.api.energy.IEnergyContainerItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }
                 if (EnergyConfigHandler.isIndustrialCraft2Loaded())
@@ -57,7 +56,7 @@ public class SlotSpecific extends Slot
                 if (EnergyConfigHandler.isMekanismLoaded())
                 {
                     ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-                    existing.add(CompatibilityManager.itemElectricMek);
+                    existing.add(mekanism.api.energy.IEnergizedItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }
             }
