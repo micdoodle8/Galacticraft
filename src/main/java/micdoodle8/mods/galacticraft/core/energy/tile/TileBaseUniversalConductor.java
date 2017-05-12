@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -68,8 +69,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         {
             try
             {
-                Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
-                Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                Object o = CompatibilityManager.classIC2tileEventLoad.getConstructor(IEnergyTile.class).newInstance(this);
 
                 if (o != null && o instanceof Event)
                 {
@@ -91,8 +91,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             {
                 try
                 {
-                    Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
-                    Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                    Object o = CompatibilityManager.classIC2tileEventUnload.getConstructor(IEnergyTile.class).newInstance(this);
 
                     if (o != null && o instanceof Event)
                     {

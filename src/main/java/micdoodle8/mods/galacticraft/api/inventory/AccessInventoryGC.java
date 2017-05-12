@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.api.inventory;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
@@ -14,26 +14,26 @@ import java.lang.reflect.Method;
 public class AccessInventoryGC
 {
 	private static Class<?> playerStatsClass;
-	private static Method getMethod;
-	private static Field extendedInventoryField;
+	private static Method getStats;
+	private static Method getExtendedInventory;
 
 	public static IInventoryGC getGCInventoryForPlayer(EntityPlayerMP player)
 	{
 		try
 		{
-			if (playerStatsClass == null || getMethod == null || extendedInventoryField == null)
+			if (playerStatsClass == null || getStats == null || getExtendedInventory == null)
 			{
 				playerStatsClass = Class.forName("micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats");
-				getMethod = playerStatsClass.getMethod("get", EntityPlayerMP.class);
-				extendedInventoryField = playerStatsClass.getField("extendedInventory");
+				getStats = playerStatsClass.getMethod("get", Entity.class);
+				getExtendedInventory = playerStatsClass.getMethod("getExtendedInventory");
 			}
 
-			Object stats = getMethod.invoke(null, player);
+			Object stats = getStats.invoke(null, player);
 			if (stats == null)
 			{
 				return null;
 			}
-			return (IInventoryGC)extendedInventoryField.get(stats);
+			return (IInventoryGC)getExtendedInventory.invoke(stats);
 		}
 		catch (Exception e)
 		{
