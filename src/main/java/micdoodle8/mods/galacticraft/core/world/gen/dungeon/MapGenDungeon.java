@@ -41,6 +41,7 @@ public class MapGenDungeon
 
     public void generateUsingArrays(World world, long seed, int x, int y, int z, int chunkX, int chunkZ, Block[] blocks, byte[] metas)
     {
+        this.worldObj = world;
         final ChunkCoordinates dungeonCoords = this.getDungeonNear(seed, chunkX, chunkZ);
         if (dungeonCoords != null)
         {
