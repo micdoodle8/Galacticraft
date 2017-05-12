@@ -882,7 +882,7 @@ public class EventHandlerGC
         {
             WorldClient worldclient = Minecraft.getMinecraft().theWorld;
 
-            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).getCelestialBody().atmosphere.size() == 0 && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
+            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.block.getMaterial() == Material.air && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {
                 Vec3 vec = worldclient.getFogColor(1.0F);
                 event.red = (float) vec.xCoord;

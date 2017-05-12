@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -107,7 +106,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.worldObj.provider instanceof WorldProviderSpace && !((WorldProviderSpace) this.worldObj.provider).hasAtmosphere())
+                if (this.worldObj.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.worldObj.provider).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 2);
                 }

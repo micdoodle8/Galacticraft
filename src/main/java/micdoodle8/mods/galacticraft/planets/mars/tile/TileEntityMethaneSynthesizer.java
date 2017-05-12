@@ -194,7 +194,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         WorldProvider WP = this.worldObj.provider;
         if (WP instanceof WorldProviderSpace)
         {
-            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere;
+            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
             if (atmos.size() > 0)
             {
                 if (atmos.get(0) == IAtmosphericGas.CO2)

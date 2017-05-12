@@ -6,11 +6,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.WorldChunkManagerVenus;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -66,12 +64,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public boolean shouldForceRespawn()
-    {
-        return !ConfigManagerCore.forceOverworldRespawn;
-    }
-
-    @Override
     public Class<? extends IChunkProvider> getChunkProviderClass()
     {
         return ChunkProviderVenus.class;
@@ -121,14 +113,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
         return true;
     }
 
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public boolean isSurfaceWorld()
-    {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
-    }
-
     //Overriding so that beds do not explode on Mars
     @Override
     public boolean canRespawnHere()
@@ -139,14 +123,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
             return true;
         }
         return false;
-    }
-
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public int getRespawnDimension(EntityPlayerMP player)
-    {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
     }
 
     @Override
@@ -180,33 +156,9 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public float getSoundVolReductionAmount()
-    {
-        return 10.0F;
-    }
-
-    @Override
     public CelestialBody getCelestialBody()
     {
         return VenusModule.planetVenus;
-    }
-
-    @Override
-    public boolean hasBreathableAtmosphere()
-    {
-        return false;
-    }
-
-    @Override
-    public float getThermalLevelModifier()
-    {
-        return 5;
-    }
-
-    @Override
-    public float getWindLevel()
-    {
-        return 0.3F;
     }
 
     @Override
@@ -226,18 +178,6 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
         return "_venus";
     }
 
-    @Override
-    public boolean shouldDisablePrecipitation()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean shouldCorrodeArmor()
-    {
-        return true;
-    }
-    
     @Override
     public int getDungeonSpacing()
     {

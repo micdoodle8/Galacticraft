@@ -50,6 +50,12 @@ public interface IGalacticraftWorldProvider
     public float getFallDamageModifier();
 
     /**
+     * 
+     * @return true if this world has no type of atmosphere at all - e.g. the Moon
+     */
+    boolean hasNoAtmosphere();
+    
+    /**
      * Changes volume of sounds on this planet. You should be using higher
      * values for thin atmospheres and high values for dense atmospheres
      *

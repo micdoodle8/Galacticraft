@@ -49,12 +49,6 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
-    public boolean shouldForceRespawn()
-    {
-        return !ConfigManagerCore.forceOverworldRespawn;
-    }
-
-    @Override
     public boolean isDaytime()
     {
         final float a = this.worldObj.getCelestialAngle(0F);
@@ -137,12 +131,6 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
-    public boolean hasBreathableAtmosphere()
-    {
-        return false;
-    }
-
-    @Override
     public double getMeteorFrequency()
     {
         return 0;
@@ -181,7 +169,7 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     @Override
     public double getYCoordinateToTeleport()
     {
-        return 1200;
+        return 750;
     }
 
     @Override
@@ -197,39 +185,9 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
-    public float getSoundVolReductionAmount()
-    {
-        return 50.0F;
-    }
-
-    @Override
-    public float getThermalLevelModifier()
-    {
-        return 0;
-    }
-
-    @Override
-    public float getWindLevel()
-    {
-        return 0.1F;
-    }
-
-    @Override
     public String getInternalNameSuffix()
     {
         return "_orbit";
-    }
-
-    @Override
-    public boolean shouldDisablePrecipitation()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean shouldCorrodeArmor()
-    {
-        return false;
     }
 
     @Override
