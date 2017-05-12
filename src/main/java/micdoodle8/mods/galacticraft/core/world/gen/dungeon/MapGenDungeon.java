@@ -449,7 +449,7 @@ public class MapGenDungeon
 
         int randX = i / numChunks;
         int randZ = j / numChunks;
-        final long dungeonSeed = randX * 341873128712L + randZ * 132897987541L + worldSeed + 4291726;
+        final long dungeonSeed = randX * 341873128712L + randZ * 132897987541L + worldSeed + 4291754 + this.worldObj.provider.dimensionId;
         final Random rand = new Random(dungeonSeed);
         randX *= numChunks;
         randZ *= numChunks;
