@@ -11,18 +11,18 @@ public class EventWakePlayer extends PlayerEvent
 {
     public EnumStatus result = null;
     public final BlockPos pos;
-    public final boolean flag1;
-    public final boolean flag2;
-    public final boolean flag3;
+    public final boolean immediately;
+    public final boolean updateWorld;
+    public final boolean setSpawn;
     public final boolean bypassed;
 
-    public EventWakePlayer(EntityPlayer player, BlockPos pos, boolean flag1, boolean flag2, boolean flag3, boolean bypassed)
+    public EventWakePlayer(EntityPlayer player, BlockPos pos, boolean immediately, boolean updateWorld, boolean setSpawn, boolean bypassed)
     {
         super(player);
         this.pos = pos;
-        this.flag1 = flag1;
-        this.flag2 = flag2;
-        this.flag3 = flag3;
+        this.immediately = immediately;
+        this.updateWorld = updateWorld;
+        this.setSpawn = setSpawn;
         this.bypassed = bypassed;
     }
 }

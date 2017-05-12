@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -12,26 +11,22 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC.OrientCameraEvent;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars.EnumMachineType;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
-import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
-import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenEggs;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.potion.Potion;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EntityDamageSource;
@@ -40,6 +35,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -90,25 +86,22 @@ public class EventHandlerMars
 
         if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
-            if (!event.flag1 && event.flag2 && event.flag3)
+            if (!event.immediately && event.updateWorld && event.setSpawn)
             {
                 event.result = EnumStatus.NOT_POSSIBLE_HERE;
-
-                if (event.entityPlayer.worldObj.isRemote && event.bypassed && event.entityPlayer instanceof EntityPlayerSP)
-                {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_WAKE_PLAYER, GCCoreUtil.getDimensionID(event.entityPlayer.worldObj), new Object[] {}));
-                }
             }
-            else if (!event.flag1 && !event.flag2 && event.flag3)
+            else if (!event.immediately && !event.updateWorld && event.setSpawn)
             {
                 if (!event.entityPlayer.worldObj.isRemote)
                 {
                     event.entityPlayer.heal(5.0F);
                     GCPlayerStats.get(event.entityPlayer).setCryogenicChamberCooldown(6000);
 
-                    for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
+                    WorldServer ws = (WorldServer)event.entityPlayer.worldObj;
+                    ws.updateAllPlayersSleepingFlag();
+                    if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
                     {
-                        worldServer.setWorldTime(0);
+                        WorldUtil.setNextMorning(ws);
                     }
                 }
             }
@@ -180,38 +173,28 @@ public class EventHandlerMars
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
-                entity.rotationPitch = 0;
+                GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
 
                 switch (tile.getBlockMetadata() & 3)
                 {
                 case 0:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(-0.4F, -0.5F, 4.1F);
-                    GL11.glRotatef(270, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 320;
                     break;
                 case 1:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
-                    GL11.glRotatef(90, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 45;
                     break;
                 case 2:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0, -0.5F, 4.1F);
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 45;
                     break;
                 case 3:
-                    GL11.glRotatef(180, 0.0F, 1.0F, 0.0F);
                     GL11.glTranslatef(0.0F, -0.5F, 4.1F);
-                    entity.rotationYaw = 0;
-                    entity.rotationYawHead = 335;
                     break;
                 }
+
+                GL11.glRotatef(-180, 0.0F, 1.0F, 0.0F);
+
+                GL11.glRotatef(FMLClientHandler.instance().getClientPlayerEntity().sleepTimer - 50, 0.0F, 1.0F, 0.0F);
+                GL11.glTranslatef(0.0F, 0.3F, 0.0F);
             }
         }
     }

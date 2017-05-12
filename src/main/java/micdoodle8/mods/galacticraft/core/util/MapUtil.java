@@ -450,8 +450,7 @@ public class MapUtil
             	//Create the current map thread, pausing any slow map thread 
 	        	if (slowMap != null)
 	        	{
-//TODO commented out for beta testing purposes - if multithreading is a problem, some blocky artifacts might be seen in the maps (none seen currently in 1.8.9 version)
-//	        		slowMap.pause();
+	        		slowMap.pause();
 	        	}
 	        	//TODO = should it use a re-usable thread pool?
             	threadCurrentMap = new Thread(currentMap);
@@ -487,7 +486,18 @@ public class MapUtil
             
             return;
         }
-            		
+
+        if (!queuedMaps.isEmpty())
+        {
+            if (slowMap != null)
+            {
+                slowMap.pause();
+            }
+
+            currentMap = queuedMaps.removeFirst();
+            return;
+        }
+
         if (slowMap != null)
         {
             if (threadSlowMap == null)
@@ -560,6 +570,13 @@ public class MapUtil
             }
         }
     }
+
+
+    public static boolean backgroundMapping(Thread currentThread)
+    {
+        return currentThread == threadSlowMap || currentThread == threadCurrentMap;
+    }
+
     
     /**
      * Converts a 48px high image to a 12px high image with a palette chosen only from the colours in the paletteImage
@@ -1125,7 +1142,7 @@ public class MapUtil
                 rv = Material.snow.getMaterialMapColor().colorValue;
             }
         }
-        float factor = (height - 68F) / 114F;
+        float factor = (height - 68F) / 94F;
         return ColorUtil.lighten(rv, factor);
     }
 

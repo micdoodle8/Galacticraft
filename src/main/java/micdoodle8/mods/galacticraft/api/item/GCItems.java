@@ -190,14 +190,13 @@ public class GCItems
             {
                 Class<?> clazz = Class.forName(GCItems.getItemListClass());
                 Field f = clazz.getDeclaredField("itemList");
-                GCItems.itemsList = f.get(null);
+                GCItems.itemsList = (HashMap<String, ItemStack>) f.get(null);
             }
 
-            if (GCItems.itemsList instanceof HashMap)
+            if (GCItems.itemsList != null)
             {
                 @SuppressWarnings("unchecked")
-                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) GCItems.itemsList;
-                ItemStack stack = blockMap.get(key);
+                ItemStack stack = GCItems.itemsList.get(key);
                 return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
             }
         }
@@ -230,14 +229,13 @@ public class GCItems
             {
                 Class<?> clazz = Class.forName(GCItems.getItemListClass());
                 Field f = clazz.getDeclaredField("blocksList");
-                GCItems.blocksList = f.get(null);
+                GCItems.blocksList = (HashMap<String, ItemStack>) f.get(null);
             }
 
-            if (GCItems.blocksList instanceof HashMap)
+            if (GCItems.blocksList != null)
             {
                 @SuppressWarnings("unchecked")
-                HashMap<String, ItemStack> blockMap = (HashMap<String, ItemStack>) GCItems.blocksList;
-                ItemStack stack = blockMap.get(key);
+                ItemStack stack = GCItems.blocksList.get(key);
                 return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
             }
         }
@@ -254,6 +252,6 @@ public class GCItems
         return "micdoodle8.mods.galacticraft.core.GalacticraftCore";
     }
 
-    private static Object blocksList;
-    private static Object itemsList;
+    private static HashMap<String, ItemStack> blocksList;
+    private static HashMap<String, ItemStack> itemsList;
 }

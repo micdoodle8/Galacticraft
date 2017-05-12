@@ -58,7 +58,7 @@ The issues list is __not__ for:
 * suggestions and feature requests - go to the [suggestions forum](http://forum.micdoodle8.com/index.php?forums/suggestions.7/)
 * questions and general support issues - go to the [support forum](http://forum.micdoodle8.com/index.php?forums/support.5/)
 * problems downloading, installing or launching the mod: the mod works if you followed the [installation guide](http://wiki.micdoodle8.com/wiki/Tutorials/Galacticraft_Installation_Guide), if it is not working for you that's a support issue for the forum
-* questions about when a 1.8 / 1.10 / 1.11 version or more planets will come - see [sticky topic on this]( http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/)
+* questions about when next version or more planets will come - see [sticky topic on this]( http://forum.micdoodle8.com/index.php?threads/when-will-the-next-update-when-will-new-planets-rockets-mobs-or-whatever-be-added.3753/)
 * communicating with micdoodle8 - use other communication channels like Twitter or email
 * modpack permission requests - modpack permissions are found here: http://wiki.micdoodle8.com/wiki/Modpack_Permission.
 
@@ -68,18 +68,16 @@ Translation fixes
 -----------------
 If you spot an error or something missing in the translation of Galacticraft for your language, the best is to fix it yourself.  That's easy to do in 5 simple steps:
 
-1.  Find the .lang file on Github and take a look at what needs fixing.  The language files are here, you'll need to figure out whether it is a Galacticraft core, moon, mars or asteroids item
+1.  Find the .lang file on Github and take a look at what needs fixing.  The language files are here, you'll need to figure out whether it is a GalacticraftCore or Galacticraft Planets item - basically any feature obtainable only after you reach Mars / Venus / Asteroids is probably in Galacticraft Planets.
 
-    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftcore/lang
-    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftmoon/lang
-    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftmars/lang
-    https://github.com/micdoodle8/Galacticraft/tree/MC1.7/src/main/resources/assets/galacticraftasteroids/lang
+    https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftcore/lang
+    https://github.com/micdoodle8/Galacticraft/tree/master/src/main/resources/assets/galacticraftplanets/lang
 
 2.  Click the Fork button (top right of this screen) and now in your new fork, navigate back to the language file: click __src/main__ then __resources__ then __assets__
 
 3.  Click the Edit button (it looks like a pencil!)
 
-4.  Edit the text to fix the translation, and save your edit
+4.  Edit the text to fix the translation, and __Save__ your edit
 
 5.  On the home page of your Fork, click "Pull Request"
 

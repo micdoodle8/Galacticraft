@@ -22,7 +22,6 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
-    private static int isBG2Loaded = 0;
 
     public RenderEvolvedSkeleton(RenderManager manager)
     {
@@ -36,18 +35,6 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
                 this.field_177186_d = new ModelSkeleton(1.0F, true);
             }
         });
-
-        //Compatibility with BattleGear2
-        try
-        {
-            Class<?> clazz = Class.forName("mods.battlegear2.MobHookContainerClass");
-
-            //accessing this: public static final int Skell_Arrow_Datawatcher = 25;
-            RenderEvolvedSkeleton.isBG2Loaded = clazz.getField("Skell_Arrow_Datawatcher").getInt(null);
-        }
-        catch (Exception e)
-        {
-        }
     }
 
     @Override

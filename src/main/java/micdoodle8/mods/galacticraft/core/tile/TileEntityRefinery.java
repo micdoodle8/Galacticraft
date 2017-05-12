@@ -58,14 +58,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             {
                 if (this.processTicks == 0)
                 {
-                    this.processTicks = TileEntityRefinery.PROCESS_TIME_REQUIRED;
+                    this.processTicks = this.getProcessTimeRequired();
                 }
                 else
                 {
                     if (--this.processTicks <= 0)
                     {
                         this.smeltItem();
-                        this.processTicks = this.canProcess() ? TileEntityRefinery.PROCESS_TIME_REQUIRED : 0;
+                        this.processTicks = this.canProcess() ? this.getProcessTimeRequired() : 0;
                     }
                 }
             }
@@ -74,6 +74,11 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
                 this.processTicks = 0;
             }
         }
+    }
+    
+    private int getProcessTimeRequired()
+    {
+        return (this.poweredByTierGC > 1) ? 1 : TileEntityRefinery.PROCESS_TIME_REQUIRED;
     }
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)

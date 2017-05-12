@@ -38,49 +38,31 @@ public class SlotSpecific extends Slot
         super(par2IInventory, par3, par4, par5);
         if (validClasses != null && Arrays.asList(validClasses).contains(IItemElectric.class))
         {
-            if (EnergyConfigHandler.isRFAPILoaded())
+            try
             {
-                try
+                if (EnergyConfigHandler.isRFAPILoaded())
                 {
-                    Class<?> itemElectricRF = Class.forName("cofh.api.energy.IEnergyContainerItem");
                     ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-                    existing.add(itemElectricRF);
+                    existing.add(cofh.api.energy.IEnergyContainerItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }
-                catch (Exception e)
+                if (EnergyConfigHandler.isIndustrialCraft2Loaded())
                 {
-                    e.printStackTrace();
+                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    existing.add(ic2.api.item.IElectricItem.class);
+                    existing.add(ic2.api.item.ISpecialElectricItem.class);
+                    validClasses = existing.toArray(new Class[existing.size()]);
+                }
+                if (EnergyConfigHandler.isMekanismLoaded())
+                {
+                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    existing.add(mekanism.api.energy.IEnergizedItem.class);
+                    validClasses = existing.toArray(new Class[existing.size()]);
                 }
             }
-            if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+            catch (Exception e)
             {
-                try
-                {
-                    Class<?> itemElectricIC2a = Class.forName("ic2.api.item.IElectricItem");
-                    Class<?> itemElectricIC2b = Class.forName("ic2.api.item.ISpecialElectricItem");
-                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-                    existing.add(itemElectricIC2a);
-                    existing.add(itemElectricIC2b);
-                    validClasses = existing.toArray(new Class[existing.size()]);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if (EnergyConfigHandler.isMekanismLoaded())
-            {
-                try
-                {
-                    Class<?> itemElectricMek = Class.forName("mekanism.api.energy.IEnergizedItem");
-                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
-                    existing.add(itemElectricMek);
-                    validClasses = existing.toArray(new Class[existing.size()]);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                e.printStackTrace();
             }
         }
         this.setClasses(validClasses);

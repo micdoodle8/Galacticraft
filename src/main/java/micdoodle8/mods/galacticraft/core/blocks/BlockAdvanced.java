@@ -92,7 +92,7 @@ public abstract class BlockAdvanced extends Block
             Class<? extends Item> wrenchClass = item.getClass();
 
             /**
-             * UE and Buildcraft
+             * Buildcraft
              */
             try
             {
@@ -111,16 +111,10 @@ public abstract class BlockAdvanced extends Block
             /**
              * Industrialcraft
              */
-            try
-            {
-                if (wrenchClass == Class.forName("ic2.core.item.tool.ItemToolWrench") || wrenchClass == Class.forName("ic2.core.item.tool.ItemToolWrenchElectric"))
+                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
                 {
                     return itemStack.getItemDamage() < itemStack.getMaxDamage();
                 }
-            }
-            catch (Exception e)
-            {
-            }
             }
         }
 
@@ -140,12 +134,12 @@ public abstract class BlockAdvanced extends Block
             Class<? extends Item> wrenchClass = itemStack.getItem().getClass();
 
             /**
-             * UE and Buildcraft
+             * Buildcraft
              */
             try
             {
-                Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", EntityPlayer.class, Integer.TYPE, Integer.TYPE, Integer.TYPE);
-                methodWrenchUsed.invoke(itemStack.getItem(), entityPlayer, pos.getX(), pos.getY(), pos.getZ());
+                Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", EntityPlayer.class, BlockPos.class);
+                methodWrenchUsed.invoke(itemStack.getItem(), entityPlayer, pos);
                 return true;
             }
             catch (Exception e)
@@ -157,7 +151,7 @@ public abstract class BlockAdvanced extends Block
              */
             try
             {
-                if (wrenchClass == Class.forName("ic2.core.item.tool.ItemToolWrench") || wrenchClass == Class.forName("ic2.core.item.tool.ItemToolWrenchElectric"))
+                if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
                 {
                     Method methodWrenchDamage = wrenchClass.getMethod("damage", ItemStack.class, Integer.TYPE, EntityPlayer.class);
                     methodWrenchDamage.invoke(itemStack.getItem(), itemStack, 1, entityPlayer);

@@ -153,9 +153,10 @@ public class EnergyNetwork implements IElectricityNetwork
             if (doReceive)
             {
                 this.totalEnergy += Math.min(energy, this.totalRequested - totalEnergyLast);
-                if (producerTier > 1)
+                //The field producersTierGC will be the *highest* of any producers putting energy into the network this tick
+                if (producerTier > this.producersTierGC)
                 {
-                    this.producersTierGC = 2;
+                    this.producersTierGC = producerTier;
                 }
             }
 
@@ -276,7 +277,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             }
                         }
                         //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
-                        result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
+                        result = Math.min(result, this.networkTierGC * 128D);
                         e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                     }
                     else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
@@ -468,7 +469,7 @@ public class EnergyNetwork implements IElectricityNetwork
      */
     public void refreshWithChecks()
     {
-        int tierfound = 2;
+        int tierfound = Integer.MAX_VALUE;
         Iterator<IConductor> it = this.conductors.iterator();
         while (it.hasNext())
         {
@@ -495,9 +496,9 @@ public class EnergyNetwork implements IElectricityNetwork
                 continue;
             }
 
-            if (conductor.getTierGC() < 2)
+            if (conductor.getTierGC() < tierfound)
             {
-                tierfound = 1;
+                tierfound = conductor.getTierGC();
             }
 
             if (conductor.getNetwork() != this)
@@ -508,13 +509,17 @@ public class EnergyNetwork implements IElectricityNetwork
         }
 
         //This will set the network tier to 2 if all the conductors are tier 2
+        if (tierfound == Integer.MAX_VALUE)
+        {
+            tierfound = 1;
+        }   
         this.networkTierGC = tierfound;
     }
 
     @Override
     public void refresh()
     {
-        int tierfound = 2;
+        int tierfound = Integer.MAX_VALUE;
         Iterator<IConductor> it = this.conductors.iterator();
         while (it.hasNext())
         {
@@ -535,9 +540,9 @@ public class EnergyNetwork implements IElectricityNetwork
                 continue;
             }
 
-            if (conductor.getTierGC() < 2)
+            if (conductor.getTierGC() < tierfound)
             {
-                tierfound = 1;
+                tierfound = conductor.getTierGC();
             }
 
             if (conductor.getNetwork() != this)
@@ -547,7 +552,11 @@ public class EnergyNetwork implements IElectricityNetwork
             }
         }
 
-        //This will set the network tier to 2 if all the conductors are tier 2
+        //This will set the network tier to 2 if all the conductors are tier 2, etc
+        if (tierfound == Integer.MAX_VALUE)
+        {
+            tierfound = 1;
+        }   
         this.networkTierGC = tierfound;
     }
 
