@@ -19,6 +19,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     @NetworkedField(targetSide = Side.CLIENT)
     public EnergyStorage storage = new EnergyStorage(STANDARD_CAPACITY, 10);
     public int tierGC = 1;
+    @NetworkedField(targetSide = Side.CLIENT)
     public int poweredByTierGC = 1;
 
     @Override
@@ -94,7 +95,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     @Override
     public float receiveElectricity(EnumFacing from, float receive, int tier, boolean doReceive)
     {
-        this.poweredByTierGC = tier;
+        this.poweredByTierGC = (tier < 6) ? tier : 6;
         return this.storage.receiveEnergyGC(receive, !doReceive);
     }
 

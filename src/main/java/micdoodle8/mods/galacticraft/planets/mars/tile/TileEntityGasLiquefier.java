@@ -252,7 +252,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                 //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
                 if (this.tierGC == 2)
                 {
-                    this.processTimeRequired = (this.poweredByTierGC == 2) ? 2 : 3;
+                    this.processTimeRequired = Math.max(1, 4 - this.poweredByTierGC);
                 }
 
                 if (this.processTicks <= 0)
