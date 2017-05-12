@@ -276,7 +276,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             }
                         }
                         //Cap IC2 power transfer at 128EU/t for standard Alu wire, 256EU/t for heavy Alu wire
-                        result = Math.max(result, (this.networkTierGC == 2) ? 256D : 128D);
+                        result = Math.min(result, (this.networkTierGC == 2) ? 256D : 128D);
                         e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                     }
                     else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
