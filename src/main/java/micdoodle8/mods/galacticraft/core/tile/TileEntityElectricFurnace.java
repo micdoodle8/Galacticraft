@@ -364,10 +364,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
-        this.clientValidate();
+        this.clientOnLoad();
     }
     
     @Override

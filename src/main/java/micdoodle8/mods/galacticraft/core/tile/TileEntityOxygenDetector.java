@@ -47,9 +47,8 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickable
     }
     
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
         this.oxygenSearch = AxisAlignedBB.fromBounds(this.getPos().getX() - 0.6, this.getPos().getY() - 0.6, this.getPos().getZ() - 0.6, this.getPos().getX() + 1.6, this.getPos().getY() + 1.6, this.getPos().getZ() + 1.6);
     }
 }

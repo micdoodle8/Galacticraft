@@ -63,12 +63,11 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
         if (this.worldObj.isRemote)
         {
-            this.clientValidate();
+            this.clientOnLoad();
             this.screen = new DrawGameScreen(1.0F, 1.0F, this);
         }
     }

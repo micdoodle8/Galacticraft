@@ -69,9 +69,8 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void validate()
+    public void onLoad()
     {
-        super.validate();
     }
 
     @Override
