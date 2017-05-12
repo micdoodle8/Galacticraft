@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.api.power.ILaserNode;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
@@ -232,8 +233,8 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         if (this.getTarget() != null)
         {
             Vector3 direction = Vector3.subtract(this.getOutputPoint(false), this.getTarget().getInputPoint()).normalize();
-            this.pitch = (float) -Vector3.getAngle(new Vector3(-direction.x, -direction.y, -direction.z), new Vector3(0, 1, 0)) * (float) (180.0F / Math.PI) + 90;
-            this.yaw = (float) -(Math.atan2(direction.z, direction.x) * (float) (180.0F / Math.PI)) + 90;
+            this.pitch = (float) -Vector3.getAngle(new Vector3(-direction.x, -direction.y, -direction.z), new Vector3(0, 1, 0)) * Constants.RADIANS_TO_DEGREES + 90;
+            this.yaw = (float) -(Math.atan2(direction.z, direction.x) * Constants.RADIANS_TO_DEGREES) + 90;
         }
     }
 

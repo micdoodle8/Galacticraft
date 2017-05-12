@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.event;
 
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.EventSpecialRender;
@@ -12,11 +13,13 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRende
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.util.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 public class AsteroidsEventHandlerClient
@@ -62,9 +65,9 @@ public class AsteroidsEventHandlerClient
             renderEvent.setCanceled(true);
             GL11.glBegin(GL11.GL_LINE_LOOP);
 
-            final float theta = (float) (2 * Math.PI / 90);
-            final float cos = (float) Math.cos(theta);
-            final float sin = (float) Math.sin(theta);
+            final float theta = Constants.twoPI / 90;
+            final float cos = MathHelper.cos(theta);
+            final float sin = MathHelper.sin(theta);
 
             float min = 72.0F;
             float max = 78.0F;

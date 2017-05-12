@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.entities;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
@@ -55,8 +56,8 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (d3 >= 1.0E-7D)
         {
-            float f = (float)(MathHelper.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f1 = (float)(-(MathHelper.atan2(d1, d3) * 180.0D / Math.PI));
+            float f = (float) MathHelper.atan2(d2, d0) * Constants.RADIANS_TO_DEGREES - 90.0F;
+            float f1 = (float) MathHelper.atan2(d1, d3) * -Constants.RADIANS_TO_DEGREES;
             double d4 = d0 / d3;
             double d5 = d2 / d3;
             this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f, f1);
@@ -78,13 +79,13 @@ public class EntityWebShot extends Entity implements IProjectile
 
         this.setSize(0.5F, 0.5F);
         this.setLocationAndAngles(shooter.posX, shooter.posY + (double)shooter.getEyeHeight(), shooter.posZ, shooter.rotationYaw, shooter.rotationPitch);
-        this.posX -= (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
+        this.posX -= (double)(MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F);
         this.posY -= 0.10000000149011612D;
-        this.posZ -= (double)(MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * 0.16F);
+        this.posZ -= (double)(MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * 0.16F);
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.motionX = (double)(-MathHelper.sin(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI));
-        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / 180.0F * (float)Math.PI) * MathHelper.cos(this.rotationPitch / 180.0F * (float)Math.PI));
-        this.motionY = (double)(-MathHelper.sin(this.rotationPitch / 180.0F * (float)Math.PI));
+        this.motionX = (double)(-MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
+        this.motionZ = (double)(MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
+        this.motionY = (double)(-MathHelper.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
         this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
     }
 
@@ -110,8 +111,8 @@ public class EntityWebShot extends Entity implements IProjectile
         this.motionY = y;
         this.motionZ = z;
         float f1 = MathHelper.sqrt_double(x * x + z * z);
-        this.prevRotationYaw = this.rotationYaw = (float)(MathHelper.atan2(x, z) * 180.0D / Math.PI);
-        this.prevRotationPitch = this.rotationPitch = (float)(MathHelper.atan2(y, (double)f1) * 180.0D / Math.PI);
+        this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(x, z) * Constants.RADIANS_TO_DEGREES;
+        this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(y, (double)f1) * Constants.RADIANS_TO_DEGREES;
     }
 
     @Override
@@ -133,8 +134,8 @@ public class EntityWebShot extends Entity implements IProjectile
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
             float f = MathHelper.sqrt_double(x * x + z * z);
-            this.prevRotationYaw = this.rotationYaw = (float)(MathHelper.atan2(x, z) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float)(MathHelper.atan2(y, (double)f) * 180.0D / Math.PI);
+            this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(x, z) * Constants.RADIANS_TO_DEGREES;
+            this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(y, (double)f) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch;
             this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
@@ -149,8 +150,8 @@ public class EntityWebShot extends Entity implements IProjectile
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
             float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-            this.prevRotationYaw = this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
-            this.prevRotationPitch = this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f) * 180.0D / Math.PI);
+            this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(this.motionX, this.motionZ) * Constants.RADIANS_TO_DEGREES;
+            this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(this.motionY, (double)f) * Constants.RADIANS_TO_DEGREES;
         }
 
         if (this.arrowShake > 0)
@@ -257,9 +258,9 @@ public class EntityWebShot extends Entity implements IProjectile
         this.posY += this.motionY;
         this.posZ += this.motionZ;
         float f3 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
-        this.rotationYaw = (float)(MathHelper.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
+        this.rotationYaw = (float) MathHelper.atan2(this.motionX, this.motionZ) * Constants.RADIANS_TO_DEGREES;
 
-        for (this.rotationPitch = (float)(MathHelper.atan2(this.motionY, (double)f3) * 180.0D / Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
+        for (this.rotationPitch = (float) MathHelper.atan2(this.motionY, (double)f3) * Constants.RADIANS_TO_DEGREES; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
         {
         }
 

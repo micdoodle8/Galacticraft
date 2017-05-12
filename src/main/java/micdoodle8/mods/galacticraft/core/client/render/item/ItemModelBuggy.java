@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -62,7 +63,7 @@ public class ItemModelBuggy extends ModelTransformWrapper
             mul.setScale(0.35F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotY(Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX(0.2F);

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -29,7 +30,7 @@ public class ItemModelGrapple extends ModelTransformWrapper
             mul.setTranslation(new Vector3f(-0.2F, -0.1F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotY(Constants.halfPI);
             ret.mul(mul);
             return ret;
         }

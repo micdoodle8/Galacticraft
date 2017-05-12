@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -294,10 +295,10 @@ public class ModelEvolvedSpider extends ModelBase
 
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
     {
-        this.head.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.head.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.oxygenMask.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.oxygenMask.rotateAngleX = f4 / (180F / (float) Math.PI);
+        this.head.rotateAngleY = f3 / Constants.RADIANS_TO_DEGREES;
+        this.head.rotateAngleX = f4 / Constants.RADIANS_TO_DEGREES;
+        this.oxygenMask.rotateAngleY = f3 / Constants.RADIANS_TO_DEGREES;
+        this.oxygenMask.rotateAngleX = f4 / Constants.RADIANS_TO_DEGREES;
         final float var7 = (float) Math.PI / 4F;
         this.leg1.rotateAngleZ = -var7;
         this.leg2.rotateAngleZ = var7;
@@ -319,12 +320,12 @@ public class ModelEvolvedSpider extends ModelBase
         this.leg8.rotateAngleY = var9 * 2.0F - var8;
         final float var10 = -(MathHelper.cos(f * 0.6662F * 2.0F + 0.0F) * 0.4F) * f1;
         final float var11 = -(MathHelper.cos(f * 0.6662F * 2.0F + (float) Math.PI) * 0.4F) * f1;
-        final float var12 = -(MathHelper.cos(f * 0.6662F * 2.0F + (float) Math.PI / 2F) * 0.4F) * f1;
-        final float var13 = -(MathHelper.cos(f * 0.6662F * 2.0F + (float) Math.PI * 3F / 2F) * 0.4F) * f1;
+        final float var12 = -(MathHelper.cos(f * 0.6662F * 2.0F + Constants.halfPI) * 0.4F) * f1;
+        final float var13 = -(MathHelper.cos(f * 0.6662F * 2.0F + 3F * Constants.halfPI) * 0.4F) * f1;
         final float var14 = Math.abs(MathHelper.sin(f * 0.6662F + 0.0F) * 0.4F) * f1;
         final float var15 = Math.abs(MathHelper.sin(f * 0.6662F + (float) Math.PI) * 0.4F) * f1;
-        final float var16 = Math.abs(MathHelper.sin(f * 0.6662F + (float) Math.PI / 2F) * 0.4F) * f1;
-        final float var17 = Math.abs(MathHelper.sin(f * 0.6662F + (float) Math.PI * 3F / 2F) * 0.4F) * f1;
+        final float var16 = Math.abs(MathHelper.sin(f * 0.6662F + Constants.halfPI) * 0.4F) * f1;
+        final float var17 = Math.abs(MathHelper.sin(f * 0.6662F + 3F * Constants.halfPI) * 0.4F) * f1;
         this.leg1.rotateAngleY += var10;
         this.leg2.rotateAngleY += -var10;
         this.leg3.rotateAngleY += var11;

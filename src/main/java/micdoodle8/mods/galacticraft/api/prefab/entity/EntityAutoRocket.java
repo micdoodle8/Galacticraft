@@ -351,8 +351,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                     double angleYaw = Math.atan(motZ / motX);
                     double signed = motX < 0 ? 50D : -50D;
                     double anglePitch = Math.atan(Math.sqrt(motZ * motZ + motX * motX) / signed) * 100D;
-                    this.rotationYaw = (float)angleYaw * 57.2957795F;
-                    this.rotationPitch = (float)anglePitch * 57.2957795F;
+                    this.rotationYaw = (float)angleYaw * Constants.RADIANS_TO_DEGREES;
+                    this.rotationPitch = (float)anglePitch * Constants.RADIANS_TO_DEGREES;
                 }
                 else
                     this.rotationPitch = 0F;

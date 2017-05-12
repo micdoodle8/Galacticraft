@@ -36,6 +36,7 @@ public class ModelBipedGC extends ModelBiped
     {
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
+        final float floatPI = 3.1415927F;
 
         if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
@@ -43,12 +44,12 @@ public class ModelBipedGC extends ModelBiped
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
             float rightMod = biped.heldItemRight != 0 ? 1 : 2;
-            biped.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * rightMod * par2 * 0.5F;
+            biped.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + floatPI) * rightMod * par2 * 0.5F;
             biped.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
             biped.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
             biped.bipedLeftArm.rotateAngleX += angularSwingArm * 4.0F * par2 * 0.5F;
-            biped.bipedLeftLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
-            biped.bipedLeftLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2 + (float) Math.PI) * 1.4F * par2;
+            biped.bipedLeftLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + floatPI) * 1.4F * par2;
+            biped.bipedLeftLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2 + floatPI) * 1.4F * par2;
             biped.bipedRightLeg.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
             biped.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
@@ -60,10 +61,10 @@ public class ModelBipedGC extends ModelBiped
             if (gearData.getParachute() != null)
             {
                 // Parachute is equipped
-                biped.bipedLeftArm.rotateAngleX += (float) Math.PI;
-                biped.bipedLeftArm.rotateAngleZ += (float) Math.PI / 10;
-                biped.bipedRightArm.rotateAngleX += (float) Math.PI;
-                biped.bipedRightArm.rotateAngleZ -= (float) Math.PI / 10;
+                biped.bipedLeftArm.rotateAngleX += floatPI;
+                biped.bipedLeftArm.rotateAngleZ += floatPI / 10;
+                biped.bipedRightArm.rotateAngleX += floatPI;
+                biped.bipedRightArm.rotateAngleZ -= floatPI / 10;
             }
         }
 
@@ -84,7 +85,7 @@ public class ModelBipedGC extends ModelBiped
 
                 if (angle == null)
                 {
-                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) Math.PI / 10.0F);
+                    angle = new Vector3(floatPI + 0.3F, 0.0F, floatPI / 10.0F);
                 }
 
                 biped.bipedLeftArm.rotateAngleX = angle.floatX();
@@ -103,7 +104,7 @@ public class ModelBipedGC extends ModelBiped
 
                 if (angle == null)
                 {
-                    angle = new Vector3((float) Math.PI + 0.3F, 0.0F, (float) -Math.PI / 10.0F);
+                    angle = new Vector3(floatPI + 0.3F, 0.0F, (float) -Math.PI / 10.0F);
                 }
 
                 biped.bipedRightArm.rotateAngleX = angle.floatX();
@@ -136,8 +137,8 @@ public class ModelBipedGC extends ModelBiped
 
                 if (ship.riddenByEntity != null && !(ship.riddenByEntity).equals(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
                 {
-                    biped.bipedRightArm.rotateAngleZ -= (float) (Math.PI / 8) + MathHelper.sin(par3 * 0.9F) * 0.2F;
-                    biped.bipedRightArm.rotateAngleX = (float) Math.PI;
+                    biped.bipedRightArm.rotateAngleZ -= floatPI / 8F + MathHelper.sin(par3 * 0.9F) * 0.2F;
+                    biped.bipedRightArm.rotateAngleX = floatPI;
                     break;
                 }
             }

@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.resources.model.IBakedModel;
+
 import org.lwjgl.Sys;
 
 import javax.vecmath.Matrix4f;
@@ -31,7 +33,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             mul.setTranslation(new Vector3f(-0.28F, -0.35F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotY(Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX((float) (Math.PI / 4.0F));
@@ -62,7 +64,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             mul.setScale(4.0F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotX((float) (Math.PI / 2.0F));
+            mul.rotX(Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotZ(-0.65F);

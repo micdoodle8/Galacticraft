@@ -803,7 +803,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
         if (this.isSprinting())
         {
-            float f = this.rotationYaw * 0.017453292F;
+            float f = this.rotationYaw / Constants.RADIANS_TO_DEGREES;
             this.motionX -= MathHelper.sin(f) * 0.2F;
             this.motionZ += MathHelper.cos(f) * 0.2F;
         }

@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
@@ -58,7 +59,7 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public float getStarBrightness(float par1)
     {
         final float var2 = this.worldObj.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
         {

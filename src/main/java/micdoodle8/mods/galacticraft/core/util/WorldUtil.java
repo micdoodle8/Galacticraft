@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.util;
 import com.google.common.collect.Lists;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IAntiGrav;
 import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
@@ -17,6 +18,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
@@ -53,6 +55,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.File;
@@ -1339,14 +1342,14 @@ public class WorldUtil
         mainPosX = position.intX();
         mainPosZ = position.intZ();
 
-        double x0 = (Math.sin((45 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
-        double x1 = (Math.sin((135 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
-        double x2 = (Math.sin((225 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
-        double x3 = (Math.sin((315 - rotation) * Math.PI / 180.0D) * footprintScale) + position.x;
-        double z0 = (Math.cos((45 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
-        double z1 = (Math.cos((135 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
-        double z2 = (Math.cos((225 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
-        double z3 = (Math.cos((315 - rotation) * Math.PI / 180.0D) * footprintScale) + position.z;
+        double x0 = (Math.sin((45 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x1 = (Math.sin((135 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x2 = (Math.sin((225 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x3 = (Math.sin((315 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double z0 = (Math.cos((45 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z1 = (Math.cos((135 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z2 = (Math.cos((225 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z3 = (Math.cos((315 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
 
         double xMin = Math.min(Math.min(x0, x1), Math.min(x2, x3));
         double xMax = Math.max(Math.max(x0, x1), Math.max(x2, x3));

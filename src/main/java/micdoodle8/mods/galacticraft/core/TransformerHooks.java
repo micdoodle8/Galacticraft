@@ -391,7 +391,7 @@ public class TransformerHooks
         if (world.provider instanceof WorldProviderMoon)
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
+            float f2 = 1.0F - (MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.2F);
 
             if (f2 < 0.0F)
             {
@@ -453,7 +453,7 @@ public class TransformerHooks
         if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || (player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.ridingEntity instanceof EntitySpaceshipBase))
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
+            float f2 = MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.5F;
 
             if (f2 < 0.0F)
             {

@@ -102,8 +102,8 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         if (this.riddenByEntity != null)
         {
-            final double offsetX = Math.sin(-this.rotationYawHead * (Math.PI / 180.0D));
-            final double offsetZ = Math.cos(this.rotationYawHead * (Math.PI / 180.0D));
+            final double offsetX = Math.sin(-this.rotationYawHead * (Constants.RADIANS_TO_DEGREES_D));
+            final double offsetZ = Math.cos(this.rotationYawHead * (Constants.RADIANS_TO_DEGREES_D));
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
             this.riddenByEntity.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset() + offsetY, this.posZ + offsetZ);
@@ -232,7 +232,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             {
                 GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.worldObj), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
             }
-            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
+            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
             final float f = MathHelper.sqrt_double(d0 * d0 + d1 * d1);

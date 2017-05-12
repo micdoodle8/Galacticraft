@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.state.IBlockState;
@@ -65,8 +66,8 @@ public class MapGenLavaVenus extends MapGenBaseMeta
 
             if (!flag && par15 == k1 && par12 > 1.0F && par16 > 0)
             {
-                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
-                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + (float) Math.PI / 2F, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 - Constants.halfPI, par14 / 3.0F, par15, par16, 1.0D);
+                this.generateCaveNode(random.nextLong(), par3, par4, primer, par6, par8, par10, random.nextFloat() * 0.5F + 0.5F, par13 + Constants.halfPI, par14 / 3.0F, par15, par16, 1.0D);
                 return;
             }
 
@@ -218,7 +219,7 @@ public class MapGenLavaVenus extends MapGenBaseMeta
 
             for (int var16 = 0; var16 < 1; ++var16)
             {
-                final float var17 = this.rand.nextFloat() * (float) Math.PI * 2.0F;
+                final float var17 = this.rand.nextFloat() * Constants.twoPI;
                 final float var18 = (this.rand.nextFloat() - 0.5F) * 2.0F / 8.0F;
 
                 this.generateCaveNode(this.rand.nextLong(), par4, par5, primer, var9, var11, var13, 1.0F, var17, var18, 0, 0, 1.0D);

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -66,10 +67,10 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final double var9 = par3EntityPlayer.prevPosY + (par3EntityPlayer.posY - par3EntityPlayer.prevPosY) * var4 + 1.62D - par3EntityPlayer.getYOffset();
         final double var11 = par3EntityPlayer.prevPosZ + (par3EntityPlayer.posZ - par3EntityPlayer.prevPosZ) * var4;
         final Vec3 var13 = new Vec3(var7, var9, var11);
-        final float var14 = MathHelper.cos(-var6 * 0.017453292F - (float) Math.PI);
-        final float var15 = MathHelper.sin(-var6 * 0.017453292F - (float) Math.PI);
-        final float var16 = -MathHelper.cos(-var5 * 0.017453292F);
-        final float var17 = MathHelper.sin(-var5 * 0.017453292F);
+        final float var14 = MathHelper.cos(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
+        final float var15 = MathHelper.sin(-var6 / Constants.RADIANS_TO_DEGREES - (float) Math.PI);
+        final float var16 = -MathHelper.cos(-var5 / Constants.RADIANS_TO_DEGREES);
+        final float var17 = MathHelper.sin(-var5 / Constants.RADIANS_TO_DEGREES);
         final float var18 = var15 * var16;
         final float var20 = var14 * var16;
         final double var21 = 5.0D;

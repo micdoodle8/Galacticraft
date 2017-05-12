@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
@@ -62,7 +63,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public float getStarBrightness(float par1)
     {
         float f1 = this.worldObj.getCelestialAngle(par1);
-        float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float f2 = 1.0F - (MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (f2 < 0.0F)
         {

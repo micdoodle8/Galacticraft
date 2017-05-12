@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -8,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.lwjgl.util.vector.Vector3f;
@@ -523,10 +525,10 @@ public class Vector3 implements Cloneable
         double x = axis.x;
         double y = axis.y;
         double z = axis.z;
-        angle *= 0.0174532925D;
-        float cos = (float) Math.cos(angle);
+        angle /= Constants.RADIANS_TO_DEGREES;
+        float cos = MathHelper.cos(angle);
         float ocos = 1.0F - cos;
-        float sin = (float) Math.sin(angle);
+        float sin = MathHelper.sin(angle);
         matrix[0] = x * x * ocos + cos;
         matrix[1] = y * x * ocos + z * sin;
         matrix[2] = x * z * ocos - y * sin;

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -108,7 +109,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
         if (this.isSprinting())
         {
-            float f = this.rotationYaw * 0.017453292F;
+            float f = this.rotationYaw / Constants.RADIANS_TO_DEGREES;
             this.motionX -= MathHelper.sin(f) * 0.2F;
             this.motionZ += MathHelper.cos(f) * 0.2F;
         }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityMoveHelper;
@@ -28,7 +29,7 @@ public class EntityMoveHelperCeiling extends EntityMoveHelper
 
             if (d3 >= 2.500000277905201E-7D)
             {
-                float f = (float)(MathHelper.atan2(d1, d0) * 180.0D / Math.PI) - 90.0F;
+                float f = (float) MathHelper.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - 90.0F;
                 this.entity.rotationYaw = f;
                 this.entity.setAIMoveSpeed((float)(this.speed * this.entity.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue()));
 

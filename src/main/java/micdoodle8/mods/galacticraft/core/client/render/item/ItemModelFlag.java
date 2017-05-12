@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
@@ -8,6 +9,7 @@ import net.minecraft.util.Timer;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
+
 import java.lang.reflect.Field;
 
 public class ItemModelFlag extends ModelTransformWrapper
@@ -32,7 +34,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.setTranslation(new Vector3f(0.2F, -0.8F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotY(Constants.halfPI);
             ret.mul(mul);
             return ret;
         }
@@ -71,7 +73,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                     Field f = c.getDeclaredField("timer");
                     f.setAccessible(true);
                     Timer t = (Timer) f.get(Minecraft.getMinecraft());
-                    mul.rotX(((var7 + (var72 - var7) * t.renderPartialTicks) * 75.0F) * (float) (Math.PI / 180.0F));
+                    mul.rotX(((var7 + (var72 - var7) * t.renderPartialTicks) * 75.0F) / Constants.RADIANS_TO_DEGREES);
                 }
                 catch (Exception e)
                 {

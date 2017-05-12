@@ -85,8 +85,8 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
 
                     GlStateManager.rotate(180, 1, 0, 0);
                     GlStateManager.pushMatrix();
-                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleY * (-180.0F / Math.PI)), 0, 1, 0);
-                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleX * (180.0F / Math.PI)), 1, 0, 0);
+                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleY * -Constants.RADIANS_TO_DEGREES), 0, 1, 0);
+                    GlStateManager.rotate((float) (this.playerRenderer.getMainModel().bipedHeadwear.rotateAngleX * Constants.RADIANS_TO_DEGREES), 1, 0, 0);
                     GlStateManager.scale(0.3F, 0.3F, 0.3F);
 
                     if (wearingHelmet)

@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -430,8 +431,8 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         GlStateManager.color(1.0F, 0.79F, 0.79F, 0.17F);
         float bb = 1.7F;
         float cc = 0.4F;
-        float radiansYaw = entity.rotationYaw * 0.017453292F;
-        float radiansPitch = entity.rotationPitch * 0.017453292F / 4F;
+        float radiansYaw = entity.rotationYaw / Constants.RADIANS_TO_DEGREES;
+        float radiansPitch = entity.rotationPitch / Constants.RADIANS_TO_DEGREES / 4F;
         float mainLaserX = bb * MathHelper.sin(radiansYaw) * MathHelper.cos(radiansPitch);
         float mainLaserY = cc + bb * MathHelper.sin(radiansPitch);
         float mainLaserZ = bb * MathHelper.cos(radiansYaw) * MathHelper.cos(radiansPitch);
