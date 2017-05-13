@@ -42,7 +42,7 @@ public class JavaUtil extends SecurityManager
     public boolean isCalledBySpecific(Class<?> clazz)
     {
         Class<?>[] context = getClassContext();
-        if (context.length < 4) return false;
-        return (clazz == context[2] && !clazz.isAssignableFrom(context[3]));
+        if (context.length < 6) return false;
+        return (clazz == context[3] && !clazz.isAssignableFrom(context[4]));
     }
 }
