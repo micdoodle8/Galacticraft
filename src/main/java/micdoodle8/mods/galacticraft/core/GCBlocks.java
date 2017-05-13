@@ -384,11 +384,11 @@ public class GCBlocks
         registerBlock(GCBlocks.spaceGlassTinStrong, null);  //The corresponding item is already registered
         registerBlock(GCBlocks.crafting, ItemBlockDesc.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
-        registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
+        registerBlock(GCBlocks.spaceStationBase, ItemBlockSpaceStationBase.class);
         registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
         registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
-        registerBlock(GCBlocks.radioTelescope, ItemBlockGC.class);
+        registerBlock(GCBlocks.radioTelescope, ItemBlockRadioTelescope.class);
         registerBlock(GCBlocks.machineBase, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase3, ItemBlockMachine.class);
