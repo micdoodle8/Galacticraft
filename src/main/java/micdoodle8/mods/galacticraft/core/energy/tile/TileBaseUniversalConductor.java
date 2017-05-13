@@ -69,8 +69,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
         {
             try
             {
-                Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
-                Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                Object o = CompatibilityManager.classIC2tileEventLoad.getConstructor(IEnergyTile.class).newInstance(this);
 
                 if (o != null && o instanceof Event)
                 {
@@ -92,8 +91,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             {
                 try
                 {
-                    Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
-                    Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                    Object o = CompatibilityManager.classIC2tileEventUnload.getConstructor(IEnergyTile.class).newInstance(this);
 
                     if (o != null && o instanceof Event)
                     {

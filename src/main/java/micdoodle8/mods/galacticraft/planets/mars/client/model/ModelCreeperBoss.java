@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -148,10 +149,10 @@ public class ModelCreeperBoss extends ModelBase
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity)
     {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        this.headMain.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.headMain.rotateAngleX = f4 / (180F / (float) Math.PI);
-        this.oxygenTank.rotateAngleY = f3 / (180F / (float) Math.PI);
-        this.oxygenTank.rotateAngleX = f4 / (180F / (float) Math.PI);
+        this.headMain.rotateAngleY = f3 / Constants.RADIANS_TO_DEGREES;
+        this.headMain.rotateAngleX = f4 / Constants.RADIANS_TO_DEGREES;
+        this.oxygenTank.rotateAngleY = f3 / Constants.RADIANS_TO_DEGREES;
+        this.oxygenTank.rotateAngleX = f4 / Constants.RADIANS_TO_DEGREES;
         this.rightLegFront.rotateAngleX = MathHelper.cos(f * 0.6662F) * 1.4F * f1;
         this.leftLegFront.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;
         this.leftLeg.rotateAngleX = MathHelper.cos(f * 0.6662F + (float) Math.PI) * 2F * f1;

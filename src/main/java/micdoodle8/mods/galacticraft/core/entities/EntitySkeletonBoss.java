@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
@@ -104,8 +105,8 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         if (this.isPassenger(passenger))
         {
-            final double offsetX = Math.sin(-this.rotationYawHead * (Math.PI / 180.0D));
-            final double offsetZ = Math.cos(this.rotationYawHead * (Math.PI / 180.0D));
+            final double offsetX = Math.sin(-this.rotationYawHead * Constants.RADIANS_TO_DEGREES_D);
+            final double offsetZ = Math.cos(this.rotationYawHead * Constants.RADIANS_TO_DEGREES_D);
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
             passenger.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + passenger.getYOffset() + offsetY, this.posZ + offsetZ);
@@ -228,7 +229,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             {
                 GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
-            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.rotationYaw;
+            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
             final float f = MathHelper.sqrt(d0 * d0 + d1 * d1);

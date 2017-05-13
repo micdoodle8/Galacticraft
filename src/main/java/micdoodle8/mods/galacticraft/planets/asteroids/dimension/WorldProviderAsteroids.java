@@ -13,7 +13,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.DimensionType;
@@ -89,12 +88,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public boolean shouldForceRespawn()
-    {
-        return !ConfigManagerCore.forceOverworldRespawn;
-    }
-
-    @Override
     public float calculateCelestialAngle(long par1, float par3)
     {
         return 0.25F;
@@ -131,14 +124,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return true;
     }
 
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public boolean isSurfaceWorld()
-    {
-        return (this.world == null) ? false : this.world.isRemote;
-    }
-
     //Overriding so that beds do not explode on Asteroids
     @Override
     public boolean canRespawnHere()
@@ -149,14 +134,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return true;
         }
         return false;
-    }
-
-    //Overriding only in case the Galacticraft API is not up-to-date
-    //(with up-to-date API this makes zero difference)
-    @Override
-    public int getRespawnDimension(EntityPlayerMP player)
-    {
-        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
     @Override
@@ -187,24 +164,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     public float getFallDamageModifier()
     {
         return 0.1F;
-    }
-
-    @Override
-    public float getSoundVolReductionAmount()
-    {
-        return 10.0F;
-    }
-
-    @Override
-    public boolean hasBreathableAtmosphere()
-    {
-        return false;
-    }
-
-    @Override
-    public float getThermalLevelModifier()
-    {
-        return -1.5F;
     }
 
     public void addAsteroid(int x, int y, int z, int size, int core)
@@ -433,12 +392,6 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public float getWindLevel()
-    {
-        return 0.05F;
-    }
-
-    @Override
     public int getActualHeight()
     {
         return 256;
@@ -548,15 +501,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public boolean shouldDisablePrecipitation()
+    public int getDungeonSpacing()
     {
-        return true;
-    }
-
-    @Override
-    public boolean shouldCorrodeArmor()
-    {
-        return false;
+        return 800;
+        //Used for generating Abandoned Base 
     }
 
     @Override

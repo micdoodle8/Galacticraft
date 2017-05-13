@@ -122,10 +122,9 @@ public class ClientProxyCore extends CommonProxyCore
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
     public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
-    public static Map<String, String> capeMap = new HashMap<>();
+    public static Map<String, ResourceLocation> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
-    private static Map<String, ResourceLocation> capesMap = Maps.newHashMap();
     public static IPlayerClient playerClientHandler = new PlayerClient();
     public static Minecraft mc = FMLClientHandler.instance().getClient();
     public static List<String> gearDataRequests = Lists.newArrayList();
@@ -775,8 +774,7 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                     int splitLocation = line.indexOf(":");
                     String username = line.substring(0, splitLocation);
-                    String capeUrl = "https://raw.github.com/micdoodle8/Galacticraft/master/capes/" + line.substring(splitLocation + 1) + ".png";
-                    ClientProxyCore.capeMap.put(username, capeUrl);
+                    ClientProxyCore.capeMap.put(username, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/capes/" + line.substring(splitLocation + 1) + ".png"));
                 }
             }
         }
@@ -784,30 +782,16 @@ public class ClientProxyCore extends CommonProxyCore
         {
             e.printStackTrace();
         }
-
-        try
+        finally
         {
-            reader.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        try
-        {
-            streamReader.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        try
-        {
-            stream.close();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            try
+            {
+                reader.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 

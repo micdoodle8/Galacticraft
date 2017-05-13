@@ -304,8 +304,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         {
             try
             {
-                Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
-                Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                Object o = CompatibilityManager.classIC2tileEventLoad.getConstructor(IEnergyTile.class).newInstance(this);
 
                 if (o instanceof Event)
                 {
@@ -329,8 +328,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             {
                 try
                 {
-                    Class<?> tileLoadEvent = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
-                    Object o = tileLoadEvent.getConstructor(IEnergyTile.class).newInstance(this);
+                    Object o = CompatibilityManager.classIC2tileEventUnload.getConstructor(IEnergyTile.class).newInstance(this);
 
                     if (o instanceof Event)
                     {
@@ -383,7 +381,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         if (!EnergyConfigHandler.disableIC2Input && (direction == null || this.getElectricalInputDirections().contains(direction.getOpposite())))
         {
             float convertedEnergy = (float) amount * EnergyConfigHandler.IC2_RATIO;
-            int tierFromIC2 = ((int) voltage > 120) ? 2 : 1;
+            int tierFromIC2 = ((int) voltage > 120) ? (((int) voltage > 256) ? 4 : 2) : 1;
             float receive = this.receiveElectricity(direction == null ? null : direction.getOpposite(), convertedEnergy, tierFromIC2, true);
 
             if (convertedEnergy > receive)

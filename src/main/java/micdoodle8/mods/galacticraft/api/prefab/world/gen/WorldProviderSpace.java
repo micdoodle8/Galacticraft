@@ -84,17 +84,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public boolean isGasPresent(IAtmosphericGas gas)
-    {
-        return this.getCelestialBody().atmosphere.contains(gas);
-    }
-
-    public boolean hasAtmosphere()
-    {
-        return this.getCelestialBody().atmosphere.size() > 0;
-    }
-
-    @Override
     public void updateWeather()
     {
         if (!this.world.isRemote)
@@ -158,6 +147,63 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
+    public boolean isGasPresent(IAtmosphericGas gas)
+    {
+        return this.getCelestialBody().atmosphere.isGasPresent(gas);
+    }
+
+    @Override
+    public boolean hasNoAtmosphere()
+    {
+        return this.getCelestialBody().atmosphere.hasNoGases();
+    }
+
+    @Override
+    public boolean hasBreathableAtmosphere()
+    {
+        return this.getCelestialBody().atmosphere.isBreathable();
+    }
+    
+    @Override
+    public boolean shouldDisablePrecipitation()
+    {
+        return !this.getCelestialBody().atmosphere.hasPrecipitation();
+    }
+
+    @Override
+    public float getSoundVolReductionAmount()
+    {
+        float d = this.getCelestialBody().atmosphere.relativeDensity();
+        if (d <= 0.0F)
+        {
+            return 20.0F;
+        }
+        if (d > 5.0F)
+        {
+            return 0.2F;
+        }
+        return 1.0F / d;
+    }
+
+    @Override
+    public float getThermalLevelModifier()
+    {
+        return this.getCelestialBody().atmosphere.thermalLevel();
+    }
+    
+    @Override
+    public float getWindLevel()
+    {
+        return this.getCelestialBody().atmosphere.windLevel();
+    }
+
+    @Override
+    public boolean shouldCorrodeArmor()
+    {
+        return this.getCelestialBody().atmosphere.isCorrosive();
+    }
+
+    @Override
     public boolean canBlockFreeze(BlockPos pos, boolean byWater)
     {
         return !this.shouldDisablePrecipitation();
@@ -173,6 +219,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public boolean canDoRainSnowIce(Chunk chunk)
     {
         return !this.shouldDisablePrecipitation();
+    }
+
+    @Override
+    public float getSolarSize()
+    {
+        return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
     }
 
     @Override
@@ -275,12 +327,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return !ConfigManagerCore.forceOverworldRespawn;
     }
 
-    @Override
-    public boolean hasBreathableAtmosphere()
-    {
-        return this.isGasPresent(IAtmosphericGas.OXYGEN) && !this.isGasPresent(IAtmosphericGas.CO2);
-    }
-
     /**
      * If false (the default) then Nether Portals will have no function on this world.
      * Nether Portals can still be constructed, if the player can make fire, they just
@@ -294,6 +340,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return false;
     }
 
+    @Override
+    public float getArrowGravity()
+    {
+        return 0.005F;
+    }
+    
     @Override
     public IChunkGenerator createChunkGenerator()
     {
@@ -357,12 +409,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public boolean shouldMapSpin(String entity, double x, double y, double z)
     {
         return false;
-    }
-
-    @Override
-    public float getSolarSize()
-    {
-        return 1.0F / this.getCelestialBody().getRelativeDistanceFromCenter().unScaledDistance;
     }
 
     //Work around vanilla feature: worlds which are not the Overworld cannot change the time, as the worldInfo is a DerivedWorldInfo

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelLargeChest;
 import net.minecraft.client.model.ModelRenderer;
 
@@ -55,7 +56,7 @@ public class ModelTreasureChestLarge extends ModelLargeChest
                     nmtmr.rotationPointX = 16.0F;
                     nmtmr.rotationPointY = 7.0F;
                     nmtmr.rotationPointZ = -2.0F;
-                    nmtmr.rotateAngleY = (float) (3 * Math.PI / 2);
+                    nmtmr.rotateAngleY = 3 * Constants.halfPI;
                     nmtmr.rotateAngleX = -this.chestLid.rotateAngleX;
                     nmtmr.render(0.0625F);
                 }

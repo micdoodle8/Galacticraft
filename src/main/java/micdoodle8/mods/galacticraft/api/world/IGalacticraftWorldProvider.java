@@ -13,6 +13,14 @@ public interface IGalacticraftWorldProvider
      */
     public float getGravity();
 
+    
+    /**
+     * Gets custom arrow gravity, overriding the vanilla gravity for arrows
+     * 
+     * @return added y-motion per tick for arrows 
+     */
+    public float getArrowGravity();
+    
     /**
      * Determines the rate to spawn meteors in this planet. Lower means MORE
      * meteors.
@@ -49,6 +57,12 @@ public interface IGalacticraftWorldProvider
      */
     public float getFallDamageModifier();
 
+    /**
+     * 
+     * @return true if this world has no type of atmosphere at all - e.g. the Moon
+     */
+    boolean hasNoAtmosphere();
+    
     /**
      * Changes volume of sounds on this planet. You should be using higher
      * values for thin atmospheres and high values for dense atmospheres
@@ -131,4 +145,12 @@ public interface IGalacticraftWorldProvider
      * @return true if armor should be corroded, false if not
      */
     public boolean shouldCorrodeArmor();
+    
+    /**
+     * The size (in blocks) of the average spacing between dungeons
+     * For example, on the Moon it's 704 blocks, meaning one dungeon in each (704 x 704) square in the (x, z) plane
+     * <p/>
+     * If your world has no dungeons you can safely return 0 here.
+     */
+    public int getDungeonSpacing();
 }

@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IFuelDock;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -92,7 +92,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.world.provider instanceof WorldProviderSpace && !((WorldProviderSpace) this.world.provider).hasAtmosphere())
+                if (this.world.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.provider).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 1.6);
                 }
@@ -103,7 +103,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
                 if (d != 0.0)
                 {
-                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+                    this.motionY = -d * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
                 }
             }
             else
@@ -169,9 +169,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         if (!this.isDead)
         {
-            double x1 = 2 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-            double z1 = 2 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-            double y1 = 2 * Math.cos((this.rotationPitch - 180) * Math.PI / 180.0D);
+            double x1 = 2 * Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
+            double z1 = 2 * Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
+            double y1 = 2 * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
 
             if (this.landing && this.targetVec != null)
             {

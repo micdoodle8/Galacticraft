@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
@@ -92,8 +93,8 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     {
         if (this.isPassenger(passenger))
         {
-            final double offsetx = Math.cos(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
-            final double offsetz = Math.sin(this.rotationYaw * Math.PI / 180.0D + 114.8) * -0.5D;
+            final double offsetx = Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetz = Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             passenger.setPosition(this.posX + offsetx, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + offsetz);
         }
     }

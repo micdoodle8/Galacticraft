@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -46,7 +47,7 @@ public class EntityAIThrowPlayer extends EntityAIBase
                 d0 = (Math.random() - Math.random()) * 0.01D;
             }
 
-            this.targetPlayer.attackedAtYaw = (float) (Math.atan2(d1, d0) * 180.0D / Math.PI) - this.targetPlayer.rotationYaw;
+            this.targetPlayer.attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.targetPlayer.rotationYaw;
 
             this.targetPlayer.knockBack(this.skeletonBoss, 20, d0, d1);
         }

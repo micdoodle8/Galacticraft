@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -169,9 +170,9 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public Map<Vector3, Vector3> getParticleMap()
     {
-        final double x1 = 4 * Math.cos(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double z1 = 4 * Math.sin(this.rotationYaw * Math.PI / 180.0D) * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-        final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch * Math.PI / 180.0D));
+        final double x1 = 4 * Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
+        final double z1 = 4 * Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
+        final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D));
 
         new Vector3(this);
 
@@ -200,9 +201,9 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                 this.motionY -= 0.008D;
             }
 
-            double motY = -1 * Math.sin(this.rotationPitch * Math.PI / 180.0D);
-            double motX = Math.cos(this.rotationYaw * Math.PI / 180.0D) * motY;
-            double motZ = Math.sin(this.rotationYaw * Math.PI / 180.0D) * motY;
+            double motY = -1 * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
+            double motX = Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * motY;
+            double motZ = Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * motY;
             this.motionX = motX / 2.0F;
             this.motionZ = motZ / 2.0F;
         }

@@ -40,6 +40,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -146,7 +147,7 @@ public class TransformerHooks
     {
         if (e.world.provider instanceof IGalacticraftWorldProvider)
         {
-            return 0.005F;
+            return ((IGalacticraftWorldProvider)e.world.provider).getArrowGravity();
         }
         else
         {
@@ -193,7 +194,7 @@ public class TransformerHooks
                 Class GCGreg = Class.forName("bloodasp.galacticgreg.GT_Worldgenerator_Space");
                 if (GCGreg != null)
                 {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
                     Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
                     for (IWorldGenerator gen : registeredGenerators)
@@ -215,7 +216,7 @@ public class TransformerHooks
                 Class cofh = Class.forName("cofh.core.world.WorldHandler");
                 if (cofh != null && ConfigManagerCore.whitelistCoFHCoreGen)
                 {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
                     Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
                     for (IWorldGenerator gen : registeredGenerators)
@@ -237,7 +238,7 @@ public class TransformerHooks
                 Class denseOres = Class.forName("com.rwtema.denseores.WorldGenOres");
                 if (denseOres != null)
                 {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
                     Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
                     for (IWorldGenerator gen : registeredGenerators)
@@ -278,7 +279,7 @@ public class TransformerHooks
 
                 if (ae2meteorPlace != null)
                 {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
                     Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
                     for (IWorldGenerator gen : registeredGenerators)
@@ -300,7 +301,7 @@ public class TransformerHooks
                 Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
                 if (genThaumCraft != null)
                 {
-                    final Field regField = Class.forName("cpw.mods.fml.common.registry.GameRegistry").getDeclaredField("worldGenerators");
+                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
                     Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
                     for (IWorldGenerator gen : registeredGenerators)
@@ -325,23 +326,23 @@ public class TransformerHooks
 
             if (generatorGCGreg != null)
             {
-                System.out.println("Whitelisting GalacticGreg oregen on planets.");
+                GCLog.info("Whitelisting GalacticGreg oregen on planets.");
             }
             if (generatorCoFH != null)
             {
-                System.out.println("Whitelisting CoFHCore custom oregen on planets.");
+                GCLog.info("Whitelisting CoFHCore custom oregen on planets.");
             }
             if (generatorDenseOres != null)
             {
-                System.out.println("Whitelisting Dense Ores oregen on planets.");
+                GCLog.info("Whitelisting Dense Ores oregen on planets.");
             }
             if (generatorAE2meteors != null)
             {
-                System.out.println("Whitelisting AE2 meteorites worldgen on planets.");
+                GCLog.info("Whitelisting AE2 meteorites worldgen on planets.");
             }
             if (generatorTCAuraNodes != null && generateTCAuraNodes != null)
             {
-                System.out.println("Whitelisting ThaumCraft aura node generation on planets.");
+                GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
             }
         }
 
@@ -393,7 +394,7 @@ public class TransformerHooks
         if (world.provider instanceof WorldProviderMoon)
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = 1.0F - (MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.2F);
+            float f2 = 1.0F - (MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.2F);
 
             if (f2 < 0.0F)
             {
@@ -455,7 +456,7 @@ public class TransformerHooks
         if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || (player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.getRidingEntity() instanceof EntitySpaceshipBase))
         {
             float f1 = world.getCelestialAngle(1.0F);
-            float f2 = MathHelper.cos(f1 * (float) Math.PI * 2.0F) * 2.0F + 0.5F;
+            float f2 = MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.5F;
 
             if (f2 < 0.0F)
             {
