@@ -56,12 +56,6 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
-    public boolean shouldForceRespawn()
-    {
-        return !ConfigManagerCore.forceOverworldRespawn;
-    }
-
-    @Override
     public boolean isDaytime()
     {
         final float a = this.worldObj.getCelestialAngle(0F);
@@ -74,7 +68,7 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public float getStarBrightness(float par1)
     {
         final float var2 = this.worldObj.getCelestialAngle(par1);
-        float var3 = 1.0F - (MathHelper.cos(var2 * (float) Math.PI * 2.0F) * 2.0F + 0.25F);
+        float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
         {
@@ -138,12 +132,6 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
-    public boolean hasBreathableAtmosphere()
-    {
-        return false;
-    }
-
-    @Override
     public double getMeteorFrequency()
     {
         return 0;
@@ -182,7 +170,7 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     @Override
     public double getYCoordinateToTeleport()
     {
-        return 1200;
+        return 750;
     }
 
     @Override
@@ -195,36 +183,6 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public float getFallDamageModifier()
     {
         return 0.4F;
-    }
-
-    @Override
-    public float getSoundVolReductionAmount()
-    {
-        return 50.0F;
-    }
-
-    @Override
-    public float getThermalLevelModifier()
-    {
-        return 0;
-    }
-
-    @Override
-    public float getWindLevel()
-    {
-        return 0.1F;
-    }
-
-    @Override
-    public boolean shouldDisablePrecipitation()
-    {
-        return true;
-    }
-
-    @Override
-    public boolean shouldCorrodeArmor()
-    {
-        return false;
     }
 
     @Override
@@ -272,5 +230,11 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
         
         if (this.getCloudRenderer() == null)
             this.setCloudRenderer(new CloudRenderer());
+    }
+    
+    @Override
+    public int getDungeonSpacing()
+    {
+        return 0;
     }
 }

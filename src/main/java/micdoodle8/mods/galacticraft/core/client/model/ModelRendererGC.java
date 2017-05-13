@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -7,6 +8,7 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 public class ModelRendererGC extends ModelRenderer
@@ -72,17 +74,17 @@ public class ModelRendererGC extends ModelRenderer
 
                     if (this.rotateAngleY != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleY * (180F / (float) Math.PI), 0.0F, 1.0F, 0.0F);
+                        GL11.glRotatef(this.rotateAngleY * Constants.RADIANS_TO_DEGREES, 0.0F, 1.0F, 0.0F);
                     }
 //
                     if (this.rotateAngleZ != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleZ * (180F / (float) Math.PI), 0.0F, 0.0F, 1.0F);
+                        GL11.glRotatef(this.rotateAngleZ * Constants.RADIANS_TO_DEGREES, 0.0F, 0.0F, 1.0F);
                     }
 
                     if (this.rotateAngleX != 0.0F)
                     {
-                        GL11.glRotatef(this.rotateAngleX * (180F / (float) Math.PI), 1.0F, 0.0F, 0.0F);
+                        GL11.glRotatef(this.rotateAngleX * Constants.RADIANS_TO_DEGREES, 1.0F, 0.0F, 0.0F);
                     }
 
                     GL11.glCallList(this.displayList);

@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -108,7 +108,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.worldObj.provider instanceof WorldProviderSpace && !((WorldProviderSpace) this.worldObj.provider).hasAtmosphere())
+                if (this.worldObj.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.worldObj.provider).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 2);
                 }
@@ -119,7 +119,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 
                 if (d != 0.0)
                 {
-                    this.motionY = -d * 2.5D * Math.cos((this.rotationPitch - 180) / 57.2957795D);
+                    this.motionY = -d * 2.5D * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES);
                 }
             }
             else
@@ -185,9 +185,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         if (!this.isDead)
         {
-            double x1 = 3.2 * Math.cos(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
-            double z1 = 3.2 * Math.sin(this.rotationYaw / 57.2957795D) * Math.sin(this.rotationPitch / 57.2957795D);
-            double y1 = 3.2 * Math.cos((this.rotationPitch - 180) / 57.2957795D);
+            double x1 = 3.2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
+            double z1 = 3.2 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
+            double y1 = 3.2 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
             if (this.landing && this.targetVec != null)
             {
                 double modifier = this.posY - this.targetVec.getY();

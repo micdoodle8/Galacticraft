@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.WorldProvider;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected boolean forceStaticLoad = true;
     protected int tierRequired = 0;
 
-    public ArrayList<IAtmosphericGas> atmosphere = new ArrayList<>();
+    public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
 
     protected ResourceLocation celestialBodyIcon;
 
@@ -158,6 +160,12 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this;
     }
 
+    public CelestialBody setAtmosphere(AtmosphereInfo atmos)
+    {
+        this.atmosphere = atmos;
+        return this;
+    }
+
     public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass)
     {
         return this.setDimensionInfo(dimID, providerClass, true);
@@ -176,7 +184,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     {
         return this.autoRegisterDimension;
     }
-
+    
     public int getDimensionID()
     {
         return this.dimensionID;
@@ -199,7 +207,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
      */
     public CelestialBody atmosphereComponent(IAtmosphericGas gas)
     {
-        this.atmosphere.add(gas);
+        this.atmosphere.composition.add(gas);
         return this;
     }
 

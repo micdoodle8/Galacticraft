@@ -57,4 +57,10 @@ public class Constants
     public static final double RENDERDISTANCE_SHORT = 16384D; //128 squared (8 chunks range), used for small + high frequency TESR tiles like Fluid Pipes
     public static final double RENDERDISTANCE_MEDIUM = 65536D; //256 squared (16 chunks range), used for standard block-sized TESR tiles like Fluid Tanks or Treasure Chests, also heavy render burden large tiles like the Dish and Display Screen
     public static final double RENDERDISTANCE_LONG = 262144D; //512 squared (32 chunks max range), used for uncommon, large or extra bright TESR tiles like Oxygen Bubble Distributors, Solar Panels or Panel Lighting
+    
+    public static final float RADIANS_TO_DEGREES = 180F / 3.1415927F;
+    public static final double RADIANS_TO_DEGREES_D = 180D / Math.PI;
+
+    public static final float twoPI = (float) Math.PI * 2F;
+    public static final float halfPI = (float) Math.PI / 2F;
 }

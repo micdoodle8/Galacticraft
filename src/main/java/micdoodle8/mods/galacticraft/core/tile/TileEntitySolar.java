@@ -120,8 +120,8 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                 if (this.worldObj.isDaytime() && (this.worldObj.provider instanceof IGalacticraftWorldProvider || !this.worldObj.isRaining() && !this.worldObj.isThundering()))
                 {
                     double distance = 100.0D;
-                    double sinA = -Math.sin((this.currentAngle - 77.5D) * Math.PI / 180.0D);
-                    double cosA = Math.abs(Math.cos((this.currentAngle - 77.5D) * Math.PI / 180.0D));
+                    double sinA = -Math.sin((this.currentAngle - 77.5D) * Constants.RADIANS_TO_DEGREES_D);
+                    double cosA = Math.abs(Math.cos((this.currentAngle - 77.5D) * Constants.RADIANS_TO_DEGREES_D));
 
                     for (int x = -1; x <= 1; x++)
                     {

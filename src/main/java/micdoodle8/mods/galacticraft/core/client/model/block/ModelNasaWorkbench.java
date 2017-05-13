@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model.block;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
@@ -50,8 +51,6 @@ public class ModelNasaWorkbench extends ModelBase
     {
         this.textureWidth = 256;
         this.textureHeight = 128;
-
-        float halfPI = (float) (Math.PI / 2.0);
 
 //        this.base1a = new ModelRenderer(this, 113, 24);
 //        this.base1a.addBox(-2.5F, -2F, -7.5F, 5, 2, 15);
@@ -312,6 +311,6 @@ public class ModelNasaWorkbench extends ModelBase
 
     private float toRadians(float f)
     {
-        return (float) (f * (Math.PI / 180.0F));
+        return f / Constants.RADIANS_TO_DEGREES;
     }
 }

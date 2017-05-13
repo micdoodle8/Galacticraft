@@ -282,7 +282,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
         if (activeString != null)
         {
-            return missingInput;
+            return activeString;
         }
 
         return EnumColor.RED + GCCoreUtil.translate("gui.status.unknown.name");

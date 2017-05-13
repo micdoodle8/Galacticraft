@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -46,7 +47,7 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         this.textureWidth = 128;
         this.textureHeight = 128;
 
-        float halfPI = (float) (Math.PI / 2.0);
+        float halfPI = Constants.halfPI;
 
         this.upperHead = new ModelRenderer(this, 0, 16);
         this.upperHead.addBox(-4F, -8F, -6F, 8, 8, 8);
@@ -293,38 +294,40 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
     @Override
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
     {
+        final float floatPI = 3.1415927F;
+        
         final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
-        this.upperHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.upperHead.rotateAngleX = par5 / (180F / (float) Math.PI);
-        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
+        this.upperHead.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
+        this.upperHead.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
+        this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + floatPI) * 2.0F * par2 * 0.5F;
         this.leftArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
         this.rightArm.rotateAngleZ = 0.0F;
         this.leftArm.rotateAngleZ = 0.0F;
         this.rightLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 1.4F * par2;
+        this.leftLeg.rotateAngleX = MathHelper.cos(par1 * 0.6662F + floatPI) * 1.4F * par2;
         this.rightLeg.rotateAngleY = 0.0F;
         this.leftLeg.rotateAngleY = 0.0F;
 
         if (this.isRiding)
         {
-            this.rightArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.leftArm.rotateAngleX += -((float) Math.PI / 5F);
-            this.rightLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-            this.leftLeg.rotateAngleX = -((float) Math.PI * 2F / 5F);
-            this.rightLeg.rotateAngleY = (float) Math.PI / 10F;
-            this.leftLeg.rotateAngleY = -((float) Math.PI / 10F);
+            this.rightArm.rotateAngleX += -(floatPI / 5F);
+            this.leftArm.rotateAngleX += -(floatPI / 5F);
+            this.rightLeg.rotateAngleX = -(floatPI * 2F / 5F);
+            this.leftLeg.rotateAngleX = -(floatPI * 2F / 5F);
+            this.rightLeg.rotateAngleY = floatPI / 10F;
+            this.leftLeg.rotateAngleY = -(floatPI / 10F);
         }
 
-        this.rightArm.rotateAngleY = par4 / (180F / (float) Math.PI);
-        this.leftArm.rotateAngleY = par4 / (180F / (float) Math.PI);
+        this.rightArm.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
+        this.leftArm.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
         float var7;
         float var8;
 
         if (this.swingProgress > -9990.0F)
         {
             var7 = this.swingProgress;
-            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
+            this.spine.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * Constants.twoPI) * 0.2F;
 
             this.rightArm.rotationPointZ = MathHelper.sin(this.spine.rotateAngleY) * 5.0F;
             this.rightArm.rotationPointX = -MathHelper.cos(this.spine.rotateAngleY) * 5.0F;
@@ -337,21 +340,21 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
             var7 *= var7;
             var7 *= var7;
             var7 = 1.0F - var7;
-            var8 = MathHelper.sin(var7 * (float) Math.PI);
-            final float var9 = MathHelper.sin(this.swingProgress * (float) Math.PI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
+            var8 = MathHelper.sin(var7 * floatPI);
+            final float var9 = MathHelper.sin(this.swingProgress * floatPI) * -(this.upperHead.rotateAngleX - 0.7F) * 0.75F;
             this.rightArm.rotateAngleX = (float) (this.rightArm.rotateAngleX - (var8 * 1.2D + var9));
             this.rightArm.rotateAngleY += this.spine.rotateAngleY * 2.0F;
-            this.rightArm.rotateAngleZ = MathHelper.sin(this.swingProgress * (float) Math.PI) * -0.4F;
+            this.rightArm.rotateAngleZ = MathHelper.sin(this.swingProgress * floatPI) * -0.4F;
         }
 
-        final float f6 = MathHelper.sin(this.swingProgress * (float) Math.PI);
-        final float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * (float) Math.PI);
+        final float f6 = MathHelper.sin(this.swingProgress * floatPI);
+        final float f7 = MathHelper.sin((1.0F - (1.0F - this.swingProgress) * (1.0F - this.swingProgress)) * floatPI);
         this.rightArm.rotateAngleZ = 0.0F;
         this.leftArm.rotateAngleZ = 0.0F;
-        this.rightArm.rotateAngleY = 0.5F * (par4 / (180F / (float) Math.PI)) + -(0.1F - f6 * 0.6F);
-        this.leftArm.rotateAngleY = 0.5F * (par4 / (180F / (float) Math.PI)) + 0.1F - f6 * 0.6F;
-        this.rightArm.rotateAngleX = -((float) Math.PI / 2F);
-        this.leftArm.rotateAngleX = -((float) Math.PI / 2F);
+        this.rightArm.rotateAngleY = 0.5F * (par4 / Constants.RADIANS_TO_DEGREES) + -(0.1F - f6 * 0.6F);
+        this.leftArm.rotateAngleY = 0.5F * (par4 / Constants.RADIANS_TO_DEGREES) + 0.1F - f6 * 0.6F;
+        this.rightArm.rotateAngleX = -(floatPI / 2F);
+        this.leftArm.rotateAngleX = -(floatPI / 2F);
         this.rightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
         this.leftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
         this.rightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
@@ -361,8 +364,8 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
 
         if (((EntitySkeletonBoss) e).deathTicks > 0)
         {
-            this.leftArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F * (float) (Math.PI / 180.0F);
-            this.rightArm.rotateAngleX = -((float) Math.PI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F * (float) (Math.PI / 180.0F);
+            this.leftArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F / Constants.RADIANS_TO_DEGREES;
+            this.rightArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F / Constants.RADIANS_TO_DEGREES;
         }
 
         if (boss.throwTimer + boss.postThrowDelay > 0)

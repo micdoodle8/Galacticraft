@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -9,6 +10,7 @@ import net.minecraft.util.Timer;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
+
 import java.lang.reflect.Field;
 
 public class ItemModelFlag extends ModelTransformWrapper
@@ -36,7 +38,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.rotX(0.5F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) ((Math.PI / 4.0F) - (Math.PI / 2.0F)));
+            mul.rotY(- Constants.halfPI / 2.0F);
             ret.mul(mul);
             return ret;
         }
@@ -79,7 +81,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                     Field f = c.getDeclaredField("timer");
                     f.setAccessible(true);
                     Timer t = (Timer) f.get(Minecraft.getMinecraft());
-                    mul.rotX(((interpolate0 + (interpolate1 - interpolate0) * t.renderPartialTicks) * 75.0F) * (float) (Math.PI / 180.0F));
+                    mul.rotX(((interpolate0 + (interpolate1 - interpolate0) * t.renderPartialTicks) * 75.0F) / Constants.RADIANS_TO_DEGREES);
                 }
                 catch (Exception e)
                 {

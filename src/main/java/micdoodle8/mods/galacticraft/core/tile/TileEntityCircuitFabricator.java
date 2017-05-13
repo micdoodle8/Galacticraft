@@ -54,7 +54,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
                 {
                     ++this.processTicks;
 
-                    if (this.processTicks == TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED)
+                    if (this.processTicks >= this.getProcessTimeRequired())
                     {
                         this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                         this.processTicks = 0;
@@ -79,6 +79,11 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         }
 
         this.ticks++;
+    }
+
+    public int getProcessTimeRequired()
+    {
+        return TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 2 / (1 + this.poweredByTierGC);
     }
 
     public void updateInput()

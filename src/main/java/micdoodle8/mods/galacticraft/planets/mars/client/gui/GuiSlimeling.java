@@ -203,15 +203,6 @@ public class GuiSlimeling extends GuiScreen
         {
             this.renderToolTip(foodStack, mouseX, mouseY);
         }
-
-        try
-        {
-            Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.atoolkit.ProcessGraphic");
-            clazz.getMethod("go").invoke(null);
-        }
-        catch (Exception e)
-        {
-        }
     }
 
     public static void drawSlimelingOnGui(EntitySlimeling slimeling, int x, int y, int scale, float mouseX, float mouseY)

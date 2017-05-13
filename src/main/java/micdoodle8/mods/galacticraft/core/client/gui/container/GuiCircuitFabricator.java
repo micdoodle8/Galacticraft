@@ -99,7 +99,7 @@ public class GuiCircuitFabricator extends GuiContainerGC
 
         if (this.tileEntity.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 100);
+            scale = (this.tileEntity.processTicks * 100) / this.tileEntity.getProcessTimeRequired();
         }
         else
         {
@@ -113,7 +113,7 @@ public class GuiCircuitFabricator extends GuiContainerGC
 
         if (this.tileEntity.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityCircuitFabricator.PROCESS_TIME_REQUIRED * 51);
+            scale = (this.tileEntity.processTicks * 51) / this.tileEntity.getProcessTimeRequired();
             this.drawTexturedModalRect(containerWidth + 88, containerHeight + 20, 176, 17 + this.tileEntity.processTicks % 9 / 3 * 10, scale, 10);
         }
 

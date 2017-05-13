@@ -33,7 +33,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -183,19 +182,19 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     public static void initialiseBC()
     {
-        for (int i = 0; i < 6; i++)
+        try
         {
-            try
+            Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
+            for (int i = 0; i < 6; i++)
             {
-                Class<?> clazzBC = Class.forName("buildcraft.BuildCraftTransport");
                 String pipeName = EnumEnclosedBlockType.values()[i + 7].getBCPipeType();
                 pipeName = pipeName.substring(0, 1).toLowerCase() + pipeName.substring(1);
                 pipeItemsBC[i] = (Item) clazzBC.getField(pipeName).get(null);
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -315,27 +314,9 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 try
                 {
-                    Class<?> clazz = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                    Class<?> cableTypeClazz = Class.forName("ic2.core.block.wiring.CableType");
-                    Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-                    Constructor<?> constructor = null;
-
-                    for (Constructor<?> constructor2 : constructors)
-                    {
-                        constructor = constructor2;
-
-                        if (constructor.getGenericParameterTypes().length == 2)
-                        {
-                            break;
-                        }
-                    }
-
-                    constructor.setAccessible(true);
-
-                    Enum[] enums = (Enum[]) cableTypeClazz.getEnumConstants();
+                    Enum[] enums = (Enum[]) CompatibilityManager.classIC2cableType.getEnumConstants();
                     Enum foundEnum = null;
                     EnumEnclosedBlockType enclosedType = EnumEnclosedBlockType.byMetadata(metadata);
-
                     for (Enum e : enums)
                     {
                         if (e.name().equals(enclosedType.getIc2Enum()))
@@ -345,7 +326,8 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                         }
                     }
 
-                    return (TileEntity) constructor.newInstance(foundEnum, enclosedType.getIc2Insulation());
+                    CompatibilityManager.constructorIC2cableTE.setAccessible(true);
+                    return (TileEntity) CompatibilityManager.constructorIC2cableTE.newInstance(foundEnum, enclosedType.getIc2Insulation());
                 }
                 catch (Exception e)
                 {

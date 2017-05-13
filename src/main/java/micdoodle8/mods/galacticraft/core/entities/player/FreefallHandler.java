@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.dimension.SpinManager;
@@ -288,7 +289,7 @@ public class FreefallHandler
             //Impulse upwards - it's probably a jetpack from another mod
             if (dX < 0.01D && dZ < 0.01D)
             {
-                float pitch = p.rotationPitch / 57.29578F;
+                float pitch = p.rotationPitch / Constants.RADIANS_TO_DEGREES;
                 jetpackBoost = (float) dY * MathHelper.cos(pitch) * 0.1F;
                 float factor = 1 + MathHelper.sin(pitch) / 5;
                 p.motionY -= dY * factor;
@@ -306,14 +307,14 @@ public class FreefallHandler
 
         if (p.movementInput.moveForward != 0)
         {
-            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
-            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / 57.29578F) / (ConfigManagerCore.hardMode ? 600F : 200F);
+            p.motionX -= p.movementInput.moveForward * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
+            p.motionZ += p.movementInput.moveForward * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES) / (ConfigManagerCore.hardMode ? 600F : 200F);
         }
 
         if (jetpackBoost != 0)
         {
-            p.motionX -= jetpackBoost * MathHelper.sin(p.rotationYaw / 57.29578F);
-            p.motionZ += jetpackBoost * MathHelper.cos(p.rotationYaw / 57.29578F);
+            p.motionX -= jetpackBoost * MathHelper.sin(p.rotationYaw / Constants.RADIANS_TO_DEGREES);
+            p.motionZ += jetpackBoost * MathHelper.cos(p.rotationYaw / Constants.RADIANS_TO_DEGREES);
         }
 
         if (p.movementInput.sneak)

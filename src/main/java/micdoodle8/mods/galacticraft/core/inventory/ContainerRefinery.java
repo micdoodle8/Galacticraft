@@ -20,7 +20,7 @@ public class ContainerRefinery extends Container
         this.tileEntity = tileEntity;
 
         // Electric Input Slot
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 50, 51, IItemElectric.class));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 38, 51, IItemElectric.class));
 
         // To be smelted
         this.addSlotToContainer(new Slot(tileEntity, 1, 7, 7));

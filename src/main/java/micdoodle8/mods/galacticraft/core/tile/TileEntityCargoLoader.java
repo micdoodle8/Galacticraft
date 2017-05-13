@@ -67,7 +67,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
                     this.targetNoInventory = state == EnumCargoLoadingState.NOINVENTORY;
                     this.noTarget = state == EnumCargoLoadingState.NOTARGET;
 
-                    if (this.ticks % 15 == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.hasEnoughEnergyToRun)
+                    if (this.ticks % (this.poweredByTierGC > 1 ? 9 : 15) == 0 && state == EnumCargoLoadingState.SUCCESS && !this.disabled && this.hasEnoughEnergyToRun)
                     {
                         this.attachedFuelable.addCargo(this.removeCargo(true).resultStack, true);
                     }

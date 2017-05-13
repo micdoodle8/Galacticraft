@@ -32,6 +32,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -46,6 +47,17 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     private ArrayList<BlockVec3> preGenList = new ArrayList();
     private Iterator<BlockVec3> preGenIterator = null;
     static boolean preGenInProgress = false;
+    static Field marsConfigAllDimsAllowed;
+
+    static {
+        try
+        {
+            Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
+            marsConfigAllDimsAllowed = marsConfig.getField("launchControllerAllDims");
+        } catch (Exception ignore)
+        {
+        }
+    }
     
     public EntityTieredRocket(World par1World)
     {
@@ -303,12 +315,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     	}
                     	else
                     		//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
-                    		if (this.targetDimension > 1 || this.targetDimension < -1)
+                    		if ((this.targetDimension > 1 || this.targetDimension < -1) && marsConfigAllDimsAllowed != null)
                     		{
                     			try {
-                    				Class<?> marsConfig = Class.forName("micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars");
-                    				if (marsConfig.getField("launchControllerAllDims").getBoolean(null))
+                    				if (marsConfigAllDimsAllowed.getBoolean(null))
+                    				{
                     					dimensionAllowed = true;
+                    				}
                     			} catch (Exception e) { e.printStackTrace(); }
                     		}
 

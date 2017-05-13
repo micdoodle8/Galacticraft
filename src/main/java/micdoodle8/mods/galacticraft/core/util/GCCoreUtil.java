@@ -23,6 +23,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -420,6 +421,14 @@ public class GCCoreUtil
     {
         long blockSeed = ((pos.getY() << 28) + pos.getX() + 30000000 << 28) + pos.getZ() + 30000000;  
         return new Random(blockSeed);
+    }
+    
+    /**
+     * Returns the angle of the compass (0 - 360 degrees) needed to reach the given position offset
+     */
+    public static float getAngleForRelativePosition(double nearestX, double nearestZ)
+    {
+        return ((float) MathHelper.atan2(nearestX, -nearestZ) * Constants.RADIANS_TO_DEGREES + 360F) % 360F;
     }
 
     /**

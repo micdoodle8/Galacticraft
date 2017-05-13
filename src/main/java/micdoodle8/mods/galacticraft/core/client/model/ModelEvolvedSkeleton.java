@@ -214,10 +214,10 @@ public class ModelEvolvedSkeleton extends ModelBiped
 
     //    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)
 //    {
-//        this.bipedHead.rotateAngleY = par4 / (180F / (float) Math.PI);
-//        this.bipedHead.rotateAngleX = par5 / (180F / (float) Math.PI);
-//        this.oxygenMask.rotateAngleY = par4 / (180F / (float) Math.PI);
-//        this.oxygenMask.rotateAngleX = par5 / (180F / (float) Math.PI);
+//        this.bipedHead.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
+//        this.bipedHead.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
+//        this.oxygenMask.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
+//        this.oxygenMask.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
 //        this.bipedHeadwear.rotateAngleY = this.bipedHead.rotateAngleY;
 //        this.bipedHeadwear.rotateAngleX = this.bipedHead.rotateAngleX;
 //        this.bipedRightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + (float) Math.PI) * 2.0F * par2 * 0.5F;
@@ -247,7 +247,7 @@ public class ModelEvolvedSkeleton extends ModelBiped
 //        if (this.onGround > -9990.0F)
 //        {
 //            var7 = this.onGround;
-//            this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * (float) Math.PI * 2.0F) * 0.2F;
+//            this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * Constants.twoPI) * 0.2F;
 //            this.bipedRightArm.rotationPointZ = MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
 //            this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
 //            this.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
@@ -291,8 +291,8 @@ public class ModelEvolvedSkeleton extends ModelBiped
 //            this.bipedLeftArm.rotateAngleZ = 0.0F;
 //            this.bipedRightArm.rotateAngleY = -(0.1F - var7 * 0.6F) + this.bipedHead.rotateAngleY;
 //            this.bipedLeftArm.rotateAngleY = 0.1F - var7 * 0.6F + this.bipedHead.rotateAngleY + 0.4F;
-//            this.bipedRightArm.rotateAngleX = -((float) Math.PI / 2F) + this.bipedHead.rotateAngleX;
-//            this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F) + this.bipedHead.rotateAngleX;
+//            this.bipedRightArm.rotateAngleX = -(Constants.halfPI) + this.bipedHead.rotateAngleX;
+//            this.bipedLeftArm.rotateAngleX = -(Constants.halfPI) + this.bipedHead.rotateAngleX;
 //            this.bipedRightArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
 //            this.bipedLeftArm.rotateAngleX -= var7 * 1.2F - var8 * 0.4F;
 //            this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;
@@ -307,8 +307,8 @@ public class ModelEvolvedSkeleton extends ModelBiped
 //        this.bipedLeftArm.rotateAngleZ = 0.0F;
 //        this.bipedRightArm.rotateAngleY = -(0.1F - f6 * 0.6F);
 //        this.bipedLeftArm.rotateAngleY = 0.1F - f6 * 0.6F;
-//        this.bipedRightArm.rotateAngleX = -((float) Math.PI / 2F);
-//        this.bipedLeftArm.rotateAngleX = -((float) Math.PI / 2F);
+//        this.bipedRightArm.rotateAngleX = -(Constants.halfPI);
+//        this.bipedLeftArm.rotateAngleX = -(Constants.halfPI);
 //        this.bipedRightArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 //        this.bipedLeftArm.rotateAngleX -= f6 * 1.2F - f7 * 0.4F;
 //        this.bipedRightArm.rotateAngleZ += MathHelper.cos(par3 * 0.09F) * 0.05F + 0.05F;

@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpinThruster;
 import micdoodle8.mods.galacticraft.core.entities.ITumblable;
@@ -40,7 +42,7 @@ public class SpinManager
     private static final float GFORCE = 9.81F / 400F; //gravity in metres per tick squared
     public boolean doSpinning = true;
     public float angularVelocityRadians = 0F;
-    public float skyAngularVelocity = (float) (this.angularVelocityRadians * 180 / Math.PI);
+    public float skyAngularVelocity = this.angularVelocityRadians * Constants.RADIANS_TO_DEGREES;
     public float angularVelocityTarget = 0F;
     public float angularVelocityAccel = 0F;
     public double spinCentreX;

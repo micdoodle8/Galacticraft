@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.item;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -66,7 +67,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             mul.setScale(4.0F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotX((float) (Math.PI / 2.0F));
+            mul.rotX(Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotZ(-0.65F);
@@ -94,10 +95,10 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             mul.setScale(0.8F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotZ((float) -(Math.PI / 2.0F));
+            mul.rotZ(-Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY((float) (Math.PI / 2.0F));
+            mul.rotY(Constants.halfPI);
             ret.mul(mul);
             mul.setIdentity();
             mul.rotX(0.2F);
