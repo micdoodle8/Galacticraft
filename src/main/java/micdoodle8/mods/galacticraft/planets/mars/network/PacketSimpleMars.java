@@ -6,7 +6,10 @@ import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiCargoRocket;
+import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiLaunchControllerAdvanced;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSlimelingInventory;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
@@ -37,8 +40,10 @@ public class PacketSimpleMars extends PacketBase
         S_WAKE_PLAYER(Side.SERVER),
         S_UPDATE_ADVANCED_GUI(Side.SERVER, Integer.class, BlockPos.class, Integer.class),
         S_UPDATE_CARGO_ROCKET_STATUS(Side.SERVER, Integer.class, Integer.class),
+        S_SWITCH_LAUNCH_CONTROLLER_GUI(Side.SERVER, BlockPos.class, Integer.class),
         // CLIENT
         C_OPEN_CUSTOM_GUI(Side.CLIENT, Integer.class, Integer.class, Integer.class),
+        C_OPEN_CUSTOM_GUI_TILE(Side.CLIENT, Integer.class, Integer.class, BlockPos.class),
         C_BEGIN_CRYOGENIC_SLEEP(Side.CLIENT, BlockPos.class);
 
         private Side targetSide;
@@ -158,9 +163,28 @@ public class PacketSimpleMars extends PacketBase
                 break;
             }
             break;
+        case C_OPEN_CUSTOM_GUI_TILE:
+            BlockPos pos;
+            TileEntity tile;
+
+            switch ((Integer) this.data.get(1))
+            {
+            case 0:
+                pos = (BlockPos) this.data.get(2);
+                tile = player.worldObj.getTileEntity(pos);
+
+                if (tile != null && tile instanceof TileEntityLaunchController)
+                {
+                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiLaunchControllerAdvanced(player.inventory, (TileEntityLaunchController) tile));
+                }
+
+                player.openContainer.windowId = (Integer) this.data.get(0);
+                break;
+            }
+            break;
         case C_BEGIN_CRYOGENIC_SLEEP:
-            BlockPos pos = (BlockPos) this.data.get(0);
-            TileEntity tile = player.worldObj.getTileEntity(pos);
+            pos = (BlockPos) this.data.get(0);
+            tile = player.worldObj.getTileEntity(pos);
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
@@ -312,6 +336,23 @@ public class PacketSimpleMars extends PacketBase
                 {
                 default:
                     rocket.statusValid = rocket.checkLaunchValidity();
+                    break;
+                }
+            }
+            break;
+        case S_SWITCH_LAUNCH_CONTROLLER_GUI:
+            BlockPos pos = (BlockPos) this.data.get(0);
+            TileEntity tile1 = player.worldObj.getTileEntity(pos);
+            if (tile1 instanceof TileEntityLaunchController)
+            {
+                TileEntityLaunchController launchController = (TileEntityLaunchController) tile1;
+                switch ((Integer) this.data.get(1))
+                {
+                case 0:
+                    MarsUtil.openAdvancedLaunchController(playerBase, launchController);
+                    break;
+                case 1:
+                    player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, player.worldObj, pos.getX(), pos.getY(), pos.getZ());
                     break;
                 }
             }
