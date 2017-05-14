@@ -252,7 +252,8 @@ public class BaseDeck extends SizedPiece
                         }
                         
                         //Special case: cap the grid ends
-                        if (y == 0 && (this.deckTier & 1) == 1 && this.configuration.getDeckType() == EnumBaseType.HUMANOID && (directionNS && (x >= startX + 2 + (this.configuration.isHangarDeck() ? 1 : 0) && x <= startX + 4 + (this.configuration.isHangarDeck() ? 1 : 0)) || !directionNS && (z >= startZ + 2 + (this.configuration.isHangarDeck() ? 1 : 0) && z <= startZ + 4 + (this.configuration.isHangarDeck() ? 1 : 0))))
+                        int hangarOffset = (this.configuration.isHangarDeck() ? 1 : 0);
+                        if (y == 0 && (this.deckTier & 1) == 1 && this.configuration.getDeckType() == EnumBaseType.HUMANOID && (directionNS && (x >= startX + 2 + hangarOffset && x <= startX + 4 + hangarOffset) || !directionNS && (z >= startZ + 2 + hangarOffset && z <= startZ + 4 + hangarOffset)))
                         {
                             if (directionNS && (z == startZ || z == endZ) || !directionNS && (x == startX || x == endX))
                             {
@@ -298,11 +299,11 @@ public class BaseDeck extends SizedPiece
                         {
                             if (z == startZ + 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(3 ^ top), x, y, z, boundingBox);
+                                this.setBlockState(worldIn, blockStair.getStateFromMeta(2 ^ top), x, y, z, boundingBox);
                             }
                             else if (z == endZ - 1)
                             {
-                                this.setBlockState(worldIn, blockStair.getStateFromMeta(2 ^ top), x, y, z, boundingBox);
+                                this.setBlockState(worldIn, blockStair.getStateFromMeta(3 ^ top), x, y, z, boundingBox);
                             }
                             
                             if (x == ceilingDeco && z == 2 && top == 4)
@@ -546,6 +547,7 @@ public class BaseDeck extends SizedPiece
             if (directionNS) z--; else x--;
             this.setBlockState(worldIn, blockLintel, x, 1, z, boundingBox);
             this.setBlockState(worldIn, blockLintel, x, 2, z, boundingBox);
+            this.setBlockState(worldIn, blockLintel, x, 3, z, boundingBox);
             if (directionNS) z++; else x++;
             this.setBlockState(worldIn, blockAir, x, 1, z, boundingBox);
             this.setBlockState(worldIn, blockAir, x, 2, z, boundingBox);
@@ -554,6 +556,7 @@ public class BaseDeck extends SizedPiece
             if (directionNS) z++; else x++;
             this.setBlockState(worldIn, blockLintel, x, 1, z, boundingBox);
             this.setBlockState(worldIn, blockLintel, x, 2, z, boundingBox);
+            this.setBlockState(worldIn, blockLintel, x, 3, z, boundingBox);
             break;
         case AVIAN:
             this.setBlockState(worldIn, blockStair.getStateFromMeta(0 + meta), x, this.sizeY - 4, z, boundingBox);
@@ -594,7 +597,7 @@ public class BaseDeck extends SizedPiece
         }
         int sY = this.sizeY;
         int choices = EnumRoomType.values().length;
-        EnumRoomType block = EnumRoomType.values()[(i * 2 + (left ? 0 : 1)) % choices];
-        return new BaseRoom(this.configuration, rand, blockX, this.boundingBox.minY, blockZ, sX, sY, sZ, dir, block, left ? (i == 0) : (i == this.roomsOnSide - 1), left ? (i == this.roomsOnSide - 1) : (i == 0), this.deckTier);
+        EnumRoomType type = EnumRoomType.values()[(i * 2 + (left ? 0 : 1)) % choices];
+        return new BaseRoom(this.configuration, rand, blockX, this.boundingBox.minY, blockZ, sX, sY, sZ, dir, type, left ? (i == 0) : (i == this.roomsOnSide - 1), left ? (i == this.roomsOnSide - 1) : (i == 0), this.deckTier);
     }
 }
