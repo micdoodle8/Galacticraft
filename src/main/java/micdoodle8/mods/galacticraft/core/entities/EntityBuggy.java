@@ -68,7 +68,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1F);
+        this.setSize(0.98F, 1.4F);
         this.currentDamage = 18;
         this.timeSinceHit = 19;
         this.rockDirection = 20;
