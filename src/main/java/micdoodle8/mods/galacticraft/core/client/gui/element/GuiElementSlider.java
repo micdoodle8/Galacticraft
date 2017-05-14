@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
