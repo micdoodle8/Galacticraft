@@ -7,6 +7,7 @@
         "variant=moon_stone_slab":  { "model": "galacticraftcore:moon_stone_model" },
         "variant=moon_dungeon_brick_slab":  { "model": "galacticraftcore:moon_dungeon_brick_model" },
         "variant=mars_cobblestone_slab":  { "model": "galacticraftplanets:cobblestone_model" },
-        "variant=mars_dungeon_slab":  { "model": "galacticraftplanets:dungeon_brick_model" }
+        "variant=mars_dungeon_slab":  { "model": "galacticraftplanets:dungeon_brick_model" },
+        "variant=asteroids_deco":  { "model": "galacticraftplanets:asteroid_deco_model" }
     }
 }
