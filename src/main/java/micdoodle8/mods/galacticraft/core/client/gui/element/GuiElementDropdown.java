@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,15 +18,15 @@ public class GuiElementDropdown extends GuiButton
     public boolean dropdownClicked;
     public String[] optionStrings;
     public int selectedOption = -1;
-    public SmallFontRenderer font;
+    public FontRenderer font;
     private IDropboxCallback parentClass;
 
     public GuiElementDropdown(int id, IDropboxCallback parentClass, int x, int y, String... text)
     {
-        super(id, x, y, 13, 13, "");
+        super(id, x, y, 15, 15, "");
         Minecraft mc = FMLClientHandler.instance().getClient();
         this.parentClass = parentClass;
-        this.font = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.renderEngine, false);
+        this.font = mc.fontRendererObj;
         this.optionStrings = text;
 
         int largestString = Integer.MIN_VALUE;
@@ -36,7 +36,7 @@ public class GuiElementDropdown extends GuiButton
             largestString = Math.max(largestString, this.font.getStringWidth(element));
         }
 
-        this.width = largestString + 8;
+        this.width = largestString + 8 + 15;
     }
 
     @Override
@@ -59,13 +59,15 @@ public class GuiElementDropdown extends GuiButton
             GL11.glTranslatef(0, 0, 500);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), ColorUtil.to32BitColor(255, 200, 200, 200));
-            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 1, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width - 15, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height), ColorUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition + 1, this.yPosition + 1, this.xPosition + this.width - 16, this.yPosition + (this.dropdownClicked ? this.height * this.optionStrings.length : this.height) - 1, ColorUtil.to32BitColor(255, 150, 150, 150));
+            Gui.drawRect(this.xPosition + this.width - 15, this.yPosition, this.xPosition + this.width - 1, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+            Gui.drawRect(this.xPosition + this.width - 15, this.yPosition + 1, this.xPosition + this.width - 2, this.yPosition + this.height - 1, ColorUtil.to32BitColor(255, 150, 150, 150));
 
             if (this.dropdownClicked && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height * this.optionStrings.length)
             {
                 int hoverPos = (par3 - this.yPosition) / this.height;
-                Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 1, this.yPosition + this.height * (hoverPos + 1) - 1, ColorUtil.to32BitColor(255, 100, 100, 100));
+                Gui.drawRect(this.xPosition + 1, this.yPosition + this.height * hoverPos + 1, this.xPosition + this.width - 16, this.yPosition + this.height * (hoverPos + 1) - 1, ColorUtil.to32BitColor(255, 175, 175, 175));
             }
 
             this.mouseDragged(par1Minecraft, par2, par3);
@@ -74,13 +76,16 @@ public class GuiElementDropdown extends GuiButton
             {
                 for (int i = 0; i < this.optionStrings.length; i++)
                 {
-                    this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 8) / 2 + this.height * i, ColorUtil.to32BitColor(255, 255, 255, 255));
+                    this.font.drawStringWithShadow(this.optionStrings[i], this.xPosition + this.width / 2 - 7 - this.font.getStringWidth(this.optionStrings[i]) / 2, this.yPosition + (this.height - 6) / 2 + this.height * i, ColorUtil.to32BitColor(255, 255, 255, 255));
                 }
             }
             else
             {
-                this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 8) / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
+                this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.xPosition + this.width / 2 - 7 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.yPosition + (this.height - 6) / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
             }
+
+            par1Minecraft.renderEngine.bindTexture(this.texture);
+            this.drawTexturedModalRect(this.xPosition + this.width - 12, this.yPosition + 5, 185, 0, 7, 4);
 
             GL11.glPopMatrix();
             this.zLevel = 0.0F;

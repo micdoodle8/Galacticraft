@@ -1,21 +1,26 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.SmallFontRenderer;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Collections;
+import java.util.List;
+
 public class GuiElementSlider extends GuiButton
 {
-    private SmallFontRenderer customFontRenderer;
     private Vector3 firstColor;
     private Vector3 lastColor;
     private final boolean isVertical;
@@ -32,7 +37,6 @@ public class GuiElementSlider extends GuiButton
         this.isVertical = vertical;
         this.firstColor = firstColor;
         this.lastColor = lastColor;
-        this.customFontRenderer = new SmallFontRenderer(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().renderEngine, false);
     }
 
     @Override
@@ -107,16 +111,6 @@ public class GuiElementSlider extends GuiButton
                 GL11.glEnable(GL11.GL_ALPHA_TEST);
                 GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-                if (this.displayString != null && this.displayString.length() > 0)
-                {
-                    GL11.glPushMatrix();
-                    GL11.glTranslatef(this.xPosition + this.width / 2, this.yPosition + this.height / 2, 0.0F);
-                    GL11.glScalef(0.5F, 0.5F, 1.0F);
-                    GL11.glTranslatef(-1 * (this.xPosition + this.width / 2), -1 * (this.yPosition + this.height / 2), 0.0F);
-                    this.customFontRenderer.drawString(this.displayString, this.xPosition + this.width / 2 - this.customFontRenderer.getStringWidth(this.displayString) / 2, this.yPosition + this.height / 2 - 3, ColorUtil.to32BitColor(255, 240, 240, 240));
-                    GL11.glPopMatrix();
-                }
-
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glDisable(GL11.GL_TEXTURE_2D);
                 GL11.glEnable(GL11.GL_BLEND);
@@ -136,6 +130,21 @@ public class GuiElementSlider extends GuiButton
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
+        }
+    }
+
+    public void drawHoveringText()
+    {
+        if (this.hovered)
+        {
+            FontRenderer font = FMLClientHandler.instance().getClient().fontRendererObj;
+            Minecraft mc = FMLClientHandler.instance().getClient();
+            ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
+            int width = scaledresolution.getScaledWidth();
+            int height = scaledresolution.getScaledHeight();
+            int x = Mouse.getX() * width / mc.displayWidth;
+            int y = height - Mouse.getY() * height / mc.displayHeight - 1;
+            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(this.displayString), x, y, width, height, -1, font);
         }
     }
 

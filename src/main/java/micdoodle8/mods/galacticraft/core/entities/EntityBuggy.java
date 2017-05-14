@@ -79,7 +79,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1F);
+        this.setSize(0.98F, 1.4F);
         this.speed = 0.0D;
         this.preventEntitySpawning = true;
         this.dataManager.register(CURRENT_DAMAGE, 0);
@@ -164,8 +164,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     {
         if (this.isPassenger(passenger))
         {
-            final double offsetX = Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            final double offsetZ = Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetX = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetZ = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             passenger.setPosition(this.posX + offsetX, this.posY + 0.4F + passenger.getYOffset(), this.posZ + offsetZ);
         }
     }
@@ -421,8 +421,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
         if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
         {
-            this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Constants.RADIANS_TO_DEGREES_D));
-            this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Constants.RADIANS_TO_DEGREES_D));
+            this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D));
+            this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D));
         }
 
         if (this.worldObj.isRemote)
@@ -643,6 +643,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
             if (this.getPassengers().contains(player))
             {
                 this.removePassenger(player);
+
                 return true;
             }
             else

@@ -11,9 +11,12 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
+import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchControllerAdvanced;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
+import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
@@ -60,6 +63,17 @@ public class MarsUtil
         int windowId = player.currentWindowId;
         GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_OPEN_CUSTOM_GUI, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { windowId, 1, rocket.getEntityId() }), player);
         player.openContainer = new ContainerRocketInventory(player.inventory, rocket, rocket.rocketType, player);
+        player.openContainer.windowId = windowId;
+        player.openContainer.addListener(player);
+    }
+
+    public static void openAdvancedLaunchController(EntityPlayerMP player, TileEntityLaunchController launchController)
+    {
+        player.getNextWindowId();
+        player.closeContainer();
+        int windowId = player.currentWindowId;
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimpleMars(EnumSimplePacketMars.C_OPEN_CUSTOM_GUI_TILE, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { windowId, 0, launchController.getPos() }), player);
+        player.openContainer = new ContainerLaunchControllerAdvanced(player.inventory, launchController, player);
         player.openContainer.windowId = windowId;
         player.openContainer.addListener(player);
     }
