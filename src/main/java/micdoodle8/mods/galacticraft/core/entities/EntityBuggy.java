@@ -156,8 +156,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     {
         if (this.riddenByEntity != null)
         {
-            final double var1 = Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            final double var3 = Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double var1 = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double var3 = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             this.riddenByEntity.setPosition(this.posX + var1, this.posY + 0.4F + this.riddenByEntity.getYOffset(), this.posZ + var3);
         }
     }
@@ -419,8 +419,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
         if (this.worldObj.isRemote && this.buggyFuelTank.getFluid() != null && this.buggyFuelTank.getFluid().amount > 0)
         {
-            this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) * Constants.RADIANS_TO_DEGREES_D));
-            this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) * Constants.RADIANS_TO_DEGREES_D));
+            this.motionX = -(this.speed * Math.cos((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D));
+            this.motionZ = -(this.speed * Math.sin((this.rotationYaw - 90F) / Constants.RADIANS_TO_DEGREES_D));
         }
 
         if (this.worldObj.isRemote)
