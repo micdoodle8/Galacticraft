@@ -545,6 +545,21 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             {
                 this.sliderEraserSize.displayString = GCCoreUtil.translate("gui.space_race.create.eraser_radius.name") + ": " + ((int) Math.floor(this.sliderEraserSize.getNormalizedValue() * 10) + 1);
             }
+
+            if (this.sliderColorR != null && this.sliderColorR.visible)
+            {
+                this.sliderColorR.displayString = String.valueOf((int)Math.floor(this.sliderColorR.getColorValueD()));
+            }
+
+            if (this.sliderColorG != null && this.sliderColorG.visible)
+            {
+                this.sliderColorG.displayString = String.valueOf((int)Math.floor(this.sliderColorG.getColorValueD()));
+            }
+
+            if (this.sliderColorB != null && this.sliderColorB.visible)
+            {
+                this.sliderColorB.displayString = String.valueOf((int)Math.floor(this.sliderColorB.getColorValueD()));
+            }
         }
         else if (this.currentState == EnumSpaceRaceGui.MAIN)
         {
@@ -817,6 +832,14 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         if (this.currentState == EnumSpaceRaceGui.REMOVE_PLAYER && this.gradientListRemovePlayers != null)
         {
             this.gradientListRemovePlayers.draw(par1, par2);
+        }
+
+        for (GuiButton button : this.buttonList)
+        {
+            if (button instanceof GuiElementSlider)
+            {
+                ((GuiElementSlider) button).drawHoveringText();
+            }
         }
     }
 

@@ -369,7 +369,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                     f3 = 0.25F;
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * f3, this.posY - this.motionY * f3, this.posZ - this.motionZ * f3, this.motionX, this.motionY, this.motionZ);
                 }
-
+                this.isHot = false;
                 f4 = 0.8F;
             }
 

@@ -40,8 +40,8 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     public GuiAirLockController(TileEntityAirLockController controller)
     {
         this.controller = controller;
-        this.xSize = 176;
         this.ySize = 139;
+        this.xSize = 181;
     }
 
     @Override
@@ -51,14 +51,14 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         this.buttonList.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.checkboxRedstoneSignal = new GuiElementCheckbox(0, this, this.width / 2 - 78, var6 + 18, GCCoreUtil.translate("gui.checkbox.redstone_signal.name"));
-        this.checkboxPlayerDistance = new GuiElementCheckbox(1, this, this.width / 2 - 78, var6 + 33, GCCoreUtil.translate("gui.checkbox.player_within.name") + ": ");
+        this.checkboxRedstoneSignal = new GuiElementCheckbox(0, this, this.width / 2 - 84, var6 + 18, GCCoreUtil.translate("gui.checkbox.redstone_signal.name"));
+        this.checkboxPlayerDistance = new GuiElementCheckbox(1, this, this.width / 2 - 84, var6 + 33, GCCoreUtil.translate("gui.checkbox.player_within.name") + ": ");
         String[] dropboxStrings = { GCCoreUtil.translate("gui.dropbox.player_distance.name.0"), GCCoreUtil.translate("gui.dropbox.player_distance.name.1"), GCCoreUtil.translate("gui.dropbox.player_distance.name.2"), GCCoreUtil.translate("gui.dropbox.player_distance.name.3") };
-        this.dropdownPlayerDistance = new GuiElementDropdown(2, this, var5 + 105, var6 + 34, dropboxStrings);
-        this.checkboxOpenForPlayer = new GuiElementCheckbox(3, this, this.width / 2 - 62, var6 + 49, GCCoreUtil.translate("gui.checkbox.player_name.name") + ": ");
-        this.textBoxPlayerToOpenFor = new GuiElementTextBox(4, this, this.width / 2 - 55, var6 + 64, 110, 15, "", false, 16, false);
-        this.checkboxInvertSelection = new GuiElementCheckbox(5, this, this.width / 2 - 78, var6 + 80, GCCoreUtil.translate("gui.checkbox.invert.name"));
-        this.checkboxHorizontalMode = new GuiElementCheckbox(6, this, this.width / 2 - 78, var6 + 96, GCCoreUtil.translate("gui.checkbox.horizontal.name"));
+        this.dropdownPlayerDistance = new GuiElementDropdown(2, this, var5 + 99, var6 + 32, dropboxStrings);
+        this.checkboxOpenForPlayer = new GuiElementCheckbox(3, this, this.width / 2 - 68, var6 + 49, GCCoreUtil.translate("gui.checkbox.player_name.name") + ": ");
+        this.textBoxPlayerToOpenFor = new GuiElementTextBox(4, this, this.width / 2 - 61, var6 + 64, 110, 15, "", false, 16, false);
+        this.checkboxInvertSelection = new GuiElementCheckbox(5, this, this.width / 2 - 84, var6 + 80, GCCoreUtil.translate("gui.checkbox.invert.name"));
+        this.checkboxHorizontalMode = new GuiElementCheckbox(6, this, this.width / 2 - 84, var6 + 96, GCCoreUtil.translate("gui.checkbox.horizontal.name"));
         this.buttonList.add(this.checkboxRedstoneSignal);
         this.buttonList.add(this.checkboxPlayerDistance);
         this.buttonList.add(this.dropdownPlayerDistance);
@@ -110,7 +110,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         this.mc.renderEngine.bindTexture(GuiAirLockController.airLockControllerGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
-        this.drawTexturedModalRect(var5 + 15, var6 + 51, 176, 0, 7, 9);
+        this.drawTexturedModalRect(var5 + 11, var6 + 51, 181, 0, 7, 9);
 
         String displayString = GCCoreUtil.translateWithFormat("gui.title.air_lock.name", this.controller.ownerName);
         this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
