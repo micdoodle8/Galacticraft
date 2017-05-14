@@ -125,11 +125,6 @@ public class GuiElementSlider extends GuiButton
                 tessellator.draw();
             }
 
-            if (this.displayString != null && this.displayString.length() > 0 && this.hovered)
-            {
-                this.drawHoveringText();
-            }
-
             GL11.glShadeModel(GL11.GL_FLAT);
             GL11.glDisable(GL11.GL_BLEND);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
@@ -137,16 +132,19 @@ public class GuiElementSlider extends GuiButton
         }
     }
 
-    protected void drawHoveringText()
+    public void drawHoveringText()
     {
-        FontRenderer font = FMLClientHandler.instance().getClient().fontRendererObj;
-        Minecraft mc = FMLClientHandler.instance().getClient();
-        ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
-        int width = scaledresolution.getScaledWidth();
-        int height = scaledresolution.getScaledHeight();
-        int x = Mouse.getX() * width / mc.displayWidth;
-        int y = height - Mouse.getY() * height / mc.displayHeight - 1;
-        net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(this.displayString), x, y, width, height, -1, font);
+        if (this.hovered)
+        {
+            FontRenderer font = FMLClientHandler.instance().getClient().fontRendererObj;
+            Minecraft mc = FMLClientHandler.instance().getClient();
+            ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
+            int width = scaledresolution.getScaledWidth();
+            int height = scaledresolution.getScaledHeight();
+            int x = Mouse.getX() * width / mc.displayWidth;
+            int y = height - Mouse.getY() * height / mc.displayHeight - 1;
+            net.minecraftforge.fml.client.config.GuiUtils.drawHoveringText(Collections.singletonList(this.displayString), x, y, width, height, -1, font);
+        }
     }
 
     public void setSliderPos(float pos)
