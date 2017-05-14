@@ -1127,7 +1127,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (!stackAt.isEmpty())
+            if (stackAt.isEmpty())
             {
                 if (doAdd)
                 {
@@ -1177,7 +1177,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             this.autoLaunch();
         }
 
-        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, ItemStack.EMPTY);
     }
 
     @Override

@@ -58,7 +58,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
                 this.noTarget = false;
                 ItemStack stack = this.removeCargo(false).resultStack;
 
-                if (stack != null)
+                if (!stack.isEmpty())
                 {
                     this.outOfItems = false;
 
@@ -209,76 +209,13 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
         return !this.getDisabled(0);
     }
 
-    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
-    {
-        int count = 1;
-
-        for (count = 1; count < this.stacks.size(); count++)
-        {
-            ItemStack stackAt = this.stacks.get(count);
-
-            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
-            {
-                if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
-                {
-                    if (doAdd)
-                    {
-                        stackAt.grow(stack.getCount());
-                        this.markDirty();
-                    }
-
-                    return EnumCargoLoadingState.SUCCESS;
-                }
-                else
-                {
-                    //Part of the stack can fill this slot but there will be some left over
-                    int origSize = stackAt.getCount();
-                    int surplus = origSize + stack.getCount() - stackAt.getMaxStackSize();
-
-                    if (doAdd)
-                    {
-                        stackAt.setCount(stackAt.getMaxStackSize());
-                        this.markDirty();
-                    }
-
-                    stack.setCount(surplus);
-                    if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
-                    {
-                        return EnumCargoLoadingState.SUCCESS;
-                    }
-
-                    stackAt.setCount(origSize);
-                    return EnumCargoLoadingState.FULL;
-                }
-            }
-        }
-
-        for (count = 1; count < this.stacks.size(); count++)
-        {
-            ItemStack stackAt = this.stacks.get(count);
-
-            if (stackAt == null)
-            {
-                if (doAdd)
-                {
-                    this.stacks.set(count, stack);
-                    this.markDirty();
-                }
-
-                return EnumCargoLoadingState.SUCCESS;
-            }
-        }
-
-        return EnumCargoLoadingState.FULL;
-    }
-
     public RemovalResult removeCargo(boolean doRemove)
     {
         for (int i = 1; i < this.stacks.size(); i++)
         {
             ItemStack stackAt = this.stacks.get(i);
 
-            if (stackAt != null)
+            if (!stackAt.isEmpty())
             {
                 ItemStack resultStack = stackAt.copy();
                 resultStack.setCount(1);
@@ -288,7 +225,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
                     stackAt.shrink(1);
                     if (stackAt.isEmpty())
                     {
-                        this.stacks.set(i, null);
+                        this.stacks.set(i, ItemStack.EMPTY);
                     }
                 }
 
@@ -301,7 +238,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
             }
         }
 
-        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, ItemStack.EMPTY);
     }
 
     @Override

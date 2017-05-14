@@ -232,7 +232,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
             return this.dockedEntity.removeCargo(doRemove);
         }
 
-        return new RemovalResult(EnumCargoLoadingState.NOTARGET, null);
+        return new RemovalResult(EnumCargoLoadingState.NOTARGET, ItemStack.EMPTY);
     }
 
     @Override

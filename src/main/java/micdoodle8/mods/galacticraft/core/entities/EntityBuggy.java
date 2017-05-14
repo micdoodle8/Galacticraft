@@ -754,7 +754,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
             }
         }
 
-        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
+        return new RemovalResult(EnumCargoLoadingState.EMPTY, ItemStack.EMPTY);
     }
 
     @Override

@@ -55,7 +55,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
                 this.noTarget = false;
                 RemovalResult result = this.attachedFuelable.removeCargo(false);
 
-                if (result.resultStack != null)
+                if (!result.resultStack.isEmpty())
                 {
                     this.targetEmpty = false;
 
@@ -260,7 +260,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (stackAt == null)
+            if (stackAt.isEmpty())
             {
                 if (doAdd)
                 {
@@ -273,38 +273,6 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         }
 
         return EnumCargoLoadingState.FULL;
-    }
-
-    public RemovalResult removeCargo(boolean doRemove)
-    {
-        for (int i = 1; i < this.stacks.size(); i++)
-        {
-            ItemStack stackAt = this.stacks.get(i);
-
-            if (stackAt != null)
-            {
-                ItemStack resultStack = stackAt.copy();
-                resultStack.setCount(1);
-
-                if (doRemove)
-                {
-                    stackAt.shrink(1);
-                    if (stackAt.isEmpty())
-                    {
-                        this.stacks.set(i, null);
-                    }
-                }
-
-                if (doRemove)
-                {
-                    this.markDirty();
-                }
-
-                return new RemovalResult(EnumCargoLoadingState.SUCCESS, resultStack);
-            }
-        }
-
-        return new RemovalResult(EnumCargoLoadingState.EMPTY, null);
     }
 
     @Override
