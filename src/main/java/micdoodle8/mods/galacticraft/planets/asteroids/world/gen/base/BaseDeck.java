@@ -84,14 +84,14 @@ public class BaseDeck extends SizedPiece
         //Special settings for Control Room
         if ((tier & 4) == 4)
         {
-            this.roomDepth -= 3;
+            this.roomDepth -= 2;
             if (this.getDirection().getAxis() == EnumFacing.Axis.X)
             {
-                this.sizeZ += 6;
+                this.sizeZ += 4;
             }
             else
             {
-                this.sizeX += 6;
+                this.sizeX += 4;
             }
             xMin = blockPosX - this.sizeX / 2;
             zMin = blockPosZ - this.sizeZ / 2;
@@ -325,10 +325,10 @@ public class BaseDeck extends SizedPiece
             }
         }
 
-        int leftX = 2;
-        int leftZ = 2;
-        int rightX = 2;
-        int rightZ = 2;
+        int leftX = ((this.deckTier & 4) == 4 && this.direction == EnumFacing.SOUTH || this.direction == EnumFacing.EAST) ? 3 : 2;
+        int rightX = leftX;
+        int leftZ = leftX;
+        int rightZ = rightX;
         for (int i = 0; i < this.roomsOnSide; i++)
         {
             boolean largeRoom = (i == largeRoomPosA || i == largeRoomPosB);
@@ -398,17 +398,17 @@ public class BaseDeck extends SizedPiece
             }
             for (int y = 1; y < 5; y++)
             {
-                for (int x = 3; x < endX - 2; x++)
+                for (int x = 2; x < endX - 1; x++)
                 {
                     this.setBlockState(worldIn, blockGlass, x, y, endZ, boundingBox);
                 }
             }
             
             //Create an access hole between the floors
-            this.setBlockState(worldIn, blockAir, 4, 0, 1, boundingBox);
+            this.setBlockState(worldIn, blockAir, 2, 0, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, 3, 0, 1, boundingBox);
             this.setBlockState(worldIn, blockAir, 11, 0, 1, boundingBox);
-            this.setBlockState(worldIn, blockAir, 10, 0, 1, boundingBox);
+            this.setBlockState(worldIn, blockAir, 12, 0, 1, boundingBox);
         }
         this.coordBaseMode = EnumFacing.NORTH;
         
@@ -535,6 +535,7 @@ public class BaseDeck extends SizedPiece
     
     protected void makeDoorway(World worldIn, int x, int z, boolean directionNS)
     {
+        System.out.println("Making doorway at " + x + "," + z + " NS:" + directionNS + " Tier " + this.deckTier);
         IBlockState blockLintel = GCBlocks.airLockFrame.getDefaultState();
         IBlockState blockAirlock = GCBlocks.airLockFrame.getStateFromMeta(1);
         Block blockStair = GCBlocks.moonStoneStairs;
@@ -597,7 +598,7 @@ public class BaseDeck extends SizedPiece
         }
         int sY = this.sizeY;
         int choices = EnumRoomType.values().length;
-        EnumRoomType type = EnumRoomType.values()[(i * 2 + (left ? 0 : 1)) % choices];
+        EnumRoomType type = EnumRoomType.values()[(i * 2 + (left ? 0 : 1) + (this.deckTier & 4)) % choices];
         return new BaseRoom(this.configuration, rand, blockX, this.boundingBox.minY, blockZ, sX, sY, sZ, dir, type, left ? (i == 0) : (i == this.roomsOnSide - 1), left ? (i == this.roomsOnSide - 1) : (i == 0), this.deckTier);
     }
 }

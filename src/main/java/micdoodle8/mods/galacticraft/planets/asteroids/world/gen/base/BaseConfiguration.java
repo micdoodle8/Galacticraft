@@ -103,7 +103,7 @@ public class BaseConfiguration
 
     public int getRoomsNo()
     {
-        return hangar ? 1 : roomsNo;
+        return hangar ? 2 : roomsNo;
     }
 
     public int getCorridorLength()
@@ -112,7 +112,7 @@ public class BaseConfiguration
             return BaseDeck.ROOMLARGE;
 
         if (getRoomsNo() == 2)
-            return BaseDeck.ROOMSMALL + BaseDeck.ROOMLARGE;
+            return BaseDeck.ROOMLARGE + BaseDeck.ROOMLARGE;
 
         return getRoomsNo() * BaseDeck.ROOMSMALL + 2 * (BaseDeck.ROOMLARGE - BaseDeck.ROOMSMALL);
     }

@@ -128,6 +128,11 @@ public class BaseHangar extends SizedPiece
             this.setBlockState(worldIn, blockPlain, 4, y, HANGARLENGTH, structureBoundingBoxIn);
             this.setBlockState(worldIn, blockPlain, 22, y, HANGARLENGTH, structureBoundingBoxIn);
         }
+        for (int y = 9; y <= maxY; y++)
+        {
+            this.setBlockState(worldIn, this.configuration.getWallBlock(), 6, y, HANGARLENGTH, structureBoundingBoxIn);
+            this.setBlockState(worldIn, this.configuration.getWallBlock(), 20, y, HANGARLENGTH, structureBoundingBoxIn);
+        }
 
         for (int xx = 0; xx <= 3; xx++)
             this.setBlockState(worldIn, moonWall, xx, 1, HANGARLENGTH, structureBoundingBoxIn);

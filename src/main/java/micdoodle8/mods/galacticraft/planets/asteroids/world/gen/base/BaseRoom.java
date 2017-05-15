@@ -131,6 +131,10 @@ public class BaseRoom extends SizedPiece
                                 this.buildRoomContents(worldIn, xx, yy, zz, maxX - 1, maxZ - 1, blockpos, randomInt);
                             }
                         }
+                        else if (this.type.doEntryWallsToo && (zz == 0 && (yy > 3 || xx <= 2 || xx >= maxX - 2)) || (zz == 1 && yy == 1) && this.type.blockFloor != null)
+                        {
+                            this.setBlockState(worldIn, this.type.blockFloor, xx, yy, zz, chunkBoundary);
+                        }
                         else if (this.configuration.getDeckType() == EnumBaseType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
                         {
                             int meta = 1;
@@ -163,14 +167,7 @@ public class BaseRoom extends SizedPiece
                         }
                         else
                         {
-                            if (zz == 0 && this.type.doEntryWallsToo && yy > 3 && this.type.blockFloor != null)
-                            {
-                                this.setBlockState(worldIn, this.type.blockFloor, xx, yy, zz, chunkBoundary);
-                            }
-                            else
-                            {
-                                this.setBlockState(worldIn, blockAir, xx, yy, zz, chunkBoundary);
-                            }
+                            this.setBlockState(worldIn, blockAir, xx, yy, zz, chunkBoundary);
                         }
                     }
                 }
@@ -194,30 +191,35 @@ public class BaseRoom extends SizedPiece
         int facing1 = 0; 
         int facing2 = 0;
         int facingLamp = 2;
+        int facingScreen = 2;
         switch (this.direction)
         {
         case WEST:
             facing1 = 3;
             facing2 = 2;
             facingLamp = 3;
+            facingScreen = 5;
             break;
         case EAST:
             facing = 2;
             facing1 = 1;
             facing2 = 0;
             facingLamp = 2;
+            facingScreen = 4;
             break;
         case NORTH:
             facing = 3;
             facing1 = 2;
             facing2 = 1;
             facingLamp = 5;
+            facingScreen = 2;
             break;
         case SOUTH:
             facing = 1;
             facing1 = 0;
             facing2 = 3;
             facingLamp = 4;
+            facingScreen = 3;
         }
 
         //Offset from centre - used for some rooms
@@ -329,7 +331,7 @@ public class BaseRoom extends SizedPiece
             int zTable = maxZ - 3;
             int zTank = maxZ - 1;
             int zLight = zTable;
-            if (zTable <= 0)
+            if (zTable <= 1)
             {
                 if (zTable < 0)
                 {
@@ -338,8 +340,8 @@ public class BaseRoom extends SizedPiece
                 }
                 
                 //Small medical room: bring everything closer together
-                zTable = 1;
-                zLight = 2;
+                zTable++;
+                zLight++;
                 zTank = maxZ;
             }
             if (y == 1)
@@ -379,8 +381,65 @@ public class BaseRoom extends SizedPiece
             }
             break;
         case CREW:
+            if (y == 1)
+            {
+                if (x == 2 || x == maxX - 1)
+                {
+                    if ((z % 2) == 1)
+                    {
+                        state = GCBlocks.wallGC.getStateFromMeta((z == 1) ? 3 : 2);
+                    }
+                }
+                else
+                {
+                    state = Blocks.carpet.getStateFromMeta(7);
+                }
+            } else if (y == 2)
+            {
+                if (x == 2 || x == maxX - 1)
+                {
+                    if (z == 1)
+                    {
+                        state = Blocks.brewing_stand.getDefaultState();
+                    }
+                    else if (z > 2 && z < maxZ)
+                    {
+                        state = GCBlocks.landingPad.getStateFromMeta(1);
+                    }
+                }
+            }
             break;
         case CONTROL:
+            if (y == 1)
+            {
+                if (x == maxX / 2 + 1 && z == maxZ - 2)
+                {
+                    state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
+                }
+                else
+                {
+                    state = GCBlocks.slabGCHalf.getStateFromMeta(6);
+                }
+            }
+            else if (y <= 3)
+            {
+                if ((x == 1 || x == maxX) && !(z == 0 || z == maxZ))
+                {
+                    state = GCBlocks.telemetry.getDefaultState();
+                }
+                else if ((x == 2 || x == maxX - 1) && !(z == 0 || z == maxZ))
+                {
+                    state = GCBlocks.screen.getStateFromMeta((x == 2 ? facingLamp : facingLamp ^ 1));
+                }
+                else if (z == maxZ && x > 2 && x < maxX - 1)
+                {
+                    state = GCBlocks.screen.getStateFromMeta(facingScreen);
+                }
+                else if (x == maxX / 2 + 1 && z == maxZ - 2 && y == 2)
+                {
+                    state = GCBlocks.landingPad.getStateFromMeta(1);
+                }
+            }
             break;
         case CRYO:
             if (y == 1)
@@ -453,9 +512,9 @@ public class BaseRoom extends SizedPiece
         POWER(null, null, false),
         ENGINEERING(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false),
         MEDICAL(Blocks.iron_trapdoor.getDefaultState(), Blocks.iron_trapdoor.getStateFromMeta(8), false),
+        CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true),
         CREW(null, null, false),
-        CONTROL(null, null, false),
-        CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true);
+        CONTROL(GCBlocks.slabGCHalf.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false);
                 
         public final IBlockState blockFloor;
         public final IBlockState blockEntrance;
