@@ -235,10 +235,10 @@ public class BaseRoom extends SizedPiece
             else if (y == 1)
             {
                 //Some random Netherwart, though it pops up easily
-                int semirand = ((blockpos.getX() * 137 + blockpos.getZ() * 23) >> 4) & 15;
-                if (semirand < 3)
+                int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
+                if (semirand < 2)
                 {
-                    state = Blocks.nether_wart.getStateFromMeta(semirand);
+                    state = AsteroidBlocks.spaceWart.getStateFromMeta(semirand);
                 }
             }
             break;
