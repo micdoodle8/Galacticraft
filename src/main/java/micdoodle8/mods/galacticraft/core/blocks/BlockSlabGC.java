@@ -43,7 +43,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> list)
     {
-        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); ++i)
+        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); ++i)
         {
             list.add(new ItemStack(this, 1, i));
         }
@@ -162,7 +162,8 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
         MOON_STONE_SLAB(2, "moon_slab"),
         MOON_DUNGEON_BRICK_SLAB(3, "moon_bricks_slab"),
         MARS_COBBLESTONE_SLAB(4, "mars_slab"),
-        MARS_DUNGEON_SLAB(5, "mars_bricks_slab");
+        MARS_DUNGEON_SLAB(5, "mars_bricks_slab"),
+        ASTEROIDS_DECO(6, "asteroids_slab");
 
         private int meta;
         private String langName;

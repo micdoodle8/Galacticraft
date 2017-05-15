@@ -47,7 +47,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
             API.hideItem(new ItemStack(block, 1, 0));
             if (block == GCBlocks.slabGCDouble)
             {
-            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); j++)
+            	for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); j++)
             		API.hideItem(new ItemStack(block, 1, j));
             }
         }

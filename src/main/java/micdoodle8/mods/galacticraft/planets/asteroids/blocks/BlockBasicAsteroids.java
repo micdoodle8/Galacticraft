@@ -41,7 +41,8 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         ASTEROID_2(2, "asteroid_rock_2"),
         ORE_ALUMINUM(3, "ore_aluminum_asteroids"),
         ORE_ILMENITE(4, "ore_ilmenite_asteroids"),
-        ORE_IRON(5, "ore_iron_asteroids");
+        ORE_IRON(5, "ore_iron_asteroids"),
+        DECO(6, "asteroid_deco");
 
         private final int meta;
         private final String name;
@@ -223,6 +224,8 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         case 4:
         case 5:
             return EnumSortCategoryBlock.ORE;
+        case 6:
+            return EnumSortCategoryBlock.DECORATION;
         }
         return EnumSortCategoryBlock.GENERAL;
     }

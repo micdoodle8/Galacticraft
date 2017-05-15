@@ -7,6 +7,7 @@
         "basictypeasteroids=asteroid_rock_2": { "model": "galacticraftplanets:asteroid_rock_2_model" },
         "basictypeasteroids=ore_aluminum_asteroids": { "model": "galacticraftplanets:ore_aluminum_asteroids_model" },
         "basictypeasteroids=ore_ilmenite_asteroids": { "model": "galacticraftplanets:ore_ilmenite_asteroids_model" },
-        "basictypeasteroids=ore_iron_asteroids": { "model": "galacticraftplanets:ore_iron_asteroids_model" }
+        "basictypeasteroids=ore_iron_asteroids": { "model": "galacticraftplanets:ore_iron_asteroids_model" },
+        "basictypeasteroids=asteroid_deco": { "model": "galacticraftplanets:asteroid_deco_model" }
     }
 }
