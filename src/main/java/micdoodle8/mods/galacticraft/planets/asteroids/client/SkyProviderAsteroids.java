@@ -28,7 +28,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation galaxyTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/planets/galaxy.png");
-    private static final ResourceLocation sunTexture = new ResourceLocation("textures/environment/sun.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
