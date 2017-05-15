@@ -291,6 +291,7 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 3, 3);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 4);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 3, 5);
+        setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 6);
 
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 1, 0);
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 1, 1);
@@ -298,6 +299,7 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 3, 3);
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 1, 4);
         setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 3, 5);
+        setHarvestLevel(GCBlocks.slabGCDouble, "pickaxe", 1, 6);
 
         setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1, 0);
         setHarvestLevel(GCBlocks.tinStairs1, "pickaxe", 1, 0);
@@ -397,9 +399,9 @@ public class GCBlocks
         registerBlock(GCBlocks.landingPadFull, ItemBlockGC.class);
         registerBlock(GCBlocks.unlitTorch, ItemBlockGC.class);
         registerBlock(GCBlocks.unlitTorchLit, ItemBlockGC.class);
-        registerBlock(GCBlocks.breatheableAir, ItemBlockGC.class);
-        registerBlock(GCBlocks.brightAir, ItemBlockGC.class);
-        registerBlock(GCBlocks.brightBreatheableAir, ItemBlockGC.class);
+        registerBlock(GCBlocks.breatheableAir, null);
+        registerBlock(GCBlocks.brightAir, null);
+        registerBlock(GCBlocks.brightBreatheableAir, null);
         registerBlock(GCBlocks.oxygenDistributor, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenCollector, ItemBlockDesc.class);
         registerBlock(GCBlocks.oxygenCompressor, ItemBlockOxygenCompressor.class);
@@ -424,7 +426,7 @@ public class GCBlocks
         registerBlock(GCBlocks.crafting, ItemBlockDesc.class);
         registerBlock(GCBlocks.sealableBlock, ItemBlockEnclosed.class);
         registerBlock(GCBlocks.spaceStationBase, ItemBlockGC.class);
-        registerBlock(GCBlocks.fakeBlock, ItemBlockDummy.class);
+        registerBlock(GCBlocks.fakeBlock, null);
         registerBlock(GCBlocks.parachest, ItemBlockDesc.class);
         registerBlock(GCBlocks.solarPanel, ItemBlockSolar.class);
         registerBlock(GCBlocks.radioTelescope, ItemBlockGC.class);

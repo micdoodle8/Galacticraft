@@ -147,6 +147,12 @@ public class TileEntityMulti extends TileEntity
                 result = false;
             }
         }
+        if (result == false && !world.isRemote)
+        {
+            //Try again to create all the multiblocks - needed if this TE was placed during worldgen (e.g. Asteroids Abandoned Base)
+            thisTile.onCreate(world, pos);
+        }
+
         return result;
     }
 }

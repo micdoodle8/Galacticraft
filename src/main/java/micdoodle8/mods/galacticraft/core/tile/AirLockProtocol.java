@@ -15,11 +15,10 @@ class AirLockProtocol
     private final TileEntity head;
     private final int maxLoops;
 
-    private int airLocksVerticalMin = 0;
-    private int airLocksVerticalMax = 0;
-    private int airLocksHorizontalMin = 0;
-    private int airLocksHorizontalMax = 0;
-    private boolean horizontal;
+    private int airLocksDimension1Min = 0;
+    private int airLocksDimension1Max = 0;
+    private int airLocksDimension2Min = 0;
+    private int airLocksDimension2Max = 0;
 
     public int minX = 6000000;
     public int maxX = -6000000;
@@ -37,7 +36,7 @@ class AirLockProtocol
         this.maxLoops = 26;
     }
 
-    public void loopThrough(BlockPos pos, int loops)
+    private void loopThrough(BlockPos pos, int loops)
     {
         int xAligned = this.head.getPos().getX();
         int zAligned = this.head.getPos().getZ();
@@ -47,7 +46,7 @@ class AirLockProtocol
             for (int z = -1; z <= 1; z++)
             {
                 int zTest = pos.getZ() + z;
-                
+
                 if ((xTest == xAligned || zTest == zAligned))
                 {
                     for (int y = -1; y <= 1; y++)
@@ -62,7 +61,9 @@ class AirLockProtocol
                                 {
                                     this.adjacentAirLocks.add(testPos);
                                     if (loops > 1)
+                                    {
                                         this.loopThrough(testPos, loops - 1);
+                                    }
                                 }
                             }
                         }
@@ -72,7 +73,7 @@ class AirLockProtocol
         }
     }
 
-    public void loopThroughHorizontal(BlockPos pos, int loops)
+    private void loopThroughHorizontal(BlockPos pos, int loops)
     {
         int yTest = pos.getY();
         for (int x = -1; x <= 1; x++)
@@ -90,7 +91,9 @@ class AirLockProtocol
                         {
                             this.adjacentAirLocks.add(testPos);
                             if (loops > 1)
+                            {
                                 this.loopThroughHorizontal(testPos, loops - 1);
+                            }
                         }
                     }
                 }
@@ -98,11 +101,11 @@ class AirLockProtocol
         }
     }
 
-    public ArrayList<BlockPos> calculate(boolean horizontal)
+    public int calculate(boolean horizontal)
     {
         if (this.world.isRemote)
         {
-            return null;
+            return -1;
         }
 
         this.adjacentAirLocks = new ArrayList<BlockPos>();
@@ -110,8 +113,6 @@ class AirLockProtocol
         final BlockPos headPos = this.head.getPos();
         this.checked.add(headPos);
         this.adjacentAirLocks.add(headPos);
-
-        this.horizontal = horizontal;
 
         if (horizontal)
         {
@@ -159,26 +160,45 @@ class AirLockProtocol
 
         if (count > 24 || this.maxX - this.minX <= 1 && this.maxZ - this.minZ <= 1 || !horizontal && this.maxY - this.minY <= 1)
         {
-            return null;
+            return -1;
         }
 
         if (horizontal && (this.maxX - this.minX <= 1 || this.maxZ - this.minZ <= 1))
         {
-            return null;
+            return -1;
         }
 
-        this.airLocksVerticalMin = 0;
-        this.airLocksVerticalMax = 0;
-        this.airLocksHorizontalMin = 0;
-        this.airLocksHorizontalMax = 0;
+        this.airLocksDimension1Min = 0;
+        this.airLocksDimension1Max = 0;
+        this.airLocksDimension2Min = 0;
+        this.airLocksDimension2Max = 0;
 
+        if (horizontal)
+        {
+            this.checkDimensionsHorizontal();
+        }
+        else
+        {
+            this.checkDimensions();
+        }
+
+        if (this.airLocksDimension2Max == 0 || this.airLocksDimension2Min == 0 || (this.airLocksDimension1Min == 0 || this.airLocksDimension1Max == 0) || this.airLocksDimension2Max != this.airLocksDimension2Min || this.airLocksDimension1Max != this.airLocksDimension1Min)
+        {
+            return -1;
+        }
+
+        return this.adjacentAirLocks.size();
+    }
+
+    private void checkDimensions()
+    {
         for (int y = this.minY; y <= this.maxY; y++)
         {
             final TileEntity tileAt = this.world.getTileEntity(new BlockPos(this.minX, y, this.minZ));
 
             if (tileAt instanceof TileEntityAirLock)
             {
-                this.airLocksVerticalMin++;
+                this.airLocksDimension1Min++;
             }
         }
 
@@ -188,7 +208,7 @@ class AirLockProtocol
 
             if (tileAt instanceof TileEntityAirLock)
             {
-                this.airLocksVerticalMax++;
+                this.airLocksDimension1Max++;
             }
         }
 
@@ -200,7 +220,7 @@ class AirLockProtocol
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
-                    this.airLocksHorizontalMax++;
+                    this.airLocksDimension2Max++;
                 }
             }
 
@@ -210,7 +230,7 @@ class AirLockProtocol
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
-                    this.airLocksHorizontalMin++;
+                    this.airLocksDimension2Min++;
                 }
             }
         }
@@ -222,7 +242,7 @@ class AirLockProtocol
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
-                    this.airLocksHorizontalMax++;
+                    this.airLocksDimension2Max++;
                 }
             }
 
@@ -232,16 +252,58 @@ class AirLockProtocol
 
                 if (tileAt instanceof TileEntityAirLock)
                 {
-                    this.airLocksHorizontalMin++;
+                    this.airLocksDimension2Min++;
+                }
+            }
+        }
+    }
+
+    private void checkDimensionsHorizontal()
+    {
+        if (this.minX != this.maxX)
+        {
+            for (int x = this.minX; x <= this.maxX; x++)
+            {
+                final TileEntity tileAt = this.world.getTileEntity(new BlockPos(x, this.minY, this.maxZ));
+
+                if (tileAt instanceof TileEntityAirLock)
+                {
+                    this.airLocksDimension1Max++;
+                }
+            }
+
+            for (int x = this.minX; x <= this.maxX; x++)
+            {
+                final TileEntity tileAt = this.world.getTileEntity(new BlockPos(x, this.minY, this.minZ));
+
+                if (tileAt instanceof TileEntityAirLock)
+                {
+                    this.airLocksDimension1Min++;
                 }
             }
         }
 
-        if (this.airLocksHorizontalMax == 0 || this.airLocksHorizontalMin == 0 || (!this.horizontal && (this.airLocksVerticalMin == 0 || this.airLocksVerticalMax == 0)) || this.airLocksHorizontalMax != this.airLocksHorizontalMin || this.airLocksVerticalMax != this.airLocksVerticalMin)
+        if (this.minZ != this.maxZ)
         {
-            return null;
-        }
+            for (int z = this.minZ; z <= this.maxZ; z++)
+            {
+                final TileEntity tileAt = this.world.getTileEntity(new BlockPos(this.maxX, this.minY, z));
 
-        return this.adjacentAirLocks;
+                if (tileAt instanceof TileEntityAirLock)
+                {
+                    this.airLocksDimension2Max++;
+                }
+            }
+
+            for (int z = this.minZ; z <= this.maxZ; z++)
+            {
+                final TileEntity tileAt = this.world.getTileEntity(new BlockPos(this.minX, this.minY, z));
+
+                if (tileAt instanceof TileEntityAirLock)
+                {
+                    this.airLocksDimension2Min++;
+                }
+            }
+        }
     }
 }

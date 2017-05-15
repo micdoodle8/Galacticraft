@@ -23,6 +23,7 @@ public class AsteroidBlocks
     public static Block blockDenseIce;
     public static Block blockMinerBase;
     public static Block minerBaseFull;
+    public static Block spaceWart;
 
     public static void initBlocks()
     {
@@ -35,9 +36,11 @@ public class AsteroidBlocks
         AsteroidBlocks.blockDenseIce = new BlockIceAsteroids("dense_ice");
         AsteroidBlocks.blockMinerBase = new BlockMinerBase("miner_base");
         AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("miner_base_full");
+        AsteroidBlocks.spaceWart = new BlockSpaceWart("spacewart");
 
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
         GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
+        GCBlocks.hiddenBlocks.add(AsteroidBlocks.spaceWart);
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
@@ -52,10 +55,11 @@ public class AsteroidBlocks
         registerBlock(AsteroidBlocks.beamReflector, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.beamReceiver, ItemBlockDesc.class);
         registerBlock(AsteroidBlocks.shortRangeTelepad, ItemBlockShortRangeTelepad.class);
-        registerBlock(AsteroidBlocks.fakeTelepad, ItemBlockGC.class);
+        registerBlock(AsteroidBlocks.fakeTelepad, null);
         registerBlock(AsteroidBlocks.blockDenseIce, ItemBlockGC.class);
         registerBlock(AsteroidBlocks.blockMinerBase, ItemBlockDesc.class);
-        registerBlock(AsteroidBlocks.minerBaseFull, ItemBlockDesc.class);
+        registerBlock(AsteroidBlocks.minerBaseFull, null);
+        registerBlock(AsteroidBlocks.spaceWart, null);
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)

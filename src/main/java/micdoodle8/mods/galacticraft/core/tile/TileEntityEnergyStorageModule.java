@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.inventory.ISidedInventory;
@@ -317,13 +318,14 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public EnumFacing getFront()
     {
-        if (getBlockType() instanceof BlockMachineTiered)
+        IBlockState state = this.world.getBlockState(getPos());
+        if (state.getBlock() instanceof BlockMachineTiered)
         {
-            return (this.world.getBlockState(getPos()).getValue(BlockMachineTiered.FACING));
+            return (state.getValue(BlockMachineTiered.FACING));
         }
-        else if (getBlockType() instanceof BlockMachine)
+        else if (state.getBlock() instanceof BlockMachine)
         {
-            return (this.world.getBlockState(getPos()).getValue(BlockMachine.FACING));
+            return (state.getValue(BlockMachine.FACING));
         }
         return EnumFacing.NORTH;
     }

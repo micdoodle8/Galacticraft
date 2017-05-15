@@ -24,12 +24,13 @@ public class BaseConfiguration
 
     public BaseConfiguration(int yPosition, Random rand)
     {
+        BaseDeck.EnumBaseType[] types = BaseDeck.EnumBaseType.values();
         this.yPosition = yPosition;
-        this.baseType = rand.nextInt(BaseDeck.EnumBaseType.values().length);
+        this.baseType = rand.nextInt(types.length);
         this.hangar = true;  //For testing!
-        this.roomHeight = BaseDeck.EnumBaseType.values()[this.baseType].height;
+        this.roomHeight = types[this.baseType].height;
         this.roomDepth = this.hangar ? 7 : rand.nextInt(3) + 5;
-        this.wallBlock = BaseDeck.EnumBaseType.values()[this.baseType].wall;
+        this.wallBlock = types[this.baseType].wall;
         this.roomsNo = rand.nextInt(3) + 2;
     }
 
@@ -102,7 +103,7 @@ public class BaseConfiguration
 
     public int getRoomsNo()
     {
-        return hangar ? 1 : roomsNo;
+        return hangar ? 2 : roomsNo;
     }
 
     public int getCorridorLength()
@@ -111,7 +112,7 @@ public class BaseConfiguration
             return BaseDeck.ROOMLARGE;
 
         if (getRoomsNo() == 2)
-            return BaseDeck.ROOMSMALL + BaseDeck.ROOMLARGE;
+            return BaseDeck.ROOMLARGE + BaseDeck.ROOMLARGE;
 
         return getRoomsNo() * BaseDeck.ROOMSMALL + 2 * (BaseDeck.ROOMLARGE - BaseDeck.ROOMSMALL);
     }
