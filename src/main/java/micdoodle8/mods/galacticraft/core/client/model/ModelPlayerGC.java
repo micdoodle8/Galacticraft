@@ -23,7 +23,7 @@ public class ModelPlayerGC extends ModelPlayer
 
         if (smallArms)
         {
-            this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, var1);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
             this.bipedRightArm = new ModelRenderer(this, 40, 16);
@@ -32,7 +32,7 @@ public class ModelPlayerGC extends ModelPlayer
         }
         else
         {
-            this.bipedLeftArm = new ModelRenderer(this, 40, 16);
+            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
             this.bipedRightArm = new ModelRenderer(this, 40, 16);
