@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars;
 
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -23,6 +24,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRoc
 import micdoodle8.mods.galacticraft.planets.mars.client.render.tile.TileEntityTreasureChestRenderer;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
+import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
 import net.minecraft.block.state.IBlockState;
@@ -173,6 +175,8 @@ public class MarsModuleClient implements IPlanetsModuleClient
 
         // Add Armor Renderer Prefix
 //        RenderingRegistry.addNewArmourRendererPrefix("desh");
+        
+        ItemSchematicTier2.registerTextures();
     }
 
     public static void registerBlockRenderers()

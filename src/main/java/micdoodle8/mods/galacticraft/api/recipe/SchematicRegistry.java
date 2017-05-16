@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 public class SchematicRegistry
 {
     public static ArrayList<ISchematicPage> schematicRecipes = new ArrayList<ISchematicPage>();
+    public static ArrayList<ItemStack> schematicItems = new ArrayList<>();
+    public static ArrayList<ResourceLocation> textures = new ArrayList<>();
 
     /**
      * Register a new schematic page
@@ -134,5 +138,35 @@ public class SchematicRegistry
         // Used internally inside Galacticraft to flip to the last page. No need
         // to subscribe to this event.
         MinecraftForge.EVENT_BUS.post(new FlipPage(cs, null, currentIndex, -1));
+    }
+    
+    public static void registerTexture(ResourceLocation loc)
+    {
+        textures.add(loc);
+    }
+    
+    public static ResourceLocation getSchematicTexture(int index)
+    {
+        if (index < textures.size())
+            return textures.get(index);
+        
+        GCLog.debug("couldn't find render texture for " + index);
+        return textures.get(0);
+    }
+    
+    public static int registerSchematicItem(ItemStack item)
+    {
+        int index = schematicItems.size();
+        schematicItems.add(item);
+        return index;
+    }
+    
+    public static ItemStack getSchematicItem(int index)
+    {
+        if (index < schematicItems.size())
+            return schematicItems.get(index).copy();
+        
+        GCLog.debug("couldn't find schematic item for " + index);
+        return schematicItems.get(0).copy();
     }
 }

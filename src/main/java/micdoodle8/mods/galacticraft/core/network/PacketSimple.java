@@ -40,6 +40,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProvider;
 import micdoodle8.mods.galacticraft.core.entities.IControllableEntity;
 import micdoodle8.mods.galacticraft.core.entities.player.*;
@@ -60,6 +61,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
@@ -165,7 +167,8 @@ public class PacketSimple extends PacketBase implements Packet
         C_SEND_OVERWORLD_IMAGE(Side.CLIENT, Integer.class, Integer.class, byte[].class),
         C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
         C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class),  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
-        C_UPDATE_MACHINE_DATA(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class);
+        C_UPDATE_MACHINE_DATA(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class),
+        C_SPAWN_HANGING_SCHEMATIC(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -758,6 +761,10 @@ public class PacketSimple extends PacketBase implements Packet
             {
                 ((ITileClientUpdates)tile3).updateClient(this.data);
             }
+            break;
+        case C_SPAWN_HANGING_SCHEMATIC:
+            EntityHangingSchematic entity = new EntityHangingSchematic(player.worldObj, (BlockPos) this.data.get(0), EnumFacing.getFront((Integer) this.data.get(2)), (Integer) this.data.get(3));
+            ((WorldClient)player.worldObj).addEntityToWorld((Integer) this.data.get(1), entity);
             break;
         default:
             break;

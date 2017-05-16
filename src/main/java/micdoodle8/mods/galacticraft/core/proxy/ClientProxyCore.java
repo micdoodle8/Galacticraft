@@ -39,6 +39,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
@@ -169,6 +170,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.registerInventoryTabs();
         ClientProxyCore.addVariants();
+        ItemSchematic.registerTextures();
 
         MinecraftForge.EVENT_BUS.register(new TabRegistry());
 
@@ -424,6 +426,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (RenderManager manager) -> new RenderEntityFake(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (RenderManager manager) -> new RenderBuggy(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, (RenderManager manager) -> new RenderMeteorChunk(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, (RenderManager manager) -> new RenderSchematic(manager));
 //        RenderingRegistry.registerEntityRenderingHandler(EntityBubble.class, new RenderBubble(0.25F, 0.25F, 1.0F));
     }
 

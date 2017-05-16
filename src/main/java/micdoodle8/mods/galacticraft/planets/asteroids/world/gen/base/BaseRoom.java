@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
@@ -501,6 +502,16 @@ public class BaseRoom extends SizedPiece
                 ((TileEntityFluidTank)tile).fill(null, new FluidStack(MarsModule.sludge, 16000), true);
             }
             //TODO: fill cargo loaders, crafting tables etc with items
+        }
+        
+        if (this.type == EnumRoomType.ENGINEERING && y == 3 && z == maxZ && (x == 3 || x == 6))
+        {
+            EntityHangingSchematic entityhanging = new EntityHangingSchematic(worldIn, blockpos, this.direction.getOpposite(), x / 3 - 1);
+            if (entityhanging != null)
+            {
+                worldIn.spawnEntityInWorld(entityhanging);
+                entityhanging.setSendToClient();
+            }
         }
     }
 
