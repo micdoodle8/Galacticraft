@@ -11,8 +11,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class TileEntityAirLockController extends TileEntityAirLock

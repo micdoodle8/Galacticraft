@@ -520,6 +520,10 @@ public class RecipeManagerGC
 //		// Dungeon Brick Wall
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.wallGC, 6, 3), new Object[] { "XXX", "XXX", 'X', new ItemStack(GCBlocks.blockMoon, 1, 14) });
 
+		// Concealed redstone
+		RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRedstone, 4, 0), new Object[] { " X ", "XYX", " X ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', Items.redstone });
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRepeater_Unpowered, 1, 0), new Object[] { "   ", "XYX", "   ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', Items.repeater });
+		
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 15), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.apple, Items.apple }));
 
         CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 16), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.carrot, Items.carrot }));

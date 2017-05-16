@@ -496,6 +496,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "GC Telemetry Unit");
         GameRegistry.registerTileEntity(TileEntityPainter.class, "GC Painter");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
+        GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
         GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
     }
 

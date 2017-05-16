@@ -375,7 +375,7 @@ public class BaseRoom extends SizedPiece
             {
                 //Lighting
                 if (x == maxX)
-                    state = this.configuration.getWallBlock();
+                    state = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
                 else if (x == maxX - 1)
                     state = GCBlocks.brightLamp.getStateFromMeta(facingLamp);
             }

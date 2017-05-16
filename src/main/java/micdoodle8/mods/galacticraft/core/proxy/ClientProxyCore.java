@@ -15,6 +15,9 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
+import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRedstone;
+import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRepeater;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
@@ -255,6 +258,10 @@ public class ClientProxyCore extends CommonProxyCore
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.oxygenDetector, new StateMap.Builder().ignore(BlockOxygenDetector.ACTIVE).build());
         ModelLoader.setCustomStateMapper(GCBlocks.panelLighting, new StateMap.Builder().ignore(BlockPanelLighting.TYPE).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.concealedRedstone, new StateMap.Builder().ignore(BlockConcealedRedstone.POWER).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Powered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Unpowered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.concealedDetector, new StateMap.Builder().ignore(BlockConcealedDetector.FACING, BlockConcealedDetector.DETECTED).build());
     }
 
     @Override
@@ -640,6 +647,10 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 4, "wall_mars_cobblestone");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.wallGC, 5, "wall_mars_dungeon_brick");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.bossSpawner);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.concealedRedstone);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.concealedRepeater_Powered);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.concealedRepeater_Unpowered);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.concealedDetector);
         //TODO: doubleslabs, fluids - and all the remaining meta-dependent block models (e.g. machine, machine2) have no 'inventory' variant for the meta-less block...
     }
 
