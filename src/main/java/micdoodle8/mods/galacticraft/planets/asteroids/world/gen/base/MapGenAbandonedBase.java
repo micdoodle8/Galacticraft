@@ -3,6 +3,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 import java.util.List;
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
+import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -55,41 +61,14 @@ public class MapGenAbandonedBase extends MapGenStructure
     {
         return "GC_AbandonedBase";
     }
-
-//    @Override
-//    protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
-//    {
-//        final byte numChunks = 44;
-//        int i = chunkX;
-//        int j = chunkZ;
-//
-//        if (chunkX < 0)
-//        {
-//            chunkX -= numChunks - 1;
-//        }
-//
-//        if (chunkZ < 0)
-//        {
-//            chunkZ -= numChunks - 1;
-//        }
-//
-//        int k = chunkX / numChunks;
-//        int l = chunkZ / numChunks;
-//        Random random = this.worldObj.setRandomSeed(k, l, 10387312);
-//        k = k * numChunks;
-//        l = l * numChunks;
-//        k = k + random.nextInt(numChunks);
-//        l = l + random.nextInt(numChunks);
-//
-//        return i == k && j == l;
-//    }
-
-    //TEMP for testing
-    
+   
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        return chunkX == -1 && chunkZ == 15;
+        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.worldObj, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.worldObj.provider).getDungeonSpacing());
+        int i = (int) (dungeonPos >> 32);
+        int j = (int) dungeonPos;
+        return i == chunkX && j == chunkZ;
     }
 
     @Override
@@ -121,8 +100,8 @@ public class MapGenAbandonedBase extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        //TODO random y position, maybe search for nearby asteroids and match
-        return new MapGenAbandonedBase.Start(this.worldObj, this.rand, chunkX, chunkZ, new BaseConfiguration(220, this.rand));
+        BlockVec3 asteroid = ((WorldProviderAsteroids) this.worldObj.provider).getClosestAsteroidXZ((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, false);
+        return new MapGenAbandonedBase.Start(this.worldObj, this.rand, asteroid.x, asteroid.z, asteroid.sideDoneBits - 5, new BaseConfiguration(asteroid.y - 10, this.rand));
     }
 
     public static class Start extends StructureStart
@@ -133,11 +112,32 @@ public class MapGenAbandonedBase extends MapGenStructure
         {
         }
 
-        public Start(World worldIn, Random rand, int chunkX, int chunkZ, BaseConfiguration configuration)
+        public Start(World worldIn, Random rand, int posX, int posZ, int size, BaseConfiguration configuration)
         {
-            super(chunkX, chunkZ);
+            super(posX >> 4, posZ >> 4);
             this.configuration = configuration;
-            BaseStart startPiece = new BaseStart(configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
+            if (size < 1) size = 1;
+            size = size * (int) MathHelper.sqrt_float(size) / 4;
+            if (configuration.isHangarDeck()) size -= 6;
+            int xoffset = 0;
+            int zoffset = 0;
+            EnumFacing direction = EnumFacing.Plane.HORIZONTAL.random(rand);
+            switch (direction)
+            {
+            case NORTH:
+                zoffset = -size;
+                break;
+            case SOUTH:
+                zoffset = size;
+                break;
+            case WEST:
+                xoffset = -size;
+                break;
+            case EAST:
+                xoffset = size;
+                break;
+            }
+            BaseStart startPiece = new BaseStart(configuration, rand, posX + xoffset, posZ + zoffset, direction);
             startPiece.buildComponent(startPiece, this.components, rand);
             List<StructureComponent> list = startPiece.attachedComponents;
 

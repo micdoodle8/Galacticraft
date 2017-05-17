@@ -254,7 +254,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.datafile.markDirty();
     }
 
-    public BlockVec3 getClosestAsteroidXZ(int x, int y, int z)
+    public BlockVec3 getClosestAsteroidXZ(int x, int y, int z, boolean mark)
     {
         if (this.dataNotLoaded)
         {
@@ -272,7 +272,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
         for (AsteroidData test : this.asteroids)
         {
-            if ((test.sizeAndLandedFlag & 128) > 0)
+            if (mark && (test.sizeAndLandedFlag & 128) > 0)
             {
                 continue;
             }
@@ -293,9 +293,14 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return null;
         }
 
-        resultRoid.sizeAndLandedFlag |= 128;
-        this.writeToNBT(this.datafile.datacompound);
-        return result.clone();
+        if (mark)
+        {
+            resultRoid.sizeAndLandedFlag |= 128;
+            this.writeToNBT(this.datafile.datacompound);
+        }
+        result = result.clone();
+        result.sideDoneBits = resultRoid.sizeAndLandedFlag & 127;
+        return result;
     }
 
     public ArrayList<BlockVec3> getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
@@ -507,7 +512,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     @Override
     public int getDungeonSpacing()
     {
-        return 800;
+        return 576;
         //Used for generating Abandoned Base 
     }
 }

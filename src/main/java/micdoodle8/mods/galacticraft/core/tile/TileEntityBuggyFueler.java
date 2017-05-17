@@ -103,7 +103,13 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
         List<BlockPos> positions = new ArrayList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.BUGGY_FUEL_PAD);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
+    }
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.BUGGY_FUEL_PAD;
     }
     
     @Override

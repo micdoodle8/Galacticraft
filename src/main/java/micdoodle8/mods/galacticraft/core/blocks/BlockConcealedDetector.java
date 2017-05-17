@@ -5,6 +5,7 @@ import java.util.Random;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlayerDetector;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -114,6 +115,9 @@ public class BlockConcealedDetector extends Block implements ISortableBlock, ITi
     @Override
     public int getWeakPower(IBlockAccess worldIn, BlockPos pos, IBlockState state, EnumFacing side)
     {
+        if (worldIn instanceof World && RedstoneUtil.isBlockReceivingDirectRedstone((World) worldIn, pos))
+            return 0;
+            
         return worldIn.getBlockState(pos).getValue(DETECTED) ? 0 : 15;
     }
 

@@ -135,9 +135,15 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
 
         List<BlockPos> positions = new LinkedList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.CRYO_CHAMBER);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
     
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.CRYO_CHAMBER;
+    }
+
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,10 +14,16 @@ import net.minecraft.item.ItemStack;
 public class ContainerCargoLoader extends Container
 {
     private TileBaseElectricBlock tileEntity;
+    private boolean locked;
 
     public ContainerCargoLoader(InventoryPlayer par1InventoryPlayer, IInventory cargoLoader)
     {
         this.tileEntity = (TileBaseElectricBlock) cargoLoader;
+        if (tileEntity instanceof ILockable)
+        {
+            this.locked = ((ILockable)tileEntity).getLocked();
+        }
+
         this.addSlotToContainer(new SlotSpecific(cargoLoader, 0, 10, 27, IItemElectric.class));
 
         int var6;
@@ -47,6 +54,16 @@ public class ContainerCargoLoader extends Container
     }
 
     @Override
+    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn)
+    {
+        if (this.locked && slotId > 0 && slotId < 15)
+        {
+            return null;
+        }
+        return super.slotClick(slotId, clickedButton, mode, playerIn);
+    }
+    
+    @Override
     public boolean canInteractWith(EntityPlayer var1)
     {
         return this.tileEntity.isUseableByPlayer(var1);
@@ -65,7 +82,7 @@ public class ContainerCargoLoader extends Container
 
             if (par2 < 15)
             {
-                if (!this.mergeItemStack(var5, 15, 51, true))
+                if ((this.locked && par2 > 0) || !this.mergeItemStack(var5, 15, 51, true))
                 {
                     return null;
                 }
@@ -81,12 +98,12 @@ public class ContainerCargoLoader extends Container
                 }
                 else if (par2 < 42)
                 {
-                    if (!this.mergeItemStack(var5, 1, 15, false) && !this.mergeItemStack(var5, 42, 51, false))
+                    if ((this.locked || !this.mergeItemStack(var5, 1, 15, false)) && !this.mergeItemStack(var5, 42, 51, false))
                     {
                         return null;
                     }
                 }
-                else if (!this.mergeItemStack(var5, 1, 15, false) && !this.mergeItemStack(var5, 15, 42, false))
+                else if ((this.locked || !this.mergeItemStack(var5, 1, 15, false)) && !this.mergeItemStack(var5, 15, 42, false))
                 {
                     return null;
                 }

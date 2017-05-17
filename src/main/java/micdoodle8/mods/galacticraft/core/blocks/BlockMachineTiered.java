@@ -144,19 +144,22 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    public TileEntity createNewTileEntity(World world, int metadata)
     {
-        int metadata = getMetaFromState(state);
         int tier = metadata / 8 + 1;
 
+        TileEntity tile;
         if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
         {
-            return new TileEntityElectricFurnace(tier);
+            tile = new TileEntityElectricFurnace(tier);
         }
         else
         {
-            return new TileEntityEnergyStorageModule(tier);
+            tile = new TileEntityEnergyStorageModule(tier);
         }
+        
+        tile.setWorldObj(world);
+        return tile;
     }
 
     public ItemStack getEnergyStorageModule()

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -18,7 +19,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
+public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable, ILockable
 {
     private ItemStack[] containingItems = new ItemStack[15];
     public boolean outOfItems;
@@ -28,6 +29,8 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public boolean targetNoInventory;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean noTarget;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean locked;
 
     public ICargoEntity attachedFuelable;
 
@@ -118,6 +121,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         super.readFromNBT(par1NBTTagCompound);
         this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        this.locked = par1NBTTagCompound.getBoolean("locked");
     }
 
     @Override
@@ -125,6 +129,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         super.writeToNBT(par1NBTTagCompound);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
+        par1NBTTagCompound.setBoolean("locked", this.locked);
     }
 
     @Override
@@ -310,5 +315,20 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public EnumFacing getElectricInputDirection()
     {
         return getFront().rotateY();
+    }
+
+    @Override
+    public void clearLockedInventory()
+    {
+        for (int i = 1; i < 15; i++)
+        {
+            this.containingItems[i] = null;
+        }
+    }
+
+    @Override
+    public boolean getLocked()
+    {
+        return this.locked;
     }
 }

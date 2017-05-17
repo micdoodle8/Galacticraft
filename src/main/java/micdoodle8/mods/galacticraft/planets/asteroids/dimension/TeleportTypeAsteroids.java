@@ -82,7 +82,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 BlockVec3 bv3 = null;
                 if (world.provider instanceof WorldProviderAsteroids)
                 {
-                    bv3 = ((WorldProviderAsteroids) world.provider).getClosestAsteroidXZ(x, 0, z);
+                    bv3 = ((WorldProviderAsteroids) world.provider).getClosestAsteroidXZ(x, 0, z, true);
                 }
 
                 if (bv3 != null)

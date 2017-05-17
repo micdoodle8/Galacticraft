@@ -106,7 +106,13 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         List<BlockPos> positions = new ArrayList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.ROCKET_PAD);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
+    }
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.ROCKET_PAD;
     }
     
     @Override
