@@ -73,7 +73,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GlStateManager.scale(0.65F, 0.6F, 0.65F);
         ClientUtil.drawBakedModel(modelEntryPod);
 
-        if (entityEntryPod.posY > 382.0F)
+        if (entityEntryPod.posY > 342.0F)
         {
             RenderHelper.disableStandardItemLighting();
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
@@ -101,7 +101,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             RenderHelper.enableStandardItemLighting();
         }
 
-        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 382.0F)
+        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 242.0F)
         {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-1.4F, 1.5F, -0.3F);
