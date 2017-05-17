@@ -17,7 +17,6 @@ import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
@@ -690,7 +689,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                     {
                         count = 7;
                     }
-                    world.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px - (count > 1 ? 1 : 0), y, pz), count);
+//LIGHTEMP                    world.setLightFor(EnumSkyBlock.BLOCK, new BlockPos(px - (count > 1 ? 1 : 0), y, pz), count);
                 }
             }
         }
@@ -780,7 +779,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                 //Asteroid at min height 48, size 20, can't have lit blocks below 16
                 for (int y = 16; y < 240; y++)
                 {
-                    world.checkLightFor(EnumSkyBlock.BLOCK, new BlockPos(xPos, y, zPos));
+//LIGHTTEMP                    world.checkLightFor(EnumSkyBlock.BLOCK, new BlockPos(xPos, y, zPos));
                 }
             }
         }

@@ -71,7 +71,13 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 
         List<BlockPos> positions = new LinkedList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.SPACE_STATION_BASE);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
+    }
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.SPACE_STATION_BASE;
     }
 
     @Override

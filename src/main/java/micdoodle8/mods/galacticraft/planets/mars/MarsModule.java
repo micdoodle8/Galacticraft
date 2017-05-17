@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.planets.mars.dimension.TeleportTypeMars;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.*;
+import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
@@ -149,6 +150,7 @@ public class MarsModule implements IPlanetsModule
     {
         RecipeManagerMars.loadRecipes();
         GCPlanetDimensions.MARS = WorldUtil.getDimensionTypeById(ConfigManagerMars.dimensionIDMars);
+        ItemSchematicTier2.registerSchematicItems();
     }
 
     @Override

@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -282,7 +284,14 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         for (BlockPos vecToAdd : positions)
             ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().withProperty(BlockTelepadFake.TOP, vecToAdd.getY() == placedPosition.getY() + 2));
     }
-    
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        //Not actually used - maybe this shouldn't be an IMultiBlock at all?
+        return EnumBlockMultiType.MINER_BASE;
+    }
+
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {

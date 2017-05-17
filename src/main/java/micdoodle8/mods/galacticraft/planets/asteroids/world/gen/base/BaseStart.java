@@ -18,9 +18,9 @@ public class BaseStart extends BaseDeck
     {
     }
 
-    public BaseStart(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ)
+    public BaseStart(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing direction)
     {
-        super(configuration, rand, blockPosX, configuration.getYPosition(), blockPosZ, 1, EnumFacing.Plane.HORIZONTAL.random(rand));
+        super(configuration, rand, blockPosX, configuration.getYPosition(), blockPosZ, 1, direction);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class BaseStart extends BaseDeck
         componentBounds.add(this.boundingBox);
         listIn.clear();
         listIn.add(this);
-        List<Piece> rooms = getRooms(this, rand);
+        List<Piece> rooms = getRooms(0, this, rand);
         for(Piece next : rooms)
         {
             listIn.add(next);

@@ -50,7 +50,13 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
         this.markDirty();
         List<BlockPos> positions = new ArrayList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.NASA_WORKBENCH);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
+    }
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.NASA_WORKBENCH;
     }
     
     @Override

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.entity.ICargoEntity;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.EnumCargoLoadingState;
 import micdoodle8.mods.galacticraft.api.entity.ICargoEntity.RemovalResult;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
+import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -23,7 +24,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
+public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable, ILockable
 {
     private NonNullList<ItemStack> stacks = NonNullList.withSize(15, ItemStack.EMPTY);
     public boolean outOfItems;
@@ -33,6 +34,8 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public boolean targetNoInventory;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean noTarget;
+    @NetworkedField(targetSide = Side.CLIENT)
+    public boolean locked;
 
     public ICargoEntity attachedFuelable;
 
@@ -123,6 +126,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         super.readFromNBT(nbt);
         this.stacks = this.readStandardItemsFromNBT(nbt);
+        this.locked = nbt.getBoolean("locked");
     }
 
     @Override
@@ -130,6 +134,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         super.writeToNBT(nbt);
         this.writeStandardItemsToNBT(nbt, stacks);
+        nbt.setBoolean("locked", this.locked);
         return nbt;
     }
 
@@ -241,6 +246,70 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
         return new RemovalResult(EnumCargoLoadingState.EMPTY, ItemStack.EMPTY);
     }
 
+    //Used by Abandoned Base worldgen
+    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
+    {
+        int count = 1;
+
+        for (count = 1; count < this.stacks.size(); count++)
+        {
+            ItemStack stackAt = this.stacks.get(count);
+
+            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
+            {
+                if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
+                {
+                    if (doAdd)
+                    {
+                        stackAt.grow(stack.getCount());
+                        this.markDirty();
+                    }
+
+                    return EnumCargoLoadingState.SUCCESS;
+                }
+                else
+                {
+                    //Part of the stack can fill this slot but there will be some left over
+                    int origSize = stackAt.getCount();
+                    int surplus = origSize + stack.getCount() - stackAt.getMaxStackSize();
+
+                    if (doAdd)
+                    {
+                        stackAt.setCount(stackAt.getMaxStackSize());
+                        this.markDirty();
+                    }
+
+                    stack.setCount(surplus);
+                    if (this.addCargo(stack, doAdd) == EnumCargoLoadingState.SUCCESS)
+                    {
+                        return EnumCargoLoadingState.SUCCESS;
+                    }
+
+                    stackAt.setCount(origSize);
+                    return EnumCargoLoadingState.FULL;
+                }
+            }
+        }
+
+        for (count = 1; count < this.stacks.size(); count++)
+        {
+            ItemStack stackAt = this.stacks.get(count);
+
+            if (stackAt.isEmpty())
+            {
+                if (doAdd)
+                {
+                    this.stacks.set(count, stack);
+                    this.markDirty();
+                }
+
+                return EnumCargoLoadingState.SUCCESS;
+            }
+        }
+
+        return EnumCargoLoadingState.FULL;
+    }
+
     @Override
     public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
     {
@@ -257,5 +326,20 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public EnumFacing getElectricInputDirection()
     {
         return getFront().rotateY();
+    }
+
+    @Override
+    public void clearLockedInventory()
+    {
+        for (int i = 1; i < 15; i++)
+        {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
+    }
+
+    @Override
+    public boolean getLocked()
+    {
+        return this.locked;
     }
 }

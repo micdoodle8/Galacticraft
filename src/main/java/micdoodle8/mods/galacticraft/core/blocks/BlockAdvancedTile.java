@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -44,6 +45,10 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
     public void dropEntireInventory(World worldIn, BlockPos pos, IBlockState state)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof ILockable)
+        {
+            ((ILockable)tileEntity).clearLockedInventory();
+        }
 
         if (tileEntity != null)
         {

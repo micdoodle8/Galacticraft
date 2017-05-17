@@ -94,6 +94,10 @@ public class GCBlocks
     public static Block moonStoneStairs;
     public static Block moonBricksStairs;
     public static Block wallGC;
+    public static Block concealedRedstone;
+    public static Block concealedRepeater_Powered;
+    public static Block concealedRepeater_Unpowered;
+    public static Block concealedDetector;
 
     public static final Material machine = new Material(MapColor.IRON);
 
@@ -164,6 +168,10 @@ public class GCBlocks
         GCBlocks.moonStoneStairs = new BlockStairsGC("moon_stairs_stone", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE)).setHardness(1.5F);
         GCBlocks.moonBricksStairs = new BlockStairsGC("moon_stairs_brick", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK)).setHardness(4.0F);
         GCBlocks.wallGC = new BlockWallGC("wall_gc");
+        GCBlocks.concealedRedstone = new BlockConcealedRedstone("concealed_redstone");
+        GCBlocks.concealedRepeater_Powered = new BlockConcealedRepeater("concealed_repeater_pow", true);
+        GCBlocks.concealedRepeater_Unpowered = new BlockConcealedRepeater("concealed_repeater", false);
+        GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -178,6 +186,7 @@ public class GCBlocks
         GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
         GCBlocks.hiddenBlocks.add(GCBlocks.bossSpawner);
         GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);
+        GCBlocks.hiddenBlocks.add(GCBlocks.concealedRepeater_Powered);
 
         // Register blocks before register ores, so that the ItemStack picks up the correct item
         GCBlocks.registerBlocks();
@@ -453,6 +462,10 @@ public class GCBlocks
         registerBlock(GCBlocks.wallGC, ItemBlockWallGC.class);
         registerBlock(GCBlocks.slabGCHalf, ItemBlockSlabGC.class, GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
         registerBlock(GCBlocks.slabGCDouble, ItemBlockSlabGC.class, GCBlocks.slabGCHalf, GCBlocks.slabGCDouble);
+        registerBlock(GCBlocks.concealedRedstone, ItemBlockGC.class);
+        registerBlock(GCBlocks.concealedRepeater_Powered, ItemBlockGC.class);
+        registerBlock(GCBlocks.concealedRepeater_Unpowered, ItemBlockGC.class);
+        registerBlock(GCBlocks.concealedDetector, ItemBlockCreativeGC.class);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));
