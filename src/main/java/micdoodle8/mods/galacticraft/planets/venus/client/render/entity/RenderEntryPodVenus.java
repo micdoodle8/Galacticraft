@@ -73,7 +73,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GlStateManager.scale(0.65F, 0.6F, 0.65F);
         ClientUtil.drawBakedModel(modelEntryPod);
 
-        if (entityEntryPod.posY > 342.0F)
+        if (entityEntryPod.posY > 382.0F)
         {
             RenderHelper.disableStandardItemLighting();
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240f, 240f);
