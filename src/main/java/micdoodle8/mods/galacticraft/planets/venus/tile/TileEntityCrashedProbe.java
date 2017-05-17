@@ -14,11 +14,18 @@ import net.minecraft.world.World;
 public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefaults
 {
     private ItemStack[] containingItems = new ItemStack[6];
+    private boolean hasCoreToDrop;
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        if (nbt.hasKey("ctd"))
+        {
+            this.hasCoreToDrop = nbt.getBoolean("ctd");
+        }
+        else
+            this.hasCoreToDrop = true;   //Legacy compatibility with worlds generated before this key used
 
         NBTTagList items = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
@@ -39,6 +46,7 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefa
     public void writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setBoolean("ctd", this.hasCoreToDrop);
 
         final NBTTagList list = new NBTTagList();
 
@@ -159,5 +167,15 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefa
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
+    }
+
+    public void setDropCore()
+    {
+        this.hasCoreToDrop = true;
+    }
+
+    public boolean getDropCore()
+    {
+        return this.hasCoreToDrop;
     }
 }
