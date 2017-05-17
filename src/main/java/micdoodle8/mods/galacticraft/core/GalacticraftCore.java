@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
@@ -375,6 +376,7 @@ public class GalacticraftCore
 
         CompatibilityManager.checkForCompatibleMods();
         RecipeManagerGC.loadRecipes();
+        ItemSchematic.registerSchematicItems();
         NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
         MinecraftForge.EVENT_BUS.register(new TickHandlerServer());
         GalaxyRegistry.refreshGalaxies();
@@ -526,6 +528,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityTelemetry.class, "GC Telemetry Unit");
         GameRegistry.registerTileEntity(TileEntityPainter.class, "GC Painter");
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
+        GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
         GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
     }
 
@@ -549,6 +552,7 @@ public class GalacticraftCore
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityLander.class, "lander", 150, 5, false);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityMeteorChunk.class, "meteor_chunk", 150, 5, true);
         GCCoreUtil.registerGalacticraftNonMobEntity(EntityCelestialFake.class, "celestial_screen", 150, 5, false);
+        GCCoreUtil.registerGalacticraftNonMobEntity(EntityHangingSchematic.class, "hanging_schematic", 150, 5, false);
     }
 
     private Planet makeDummyPlanet(String name, SolarSystem system)

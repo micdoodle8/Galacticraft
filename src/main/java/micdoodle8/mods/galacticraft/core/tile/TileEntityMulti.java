@@ -131,7 +131,10 @@ public class TileEntityMulti extends TileEntity
         IMultiBlock thisTile = (IMultiBlock)this;
         
         //Client can create its own fake blocks and tiles - no need for networking in 1.8+
-        if (world.isRemote) thisTile.onCreate(world, pos);
+        if (world.isRemote)
+        {
+            thisTile.onCreate(world, pos);
+        }
         
         List<BlockPos> positions = new ArrayList();
         thisTile.getPositions(pos, positions);
@@ -150,8 +153,8 @@ public class TileEntityMulti extends TileEntity
         }
         if (result == false && !world.isRemote)
         {
-            //Try again to create all the multiblocks - needed if this TE was placed during worldgen (e.g. Asteroids Abandoned Base)
-            thisTile.onCreate(world, pos);
+//            //Try again to create all the multiblocks - currently disabled because making new tiles here interferes with server->client tileEntity sync during worldgen (Abandoned Base)
+//            thisTile.onCreate(world, pos);
         }
 
         return result;

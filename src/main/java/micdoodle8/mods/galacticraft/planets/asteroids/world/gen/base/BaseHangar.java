@@ -53,6 +53,7 @@ public class BaseHangar extends SizedPiece
         IBlockState moonWall = GCBlocks.wallGC.getStateFromMeta(2);
         IBlockState blockBars = Blocks.IRON_BARS.getDefaultState();
         IBlockState blockDesh = MarsBlocks.marsBlock.getStateFromMeta(8);
+        IBlockState blockRedstone = GCBlocks.concealedRedstone.getDefaultState();
         Block blockStair = GCBlocks.tinStairs2;
         Block arcLamp = GCBlocks.brightLamp;
         int stairmeta = 1;
@@ -140,9 +141,9 @@ public class BaseHangar extends SizedPiece
             this.setBlockState(worldIn, moonWall, xx, 1, HANGARLENGTH, structureBoundingBoxIn);
 
         this.setBlockState(worldIn, blockDesh, 9, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
-        this.setBlockState(worldIn, blockPlain, 11, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockRedstone, 11, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, blockPattern, 13, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
-        this.setBlockState(worldIn, blockPlain, 15, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
+        this.setBlockState(worldIn, blockRedstone, 15, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, blockDesh, 17, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, upsideSlab, 10, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
         this.setBlockState(worldIn, upsideSlab, 12, maxY, HANGARLENGTH - 1, structureBoundingBoxIn);
@@ -195,9 +196,9 @@ public class BaseHangar extends SizedPiece
             if (zz < HANGARLENGTH - 1)
             {
                 this.setBlockState(worldIn, blockGrid, 9, maxY, zz, structureBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 11, maxY, zz, structureBoundingBoxIn);
+                this.setBlockState(worldIn, blockRedstone, 11, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockGrid, 13, maxY, zz, structureBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 15, maxY, zz, structureBoundingBoxIn);
+                this.setBlockState(worldIn, blockRedstone, 15, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockGrid, 17, maxY, zz, structureBoundingBoxIn);
             }
             
@@ -283,10 +284,19 @@ public class BaseHangar extends SizedPiece
             else
             {
                 this.setBlockState(worldIn, blockGrid, 9, maxY, zz, structureBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 11, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockGrid, 13, maxY, zz, structureBoundingBoxIn);
-                this.setBlockState(worldIn, blockPlain, 15, maxY, zz, structureBoundingBoxIn);
                 this.setBlockState(worldIn, blockGrid, 17, maxY, zz, structureBoundingBoxIn);
+                if (zz == HANGARLENGTH - 12)
+                {
+                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(this.direction.getOpposite().getHorizontalIndex());
+                    this.setBlockState(worldIn, repeater, 11, maxY, zz, structureBoundingBoxIn);
+                    this.setBlockState(worldIn, repeater, 15, maxY, zz, structureBoundingBoxIn);
+                }
+                else
+                {
+                    this.setBlockState(worldIn, blockRedstone, 11, maxY, zz, structureBoundingBoxIn);
+                    this.setBlockState(worldIn, blockRedstone, 15, maxY, zz, structureBoundingBoxIn);
+                }
             }
             if ((zz - midPoint - 1) % 6 == 0)
             {

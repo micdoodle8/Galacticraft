@@ -1,6 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
@@ -11,14 +19,19 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 public class BaseRoom extends SizedPiece
@@ -27,6 +40,9 @@ public class BaseRoom extends SizedPiece
     private boolean nearEnd;
     private boolean farEnd;
     private int deckTier;
+    //Temporary treasure items until we have a specific Asteroids treasure
+    private static final ItemStack TREASURE1 = new ItemStack(Items.GHAST_TEAR, 2, 0);
+    private static final ItemStack TREASURE2 = new ItemStack(Items.NETHER_STAR, 1, 0);
     
     public BaseRoom()
     {
@@ -101,7 +117,8 @@ public class BaseRoom extends SizedPiece
                     //5 outer walls of the room
                     if (xx == 0 || xx == maxX || yy == 0 || yy == this.sizeY || zz == maxZ)
                     {
-                        if (this.type.blockEntrance != null && yy == 0 && zz == 0 && !(xx <= 2 || xx >= maxX - 2) && this.configuration.getDeckType() != EnumBaseType.TUNNELER)
+                        boolean xEntrance = maxX > 6 ? (xx > 2 && xx < maxX - 2) : (xx > 1 && xx < maxX - 1);
+                        if (this.type.blockEntrance != null && yy == 0 && zz == 0 && xEntrance && this.configuration.getDeckType() != EnumBaseType.TUNNELER)
                         {
                             this.setBlockState(worldIn, this.type.blockEntrance, xx, yy, zz, chunkBoundary);
                             this.setBlockState(worldIn, this.configuration.getWallBlock(), xx, yy - 1, zz, chunkBoundary);
@@ -123,17 +140,13 @@ public class BaseRoom extends SizedPiece
                     else
                     {
                         //Room internals
-                        if ((xx > 1 && xx < maxX - 1) && (zz > 0 && zz < maxZ - 1) || (yy > 1 && yy < this.sizeY - 1))
+                        if ((xx > 1 && xx < maxX - 1) && (zz > 0 && zz < maxZ - 1) || (yy > 1 && yy < this.sizeY - 1) || this.type.doEntryWallsToo)
                         {
                             BlockPos blockpos = new BlockPos(this.getXWithOffset(xx, zz), this.getYWithOffset(yy), this.getZWithOffset(xx, zz));
                             if (chunkBoundary.isVecInside(blockpos))
                             {
                                 this.buildRoomContents(worldIn, xx, yy, zz, maxX - 1, maxZ - 1, blockpos, randomInt);
                             }
-                        }
-                        else if (this.type.doEntryWallsToo && (zz == 0 && (yy > 3 || xx <= 2 || xx >= maxX - 2)) || (zz == 1 && yy == 1) && this.type.blockFloor != null)
-                        {
-                            this.setBlockState(worldIn, this.type.blockFloor, xx, yy, zz, chunkBoundary);
                         }
                         else if (this.configuration.getDeckType() == EnumBaseType.TUNNELER && (yy == 1 || yy == this.sizeY - 1))
                         {
@@ -156,7 +169,8 @@ public class BaseRoom extends SizedPiece
                         }
                         else if (yy == 1 && this.type.blockFloor != null)
                         {
-                            if (zz == 0 && (this.type.blockEntrance != null && !(xx <= 2 || xx >= maxX - 2)))
+                            boolean xEntrance = maxX > 6 ? (xx > 2 && xx < maxX - 2) : (xx > 1 && xx < maxX - 1);
+                            if (zz == 0 && (this.type.blockEntrance != null && xEntrance))
                             {
                                 this.setBlockState(worldIn, blockAir, xx, yy, zz, chunkBoundary);
                             }
@@ -186,6 +200,7 @@ public class BaseRoom extends SizedPiece
     private void buildRoomContents(World worldIn, int x, int y, int z, int maxX, int maxZ, BlockPos blockpos, int randomInt)
     {
         IBlockState state = Blocks.AIR.getDefaultState();
+        int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
         
         int facing = 0; 
         int facing1 = 0; 
@@ -236,8 +251,7 @@ public class BaseRoom extends SizedPiece
             }
             else if (y == 1)
             {
-                //Some random Netherwart, though it pops up easily
-                int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
+                //Some random Netherwart
                 if (semirand < 2)
                 {
                     state = AsteroidBlocks.spaceWart.getStateFromMeta(semirand);
@@ -278,7 +292,7 @@ public class BaseRoom extends SizedPiece
             case 1:
                 //Layer 1: wall blocks with sealable alu wire in the centre
                 if (z == 3 && xx >= 4 && x <= maxX - 2) state = GCBlocks.sealableBlock.getStateFromMeta(14);
-                else if (xx >= 3 && z > 1 &&  z < maxZ - 1) state = this.configuration.getWallBlock();
+                else if (xx >= 3 && z > 1 && (z < maxZ - 1 || z == 4)) state = this.configuration.getWallBlock();
                 break;
             case 2:
                 //Layer 2: tier 1 storage and alu wire and a switch
@@ -317,7 +331,8 @@ public class BaseRoom extends SizedPiece
         case ENGINEERING:
             if (y == 1)
             {
-                if ((z == maxZ - 2 && x == maxX / 2 + 1 || z == 3 && (x == 2 || x == maxX - 1)) && maxZ > 3)
+                int closerz = (maxZ <= 5) ? 2 : 3;
+                if ((z == maxZ - 2 && x == maxX / 2 + 1 || (z == closerz && (x == 2 || x == maxX - 1) && maxX > 5)) && maxZ > 3)
                 {
                     state = GCBlocks.nasaWorkbench.getDefaultState();
                 }
@@ -375,7 +390,7 @@ public class BaseRoom extends SizedPiece
             {
                 //Lighting
                 if (x == maxX)
-                    state = this.configuration.getWallBlock();
+                    state = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
                 else if (x == maxX - 1)
                     state = GCBlocks.brightLamp.getStateFromMeta(facingLamp);
             }
@@ -442,19 +457,21 @@ public class BaseRoom extends SizedPiece
             }
             break;
         case CRYO:
+            boolean xEntrance = maxX > 5 ? (x > 2 && x < maxX - 1) : (x > 1 && x < maxX);
+            boolean highEntrance = this.configuration.isHangarDeck() && this.configuration.getDeckType() == EnumBaseType.AVIAN;
             if (y == 1)
             {
                 //Build a dark plinth for it all at y == 1
-                if (z == 1)
+                if (z == 1 && x > 1 && x < maxX)
                 {
                     state = GCBlocks.slabGCHalf.getStateFromMeta(6);
                 }
-                else
+                else if (z != 0 || !xEntrance || highEntrance)
                 {
                     state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
                 }
             }
-            else if (z == 0 && (y > 3 || x < 3 || x > 5))
+            else if (z == 0 && (y > (highEntrance ? 5 : 3) || !xEntrance))
             {
                 //Dark ceiling and entrance wall
                 state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
@@ -462,7 +479,6 @@ public class BaseRoom extends SizedPiece
             else if (y <= 4 && (z == maxZ || x == 1 || x == maxX))
             {
                 //Around the walls: Cryo Chambers alternated with dark blocks
-                state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
                 if (z == maxZ && x % 2 == 0 && x < maxX)
                 {
                     if (y == 2)
@@ -477,15 +493,14 @@ public class BaseRoom extends SizedPiece
                         state = MarsBlocks.machine.getStateFromMeta(BlockMachineMars.CRYOGENIC_CHAMBER_METADATA + (x == 1 ? facing : facing2));
                     }
                 }
+                else
+                {
+                    state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
+                }
             }
-            else if (y < 6 && (z == maxZ || x == 1 || x == maxX))
+            else if (y > 5 || y == this.configuration.getRoomHeight() || (z == maxZ || x == 1 || x == maxX))
             {
-                //Dark top section of walls
-                state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
-            }
-            else if (y > 5)
-            {
-                //Dark ceiling
+                //Dark top section of walls and ceiling
                 state = AsteroidBlocks.blockBasic.getStateFromMeta(6);
             }
             break;
@@ -496,24 +511,109 @@ public class BaseRoom extends SizedPiece
         if (state.getBlock() instanceof ITileEntityProvider)
         {
             TileEntity tile = worldIn.getTileEntity(blockpos);
+
+            if (tile instanceof IMultiBlock)
+            {
+                List<BlockPos> positions = new LinkedList();
+                ((IMultiBlock)tile).getPositions(blockpos, positions);
+                for (BlockPos pos : positions)
+                {
+                    worldIn.setBlockState(pos, GCBlocks.fakeBlock.getDefaultState().withProperty(BlockMulti.MULTI_TYPE, ((IMultiBlock)tile).getMultiType()), 2);
+                }
+            }
+            
             if (tile instanceof TileEntityFluidTank)
             {
                 ((TileEntityFluidTank)tile).fill(null, new FluidStack(MarsModule.sludge, 16000), true);
             }
-            //TODO: fill cargo loaders, crafting tables etc with items
+            else if (tile instanceof TileEntityCargoLoader)
+            {
+                TileEntityCargoLoader loader = (TileEntityCargoLoader) tile;
+                loader.locked = true;
+                //Looks like the food supplies have gone off!
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.ROTTEN_FLESH, 64, 0), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
+                loader.addCargo(TREASURE1.copy(), true);
+                loader.addCargo(TREASURE2.copy(), true);
+            }
+            else if (tile instanceof TileEntityCrafting)
+            {
+                switch (semirand % 4)
+                {
+                case 0:
+                    break;
+                case 1:
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    break;
+                case 2:
+                    //Creeper or Zombie head
+                    int slot = semirand % 9;
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(slot,new ItemStack(Items.SKULL, 1, (semirand % 13 < 6) ? 4 : 2));
+                    break;
+                case 3:
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(4, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(7, new ItemStack(Items.STICK));
+                    break;
+                }
+            }
+            else if (tile instanceof TileEntityBrewingStand)
+            {
+                TileEntityBrewingStand stand = (TileEntityBrewingStand) tile;
+                stand.setInventorySlotContents(0, new ItemStack(Items.POTIONITEM, 1, 8196));  //Poison
+                stand.setInventorySlotContents(1, new ItemStack(Items.POTIONITEM, 1, 8200));  //Weakness
+                stand.setInventorySlotContents(2, new ItemStack(Items.POTIONITEM, 1, 8204)); //Harming
+            }
+            else if (tile instanceof TileEntityEnergyStorageModule)
+            {
+                TileEntityEnergyStorageModule store = (TileEntityEnergyStorageModule) tile;
+                if (semirand % 3 == 1)
+                {
+                    store.setInventorySlotContents(1, new ItemStack(GCItems.battery, 1, 100));
+                }
+            }
+        }
+        
+        if (this.type == EnumRoomType.ENGINEERING && y == (this.configuration.getRoomHeight() <= 4 ? 2 : 3) && z == maxZ && (x == 3 || x == 6))
+        {
+            EnumFacing hangingDirection = this.direction;
+            if (hangingDirection == EnumFacing.WEST || hangingDirection == EnumFacing.EAST)
+            {
+                //Apparently we have our North and our South reversed ?  So we don't want the opposite for North and South!
+                hangingDirection = hangingDirection.getOpposite();
+            }
+            EntityHangingSchematic entityhanging = new EntityHangingSchematic(worldIn, blockpos, hangingDirection, x / 3 - 1);
+            if (entityhanging != null)
+            {
+                worldIn.spawnEntityInWorld(entityhanging);
+                entityhanging.setSendToClient();
+            }
         }
     }
 
     
     public enum EnumRoomType 
     {
-        EMPTY(null, null, false),
-        STORE(null, null, false),
-        POWER(null, null, false),
         ENGINEERING(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false),
+        POWER(null, null, false),
+        STORE(null, null, false),
+        EMPTY(null, null, false),
         MEDICAL(Blocks.IRON_TRAPDOOR.getDefaultState(), Blocks.IRON_TRAPDOOR.getStateFromMeta(8), false),
-        CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true),
         CREW(null, null, false),
+        CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true),
         CONTROL(GCBlocks.slabGCHalf.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false);
 
         public final IBlockState blockFloor;

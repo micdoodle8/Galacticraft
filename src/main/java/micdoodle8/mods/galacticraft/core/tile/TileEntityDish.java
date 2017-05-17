@@ -144,7 +144,13 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     {
         List<BlockPos> positions = new LinkedList();
         this.getPositions(placedPosition, positions);
-        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, EnumBlockMultiType.DISH_LARGE);
+        ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
+    }
+
+    @Override
+    public BlockMulti.EnumBlockMultiType getMultiType()
+    {
+        return EnumBlockMultiType.DISH_LARGE;
     }
     
     @Override
