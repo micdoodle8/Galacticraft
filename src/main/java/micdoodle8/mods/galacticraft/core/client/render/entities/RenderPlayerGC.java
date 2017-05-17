@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -69,7 +70,10 @@ public class RenderPlayerGC extends RenderPlayer
                 armorLayerIndex = i;
             }
         }
-        if (itemLayerIndex >= 0) this.layerRenderers.set(itemLayerIndex, new LayerHeldItemGC(this));
+        if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
+        {
+            this.layerRenderers.set(itemLayerIndex, new LayerHeldItemGC(this));
+        }
         if (armorLayerIndex >= 0)
         {
             LayerRenderer playerArmor = new LayerBipedArmor(this)
