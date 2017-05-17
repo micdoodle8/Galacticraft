@@ -81,7 +81,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     @Override
     public int getThermalStrength()
     {
-        return 1;
+        return 2;
     }
 
     @Override
