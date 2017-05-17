@@ -370,11 +370,11 @@ public class BaseDeck extends SizedPiece
                             {
                                 if (x == ceilingDeco && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(0 ^ top), x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
                                 }
                                 else if (x == ceilingDeco + 1 && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(top), x, y, z, chunkBounds);
                                     if (z >= endZ - 2) ceilingDeco += ceilingSpacer;
                                 }
                                 else
@@ -483,28 +483,24 @@ public class BaseDeck extends SizedPiece
             
             //Create two levers
             int facing = 0; 
-            int leverfacing = 4;
             switch (this.direction)
             {
             case NORTH:
                 break;
             case SOUTH:
                 facing = 2;
-                leverfacing = 3;
                 break;
             case EAST:
                 facing = 1;
-                leverfacing = 1;
                 break;
             case WEST:
                 facing = 3;
-                leverfacing = 2;
             }
 
             IBlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, chunkBounds);
-            lever = Blocks.LEVER.getStateFromMeta(leverfacing);
+            lever = Blocks.LEVER.getStateFromMeta(3);
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ - 1, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ - 1, chunkBounds);
             
