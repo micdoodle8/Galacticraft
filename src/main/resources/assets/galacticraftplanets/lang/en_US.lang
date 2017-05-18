@@ -212,6 +212,7 @@ item.methane_canister.name=Filled Methane Gas Canister
 item.methane_canister_partial.name=Methane Gas Canister
 item.orion_drive.name=Orion Drive
 item.prelaunch_checklist.name=Pre-Launch Checklist
+item.radioisotope_core.name=Radioisotope Core
 item.raw_desh.name=Unrefined Desh
 item.reinforced_plate_t2.name=Heavy-Duty Plate
 item.reinforced_plate_t3.name=Heavy-Duty Plate

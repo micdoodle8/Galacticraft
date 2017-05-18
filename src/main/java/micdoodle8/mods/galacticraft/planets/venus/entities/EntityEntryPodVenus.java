@@ -88,12 +88,12 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
             {
                 this.motionY -= 0.002D;
 
-                if (this.motionY < -0.5F)
+                if (this.motionY < -0.7F)
                 {
                     this.motionY *= 0.994F;
                 }
 
-                if (this.posY <= 382.0F)
+                if (this.posY <= 242.0F)
                 {
                     if (groundPosY == null)
                     {
@@ -104,6 +104,8 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
                     {
                         this.motionY *= 0.995F;
                     }
+                    else
+                        this.motionY *= 0.9995F;
                 }
             }
         }

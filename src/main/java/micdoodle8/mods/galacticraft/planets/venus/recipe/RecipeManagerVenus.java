@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.recipe;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.item.ItemStack;
@@ -23,5 +24,8 @@ public class RecipeManagerVenus
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 7), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 8), new ItemStack(VenusItems.basicItem, 1, 1), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 11), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
+
+        // Atomic Battery
+        RecipeUtil.addRecipe(new ItemStack(VenusItems.atomicBattery, 1, 0), new Object[] { "XXX", "XYX", "XXX", 'X', new ItemStack(VenusItems.basicItem, 1, 1), 'Y', new ItemStack(VenusItems.basicItem, 1, 2) });
     }
 }

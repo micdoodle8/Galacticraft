@@ -45,6 +45,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.zip.ZipEntry;
@@ -394,5 +395,49 @@ public class GCCoreUtil
             return stack;
         }
         return null;
+    }
+
+    //For performance
+    public static List<BlockPos> getPositionsAdjoining(BlockPos pos)
+    {
+        LinkedList<BlockPos> result = new LinkedList<>();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
+        return result;
+    }
+    
+    //For performance
+    public static List<BlockPos> getPositionsAdjoining(int x, int y, int z)
+    {
+        LinkedList<BlockPos> result = new LinkedList<>();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
+        return result;
+    }
+    
+    //For performance
+    public static void getPositionsAdjoining(BlockPos pos, List<BlockPos> result)
+    {
+        result.clear();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
     }
 }
