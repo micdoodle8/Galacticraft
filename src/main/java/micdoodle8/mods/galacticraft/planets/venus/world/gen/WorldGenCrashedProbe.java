@@ -84,6 +84,8 @@ public class WorldGenCrashedProbe extends WorldGenerator
 //            ChestGenHooks info = ChestGenHooks.getInfo(BlockCrashedProbe.CRASHED_PROBE);
 //
 //            WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), probe, info.getCount(rand));
+            
+            probe.setDropCore();
         }
 
         return true;

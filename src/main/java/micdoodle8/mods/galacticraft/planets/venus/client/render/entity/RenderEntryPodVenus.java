@@ -101,7 +101,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             RenderHelper.enableStandardItemLighting();
         }
 
-        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 382.0F)
+        if (entityEntryPod.getGroundPosY() != null && entityEntryPod.posY - entityEntryPod.getGroundPosY() > 5.0F && entityEntryPod.posY <= 242.0F)
         {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-1.4F, 1.5F, -0.3F);

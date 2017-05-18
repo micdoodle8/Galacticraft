@@ -2254,6 +2254,7 @@ public class GuiCelestialSelection extends GuiScreen
         worldRenderer.pos(width, 0.0D, -90.0D).endVertex();
         worldRenderer.pos(0.0D, 0.0D, -90.0D).endVertex();
         tessellator.draw();
+        GL11.glDepthMask(true);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ItemBasicVenus extends ItemDesc implements ISortableItem
 {
-    public static String[] names = { "shield_controller", "ingot_lead" };
+    public static String[] names = { "shield_controller", "ingot_lead", "radioisotope_core" };
 
     public ItemBasicVenus(String name)
     {
@@ -89,7 +89,7 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
     {
-        if (player instanceof EntityPlayerMP)
+        if (player instanceof EntityPlayerMP && itemStack.getItemDamage() == 0)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(10);

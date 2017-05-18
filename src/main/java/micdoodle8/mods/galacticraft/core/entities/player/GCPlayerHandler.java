@@ -551,16 +551,17 @@ public class GCPlayerHandler
                     lowestThermalStrength += ((IItemThermal) thermalPaddingBoots.getItem()).getThermalStrength();
                 }
                 lowestThermalStrength /= 4.0F;
+                lowestThermalStrength = Math.abs(lowestThermalStrength);  //It shouldn't be negative, but just in case!
             }
 
             IGalacticraftWorldProvider provider = (IGalacticraftWorldProvider) player.worldObj.provider;
             float thermalLevelMod = provider.getThermalLevelModifier();
-            double absThermalLevelMod = Math.abs(thermalLevelMod);
+            float absThermalLevelMod = Math.abs(thermalLevelMod);
 
             if (absThermalLevelMod > 0D)
             {
-                int thermalLevelCooldownBase = Math.abs(MathHelper.floor_double(200 / thermalLevelMod));
-                int normaliseCooldown = Math.abs(MathHelper.floor_double(150 / lowestThermalStrength));
+                int thermalLevelCooldownBase = Math.abs(MathHelper.floor_float(200 / thermalLevelMod));
+                int normaliseCooldown = MathHelper.floor_float(150 / lowestThermalStrength);
                 int thermalLevelTickCooldown = thermalLevelCooldownBase;
                 if (thermalLevelTickCooldown < 1)
                 {
@@ -569,9 +570,10 @@ public class GCPlayerHandler
 
                 if (thermalPaddingHelm != null && thermalPaddingChestplate != null && thermalPaddingLeggings != null && thermalPaddingBoots != null)
                 {
-                    thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
-                    absThermalLevelMod = Math.abs(thermalLevelMod);
-                    normaliseCooldown = MathHelper.floor_double(normaliseCooldown / absThermalLevelMod);
+                    //If the thermal strength exceeds the dimension's thermal level mod, it can't improve the normalise
+                    //This factor of 1.5F is chosen so that a combination of Tier 1 and Tier 2 thermal isn't enough to normalise on Venus (three Tier 2, one Tier 1 stays roughly constant)
+                    float relativeFactor = Math.max(1.0F, absThermalLevelMod / lowestThermalStrength) / 1.5F;
+                    normaliseCooldown = MathHelper.floor_float(normaliseCooldown / absThermalLevelMod * relativeFactor);
                     if (normaliseCooldown < 1)
                     {
                         normaliseCooldown = 1;   //Prevent divide by zero errors
@@ -581,6 +583,8 @@ public class GCPlayerHandler
                     {
                         this.normaliseThermalLevel(player, playerStats, 1);
                     }
+                    thermalLevelMod /= Math.max(1.0F, lowestThermalStrength / 2.0F);
+                    absThermalLevelMod = Math.abs(thermalLevelMod);
                 }
 
                 if (OxygenUtil.isAABBInBreathableAirBlock(player, true))
