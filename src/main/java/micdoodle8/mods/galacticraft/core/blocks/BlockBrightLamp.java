@@ -35,7 +35,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         this.setHardness(0.1F);
         this.setStepSound(Block.soundTypeMetal);
         this.setUnlocalizedName(assetName);
-        this.setLightLevel(1.0F);
+        this.setLightLevel(0.9F);
     }
 
     @Override
@@ -58,6 +58,12 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         return 0;
     }
 
+    @Override
+    public int getLightOpacity(IBlockAccess world, BlockPos pos)
+    {
+        return 1;
+    }
+    
     @Override
     public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
     {

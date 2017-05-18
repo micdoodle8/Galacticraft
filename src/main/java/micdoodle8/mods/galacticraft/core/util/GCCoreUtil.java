@@ -33,6 +33,7 @@ import net.minecraftforge.fml.common.registry.LanguageRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -353,5 +354,46 @@ public class GCCoreUtil
         }
 
         return Side.CLIENT;
+    }
+    
+    public static List<BlockPos> getPositionsAdjoining(BlockPos pos)
+    {
+        LinkedList<BlockPos> result = new LinkedList<>();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
+        return result;
+    }
+    
+    public static List<BlockPos> getPositionsAdjoining(int x, int y, int z)
+    {
+        LinkedList<BlockPos> result = new LinkedList<>();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
+        return result;
+    }
+    
+    public static void getPositionsAdjoining(BlockPos pos, List<BlockPos> result)
+    {
+        result.clear();
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
+        result.add(new BlockPos(x, y - 1, z));
+        result.add(new BlockPos(x, y + 1, z));
+        result.add(new BlockPos(x, y, z - 1));
+        result.add(new BlockPos(x, y, z + 1));
+        result.add(new BlockPos(x - 1, y, z));
+        result.add(new BlockPos(x + 1, y, z));
     }
 }
