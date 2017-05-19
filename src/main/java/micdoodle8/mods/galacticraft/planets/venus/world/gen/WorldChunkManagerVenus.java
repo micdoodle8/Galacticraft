@@ -135,7 +135,7 @@ public class WorldChunkManagerVenus extends WorldChunkManager
             }
             else
             {
-                listToReuse[i] = BiomeGenBase.beach; // TODO Replace with venus default
+                listToReuse[i] = BiomeGenBaseVenus.venusFlat;
             }
         }
 
