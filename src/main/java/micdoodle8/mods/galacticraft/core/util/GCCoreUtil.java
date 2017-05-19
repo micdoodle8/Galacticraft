@@ -362,8 +362,8 @@ public class GCCoreUtil
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        result.add(new BlockPos(x, y - 1, z));
-        result.add(new BlockPos(x, y + 1, z));
+        if (y > 0) result.add(new BlockPos(x, y - 1, z));
+        if (y < 255) result.add(new BlockPos(x, y + 1, z));
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
@@ -374,8 +374,8 @@ public class GCCoreUtil
     public static List<BlockPos> getPositionsAdjoining(int x, int y, int z)
     {
         LinkedList<BlockPos> result = new LinkedList<>();
-        result.add(new BlockPos(x, y - 1, z));
-        result.add(new BlockPos(x, y + 1, z));
+        if (y > 0) result.add(new BlockPos(x, y - 1, z));
+        if (y < 255) result.add(new BlockPos(x, y + 1, z));
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
@@ -389,8 +389,8 @@ public class GCCoreUtil
         int x = pos.getX();
         int y = pos.getY();
         int z = pos.getZ();
-        result.add(new BlockPos(x, y - 1, z));
-        result.add(new BlockPos(x, y + 1, z));
+        if (y > 0) result.add(new BlockPos(x, y - 1, z));
+        if (y < 255) result.add(new BlockPos(x, y + 1, z));
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
