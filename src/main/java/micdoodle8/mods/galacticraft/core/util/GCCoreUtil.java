@@ -371,16 +371,30 @@ public class GCCoreUtil
         return result;
     }
     
-    public static List<BlockPos> getPositionsAdjoining(int x, int y, int z)
+    public static void getPositionsAdjoining(int x, int y, int z, List<BlockPos> result)
     {
-        LinkedList<BlockPos> result = new LinkedList<>();
+        result.clear();
         if (y > 0) result.add(new BlockPos(x, y - 1, z));
         if (y < 255) result.add(new BlockPos(x, y + 1, z));
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
-        return result;
+    }
+    
+    public static void getPositionsAdjoiningLoaded(int x, int y, int z, List<BlockPos> result, World world)
+    {
+        result.clear();
+        if (y > 0) result.add(new BlockPos(x, y - 1, z));
+        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        BlockPos pos = new BlockPos(x, y, z - 1);
+        if ((z & 15) > 0 || world.isBlockLoaded(pos, false)) result.add(pos);
+        pos = new BlockPos(x, y, z + 1);
+        if ((z & 15) < 15 || world.isBlockLoaded(pos, false)) result.add(pos);
+        pos = new BlockPos(x - 1, y, z);
+        if ((x & 15) > 0 || world.isBlockLoaded(pos, false)) result.add(pos);
+        pos = new BlockPos(x + 1, y, z);
+        if ((x & 15) < 15 || world.isBlockLoaded(pos, false)) result.add(pos);
     }
     
     public static void getPositionsAdjoining(BlockPos pos, List<BlockPos> result)

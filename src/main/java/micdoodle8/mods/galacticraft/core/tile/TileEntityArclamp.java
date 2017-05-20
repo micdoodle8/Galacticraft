@@ -47,16 +47,19 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     private int sideRear = 0;
     public int facing = 0;
     private HashSet<BlockVec3> airToRestore = new HashSet();
-    private static intBucket[] buckets;
-    private static AtomicBoolean usingBuckets = new AtomicBoolean();
-    /**
-     * Every element is a packed bit value: 0000000000LLLLzzzzzzyyyyyyxxxxxx. The
-     * 4-bit L is a light level used when darkening blocks. 6-bit numbers x, y and z represent the block's offset from
-     * the original block, plus 32 (i.e. value of 31 would mean a -1 offset
-     */
-    private static int[] lightUpdateBlockList;
-    private static final int SIZELIST = 32768;
-    private static AtomicBoolean usingLightList = new AtomicBoolean();
+    private intBucket[] buckets;
+    private static intBucket[] bucketsServer;
+    private static intBucket[] bucketsClient;
+    private static AtomicBoolean usingBucketsServer = new AtomicBoolean();
+    private static AtomicBoolean usingBucketsClient = new AtomicBoolean();
+    private AtomicBoolean usingBuckets;
+    private static final int SIZELIST = 65536;
+    private int[] lightUpdateBlockList;
+    private static int[] lightUpdateBlockListServer = null;
+    private static int[] lightUpdateBlockListClient = null;
+    private static AtomicBoolean usingLightListServer = new AtomicBoolean();
+    private static AtomicBoolean usingLightListClient = new AtomicBoolean();
+    private AtomicBoolean usingLightList;
     private boolean isActive = false;
     private AxisAlignedBB thisAABB;
     private AxisAlignedBB renderAABB;
@@ -65,9 +68,10 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
 
     static
     {
-        buckets = new intBucket[256];
-        lightUpdateBlockList = new int[SIZELIST];
-        checkedInit();
+        bucketsServer = new intBucket[256];
+        bucketsClient = new intBucket[256];
+        checkedInit(bucketsServer);
+        checkedInit(bucketsClient);
     }
     
     @Override
@@ -222,11 +226,27 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         this.thisAABB = null;
         if (this.worldObj.isRemote)
         {
+            this.buckets = bucketsClient;
+            this.usingBuckets = usingBucketsClient;
+            if (lightUpdateBlockListClient == null)
+            {
+                lightUpdateBlockListClient = new int[SIZELIST];
+            }
+            this.lightUpdateBlockList = lightUpdateBlockListClient;
+            this.usingLightList = usingLightListClient;
             this.clientOnLoad();
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
         else
         {
+            this.buckets = bucketsServer;
+            this.usingBuckets = usingBucketsServer;
+            if (lightUpdateBlockListServer == null)
+            {
+                lightUpdateBlockListServer = new int[SIZELIST];
+            }
+            this.lightUpdateBlockList = lightUpdateBlockListServer;
+            this.usingLightList = usingLightListServer;
             this.isActive = this.pos.getX() >= -30000000 + 32 && this.pos.getZ() >= -30000000 + 32 && this.pos.getX() < 30000000 - 32 && this.pos.getZ() < 30000000 -32;
         }
     }
@@ -241,10 +261,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
 
     public void lightArea()
     {
-        if (usingBuckets.getAndSet(true))
+        if (this.usingBuckets.getAndSet(true) || this.usingLightList.getAndSet(true))
         {
             return;
         }
+//        long time1 = System.nanoTime();
+        int index = 0;
         Block air = Blocks.air;
         Block breatheableAirID = GCBlocks.breatheableAir;
         IBlockState brightAir = GCBlocks.brightAir.getDefaultState();
@@ -405,11 +427,13 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     if (Blocks.air == id)
                     {
                         this.brightenAir(world, vec, brightAir);
+                        index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
                         dirty = true;
                     }
                     else if (id == breatheableAirID)
                     {
                         this.brightenAir(world, vec, brightBreatheableAir);
+                        index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
                         dirty = true;
                     }
                 }
@@ -422,17 +446,37 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             nextLayer = new LinkedList<BlockVec3>();
         }
 
-        if (dirty) this.markDirty();
+        if (dirty)
+        {
+            this.markDirty();
+            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+        }
         
         //Look for any holdover bright blocks which are no longer lit (e.g. because the Arc Lamp became blocked in a tunnel)
         airToRevert.removeAll(airNew);
+        index = 0;
+        dirty = false;
         for (Object obj : airToRevert)
         {
             BlockVec3 vec = (BlockVec3) obj;
             this.setDarkerAir(vec);
+            index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
             this.airToRestore.remove(vec);
+            dirty = true;
         }
-        usingBuckets.set(false);
+
+        if (dirty)
+        {
+            this.markDirty();
+            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+        }
+
+//        long time3 = System.nanoTime();
+//        float total = (time3 - time1) / 1000000.0F;
+//        GCLog.info("   Total Time taken: " + String.format("%.2f", total) + "ms");
+
+        this.usingBuckets.set(false);
+        this.usingLightList.set(false);
     }
 
     @Override
@@ -496,16 +540,15 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         BlockPos blockpos = vec.toBlockPos();
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(blockpos);
         IBlockState oldState = chunk.setBlockState(blockpos, newState);
-        if (this.worldObj.isRemote) this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+        if (this.worldObj.isRemote && oldState != null) this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
-        this.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
-        //No lighting update on server for now - seems to cause a lot of lag
         this.airToRestore.add(vec);
     }
     
     private void setDarkerAir(BlockVec3 vec)
     {
-        Block b = vec.getBlock(this.worldObj);
+        BlockPos blockpos = vec.toBlockPos();
+        Block b = this.worldObj.getBlockState(blockpos).getBlock();
         IBlockState newState;
         if (b == GCBlocks.brightAir)
         {
@@ -520,33 +563,37 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             return;
         }
             
-//      Replicate:  this.worldObj.setBlockState(pos, newState, (this.worldObj.isRemote) ? 2 : 0);
-        BlockPos blockpos = vec.toBlockPos();
+//      Roughly similar to:  this.worldObj.setBlockState(pos, newState, (this.worldObj.isRemote) ? 2 : 0);
+        
         Chunk chunk = this.worldObj.getChunkFromBlockCoords(blockpos);
         IBlockState oldState = chunk.setBlockState(blockpos, newState);
-        if (this.worldObj.isRemote) this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+        if (this.worldObj.isRemote && oldState != null) this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
-        this.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
-        //No lighting update on server for now - seems to cause a lot of lag
     }
 
     private void revertAir()
     {
+        int index = 0;
         for (BlockVec3 vec : this.airToRestore)
         {
             this.setDarkerAir(vec);
+        }
+        if (!this.usingLightList.getAndSet(true))
+        {
+            for (BlockVec3 vec : this.airToRestore)
+            {
+                index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
+            }
+            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+            this.usingLightList.set(false);
         }
         this.airToRestore.clear();
         this.checkLightFor(EnumSkyBlock.BLOCK, this.pos);
     }
 
-    public boolean checkLightFor(EnumSkyBlock lightType, BlockPos pos)
+    public boolean checkLightFor(EnumSkyBlock lightType, BlockPos bp)
     {
-        if (!this.worldObj.isAreaLoaded(pos, 17, false))
-        {
-            return false;
-        }
-        if (usingLightList.getAndSet(true))
+        if (!this.worldObj.isAreaLoaded(bp, 17, false))
         {
             return false;
         }
@@ -555,13 +602,17 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         BlockPos blockpos;
         int i = 0;
         int index = 0;
-        int savedLight = world.getLightFor(lightType, pos);
-        int rawLight = this.getRawLight(pos, lightType);
-        int x = pos.getX() - 32;
-        int y = pos.getY() - 32;
-        int z = pos.getZ() - 32;
+        int savedLight = world.getLightFor(lightType, bp);
+        int rawLight = this.getRawLight(bp, lightType);
+        int testx = bp.getX();
+        int testy = bp.getY();
+        int testz = bp.getZ();
+        int x = testx - 32;
+        int y = testy - 32;
+        int z = testz - 32;
         int value, opacity, arraylight;
         int xx, yy, zz, range;
+        LinkedList<BlockPos> result = new LinkedList<>();
 
         if (rawLight > savedLight)  //Light switched on
         {
@@ -586,10 +637,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     {
                         this.setLightFor_preChecked(lightType, blockpos, 0);  //= flagdone
 
-                        range = MathHelper.abs_int(xx - x - 32) + MathHelper.abs_int(yy - y - 32) + MathHelper.abs_int(zz - z - 32);
+                        range = MathHelper.abs_int(xx - testx) + MathHelper.abs_int(yy - testy) + MathHelper.abs_int(zz - testz);
                         if (range < 17)
                         {
-                            for (BlockPos vec : GCCoreUtil.getPositionsAdjoining(xx, yy, zz))
+                            GCCoreUtil.getPositionsAdjoining(xx, yy, zz, result);
+                            for (BlockPos vec : result)
                             {
                                 savedLight = world.getLightFor(lightType, vec);
                                 if (savedLight == 0) continue;  //eliminate backtracking
@@ -623,13 +675,15 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             if (rawLight != savedLight)
             {
                 this.setLightFor_preChecked(lightType, blockpos, rawLight);   //<-------the light setting
+                if (world.isRemote) world.notifyLightSet(blockpos);
 
                 if (rawLight > savedLight)
                 {
-                    range = MathHelper.abs_int(xx - x - 32) + MathHelper.abs_int(yy - y - 32) + MathHelper.abs_int(zz - z - 32);
+                    range = MathHelper.abs_int(xx - testx) + MathHelper.abs_int(yy - testy) + MathHelper.abs_int(zz - testz);
                     if (range < 17 && index < SIZELIST - 6)
                     {
-                        for (BlockPos vec : GCCoreUtil.getPositionsAdjoining(xx, yy, zz))
+                        GCCoreUtil.getPositionsAdjoining(xx, yy, zz, result);
+                        for (BlockPos vec : result)
                         {
                             if (world.getLightFor(lightType, vec) < rawLight - 1)  //-1 here because opacity can't be less than 1 in getRawLight
                             {
@@ -640,72 +694,186 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     }
                 }
             }
+            else if (world.isRemote && savedLight != ((value >> 21) & 15))
+            {
+                world.notifyLightSet(blockpos);
+            }
         }
 
-        usingLightList.set(false);
         return true;
     }
 
+    public int checkLightPartA(EnumSkyBlock lightType, BlockPos bp, int indexIn)
+    {
+        if (indexIn >= SIZELIST)
+        {
+            return indexIn;
+        }
+
+        World world = this.worldObj;
+        BlockPos blockpos;
+        int i = indexIn;
+        int iNextStart = 0;
+        int index = indexIn;
+        int savedLight = world.getLightFor(lightType, bp);
+        int rawLight = this.getRawLight(bp, lightType);
+        int x = this.pos.getX() - 64;
+        int y = this.pos.getY() - 64;
+        int z = this.pos.getZ() - 64;
+        int testx = bp.getX();
+        int testy = bp.getY();
+        int testz = bp.getZ();
+        int value, opacity, arraylight;
+        int xx, yy, zz, range;
+        LinkedList<BlockPos> neighbours = new LinkedList<>();
+
+        if (rawLight > savedLight)  //Light switched on
+        {
+            lightUpdateBlockList[index++] = ((testz - z << 7) + testy - y << 7) + testx - x;
+        }
+        else if (rawLight < savedLight)  //Light switched off:  savedLight cannot be 0 here
+        {
+            lightUpdateBlockList[index++] = ((testz - z << 7) + testy - y << 7) + testx - x | savedLight << 21;
+            this.setLightFor_preChecked(lightType, bp, 0);
+
+            while (i < index)
+            {
+                value = lightUpdateBlockList[i++];
+                xx = (value & 127) + x;
+                yy = (value >> 7 & 127) + y;
+                zz = (value >> 14 & 127) + z;
+                range = MathHelper.abs_int(xx - testx) + MathHelper.abs_int(yy - testy) + MathHelper.abs_int(zz - testz);
+                if (range < 17)
+                {
+                    arraylight = value >> 21 & 15;
+                    GCCoreUtil.getPositionsAdjoiningLoaded(xx, yy, zz, neighbours, world);
+                    for (BlockPos vec : neighbours)
+                    {
+                        savedLight = world.getLightFor(lightType, vec);
+                        if (savedLight == 0) continue;  //eliminate backtracking
+                        opacity = world.getBlockState(vec).getBlock().getLightOpacity();
+                        if (opacity <= 0) opacity = 1;
+                        //Tack positions onto the list as long as it looks like lit from here. i.e. saved light is adjacent light - opacity!
+                        //There will be some errors due to coincidence / equality of light levels from 2 sources
+                        if (savedLight == arraylight - opacity && index < SIZELIST)
+                        {
+                            lightUpdateBlockList[index++] = vec.getX() - x + (((savedLight << 7) + vec.getZ() - z << 7) + vec.getY() - y << 7);
+                            this.setLightFor_preChecked(lightType, vec, 0);  //darken everything ready for re-light
+                        }
+                    }
+                }
+            }
+
+            i = indexIn;
+        }
+        return index;
+    }
+
+    public boolean checkLightPartB(EnumSkyBlock lightType, int index)
+    {
+        World world = this.worldObj;
+        BlockPos blockpos;
+        int i = 0;
+        int savedLight, rawLight;
+        int testx = this.pos.getX();
+        int testy = this.pos.getY();
+        int testz = this.pos.getZ();
+        int x = testx - 64;
+        int y = testy - 64;
+        int z = testz - 64;
+        int value;
+        int xx, yy, zz, range;
+        LinkedList<BlockPos> neighbours = new LinkedList<>();
+
+        while (i < index)
+        {
+            value = lightUpdateBlockList[i++];
+            xx = (value & 127) + x;
+            yy = (value >> 7 & 127) + y;
+            zz = (value >> 14 & 127) + z;
+            blockpos = new BlockPos(xx, yy, zz);
+            savedLight = world.getLightFor(lightType, blockpos);
+            rawLight = this.getRawLight(blockpos, lightType);
+
+            if (rawLight != savedLight)
+            {
+                this.setLightFor_preChecked(lightType, blockpos, rawLight);   //<-------the light setting
+                if (world.isRemote) world.notifyLightSet(blockpos);
+
+                if (rawLight > savedLight)
+                {
+                    range = MathHelper.abs_int(xx - testx) + MathHelper.abs_int(yy - testy) + MathHelper.abs_int(zz - testz);
+                    if (range < 34 && index < SIZELIST - 6)
+                    {
+                        GCCoreUtil.getPositionsAdjoiningLoaded(xx, yy, zz, neighbours, world);
+                        for (BlockPos vec : neighbours)
+                        {
+                            if (world.getLightFor(lightType, vec) < rawLight - 1)  //-1 here because opacity can't be less than 1 in getRawLight
+                            {
+                                //Tack even more positions on to the end of the list - this propagates each time we find a light source block... including going back over old positions
+                                lightUpdateBlockList[index++] = vec.getX() - x + ((vec.getZ() - z << 7) + vec.getY() - y << 7);
+                            }
+                        }
+                    }
+                }
+            }
+            else if (world.isRemote && savedLight != ((value >> 21) & 15))
+            {
+                world.notifyLightSet(blockpos);
+            }
+        }
+        return true;
+    }
+    
 /**
  * From vanilla.  This is buggy, gets confused if two low opacity blocks adjacent (e.g. redstone wire, stairs)
  * if those blocks are receiving similar light levels from another source
  */
     private int getRawLight(BlockPos pos, EnumSkyBlock lightType)
     {
-        {
-            Block block = this.worldObj.getBlockState(pos).getBlock();
-            int blockLight = block.getLightValue(this.worldObj, pos);
-            int light = lightType == EnumSkyBlock.SKY ? 0 : blockLight;
+        Block block = this.worldObj.getBlockState(pos).getBlock();
+        int blockLight = block.getLightValue(this.worldObj, pos);
+        int light = lightType == EnumSkyBlock.SKY ? 0 : blockLight;
 
-            if (light >= 14)
+        if (light < 14)
+        {
+            int opacity = block.getLightOpacity(this.worldObj, pos);
+            if (opacity < 1)
             {
-                return light;
+                opacity = 1;
             }
-            else
+            else if (opacity >= 15)
             {
-                int opacity = block.getLightOpacity(this.worldObj, pos);
-                if (opacity < 1)
+                if (blockLight > 0)
                 {
                     opacity = 1;
                 }
-                else if (opacity >= 15)
+                else
                 {
-                    if (blockLight > 0)
-                    {
-                        opacity = 1;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
+                    return 0;
                 }
+            }
 
-                for (BlockPos blockpos : GCCoreUtil.getPositionsAdjoining(pos))
+            for (BlockPos blockpos : GCCoreUtil.getPositionsAdjoining(pos))
+            {
+                int neighbourLight = this.worldObj.getLightFor(lightType, blockpos) - opacity;  //Easily picks up neighbour lighting if opacity is low...
+                if (neighbourLight > light)
                 {
-                    int neighbourLight = this.worldObj.getLightFor(lightType, blockpos) - opacity;  //Easily picks up neighbour lighting if opacity is low...
-                    if (neighbourLight > light)
+                    if (neighbourLight >= 14)
                     {
-                        if (neighbourLight >= 14)
-                        {
-                            return neighbourLight;
-                        }
-                        light = neighbourLight;
+                        return neighbourLight;
                     }
+                    light = neighbourLight;
                 }
-
-                return light;
             }
         }
+
+        return light;
     }
     
     private void setLightFor_preChecked(EnumSkyBlock type, BlockPos pos, int lightValue)
     {
-        if (this.worldObj.getChunkProvider().chunkExists(pos.getX() >> 4, pos.getZ() >> 4))
-        {
-            Chunk chunk = this.worldObj.getChunkFromChunkCoords(pos.getX() >> 4, pos.getZ() >> 4);
-            chunk.setLightFor(type, pos, lightValue);
-            if (this.worldObj.isRemote) this.worldObj.notifyLightSet(pos);
-        }
+        this.worldObj.getChunkFromChunkCoords(pos.getX() >> 4, pos.getZ() >> 4).setLightFor(type, pos, lightValue);
     }
 
     public boolean getEnabled()
@@ -776,7 +944,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         return bucket.contains(y + ((dx & 0x3FF0) + ((dz & 0x3FF0) << 10) << 4));
     }
 
-    private static void checkedInit()
+    private static void checkedInit(intBucket[] buckets)
     {
         for (int i = 0; i < 256; i++)
         {
@@ -784,17 +952,17 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         }
     }
 
-    private static void checkedClear()
+    private void checkedClear()
     {
         for (int i = 0; i < 256; i++)
         {
-            buckets[i].clear();
+            this.buckets[i].clear();
         }
     }
 
     public static class intBucket
     {
-        private int maxSize = 24;  //default size
+        private int maxSize = 12;  //default size
         private int size = 0;
         private int[] table = new int[maxSize];
         
