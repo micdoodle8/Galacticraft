@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
+import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.init.Blocks;
@@ -74,17 +75,7 @@ public class WorldGenCrashedProbe extends WorldGenerator
 
         if (probe != null)
         {
-            for (int i = 0; i < probe.getSizeInventory(); ++i)
-            {
-                // Clear contents
-                probe.setInventorySlotContents(i, null);
-            }
-
-            // TODO
-//            ChestGenHooks info = ChestGenHooks.getInfo(BlockCrashedProbe.CRASHED_PROBE);
-//
-//            WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), probe, info.getCount(rand));
-            
+            probe.setLootTable(LootHandlerGC.TABLE_CRASHED_PROBE, rand.nextLong());
             probe.setDropCore();
         }
 
