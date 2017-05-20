@@ -371,16 +371,31 @@ public class GCCoreUtil
         return result;
     }
     
-    public static List<BlockPos> getPositionsAdjoining(int x, int y, int z)
+    public static void getPositionsAdjoining(int x, int y, int z, List<BlockPos> result)
     {
-        LinkedList<BlockPos> result = new LinkedList<>();
+        result.clear();
         if (y > 0) result.add(new BlockPos(x, y - 1, z));
         if (y < 255) result.add(new BlockPos(x, y + 1, z));
         result.add(new BlockPos(x, y, z - 1));
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
-        return result;
+    }
+    
+    public static void getPositionsAdjoiningLoaded(int x, int y, int z, List<BlockPos> result, World world)
+    {
+        result.clear();
+        if (y > 0) result.add(new BlockPos(x, y - 1, z));
+        if (y < 255) result.add(new BlockPos(x, y + 1, z));
+        if ((z - 1) % 16 < 15 || isChunkLoaded(world, x >> 4, (z - 1) >> 4, false)) result.add(new BlockPos(x, y, z - 1));
+        if ((z + 1) % 16 > 0 || isChunkLoaded(world, x >> 4, (z + 1) >> 4, false)) result.add(new BlockPos(x, y, z + 1));
+        if ((x - 1) % 16 < 15 || isChunkLoaded(world, (x - 1) >> 4, z >> 4, false)) result.add(new BlockPos(x - 1, y, z));
+        if ((x + 1) % 16 > 0 || isChunkLoaded(world, (x + 1) >> 4, z >> 4, false)) result.add(new BlockPos(x + 1, y, z));
+    }
+    
+    public static boolean isChunkLoaded(World world, int cx, int cz, boolean allowEmpty)
+    {
+        return world.getChunkProvider().chunkExists(cx, cz) && (allowEmpty || !world.getChunkProvider().provideChunk(cx, cz).isEmpty());
     }
     
     public static void getPositionsAdjoining(BlockPos pos, List<BlockPos> result)
