@@ -421,13 +421,17 @@ copy and distribute the API to the extent required for interoperability reasons.
 
 reverse engineer it or otherwise use it for that person's own personal use
 
-or any non-commercial academic purpose (but this does not permit distribution).
+or any non-commercial academic purpose (but this does not permit distribution
 
-(c) Licence is granted to all persons freely to copy, use and modify
+and this does not permit inclusion or copying of any part of Galacticraft
 
-non-substantial parts (as defined below) of the Galacticraft project or its
+or any derivative works in any commercial work or for any commercial purpose).
 
-source code for any non-commercial purpose and to incorporate such non-substantial
+(c) Licence is granted to all persons to copy, use and modify
+
+non-substantial parts (as defined below) of the Galacticraft project (including its
+
+source code) for any non-commercial purpose and to incorporate such non-substantial
 
 parts as appropriate and reasonable in their own non-commercial projects, including
 
@@ -435,13 +439,15 @@ other Minecraft mods or plugins, provided that no person other than the Galactic
 
 developers may present Galacticraft's source code as being their own work, and any
 
-derived work must contain appropriate author attribution.
+derived work must contain appropriate author attribution.  Any commercial use of a work
+
+derived from Galacticraft shall continue to be prohibited.
 
 (d) "Non-substantial parts" means any part other than the whole or a substantial
 
-part of Galacticraft: for example a single Java class would be a non-substantial part.
+element of Galacticraft: for example a single Java method would be a non-substantial part.
 
-A "substantial part" is anything which when compiled into playable form (including
+A "substantial part" includes anything which when compiled into playable form (together with
 
 any other code from any origin required to render it playable) replicates or reproduces
 
@@ -621,13 +627,17 @@ Galacticraft developers from time to time as set out herein.
 Modpacks permission
 -------------------
 
-37.  Permission is hereby granted for Galacticraft to be incorporated in any 
+37.  Permission is hereby granted for Galacticraft (in its compiled, Java
+
+version in the form of .jar binary files) to be incorporated in any 
 
 modpack without further authorisation from the Galacticraft developers, on 
 
-the basis set out in sections 1 to 36 above and subject to the following 
+the basis set out in sections 1 to 36 above - note in particular the
 
-additional points: (a) a modpack must not incorporate the word 
+prohibitions on commercial use - and subject to the following
+ 
+additional points: (a) a modpack must not incorporate the word
 
 "Galacticraft" in its name nor in any other way present itself as being an 
 
