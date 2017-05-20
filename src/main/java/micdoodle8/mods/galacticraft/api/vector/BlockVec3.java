@@ -36,6 +36,10 @@ public class BlockVec3 implements Cloneable
     public static int chunkCacheDim = Integer.MAX_VALUE;
     private static int chunkCacheX = 1876000; // outside the world edge
     private static int chunkCacheZ = 1876000; // outside the world edge
+    private static Chunk chunkCached_Client;
+    public static int chunkCacheDim_Client = Integer.MAX_VALUE;
+    private static int chunkCacheX_Client = 1876000; // outside the world edge
+    private static int chunkCacheZ_Client = 1876000; // outside the world edge
     // INVALID_VECTOR is used in cases where a null vector cannot be used
     public static final BlockVec3 INVALID_VECTOR = new BlockVec3(-1, -1, -1);
 
@@ -103,20 +107,39 @@ public class BlockVec3 implements Cloneable
         int chunkz = this.z >> 4;
         try
         {
-            // In a typical inner loop, 80% of the time consecutive calls to
-            // this will be within the same chunk
-            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+            if (world.isRemote)
             {
-                return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                {
+                    return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
+                else
+                {
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    BlockVec3.chunkCached_Client = chunk;
+                    BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                    BlockVec3.chunkCacheX_Client = chunkx;
+                    BlockVec3.chunkCacheZ_Client = chunkz;
+                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
             }
             else
             {
-                final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-                BlockVec3.chunkCached = chunk;
-                BlockVec3.chunkCacheDim = world.provider.getDimension();
-                BlockVec3.chunkCacheX = chunkx;
-                BlockVec3.chunkCacheZ = chunkz;
-                return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                // In a typical inner loop, 80% of the time consecutive calls to
+                // this will be within the same chunk
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                {
+                    return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
+                else
+                {
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    BlockVec3.chunkCached = chunk;
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
+                    BlockVec3.chunkCacheX = chunkx;
+                    BlockVec3.chunkCacheZ = chunkz;
+                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
             }
         }
         catch (Throwable throwable)
@@ -150,20 +173,39 @@ public class BlockVec3 implements Cloneable
         {
             if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             {
-                // In a typical inner loop, 80% of the time consecutive calls to
-                // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                if (world.isRemote)
                 {
-                    return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                    {
+                        return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached_Client = chunk;
+                        BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                        BlockVec3.chunkCacheX_Client = chunkx;
+                        BlockVec3.chunkCacheZ_Client = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
                 }
                 else
                 {
-                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-                    BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimension();
-                    BlockVec3.chunkCacheX = chunkx;
-                    BlockVec3.chunkCacheZ = chunkz;
-                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    // In a typical inner loop, 80% of the time consecutive calls to
+                    // this will be within the same chunk
+                    if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                    {
+                        return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached = chunk;
+                        BlockVec3.chunkCacheDim = world.provider.getDimension();
+                        BlockVec3.chunkCacheX = chunkx;
+                        BlockVec3.chunkCacheZ = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
                 }
             }
             //Chunk doesn't exist - meaning, it is not loaded
@@ -207,20 +249,39 @@ public class BlockVec3 implements Cloneable
         {
             if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             {
-                // In a typical inner loop, 80% of the time consecutive calls to
-                // this will be within the same chunk
-                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                if (world.isRemote)
                 {
-                    return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                    {
+                        return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached_Client = chunk;
+                        BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                        BlockVec3.chunkCacheX_Client = chunkx;
+                        BlockVec3.chunkCacheZ_Client = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
                 }
                 else
                 {
-                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-                    BlockVec3.chunkCached = chunk;
-                    BlockVec3.chunkCacheDim = world.provider.getDimension();
-                    BlockVec3.chunkCacheX = chunkx;
-                    BlockVec3.chunkCacheZ = chunkz;
-                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    // In a typical inner loop, 80% of the time consecutive calls to
+                    // this will be within the same chunk
+                    if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                    {
+                        return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached = chunk;
+                        BlockVec3.chunkCacheDim = world.provider.getDimension();
+                        BlockVec3.chunkCacheX = chunkx;
+                        BlockVec3.chunkCacheZ = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
                 }
             }
             //Chunk doesn't exist - meaning, it is not loaded

@@ -172,14 +172,10 @@ public class GCBlocks
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
-        GCBlocks.hiddenBlocks.add(GCBlocks.breatheableAir);
-        GCBlocks.hiddenBlocks.add(GCBlocks.brightBreatheableAir);
-        GCBlocks.hiddenBlocks.add(GCBlocks.brightAir);
         GCBlocks.hiddenBlocks.add(GCBlocks.oxygenPipePull);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorch);
         GCBlocks.hiddenBlocks.add(GCBlocks.unlitTorchLit);
         GCBlocks.hiddenBlocks.add(GCBlocks.landingPadFull);
-        GCBlocks.hiddenBlocks.add(GCBlocks.fakeBlock);
         GCBlocks.hiddenBlocks.add(GCBlocks.spaceStationBase);
         GCBlocks.hiddenBlocks.add(GCBlocks.bossSpawner);
         GCBlocks.hiddenBlocks.add(GCBlocks.slabGCDouble);

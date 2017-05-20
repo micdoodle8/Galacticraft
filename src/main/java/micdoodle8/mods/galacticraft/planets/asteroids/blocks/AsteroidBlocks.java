@@ -40,10 +40,6 @@ public class AsteroidBlocks
         AsteroidBlocks.blockMinerBase = new BlockMinerBase("miner_base");
         AsteroidBlocks.minerBaseFull = new BlockMinerBaseFull("miner_base_full");
         AsteroidBlocks.spaceWart = new BlockSpaceWart("spacewart");
-
-        GCBlocks.hiddenBlocks.add(AsteroidBlocks.fakeTelepad);
-        GCBlocks.hiddenBlocks.add(AsteroidBlocks.minerBaseFull);
-        GCBlocks.hiddenBlocks.add(AsteroidBlocks.spaceWart);
     }
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)

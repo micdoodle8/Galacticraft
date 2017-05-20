@@ -1,11 +1,8 @@
 package micdoodle8.mods.galacticraft.core.event;
 
-import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.loot.LootTableList;
-
-import java.util.List;
 
 public class LootHandlerGC
 {

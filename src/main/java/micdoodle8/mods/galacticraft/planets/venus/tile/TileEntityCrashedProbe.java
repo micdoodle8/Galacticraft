@@ -15,7 +15,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 
-import javax.annotation.Nullable;
 import java.util.Random;
 
 public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefaults
