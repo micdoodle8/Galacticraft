@@ -682,7 +682,7 @@ public class TransformerHooks
             if (stats != null)
             {
                 ItemStack shield = stats.getShieldControllerInSlot();
-                if (shield != null && shield.getItem() == VenusItems.basicItem && shield.getItemDamage() == 0 && shield.stackSize > 0)
+                if (shield != null && !shield.isEmpty() && shield.getItem() == VenusItems.basicItem && shield.getItemDamage() == 0)
                 {
                     return 0D;
                 }
