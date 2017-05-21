@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.blocks;
 
 import com.google.common.base.Predicate;
+
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
@@ -247,17 +248,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = state.getBlock().getMetaFromState(state);
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
-        {
-            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-        }
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE)
-        {
-            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-        }
-
-        return super.getPickBlock(state, target, world, pos, player);
+        return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }
 
     @Override

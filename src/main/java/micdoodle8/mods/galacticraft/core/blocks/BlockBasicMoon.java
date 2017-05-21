@@ -285,13 +285,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-//        int metadata = getMetaFromState(world.getBlockState(pos));
-//        if (metadata == 2)
-//        {
-//            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
-//        }
-
-        return super.getPickBlock(state, target, world, pos, player);
+        return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }
 
     @Override
