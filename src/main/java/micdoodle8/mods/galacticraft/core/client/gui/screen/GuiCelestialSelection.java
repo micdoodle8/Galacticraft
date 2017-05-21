@@ -75,6 +75,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected CelestialBody lastSelectedBody;
     protected static int BORDER_SIZE = 0;
     protected static int BORDER_EDGE_SIZE = 0;
+    protected int canCreateOffset = 24;
     protected EnumSelectionState selectionState = EnumSelectionState.PREVIEW;
     protected int selectionCount = 0;
     protected int zoomTooltipPos = 0;
@@ -678,7 +679,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (!this.mapMode)
         {
-            if (x > width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE - 96 && x < width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE && y > GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 182 && y < GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 182 + 12)
+            if (x >= width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE - 95 && x < width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE && y > GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 181 + canCreateOffset && y < GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 182 + 12 + canCreateOffset)
             {
                 if (this.selectedBody != null)
                 {
@@ -1741,7 +1742,7 @@ public class GuiCelestialSelection extends GuiScreen
                     GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                     this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain1);
                     int canCreateLength = Math.max(0, this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station.name"), 0, 0, 91, 0, true, true) - 2);
-                    int canCreateOffset = canCreateLength * this.fontRenderer.FONT_HEIGHT;
+                    canCreateOffset = canCreateLength * this.fontRenderer.FONT_HEIGHT;
 
                     this.drawTexturedModalRect(width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE - 95, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 134, 93, 4, 159, 102, 93, 4, false, false);
                     for (int barY = 0; barY < canCreateLength; ++barY)
