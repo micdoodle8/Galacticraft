@@ -216,7 +216,7 @@ tile.moonBricksStairs.name=Moon Dungeon Brick Stairs
 tile.wallGC.moonBricks.name=Moon Dungeon Brick Wall
 tile.slabGCHalf.moonBricksSlab.name=Moon Dungeon Brick Slab
 tile.crudeOil.name=Oil
-tile.fuelBlock.name=Fuel ##NEEDS TRANSLATE##
+tile.fuelBlock.name=Fuel
 
 # ENTITIES
 entity.EvolvedSpider.name=Evolved Spider
