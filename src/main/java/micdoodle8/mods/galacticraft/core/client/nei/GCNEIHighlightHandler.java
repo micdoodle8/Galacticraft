@@ -26,46 +26,48 @@ public class GCNEIHighlightHandler implements IHighlightHandler
     @Override
     public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout)
     {
-        if (stack.getItem() == Item.getItemFromBlock(GCBlocks.fluidTank))
+        if (stack != null)
         {
-            if (layout == ItemInfo.Layout.BODY)
+            if (stack.getItem() == Item.getItemFromBlock(GCBlocks.fluidTank))
             {
-                TileEntity tile = world.getTileEntity(mop.getBlockPos());
-                if (tile instanceof TileEntityFluidTank)
+                if (layout == ItemInfo.Layout.BODY)
                 {
-                    TileEntityFluidTank tank = (TileEntityFluidTank) tile;
-                    FluidTankInfo[] infos = tank.getTankInfo(EnumFacing.DOWN);
-                    if (infos.length == 1)
+                    TileEntity tile = world.getTileEntity(mop.getBlockPos());
+                    if (tile instanceof TileEntityFluidTank)
                     {
-                        FluidTankInfo info = infos[0];
-                        currenttip.add(info.fluid != null ? info.fluid.getLocalizedName() : "Empty");
-                        currenttip.add((info.fluid != null ? info.fluid.amount : 0) + " / " + info.capacity);
+                        TileEntityFluidTank tank = (TileEntityFluidTank) tile;
+                        FluidTankInfo[] infos = tank.getTankInfo(EnumFacing.DOWN);
+                        if (infos.length == 1)
+                        {
+                            FluidTankInfo info = infos[0];
+                            currenttip.add(info.fluid != null ? info.fluid.getLocalizedName() : "Empty");
+                            currenttip.add((info.fluid != null ? info.fluid.amount : 0) + " / " + info.capacity);
+                        }
+                    }
+                }
+            }
+            else if (stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipe) || stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipePull))
+            {
+                if (layout == ItemInfo.Layout.BODY)
+                {
+                    TileEntity tile = world.getTileEntity(mop.getBlockPos());
+                    if (tile instanceof TileEntityFluidPipe)
+                    {
+                        TileEntityFluidPipe pipe = (TileEntityFluidPipe) tile;
+                        currenttip.add(((BlockFluidPipe) pipe.getBlockType()).getMode().toString());
+                        if (pipe.hasNetwork())
+                        {
+                            FluidNetwork network = ((FluidNetwork) pipe.getNetwork());
+                            currenttip.add("Network: " + (network.buffer != null ? network.buffer.amount : 0) + " / " + network.getCapacity());
+                        }
+                        else
+                        {
+                            currenttip.add("Pipe: " + (pipe.getBuffer() != null ? pipe.getBuffer().amount + " / " + pipe.buffer.getCapacity() : "None"));
+                        }
                     }
                 }
             }
         }
-        else if (stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipe) || stack.getItem() == Item.getItemFromBlock(GCBlocks.oxygenPipePull))
-        {
-            if (layout == ItemInfo.Layout.BODY)
-            {
-                TileEntity tile = world.getTileEntity(mop.getBlockPos());
-                if (tile instanceof TileEntityFluidPipe)
-                {
-                    TileEntityFluidPipe pipe = (TileEntityFluidPipe) tile;
-                    currenttip.add(((BlockFluidPipe) pipe.getBlockType()).getMode().toString());
-                    if (pipe.hasNetwork())
-                    {
-                        FluidNetwork network = ((FluidNetwork) pipe.getNetwork());
-                        currenttip.add("Network: " + (network.buffer != null ? network.buffer.amount : 0) + " / " + network.getCapacity());
-                    }
-                    else
-                    {
-                        currenttip.add("Pipe: " + (pipe.getBuffer() != null ? pipe.getBuffer().amount + " / " + pipe.buffer.getCapacity() : "None"));
-                    }
-                }
-            }
-        }
-
         return currenttip;
     }
 
