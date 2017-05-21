@@ -2,9 +2,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -28,19 +31,21 @@ public class BaseDeck extends SizedPiece
     
     public enum EnumBaseType 
     {
-        HUMANOID(5, 3, GCBlocks.basicBlock.getStateFromMeta(4)),
-        AVIAN(4, 3, GCBlocks.blockMoon.getStateFromMeta(4)),
-        TUNNELER(4, 4, GCBlocks.blockMoon.getStateFromMeta(4));
+        HUMANOID(5, 3, GCBlocks.basicBlock.getStateFromMeta(4), new ItemStack(Items.ghast_tear, 3, 0)),
+        AVIAN(4, 3, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 1)),
+        TUNNELER(4, 4, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 0));
         
         public final int height;
         public final int width;
         public final IBlockState wall;
+        public final ItemStack treasure;
         
-        EnumBaseType(int height, int width, IBlockState wallBlock)
+        EnumBaseType(int height, int width, IBlockState wallBlock, ItemStack treasure)
         {
             this.height = height;
             this.width = width;
             this.wall = wallBlock;
+            this.treasure = treasure;
         }
     }
     

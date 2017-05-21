@@ -225,6 +225,7 @@ item.shard_titanium.name=Titanium Shard
 item.shield_controller.description=Shield Controller protects armor from ALL forms of damage - including atmospheric corrosion!
 item.shield_controller.name=Shield Controller
 item.slimeling_cargo.name=Slimeling Inventory Bag
+itme.strange_seed.name=Strange Seed
 item.thermal_boots.name=Thermal Padding Boots
 item.thermal_boots_t2.name=Thermal Padding Boots
 item.thermal_chestplate.name=Thermal Padding Chestpiece

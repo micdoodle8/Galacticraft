@@ -11,10 +11,12 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -40,9 +42,6 @@ public class BaseRoom extends SizedPiece
     private boolean nearEnd;
     private boolean farEnd;
     private int deckTier;
-    //Temporary treasure items until we have a specific Asteroids treasure
-    private static final ItemStack TREASURE1 = new ItemStack(Items.ghast_tear, 2, 0);
-    private static final ItemStack TREASURE2 = new ItemStack(Items.nether_star, 1, 0);
     
     public BaseRoom()
     {
@@ -536,15 +535,15 @@ public class BaseRoom extends SizedPiece
                 loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
                 loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
                 loader.addCargo(new ItemStack(Items.rotten_flesh, 64, 0), true);
+                loader.addCargo(new ItemStack(GCItems.flagPole, semirand % 31 + 2, 0), true);
+                loader.addCargo(new ItemStack(MarsItems.marsItemBasic, semirand % 2 + 1, 4), true);  //Slimeling Inventory Bag
+                loader.addCargo(new ItemStack(AsteroidsItems.basicItem, semirand % 23 + 41, 7), true); //Thermal cloth
                 loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
                 loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
                 loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
                 loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
                 loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
-                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
-                loader.addCargo(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), true);
-                loader.addCargo(TREASURE1.copy(), true);
-                loader.addCargo(TREASURE2.copy(), true);
+                loader.addCargo(this.configuration.getDeckType().treasure.copy(), true);
             }
             else if (tile instanceof TileEntityCrafting)
             {
