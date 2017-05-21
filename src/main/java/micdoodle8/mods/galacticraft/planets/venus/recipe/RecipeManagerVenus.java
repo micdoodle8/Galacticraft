@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.recipe;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -40,5 +42,6 @@ public class RecipeManagerVenus
         RecipeUtil.addRecipe(new ItemStack(VenusItems.thermalPaddingTier2, 1, 2), new Object[] { "XXX", "X X", "X X", 'X', new ItemStack(VenusItems.basicItem, 1, 3) });
         RecipeUtil.addRecipe(new ItemStack(VenusItems.thermalPaddingTier2, 1, 3), new Object[] { "X X", "X X", 'X', new ItemStack(VenusItems.basicItem, 1, 3) });
 
+        RecipeUtil.addRecipe(new ItemStack(VenusBlocks.geothermalGenerator, 1, 0), new Object[] { "XVX", "WGW", "XYX", 'X', "compressedBronze", 'Y', new ItemStack(VenusItems.basicItem, 1, 1), 'W', new ItemStack(GCBlocks.aluminumWire), 'V', new ItemStack(AsteroidsItems.atmosphericValve), 'G', new ItemStack(GCBlocks.machineBase, 1, BlockMachine.COAL_GENERATOR_METADATA)  } );
     }
 }
