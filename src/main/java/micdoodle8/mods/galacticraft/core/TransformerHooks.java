@@ -12,9 +12,11 @@ import micdoodle8.mods.galacticraft.core.client.SkyProviderOverworld;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.EnumGravity;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
@@ -650,5 +652,22 @@ public class TransformerHooks
     {
         FootprintRenderer.renderFootprints(ClientProxyCore.mc.thePlayer, partialTicks);
         MinecraftForge.EVENT_BUS.post(new ClientProxyCore.EventSpecialRender(partialTicks));
+    }
+    
+    public static double armorDamageHook(EntityLivingBase entity)
+    {
+        if (entity instanceof EntityPlayer && GalacticraftCore.isPlanetsLoaded)
+        {
+            GCPlayerStats stats = GCPlayerStats.get(entity);
+            if (stats != null)
+            {
+                ItemStack shield = stats.getShieldControllerInSlot();
+                if (shield != null && shield.getItem() == VenusItems.basicItem && shield.getItemDamage() == 0 && shield.stackSize > 0)
+                {
+                    return 0D;
+                }
+            }
+        }
+        return 1D;
     }
 }
