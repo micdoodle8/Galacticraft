@@ -23,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
@@ -213,6 +214,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
         ChunkPowerHandler.initiate();
         EnergyConfigHandler.initGas();
+        LootHandlerGC.registerAll();
 
         CompatibilityManager.registerMicroBlocks();
         this.registerCreatures();

@@ -49,7 +49,6 @@ public class BlockBrightAir extends BlockAir
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (world instanceof World && !((World)world).isRemote) return 0;  //We don't want a ton of "notifyLightSet()" from the server -> client
         return 15;
     }
     
