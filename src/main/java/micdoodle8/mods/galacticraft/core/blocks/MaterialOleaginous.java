@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.MaterialLiquid;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 //This avoids water and oil mixing, by being a different material
 public class MaterialOleaginous extends MaterialLiquid
 {
-    private String blockLiquidName = BlockLiquid.class.getName();
-    private String blockLiquidStaticName = BlockStaticLiquid.class.getName();
-    private String blockLiquidDynamicName = BlockDynamicLiquid.class.getName();
+    private Class blockLiquidName = BlockLiquid.class;
+    private Class blockLiquidStaticName = BlockStaticLiquid.class;
+    private Class blockLiquidDynamicName = BlockDynamicLiquid.class;
 
     public MaterialOleaginous(MapColor color)
     {
@@ -24,7 +24,6 @@ public class MaterialOleaginous extends MaterialLiquid
     @Override
     public boolean blocksMovement()
     {
-        String string = ExceptionUtils.getStackTrace(new Throwable());
-        return string.contains(blockLiquidName) || string.contains(blockLiquidStaticName) || string.contains(blockLiquidDynamicName);
+        return JavaUtil.instance.isCalledBy(blockLiquidStaticName, blockLiquidName, blockLiquidDynamicName);
     }
 }

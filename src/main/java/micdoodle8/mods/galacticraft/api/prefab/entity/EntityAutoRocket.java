@@ -63,7 +63,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     public int targetDimension;
     protected NonNullList<ItemStack> stacks;
     private IFuelDock landingPad;
-    public boolean landing;
     public EnumAutoLaunch autoLaunchSetting;
     public int autoLaunchCountdown;
     private BlockVec3 activeLaunchController;
@@ -324,12 +323,12 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             }
         }
         
-        if (this.landing && this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.hasValidFuel())
         {
             if (this.targetVec != null)
             {
                 double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.getY();
-                this.motionY = Math.max(-2.0, (yDiff - 0.04) / -70.0);
+                this.motionY = Math.max(-2.0, (yDiff - 0.04) / -55.0);
 
                 //Some lateral motion in case not exactly on target (happens if rocket was moving laterally during launch)
                 double diff = this.posX - this.targetVec.getX() - 0.5D;
@@ -375,7 +374,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         }
                     }
                 }
-                if (yDiff < 0.04)
+                if (yDiff < 0.06)
                 {
                     int yMin = MathHelper.floor(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
                     int yMax = MathHelper.floor(this.getEntityBoundingBox().maxY) + 1;
@@ -447,7 +446,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                 }
             }
 
-            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+            if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal())
             {
                 this.setPad(null);
             }
@@ -461,8 +460,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
             this.lastStatusMessageCooldown = this.statusMessageCooldown;          
         }
-        
-        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.getLaunched())
+
+        if (this.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
         {
 	        if (this.rocketSoundUpdater != null)
 	        {
@@ -472,9 +471,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
         else
         {
-        	//Not ignited - either because not yet launched, or because it has landed
-        	if (this.rocketSoundToStop)
-        		this.stopRocketSound();
+            if (this.rocketSoundToStop)
+            {
+                this.stopRocketSound();
+                this.rocketSoundUpdater = null;
+            }
         }
     }
 
@@ -643,6 +644,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         this.setPositionAndRotation(pos.getX() + 0.5, pos.getY() + 0.4D + this.getOnPadYOffset(), pos.getZ() + 0.5, this.rotationYaw, 0.0F);
         this.stopRocketSound();
+        this.rocketSoundUpdater = null;  //Allow sound to be restarted again if it relaunches
     }
     
     public void stopRocketSound()
@@ -668,9 +670,36 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
+        if (!this.world.isRemote)
+        {
+            double clientPosY = buffer.readDouble();
+            if (clientPosY != Double.NaN)
+            {
+                if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+                {
+                    if (clientPosY > this.posY)
+                    {
+                        this.motionY += (clientPosY - this.posY) / 40D;
+                    }
+                }
+                else if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal())
+                {
+                    if (clientPosY < this.posY)
+                    {
+                        this.motionY += (clientPosY - this.posY) / 40D;
+                    }
+                }
+            }
+            return;
+        }
+        int launchPhaseLast = this.launchPhase;
         super.decodePacketdata(buffer);
         this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, buffer.readInt()));
-        this.landing = buffer.readBoolean();
+        boolean landingNew = buffer.readBoolean();
+        if (landingNew && launchPhaseLast != EnumLaunchPhase.LANDING.ordinal())
+        {
+            this.rocketSoundUpdater = null;  //Flag TickHandlerClient to restart it
+        }
         this.destinationFrequency = buffer.readInt();
 
         if (buffer.readBoolean())
@@ -678,11 +707,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             this.targetVec = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
 
-        this.motionX = buffer.readDouble() / 8000.0D;
-        this.motionY = buffer.readDouble() / 8000.0D;
-        this.motionZ = buffer.readDouble() / 8000.0D;
-        this.lastMotionY = buffer.readDouble() / 8000.0D;
-        this.lastLastMotionY = buffer.readDouble() / 8000.0D;
+        double motX = buffer.readDouble() / 8000.0D;
+        double motY = buffer.readDouble() / 8000.0D;
+        double motZ = buffer.readDouble() / 8000.0D;
+        double lastMotY = buffer.readDouble() / 8000.0D;
+        double lastLastMotY = buffer.readDouble() / 8000.0D;
 
         if (this.stacks == null)
         {
@@ -755,12 +784,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.world.isRemote)
         {
-            return;
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity()))
+            {
+                list.add(this.posY);
+            }
+            else
+            {
+                list.add(Double.NaN);
+            }
         }
         super.getNetworkedData(list);
 
         list.add(this.fuelTank.getFluidAmount());
-        list.add(this.landing);
+        list.add(this.launchPhase == EnumLaunchPhase.LANDING.ordinal());
         list.add(this.destinationFrequency);
         list.add(this.targetVec != null);
 
@@ -794,6 +830,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     protected void failRocket()
     {
+        this.stopRocketSound();
+
         if (this.shouldCancelExplosion())
         {
             //TODO: why looking around when already know the target?
@@ -801,7 +839,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             for (int i = -3; i <= 3; i++)
             {
                 BlockPos pos = new BlockPos((int) Math.floor(this.posX), (int) Math.floor(this.posY + i), (int) Math.floor(this.posZ));
-                if (this.landing && this.targetVec != null && this.world.getTileEntity(pos) instanceof IFuelDock && this.posY - this.targetVec.getY() < 5)
+                if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null && this.world.getTileEntity(pos) instanceof IFuelDock && this.posY - this.targetVec.getY() < 5)
                 {
                     for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
                     {
@@ -824,7 +862,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             }
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal())
         {
             super.failRocket();
         }
@@ -974,7 +1012,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
 
         nbt.setBoolean("WaitingForPlayer", this.getWaitForPlayer());
-        nbt.setBoolean("Landing", this.landing);
+        nbt.setBoolean("Landing", this.launchPhase == EnumLaunchPhase.LANDING.ordinal());
         nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
         nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
         nbt.setInteger("DestinationFrequency", this.destinationFrequency);
@@ -1003,7 +1041,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
 
         this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
-        this.landing = nbt.getBoolean("Landing");
         int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
         this.autoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
         this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
@@ -1042,7 +1079,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                     this.updateControllerSettings(pad);
                 }
             }
-	        this.landing = false;
         }
     }
 
@@ -1275,7 +1311,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onPadDestroyed()
     {
-        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+        if (!this.isDead && this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal())
         {
             this.dropShipAsItem();
             this.setDead();
@@ -1364,5 +1400,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         double d2 = this.posZ - z;
         double d3 = d0 * d0 + d1 * d1 + d2 * d2;
         return d3 < Constants.RENDERDISTANCE_LONG;
+    }
+    
+    @Override
+    public boolean inFlight()
+    {
+        return this.getLaunched();
     }
 }

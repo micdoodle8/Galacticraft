@@ -1039,7 +1039,7 @@ public class WorldUtil
     public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos, boolean spawnRequired)
     {
         CompatibilityManager.forceLoadChunks(worldNew);
-        ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getPos();
+        ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
         if (entity instanceof EntityPlayerMP)
@@ -1373,14 +1373,14 @@ public class WorldUtil
         mainPosX = position.intX();
         mainPosZ = position.intZ();
 
-        double x0 = (Math.sin((45 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
-        double x1 = (Math.sin((135 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
-        double x2 = (Math.sin((225 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
-        double x3 = (Math.sin((315 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
-        double z0 = (Math.cos((45 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
-        double z1 = (Math.cos((135 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
-        double z2 = (Math.cos((225 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
-        double z3 = (Math.cos((315 - rotation) * Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double x0 = (Math.sin((45 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x1 = (Math.sin((135 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x2 = (Math.sin((225 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double x3 = (Math.sin((315 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.x;
+        double z0 = (Math.cos((45 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z1 = (Math.cos((135 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z2 = (Math.cos((225 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
+        double z3 = (Math.cos((315 - rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale) + position.z;
 
         double xMin = Math.min(Math.min(x0, x1), Math.min(x2, x3));
         double xMax = Math.max(Math.max(x0, x1), Math.max(x2, x3));

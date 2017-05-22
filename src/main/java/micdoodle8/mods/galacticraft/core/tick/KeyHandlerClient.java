@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.KeyHandler;
@@ -19,6 +20,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.gameevent.TickEvent.Type;
+
 import org.lwjgl.input.Keyboard;
 
 public class KeyHandlerClient extends KeyHandler
@@ -146,7 +148,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 EntityAutoRocket autoRocket = (EntityAutoRocket) entityTest;
 
-                if (autoRocket.landing)
+                if (autoRocket.launchPhase == EnumLaunchPhase.LANDING.ordinal())
                 {
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {

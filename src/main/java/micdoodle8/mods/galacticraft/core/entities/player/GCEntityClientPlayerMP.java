@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -486,6 +487,12 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     @Override
     public ResourceLocation getLocationCape()
     {
+        if (this.getRidingEntity() instanceof EntitySpaceshipBase)
+        {
+            // Don't draw any cape if riding a rocket (the cape renders outside the rocket model!)
+            return null;
+        }
+        
         ResourceLocation vanillaCape = super.getLocationCape();
 
         if (!this.checkedCape)

@@ -81,7 +81,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     @Override
     public void onUpdate()
     {
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
             double motionScalar = this.timeSinceLaunch / 250;
 
@@ -90,11 +90,11 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             double modifier = this.getCargoFilledAmount();
             motionScalar *= 5.0D / modifier;
 
-            if (!this.landing)
+            if (this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
             {
                 if (motionScalar != 0.0)
                 {
-                    this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
+                    this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
                 }
             }
 
@@ -139,7 +139,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             this.rumble++;
         }
 
-        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
         {
             this.performHurtAnimation();
 
@@ -174,11 +174,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
     protected void spawnParticles(boolean launched)
     {
-        double x1 = 2 * Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
-        double z1 = 2 * Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
-        double y1 = 2 * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
+        double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
+        double x1 = 2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+        double z1 = 2 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+        double y1 = 2 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
 
-        if (this.landing && this.targetVec != null)
+        if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
         {
             double modifier = this.posY - this.targetVec.getY();
             modifier = Math.max(modifier, 1.0);
@@ -258,7 +259,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
                     {
                         GCLog.debug("Cargo rocket arrived at destination dimension, going into landing mode.");
                         e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                        ((EntityCargoRocket) e).landing = true;
+                        ((EntityCargoRocket) e).setLaunchPhase(EnumLaunchPhase.LANDING);
             			//No setDead() following successful transferEntityToDimension() - see javadoc on that
                     }
                     else
@@ -277,7 +278,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             {
                 GCLog.debug("Cargo rocket going into landing mode in same destination.");
                 this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                this.landing = true;
+                this.setLaunchPhase(EnumLaunchPhase.LANDING);
                 return;
             }
         }
@@ -338,20 +339,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
         if (this.targetVec != null)
         {
             this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-            this.landing = true;
+            this.setLaunchPhase(EnumLaunchPhase.LANDING);
         }
         else
         {
-            this.setDead();
-        }
-    }
-
-    @Override
-    public void onPadDestroyed()
-    {
-        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
-        {
-            this.dropShipAsItem();
             this.setDead();
         }
     }

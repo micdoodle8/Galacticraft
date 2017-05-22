@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -243,22 +242,22 @@ public class TickHandlerClient
 //                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //            }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 OverlayRocket.renderSpaceshipOverlay(((EntitySpaceshipBase) player.getRidingEntity()).getSpaceshipGui());
             }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 OverlayLander.renderLanderOverlay();
             }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
                 OverlayDockingRocket.renderDockingOverlay();
             }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.player.getRidingEntity()).launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && !((EntitySpaceshipBase) minecraft.player.getRidingEntity()).getLaunched())
             {
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
@@ -451,7 +450,7 @@ public class TickHandlerClient
             }
 
             boolean inSpaceShip = false;
-            if (player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase)
+            if (player.getRidingEntity() instanceof EntitySpaceshipBase)
             {
                 inSpaceShip = true;
                 EntitySpaceshipBase rocket = (EntitySpaceshipBase) player.getRidingEntity();

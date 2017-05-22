@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 // import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 // import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.world.IChunkLoader;
@@ -75,7 +76,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public TileEntityLaunchController()
     {
-        this.storage.setMaxExtract(10);
+        this.storage.setMaxExtract(6);
         this.noRedstoneControl = true;
     }
 
@@ -374,6 +375,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
                             if (launchController2.frequency == this.frequency)
                             {
+                                GCLog.debug("Launch Controller frequency conflict at " + tile2.getPos() + " on dim: " + GCCoreUtil.getDimensionID(tile2));
                                 this.frequencyValid = false;
                                 break worldLoop;
                             }

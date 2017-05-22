@@ -93,8 +93,8 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     {
         if (this.isPassenger(passenger))
         {
-            final double offsetx = Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            final double offsetz = Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetx = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetz = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
             passenger.setPosition(this.posX + offsetx, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + offsetz);
         }
     }

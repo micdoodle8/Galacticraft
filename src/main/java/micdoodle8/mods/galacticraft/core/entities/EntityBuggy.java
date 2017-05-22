@@ -812,4 +812,9 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
         return true;
     }
+
+    public boolean inFlight()
+    {
+        return false;
+    }
 }
