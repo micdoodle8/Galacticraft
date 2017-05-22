@@ -843,4 +843,10 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
         return this.riddenByEntity != null ? ((EntityPlayer) this.riddenByEntity).getPersistentID() : null;
     }
+
+    @Override
+    public boolean inFlight()
+    {
+        return false;
+    }
 }

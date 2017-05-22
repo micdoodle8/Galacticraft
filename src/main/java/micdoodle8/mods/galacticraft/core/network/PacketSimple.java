@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
+import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
@@ -796,7 +797,7 @@ public class PacketSimple extends PacketBase implements Packet
             {
                 final EntityTieredRocket ship = (EntityTieredRocket) player.ridingEntity;
 
-                if (!ship.landing)
+                if (ship.launchPhase != EnumLaunchPhase.LANDING.ordinal())
                 {
                     if (ship.hasValidFuel())
                     {

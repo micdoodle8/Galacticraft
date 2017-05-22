@@ -67,12 +67,12 @@ public class SoundUpdaterRocket extends MovingSound
                 this.pitch = 1.0F;
             }
 
-            if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.theRocket.getLaunched())
+            if (this.theRocket.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
             {
                 if (this.theRocket.posY > 1000)
                 {
                     this.volume = 0F;
-                    if (!this.theRocket.landing)
+                    if (this.theRocket.launchPhase != EnumLaunchPhase.LANDING.ordinal())
                     {
                         this.donePlaying = true;
                     }

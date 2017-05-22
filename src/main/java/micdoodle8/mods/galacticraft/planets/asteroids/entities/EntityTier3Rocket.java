@@ -101,9 +101,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
             }
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
-            if (!this.landing)
+            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
             {
                 double d = this.timeSinceLaunch / 150;
 
@@ -187,7 +187,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             double x1 = 3.2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
             double z1 = 3.2 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
             double y1 = 3.2 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
-            if (this.landing && this.targetVec != null)
+            if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
             {
                 double modifier = this.posY - this.targetVec.getY();
                 modifier = Math.max(modifier, 180.0);
@@ -196,7 +196,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
                 z1 *= modifier / 200.0D;
             }
 
-            final double y2 = this.prevPosY + (this.posY - this.prevPosY) + y1 - 0.75 * this.motionY - 0.3;
+            final double y2 = this.prevPosY + (this.posY - this.prevPosY) + y1 - 0.75 * this.motionY - 0.3 + 1.2D;
 
             final double x2 = this.posX + x1 + this.motionX;
             final double z2 = this.posZ + z1 + this.motionZ;
@@ -262,16 +262,6 @@ public class EntityTier3Rocket extends EntityTieredRocket
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public void onPadDestroyed()
-    {
-        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
-        {
-            this.dropShipAsItem();
-            this.setDead();
-        }
     }
 
     @Override

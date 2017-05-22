@@ -16,12 +16,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -488,5 +491,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         }
 
         return id;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float partialTicks)
+    {
+        double height = this.posY + (double)this.getEyeHeight();
+        if (height > 255D) height = 255D;
+        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+        return this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
     }
 }

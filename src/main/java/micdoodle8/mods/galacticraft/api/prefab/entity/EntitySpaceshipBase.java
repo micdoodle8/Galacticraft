@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -51,7 +52,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         UNIGNITED,
         IGNITED,
-        LAUNCHED
+        LAUNCHED,
+        LANDING
     }
 
     public int launchPhase;
@@ -65,6 +67,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     private ArrayList<BlockVec3Dim> telemetryList = new ArrayList<BlockVec3Dim>();
     private boolean addToTelemetry = false;
     public FluidTank fuelTank = new FluidTank(this.getFuelTankCapacity() * ConfigManagerCore.rocketFuelFactor);
+    private double syncAdjustX = 0D; 
+    private double syncAdjustY = 0D; 
+    private double syncAdjustZ = 0D;
+    private boolean syncAdjustFlag = false;
     
     public EntitySpaceshipBase(World par1World)
     {
@@ -276,7 +282,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.timeUntilLaunch = this.getPreLaunchWait();
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal())
         {
             this.timeSinceLaunch++;
         }
@@ -328,7 +334,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.motionX = -(50 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * 0.01 / Constants.RADIANS_TO_DEGREES_D));
         this.motionZ = -(50 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * 0.01 / Constants.RADIANS_TO_DEGREES_D));
 
-        if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal())
         {
             this.motionX = this.motionY = this.motionZ = 0.0F;
         }
@@ -379,7 +385,21 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             new Exception().printStackTrace();
         }
-        this.setLaunchPhase(EnumLaunchPhase.values()[buffer.readInt()]);
+        int newLaunchPhase = buffer.readInt(); 
+        if (this.launchPhase != newLaunchPhase)
+        {
+            this.setLaunchPhase(EnumLaunchPhase.values()[newLaunchPhase]);
+            if (newLaunchPhase == EnumLaunchPhase.LANDING.ordinal())
+            {
+                this.syncAdjustFlag = true;
+            }
+        }
+        else
+        {
+            if (Math.abs(this.syncAdjustX - this.posX) > 0.2D) this.motionX += (this.syncAdjustX - this.posX) / 40D;
+            if (Math.abs(this.syncAdjustY - this.posY) > 0.2D) this.motionY += (this.syncAdjustY - this.posY) / 40D;
+            if (Math.abs(this.syncAdjustZ - this.posZ) > 0.2D) this.motionZ += (this.syncAdjustZ - this.posZ) / 40D;
+        }
         this.timeSinceLaunch = buffer.readFloat();
         this.timeUntilLaunch = buffer.readInt();
     }
@@ -426,6 +446,22 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setRotation(yaw, pitch);
+        if (this.syncAdjustFlag)
+        {
+            this.posX = x;
+            this.posY = y;
+            this.posZ = z;
+            this.syncAdjustX = 0D;
+            this.syncAdjustY = 0D;
+            this.syncAdjustZ = 0D;
+            this.syncAdjustFlag = false;
+        }
+        else
+        {
+            this.syncAdjustX = x;
+            this.syncAdjustY = y;
+            this.syncAdjustZ = z;
+        }
     }
 
     @Override
@@ -482,7 +518,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         // Backwards compatibility:
         if (hasOldTags)
         {
-            if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.launchPhase != EnumLaunchPhase.IGNITED.ordinal())
+            if (this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal() && this.launchPhase != EnumLaunchPhase.IGNITED.ordinal())
             {
                 this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
             }
@@ -514,7 +550,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     public boolean getLaunched()
     {
-        return this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal();
+        return this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal();
     }
 
     public boolean canBeRidden()
@@ -571,7 +607,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     @Override
     public boolean shouldIgnoreShiftExit()
     {
-        return this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal();
+        return this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal();
     }
 
     public static class RocketLaunchEvent extends EntityEvent
@@ -657,4 +693,14 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             return e instanceof EntitySpaceshipBase && e.isEntityAlive();
         }
     };
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float partialTicks)
+    {
+        double height = this.posY + (double)this.getEyeHeight();
+        if (height > 255D) height = 255D;
+        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+        return this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
+    }
 }
