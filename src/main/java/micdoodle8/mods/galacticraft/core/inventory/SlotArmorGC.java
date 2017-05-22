@@ -40,6 +40,6 @@ public class SlotArmorGC extends Slot
     @SideOnly(Side.CLIENT)
     public String getSlotTexture()
     {
-        return ItemArmor.EMPTY_SLOT_NAMES[this.armorType];
+        return ItemArmor.EMPTY_SLOT_NAMES[VALID_EQUIPMENT_SLOTS[this.armorType].getIndex()];
     }
 }
