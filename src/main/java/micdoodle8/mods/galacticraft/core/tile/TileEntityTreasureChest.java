@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -139,6 +141,16 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     public void setCustomName(String name)
     {
+    }
+    
+    @Override
+    public void onLoad()
+    {
+        IBlockState bs = this.worldObj.getBlockState(this.pos);
+        if (bs.getBlock() instanceof BlockTier1TreasureChest)
+        {
+            this.tier = ((BlockTier1TreasureChest)bs.getBlock()).getTier();
+        }
     }
 
     @Override
