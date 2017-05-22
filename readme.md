@@ -7,19 +7,19 @@ An advanced space exploration mod for Minecraft.
 
 Full documentation is at our wiki: [wiki.micdoodle8.com](https://wiki.micdoodle8.com/wiki/Galacticraft)
 
-
+------
 
 ## Download Galacticraft
 
 Download recent and latest Galacticraft for Minecraft version 1.11.2, Minecraft version 1.10.2, Minecraft 1.8.9 and Minecraft 1.7.10 at the [Galacticraft download site](https://micdoodle8.com/mods/galacticraft/downloads)
 
-
+------
 
 ## Reporting issues
 
 Before reporting an issue, please read [Notes for Contributors](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md) and follow the six guidelines given.
 
-
+------
 
 ## Mod Developers
 
@@ -27,15 +27,14 @@ API and deobfuscated version for developers is available through our [downloads]
 
 To build, run the command `gradlew build packCoreJar packPlanetsJar PackMicCoreJar`
  
- 
+------
  
 ## Modpacks
 
 We welcome inclusion of Galacticraft in modpacks.  [Modpack permission and setup tips](https://wiki.micdoodle8.com/wiki/Modpack_Permission)
 
- 
+------
  
 ## License
-
 
 Galacticraft is open source and free for everyone for non-commercial use.  (But distribution of Galacticraft in modified form is not permitted.)  Full license can be found [here](https://github.com/micdoodle8/Galacticraft/blob/master/LICENSE.txt)
