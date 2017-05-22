@@ -200,7 +200,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         {
                             w.getChunkFromChunkCoords(coords.x, coords.z);
                             //Pregen a second chunk if still on launchpad (low strain on server)
-                            if (this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
+                            if (this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
                             {
                                 coords = this.preGenIterator.next();
                                 w = mcserver.worldServerForDimension(coords.y);
@@ -233,7 +233,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             passenger.posZ += rumbleAmount;
         }
 
-        if (this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() || this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase >= EnumLaunchPhase.IGNITED.ordinal())
         {
             this.performHurtAnimation();
 
@@ -271,7 +271,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         list.add(this.rocketType != null ? this.rocketType.getIndex() : 0);
         super.getNetworkedData(list);
 
-        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal() || this.landing;
+        boolean sendPosUpdates = this.ticks < 25 || this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal();
         list.add(sendPosUpdates);
 
         if (sendPosUpdates)
@@ -343,7 +343,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		    if (e instanceof EntityAutoRocket)
                     		    {
                     		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
-                    		        ((EntityAutoRocket)e).landing = true;
+                    		        ((EntityAutoRocket)e).setLaunchPhase(EnumLaunchPhase.LANDING);
                     		        ((EntityAutoRocket)e).setWaitForPlayer(false);
                     		    }
                     		    else
@@ -360,6 +360,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 }
                 else
                 {
+                    System.out.println("Target Position " + this.targetVec);
                 	//Same dimension controlled rocket flight
                 	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
@@ -375,7 +376,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                             if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
                         }
                     }
-                    this.landing = true;
+                    this.setLaunchPhase(EnumLaunchPhase.LANDING);
                     //Do not destroy the rocket, we still need it!
                     return;
                 }
@@ -449,7 +450,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             return false;
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal())
         {
             return false;
         }
@@ -520,7 +521,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         if (this.targetVec != null)
         {
             this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-            this.landing = true;
+            this.setLaunchPhase(EnumLaunchPhase.LANDING);
             this.setWaitForPlayer(true);
             this.motionX = this.motionY = this.motionZ = 0.0D;
         }

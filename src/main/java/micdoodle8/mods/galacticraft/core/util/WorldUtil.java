@@ -1038,7 +1038,7 @@ public class WorldUtil
     public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos, boolean spawnRequired)
     {
         CompatibilityManager.forceLoadChunks(worldNew);
-        ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getChunkCoordIntPair();
+        ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getChunkCoordIntPair();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
         if (entity instanceof EntityPlayerMP)

@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -258,7 +257,7 @@ public class TickHandlerClient
                 OverlayDockingRocket.renderDockingOverlay();
             }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && ((EntitySpaceshipBase) minecraft.thePlayer.getRidingEntity()).launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
+            if (minecraft.currentScreen == null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && !((EntitySpaceshipBase) minecraft.thePlayer.getRidingEntity()).getLaunched())
             {
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }

@@ -74,7 +74,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public TileEntityLaunchController()
     {
-        this.storage.setMaxExtract(10);
+        this.storage.setMaxExtract(6);
         this.noRedstoneControl = true;
     }
 
@@ -373,6 +373,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
                             if (launchController2.frequency == this.frequency)
                             {
+                                System.out.println("Conflicting Launch Controller at " + tile2.getPos() + " : " + GCCoreUtil.getDimensionID(tile2));
                                 this.frequencyValid = false;
                                 break worldLoop;
                             }

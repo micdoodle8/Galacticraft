@@ -57,25 +57,28 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
             for (final Object o : list)
             {
-                if (o instanceof IDockable && !((Entity)o).isDead) 
+                if (o instanceof IDockable && !((Entity)o).isDead)
                 {
-                    docked = true;
-
                     final IDockable fuelable = (IDockable) o;
 
-                    if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
+                    if (!fuelable.inFlight())
                     {
-                        if (fuelable instanceof ILandable)
-                        {
-                            ((ILandable) fuelable).landEntity(this.getPos());
-                        }
-                        else
-                        {
-                            fuelable.setPad(this);
-                        }
-                    }
+                        docked = true;
 
-                    break;
+                        if (fuelable != this.dockedEntity && fuelable.isDockValid(this))
+                        {
+                            if (fuelable instanceof ILandable)
+                            {
+                                ((ILandable) fuelable).landEntity(this.getPos());
+                            }
+                            else
+                            {
+                                fuelable.setPad(this);
+                            }
+                        }
+
+                        break;
+                    }
                 }
             }
 

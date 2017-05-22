@@ -846,4 +846,10 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
         return !this.getPassengers().isEmpty() ? this.getPassengers().get(0).getPersistentID() : null;
     }
+
+    @Override
+    public boolean inFlight()
+    {
+        return false;
+    }
 }

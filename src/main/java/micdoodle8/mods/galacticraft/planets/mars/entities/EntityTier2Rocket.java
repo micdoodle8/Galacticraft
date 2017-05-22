@@ -105,9 +105,9 @@ public class EntityTier2Rocket extends EntityTieredRocket
             }
         }
 
-        if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal() && this.hasValidFuel())
         {
-            if (!this.landing)
+            if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
             {
                 double d = this.timeSinceLaunch / 150;
 
@@ -191,7 +191,7 @@ public class EntityTier2Rocket extends EntityTieredRocket
             double x1 = 2.9 * Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
             double z1 = 2.9 * Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
             double y1 = 2.9 * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
-            if (this.landing && this.targetVec != null)
+            if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
             {
                 double modifier = this.posY - this.targetVec.getY();
                 modifier = Math.min(Math.max(modifier, 80.0), 200.0);
@@ -259,16 +259,6 @@ public class EntityTier2Rocket extends EntityTieredRocket
     protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
-    }
-
-    @Override
-    public void onPadDestroyed()
-    {
-        if (!this.isDead && this.launchPhase != EnumLaunchPhase.LAUNCHED.ordinal())
-        {
-            this.dropShipAsItem();
-            this.setDead();
-        }
     }
 
     @Override
