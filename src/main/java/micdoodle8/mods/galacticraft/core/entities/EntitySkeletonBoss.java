@@ -105,8 +105,8 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         if (this.isPassenger(passenger))
         {
-            final double offsetX = Math.sin(-this.rotationYawHead * Constants.RADIANS_TO_DEGREES_D);
-            final double offsetZ = Math.cos(this.rotationYawHead * Constants.RADIANS_TO_DEGREES_D);
+            final double offsetX = Math.sin(-this.rotationYawHead / Constants.RADIANS_TO_DEGREES_D);
+            final double offsetZ = Math.cos(this.rotationYawHead / Constants.RADIANS_TO_DEGREES_D);
             final double offsetY = 2 * Math.cos((this.throwTimer + this.postThrowDelay) * 0.05F);
 
             passenger.setPosition(this.posX + offsetX, this.posY + this.getMountedYOffset() + passenger.getYOffset() + offsetY, this.posZ + offsetZ);

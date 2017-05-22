@@ -668,6 +668,28 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
+        if (!this.worldObj.isRemote)
+        {
+            double clientPosY = buffer.readDouble();
+            if (clientPosY != Double.NaN)
+            {
+                if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
+                {
+                    if (clientPosY > this.posY)
+                    {
+                        this.motionY += (clientPosY - this.posY) / 40D;
+                    }
+                }
+                else if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal())
+                {
+                    if (clientPosY < this.posY)
+                    {
+                        this.motionY += (clientPosY - this.posY) / 40D;
+                    }
+                }
+            }
+            return;
+        }
         int launchPhaseLast = this.launchPhase;
         super.decodePacketdata(buffer);
         this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, buffer.readInt()));
@@ -750,15 +772,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	       		 	}
 	        	}
 	        }
-            
-//            if (!(this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity())))
-//            {
-//                this.motionX = motX;
-//                this.motionY = motY;
-//                this.motionZ = motZ;
-//                this.lastMotionY = lastMotY;
-//                this.lastLastMotionY = lastLastMotY;
-//            }
         }
         this.statusColour = ByteBufUtils.readUTF8String(buffer);
         if (this.statusColour.equals("")) this.statusColour = null;
@@ -769,7 +782,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.worldObj.isRemote)
         {
-            return;
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity()))
+            {
+                list.add(this.posY);
+            }
+            else
+            {
+                list.add(Double.NaN);
+            }
         }
         super.getNetworkedData(list);
 

@@ -93,7 +93,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             {
                 if (motionScalar != 0.0)
                 {
-                    this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
+                    this.motionY = -motionScalar * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
                 }
             }
 
@@ -173,9 +173,10 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
     protected void spawnParticles(boolean launched)
     {
-        double x1 = 2 * Math.cos(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
-        double z1 = 2 * Math.sin(this.rotationYaw * Constants.RADIANS_TO_DEGREES_D) * Math.sin(this.rotationPitch * Constants.RADIANS_TO_DEGREES_D);
-        double y1 = 2 * Math.cos((this.rotationPitch - 180) * Constants.RADIANS_TO_DEGREES_D);
+        double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
+        double x1 = 2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+        double z1 = 2 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+        double y1 = 2 * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
 
         if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() && this.targetVec != null)
         {
