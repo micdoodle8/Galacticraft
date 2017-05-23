@@ -146,7 +146,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     @Override
     public void onLoad()
     {
-        IBlockState bs = this.worldObj.getBlockState(this.pos);
+        IBlockState bs = this.world.getBlockState(this.pos);
         if (bs.getBlock() instanceof BlockTier1TreasureChest)
         {
             this.tier = ((BlockTier1TreasureChest)bs.getBlock()).getTier();
