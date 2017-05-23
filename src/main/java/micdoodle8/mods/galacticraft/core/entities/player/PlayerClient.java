@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
@@ -286,7 +287,7 @@ public class PlayerClient implements IPlayerClient
         if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null && !player.capabilities.isFlying)
         {
             int iPosX = (int) Math.floor(player.posX);
-            int iPosY = (int) Math.floor(player.posY - 1);
+            int iPosY = (int) Math.floor(player.posY - 0.05);
             int iPosZ = (int) Math.floor(player.posZ);
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
             IBlockState state = player.worldObj.getBlockState(pos1);
@@ -295,7 +296,7 @@ public class PlayerClient implements IPlayerClient
             if (state.getBlock() == GCBlocks.blockMoon)
             {
                 // And is the correct metadata (moon turf)
-                if (state.getBlock().getMetaFromState(state) == 5)
+                if (state.getValue(BlockBasicMoon.BASIC_TYPE_MOON) == BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF)
                 {
                     // If it has been long enough since the last step
                     if (stats.getDistanceSinceLastStep() > 0.35)
