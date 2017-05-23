@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -236,7 +237,7 @@ public class GCCoreUtil
     public static InputStream supplementEntityKeys(InputStream inputstream, String assetprefix) throws IOException
     {
         ArrayList<String> langLines = new ArrayList<String>();
-        BufferedReader br = new BufferedReader(new InputStreamReader(inputstream));
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputstream, StandardCharsets.UTF_8));
         String line;
         String supplemented = "entity." + assetprefix.toLowerCase() + ".";
         
