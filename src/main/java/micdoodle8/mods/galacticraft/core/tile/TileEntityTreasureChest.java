@@ -3,11 +3,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.item.IKeyable;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -46,6 +44,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean locked = true;
+    @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public int tier = 1;
 
     public TileEntityTreasureChest()
@@ -143,15 +142,6 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
     }
     
-    @Override
-    public void onLoad()
-    {
-        IBlockState bs = this.world.getBlockState(this.pos);
-        if (bs.getBlock() instanceof BlockTier1TreasureChest)
-        {
-            this.tier = ((BlockTier1TreasureChest)bs.getBlock()).getTier();
-        }
-    }
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
