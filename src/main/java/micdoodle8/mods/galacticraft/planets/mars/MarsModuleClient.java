@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars;
 
 import com.google.common.collect.ImmutableList;
 
+import micdoodle8.mods.galacticraft.api.client.ItemMeshDefinitionCustom;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -103,7 +104,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         Item sludge = Item.getItemFromBlock(MarsBlocks.blockSludge);
         ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sludge"));
-        ModelLoader.setCustomMeshDefinition(sludge, (ItemStack stack) -> sludgeLocation);
+        ModelLoader.setCustomMeshDefinition(sludge, ItemMeshDefinitionCustom.create((ItemStack stack) -> sludgeLocation));
         ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
         {
             @Override

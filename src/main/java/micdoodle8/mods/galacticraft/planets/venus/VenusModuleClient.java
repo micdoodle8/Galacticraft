@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus;
 
+import micdoodle8.mods.galacticraft.api.client.ItemMeshDefinitionCustom;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -90,7 +91,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     {
         Item sludge = Item.getItemFromBlock(VenusBlocks.sulphuricAcid);
         ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid"));
-        ModelLoader.setCustomMeshDefinition(sludge, (ItemStack stack) -> sulphuricAcidLocation);
+        ModelLoader.setCustomMeshDefinition(sludge, ItemMeshDefinitionCustom.create((ItemStack stack) -> sulphuricAcidLocation));
         ModelLoader.setCustomStateMapper(VenusBlocks.sulphuricAcid, new StateMapperBase()
         {
             @Override

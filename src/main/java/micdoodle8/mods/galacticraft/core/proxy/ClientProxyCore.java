@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 
+import micdoodle8.mods.galacticraft.api.client.ItemMeshDefinitionCustom;
 import micdoodle8.mods.galacticraft.api.client.tabs.InventoryTabVanilla;
 import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -210,7 +211,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
         ModelBakery.registerItemVariants(fuel, new ResourceLocation("galacticraftcore:fuel"));
-        ModelLoader.setCustomMeshDefinition(fuel, (ItemStack stack) -> fuelLocation);
+        ModelLoader.setCustomMeshDefinition(fuel, ItemMeshDefinitionCustom.create((ItemStack stack) -> fuelLocation));
         ModelLoader.setCustomStateMapper(GCBlocks.fuel, new StateMapperBase()
         {
             @Override
@@ -221,7 +222,7 @@ public class ClientProxyCore extends CommonProxyCore
         });
         Item oil = Item.getItemFromBlock(GCBlocks.crudeOil);
         ModelBakery.registerItemVariants(oil, new ResourceLocation("galacticraftcore:oil"));
-        ModelLoader.setCustomMeshDefinition(oil, (ItemStack stack) -> oilLocation);
+        ModelLoader.setCustomMeshDefinition(oil, ItemMeshDefinitionCustom.create((ItemStack stack) -> oilLocation));
         ModelLoader.setCustomStateMapper(GCBlocks.crudeOil, new StateMapperBase()
         {
             @Override
