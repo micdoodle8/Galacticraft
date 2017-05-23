@@ -315,6 +315,11 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
+        if (!(state.getBlock() instanceof BlockSpaceGlass))
+        {
+            return;
+        }
+        
         IBlockState above = worldIn.getBlockState(pos.up());
         IBlockState below = worldIn.getBlockState(pos.down());
         IBlockState north = worldIn.getBlockState(pos.north());

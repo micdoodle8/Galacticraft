@@ -46,10 +46,14 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
     {
-        float f = 0.0625F;
-        float f1 = (float) (1 + ((Integer) worldIn.getBlockState(pos).getValue(BITES)).intValue() * 2) / 16.0F;
-        float f2 = 0.5F;
-        this.setBlockBounds(f1, 0.0F, f, 1.0F - f, f2, 1.0F - f);
+        IBlockState bs = worldIn.getBlockState(pos);
+        if (bs.getBlock() instanceof BlockCheese)
+        {
+            float f = 0.0625F;
+            float f1 = (float) (1 + ((Integer) bs.getValue(BITES)).intValue() * 2) / 16.0F;
+            float f2 = 0.5F;
+            this.setBlockBounds(f1, 0.0F, f, 1.0F - f, f2, 1.0F - f);
+        }
     }
 
     /**

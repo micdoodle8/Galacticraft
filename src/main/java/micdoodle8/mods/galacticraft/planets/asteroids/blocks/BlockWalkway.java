@@ -160,10 +160,10 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         TileEntity[] connectable = new TileEntity[6];
+        IBlockState state = worldIn.getBlockState(pos);
 
-        if (tileEntity != null)
+        if (tileEntity != null && state.getBlock() instanceof BlockWalkway)
         {
-            IBlockState state = worldIn.getBlockState(pos);
             if (this.getNetworkType(state) != null)
             {
                 switch (this.getNetworkType(state))

@@ -86,14 +86,15 @@ public abstract class BlockTransmitter extends BlockAdvanced
     public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
+        IBlockState bs = worldIn.getBlockState(pos);
 
-        if (tileEntity instanceof ITransmitter)
+        if (tileEntity instanceof ITransmitter && bs.getBlock() instanceof BlockTransmitter)
         {
-            Vector3 minVector = this.getMinVector(worldIn.getBlockState(pos));
-            Vector3 maxVector = this.getMaxVector(worldIn.getBlockState(pos));
+            Vector3 minVector = this.getMinVector(bs);
+            Vector3 maxVector = this.getMaxVector(bs);
 
             TileEntity[] connectable = new TileEntity[6];
-            switch (this.getNetworkType(worldIn.getBlockState(pos)))
+            switch (this.getNetworkType(bs))
             {
             case FLUID:
                 connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
