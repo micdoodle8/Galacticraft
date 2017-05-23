@@ -151,8 +151,8 @@
 },
 {
     "__comment": "Bottom_North",
-    "from": [ 6.5, 6.4375, 0 ],
-    "to": [ 9.5, 9.4375, 6.5 ],
+    "from": [ 6.5, 6.5, 0 ],
+    "to": [ 9.5, 9.5, 6.5 ],
     "faces": {
         "down":  { "uv": [ 0.375, 0.375, 2.875, 6.125 ], "texture": "#aluminum_wire" },
         "up":    { "uv": [ 0.375, 0.375, 2.875, 6 ], "texture": "#aluminum_wire" },
