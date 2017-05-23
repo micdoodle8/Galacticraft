@@ -17,10 +17,4 @@ public class BlockTier3TreasureChest extends BlockTier1TreasureChest
     {
         return new TileEntityTreasureChestVenus();
     }
-
-    @Override
-    public int getTier()
-    {
-        return 3;
-    }
 }
