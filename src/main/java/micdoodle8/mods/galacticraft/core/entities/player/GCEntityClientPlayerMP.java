@@ -15,6 +15,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.EnumDifficulty;
@@ -506,5 +507,15 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         }
 
         return vanillaCape;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float partialTicks)
+    {
+        double height = this.posY + (double)this.getEyeHeight();
+        if (height > 255D) height = 255D;
+        BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
+        return this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
     }
 }

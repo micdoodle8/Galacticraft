@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -64,7 +66,13 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
 
-        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass());
+        Entity rocket = OverlayRocket.minecraft.thePlayer.ridingEntity;
+        float headOffset = 0;
+        if (rocket instanceof EntityTier1Rocket)
+        {
+            headOffset = 5F;
+        }
+        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(rocket.getClass());
 
         final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
         var1 = 2.5F;
@@ -78,7 +86,7 @@ public class OverlayRocket extends Overlay
         var8 = 1.0F / 64.0F;
 
         GlStateManager.pushMatrix();
-        final int i = OverlayRocket.minecraft.thePlayer.ridingEntity.getBrightnessForRender(1);
+        final int i = rocket.getBrightnessForRender(1);
         final int j = i % 65536;
         final int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
@@ -91,7 +99,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(OverlayRocket.minecraft.thePlayer.ridingEntity.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(rocket.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
@@ -105,7 +113,7 @@ public class OverlayRocket extends Overlay
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(770, 771);
-        GlStateManager.translate(0F, -13F, 60F);
+        GlStateManager.translate(0F, -12F + headOffset, 60F);
 
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(var1 + 0, var2 + var6, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();

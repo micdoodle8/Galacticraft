@@ -8,6 +8,9 @@ import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GCPlayerBaseSP extends ClientPlayerBase
 {
@@ -136,4 +139,14 @@ public class GCPlayerBaseSP extends ClientPlayerBase
 //    {
 //        return this.getClientHandler().getBedOrientationInDegrees(this, super.getBedOrientationInDegrees());
 //    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public int getBrightnessForRender(float partialTicks)
+    {
+        double height = this.player.posY + (double)this.player.getEyeHeight();
+        if (height > 255D) height = 255D;
+        BlockPos blockpos = new BlockPos(this.player.posX, height, this.player.posZ);
+        return this.player.worldObj.isBlockLoaded(blockpos) ? this.player.worldObj.getCombinedLight(blockpos, 0) : 0;
+    }
 }
