@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+
 public class Planet extends CelestialBody
 {
     protected SolarSystem parentSolarSystem = null;
@@ -30,5 +32,10 @@ public class Planet extends CelestialBody
     {
         this.parentSolarSystem = galaxy;
         return this;
+    }
+    
+    public static void addMobToSpawn(String planetName, SpawnListEntry mobData)
+    {
+        GalaxyRegistry.getCelestialBodyFromUnlocalizedName("planet." + planetName).addMobInfo(mobData);
     }
 }

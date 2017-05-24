@@ -1,9 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
@@ -17,7 +14,7 @@ import net.minecraft.world.chunk.ChunkPrimer;
 
 import java.util.Random;
 
-public class BiomeGenBaseVenus extends BiomeGenBase
+public class BiomeGenBaseVenus extends BiomeGenBaseGC
 {
     public static final BiomeGenBase venusFlat = new BiomeGenFlatVenus(ConfigManagerCore.biomeIDbase + 4).setBiomeName("Venus Flat");
     public static final BiomeGenBase venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("Venus Mountain");
@@ -27,14 +24,6 @@ public class BiomeGenBaseVenus extends BiomeGenBase
     BiomeGenBaseVenus(int var1)
     {
         super(var1);
-        this.spawnableMonsterList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCreatureList.clear();
-        this.spawnableCaveCreatureList.clear();
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
-        this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
         this.rainfall = 0F;
     }
 

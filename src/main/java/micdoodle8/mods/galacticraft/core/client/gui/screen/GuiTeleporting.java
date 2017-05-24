@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 
