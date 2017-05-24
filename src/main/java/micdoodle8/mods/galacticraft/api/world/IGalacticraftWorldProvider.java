@@ -11,7 +11,7 @@ public interface IGalacticraftWorldProvider
      *
      * @return additional gravity for this provider
      */
-    public float getGravity();
+    float getGravity();
 
     
     /**
@@ -19,7 +19,7 @@ public interface IGalacticraftWorldProvider
      * 
      * @return added y-motion per tick for arrows 
      */
-    public float getArrowGravity();
+    float getArrowGravity();
     
     /**
      * Determines the rate to spawn meteors in this planet. Lower means MORE
@@ -29,7 +29,7 @@ public interface IGalacticraftWorldProvider
      *
      * @return
      */
-    public double getMeteorFrequency();
+    double getMeteorFrequency();
 
     /**
      * Depending on gravity, different fuel depletion rates will occur in
@@ -38,7 +38,7 @@ public interface IGalacticraftWorldProvider
      * @return multiplier of fuel usage, relative to the earth. Lower gravity =
      * Lower fuel usage (multiplier less than zero)
      */
-    public double getFuelUsageMultiplier();
+    double getFuelUsageMultiplier();
 
     /**
      * Whether or not the spaceship tier from {@link IRocketType} can enter this
@@ -48,14 +48,14 @@ public interface IGalacticraftWorldProvider
      * @return Whether or not the spaceship with given tier can enter this
      * dimension
      */
-    public boolean canSpaceshipTierPass(int tier);
+    boolean canSpaceshipTierPass(int tier);
 
     /**
      * Fall damage will be multiplied by this number while on the planet/moon.
      *
      * @return Fall damage multiplier, returning 1 will be equal to earth.
      */
-    public float getFallDamageModifier();
+    float getFallDamageModifier();
 
     /**
      * 
@@ -71,7 +71,7 @@ public interface IGalacticraftWorldProvider
      * more quiet. Value of 0.1 will make sounds 10 times louder. Be
      * careful with the values you choose!
      */
-    public float getSoundVolReductionAmount();
+    float getSoundVolReductionAmount();
 
     /**
      * Whether or not the atmosphere of this dimension is valid for players to
@@ -79,7 +79,7 @@ public interface IGalacticraftWorldProvider
      *
      * @return True if players can breathe here, False if not.
      */
-    public boolean hasBreathableAtmosphere();
+    boolean hasBreathableAtmosphere();
    
     /**
      * If false (the default) then Nether Portals will have no function on this world.
@@ -88,14 +88,14 @@ public interface IGalacticraftWorldProvider
      * 
      * @return True if Nether Portals should work like on the Overworld.
      */
-    public boolean netherPortalsOperational();
+    boolean netherPortalsOperational();
 
     /**
      * Whether or not the atmosphere of this dimension contains the specified gas
      *
      * @return True if the gas is present in the atmosphere, False if not.
      */
-    public boolean isGasPresent(IAtmosphericGas gas);
+    boolean isGasPresent(EnumAtmosphericGas gas);
 
     /**
      * This value will affect player's thermal level, damaging them if it
@@ -104,7 +104,7 @@ public interface IGalacticraftWorldProvider
      * @return Positive integer for hot celestial bodies, negative for cold.
      * Zero for neutral
      */
-    public float getThermalLevelModifier();
+    float getThermalLevelModifier();
 
     /**
      * Amount of wind on this world. Used for flag waving.
@@ -113,7 +113,7 @@ public interface IGalacticraftWorldProvider
      *
      * @return Flag movement magnitude. Relative to earth's value of 1.0F
      */
-    public float getWindLevel();
+    float getWindLevel();
     
     /**
      * Factor by which the sun is to be drawn smaller (<1.0) or larger (>1.0) than
@@ -121,7 +121,7 @@ public interface IGalacticraftWorldProvider
      * 
      * @return  factor
      */
-    public float getSolarSize();
+    float getSolarSize();
 
     /**
      * The celestial body object for this dimension
@@ -130,21 +130,21 @@ public interface IGalacticraftWorldProvider
      * @see micdoodle8.mods.galacticraft.api.galaxies.Planet
      * @see micdoodle8.mods.galacticraft.api.galaxies.Moon
      */
-    public abstract CelestialBody getCelestialBody();
+    abstract CelestialBody getCelestialBody();
 
     /**
      * Whether rain and snow should be disabled on this planet
      *
      * @return true if precipitation should be disabled. False otherwise.
      */
-    public boolean shouldDisablePrecipitation();
+    boolean shouldDisablePrecipitation();
 
     /**
      * Whether or not player's armor should be corroded in this world
      *
      * @return true if armor should be corroded, false if not
      */
-    public boolean shouldCorrodeArmor();
+    boolean shouldCorrodeArmor();
     
     /**
      * The size (in blocks) of the average spacing between dungeons
@@ -152,5 +152,5 @@ public interface IGalacticraftWorldProvider
      * <p/>
      * If your world has no dungeons you can safely return 0 here.
      */
-    public int getDungeonSpacing();
+    int getDungeonSpacing();
 }

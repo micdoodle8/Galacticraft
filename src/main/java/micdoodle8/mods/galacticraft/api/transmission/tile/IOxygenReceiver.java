@@ -7,7 +7,7 @@ import net.minecraft.util.EnumFacing;
  */
 public interface IOxygenReceiver extends IConnector
 {
-    public abstract boolean shouldPullOxygen();
+    boolean shouldPullOxygen();
 
     /**
      * Adds oxygen reception to a tile entity. Returns the quantity of oxygen
@@ -19,7 +19,7 @@ public interface IOxygenReceiver extends IConnector
      * @param doReceive If false, the transfer will only be simulated.
      * @return Amount of oxygen that was accepted by the block.
      */
-    public int receiveOxygen(EnumFacing from, int receive, boolean doReceive);
+    int receiveOxygen(EnumFacing from, int receive, boolean doReceive);
 
     /**
      * Adds oxygen provision to a block. Returns the quantity of oxygen
@@ -31,16 +31,16 @@ public interface IOxygenReceiver extends IConnector
      * @param doProvide If false, the transfer will only be simulated.
      * @return Amount of oxygen that was given out by the block.
      */
-    public int provideOxygen(EnumFacing from, int request, boolean doProvide);
+    int provideOxygen(EnumFacing from, int request, boolean doProvide);
 
     /**
      * @return How much oxygen does this TileEntity want?
      */
-    public int getOxygenRequest(EnumFacing direction);
+    int getOxygenRequest(EnumFacing direction);
 
     /**
      * @return How much oxygen does this TileEntity want to provide?
      */
-    public int getOxygenProvide(EnumFacing direction);
+    int getOxygenProvide(EnumFacing direction);
 
 }

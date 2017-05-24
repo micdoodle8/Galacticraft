@@ -13,7 +13,7 @@ public interface IKeyable
      * @return -1 for any tier, or return tier required for key activated to
      * pass
      */
-    public int getTierOfKeyRequired();
+    int getTierOfKeyRequired();
 
     /**
      * called when key of correct tier is clicked
@@ -22,15 +22,15 @@ public interface IKeyable
      * @param face the block face clicked
      * @return true if something was done, false if not
      */
-    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face);
+    boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face);
 
     /**
      * called when player is not holding correct tier of key, or any key at all
      *
-     * @param key the key itemstack
+     * @param player
      * @return true if something was done, false if not
      */
-    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face);
+    boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face);
 
-    public boolean canBreak();
+    boolean canBreak();
 }

@@ -14,5 +14,5 @@ public interface IConnector
     /**
      * @return If the connection is possible.
      */
-    public boolean canConnect(EnumFacing direction, NetworkType type);
+    boolean canConnect(EnumFacing direction, NetworkType type);
 }

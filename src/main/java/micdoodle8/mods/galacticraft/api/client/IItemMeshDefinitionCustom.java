@@ -4,9 +4,9 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 
-public interface ItemMeshDefinitionCustom extends ItemMeshDefinition
+public interface IItemMeshDefinitionCustom extends ItemMeshDefinition
 {
-    static ItemMeshDefinition create(ItemMeshDefinitionCustom lambda)
+    static ItemMeshDefinition create(IItemMeshDefinitionCustom lambda)
     { 
         return lambda;
     }

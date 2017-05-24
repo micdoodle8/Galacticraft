@@ -17,20 +17,20 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * Get the page ID. Make it configurable since it has to be unique between
      * other Galacticraft addons. Determines order of schematics.
      */
-    public int getPageID();
+    int getPageID();
 
     /**
      * The GUI ID of this page. Used like any other GUI IDs to determine which
      * container and GUI to open. Again, must be unique between mods so make it
      * configurable.
      */
-    public int getGuiID();
+    int getGuiID();
 
     /**
      * The item required to unlock this schematic. The item class must implement
      * ISchematicItem, since it goes in the NASA Workbench unlock slot.
      */
-    public ItemStack getRequiredItem();
+    ItemStack getRequiredItem();
 
     /**
      * The resulting client-side GUI for this page
@@ -40,7 +40,7 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * @return the GUI to be opened with this schematic
      */
     @SideOnly(Side.CLIENT)
-    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos);
+    GuiScreen getResultScreen(EntityPlayer player, BlockPos pos);
 
     /**
      * The resulting container for this page
@@ -49,5 +49,5 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * @param pos    Coordinates of the NASA Workbench
      * @return the container to be opened with this schematic
      */
-    public Container getResultContainer(EntityPlayer player, BlockPos pos);
+    Container getResultContainer(EntityPlayer player, BlockPos pos);
 }

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
@@ -204,7 +204,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
      * Do not include trace gases (anything less than 0.25%)
      * (Do not use for stars!)
      */
-    public CelestialBody atmosphereComponent(IAtmosphericGas gas)
+    public CelestialBody atmosphereComponent(EnumAtmosphericGas gas)
     {
         this.atmosphere.composition.add(gas);
         return this;

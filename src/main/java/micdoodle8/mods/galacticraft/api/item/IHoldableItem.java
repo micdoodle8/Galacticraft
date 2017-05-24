@@ -15,7 +15,7 @@ public interface IHoldableItem
      * @param player the player holding the item
      * @return true if player should hold the item above their head
      */
-    public boolean shouldHoldLeftHandUp(EntityPlayer player);
+    boolean shouldHoldLeftHandUp(EntityPlayer player);
 
     /**
      * Self-explanatory.
@@ -25,7 +25,7 @@ public interface IHoldableItem
      * @param player the player holding the item
      * @return true if player should hold the item above their head
      */
-    public boolean shouldHoldRightHandUp(EntityPlayer player);
+    boolean shouldHoldRightHandUp(EntityPlayer player);
 
     /**
      * Used to determine if player should crouch while holding this item.
@@ -35,5 +35,5 @@ public interface IHoldableItem
      * @param player the player holding the item
      * @return true if player should hold the item above their head
      */
-    public boolean shouldCrouch(EntityPlayer player);
+    boolean shouldCrouch(EntityPlayer player);
 }

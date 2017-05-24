@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
@@ -108,7 +108,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
                     if (!this.isInitialised)
                     {
-                        this.noAtmosphericOxygen = (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).isGasPresent(IAtmosphericGas.OXYGEN));
+                        this.noAtmosphericOxygen = (this.worldObj.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.worldObj.provider).isGasPresent(EnumAtmosphericGas.OXYGEN));
                         this.isInitialised = true;
                     }
 

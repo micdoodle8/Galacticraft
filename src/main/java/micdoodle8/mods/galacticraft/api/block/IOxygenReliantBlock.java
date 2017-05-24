@@ -13,7 +13,7 @@ import net.minecraft.world.World;
  */
 public interface IOxygenReliantBlock
 {
-    public void onOxygenRemoved(World world, BlockPos pos, IBlockState currentState);
+    void onOxygenRemoved(World world, BlockPos pos, IBlockState currentState);
 
-    public void onOxygenAdded(World world, BlockPos pos, IBlockState currentState);
+    void onOxygenAdded(World world, BlockPos pos, IBlockState currentState);
 }

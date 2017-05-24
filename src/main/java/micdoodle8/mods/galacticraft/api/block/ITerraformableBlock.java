@@ -12,10 +12,8 @@ public interface ITerraformableBlock
      * true.
      *
      * @param world World that the block is a part of
-     * @param x     Position of the block on the x-axis
-     * @param y     Position of the block on the y-axis
-     * @param z     Position of the block on the z-axis
+     * @param pos The position of the block
      * @return True if the block can be terraformed, false if not.
      */
-    public boolean isTerraformable(World world, BlockPos pos);
+    boolean isTerraformable(World world, BlockPos pos);
 }
