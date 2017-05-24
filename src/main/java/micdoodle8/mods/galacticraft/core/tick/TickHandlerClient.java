@@ -442,6 +442,7 @@ public class TickHandlerClient
                 ClientProxyCore.overworldTextureRequestSent = false;
                 ClientProxyCore.flagRequestsSent.clear();
                 TickHandlerClient.clearLiquidNetworks();
+                ClientProxyCore.clientSpaceStationID.clear();
 
                 if (TickHandlerClient.missingRequirementThread == null)
                 {
