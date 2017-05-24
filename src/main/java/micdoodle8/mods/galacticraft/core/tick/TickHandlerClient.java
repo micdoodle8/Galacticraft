@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
+import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -82,6 +83,7 @@ public class TickHandlerClient
     public static boolean spaceRaceGuiScheduled = false;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
+    public static GuiTeleporting teleportingGui;
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -321,6 +323,14 @@ public class TickHandlerClient
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
         final WorldClient world = minecraft.theWorld;
         final EntityPlayerSP player = minecraft.thePlayer;
+
+        if (teleportingGui != null)
+        {
+            if (minecraft.currentScreen != teleportingGui)
+            {
+                minecraft.currentScreen = teleportingGui;
+            }
+        }
 
         if (event.phase == Phase.START && player != null)
         {
