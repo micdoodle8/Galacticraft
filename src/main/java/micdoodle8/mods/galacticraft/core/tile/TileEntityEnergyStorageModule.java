@@ -356,7 +356,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
         else if (state.getBlock() instanceof BlockMachine)
         {
-            return (this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING));
+            return (state.getValue(BlockMachine.FACING));
         }
         return EnumFacing.NORTH;
     }

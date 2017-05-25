@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -361,7 +362,12 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public EnumFacing getFront()
     {
-        return (this.worldObj.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockOxygenCollector)
+        {
+            return state.getValue(BlockOxygenCollector.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override
