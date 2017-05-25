@@ -130,7 +130,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             	this.dropItem(GCItems.canister, 1);
                 break;
             default:
-            	if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.pumpkin_seeds, 1);
+            	if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.pumpkin_seeds, 1);
                 break;
         }
     }
@@ -159,7 +159,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         	this.dropItem(Items.bone, 1); 
         
         //Drop lapis as semi-rare drop if player hit and if dropping bones
-        if (p_70628_1_ && (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
+        if (p_70628_1_ && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
         	this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
     }
 

@@ -41,6 +41,7 @@ public class ConfigManagerCore
     public static boolean hardMode;
     public static boolean quickMode;
 	public static boolean challengeMode;
+	private static int challengeFlags;
 	public static boolean challengeRecipes;
 	public static boolean challengeMobDropsAndSpawning;
 	public static boolean challengeSpawnHandling;
@@ -486,30 +487,10 @@ public class ConfigManagerCore
             if (!GalacticraftCore.isPlanetsLoaded) challengeMode = false;
             propOrder.add(prop.getName());
             
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode Recipes", false);
-            prop.comment = "Set this to true to just enable the compressor recipes from Adventure Mode (regardless of whether the game mode is enabled).";
-            prop.setLanguageKey("gc.configgui.asteroidsRecipes");
-            challengeRecipes = prop.getBoolean(false);
-            propOrder.add(prop.getName());
-            
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode Mob Drops and Spawning", false);
-            prop.comment = "Set this to true to just enable the mob drops and mob spawning additions from Adventure Mode (regardless of whether the game mode is enabled).";
-            prop.setLanguageKey("gc.configgui.asteroidsMobDropsAndSpawning");
-            challengeMobDropsAndSpawning = prop.getBoolean(false);
-            propOrder.add(prop.getName());
-            
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode Spawn Handling", false);
-            prop.comment = "Set this to true to just enable players spawning in entry pods in the asteroids dimension like they would in Adventure Mode (regardless of whether the game mode is enabled, but only effective if Galacticraft Planets is installed).";
-            prop.setLanguageKey("gc.configgui.asteroidsSpawnHandling");
-            challengeSpawnHandling = prop.getBoolean(false);
-            if (!GalacticraftCore.isPlanetsLoaded) challengeSpawnHandling = false;
-            propOrder.add(prop.getName());
-            
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode Asteroid Population", false);
-            prop.comment = "Set this to true to just enable trees being placed in all hollow asteroids in the asteroids dimension like they would in Adventure Mode (regardless of whether the game mode is enabled, but only effective if Galacticraft Planets is installed).";
-            prop.setLanguageKey("gc.configgui.asteroidsAsteroidPopulation");
-            challengeAsteroidPopulation = prop.getBoolean(false);
-            if (!GalacticraftCore.isPlanetsLoaded) challengeAsteroidPopulation = false;
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Adventure Game Mode Flags", 15);
+            prop.comment = "Add together flags 8, 4, 2, 1 to enable the four elements of adventure game mode. Default 15.  1 = extended compressor recipes.  2 = mob drops and spawning.  4 = more trees in hollow asteroids.  8 = start stranded in Asteroids.";
+            prop.setLanguageKey("gc.configgui.asteroidsFlags");
+            challengeFlags = prop.getInt(15);
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Enable Sealed edge checks", true);
@@ -720,10 +701,17 @@ public class ConfigManagerCore
     {
     	if (challengeMode)
     	{
-    		challengeRecipes = true;
-    		challengeMobDropsAndSpawning = true;
-    		challengeSpawnHandling = true;
-    		challengeAsteroidPopulation = true;
+    		challengeRecipes = (challengeFlags & 1) > 0;
+    		challengeMobDropsAndSpawning = (challengeFlags & 2) > 0;
+            challengeAsteroidPopulation = (challengeFlags & 4) > 0;
+    		challengeSpawnHandling = (challengeFlags & 8) > 0;
+    	}
+    	else
+    	{
+    	    challengeRecipes = false;
+            challengeMobDropsAndSpawning = false;
+            challengeAsteroidPopulation = false;
+            challengeSpawnHandling = false;
     	}
 
     	//This enables Endermen on Asteroids in Asteroids Challenge mode

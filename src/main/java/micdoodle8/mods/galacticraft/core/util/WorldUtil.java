@@ -1279,7 +1279,7 @@ public class WorldUtil
 
     public static WorldServer getStartWorld(WorldServer worldOld)
     {
-        if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling)
+        if (ConfigManagerCore.challengeSpawnHandling)
         {
         	WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
         	WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
