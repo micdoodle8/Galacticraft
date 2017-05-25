@@ -352,7 +352,9 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 }
             }
             else
+            {
                 super.onLivingUpdate();
+            }
         }
         catch (RuntimeException e)
         {

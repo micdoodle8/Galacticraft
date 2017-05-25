@@ -28,11 +28,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -378,6 +380,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         return true;
     }
 
+    public abstract boolean hasValidFuel();
+
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
@@ -394,7 +398,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 this.syncAdjustFlag = true;
             }
         }
-        else
+        else if (this.hasValidFuel())
         {
             if (Math.abs(this.syncAdjustX - this.posX) > 0.2D) this.motionX += (this.syncAdjustX - this.posX) / 40D;
             if (Math.abs(this.syncAdjustY - this.posY) > 0.2D) this.motionY += (this.syncAdjustY - this.posY) / 40D;
@@ -446,15 +450,43 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setRotation(yaw, pitch);
-        if (this.syncAdjustFlag)
+        if (this.syncAdjustFlag && this.worldObj.isBlockLoaded(new BlockPos(x, 255D, z)) && this.hasValidFuel())
         {
-            this.posX = x;
-            this.posY = y;
-            this.posZ = z;
-            this.syncAdjustX = 0D;
-            this.syncAdjustY = 0D;
-            this.syncAdjustZ = 0D;
-            this.syncAdjustFlag = false;
+            EntityPlayer p = FMLClientHandler.instance().getClientPlayerEntity();
+            double dx = x - p.posX;
+            double dz = z - p.posZ;
+            if (dx * dx + dz * dz < 1024)
+            {
+                if (!this.worldObj.loadedEntityList.contains(this))
+                {
+                    try {
+                        this.worldObj.loadedEntityList.add(this);
+                    } catch (Exception e) { e.printStackTrace(); }
+                }
+
+                this.posX = x;
+                this.posY = y;
+                this.posZ = z;
+                
+                int cx = MathHelper.floor_double(x / 16.0D);
+                int cz = MathHelper.floor_double(z / 16.0D);
+
+                if (!this.addedToChunk || this.chunkCoordX != cx || this.chunkCoordZ != cz)
+                {
+                    if (this.addedToChunk && this.worldObj.isBlockLoaded(new BlockPos(this.chunkCoordX << 4, 255, this.chunkCoordZ << 4), true))
+                    {
+                        this.worldObj.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ).removeEntityAtIndex(this, this.chunkCoordY);
+                    }
+
+                    this.addedToChunk = true;
+                    this.worldObj.getChunkFromChunkCoords(cx, cz).addEntity(this);
+                }
+                
+                this.syncAdjustX = 0D;
+                this.syncAdjustY = 0D;
+                this.syncAdjustZ = 0D;
+                this.syncAdjustFlag = false;
+            }
         }
         else
         {
