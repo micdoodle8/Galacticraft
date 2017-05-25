@@ -52,7 +52,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public float getRotateOffset()
     {
-        return 0.0F;
+        return -1.5F;
     }
 
     @Override
@@ -183,7 +183,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 z1 *= modifier / 100.0D;
             }
 
-            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.motionY;
+            final double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.motionY + 1.2D;
 
             final double x2 = this.posX + x1 - this.motionX;
             final double z2 = this.posZ + z1 - this.motionZ;

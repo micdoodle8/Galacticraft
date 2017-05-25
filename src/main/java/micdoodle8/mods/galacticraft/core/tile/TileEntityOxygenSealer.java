@@ -396,7 +396,12 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     @Override
     public EnumFacing getFront()
     {
-        return this.world.getBlockState(getPos()).getValue(BlockOxygenSealer.FACING);
+        IBlockState state = this.world.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockOxygenSealer)
+        {
+            return state.getValue(BlockOxygenSealer.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

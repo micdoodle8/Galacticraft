@@ -10,7 +10,7 @@ public class AtmosphereInfo
     private final float thermalLevel;
     private final float windLevel;
     private final float density;
-    public ArrayList<IAtmosphericGas> composition = new ArrayList<>();
+    public ArrayList<EnumAtmosphericGas> composition = new ArrayList<>();
     
     /**
      * @param breathable - supply null here to have the AtmosphereInfo object test the atmospheric composition for oxygen and CO2, or true or false to override
@@ -34,7 +34,7 @@ public class AtmosphereInfo
     {
         if (this.isBreathable == null)
         {
-            return this.isGasPresent(IAtmosphericGas.OXYGEN) && !this.isGasPresent(IAtmosphericGas.CO2);
+            return this.isGasPresent(EnumAtmosphericGas.OXYGEN) && !this.isGasPresent(EnumAtmosphericGas.CO2);
         }
         return this.isBreathable;
     }
@@ -64,7 +64,7 @@ public class AtmosphereInfo
         return this.density;
     }
 
-    public boolean isGasPresent(IAtmosphericGas gas)
+    public boolean isGasPresent(EnumAtmosphericGas gas)
     {
         return this.composition.contains(gas);
     }

@@ -20,8 +20,8 @@
 },
 {
     "__comment": "North",
-    "from": [ 6.5, 6.4375, 0 ],
-    "to": [ 9.5, 9.4375, 6.5 ],
+    "from": [ 6.5, 6.5, 0 ],
+    "to": [ 9.5, 9.5, 6.5 ],
     "faces": {
         "down":  { "uv": [ 6, 0, 10, 6 ], "texture": "#pipeTex" },
         "up":    { "uv": [ 6, 0, 10, 6 ], "texture": "#pipeTex" },

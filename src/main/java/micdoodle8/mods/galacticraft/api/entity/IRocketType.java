@@ -4,7 +4,7 @@ import net.minecraft.util.text.translation.I18n;
 
 public interface IRocketType
 {
-    public static enum EnumRocketType
+    enum EnumRocketType
     {
         DEFAULT(0, "", false, 2),
         INVENTORY27(1, I18n.translateToLocal("gui.rocket_type.0"), false, 20),
@@ -46,7 +46,7 @@ public interface IRocketType
         }
     }
 
-    public EnumRocketType getType();
+    EnumRocketType getType();
 
-    public int getRocketTier();
+    int getRocketTier();
 }

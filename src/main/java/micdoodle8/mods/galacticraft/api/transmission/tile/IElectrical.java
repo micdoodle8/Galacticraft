@@ -20,7 +20,7 @@ public interface IElectrical extends IConnector
      * @param doReceive    If false, the charge will only be simulated.
      * @return Amount of energy that was accepted by the block.
      */
-    public float receiveElectricity(EnumFacing from, float receive, int tierProduced, boolean doReceive);
+    float receiveElectricity(EnumFacing from, float receive, int tierProduced, boolean doReceive);
 
     /**
      * Adds electricity to an block. Returns the ElectricityPack, the
@@ -28,27 +28,27 @@ public interface IElectrical extends IConnector
      * be externally discharged.
      *
      * @param from      Orientation the electricity is requested from.
-     * @param energy    Maximum amount of energy to be sent into the block.
-     * @param doReceive If false, the charge will only be simulated.
+     * @param request   Maximum amount of energy to be sent into the block.
+     * @param doProvide If false, the charge will only be simulated.
      * @return Amount of energy that was given out by the block.
      */
-    public float provideElectricity(EnumFacing from, float request, boolean doProvide);
+    float provideElectricity(EnumFacing from, float request, boolean doProvide);
 
     /**
      * @return How much energy does this TileEntity want?
      */
-    public float getRequest(EnumFacing direction);
+    float getRequest(EnumFacing direction);
 
     /**
      * @return How much energy does this TileEntity want to provide?
      */
-    public float getProvide(EnumFacing direction);
+    float getProvide(EnumFacing direction);
 
     /**
      * Gets the tier of this TileEntity.
      *
      * @return The tier, should be 1 or 2
      */
-    public int getTierGC();
+    int getTierGC();
 
 }

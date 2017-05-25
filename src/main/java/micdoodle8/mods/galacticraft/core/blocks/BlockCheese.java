@@ -54,41 +54,13 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        return CHEESE_AABB[((Integer)state.getValue(BITES)).intValue()];
+        int bites = 0;
+        if (state.getBlock() instanceof BlockCheese)
+        {
+            bites = ((Integer)state.getValue(BITES)).intValue();
+        }
+        return CHEESE_AABB[bites];
     }
-
-//    @Override
-//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-//    {
-//        float f = 0.0625F;
-//        float f1 = (float) (1 + ((Integer) worldIn.getBlockState(pos).getValue(BITES)).intValue() * 2) / 16.0F;
-//        float f2 = 0.5F;
-//        this.setBlockBounds(f1, 0.0F, f, 1.0F - f, f2, 1.0F - f);
-//    }
-//
-//    @Override
-//    public void setBlockBoundsForItemRender()
-//    {
-//        float f = 0.0625F;
-//        float f1 = 0.5F;
-//        this.setBlockBounds(f, 0.0F, f, 1.0F - f, f1, 1.0F - f);
-//    }
-//
-//    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
-//    {
-//        float f = 0.0625F;
-//        float f1 = (float) (1 + ((Integer) state.getValue(BITES)).intValue() * 2) / 16.0F;
-//        float f2 = 0.5F;
-//        return new AxisAlignedBB((double) ((float) pos.getX() + f1), (double) pos.getY(), (double) ((float) pos.getZ() + f), (double) ((float) (pos.getX() + 1) - f), (double) ((float) pos.getY() + f2), (double) ((float) (pos.getZ() + 1) - f));
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
-//    {
-//        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
-//    }
 
     @Override
     public boolean isFullCube(IBlockState state)

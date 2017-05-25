@@ -26,19 +26,19 @@ public interface ITileClientUpdates
      * ALWAYS has length 4.  You don't
      * have to use all of them!
      */
-    public void buildDataPacket(int[] data);
+    void buildDataPacket(int[] data);
     
     /**
      * The supplied data list has 4 ints
      * of data to use at positions 1 through 4.
      */
     @SideOnly(Side.CLIENT)
-    public void updateClient(List<Object> data);
+    void updateClient(List<Object> data);
     
     /**
      * Implement validate() in the tile and call this!
      */
-    public default void clientOnLoad()
+    default void clientOnLoad()
     {
         TileEntity tile = (TileEntity)this;
         if (tile.getWorld().isRemote)
@@ -53,7 +53,7 @@ public interface ITileClientUpdates
      * (If overriding this you must override all other methods in
      * ITileClientUpdates as well ... in which case, why are you using it?)
      */
-    public default void sendUpdateToClient(EntityPlayerMP player)
+    default void sendUpdateToClient(EntityPlayerMP player)
     {
         int[] data = new int[4];
         this.buildDataPacket(data);
@@ -63,7 +63,7 @@ public interface ITileClientUpdates
     /**
      * Used to push updates out to clients
      */
-    public default void updateAllInDimension()
+    default void updateAllInDimension()
     {
         int[] data = new int[4];
         this.buildDataPacket(data);

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
@@ -109,7 +109,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
 
                     if (!this.isInitialised)
                     {
-                        this.noAtmosphericOxygen = (this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.provider).isGasPresent(IAtmosphericGas.OXYGEN));
+                        this.noAtmosphericOxygen = (this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.provider).isGasPresent(EnumAtmosphericGas.OXYGEN));
                         this.isInitialised = true;
                     }
 
@@ -334,7 +334,12 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     @Override
     public EnumFacing getFront()
     {
-        return (this.world.getBlockState(getPos()).getValue(BlockOxygenCollector.FACING));
+        IBlockState state = this.world.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockOxygenCollector)
+        {
+            return state.getValue(BlockOxygenCollector.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

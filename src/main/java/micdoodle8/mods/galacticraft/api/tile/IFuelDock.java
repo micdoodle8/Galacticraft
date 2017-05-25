@@ -8,11 +8,11 @@ import java.util.HashSet;
 
 public interface IFuelDock
 {
-    public HashSet<ILandingPadAttachable> getConnectedTiles();
+    HashSet<ILandingPadAttachable> getConnectedTiles();
 
-    public boolean isBlockAttachable(IBlockAccess world, BlockPos pos);
+    boolean isBlockAttachable(IBlockAccess world, BlockPos pos);
 
-    public IDockable getDockedEntity();
+    IDockable getDockedEntity();
 
 	void dockEntity(IDockable entity);
 }

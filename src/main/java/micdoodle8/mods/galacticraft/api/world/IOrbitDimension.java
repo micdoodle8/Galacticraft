@@ -6,11 +6,11 @@ public interface IOrbitDimension extends IGalacticraftWorldProvider
      * @return the name of the world that this dimension is orbiting. For the
      * overworld it returns "Overworld"
      */
-    public String getPlanetToOrbit();
+    String getPlanetToOrbit();
 
     /**
      * @return the y-coordinate that entities will fall back into the world we
      * are orbiting
      */
-    public int getYCoordToTeleportToPlanet();
+    int getYCoordToTeleportToPlanet();
 }

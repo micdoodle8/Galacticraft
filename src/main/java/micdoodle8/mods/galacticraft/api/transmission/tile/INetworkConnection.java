@@ -16,12 +16,12 @@ public interface INetworkConnection extends IConnector
      *
      * @return
      */
-    public TileEntity[] getAdjacentConnections();
+    TileEntity[] getAdjacentConnections();
 
     /**
      * Refreshes the conductor
      */
-    public void refresh();
+    void refresh();
 
-    public void onNetworkChanged();
+    void onNetworkChanged();
 }

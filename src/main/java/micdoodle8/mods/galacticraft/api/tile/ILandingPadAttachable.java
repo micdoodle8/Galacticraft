@@ -18,5 +18,5 @@ public interface ILandingPadAttachable
      * @param pos   Coordinate the landing pad is located at
      * @return True if the block can attach to the landing pad, false if not
      */
-    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos);
+    boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos);
 }

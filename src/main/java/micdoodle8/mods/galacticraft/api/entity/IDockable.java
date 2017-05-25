@@ -11,25 +11,25 @@ public interface IDockable extends IFuelable, ICargoEntity
     /**
      * Sets the current fuel dock for this entity
      */
-    public void setPad(IFuelDock pad);
+    void setPad(IFuelDock pad);
 
     /**
      * Gets the fuel dock when required. Must return the same one that was set.
      */
-    public IFuelDock getLandingPad();
+    IFuelDock getLandingPad();
 
     /**
      * When the fuel dock is destroyed. Most likely kills the entity and drops
      * it's containing items.
      */
-    public void onPadDestroyed();
+    void onPadDestroyed();
 
     /**
      * Whether or not the fuel dock this entity is on is valid.
      * <p/>
      * Returning false will not let setPad be called.
      */
-    public boolean isDockValid(IFuelDock dock);
+    boolean isDockValid(IFuelDock dock);
     
-    public boolean inFlight();
+    boolean inFlight();
 }

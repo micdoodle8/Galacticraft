@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.tile;
 
 public interface ILockable
 {
-    public boolean getLocked();
+    boolean getLocked();
 
-    public void clearLockedInventory();
+    void clearLockedInventory();
 }

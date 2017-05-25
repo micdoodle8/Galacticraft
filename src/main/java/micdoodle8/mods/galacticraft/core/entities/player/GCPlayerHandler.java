@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -1020,7 +1021,7 @@ public class GCPlayerHandler
         if (motionSqrd > 0.001D && !player.capabilities.isFlying)
         {
             int iPosX = MathHelper.floor(player.posX);
-            int iPosY = MathHelper.floor(player.posY) - 1;
+            int iPosY = MathHelper.floor(player.posY - 0.05);
             int iPosZ = MathHelper.floor(player.posZ);
 
             // If the block below is the moon block
@@ -1028,7 +1029,7 @@ public class GCPlayerHandler
             if (state.getBlock() == GCBlocks.blockMoon)
             {
                 // And is the correct metadata (moon turf)
-                if (state.getBlock().getMetaFromState(state) == 5)
+                if (state.getValue(BlockBasicMoon.BASIC_TYPE_MOON) == BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(player);
                     // If it has been long enough since the last step

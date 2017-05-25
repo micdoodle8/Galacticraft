@@ -9,7 +9,7 @@ import javax.annotation.Nonnull;
  */
 public interface ICargoEntity
 {
-    public static enum EnumCargoLoadingState
+    enum EnumCargoLoadingState
     {
         FULL,
         EMPTY,
@@ -18,7 +18,7 @@ public interface ICargoEntity
         SUCCESS
     }
 
-    public static class RemovalResult
+    class RemovalResult
     {
         public final EnumCargoLoadingState resultState;
         @Nonnull
@@ -31,7 +31,7 @@ public interface ICargoEntity
         }
     }
 
-    public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd);
+    EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd);
 
-    public RemovalResult removeCargo(boolean doRemove);
+    RemovalResult removeCargo(boolean doRemove);
 }

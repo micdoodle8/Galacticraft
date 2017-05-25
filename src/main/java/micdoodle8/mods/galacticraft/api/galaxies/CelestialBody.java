@@ -1,15 +1,19 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.WorldProvider;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +35,8 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected int tierRequired = 0;
 
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
+    protected LinkedList<Biome> biomeInfo;
+    protected LinkedList<SpawnListEntry> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
 
@@ -205,7 +211,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
      * Do not include trace gases (anything less than 0.25%)
      * (Do not use for stars!)
      */
-    public CelestialBody atmosphereComponent(IAtmosphericGas gas)
+    public CelestialBody atmosphereComponent(EnumAtmosphericGas gas)
     {
         this.atmosphere.composition.add(gas);
         return this;
@@ -316,5 +322,37 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public void setDimensionSuffix(String dimensionSuffix)
     {
         this.dimensionSuffix = dimensionSuffix;
+    }
+
+    public void setBiomeInfo(Biome ...  biome)
+    {
+        if (this.biomeInfo == null)
+        {
+            this.biomeInfo = new LinkedList<Biome>();
+        }
+        this.biomeInfo.addAll(Arrays.asList(biome));
+    }
+
+    public void addMobInfo(SpawnListEntry entry)
+    {
+        if (this.mobInfo == null)
+        {
+            this.mobInfo = new LinkedList<SpawnListEntry>();
+        }
+        this.mobInfo.add(entry);
+    }
+
+    public void initialiseMobSpawns()
+    {
+        if (this.biomeInfo != null && this.mobInfo != null)
+        {
+            for (Biome biome : this.biomeInfo)
+            {
+                if (biome instanceof IMobSpawnBiome)
+                {
+                    ((IMobSpawnBiome)biome).initialiseMobLists(this.mobInfo);
+                }
+            }
+        }
     }
 }

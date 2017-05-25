@@ -25,6 +25,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -745,7 +746,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     @Override
     public EnumFacing getFront()
     {
-        return this.world.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+    	IBlockState state = this.world.getBlockState(getPos()); 
+    	if (state.getBlock() instanceof BlockMachineMarsT2)
+    	{
+    		return state.getValue(BlockMachineMarsT2.FACING);
+    	}
+    	return EnumFacing.NORTH;
     }
 
     @Override

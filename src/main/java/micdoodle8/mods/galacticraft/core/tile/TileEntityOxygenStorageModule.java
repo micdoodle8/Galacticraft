@@ -184,7 +184,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
         {
             return EnumFacing.NORTH;
         }
-        return this.world.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+        return state.getValue(BlockMachine2.FACING);
     }
 
     @Override

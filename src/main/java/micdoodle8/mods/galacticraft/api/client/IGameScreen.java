@@ -12,7 +12,7 @@ public interface IGameScreen
 	 * 
 	 * @param frameSize
 	 */
-	public void setFrameSize(float frameSize);
+	void setFrameSize(float frameSize);
 
 	/**
      * Draw a screen in the XY plane with z == 0.
@@ -34,8 +34,7 @@ public interface IGameScreen
 
      * NOTE 2: if disabling GL11.GL_TEXTURE_2D in your code it is very
      * IMPORTANT to re-enable it again.
-	 * @param driver 
-     * 
+     *
      */
-	public void render(int type, float ticks, float scaleX, float scaleY, IScreenManager screen);
+	void render(int type, float ticks, float scaleX, float scaleY, IScreenManager screen);
 	}

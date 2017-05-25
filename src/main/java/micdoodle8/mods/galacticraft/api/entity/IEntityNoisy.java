@@ -13,8 +13,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public interface IEntityNoisy
 {
 	@SideOnly(Side.CLIENT)
-	public ITickable getSoundUpdater();
+	ITickable getSoundUpdater();
 
 	@SideOnly(Side.CLIENT)
-	public ISound setSoundUpdater(EntityPlayerSP player);
+	ISound setSoundUpdater(EntityPlayerSP player);
 }

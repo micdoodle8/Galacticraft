@@ -24,10 +24,10 @@ public class ItemModelWorkbench extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.0F, -0.25F, 0.0F));
+            mul.setTranslation(new Vector3f(0.0F, -0.0F, 0.0F));
             ret.mul(mul);
             mul.setIdentity();
-            mul.setScale(0.42F);
+            mul.setScale(1.0F);
             ret.mul(mul);
             return ret;
         }

@@ -178,7 +178,12 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     public EnumFacing getFront()
     {
-        return this.world.getBlockState(getPos()).getValue(BlockGeothermalGenerator.FACING);
+        IBlockState state = this.world.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockGeothermalGenerator)
+        {
+            return state.getValue(BlockGeothermalGenerator.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

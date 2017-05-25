@@ -382,7 +382,6 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 //            f3 = 0.625F;
 //        }
 
-
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing dir)
     {

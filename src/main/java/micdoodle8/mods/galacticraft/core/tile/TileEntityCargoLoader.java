@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -319,7 +320,12 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     @Override
     public EnumFacing getFront()
     {
-        return this.getWorld().getBlockState(getPos()).getValue(BlockCargoLoader.FACING);
+        IBlockState state = this.world.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockCargoLoader)
+        {
+            return (state.getValue(BlockCargoLoader.FACING));
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override
