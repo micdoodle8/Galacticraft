@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class ParticleLaunchSmoke extends Particle
+public class ParticleLaunchSmoke extends EntityFXLaunchParticle
 {
     float smokeParticleScale;
 
