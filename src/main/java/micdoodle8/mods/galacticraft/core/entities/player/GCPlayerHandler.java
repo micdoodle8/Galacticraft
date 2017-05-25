@@ -1161,7 +1161,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-        if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
+        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
         {
             if (stats.getStartDimension().length() > 0)
             {

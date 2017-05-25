@@ -207,7 +207,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
             this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
             break;
         default:
-            if (ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.reeds, 1);
+            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.reeds, 1);
             break;
         }
     }

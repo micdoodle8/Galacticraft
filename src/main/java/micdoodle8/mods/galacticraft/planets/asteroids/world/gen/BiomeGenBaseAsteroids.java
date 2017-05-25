@@ -20,7 +20,7 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
-        this.resetMonsterListByMode(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning);
+        this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
         this.rainfall = 0F;
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
