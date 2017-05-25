@@ -30,6 +30,7 @@ import java.util.Random;
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
     public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
+    private final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.2D, 1.0D);
 
     public enum EnumLandingPadFullType implements IStringSerializable
     {
@@ -104,37 +105,19 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
     {
-        switch (getMetaFromState(blockState))
-        {
+//        switch (getMetaFromState(blockState))
+//        {
 //        case 0:
 //            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 //                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ); TODO
 //        case 2:
 //            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
 //                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
-        default:
-            return new AxisAlignedBB(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
-                    pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
-    {
-        switch (getMetaFromState(worldIn.getBlockState(pos)))
-        {
-//        case 0:
-//            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ); TODO
-//        case 2:
-//            return new AxisAlignedBB(pos.getX() + this.minX, pos.getY() + this.minY, pos.getZ() + this.minZ,
-//                    pos.getX() + this.maxX, pos.getY() + this.maxY, pos.getZ() + this.maxZ);
-        default:
-            return new AxisAlignedBB(pos.getX() + 0.0D, pos.getY() + 0.0D, pos.getZ() + 0.0D,
-                    pos.getX() + 1.0D, pos.getY() + 0.2D, pos.getZ() + 1.0D);
-        }
+//        default:
+//        }
+        return this.AABB;
     }
 
     @Override
