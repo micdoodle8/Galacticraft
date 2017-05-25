@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -491,7 +492,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachineMars)
+        {
+            return state.getValue(BlockMachineMars.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

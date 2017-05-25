@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -147,7 +147,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public boolean isGasPresent(IAtmosphericGas gas)
+    public boolean isGasPresent(EnumAtmosphericGas gas)
     {
         return this.getCelestialBody().atmosphere.isGasPresent(gas);
     }

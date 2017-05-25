@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -563,7 +564,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine2.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachine2)
+        {
+            return state.getValue(BlockMachine2.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

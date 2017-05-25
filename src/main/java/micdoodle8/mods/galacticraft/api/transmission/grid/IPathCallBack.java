@@ -12,7 +12,7 @@ public interface IPathCallBack
      * @return A set of nodes connected to the currentNode. Essentially one
      * should return a set of neighboring nodes.
      */
-    public Set<BlockVec3> getConnectedNodes(Pathfinder finder, BlockVec3 currentNode);
+    Set<BlockVec3> getConnectedNodes(Pathfinder finder, BlockVec3 currentNode);
 
     /**
      * Called when looping through nodes.
@@ -21,5 +21,5 @@ public interface IPathCallBack
      * @param node   - The node being searched.
      * @return True to stop the path finding operation.
      */
-    public boolean onSearch(Pathfinder finder, BlockVec3 node);
+    boolean onSearch(Pathfinder finder, BlockVec3 node);
 }

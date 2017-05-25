@@ -18,6 +18,7 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockSapling;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -711,7 +712,12 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMars.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachineMars)
+        {
+            return state.getValue(BlockMachineMars.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

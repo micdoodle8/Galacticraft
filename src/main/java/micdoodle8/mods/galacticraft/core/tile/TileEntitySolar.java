@@ -438,7 +438,12 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
     public EnumFacing getFront()
     {
-        return ((EnumFacing) this.worldObj.getBlockState(getPos()).getValue(BlockSolar.FACING));
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockSolar)
+        {
+            return state.getValue(BlockSolar.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

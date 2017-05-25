@@ -11,7 +11,7 @@ public interface IColorable
     /**
      * Called when the color is changed
      */
-    public void onColorUpdate();
+    void onColorUpdate();
 
     /**
      * Gets the color of this tile from the Block State
@@ -19,12 +19,12 @@ public interface IColorable
      * @return the color of the tile, equivalent to the dye colors in vanilla
      * minecraft
      */
-    public byte getColor(IBlockState state);
+    byte getColor(IBlockState state);
 
     /**
      * Called when a tile adjacent to this one has it's color changed
      *
      * @param direction the direction (relative to this tile) that was updated.
      */
-    public void onAdjacentColorChanged(EnumFacing direction);
+    void onAdjacentColorChanged(EnumFacing direction);
 }

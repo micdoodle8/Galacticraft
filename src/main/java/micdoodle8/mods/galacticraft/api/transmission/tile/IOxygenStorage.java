@@ -8,15 +8,15 @@ public interface IOxygenStorage
     /**
      * Sets the amount of oxygen this unit has stored.
      */
-    public void setOxygenStored(int oxygen);
+    void setOxygenStored(int oxygen);
 
     /**
      * * @return Get the amount of oxygen currently stored in the block.
      */
-    public int getOxygenStored();
+    int getOxygenStored();
 
     /**
      * @return Get the max amount of oxygen that can be stored in the block.
      */
-    public int getMaxOxygenStored();
+    int getMaxOxygenStored();
 }

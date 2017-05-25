@@ -9,5 +9,5 @@ public interface IDetectableResource
     /**
      * @return array of metadata values that are considered valueable.
      */
-    public boolean isValueable(IBlockState metadata);
+    boolean isValueable(IBlockState metadata);
 }

@@ -13,7 +13,7 @@ public interface IItemElectric
      * @param doRecharge If false, the charge will only be simulated.
      * @return Amount of energy that was accepted by the item.
      */
-    public float recharge(ItemStack itemStack, float energy, boolean doRecharge);
+    float recharge(ItemStack itemStack, float energy, boolean doRecharge);
 
     /**
      * Removes energy from an item. Returns the quantity of energy that was
@@ -25,17 +25,17 @@ public interface IItemElectric
      * @param doDischarge If false, the discharge will only be simulated.
      * @return Amount of energy that was removed from the item.
      */
-    public float discharge(ItemStack itemStack, float energy, boolean doDischarge);
+    float discharge(ItemStack itemStack, float energy, boolean doDischarge);
 
     /**
      * Get the amount of energy currently stored in the item.
      */
-    public float getElectricityStored(ItemStack theItem);
+    float getElectricityStored(ItemStack theItem);
 
     /**
      * Get the max amount of energy that can be stored in the item.
      */
-    public float getMaxElectricityStored(ItemStack theItem);
+    float getMaxElectricityStored(ItemStack theItem);
 
     /**
      * Sets the amount of energy in the ItemStack.
@@ -43,15 +43,15 @@ public interface IItemElectric
      * @param itemStack - the ItemStack.
      * @param joules    - Amount of electrical energy.
      */
-    public void setElectricity(ItemStack itemStack, float joules);
+    void setElectricity(ItemStack itemStack, float joules);
 
     /**
      * @return the energy request this ItemStack demands.
      */
-    public float getTransfer(ItemStack itemStack);
+    float getTransfer(ItemStack itemStack);
 
     /**
      * @return The energy tier this item runs on (must be 1 or 2)
      */
-    public int getTierGC(ItemStack itemStack);
+    int getTierGC(ItemStack itemStack);
 }

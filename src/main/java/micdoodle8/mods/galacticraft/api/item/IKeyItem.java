@@ -15,5 +15,5 @@ public interface IKeyItem
      *
      * @return - The item's tier
      */
-    public int getTier(ItemStack stack);
+    int getTier(ItemStack stack);
 }

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItemCustom;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityTieredRocket;
@@ -80,7 +81,7 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        if (heldItemStack != null)
+        if (heldItemStack != null && !(player.getRidingEntity() instanceof ICameraZoomEntity))
         {
             Item heldItem = heldItemStack.getItem();
             IHoldableItem holdableItem = (IHoldableItem) heldItem;

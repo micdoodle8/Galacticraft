@@ -6,21 +6,21 @@ import net.minecraft.tileentity.TileEntity;
 
 public interface ILaserNode extends IEnergyHandlerGC
 {
-    public Vector3 getInputPoint();
+    Vector3 getInputPoint();
 
-    public Vector3 getOutputPoint(boolean offset);
+    Vector3 getOutputPoint(boolean offset);
 
-    public ILaserNode getTarget();
+    ILaserNode getTarget();
 
-    public TileEntity getTile();
+    TileEntity getTile();
 
-    public boolean canConnectTo(ILaserNode node);
+    boolean canConnectTo(ILaserNode node);
 
-    public Vector3 getColor();
+    Vector3 getColor();
 
-    public void addNode(ILaserNode node);
+    void addNode(ILaserNode node);
 
-    public void removeNode(ILaserNode node);
+    void removeNode(ILaserNode node);
 
-    public int compareTo(ILaserNode otherNode, BlockVec3 origin);
+    int compareTo(ILaserNode otherNode, BlockVec3 origin);
 }

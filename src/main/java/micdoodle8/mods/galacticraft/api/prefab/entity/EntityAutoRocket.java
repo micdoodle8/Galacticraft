@@ -671,7 +671,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         if (!this.worldObj.isRemote)
         {
             double clientPosY = buffer.readDouble();
-            if (clientPosY != Double.NaN)
+            if (clientPosY != Double.NaN && this.hasValidFuel())
             {
                 if (this.launchPhase == EnumLaunchPhase.LAUNCHED.ordinal())
                 {
@@ -710,6 +710,15 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         double motZ = buffer.readDouble() / 8000.0D;
         double lastMotY = buffer.readDouble() / 8000.0D;
         double lastLastMotY = buffer.readDouble() / 8000.0D;
+
+        if (!this.hasValidFuel())
+        {    
+            this.motionX = motX;
+            this.motionY = motY;
+            this.motionZ = motZ;
+            this.lastMotionY = lastMotY;
+            this.lastLastMotionY = lastLastMotY;
+        }
 
         if (this.cargoItems == null)
         {
@@ -782,7 +791,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.worldObj.isRemote)
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity()))
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity()) && this.hasValidFuel())
             {
                 list.add(this.posY);
             }
@@ -871,6 +880,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         return this.hasValidFuel();
     }
 
+    @Override
     public boolean hasValidFuel()
     {
         return this.fuelTank.getFluidAmount() > 0;

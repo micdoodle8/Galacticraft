@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -417,7 +417,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         if (WP instanceof WorldProviderSpace)
         {
             int result = 0;
-            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
+            ArrayList<EnumAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
             if (atmos.size() > 0)
             {
                 result = this.getIdFromName(atmos.get(0).name().toLowerCase()) + 1;
@@ -863,7 +863,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachineMarsT2)
+        {
+            return state.getValue(BlockMachineMarsT2.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     public EnumFacing getGasInputDirection()

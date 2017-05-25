@@ -5,7 +5,7 @@ import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
@@ -216,24 +216,24 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         WorldProvider WP = this.worldObj.provider;
         if (WP instanceof WorldProviderSpace)
         {
-            ArrayList<IAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
+            ArrayList<EnumAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
             if (atmos.size() > 0)
             {
-                if (atmos.get(0) == IAtmosphericGas.CO2)
+                if (atmos.get(0) == EnumAtmosphericGas.CO2)
                 {
                     return 1;
                 }
             }
             if (atmos.size() > 1)
             {
-                if (atmos.get(1) == IAtmosphericGas.CO2)
+                if (atmos.get(1) == EnumAtmosphericGas.CO2)
                 {
                     return 1;
                 }
             }
             if (atmos.size() > 2)
             {
-                if (atmos.get(2) == IAtmosphericGas.CO2)
+                if (atmos.get(2) == EnumAtmosphericGas.CO2)
                 {
                     return 1;
                 }
@@ -630,7 +630,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachineMarsT2.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachineMarsT2)
+        {
+            return state.getValue(BlockMachineMarsT2.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     public EnumFacing getHydrogenInputDirection()

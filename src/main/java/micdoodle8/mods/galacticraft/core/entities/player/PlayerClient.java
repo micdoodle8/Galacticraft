@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
@@ -117,31 +118,36 @@ public class PlayerClient implements IPlayerClient
 //            GCLog.debug("Changed player BB to " + player.boundingBox.minY);
 //        }
     }
+    
+    public void cancelLimbSwing(EntityPlayerSP player)
+    {
+        player.limbSwing -= player.limbSwingAmount;
+        player.limbSwingAmount = player.prevLimbSwingAmount;
+        float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
+        if (player.limbSwing < 0)
+        {
+            player.limbSwing += adjust;
+        }
+        else if (player.limbSwing > 0)
+        {
+            player.limbSwing -= adjust;
+        }
+        player.limbSwingAmount *= 0.9;
+    }
 
     @Override
     public void onLivingUpdatePost(EntityPlayerSP player)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
+        boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
 
         if (player.worldObj.provider instanceof IZeroGDimension)
         {
             stats.getFreefallHandler().postVanillaMotion(player);
 
-            if (stats.isInFreefall())
+            if (stats.isInFreefall() || ridingThirdPersonEntity)
             {
-                //No limb swing
-                player.limbSwing -= player.limbSwingAmount;
-                player.limbSwingAmount = player.prevLimbSwingAmount;
-                float adjust = Math.min(Math.abs(player.limbSwing), Math.abs(player.limbSwingAmount) / 3);
-                if (player.limbSwing < 0)
-                {
-                    player.limbSwing += adjust;
-                }
-                else if (player.limbSwing > 0)
-                {
-                    player.limbSwing -= adjust;
-                }
-                player.limbSwingAmount *= 0.9;
+                this.cancelLimbSwing(player);
             }
             else
             {
@@ -176,9 +182,11 @@ public class PlayerClient implements IPlayerClient
         else
         {
             stats.setInFreefall(false);
+            if (ridingThirdPersonEntity)
+            {
+                this.cancelLimbSwing(player);
+            }
         }
-
-        boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
 
         if (ridingThirdPersonEntity && !stats.isLastRidingCameraZoomEntity())
         {
@@ -186,7 +194,7 @@ public class PlayerClient implements IPlayerClient
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
-        if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
+        if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             if(!ConfigManagerCore.disableVehicleCameraChanges)
             {
@@ -286,9 +294,9 @@ public class PlayerClient implements IPlayerClient
         // If the player is on the moon, not airbourne and not riding anything
         if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.getRidingEntity() == null && !player.capabilities.isFlying)
         {
-            int iPosX = (int) Math.floor(player.posX);
-            int iPosY = (int) Math.floor(player.posY - 1);
-            int iPosZ = (int) Math.floor(player.posZ);
+            int iPosX = MathHelper.floor_double(player.posX);
+            int iPosY = MathHelper.floor_double(player.posY - 0.05);
+            int iPosZ = MathHelper.floor_double(player.posZ);
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
             IBlockState state = player.worldObj.getBlockState(pos1);
 
@@ -296,7 +304,7 @@ public class PlayerClient implements IPlayerClient
             if (state.getBlock() == GCBlocks.blockMoon)
             {
                 // And is the correct metadata (moon turf)
-                if (state.getBlock().getMetaFromState(state) == 5)
+                if (state.getValue(BlockBasicMoon.BASIC_TYPE_MOON) == BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF)
                 {
                     // If it has been long enough since the last step
                     if (stats.getDistanceSinceLastStep() > 0.35)

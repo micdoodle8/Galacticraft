@@ -7,7 +7,7 @@ public interface IItemOxygenSupply
     /*
      * Returns the amount of gas that this oxygen item is able to supply
      */
-	public int discharge(ItemStack itemStack, int amount);
+	int discharge(ItemStack itemStack, int amount);
 
-    public int getOxygenStored(ItemStack theItem);
+    int getOxygenStored(ItemStack theItem);
 }

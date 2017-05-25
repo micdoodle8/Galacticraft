@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
@@ -50,6 +50,7 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.*;
@@ -185,13 +186,18 @@ public class GalacticraftCore
         GalacticraftCore.planetOverworld = (Planet) new Planet("overworld").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(0.0F);
         GalacticraftCore.planetOverworld.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
         GalacticraftCore.planetOverworld.setDimensionInfo(ConfigManagerCore.idDimensionOverworld, WorldProvider.class, false).setTierRequired(1);
-        GalacticraftCore.planetOverworld.atmosphereComponent(IAtmosphericGas.NITROGEN).atmosphereComponent(IAtmosphericGas.OXYGEN).atmosphereComponent(IAtmosphericGas.ARGON).atmosphereComponent(IAtmosphericGas.WATER);
+        GalacticraftCore.planetOverworld.atmosphereComponent(EnumAtmosphericGas.NITROGEN).atmosphereComponent(EnumAtmosphericGas.OXYGEN).atmosphereComponent(EnumAtmosphericGas.ARGON).atmosphereComponent(EnumAtmosphericGas.WATER);
         GalacticraftCore.planetOverworld.addChecklistKeys("equipParachute");
 
         GalacticraftCore.moonMoon = (Moon) new Moon("moon").setParentPlanet(GalacticraftCore.planetOverworld).setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(13F, 13F)).setRelativeOrbitTime(1 / 0.01F);
         GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class).setTierRequired(1);
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
         GalacticraftCore.moonMoon.setAtmosphere(new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 0.0F));
+        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
+        GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
+        GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
+        GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
+        GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addChecklistKeys("equipOxygenSuit");
 
         //Satellites must always have a WorldProvider implementing IOrbitDimension
@@ -366,7 +372,11 @@ public class GalacticraftCore
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
                 DimensionType type = GalacticraftRegistry.registerDimension(body.getLocalizedName(), body.getDimensionSuffix(), body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
-                if (type == null)
+                if (type != null)
+                {
+                    body.initialiseMobSpawns();
+                }
+                else
                 {
                     body.setUnreachable();
                     GCLog.severe("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());

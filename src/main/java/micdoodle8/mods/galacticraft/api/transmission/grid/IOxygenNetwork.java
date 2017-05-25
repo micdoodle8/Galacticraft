@@ -15,7 +15,7 @@ public interface IOxygenNetwork extends IGridNetwork<IOxygenNetwork, ITransmitte
      *
      * @return Rejected energy in Joules.
      */
-    public float produce(float sendAmount, TileEntity... ignoreTiles);
+    float produce(float sendAmount, TileEntity... ignoreTiles);
 
     /**
      * Gets the total amount of oxygen requested/needed in the electricity
@@ -23,5 +23,5 @@ public interface IOxygenNetwork extends IGridNetwork<IOxygenNetwork, ITransmitte
      *
      * @param ignoreTiles The TileEntities to ignore during this calculation (optional).
      */
-    public float getRequest(TileEntity... ignoreTiles);
+    float getRequest(TileEntity... ignoreTiles);
 }

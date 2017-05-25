@@ -7,11 +7,11 @@ public interface IConductor extends ITransmitter
     /**
      * @return The tier of this conductor - must be 1 or 2
      */
-    public int getTierGC();
+    int getTierGC();
 
     /**
      * @return This conductor's electricity network.
      */
     @Override
-    public IElectricityNetwork getNetwork();
+    IElectricityNetwork getNetwork();
 }

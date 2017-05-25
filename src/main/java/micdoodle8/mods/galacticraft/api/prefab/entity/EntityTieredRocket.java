@@ -159,7 +159,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     {
                         this.removePassengers();
                         passenger.startRiding(this, true);
-                        if (ConfigManagerCore.enableDebug) GCLog.info("Remounting player in rocket.");
+                        GCLog.debug("Remounting player in rocket.");
                     }
 
                     this.setWaitForPlayer(false);
@@ -360,7 +360,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 }
                 else
                 {
-                    System.out.println("Target Position " + this.targetVec);
                 	//Same dimension controlled rocket flight
                 	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
@@ -373,7 +372,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         {
                             WorldUtil.forceMoveEntityToPos(passenger, (WorldServer) this.worldObj, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
                             this.setWaitForPlayer(true);
-                            if (ConfigManagerCore.enableDebug) GCLog.info("Rocket repositioned, waiting for player");
+                            GCLog.debug("Rocket repositioned, waiting for player");
                         }
                     }
                     this.setLaunchPhase(EnumLaunchPhase.LANDING);

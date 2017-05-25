@@ -218,7 +218,7 @@ public class ConfigManagerCore
             disableRocketsToOverworld = prop.getBoolean(false);
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "World border for landing location on other planets (Moon, Mars, etc)", false);
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "World border for landing location on other planets (Moon, Mars, etc)", 0);
             prop.setComment("Set this to 0 for no borders (default).  If set to e.g. 2000, players will land on the Moon inside the x,z range -2000 to 2000.)");
             prop.setLanguageKey("gc.configgui.planet_worldborders");
             otherPlanetWorldBorders = prop.getInt(0);

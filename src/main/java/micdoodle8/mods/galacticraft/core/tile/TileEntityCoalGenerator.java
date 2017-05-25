@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -313,7 +314,12 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     public EnumFacing getFront()
     {
-        return this.worldObj.getBlockState(getPos()).getValue(BlockMachine.FACING);
+        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        if (state.getBlock() instanceof BlockMachine)
+        {
+            return state.getValue(BlockMachine.FACING);
+        }
+        return EnumFacing.NORTH;
     }
 
     @Override

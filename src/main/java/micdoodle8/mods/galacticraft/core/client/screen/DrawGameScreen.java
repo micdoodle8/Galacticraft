@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-public class DrawGameScreen extends IScreenManager
+public class DrawGameScreen implements IScreenManager
 {
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);

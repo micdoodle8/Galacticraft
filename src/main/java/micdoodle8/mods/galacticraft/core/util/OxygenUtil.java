@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
-import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -500,7 +500,7 @@ public class OxygenUtil
     {
         if (provider instanceof IGalacticraftWorldProvider)
         {
-            return (!((IGalacticraftWorldProvider) provider).isGasPresent(IAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
+            return (!((IGalacticraftWorldProvider) provider).isGasPresent(EnumAtmosphericGas.OXYGEN) && !((IGalacticraftWorldProvider) provider).hasBreathableAtmosphere());
         }
 
         return false;
