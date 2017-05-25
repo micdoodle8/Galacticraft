@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting.PanelType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +30,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 {
     public int meta;
     private IBlockState superState;
+    private static IBlockState defaultLook = GalacticraftCore.isPlanetsLoaded ? AsteroidBlocks.blockBasic.getStateFromMeta(6) : GCBlocks.basicBlock.getStateFromMeta(4);
     public int color = 0xf0f0e0;
     @SideOnly(Side.CLIENT)
     private AxisAlignedBB renderAABB;
@@ -43,6 +45,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         if (isRemote)
         {
             this.superState = superStateClient;
+            this.color = BlockPanelLighting.color;
         }
         else
         {
@@ -50,7 +53,6 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
             this.superState = stats.getPanelLightingBases()[type];
             this.color = stats.getPanelLightingColor();
         }
-        this.color = BlockPanelLighting.color; //TODO - this is a placeholder to show the system works, needs saving in stats per player like the superState
     }
 
     
@@ -60,7 +62,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         {
             this.superState = null;
         }
-        return this.superState == null ? GCBlocks.basicBlock.getStateFromMeta(4) : this.superState;
+        return this.superState == null ? defaultLook : this.superState;
     }
 
     public BlockPanelLighting.PanelType getType()
