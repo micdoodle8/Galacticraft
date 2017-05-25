@@ -25,6 +25,8 @@ public abstract class EntityFXLaunchParticle extends Particle
     public void moveEntity(double x, double y, double z)
     {
         double d0 = y;
+        double origX = x;
+        double origZ = z;
 
         List<AxisAlignedBB> list = this.getCollidingBoundingBoxes(this.getEntityBoundingBox().addCoord(x, y, z));
 
@@ -52,12 +54,12 @@ public abstract class EntityFXLaunchParticle extends Particle
         this.resetPositionToBB();
         this.isCollided = y != y && d0 < 0.0D;
 
-        if (x != x)
+        if (origX != x)
         {
             this.motionX = 0.0D;
         }
 
-        if (z != z)
+        if (origZ != z)
         {
             this.motionZ = 0.0D;
         }
