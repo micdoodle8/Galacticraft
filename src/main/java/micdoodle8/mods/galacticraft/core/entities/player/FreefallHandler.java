@@ -2,6 +2,7 @@
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.blocks.GCBlocks;
@@ -21,6 +22,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.MinecraftForge;
 
 public class FreefallHandler {
 
@@ -40,6 +42,13 @@ public class FreefallHandler {
 	
 	public static boolean testFreefall(EntityPlayer player)
 	{
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall(player);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
+        {
+            return false;
+        }
+            
         //Test whether feet are on a block, also stops the login glitch
         int playerFeetOnY = (int) (player.boundingBox.minY - 0.01D);
         int xx = MathHelper.floor_double(player.posX);
@@ -80,6 +89,12 @@ public class FreefallHandler {
     	{
     		return false;
     	}
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall(p);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
+        {
+            return false;
+        }
 
     	if (stats.pjumpticks > 0 || (stats.pWasOnGround && p.movementInput.jump))
         {
@@ -385,6 +400,13 @@ public class FreefallHandler {
     	{
     		return;
     	}
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.Motion(p);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
+        {
+            return;
+        }
+
         boolean freefall = stats.inFreefall;
         if (freefall) p.ySize = 0F;  //Undo the sneak height adjust
         freefall = testFreefall(p, freefall);

@@ -5,6 +5,7 @@ import java.util.List;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -22,6 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 
 public class GCEntityClientPlayerMP extends EntityClientPlayerMP
 {
@@ -350,6 +352,13 @@ public class GCEntityClientPlayerMP extends EntityClientPlayerMP
     {
         if (this.worldObj.provider instanceof IZeroGDimension)
         {
+            ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.SneakOverride(this);
+            MinecraftForge.EVENT_BUS.post(zeroGEvent);
+            if (zeroGEvent.isCanceled())
+            {
+                return super.isSneaking();
+            }
+
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.landingTicks > 0)
                {
