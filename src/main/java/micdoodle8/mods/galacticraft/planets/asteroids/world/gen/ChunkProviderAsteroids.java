@@ -719,7 +719,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
                 int asteroidSize = asteroidIndex.asteroidSizeArray;
                 boolean treesdone = false;
                 
-                if(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeAsteroidPopulation || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
+                if (ConfigManagerCore.challengeAsteroidPopulation || rand.nextInt(ChunkProviderAsteroids.TREE_CHANCE) == 0)
                 {
                     int treeType = rand.nextInt(3);
                     if (treeType == 1)
