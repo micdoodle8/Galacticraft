@@ -122,7 +122,7 @@ public class MapGenDungeon extends MapGenStructure
                 }
             }
         }
-        
+
         return GCCoreUtil.getAngleForRelativePosition(nearestX, nearestZ);
     }
 

@@ -439,6 +439,7 @@ item.canvas.name=Canvas
 item.cheese_block.name=Block of Cheese
 item.cheese_curd.name=Cheese Curd
 item.compressed_meteoric_iron.name=Compressed Meteoric Iron
+item.dungeonfinder.name=Dungeon Locator
 item.empty_liquid_canister.name=Empty Canister
 item.engine.tier1booster.name=Tier 1 Booster
 item.engine.tier1engine.name=Tier 1 Rocket Engine

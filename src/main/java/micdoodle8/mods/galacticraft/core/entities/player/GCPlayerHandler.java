@@ -32,6 +32,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
@@ -1164,6 +1165,11 @@ public class GCPlayerHandler
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_THERMAL_LEVEL, GCCoreUtil.getDimensionID(player.world), new Object[] { stats.getThermalLevel(), stats.isThermalLevelNormalising() }), player);
     }
 
+    protected void sendDungeonDirectionPacket(EntityPlayerMP player, GCPlayerStats stats)
+    {
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_DUNGEON_DIRECTION, GCCoreUtil.getDimensionID(player.world), new Object[] { MapGenDungeon.directionToNearestDungeon(player.world, player.posX + player.motionX, player.posZ + player.motionZ) }), player);
+    }
+
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)
     {
         GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, -1);
@@ -1191,7 +1197,7 @@ public class GCPlayerHandler
         //This will speed things up a little
         GCPlayerStats stats = GCPlayerStats.get(player);
 
-        if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
+        if ((ConfigManagerCore.challengeSpawnHandling) && stats.getUnlockedSchematics().size() == 0)
         {
             if (stats.getStartDimension().length() > 0)
             {
@@ -1332,10 +1338,14 @@ public class GCPlayerHandler
 
         if (isInGCDimension)
         {
-            if (tick % 30 == 0)
+            if (tick % 10 == 0)
             {
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
-                this.sendThermalLevelPacket(player, stats);
+                this.sendDungeonDirectionPacket(player, stats);
+                if (tick % 30 == 0)
+                {
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                    this.sendThermalLevelPacket(player, stats);
+                }
             }
 
             if (player.getRidingEntity() instanceof EntityLanderBase)

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -22,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -385,6 +387,13 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         if (this.world.provider instanceof IZeroGDimension)
         {
+            ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.SneakOverride(this);
+            MinecraftForge.EVENT_BUS.post(zeroGEvent);
+            if (zeroGEvent.isCanceled())
+            {
+                return super.isSneaking();
+            }
+
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this);
             if (stats.getLandingTicks() > 0)
             {

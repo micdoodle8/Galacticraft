@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
 import api.player.client.ClientPlayerAPI;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -34,6 +33,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelFlag;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
+import micdoodle8.mods.galacticraft.core.client.render.item.TextureDungeonFinder;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.entities.*;
@@ -380,6 +380,7 @@ public class ClientProxyCore extends CommonProxyCore
         event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
         event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
         event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
+        new TextureDungeonFinder("galacticraftcore:items/dungeonfinder").register(event.getMap());
     }
 
     @SubscribeEvent

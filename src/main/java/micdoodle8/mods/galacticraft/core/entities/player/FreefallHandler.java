@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -27,6 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -50,6 +52,13 @@ public class FreefallHandler
 
     public boolean testFreefall(EntityPlayer player)
     {
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall(player);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
+        {
+            return false;
+        }
+            
         //Test whether feet are on a block, also stops the login glitch
         int playerFeetOnY = (int) (player.getEntityBoundingBox().minY - 0.01D);
         int xx = MathHelper.floor(player.posX);
@@ -90,6 +99,12 @@ public class FreefallHandler
         World world = p.world;
         WorldProvider worldProvider = world.provider;
         if (!(worldProvider instanceof IZeroGDimension))
+        {
+            return false;
+        }
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall(p);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
         {
             return false;
         }
@@ -416,6 +431,13 @@ public class FreefallHandler
         {
             return;
         }
+        ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.Motion(p);
+        MinecraftForge.EVENT_BUS.post(zeroGEvent);
+        if (zeroGEvent.isCanceled())
+        {
+            return;
+        }
+
         boolean freefall = stats.isInFreefall();
         freefall = this.testFreefall(p, freefall);
         stats.setInFreefall(freefall);
@@ -589,39 +611,44 @@ public class FreefallHandler
         boolean warnLog = false;
         if (e instanceof EntityLivingBase)
         {
-            e.motionX /= (double)0.91F; //0.91F;
-            e.motionZ /= (double)0.91F; //0.91F;
-            e.motionY /= (e instanceof EntityFlying) ?  0.91F : 0.9800000190734863D;
+            ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall((EntityLivingBase) e);
+            MinecraftForge.EVENT_BUS.post(zeroGEvent);
+            if (!zeroGEvent.isCanceled())
+            {
+                e.motionX /= (double)0.91F; //0.91F;
+                e.motionZ /= (double)0.91F; //0.91F;
+                e.motionY /= (e instanceof EntityFlying) ?  0.91F : 0.9800000190734863D;
 
-            if (e.motionX > 10D)
-            {
-                warnLog = true;
-                e.motionX = 10D;
-            }
-            else if (e.motionX < -10D)
-            {
-                warnLog = true;
-                e.motionX = -10D;
-            }
-            if (e.motionY > 10D)
-            {
-                warnLog = true;
-                e.motionY = 10D;
-            }
-            else if (e.motionY < -10D)
-            {
-                warnLog = true;
-                e.motionY = -10D;
-            }
-            if (e.motionZ > 10D)
-            {
-                warnLog = true;
-                e.motionZ = 10D;
-            }
-            else if (e.motionZ < -10D)
-            {
-                warnLog = true;
-                e.motionZ = -10D;
+                if (e.motionX > 10D)
+                {
+                    warnLog = true;
+                    e.motionX = 10D;
+                }
+                else if (e.motionX < -10D)
+                {
+                    warnLog = true;
+                    e.motionX = -10D;
+                }
+                if (e.motionY > 10D)
+                {
+                    warnLog = true;
+                    e.motionY = 10D;
+                }
+                else if (e.motionY < -10D)
+                {
+                    warnLog = true;
+                    e.motionY = -10D;
+                }
+                if (e.motionZ > 10D)
+                {
+                    warnLog = true;
+                    e.motionZ = 10D;
+                }
+                else if (e.motionZ < -10D)
+                {
+                    warnLog = true;
+                    e.motionZ = -10D;
+                }
             }
         }
         else if (e instanceof EntityFallingBlock)

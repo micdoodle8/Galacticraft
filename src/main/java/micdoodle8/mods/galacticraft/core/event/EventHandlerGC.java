@@ -351,7 +351,7 @@ public class EventHandlerGC
             {
                 if (!(entityLiving instanceof EntityPlayer) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider) entityLiving.world.provider).hasBreathableAtmosphere())
                 {
-                    if ((ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning) && entityLiving instanceof EntityEnderman)
+                    if ((ConfigManagerCore.challengeMobDropsAndSpawning) && entityLiving instanceof EntityEnderman)
                     {
                         return;
                     }

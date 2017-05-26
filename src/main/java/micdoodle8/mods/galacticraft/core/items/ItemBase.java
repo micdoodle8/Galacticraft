@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,6 +46,10 @@ public class ItemBase extends Item implements ISortableItem
         if (par1ItemStack != null && this == GCItems.heavyPlatingTier1)
         {
             tooltip.add(GCCoreUtil.translate("item.tier1.desc"));
+        }
+        else if (par1ItemStack != null && this == GCItems.dungeonFinder)
+        {
+            tooltip.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
         }
     }
 

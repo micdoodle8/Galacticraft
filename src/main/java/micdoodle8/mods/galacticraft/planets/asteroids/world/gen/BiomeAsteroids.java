@@ -21,7 +21,7 @@ public class BiomeAsteroids extends Biome
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
-        this.resetMonsterListByMode(ConfigManagerCore.challengeMode || ConfigManagerCore.challengeMobDropsAndSpawning);
+        this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
         Biome.registerBiome(ConfigManagerCore.biomeIDbase + 2, GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName(), this);
     }
 

@@ -159,6 +159,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         C_UPDATE_SPACE_RACE_DATA(Side.CLIENT, Integer.class, String.class, FlagData.class, Vector3.class, String[].class),
         C_OPEN_JOIN_RACE_GUI(Side.CLIENT, Integer.class),
         C_UPDATE_FOOTPRINT_LIST(Side.CLIENT, Long.class, Footprint[].class),
+        C_UPDATE_DUNGEON_DIRECTION(Side.CLIENT, Float.class),
         C_FOOTPRINTS_REMOVED(Side.CLIENT, Long.class, BlockVec3.class),
         C_UPDATE_STATION_SPIN(Side.CLIENT, Float.class, Boolean.class),
         C_UPDATE_STATION_DATA(Side.CLIENT, Double.class, Double.class),
@@ -604,6 +605,9 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         case C_OPEN_JOIN_RACE_GUI:
             stats.setSpaceRaceInviteTeamID((Integer) this.data.get(0));
             player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_JOIN, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);
+            break;
+        case C_UPDATE_DUNGEON_DIRECTION:
+            stats.setDungeonDirection((Float) this.data.get(0));
             break;
         case C_UPDATE_FOOTPRINT_LIST:
             List<Footprint> printList = new ArrayList<Footprint>();

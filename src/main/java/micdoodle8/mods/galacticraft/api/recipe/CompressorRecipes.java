@@ -335,7 +335,7 @@ public class CompressorRecipes
 
     public static List<IRecipe> getRecipeList()
     {
-    	return (GalacticraftConfigAccess.getChallengeMode() || GalacticraftConfigAccess.getChallengeRecipes()) ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
+    	return (GalacticraftConfigAccess.getChallengeRecipes()) ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
     }
     
     public static void removeRecipe(ItemStack match)
