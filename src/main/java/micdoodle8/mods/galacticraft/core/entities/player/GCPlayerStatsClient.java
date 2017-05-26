@@ -144,4 +144,8 @@ public abstract class GCPlayerStatsClient
     public abstract float[] getLandingYOffset();
 
     public abstract void setLandingYOffset(float[] landingYOffset);
+
+    public abstract void setDungeonDirection(float dir);
+    
+    public abstract float getDungeonDirection();
 }

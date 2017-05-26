@@ -42,6 +42,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public int buildFlags = -1;
 
     public boolean ssOnGroundLast;
+    private float dungeonDirection;
 
     public FreefallHandler freefallHandler = new FreefallHandler(this);
 
@@ -598,5 +599,17 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public void setLandingYOffset(float[] landingYOffset)
     {
         this.landingYOffset = landingYOffset;
+    }
+
+    @Override
+    public void setDungeonDirection(float dir)
+    {
+        this.dungeonDirection = dir;
+    }
+
+    @Override
+    public float getDungeonDirection()
+    {
+        return this.dungeonDirection;
     }
 }
