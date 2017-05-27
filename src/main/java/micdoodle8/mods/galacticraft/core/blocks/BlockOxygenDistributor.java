@@ -65,17 +65,8 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = getMetaFromState(world.getBlockState(pos));
-        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
-
-        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
-
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileBaseUniversalElectrical)
-        {
-            ((TileBaseUniversalElectrical) te).updateFacing();
-        }
-
+        IBlockState state = world.getBlockState(pos);
+        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
         return true;
     }
 

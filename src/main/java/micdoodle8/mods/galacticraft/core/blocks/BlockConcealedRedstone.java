@@ -192,18 +192,23 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
                 this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
             }
 
-            for (EnumFacing enumfacing2 : EnumFacing.Plane.HORIZONTAL)
-            {
-                BlockPos blockpos = pos.offset(enumfacing2);
+            this.notifyNeighbors(worldIn, pos);
+        }
+    }
 
-                if (worldIn.getBlockState(blockpos).getBlock().isNormalCube())
-                {
-                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
-                }
-                else
-                {
-                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
-                }
+    private void notifyNeighbors(World worldIn, BlockPos pos)
+    {
+        for (EnumFacing enumfacing2 : EnumFacing.Plane.HORIZONTAL)
+        {
+            BlockPos blockpos = pos.offset(enumfacing2);
+
+            if (worldIn.getBlockState(blockpos).getBlock().isNormalCube())
+            {
+                this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
+            }
+            else
+            {
+                this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
             }
         }
     }
@@ -227,19 +232,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
                 this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
             }
 
-            for (EnumFacing enumfacing2 : EnumFacing.Plane.HORIZONTAL)
-            {
-                BlockPos blockpos = pos.offset(enumfacing2);
-
-                if (worldIn.getBlockState(blockpos).getBlock().isNormalCube())
-                {
-                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
-                }
-                else
-                {
-                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
-                }
-            }
+            this.notifyNeighbors(worldIn, pos);
         }
     }
 
@@ -251,7 +244,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         }
         else
         {
-            int i = ((Integer)worldIn.getBlockState(pos).getValue(POWER)).intValue();
+            int i = (Integer) worldIn.getBlockState(pos).getValue(POWER);
             return i > strength ? i : strength;
         }
     }
