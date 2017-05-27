@@ -11,10 +11,7 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
@@ -143,6 +140,7 @@ public class MarsModule implements IPlanetsModule
         MarsModule.planetMars.addMobInfo(new BiomeGenBase.SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new BiomeGenBase.SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new BiomeGenBase.SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
+        MarsModule.planetMars.addMobInfo(new BiomeGenBase.SpawnListEntry(EntityEvolvedEnderman.class, 10, 1, 4));
         MarsModule.planetMars.addChecklistKeys("equipOxygenSuit");
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
