@@ -515,4 +515,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return 576;
         //Used for generating Abandoned Base 
     }
+
+    @Override
+    public float getArrowGravity()
+    {
+        return 0.002F;
+    }
 }
