@@ -34,7 +34,6 @@ public class ItemModelGrapple extends ModelTransformWrapper
             ret.mul(mul);
             return ret;
         }
-
         if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Matrix4f ret = new Matrix4f();
@@ -52,7 +51,6 @@ public class ItemModelGrapple extends ModelTransformWrapper
             ret.mul(mul);
             return ret;
         }
-
         if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Matrix4f ret = new Matrix4f();
@@ -66,11 +64,38 @@ public class ItemModelGrapple extends ModelTransformWrapper
             ret.mul(mul);
             mul.setIdentity();
             mul.rotY((float) (-Math.PI / 1.2F));
-//            mul.rotZ((float) (-Math.PI / 2.0F));
             ret.mul(mul);
             return ret;
         }
-
+        if (cameraTransformType == TransformType.GROUND)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(1.0F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.35F, 0.25F, 0.25F));
+            ret.mul(mul);
+            return ret;
+        }
+        if (cameraTransformType == TransformType.FIXED)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(1.0F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY(3.1F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.4F, 0.25F, 0.25F));
+            ret.mul(mul);
+            return ret;
+        }
         return null;
     }
 }

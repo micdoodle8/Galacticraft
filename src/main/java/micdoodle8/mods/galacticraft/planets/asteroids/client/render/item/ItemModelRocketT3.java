@@ -52,7 +52,6 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
             ret.mul(mul);
             return ret;
         }
-
         if (cameraTransformType == TransformType.FIRST_PERSON)
         {
             Vector3f trans = new Vector3f(0.5F, 0.5F, -1.2F);
@@ -76,7 +75,6 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
             ret.mul(mul);
             return ret;
         }
-
         if (cameraTransformType == TransformType.THIRD_PERSON)
         {
             Vector3f trans = new Vector3f(0.0F, -0.4F, -0.3F);
@@ -100,7 +98,35 @@ public class ItemModelRocketT3 extends ModelTransformWrapper
             ret.mul(mul);
             return ret;
         }
-
+        if (cameraTransformType == TransformType.GROUND)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.5F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.25F, 0.25F, 0.25F));
+            ret.mul(mul);
+            return ret;
+        }
+        if (cameraTransformType == TransformType.FIXED)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.225F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY(3.1F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.25F, -0.5F, 0.25F));
+            ret.mul(mul);
+            return ret;
+        }
         return null;
     }
 }
