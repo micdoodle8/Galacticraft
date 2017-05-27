@@ -184,4 +184,10 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     {
         return 704;
     }
+
+    @Override
+    public float getArrowGravity()
+    {
+        return 0.0275F;
+    }
 }
