@@ -46,17 +46,8 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        int metadata = getMetaFromState(world.getBlockState(pos));
-        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
-
-        world.setBlockState(pos, this.getStateFromMeta(metadata - (metadata % 4) + change), 3);
-
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileBaseUniversalElectrical)
-        {
-            ((TileBaseUniversalElectrical) te).updateFacing();
-        }
-
+        IBlockState state = world.getBlockState(pos);
+        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
         return true;
     }
 

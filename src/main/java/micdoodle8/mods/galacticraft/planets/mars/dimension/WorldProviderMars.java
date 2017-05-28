@@ -168,4 +168,10 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     {
         return GCPlanetDimensions.MARS;
     }
+
+    @Override
+    public float getArrowGravity()
+    {
+        return 0.015F;
+    }
 }

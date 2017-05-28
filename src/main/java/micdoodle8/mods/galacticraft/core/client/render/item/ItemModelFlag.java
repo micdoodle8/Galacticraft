@@ -118,7 +118,26 @@ public class ItemModelFlag extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.1F);
+            mul.setScale(0.5F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.25F, 0.0F, 0.25F));
+            ret.mul(mul);
+            return ret;
+        }
+        if (cameraTransformType == TransformType.FIXED)
+        {
+            Matrix4f ret = new Matrix4f();
+            ret.setIdentity();
+            Matrix4f mul = new Matrix4f();
+            mul.setIdentity();
+            mul.setScale(0.35F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.rotY(3.1F);
+            ret.mul(mul);
+            mul.setIdentity();
+            mul.setTranslation(new Vector3f(0.0F, -0.75F, 0.1F));
             ret.mul(mul);
             return ret;
         }

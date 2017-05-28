@@ -15,11 +15,15 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
@@ -540,6 +544,20 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             //(Maybe there is an internal refresh() method but it's not in the API)
             this.unloadTileIC2();
             //This will do an initIC2 on next tick update.
+        }
+    }
+
+    public static void onUseWrenchBlock(IBlockState state, World world, BlockPos pos, EnumFacing facing)
+    {
+        int metadata = state.getBlock().getMetaFromState(world.getBlockState(pos));
+        int change = facing.rotateY().getHorizontalIndex();
+
+        world.setBlockState(pos, state.getBlock().getStateFromMeta(metadata - (metadata % 4) + change), 3);
+
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileBaseUniversalElectrical)
+        {
+            ((TileBaseUniversalElectrical) te).updateFacing();
         }
     }
 }
