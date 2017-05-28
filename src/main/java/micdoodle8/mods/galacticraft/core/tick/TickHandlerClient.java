@@ -332,6 +332,21 @@ public class TickHandlerClient
             }
         }
 
+        if (minecraft.currentScreen instanceof GuiMainMenu)
+        {
+            ClientProxyCore.playerItemData.clear();
+            ClientProxyCore.overworldTextureRequestSent = false;
+            ClientProxyCore.flagRequestsSent.clear();
+            TickHandlerClient.clearLiquidNetworks();
+            ClientProxyCore.clientSpaceStationID.clear();
+
+            if (TickHandlerClient.missingRequirementThread == null)
+            {
+                TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(Side.CLIENT);
+                TickHandlerClient.missingRequirementThread.start();
+            }
+        }
+
         if (event.phase == Phase.START && player != null)
         {
             if (ClientProxyCore.playerHead == null)
@@ -433,21 +448,6 @@ public class TickHandlerClient
                     {
                         MapUtil.resetClientBody();
                     }
-                }
-            }
-
-            if (minecraft.currentScreen instanceof GuiMainMenu)
-            {
-                ClientProxyCore.playerItemData.clear();
-                ClientProxyCore.overworldTextureRequestSent = false;
-                ClientProxyCore.flagRequestsSent.clear();
-                TickHandlerClient.clearLiquidNetworks();
-                ClientProxyCore.clientSpaceStationID.clear();
-
-                if (TickHandlerClient.missingRequirementThread == null)
-                {
-                    TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(Side.CLIENT);
-                    TickHandlerClient.missingRequirementThread.start();
                 }
             }
 
