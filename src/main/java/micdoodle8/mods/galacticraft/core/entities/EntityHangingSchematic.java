@@ -7,9 +7,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -125,6 +127,12 @@ public class EntityHangingSchematic extends EntityHanging
 
             this.entityDropItem(SchematicRegistry.getSchematicItem(this.schematic), 0.0F);
         }
+    }
+
+    @Override
+    public ItemStack getPickedResult(MovingObjectPosition target)
+    {
+        return SchematicRegistry.getSchematicItem(this.schematic);
     }
 
     /**
