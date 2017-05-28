@@ -95,6 +95,7 @@ public class MapGenDungeon extends MapGenStructure
     public static float directionToNearestDungeon(World world, double xpos, double zpos)
     {
         int spacing = ((IGalacticraftWorldProvider) world.provider).getDungeonSpacing();
+        if (spacing == 0) return 0F;
         int x = MathHelper.floor(xpos);
         int z = MathHelper.floor(zpos);
         int quadrantX = x % spacing;
