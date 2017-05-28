@@ -49,7 +49,7 @@ public class LayerEvolvedEndermanEyes implements LayerRenderer<EntityEvolvedEnde
         GlStateManager.enableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.render.getMainModel().render(entity, par2, par3, par5, par6, par7, scale);
-        this.render.func_177105_a(entity, partialTicks);
+        this.render.setLightmap(entity, partialTicks);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
     }

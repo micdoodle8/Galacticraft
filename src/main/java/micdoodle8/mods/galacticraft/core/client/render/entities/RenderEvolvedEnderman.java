@@ -38,7 +38,7 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
     @Override
     public void doRender(EntityEvolvedEnderman entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.endermanModel.isCarrying = entity.getHeldBlockState().getBlock().getMaterial() != Material.air;
+        this.endermanModel.isCarrying = entity.getHeldBlockState().getBlock().getMaterial(entity.getHeldBlockState()) != Material.AIR;
         this.endermanModel.isAttacking = entity.isScreaming();
 
         if (entity.isScreaming())

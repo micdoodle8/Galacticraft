@@ -31,7 +31,7 @@ public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
     @Override
     public void doRender(EntityEvolvedWitch entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        ((ModelEvolvedWitch)this.mainModel).field_82900_g = entity.getHeldItem() != null;
+        ((ModelEvolvedWitch)this.mainModel).holdingItem = entity.getHeldItemMainhand() != null;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 

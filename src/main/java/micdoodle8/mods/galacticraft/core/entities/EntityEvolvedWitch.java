@@ -20,7 +20,6 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
         return true;
     }
 
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(10))
@@ -33,7 +32,7 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
             break;
         case 2:
         case 3:
-            this.entityDropItem(new ItemStack(Blocks.glowstone, 1), 0.0F);
+            this.entityDropItem(new ItemStack(Blocks.GLOWSTONE, 1), 0.0F);
             break;
         case 4:
         case 5:
@@ -49,6 +48,17 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
         case 8:
             this.dropItem(GCItems.oxygenVent, 1);
             break;
+        }
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        super.dropFewItems(wasRecentlyHit, lootingModifier);
+
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        {
+            this.addRandomDrop();
         }
     }
 }

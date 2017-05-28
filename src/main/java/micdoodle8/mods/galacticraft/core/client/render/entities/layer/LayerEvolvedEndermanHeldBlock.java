@@ -34,7 +34,7 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
     {
         IBlockState iblockstate = entity.getHeldBlockState();
 
-        if (iblockstate.getBlock().getMaterial() != Material.air)
+        if (iblockstate.getBlock().getMaterial(iblockstate) != Material.AIR)
         {
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
             GlStateManager.enableRescaleNormal();
@@ -50,7 +50,7 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
             int k = i / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.render.bindTexture(TextureMap.locationBlocksTexture);
+            this.render.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             blockrendererdispatcher.renderBlockBrightness(iblockstate, 1.0F);
             GlStateManager.popMatrix();
             GlStateManager.disableRescaleNormal();
