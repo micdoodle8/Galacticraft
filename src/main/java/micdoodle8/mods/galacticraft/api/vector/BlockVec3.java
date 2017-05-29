@@ -281,7 +281,27 @@ public class BlockVec3 implements Cloneable
     {
         final BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
         vec.sideDoneBits = (1 << (side ^ 1)) + (side << 6);
-        vec.modifyPositionFromSide(EnumFacing.getFront(side));
+        switch (side)
+        {
+        case 0:
+            vec.y--;
+            return vec;
+        case 1:
+            vec.y++;
+            return vec;
+        case 2:
+            vec.z--;
+            return vec;
+        case 3:
+            vec.z++;
+            return vec;
+        case 4:
+            vec.x--;
+            return vec;
+        case 5:
+            vec.x++;
+            return vec;
+        }
         return vec;
     }
 
@@ -329,9 +349,33 @@ public class BlockVec3 implements Cloneable
      */
     public TileEntity getTileEntityOnSide(World world, EnumFacing side)
     {
-        BlockVec3 vec = new BlockVec3(this.x, this.y, this.z);
-        vec.modifyPositionFromSide(side);
-        final BlockPos pos = vec.toBlockPos();
+        int x = this.x;
+        int y = this.y;
+        int z = this.z;
+        switch (side.ordinal())
+        {
+        case 0:
+            y--;
+            break;
+        case 1:
+            y++;
+            break;
+        case 2:
+            z--;
+            break;
+        case 3:
+            z++;
+            break;
+        case 4:
+            x--;
+            break;
+        case 5:
+            x++;
+            break;
+        default:
+            return null;
+        }
+        final BlockPos pos = new BlockPos(x, y, z);
         return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
@@ -340,7 +384,34 @@ public class BlockVec3 implements Cloneable
      */
     public TileEntity getTileEntityOnSide(World world, int side)
     {
-        return this.getTileEntityOnSide(world, EnumFacing.getFront(side));
+        int x = this.x;
+        int y = this.y;
+        int z = this.z;
+        switch (side)
+        {
+        case 0:
+            y--;
+            break;
+        case 1:
+            y++;
+            break;
+        case 2:
+            z--;
+            break;
+        case 3:
+            z++;
+            break;
+        case 4:
+            x--;
+            break;
+        case 5:
+            x++;
+            break;
+        default:
+            return null;
+        }
+        final BlockPos pos = new BlockPos(x, y, z);
+        return world.isBlockLoaded(pos, false) ? world.getTileEntity(pos) : null;
     }
 
     /**
@@ -469,9 +540,9 @@ public class BlockVec3 implements Cloneable
 
     public static BlockVec3 readFromNBT(NBTTagCompound par1NBTTagCompound, String prefix)
     {
-        Integer readX = par1NBTTagCompound.getInteger(prefix + "_x");
-        Integer readY = par1NBTTagCompound.getInteger(prefix + "_y");
-        Integer readZ = par1NBTTagCompound.getInteger(prefix + "_z");
+        int readX = par1NBTTagCompound.getInteger(prefix + "_x");
+        int readY = par1NBTTagCompound.getInteger(prefix + "_y");
+        int readZ = par1NBTTagCompound.getInteger(prefix + "_z");
         return new BlockVec3(readX, readY, readZ);
     }
 
@@ -500,15 +571,15 @@ public class BlockVec3 implements Cloneable
         this.sideDoneBits |= 1 << side;
     }
 
-	public TileEntity getTileEntityForce(World world)
-	{
+    public TileEntity getTileEntityForce(World world)
+    {
         int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
-		
-		if (world.getChunkProvider().chunkExists(chunkx, chunkz))
-			return world.getTileEntity(this.toBlockPos());
-		
-		Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
-		return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
-	}
+        
+        if (world.getChunkProvider().chunkExists(chunkx, chunkz))
+            return world.getTileEntity(this.toBlockPos());
+        
+        Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
+        return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
+    }
 }
