@@ -42,6 +42,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     private Boolean shouldMoveServer;
     private ArrayList prevData;
     private boolean networkDataChanged;
+    private boolean syncAdjustFlag = false;
 
     public EntityLanderBase(World var1)
     {
@@ -70,6 +71,48 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         return this.shouldSendAdvancedMotionPacket();
     }
 
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    {
+        super.setPositionAndRotation2(x, y, z, yaw, pitch, posRotationIncrements, b);
+        if (this.syncAdjustFlag && this.worldObj.isBlockLoaded(new BlockPos(x, 255D, z)))
+        {
+            EntityPlayer p = FMLClientHandler.instance().getClientPlayerEntity();
+            double dx = x - p.posX;
+            double dz = z - p.posZ;
+            if (dx * dx + dz * dz < 1024)
+            {
+                if (!this.worldObj.loadedEntityList.contains(this))
+                {
+                    try {
+                        this.worldObj.loadedEntityList.add(this);
+                    } catch (Exception e) { e.printStackTrace(); }
+                }
+
+                this.posX = x;
+                this.posY = y;
+                this.posZ = z;
+                
+                int cx = MathHelper.floor_double(x / 16.0D);
+                int cz = MathHelper.floor_double(z / 16.0D);
+
+                if (!this.addedToChunk || this.chunkCoordX != cx || this.chunkCoordZ != cz)
+                {
+                    if (this.addedToChunk && this.worldObj.isBlockLoaded(new BlockPos(this.chunkCoordX << 4, 255, this.chunkCoordZ << 4), true))
+                    {
+                        this.worldObj.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ).removeEntityAtIndex(this, this.chunkCoordY);
+                    }
+
+                    this.addedToChunk = true;
+                    this.worldObj.getChunkFromChunkCoords(cx, cz).addEntity(this);
+                }
+                
+                this.syncAdjustFlag = false;
+            }
+        }
+    }
+    
     @Override
     public int getScaledFuelLevel(int i)
     {
@@ -383,11 +426,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                                 {
                                     e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
                                     e.mountEntity(this);
+                                    this.syncAdjustFlag = true;
                                 }
                             }
                             else
                             {
                                 e.mountEntity(this);
+                                this.syncAdjustFlag = true;
                             }
                         }
                     }
@@ -409,11 +454,13 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                                 {
                                     e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
                                     e.mountEntity(this);
+                                    this.syncAdjustFlag = true;
                                 }
                             }
                             else
                             {
                                 e.mountEntity(this);
+                                this.syncAdjustFlag = true;
                             }
                         }
                     }
