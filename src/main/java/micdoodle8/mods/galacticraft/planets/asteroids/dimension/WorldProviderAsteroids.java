@@ -517,4 +517,9 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     {
         return GCPlanetDimensions.ASTEROIDS;
     }
+
+    public float getArrowGravity()
+    {
+        return 0.002F;
+    }
 }

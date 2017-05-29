@@ -1,12 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
+import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.world.biome.Biome;
 
 public class BiomeAsteroids extends Biome
@@ -32,7 +28,7 @@ public class BiomeAsteroids extends Biome
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 2000, 1, 2));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSkeleton.class, 1500, 1, 1));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedCreeper.class, 2000, 1, 1));
-        if (challengeMode) this.spawnableMonsterList.add(new SpawnListEntry(EntityEnderman.class, 250, 1, 1));
+        if (challengeMode) this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedEnderman.class, 250, 1, 1));
     }
 
     @Override

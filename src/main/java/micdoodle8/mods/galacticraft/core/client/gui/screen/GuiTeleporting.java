@@ -40,13 +40,16 @@ public class GuiTeleporting extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
-        if (mc.player.world != null)
+		if (mc.player != null && mc.player.world != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
-            if (mc.player.world.provider.getDimension() == this.targetDimensionID && (mc.player.world.provider instanceof IZeroGDimension || (mc.player.posY - mc.player.lastTickPosY) < 0.0))
+            if (mc.player.world.provider.getDimension() == this.targetDimensionID)
             {
-                mc.displayGuiScreen(null);
-                TickHandlerClient.teleportingGui = null;
+                if ((mc.player.world.provider instanceof IZeroGDimension || (mc.player.posY - mc.player.lastTickPosY) < 0.0))
+                {
+                    mc.displayGuiScreen(null);
+                    TickHandlerClient.teleportingGui = null;
+                }
             }
         }
 

@@ -8,9 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -108,6 +110,12 @@ public class EntityHangingSchematic extends EntityHanging
 
             this.entityDropItem(SchematicRegistry.getSchematicItem(this.schematic), 0.0F);
         }
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult target)
+    {
+        return SchematicRegistry.getSchematicItem(this.schematic);
     }
 
     @Override

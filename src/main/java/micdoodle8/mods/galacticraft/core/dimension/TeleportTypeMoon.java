@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -97,7 +98,11 @@ public class TeleportTypeMoon implements ITeleportType
                 CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                 lander.forceSpawn = true;
                 newWorld.spawnEntity(lander);
+                lander.setWorld(newWorld);
+                newWorld.updateEntityWithOptionalForce(lander, true);
+                player.startRiding(lander);
                 CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
+                GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
             }
 
             stats.setTeleportCooldown(10);

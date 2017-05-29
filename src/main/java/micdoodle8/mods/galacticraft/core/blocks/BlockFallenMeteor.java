@@ -122,6 +122,18 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack itemStack)
+    {
+        world.setBlockState(pos, this.getDefaultState(), 3);
+        TileEntity tile = world.getTileEntity(pos);
+
+        if (tile instanceof TileEntityFallenMeteor)
+        {
+            ((TileEntityFallenMeteor) tile).setHeatLevel(0);
+        }
+    }
+
+    @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
