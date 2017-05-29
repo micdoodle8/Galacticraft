@@ -207,6 +207,7 @@ public class ModelEvolvedEnderman extends ModelBiped
         {
             float f8 = 1.0F;
             this.bipedHead.rotationPointY -= f8 * 5.0F;
+            this.oxygenMask.rotationPointY -= f8 * 5.0F;
         }
     }
 
