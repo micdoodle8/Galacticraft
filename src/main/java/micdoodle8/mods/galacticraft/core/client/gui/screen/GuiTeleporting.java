@@ -38,7 +38,7 @@ public class GuiTeleporting extends GuiScreen
     public void updateScreen()
     {
         super.updateScreen();
-        if (mc.thePlayer.worldObj != null)
+        if (mc.thePlayer != null && mc.thePlayer.worldObj != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
             if (mc.thePlayer.worldObj.provider.getDimensionId() == this.targetDimensionID && (mc.thePlayer.worldObj.provider instanceof IZeroGDimension || (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) < 0.0))
