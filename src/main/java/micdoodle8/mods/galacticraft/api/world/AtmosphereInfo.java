@@ -18,7 +18,7 @@ public class AtmosphereInfo
      * @param corrosive - true for atmosphere which can corrode armor
      * @param relativeTemperature - the thermal level relative to Overworld: 0.0F is default
      * @param windLevel - the wind level
-     * @param density - the atmospheric density (affects sounds): 1.0F is default
+     * @param density - the atmospheric density (affects sounds and meteor frequency): 1.0F is like Overworld
      */
     public AtmosphereInfo(Boolean breathable, boolean precipitation, boolean corrosive, float relativeTemperature, float windLevel, float density)
     {    
