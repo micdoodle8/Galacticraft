@@ -193,6 +193,17 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
+    public double getMeteorFrequency()
+    {
+        float d = this.getCelestialBody().atmosphere.relativeDensity();
+        if (d <= 0.0F)
+        {
+            return 5.0D;
+        }
+        return d * 100D; 
+    }
+
+    @Override
     public float getThermalLevelModifier()
     {
         return this.getCelestialBody().atmosphere.thermalLevel();
