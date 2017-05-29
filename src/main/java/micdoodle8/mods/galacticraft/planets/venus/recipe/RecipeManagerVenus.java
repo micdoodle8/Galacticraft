@@ -23,6 +23,8 @@ public class RecipeManagerVenus
     private static void addUniversalRecipes()
     {
         OreDictionary.registerOre("ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
+        Object deshIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : "ingotDesh";
+        Object leadIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(VenusItems.basicItem, 1, 1) : "ingotLead";
 
         // Smelting
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
@@ -31,10 +33,9 @@ public class RecipeManagerVenus
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 11), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
 
         // Atomic Battery
-        RecipeUtil.addRecipe(new ItemStack(VenusItems.atomicBattery, 1, 0), new Object[] { "XXX", "XYX", "XXX", 'X', new ItemStack(VenusItems.basicItem, 1, 1), 'Y', new ItemStack(VenusItems.basicItem, 1, 2) });
+        RecipeUtil.addRecipe(new ItemStack(VenusItems.atomicBattery, 1, 0), new Object[] { "XXX", "XYX", "XXX", 'X', leadIngot, 'Y', new ItemStack(VenusItems.basicItem, 1, 2) });
 
         //Thermal Fabric T2
-        Object deshIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : "ingotDesh";
         RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 1, 3), new Object[] { "   ", "XYX", "   ", 'X', new ItemStack(AsteroidsItems.basicItem, 1, 7), 'Y', deshIngot });
 
         RecipeUtil.addRecipe(new ItemStack(VenusItems.thermalPaddingTier2, 1, 0), new Object[] { "XXX", "X X", 'X', new ItemStack(VenusItems.basicItem, 1, 3) });
