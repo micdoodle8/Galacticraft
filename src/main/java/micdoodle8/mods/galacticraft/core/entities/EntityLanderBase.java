@@ -73,9 +73,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        super.setPositionAndRotation2(x, y, z, yaw, pitch, posRotationIncrements, b);
+        super.setPositionAndRotationDirect(x, y, z, yaw, pitch, posRotationIncrements, b);
         if (this.syncAdjustFlag && this.worldObj.isBlockLoaded(new BlockPos(x, 255D, z)))
         {
             EntityPlayer p = FMLClientHandler.instance().getClientPlayerEntity();
@@ -425,24 +425,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-<<<<<<< HEAD
                                     e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
                                     e.startRiding(this);
-=======
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
-                                    e.mountEntity(this);
                                     this.syncAdjustFlag = true;
->>>>>>> master
                                 }
                             }
                             else
                             {
-<<<<<<< HEAD
                                 e.startRiding(this);
-=======
-                                e.mountEntity(this);
                                 this.syncAdjustFlag = true;
->>>>>>> master
                             }
                         }
                     }
@@ -462,24 +453,15 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                             {
                                 if (e instanceof EntityPlayer)
                                 {
-<<<<<<< HEAD
                                     e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
                                     e.startRiding(this, true);
-=======
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.worldObj.getDifficulty().getDifficultyId(), e.worldObj.getWorldInfo().getTerrainType().getWorldTypeName(), ((EntityPlayerMP) e).theItemInWorldManager.getGameType().getID());
-                                    e.mountEntity(this);
                                     this.syncAdjustFlag = true;
->>>>>>> master
                                 }
                             }
                             else
                             {
-<<<<<<< HEAD
                                 e.startRiding(this, true);
-=======
-                                e.mountEntity(this);
                                 this.syncAdjustFlag = true;
->>>>>>> master
                             }
                         }
                     }

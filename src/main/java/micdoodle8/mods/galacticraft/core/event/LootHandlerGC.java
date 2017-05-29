@@ -10,7 +10,6 @@ public class LootHandlerGC
 
     public static void registerAll()
     {
-        System.err.println("findthis");
         TABLE_CRASHED_PROBE = register("crashed_probe");
     }
 
