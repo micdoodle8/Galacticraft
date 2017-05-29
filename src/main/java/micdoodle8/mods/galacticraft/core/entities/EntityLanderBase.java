@@ -42,7 +42,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     private Boolean shouldMoveServer;
     private ArrayList prevData;
     private boolean networkDataChanged;
-    private boolean syncAdjustFlag = false;
+    private boolean syncAdjustFlag = true;
 
     public EntityLanderBase(World var1)
     {
