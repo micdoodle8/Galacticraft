@@ -160,6 +160,11 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                                 {
                                     BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
                                     IBlockState state = blockAt.getBlockState(this.world);
+                                    
+                                    if (state == null)
+                                    {
+                                        break;
+                                    }
 
                                     if (state.getBlock().isOpaqueCube(state))
                                     {
