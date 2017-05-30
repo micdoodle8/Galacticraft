@@ -666,6 +666,7 @@ gc.configgui.idDimensionOverworldOrbit=Space Station Dimension ID
 gc.configgui.idDimensionOverworldOrbitStatic=Space Station Static Dimension ID
 gc.configgui.biomeIDBase=BiomeID Base for GC
 gc.configgui.staticLoadedDimensions=Static Loaded Dimensions
+gc.configgui.staticLoadedNewSS=New Space Stations static loaded?
 gc.configgui.rocketDisableOverworldReturn=Disable Overworld Rocket Return
 gc.configgui.rocketDisabledDimensions=Rocket Disabled Dimensions
 gc.configgui.planetWorldBorders=Max x,z for Moon landing

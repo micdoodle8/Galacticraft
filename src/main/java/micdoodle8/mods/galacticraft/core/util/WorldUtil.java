@@ -919,10 +919,15 @@ public class WorldUtil
 
     public static SpaceStationWorldData createSpaceStation(World world, int dimID, int homePlanetID, int dynamicProviderID, int staticProviderID, EntityPlayerMP player)
     {
-        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
-
         if (!DimensionManager.isDimensionRegistered(dimID))
         {
+            if (ConfigManagerCore.keepLoadedNewSpaceStations)
+            {
+                ConfigManagerCore.setLoaded(dimID);
+            }
+
+            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+
 	        if (id >= 0)
 	        {
 	            DimensionManager.registerDimension(dimID, staticProviderID);
