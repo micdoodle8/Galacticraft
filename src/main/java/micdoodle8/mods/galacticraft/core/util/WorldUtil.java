@@ -46,6 +46,7 @@ import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.network.play.server.SPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -1019,6 +1020,7 @@ public class WorldUtil
         if (entity instanceof EntityPlayerMP)
         {
             if (dimChange) FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
+
             //Spawn in a lander if appropriate
             type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
         }
@@ -1041,19 +1043,35 @@ public class WorldUtil
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getChunkCoordIntPair();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
-        if (entity instanceof EntityPlayerMP)
-        {
-            ((EntityPlayerMP) entity).connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-        }
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+        WorldServer fromWorld = ((WorldServer) entity.worldObj); 
         if (spawnRequired)
         {
-            ((WorldServer) entity.worldObj).getEntityTracker().untrackEntity(entity);
+            fromWorld.removeEntityDangerously(entity);
+            entity.setDropItemsWhenDead(true);
+            entity.isDead = false;
             entity.forceSpawn = true;
             worldNew.spawnEntityInWorld(entity);
             entity.setWorld(worldNew);
         }
         worldNew.updateEntityWithOptionalForce(entity, true);
+        if (entity instanceof EntityPlayerMP)
+        {
+            EntityPlayerMP player = (EntityPlayerMP) entity; 
+            if (spawnRequired)
+            {
+                PlayerList pl = player.mcServer.getPlayerList();
+                pl.preparePlayer(player, fromWorld);
+                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+                player.interactionManager.setWorld(worldNew);
+                pl.updateTimeAndWeatherForPlayer(player, worldNew);
+                pl.syncPlayerInventory(player);
+            }
+            else
+            {
+                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+            }
+        }
         CompatibilityManager.forceLoadChunksEnd(worldNew);
     }
 
