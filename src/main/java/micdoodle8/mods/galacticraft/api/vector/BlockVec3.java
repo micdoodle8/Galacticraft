@@ -658,15 +658,15 @@ public class BlockVec3 implements Cloneable
         this.sideDoneBits |= 1 << side;
     }
 
-	public TileEntity getTileEntityForce(World world)
-	{
+    public TileEntity getTileEntityForce(World world)
+    {
         int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
-		
-		if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
-			return world.getTileEntity(this.toBlockPos());
-		
-		Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).loadChunk(chunkx, chunkz);
-		return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
-	}
+        
+        if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
+            return world.getTileEntity(this.toBlockPos());
+        
+        Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).loadChunk(chunkx, chunkz);
+        return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
+    }
 }

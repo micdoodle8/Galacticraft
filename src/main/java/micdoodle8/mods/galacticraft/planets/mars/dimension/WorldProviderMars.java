@@ -117,12 +117,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public double getMeteorFrequency()
-    {
-        return 10.0D;
-    }
-
-    @Override
     public double getFuelUsageMultiplier()
     {
         return 0.9D;
