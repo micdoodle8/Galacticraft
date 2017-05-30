@@ -124,6 +124,25 @@ public class Gas
 		return iconLocation;
 	}
 
+	/**
+	 * Gets the Sprite associated with this Gas.
+	 * @return associated IIcon
+	 */
+	public TextureAtlasSprite getSprite()
+	{
+//		if(from_fluid)
+//		{
+//			return MekanismRenderer.getFluidTexture(fluid, FluidType.STILL);
+//		}
+		
+		return sprite;
+	}
+
+	/**
+	 * Sets this gas's icon.
+	 * @param i - IIcon to associate with this Gas
+	 * @return this Gas object
+	 */
 	public Gas registerIcon(TextureMap map)
 	{
 		map.registerSprite(iconLocation);
@@ -202,21 +221,31 @@ public class Gas
 	 * Registers a new fluid out of this Gas or gets one from the FluidRegistry.
 	 * @return this Gas object
 	 */
-	public Gas registerFluid()
+	public Gas registerFluid(String name)
 	{
 		if(fluid == null)
 		{
-			if(FluidRegistry.getFluid(getName()) == null)
+			if(FluidRegistry.getFluid(name) == null)
 			{
-				fluid = new Fluid(getName(), getIcon(), getIcon()).setGaseous(true);
+				fluid = new Fluid(name, getIcon(), getIcon());
 				FluidRegistry.registerFluid(fluid);
 			}
 			else {
-				fluid = FluidRegistry.getFluid(getName());
+				fluid = FluidRegistry.getFluid(name);
 			}
 		}
 
 		return this;
+	}
+	
+	/**
+	 * Registers a new fluid out of this Gas or gets one from the FluidRegistry.
+	 * Uses default gas name.
+	 * @return this Gas object
+	 */
+	public Gas registerFluid()
+	{
+		return registerFluid(getName());
 	}
 
 	@Override

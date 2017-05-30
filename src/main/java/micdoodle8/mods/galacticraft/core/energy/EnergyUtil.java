@@ -9,9 +9,9 @@ import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.*;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
+import mekanism.api.energy.IStrictEnergyOutputter;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -88,7 +88,7 @@ public class EnergyUtil
                 continue;
             }
 
-            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
+            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof IStrictEnergyOutputter))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
                 try
@@ -107,7 +107,7 @@ public class EnergyUtil
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
-                else if (tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
+                else if (tileEntity instanceof IStrictEnergyOutputter && ((IStrictEnergyOutputter) tileEntity).canOutputEnergy(direction.getOpposite()))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -343,15 +343,7 @@ public class EnergyUtil
             IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
             if (tileMek.canReceiveEnergy(inputAdj))
             {
-                float transferredMek;
-                if (simulate)
-                {
-                    transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
-                }
-                else
-                {
-                    transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                }
+                float transferredMek = (float) tileMek.acceptEnergy(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO, simulate);
                 return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
             }
         }
