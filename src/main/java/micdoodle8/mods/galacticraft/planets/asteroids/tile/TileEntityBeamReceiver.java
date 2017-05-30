@@ -78,7 +78,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
                 	}               	
                 }
             }
-
+            else
             if (this.modeReceive == ReceiverMode.RECEIVE.ordinal() && this.storage.getEnergyStoredGC() > 0)
             {
             	//One Beam Receiver might be powered by multiple transmitters - allow for 5 at maximum transfer rate
@@ -199,7 +199,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
             return 0;
         }
 
-        //TileEntity tile = this.getAttachedTile();
+        this.getAttachedTile();
 
         if (this.facing == ForgeDirection.UNKNOWN.ordinal())
         {
