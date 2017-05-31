@@ -1061,6 +1061,7 @@ public class WorldUtil
             {
                 return new ItemInWorldManager(worldNew);
             }
+            ConfigManagerCore.challengeSpawnHandling = false;
         }
         return unchanged;
     }

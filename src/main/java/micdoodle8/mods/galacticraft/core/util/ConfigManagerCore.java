@@ -723,7 +723,7 @@ public class ConfigManagerCore
         return foundCount > 0;
     }
 
-    private static void challengeModeUpdate()
+    public static void challengeModeUpdate()
     {
     	if (challengeMode)
     	{
