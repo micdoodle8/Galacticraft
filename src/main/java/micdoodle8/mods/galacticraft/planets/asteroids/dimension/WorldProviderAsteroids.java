@@ -254,7 +254,8 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.datafile.markDirty();
     }
 
-    public BlockVec3 getClosestAsteroidXZ(int x, int y, int z, boolean mark)
+
+    public boolean checkHasAsteroids()
     {
         if (this.dataNotLoaded)
         {
@@ -262,6 +263,16 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         }
 
         if (this.asteroids.size() == 0)
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
+    public BlockVec3 getClosestAsteroidXZ(int x, int y, int z, boolean mark)
+    {
+        if (!this.checkHasAsteroids())
         {
             return null;
         }
@@ -305,12 +316,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
     public ArrayList<BlockVec3> getClosestAsteroidsXZ(int x, int y, int z, int facing, int count)
     {
-        if (this.dataNotLoaded)
-        {
-            this.loadAsteroidSavedData();
-        }
-
-        if (this.asteroids.size() == 0)
+        if (!this.checkHasAsteroids())
         {
             return null;
         }

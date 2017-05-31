@@ -546,7 +546,10 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         this.generateTerrain(par1, par2, primer, false);
         //this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
-        this.dungeonGenerator.generate(this, this.worldObj, par1, par2, primer);
+        if (this.worldObj.provider instanceof WorldProviderAsteroids && ((WorldProviderAsteroids)this.worldObj.provider).checkHasAsteroids())
+        {
+            this.dungeonGenerator.generate(this, this.worldObj, par1, par2, primer);
+        }
 
 //        long time2 = System.nanoTime();
         final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
