@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -35,7 +37,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
     {
         if (!player.isInvisible())
         {
-            PlayerGearData gearData = ModelPlayerGC.getGearData(player);
+            PlayerGearData gearData = GalacticraftCore.proxy.getGearData(player);
 
             if (gearData != null)
             {
