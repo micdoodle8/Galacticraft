@@ -70,6 +70,7 @@ public class ConfigManagerCore
     public static int[] disableRocketLaunchDimensions = { -1, 1 };
     public static boolean disableRocketLaunchAllNonGC;
     public static int otherPlanetWorldBorders = 0;
+    public static boolean keepLoadedNewSpaceStations;
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -206,6 +207,12 @@ public class ConfigManagerCore
             prop.comment = "IDs to load at startup, and keep loaded until server stops. Can be added via /gckeeploaded";
             prop.setLanguageKey("gc.configgui.staticLoadedDimensions");
             staticLoadDimensions = prop.getIntList();
+            propOrder.add(prop.getName());
+            
+            prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Set new Space Stations to be static loaded", false);
+            prop.comment = "Set this to true to have an automatic /gckeeploaded for any new Space Station created.";
+            prop.setLanguageKey("gc.configgui.static_loaded_new_ss");
+            keepLoadedNewSpaceStations = prop.getBoolean();
             propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "Dimensions where rockets cannot launch", new String[] { "1", "-1" });

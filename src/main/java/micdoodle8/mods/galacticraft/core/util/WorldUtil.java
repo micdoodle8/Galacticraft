@@ -644,13 +644,18 @@ public class WorldUtil
 
     public static SpaceStationWorldData createSpaceStation(World world, int dimID, int homePlanetID, int dynamicProviderID, int staticProviderID, EntityPlayerMP player)
     {
-        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
-
         if (!DimensionManager.isDimensionRegistered(dimID))
         {
-            if (id >= 0)
+            if (ConfigManagerCore.keepLoadedNewSpaceStations)
             {
-                DimensionManager.registerDimension(dimID, staticProviderID);
+                ConfigManagerCore.setLoaded(dimID);
+            }
+
+            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+
+	        if (id >= 0)
+	        {
+	            DimensionManager.registerDimension(dimID, staticProviderID);
                 WorldUtil.registeredSpaceStations.put(dimID, staticProviderID);
             }
             else

@@ -111,6 +111,7 @@ gc.configgui.sealable_i_ds=Sealable Blocks
 gc.configgui.space_station_energy_scalar=Space Station Energy Modifier
 gc.configgui.space_stations_require_permission=Space Stations Permissions
 gc.configgui.static_loaded_dimensions=Static Loaded Dimensions
+gc.configgui.static_loaded_new_ss=New Space Stations static loaded?
 gc.configgui.suffocation_cooldown=Suffocation Cooldown
 gc.configgui.suffocation_damage=Suffocation Damage
 gc.configgui.title=Galacticraft Core Config
