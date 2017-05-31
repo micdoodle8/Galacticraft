@@ -1496,6 +1496,7 @@ public class WorldUtil
         if (world.provider instanceof WorldProviderSpace)
         {
             dayLength = ((WorldProviderSpace)world.provider).getDayLength();
+            if (dayLength <= 0) return;
             newTime = current - current % dayLength + dayLength;
         }
         else
