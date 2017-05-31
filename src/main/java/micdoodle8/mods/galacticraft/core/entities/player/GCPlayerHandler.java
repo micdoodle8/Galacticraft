@@ -74,6 +74,8 @@ import java.util.Map.Entry;
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
+    public static final int GEAR_NOT_PRESENT = -1;
+    
 //    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
     private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
 
@@ -971,7 +973,7 @@ public class GCPlayerHandler
 
         if (tf)
         {
-            int subtype = -1;
+            int subtype = GCPlayerHandler.GEAR_NOT_PRESENT;
 
             if (playerStats.getParachuteInSlot() != null)
             {
@@ -1142,7 +1144,7 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)
     {
-        GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, -1);
+        GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, GCPlayerHandler.GEAR_NOT_PRESENT);
     }
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType, int gearID)

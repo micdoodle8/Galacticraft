@@ -7,6 +7,7 @@ import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -67,8 +68,8 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
 
             if (gearData != null)
             {
-                boolean wearingModule = gearData.getFrequencyModule() != -1;
-                boolean wearingHelmet = gearData.getMask() != -1;
+                boolean wearingModule = gearData.getFrequencyModule() != GCPlayerHandler.GEAR_NOT_PRESENT;
+                boolean wearingHelmet = gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
 
                 if (wearingModule)

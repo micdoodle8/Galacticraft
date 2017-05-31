@@ -220,7 +220,7 @@ public class PlayerClient implements IPlayerClient
             stats.setUsingParachute(gearData.getParachute() != null);
             if(!GalacticraftCore.isHeightConflictingModInstalled)
             {
-                if (gearData.getMask() >= 0)
+                if (gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
                 	player.height = 1.9375F;
                 }

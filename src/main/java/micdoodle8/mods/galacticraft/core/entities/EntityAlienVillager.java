@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
@@ -179,7 +180,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
             if (!this.worldObj.isRemote && (this.buyingList == null || this.buyingList.size() > 0))
             {
-                if (gearData != null && gearData.getFrequencyModule() != -1)
+                if (gearData != null && gearData.getFrequencyModule() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
                     this.setCustomer(player);
                     player.displayVillagerTradeGui(this);

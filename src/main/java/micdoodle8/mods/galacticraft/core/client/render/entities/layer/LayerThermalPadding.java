@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
@@ -44,7 +45,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
         if (gearData != null)
         {
             int padding = gearData.getThermalPadding(armorSlot - 1);
-            if (padding >= 0)
+            if (padding != GCPlayerHandler.GEAR_NOT_PRESENT)
             {
                 switch (padding)
                 {
