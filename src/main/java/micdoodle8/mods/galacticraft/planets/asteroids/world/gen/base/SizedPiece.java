@@ -58,7 +58,7 @@ public abstract class SizedPiece extends Piece
 
         if (tagCompound.hasKey("dir"))
         {
-            this.direction = EnumFacing.getFront(tagCompound.getInteger("direction"));
+            this.direction = EnumFacing.getFront(tagCompound.getInteger("dir"));
         }
         else
         {

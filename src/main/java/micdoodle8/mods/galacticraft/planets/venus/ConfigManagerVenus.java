@@ -67,7 +67,7 @@ public class ConfigManagerVenus
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "disableAmbientLightning", false);
             prop.setComment("Disables background thunder and lightning.");
-            prop.setLanguageKey("gc.configgui.disableAmbientLightning");
+            prop.setLanguageKey("gc.configgui.disable_ambient_lightning");
             disableAmbientLightning = prop.getBoolean(false);
 
             if (load)

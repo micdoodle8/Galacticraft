@@ -46,7 +46,6 @@ import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.network.play.server.SPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PlayerList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -666,12 +665,17 @@ public class WorldUtil
 
     public static SpaceStationWorldData createSpaceStation(World world, int dimID, int homePlanetID, int dynamicProviderID, int staticProviderID, EntityPlayerMP player)
     {
-        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
-
         if (!DimensionManager.isDimensionRegistered(dimID))
         {
-            if (id >= 0)
+            if (ConfigManagerCore.keepLoadedNewSpaceStations)
             {
+                ConfigManagerCore.setLoaded(dimID);
+            }
+
+            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+
+	        if (id >= 0)
+	        {
                 DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(staticProviderID));
                 WorldUtil.registeredSpaceStations.put(dimID, staticProviderID);
             }
@@ -857,6 +861,7 @@ public class WorldUtil
                 }
                 player.capabilities.isFlying = false;
 
+                player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldOld);
                 player.interactionManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
                 player.mcServer.getPlayerList().syncPlayerInventory(player);
@@ -1057,36 +1062,25 @@ public class WorldUtil
         worldNew.updateEntityWithOptionalForce(entity, true);
         if (entity instanceof EntityPlayerMP)
         {
-            EntityPlayerMP player = (EntityPlayerMP) entity; 
-            if (spawnRequired)
-            {
-                PlayerList pl = player.mcServer.getPlayerList();
-                pl.preparePlayer(player, fromWorld);
-                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-                player.interactionManager.setWorld(worldNew);
-                pl.updateTimeAndWeatherForPlayer(player, worldNew);
-                pl.syncPlayerInventory(player);
-            }
-            else
-            {
-                player.connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-            }
+            ((EntityPlayerMP) entity).connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         }
         CompatibilityManager.forceLoadChunksEnd(worldNew);
     }
 
-    public static WorldServer getStartWorld(WorldServer worldOld)
+    public static WorldServer getStartWorld(WorldServer unchanged)
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
+            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
             if (worldNew != null)
             {
+                Thread.dumpStack();
                 return worldNew;
             }
         }
-        return worldOld;
+        return unchanged;
     }
 
     @SideOnly(Side.CLIENT)

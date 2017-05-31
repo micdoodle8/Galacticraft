@@ -47,6 +47,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.gui.GuiScreenServerList;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -84,6 +85,25 @@ public class TickHandlerClient
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static String savedLang;
     public static GuiTeleporting teleportingGui;
+    private static boolean menuReset = true;
+    
+    public static void resetClient()
+    {
+        ClientProxyCore.playerItemData.clear();
+        ClientProxyCore.overworldTextureRequestSent = false;
+        ClientProxyCore.flagRequestsSent.clear();
+        TickHandlerClient.clearLiquidNetworks();
+        ClientProxyCore.clientSpaceStationID.clear();
+        ConfigManagerCore.challengeModeUpdate();
+
+        if (TickHandlerClient.missingRequirementThread == null)
+        {
+            TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(Side.CLIENT);
+            TickHandlerClient.missingRequirementThread.start();
+        }
+        
+        MapUtil.resetClient();
+    }
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -327,19 +347,17 @@ public class TickHandlerClient
             }
         }
 
-        if (minecraft.currentScreen instanceof GuiMainMenu)
+        if (minecraft.currentScreen instanceof GuiMainMenu || minecraft.currentScreen instanceof GuiScreenServerList)
         {
-            ClientProxyCore.playerItemData.clear();
-            ClientProxyCore.overworldTextureRequestSent = false;
-            ClientProxyCore.flagRequestsSent.clear();
-            TickHandlerClient.clearLiquidNetworks();
-            ClientProxyCore.clientSpaceStationID.clear();
-
-            if (TickHandlerClient.missingRequirementThread == null)
+            if (menuReset)
             {
-                TickHandlerClient.missingRequirementThread = new ThreadRequirementMissing(Side.CLIENT);
-                TickHandlerClient.missingRequirementThread.start();
+                TickHandlerClient.resetClient();
+                menuReset = false;
             }
+        }
+        else
+        {
+            menuReset = true;
         }
 
         if (event.phase == Phase.START && player != null)

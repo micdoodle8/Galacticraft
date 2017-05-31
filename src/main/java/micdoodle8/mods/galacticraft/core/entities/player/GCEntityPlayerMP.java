@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -20,11 +19,11 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager interactionManager)
     {
-        super(server, WorldUtil.getStartWorld(world), profile, interactionManager);
-        if (this.worldObj != world)
-        {
-            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
-        }
+        super(server, world, profile, interactionManager);
+//        if (this.worldObj != world)
+//        {
+//            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
+//        }
     }
 
     //Server-only method
