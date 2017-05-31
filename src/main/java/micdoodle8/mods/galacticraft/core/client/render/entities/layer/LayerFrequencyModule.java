@@ -3,8 +3,11 @@ package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
@@ -21,6 +24,7 @@ import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -60,12 +64,12 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
     {
         if (!player.isInvisible())
         {
-            PlayerGearData gearData = ModelPlayerGC.getGearData(player);
+            PlayerGearData gearData = GalacticraftCore.proxy.getGearData(player);
 
             if (gearData != null)
             {
-                boolean wearingModule = gearData.getFrequencyModule() != -1;
-                boolean wearingHelmet = gearData.getMask() != -1;
+                boolean wearingModule = gearData.getFrequencyModule() != GCPlayerHandler.GEAR_NOT_PRESENT;
+                boolean wearingHelmet = gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT;
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
 
                 if (wearingModule)

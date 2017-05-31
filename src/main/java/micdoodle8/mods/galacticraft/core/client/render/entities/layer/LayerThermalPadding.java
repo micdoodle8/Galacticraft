@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
@@ -17,6 +19,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+
 import org.lwjgl.opengl.GL11;
 
 public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
@@ -63,12 +66,12 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
 
     public ItemStack getItemStackFromSlot(EntityLivingBase living, EntityEquipmentSlot slotIn)
     {
-        PlayerGearData gearData = ModelPlayerGC.getGearData((EntityPlayer) living);
+        PlayerGearData gearData = GalacticraftCore.proxy.getGearData((EntityPlayer) living);
 
         if (gearData != null)
         {
             int padding = gearData.getThermalPadding(slotIn.getSlotIndex() - 1);
-            if (padding >= 0)
+            if (padding != GCPlayerHandler.GEAR_NOT_PRESENT)
             {
                 switch (padding)
                 {

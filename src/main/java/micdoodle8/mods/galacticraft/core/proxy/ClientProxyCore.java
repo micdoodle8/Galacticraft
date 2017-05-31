@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.proxy;
 
 import api.player.client.ClientPlayerAPI;
+
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -43,6 +44,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
@@ -843,5 +845,24 @@ public class ClientProxyCore extends CommonProxyCore
         {
             this.partialTicks = partialTicks;
         }
+    }
+    
+    @Override
+    public PlayerGearData getGearData(EntityPlayer player)
+    {
+        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
+
+        if (gearData == null)
+        {
+            String id = player.getGameProfile().getName();
+
+            if (!ClientProxyCore.gearDataRequests.contains(id))
+            {
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
+                ClientProxyCore.gearDataRequests.add(id);
+            }
+        }
+
+        return gearData;
     }
 }

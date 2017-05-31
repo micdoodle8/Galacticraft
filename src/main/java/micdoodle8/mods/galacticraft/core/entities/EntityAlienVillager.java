@@ -2,10 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.entity.*;
@@ -174,11 +175,11 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
         if (!flag && this.isEntityAlive() && !this.isTrading() && !this.isChild() && !player.isSneaking())
         {
-            PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
+            PlayerGearData gearData = GalacticraftCore.proxy.getGearData(player);
 
             if (!this.world.isRemote && (this.buyingList == null || this.buyingList.size() > 0))
             {
-                if (gearData != null && gearData.getFrequencyModule() != -1)
+                if (gearData != null && gearData.getFrequencyModule() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
                     this.setCustomer(player);
                     player.displayVillagerTradeGui(this);

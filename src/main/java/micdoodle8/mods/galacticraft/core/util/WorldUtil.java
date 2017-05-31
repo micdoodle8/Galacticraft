@@ -665,12 +665,17 @@ public class WorldUtil
 
     public static SpaceStationWorldData createSpaceStation(World world, int dimID, int homePlanetID, int dynamicProviderID, int staticProviderID, EntityPlayerMP player)
     {
-        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
-
         if (!DimensionManager.isDimensionRegistered(dimID))
         {
-            if (id >= 0)
+            if (ConfigManagerCore.keepLoadedNewSpaceStations)
             {
+                ConfigManagerCore.setLoaded(dimID);
+            }
+
+            int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, dimID);
+
+	        if (id >= 0)
+	        {
                 DimensionManager.registerDimension(dimID, WorldUtil.getDimensionTypeById(staticProviderID));
                 WorldUtil.registeredSpaceStations.put(dimID, staticProviderID);
             }
@@ -856,6 +861,7 @@ public class WorldUtil
                 }
                 player.capabilities.isFlying = false;
 
+                player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldOld);
                 player.interactionManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
                 player.mcServer.getPlayerList().syncPlayerInventory(player);
@@ -1020,6 +1026,7 @@ public class WorldUtil
         if (entity instanceof EntityPlayerMP)
         {
             if (dimChange) FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) entity, oldDimID, dimID);
+
             //Spawn in a lander if appropriate
             type.onSpaceDimensionChanged(worldNew, (EntityPlayerMP) entity, ridingRocket != null);
         }
@@ -1042,34 +1049,39 @@ public class WorldUtil
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
         GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
-        if (entity instanceof EntityPlayerMP)
-        {
-            ((EntityPlayerMP) entity).connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
-        }
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+        WorldServer fromWorld = ((WorldServer) entity.world); 
         if (spawnRequired)
         {
-            ((WorldServer) entity.world).getEntityTracker().untrack(entity);
+            fromWorld.removeEntityDangerously(entity);
+            entity.setDropItemsWhenDead(true);
+            entity.isDead = false;
             entity.forceSpawn = true;
             worldNew.spawnEntity(entity);
             entity.setWorld(worldNew);
         }
         worldNew.updateEntityWithOptionalForce(entity, true);
+        if (entity instanceof EntityPlayerMP)
+        {
+            ((EntityPlayerMP) entity).connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
+        }
         CompatibilityManager.forceLoadChunksEnd(worldNew);
     }
 
-    public static WorldServer getStartWorld(WorldServer worldOld)
+    public static WorldServer getStartWorld(WorldServer unchanged)
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
+            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.world;
             if (worldNew != null)
             {
+                Thread.dumpStack();
                 return worldNew;
             }
         }
-        return worldOld;
+        return unchanged;
     }
 
     @SideOnly(Side.CLIENT)

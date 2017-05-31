@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -10,6 +12,7 @@ import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+
 import org.lwjgl.opengl.GL11;
 
 public class LayerShield implements LayerRenderer<EntityLivingBase>
@@ -34,11 +37,11 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
     {
         if (!entitylivingbaseIn.isInvisible())
         {
-            PlayerGearData gearData = ModelPlayerGC.getGearData((EntityPlayer) entitylivingbaseIn);
+            PlayerGearData gearData = GalacticraftCore.proxy.getGearData((EntityPlayer) entitylivingbaseIn);
 
             if (gearData != null)
             {
-                if (gearData.getShieldController() >= 0)
+                if (gearData.getShieldController() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
                     this.shieldModel.setInvisible(false);
                     this.shieldModel.bipedRightLeg.showModel = true;

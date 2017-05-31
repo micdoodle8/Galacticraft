@@ -78,6 +78,8 @@ import java.util.Map.Entry;
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
+    public static final int GEAR_NOT_PRESENT = -1;
+    
 //    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
     private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
 
@@ -1001,7 +1003,7 @@ public class GCPlayerHandler
 
         if (tf)
         {
-            int subtype = -1;
+            int subtype = GCPlayerHandler.GEAR_NOT_PRESENT;
 
             if (!playerStats.getParachuteInSlot().isEmpty())
             {
@@ -1172,7 +1174,7 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType)
     {
-        GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, -1);
+        GCPlayerHandler.sendGearUpdatePacket(player, packetType, gearType, GCPlayerHandler.GEAR_NOT_PRESENT);
     }
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType, int gearID)
@@ -1238,12 +1240,14 @@ public class GCPlayerHandler
                 }
                 worldNew.spawnEntity(player);
                 player.setWorld(worldNew);
+                player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldOld);
             }
 
             //This is a mini version of the code at WorldUtil.teleportEntity
+            player.interactionManager.setWorld((WorldServer) player.world);
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.world.provider.getClass());
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.world, player);
-            ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX(), spawnPos.intZ()).getPos();
+            ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
             GCLog.debug("Loading first chunk in new dimension.");
             ((WorldServer) player.world).getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
             player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);

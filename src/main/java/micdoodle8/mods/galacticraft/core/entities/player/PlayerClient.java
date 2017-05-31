@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
@@ -219,7 +218,7 @@ public class PlayerClient implements IPlayerClient
             player.fallDistance = 0.0F;
         }
 
-        PlayerGearData gearData = ModelPlayerGC.getGearData(player);
+        PlayerGearData gearData = GalacticraftCore.proxy.getGearData(player);
 
         stats.setUsingParachute(false);
 
@@ -228,7 +227,7 @@ public class PlayerClient implements IPlayerClient
             stats.setUsingParachute(gearData.getParachute() != null);
             if(!GalacticraftCore.isHeightConflictingModInstalled)
             {
-                if (gearData.getMask() >= 0)
+                if (gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
                 	player.height = 1.9375F;
                 }

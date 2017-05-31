@@ -56,36 +56,36 @@ public class ConfigManagerMars
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDMars", -29);
             prop.setComment("Dimension ID for Mars");
-            prop.setLanguageKey("gc.configgui.dimensionIDMars").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.dimension_i_d_mars").setRequiresMcRestart(true);
             dimensionIDMars = prop.getInt();
 
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT2", 2);
             prop.setComment("Schematic ID for Tier 2 Rocket, must be unique.");
-            prop.setLanguageKey("gc.configgui.idSchematicRocketT2");
+            prop.setLanguageKey("gc.configgui.id_schematic_rocket_t2");
             idSchematicRocketT2 = prop.getInt(2);
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicCargoRocket", 3);
             prop.setComment("Schematic ID for Cargo Rocket, must be unique.");
-            prop.setLanguageKey("gc.configgui.idSchematicCargoRocket");
+            prop.setLanguageKey("gc.configgui.id_schematic_cargo_rocket");
             idSchematicCargoRocket = prop.getInt(3);
 
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "launchControllerChunkLoad", true);
             prop.setComment("Whether or not the launch controller acts as a chunk loader. Will cause issues if disabled!");
-            prop.setLanguageKey("gc.configgui.launchControllerChunkLoad");
+            prop.setLanguageKey("gc.configgui.launch_controller_chunk_load");
             launchControllerChunkLoad = prop.getBoolean(true);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "launchControllerAllDims", false);
             prop.setComment("May rarely cause issues if enabled, depends on how the other mod's dimensions are.");
-            prop.setLanguageKey("gc.configgui.launchControllerAllDims");
+            prop.setLanguageKey("gc.configgui.launch_controller_all_dims");
             launchControllerAllDims = prop.getBoolean(false);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Mars", false);
             prop.setComment("Disable Iron Ore Gen on Mars.");
-            prop.setLanguageKey("gc.configgui.disableIronGenMars");
+            prop.setLanguageKey("gc.configgui.disable_iron_gen_mars");
             if (update)
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -97,7 +97,7 @@ public class ConfigManagerMars
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Copper Ore Gen on Mars", false);
             prop.setComment("Disable Copper Ore Gen on Mars.");
-            prop.setLanguageKey("gc.configgui.disableCopperGenMars");
+            prop.setLanguageKey("gc.configgui.disable_copper_gen_mars");
             if (update)
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -109,7 +109,7 @@ public class ConfigManagerMars
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Tin Ore Gen on Mars", false);
             prop.setComment("Disable Tin Ore Gen on Mars.");
-            prop.setLanguageKey("gc.configgui.disableTinGenMars");
+            prop.setLanguageKey("gc.configgui.disable_tin_gen_mars");
             if (update)
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -121,7 +121,7 @@ public class ConfigManagerMars
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Desh Ore Gen on Mars", false);
             prop.setComment("Disable Desh Ore Gen on Mars.");
-            prop.setLanguageKey("gc.configgui.disableDeshGenMars");
+            prop.setLanguageKey("gc.configgui.disable_desh_gen_mars");
             if (update)
             {
                 prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());

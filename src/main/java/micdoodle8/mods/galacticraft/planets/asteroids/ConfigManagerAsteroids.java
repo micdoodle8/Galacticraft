@@ -67,7 +67,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDAsteroids", -30);
             prop.setComment("Dimension ID for Asteroids");
-            prop.setLanguageKey("gc.configgui.dimensionIDAsteroids").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.dimension_i_d_asteroids").setRequiresMcRestart(true);
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.getComment());
@@ -80,7 +80,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT3", 4);
             prop.setComment("Schematic ID for Tier 3 Rocket, must be unique.");
-            prop.setLanguageKey("gc.configgui.idSchematicRocketT3");
+            prop.setLanguageKey("gc.configgui.id_schematic_rocket_t3");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, prop.getName(), prop.getInt(), prop.getComment());
@@ -90,7 +90,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableGalacticraftHelium", false);
             prop.setComment("Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).");
-            prop.setLanguageKey("gc.configgui.disableGalacticraftHelium");
+            prop.setLanguageKey("gc.configgui.disable_galacticraft_helium");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -101,7 +101,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 6);
             prop.setComment("Maximum number of Astro Miners each player is allowed to have active (default 4).");
-            prop.setLanguageKey("gc.configgui.astroMinersMax");
+            prop.setLanguageKey("gc.configgui.astro_miners_max");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getInt(), prop.getComment());
@@ -112,7 +112,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Asteroids", false);
             prop.setComment("Disable Iron Ore Gen on Asteroids.");
-            prop.setLanguageKey("gc.configgui.disableIronGenAsteroids");
+            prop.setLanguageKey("gc.configgui.disable_iron_gen_asteroids");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -123,7 +123,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Aluminum Ore Gen on Asteroids", false);
             prop.setComment("Disable Aluminum Ore Gen on Asteroids.");
-            prop.setLanguageKey("gc.configgui.disableAluminumGenAsteroids");
+            prop.setLanguageKey("gc.configgui.disable_aluminum_gen_asteroids");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
@@ -134,7 +134,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Ilmenite Ore Gen on Asteroids", false);
             prop.setComment("Disable Ilmenite Ore Gen on Asteroids.");
-            prop.setLanguageKey("gc.configgui.disableIlmeniteGenAsteroids");
+            prop.setLanguageKey("gc.configgui.disable_ilmenite_gen_asteroids");
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
