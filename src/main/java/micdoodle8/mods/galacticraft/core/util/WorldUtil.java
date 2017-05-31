@@ -46,6 +46,7 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -839,6 +840,7 @@ public class WorldUtil
                 }
                 player.capabilities.isFlying = false;
 
+                player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldOld);
                 player.theItemInWorldManager.setWorld((WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
                 player.mcServer.getConfigurationManager().syncPlayerInventory(player);
@@ -1047,6 +1049,20 @@ public class WorldUtil
             }
         }
         return worldOld;
+    }
+
+    public static ItemInWorldManager getStartItemManager(ItemInWorldManager unchanged)
+    {
+        if (ConfigManagerCore.challengeSpawnHandling)
+        {
+            WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
+            WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
+            if (worldNew != null)
+            {
+                return new ItemInWorldManager(worldNew);
+            }
+        }
+        return unchanged;
     }
 
     @SideOnly(Side.CLIENT)

@@ -20,7 +20,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 {
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
     {
-        super(server, WorldUtil.getStartWorld(world), profile, itemInWorldManager);
+        super(server, WorldUtil.getStartWorld(world), profile, WorldUtil.getStartItemManager(itemInWorldManager));
         if (this.worldObj != world)
         {
             GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
