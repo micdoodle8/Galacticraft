@@ -8,9 +8,6 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
-import micdoodle8.mods.galacticraft.core.network.PacketSimple;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
@@ -56,7 +53,7 @@ public class ModelBipedGC extends ModelBiped
             biped.bipedRightLeg.rotateAngleX += MathHelper.cos(par1 * 0.1162F * 2) * 1.4F * par2;
         }
 
-        PlayerGearData gearData = ModelBipedGC.getGearData(player);
+        PlayerGearData gearData = GalacticraftCore.proxy.getGearData(player);
 
         if (gearData != null)
         {
@@ -192,23 +189,5 @@ public class ModelBipedGC extends ModelBiped
     {
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
         ModelBipedGC.setRotationAngles(this, par1, par2, par3, par4, par5, par6, par7Entity);
-    }
-
-    public static PlayerGearData getGearData(EntityPlayer player)
-    {
-        PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
-
-        if (gearData == null)
-        {
-            String id = player.getGameProfile().getName();
-
-            if (!ClientProxyCore.gearDataRequests.contains(id))
-            {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { id }));
-                ClientProxyCore.gearDataRequests.add(id);
-            }
-        }
-
-        return gearData;
     }
 }
