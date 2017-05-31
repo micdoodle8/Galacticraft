@@ -46,7 +46,6 @@ import net.minecraft.network.play.server.S1DPacketEntityEffect;
 import net.minecraft.network.play.server.S1FPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
@@ -1037,31 +1036,18 @@ public class WorldUtil
         worldNew.updateEntityWithOptionalForce(entity, true);
     }
 
-    public static WorldServer getStartWorld(WorldServer worldOld)
+    public static WorldServer getStartWorld(WorldServer unchanged)
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
+            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
             if (worldNew != null)
             {
+                Thread.dumpStack();
                 return worldNew;
             }
-        }
-        return worldOld;
-    }
-
-    public static ItemInWorldManager getStartItemManager(ItemInWorldManager unchanged)
-    {
-        if (ConfigManagerCore.challengeSpawnHandling)
-        {
-            WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
-            WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
-            if (worldNew != null)
-            {
-                return new ItemInWorldManager(worldNew);
-            }
-            ConfigManagerCore.challengeSpawnHandling = false;
         }
         return unchanged;
     }

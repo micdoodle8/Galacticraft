@@ -1211,10 +1211,10 @@ public class GCPlayerHandler
                 worldNew.spawnEntityInWorld(player);
                 player.setWorld(worldNew);
                 player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldOld);
-                player.theItemInWorldManager.setWorld((WorldServer) worldNew);
             }
 
             //This is a mini version of the code at WorldUtil.teleportEntity
+            player.theItemInWorldManager.setWorld((WorldServer) player.worldObj);
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.worldObj.provider.getClass());
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.worldObj, player);
             ChunkCoordIntPair pair = player.worldObj.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getChunkCoordIntPair();
