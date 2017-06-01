@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -9,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.state.IBlockState;
@@ -54,7 +58,12 @@ public class RenderPlayerGC extends RenderPlayer
     public RenderPlayerGC(boolean smallArms)
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
-
+        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
+        this.addGCLayers();
+    }
+    
+    private void addGCLayers()
+    {
         // The following code removes the vanilla armor and item layer renderers and replaces them with the Galacticraft ones
         int itemLayerIndex = -1;
         int armorLayerIndex = -1;
@@ -88,7 +97,6 @@ public class RenderPlayerGC extends RenderPlayer
             this.layerRenderers.set(armorLayerIndex, playerArmor);
         }
 
-        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
         this.addLayer(new LayerOxygenTanks(this));
         this.addLayer(new LayerOxygenGear(this));
         this.addLayer(new LayerOxygenMask(this));
@@ -106,6 +114,33 @@ public class RenderPlayerGC extends RenderPlayer
 
             this.addLayer(new LayerShield(this));
         }
+    }
+
+    public RenderPlayerGC(RenderPlayer old, boolean smallArms)
+    {
+        super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
+        this.mainModel = new ModelPlayerGC(0.0F, smallArms);
+        
+        //Preserve any layers added by other mods, for example WearableBackpacks
+        try
+        {
+            Field f = old.getClass().getSuperclass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "layerRenderers" : "field_177097_h");
+            f.setAccessible(true);
+            List<LayerRenderer<?>> layers = (List<LayerRenderer<?>>) f.get(old);
+            if (layers.size() > 0)
+            {
+                this.layerRenderers.clear();
+                for (LayerRenderer<?> oldLayer : layers)
+                {
+                    this.addLayer(oldLayer);
+                }
+            }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        this.addGCLayers();
     }
 
     @Override
