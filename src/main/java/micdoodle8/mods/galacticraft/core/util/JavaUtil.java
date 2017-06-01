@@ -13,7 +13,7 @@ public class JavaUtil extends SecurityManager
     {
         Class<?>[] context = getClassContext();
         
-        int imax = Math.max(context.length, 6);
+        int imax = Math.min(context.length, 6);
         for (int i = 2; i < imax; i++)
         {
             if (clazz == context[i])
@@ -28,7 +28,7 @@ public class JavaUtil extends SecurityManager
     {
         Class<?>[] context = getClassContext();
         
-        int imax = Math.max(context.length, 6);
+        int imax = Math.min(context.length, 6);
         for (int i = 2; i < imax; i++)
         {
             Class<?> test = context[i]; 
@@ -44,7 +44,7 @@ public class JavaUtil extends SecurityManager
     {
         Class<?>[] context = getClassContext();
         
-        int imax = Math.max(context.length, 6);
+        int imax = Math.min(context.length, 6);
         for (int i = 2; i < imax; i++)
         {
             if (context[i].getName().equals(name))
