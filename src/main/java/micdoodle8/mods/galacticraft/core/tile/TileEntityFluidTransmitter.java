@@ -172,9 +172,10 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
         {
             this.adjacentConnections = null;
 
-            for (EnumFacing side : EnumFacing.values())
+            BlockVec3 thisVec = new BlockVec3(this);
+            for (EnumFacing side : EnumFacing.VALUES)
             {
-                TileEntity tileEntity = new BlockVec3(this).getTileEntityOnSide(this.worldObj, side);
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 
                 if (tileEntity != null)
                 {

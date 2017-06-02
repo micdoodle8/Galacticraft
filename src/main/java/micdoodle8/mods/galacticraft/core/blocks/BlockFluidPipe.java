@@ -159,7 +159,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
                     //					GCCorePacketManager.sendPacketToClients(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES, tileEntity, tileEntity.getColor(), (byte) -1)); TODO Fix pipe color
 
                     BlockPos tileVec = tileEntity.getPos();
-                    for (final EnumFacing dir : EnumFacing.values())
+                    for (final EnumFacing dir : EnumFacing.VALUES)
                     {
                         final TileEntity tileAt = worldIn.getTileEntity(tileVec.offset(dir));
 

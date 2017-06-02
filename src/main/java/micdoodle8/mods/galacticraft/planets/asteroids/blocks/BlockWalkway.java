@@ -306,9 +306,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Object[] connectable = new Object[EnumFacing.values().length];
+        Object[] connectable = new Object[EnumFacing.VALUES.length];
 
-        for (EnumFacing direction : EnumFacing.values())
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
             if (direction == EnumFacing.UP || (direction == EnumFacing.DOWN && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY))
             {

@@ -265,7 +265,7 @@ public class OxygenUtil
         //Testing a non-air, permeable block (for example a torch or a ladder)
         if (limitCount < 5)
         {
-            for (EnumFacing side : EnumFacing.values())
+            for (EnumFacing side : EnumFacing.VALUES)
             {
                 if (permeableFlag || OxygenUtil.canBlockPassAirOnSide(world, block, pos, side))
                 {
@@ -455,12 +455,12 @@ public class OxygenUtil
 
     public static TileEntity[] getAdjacentFluidConnections(TileEntity tile, boolean ignoreConnect)
     {
-        TileEntity[] adjacentConnections = new TileEntity[EnumFacing.values().length];
+        TileEntity[] adjacentConnections = new TileEntity[EnumFacing.VALUES.length];
 
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (EnumFacing direction : EnumFacing.values())
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 

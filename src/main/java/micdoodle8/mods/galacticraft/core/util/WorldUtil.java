@@ -1331,7 +1331,7 @@ public class WorldUtil
             Block b2 = world.getBlockState(pos1).getBlock();
             if (b2 != null && b2.isAir(world, pos1))
             {
-                for (EnumFacing direction : EnumFacing.values())
+                for (EnumFacing direction : EnumFacing.VALUES)
                 {
                     BlockPos offsetPos = posMain.offset(direction);
                     if (direction != EnumFacing.DOWN && direction != EnumFacing.UP)

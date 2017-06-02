@@ -155,7 +155,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             return direction.ordinal();
         }
 
-        for (EnumFacing adjacentDir : EnumFacing.values())
+        for (EnumFacing adjacentDir : EnumFacing.VALUES)
         {
             if (adjacentDir == direction)
             {

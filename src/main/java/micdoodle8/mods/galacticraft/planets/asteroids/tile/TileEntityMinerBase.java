@@ -718,9 +718,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.updateAllInDimension();
         }
 
-        for (EnumFacing facing : EnumFacing.values())
+        for (EnumFacing facing : EnumFacing.VALUES)
         {
-            BlockPos offset = this.getPos().offset(facing);
+            BlockPos offset = this.pos.offset(facing);
             TileEntity tileOffset = this.worldObj.getTileEntity(offset);
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {

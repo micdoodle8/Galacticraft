@@ -152,7 +152,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
             this.blocksNeedingUpdate.add(pos1);
 
-            for (EnumFacing enumfacing1 : EnumFacing.values())
+            for (EnumFacing enumfacing1 : EnumFacing.VALUES)
             {
                 this.blocksNeedingUpdate.add(pos1.offset(enumfacing1));
             }
@@ -168,7 +168,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         {
             worldIn.notifyNeighborsOfStateChange(pos, this);
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
@@ -220,7 +220,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
         if (!worldIn.isRemote)
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }

@@ -127,7 +127,7 @@ public abstract class StructureComponentGC extends StructureComponent
 
     protected static class SwitchEnumFacing
     {
-        protected static int[] field_176064_a = new int[EnumFacing.values().length];
+        protected static int[] field_176064_a = new int[EnumFacing.VALUES.length];
 
         static
         {

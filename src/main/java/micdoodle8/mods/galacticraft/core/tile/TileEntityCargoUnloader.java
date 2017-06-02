@@ -86,9 +86,10 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     {
         boolean foundFuelable = false;
 
-        for (final EnumFacing dir : EnumFacing.values())
+        BlockVec3 thisVec = new BlockVec3(this);
+        for (final EnumFacing dir : EnumFacing.VALUES)
         {
-            final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.worldObj, dir);
+            final TileEntity pad = thisVec.getTileEntityOnSide(this.worldObj, dir);
 
             if (pad != null && pad instanceof TileEntityMulti)
             {

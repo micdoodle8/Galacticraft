@@ -30,7 +30,7 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickable
                 }
                 else
                 {
-                    for (EnumFacing side : EnumFacing.values())
+                    for (EnumFacing side : EnumFacing.VALUES)
                     {
                         BlockPos offset = this.pos.offset(side, 1);
                         IBlockState bs = this.worldObj.getBlockState(offset);
