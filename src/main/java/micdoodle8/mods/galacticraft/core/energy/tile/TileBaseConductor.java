@@ -87,7 +87,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             this.getNetwork().refresh();
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing side : EnumFacing.values())
+            for (EnumFacing side : EnumFacing.VALUES)
             {
             	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
 

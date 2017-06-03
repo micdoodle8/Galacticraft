@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
@@ -22,6 +23,7 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
+    private boolean texSwitch;
 
     public RenderEvolvedSkeleton(RenderManager manager)
     {
@@ -41,13 +43,29 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     @Override
     protected ResourceLocation getEntityTexture(EntityEvolvedSkeleton par1Entity)
     {
-        return RenderEvolvedSkeleton.skeletonTexture;
+        return texSwitch ? OverlaySensorGlasses.altTexture : RenderEvolvedSkeleton.skeletonTexture;
     }
 
     @Override
     protected void preRenderCallback(EntityEvolvedSkeleton par1EntityLiving, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
+        if (texSwitch)
+        {
+            OverlaySensorGlasses.preRenderMobs();
+        }
+    }
+
+    @Override
+    public void doRender(EntityEvolvedSkeleton entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        super.doRender(entity, par2, par4, par6, par8, par9);
+        if (OverlaySensorGlasses.overrideMobTexture())
+        {
+            texSwitch = true;
+            super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
+        }
     }
     
     @Override

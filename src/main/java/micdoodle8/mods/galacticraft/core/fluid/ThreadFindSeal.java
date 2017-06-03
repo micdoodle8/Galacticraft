@@ -1118,7 +1118,7 @@ public class ThreadFindSeal
             }
 
             //Find the solid sides so they don't get iterated into, when doing the next layer
-            for (EnumFacing face : EnumFacing.values())
+            for (EnumFacing face : EnumFacing.VALUES)
             {
                 if (face == testSide)
                 {

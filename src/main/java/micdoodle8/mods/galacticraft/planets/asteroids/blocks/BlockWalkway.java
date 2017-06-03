@@ -313,7 +313,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Object[] connectable = new Object[EnumFacing.values().length];
+        Object[] connectable = new Object[EnumFacing.VALUES.length];
 
         TileEntity tileEntity = null;
         
@@ -321,7 +321,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         {
             tileEntity = worldIn.getTileEntity(pos);
         }
-        for (EnumFacing direction : EnumFacing.values())
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
             if (direction == EnumFacing.UP || (direction == EnumFacing.DOWN && tileEntity == null))
             {

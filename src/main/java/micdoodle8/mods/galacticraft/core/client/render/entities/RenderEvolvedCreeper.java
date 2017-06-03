@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderCreeper;
@@ -10,6 +11,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -19,6 +21,7 @@ public class RenderEvolvedCreeper extends RenderCreeper
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
 
     private final ModelBase creeperModel = new ModelEvolvedCreeper(0.2F);
+    private boolean texSwitch;
 
     public RenderEvolvedCreeper(RenderManager manager)
     {
@@ -34,7 +37,7 @@ public class RenderEvolvedCreeper extends RenderCreeper
     @Override
     protected ResourceLocation getEntityTexture(EntityCreeper entity)
     {
-        return this.func_110779_a(entity);
+        return texSwitch ? OverlaySensorGlasses.altTexture : this.func_110779_a(entity);
     }
 
     protected void updateCreeperScale(EntityCreeper par1GCEntityCreeper, float par2)
@@ -97,12 +100,29 @@ public class RenderEvolvedCreeper extends RenderCreeper
     protected void preRenderCallback(EntityCreeper entitylivingbaseIn, float partialTickTime)
     {
         this.updateCreeperScale(entitylivingbaseIn, partialTickTime);
+        if (texSwitch)
+        {
+            GL11.glTranslatef(0.0F, -0.03F, 0.0F);
+            OverlaySensorGlasses.preRenderMobs();
+        }
     }
 
     @Override
     protected int getColorMultiplier(EntityCreeper entitylivingbaseIn, float lightBrightness, float partialTickTime)
     {
         return this.updateCreeperColorMultiplier(entitylivingbaseIn, lightBrightness, partialTickTime);
+    }
+
+    @Override
+    public void doRender(EntityCreeper entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        super.doRender(entity, par2, par4, par6, par8, par9);
+        if (OverlaySensorGlasses.overrideMobTexture())
+        {
+            texSwitch = true;
+            super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
+        }
     }
 
 //    @Override

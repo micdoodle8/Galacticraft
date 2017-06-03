@@ -86,7 +86,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             	this.getNetwork().refresh();
 
             	BlockVec3 thisVec = new BlockVec3(this);
-            	for (EnumFacing side : EnumFacing.values())
+            	for (EnumFacing side : EnumFacing.VALUES)
             	{
             		if (this.canConnect(side, NetworkType.POWER))
             		{

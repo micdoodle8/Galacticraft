@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerHeldItemEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedWitch;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
 {
     private static final ResourceLocation witchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_witch.png");
+    private boolean texSwitch;
 
     public RenderEvolvedWitch(RenderManager manager)
     {
@@ -33,6 +35,12 @@ public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
     {
         ((ModelEvolvedWitch)this.mainModel).holdingItem = entity.getHeldItemMainhand() != null;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        if (OverlaySensorGlasses.overrideMobTexture())
+        {
+            texSwitch = true;
+            super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
+        }
     }
 
     @Override
@@ -40,11 +48,15 @@ public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
     {
         float f1 = 0.9375F;
         GlStateManager.scale(f1, f1, f1);
+        if (texSwitch)
+        {
+            OverlaySensorGlasses.preRenderMobs();
+        }
     }
 
     @Override
     protected ResourceLocation getEntityTexture(EntityEvolvedWitch entity)
     {
-        return RenderEvolvedWitch.witchTexture;
+        return texSwitch ? OverlaySensorGlasses.altTexture : RenderEvolvedWitch.witchTexture;
     }
 }

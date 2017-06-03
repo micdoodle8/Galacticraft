@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -447,14 +448,20 @@ public class TickHandlerClient
                             }
                         }
                     }
+                    
                     TileEntityOxygenSealer nearestSealer = TileEntityOxygenSealer.getNearestSealer(world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
-                    //TODO: revert. Correct code is temporarily commented out for testing render
-                    if (nearestSealer != null)// && nearestSealer.threadSeal != null)
+                    if (nearestSealer != null && !nearestSealer.sealed)
                     {
-                        ClientProxyCore.leakTrace = new ArrayList();//nearestSealer.threadSeal.leakTrace;
-                        //TODO: revert. Temporarily for testing purposes any sealer should show a leak block directly above itself
-                        ClientProxyCore.leakTrace.add(new BlockVec3(nearestSealer).translate(0, 1, 0));
+                        ClientProxyCore.leakTrace = nearestSealer.getLeakTraceClient();
                     }
+                    else
+                    {
+                        ClientProxyCore.leakTrace = null;
+                    }
+                }
+                else
+                {
+                    ClientProxyCore.leakTrace = null;
                 }
 
                 if (world != null)
@@ -466,6 +473,8 @@ public class TickHandlerClient
                 }
             }
 
+            if (ClientProxyCore.leakTrace != null) this.spawnLeakParticles();
+            
             if (world != null && TickHandlerClient.spaceRaceGuiScheduled && minecraft.currentScreen == null && ConfigManagerCore.enableSpaceRaceManagerPopup)
             {
                 player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.worldObj, (int) player.posX, (int) player.posY, (int) player.posZ);
@@ -658,6 +667,27 @@ public class TickHandlerClient
                     GalacticraftPlanets.instance.loadLanguagePlanets(lang);
                 }
             }
+        }
+    }
+
+    private void spawnLeakParticles()
+    {
+        Random rand = new Random();
+        for (int i = ClientProxyCore.leakTrace.size() - 1; i >= 0; i--)
+        {
+            if (i == 1) continue;
+            BlockVec3 curr = ClientProxyCore.leakTrace.get(i);
+            int nx = i - 2;
+            if (i > 2 && rand.nextInt(3) == 0) nx --;
+            BlockVec3 vec;
+            if (i > 1) vec = ClientProxyCore.leakTrace.get(nx).clone();
+            else
+            {
+                vec = curr.clone().translate(0, -2, 0);
+            }
+            Vector3 mot = new Vector3(vec.subtract(curr));
+            Vector3 rnd = new Vector3(rand.nextDouble() / 2 - 0.25, rand.nextDouble() / 2 - 0.25, rand.nextDouble() / 2 - 0.25);
+            GalacticraftCore.proxy.spawnParticle("oxygen", curr.midPoint().add(rnd), mot, new Object[] { new Vector3(0.7D, 0.7D, 1.0D) });
         }
     }
 

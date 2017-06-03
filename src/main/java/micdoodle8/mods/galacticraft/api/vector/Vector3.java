@@ -95,6 +95,11 @@ public class Vector3 implements Cloneable
         this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
     }
 
+    public Vector3(BlockVec3 vec)
+    {
+        this(vec.x, vec.y, vec.z);
+    }
+
     /**
      * Returns the coordinates as integers, ideal for block placement.
      */
