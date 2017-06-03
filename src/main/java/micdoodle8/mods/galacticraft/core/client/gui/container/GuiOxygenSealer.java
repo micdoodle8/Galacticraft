@@ -119,14 +119,10 @@ public class GuiOxygenSealer extends GuiContainerGC
     {
         IBlockState stateAbove = this.sealer.getWorld().getBlockState(this.sealer.getPos().up());
         Block blockAbove = stateAbove.getBlock();
-        int metadata = blockAbove.getMetaFromState(stateAbove);
 
         if (blockAbove == GCBlocks.breatheableAir || blockAbove == GCBlocks.brightBreatheableAir)
         {
-            if (metadata == 1)
-            {
-                return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.on.name");
-            }
+            return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.on.name");
         }
 
         if (this.sealer.thermalControlEnabled())
