@@ -170,7 +170,8 @@ public class PacketSimple extends PacketBase implements Packet
         C_RECOLOR_PIPE(Side.CLIENT, BlockPos.class),
         C_RECOLOR_ALL_GLASS(Side.CLIENT, Integer.class, Integer.class, Integer.class),  //Number of integers to match number of different blocks of PLAIN glass individually instanced and registered in GCBlocks
         C_UPDATE_MACHINE_DATA(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class, Integer.class),
-        C_SPAWN_HANGING_SCHEMATIC(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class);
+        C_SPAWN_HANGING_SCHEMATIC(Side.CLIENT, BlockPos.class, Integer.class, Integer.class, Integer.class),
+        C_LEAK_DATA(Side.CLIENT, BlockPos.class, Integer[].class);
 
         private Side targetSide;
         private Class<?>[] decodeAs;
@@ -765,6 +766,13 @@ public class PacketSimple extends PacketBase implements Packet
             if (tile3 instanceof ITileClientUpdates)
             {
                 ((ITileClientUpdates)tile3).updateClient(this.data);
+            }
+            break;
+        case C_LEAK_DATA:
+            TileEntity tile4 = player.worldObj.getTileEntity((BlockPos) this.data.get(0));
+            if (tile4 instanceof TileEntityOxygenSealer)
+            {
+                ((ITileClientUpdates)tile4).updateClient(this.data);
             }
             break;
         case C_SPAWN_HANGING_SCHEMATIC:

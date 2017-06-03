@@ -582,4 +582,9 @@ public class BlockVec3 implements Cloneable
         Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
         return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
     }
+
+    public Vector3 midPoint()
+    {
+        return new Vector3(this.x + 0.5, this.y + 0.5, this.z + 0.5);
+    }
 }
