@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -10,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -20,6 +22,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.Iterator;
@@ -29,6 +32,7 @@ public class OverlaySensorGlasses extends Overlay
 {
     private static final ResourceLocation hudTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/hud.png");
     private static final ResourceLocation indicatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/indicator.png");
+    public static final ResourceLocation altTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/sensor_mobs.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -125,5 +129,28 @@ public class OverlaySensorGlasses extends Overlay
                 GL11.glPopMatrix();
             }
         }
+    }
+    
+    public static void preRenderMobs()
+    {
+        GL11.glEnable(GL11.GL_BLEND);
+//TODO  Enable these to see the entity through solid blocks - but would need a postRenderCallback to switch this off again otherwise everything is changed
+//            GL11.glDisable(GL11.GL_DEPTH_TEST);
+//            GL11.glDepthMask(false);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        int i = 15728880;
+        int j = i % 65536;
+        int k = i / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+        GL11.glTranslatef(0.0F, 0.045F, 0.0F);
+        GL11.glScalef(1.07F, 1.035F, 1.07F);
+    }
+    
+    public static boolean overrideMobTexture()
+    {
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        return (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses);
     }
 }

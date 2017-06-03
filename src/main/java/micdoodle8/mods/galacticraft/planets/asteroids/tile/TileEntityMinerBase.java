@@ -720,7 +720,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.updateAllInDimension();
         }
 
-        for (EnumFacing facing : EnumFacing.values())
+        for (EnumFacing facing : EnumFacing.VALUES)
         {
             BlockPos offset = this.getPos().offset(facing);
             TileEntity tileOffset = this.world.getTileEntity(offset);

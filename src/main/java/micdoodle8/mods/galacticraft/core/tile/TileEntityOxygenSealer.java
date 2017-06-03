@@ -1,19 +1,24 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
+import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenSealer;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -27,8 +32,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.List;
 
-public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory
+public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, ITileClientUpdates
 {
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean sealed;
@@ -51,6 +57,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     private static boolean sealerCheckedThisTick = false;
     public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
     private static final int UNSEALED_OXYGENPERTICK = 12;
+    public List<BlockVec3> leaksClient;
 
 
     public TileEntityOxygenSealer()
@@ -72,6 +79,10 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
                 TileEntityOxygenSealer.loadedTiles.add(this);
             }
             this.stopSealThreadCooldown = 126 + countEntities;
+        }
+        else
+        {
+            this.clientOnLoad();
         }
     }
 
@@ -468,5 +479,57 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         }
 
         return ret;
+    }
+
+    @Override
+    public void sendUpdateToClient(EntityPlayerMP player)
+    {
+        if (this.sealed || this.threadSeal == null || this.threadSeal.leakTrace == null || this.threadSeal.leakTrace.isEmpty())
+        {
+            return;
+        }
+        Integer[] data = new Integer[this.threadSeal.leakTrace.size()];
+        int index = 0;
+        for (BlockVec3 vec : this.threadSeal.leakTrace)
+        {
+            int dx = vec.x - this.pos.getX() + 128;
+            int dz = vec.z - this.pos.getZ() + 128;
+            int dy = vec.y;
+            if (dx < 0 || dx > 255 || dz < 0 || dz > 255)
+                continue;
+            
+            int composite = dz + ((dy + (dx << 8)) << 8);
+            data[index++] = composite;
+        }
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { this.getPos(), data }), player);
+    }
+
+    @Override
+    public void buildDataPacket(int[] data)
+    {
+        //unused
+    }
+
+    @Override
+    public void updateClient(List<Object> data)
+    {
+        this.leaksClient = new ArrayList<>();
+        if (data.size() > 1)
+        {
+            for (int i = 1; i < data.size(); i ++)
+            {
+                int comp = (Integer) data.get(i);
+                int dx = (comp >> 16) - 128;
+                int dy = (comp >> 8) & 255;
+                int dz = (comp & 255) - 128;
+                this.leaksClient.add(new BlockVec3(this.pos.getX() + dx, dy, this.pos.getZ() + dz));
+            }
+        }
+    }
+
+    public List<BlockVec3> getLeakTraceClient()
+    {
+        this.clientOnLoad();
+        return this.leaksClient;
     }
 }

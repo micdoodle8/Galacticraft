@@ -557,7 +557,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     {
         if (!this.world.isRemote && !this.isDead)
         {
-            EntityWitch entitywitch = new EntityWitch(this.world);
+            EntityWitch entitywitch = new EntityEvolvedWitch(this.world);
             entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), (IEntityLivingData) null);
             entitywitch.setNoAI(this.isAIDisabled());

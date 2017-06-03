@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedEnderman;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanEyes;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanHeldBlock;
@@ -20,6 +21,7 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
     private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_enderman.png");
     private ModelEvolvedEnderman endermanModel;
     private Random rnd = new Random();
+    private boolean texSwitch;
 
     public RenderEvolvedEnderman(RenderManager manager)
     {
@@ -32,7 +34,7 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
     @Override
     protected ResourceLocation getEntityTexture(EntityEvolvedEnderman entity)
     {
-        return RenderEvolvedEnderman.endermanTexture;
+        return texSwitch ? OverlaySensorGlasses.altTexture : RenderEvolvedEnderman.endermanTexture;
     }
 
     @Override
@@ -49,5 +51,20 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
             z += this.rnd.nextGaussian() * d3;
         }
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
+        if (OverlaySensorGlasses.overrideMobTexture())
+        {
+            texSwitch = true;
+            super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
+        }
+    }
+    
+    @Override
+    protected void preRenderCallback(EntityEvolvedEnderman entity, float partialTickTime)
+    {
+        if (texSwitch)
+        {
+            OverlaySensorGlasses.preRenderMobs();
+        }
     }
 }

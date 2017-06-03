@@ -119,7 +119,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        for (EnumFacing side : EnumFacing.values())
+        for (EnumFacing side : EnumFacing.VALUES)
         {
             BlockPos offsetPos = pos.offset(side);
             IBlockState state = worldIn.getBlockState(offsetPos);
@@ -140,7 +140,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        EnumFacing opposite = EnumFacing.values()[facing.getIndex() ^ 1];
+        EnumFacing opposite = facing.getOpposite();
         BlockPos offsetPos = pos.offset(opposite);
         IBlockState state = world.getBlockState(offsetPos);
         if (state.getBlock().isSideSolid(state, world, offsetPos, facing))

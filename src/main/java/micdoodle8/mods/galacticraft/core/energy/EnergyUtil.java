@@ -65,7 +65,7 @@ public class EnergyUtil
         final TileEntity[] adjacentConnections = new TileEntity[6];
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (EnumFacing direction : EnumFacing.values())
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
         	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
             {
@@ -254,7 +254,7 @@ public class EnergyUtil
     {
         final BlockVec3 thisVec = new BlockVec3(conductor);
         final World world = conductor.getWorld(); 
-        for (EnumFacing direction : EnumFacing.values())
+        for (EnumFacing direction : EnumFacing.VALUES)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
             

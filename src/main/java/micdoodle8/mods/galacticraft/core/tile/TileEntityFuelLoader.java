@@ -71,9 +71,10 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             {
                 this.attachedFuelable = null;
 
-                for (final EnumFacing dir : EnumFacing.values())
+                BlockVec3 thisVec = new BlockVec3(this);
+                for (final EnumFacing dir : EnumFacing.VALUES)
                 {
-                    final TileEntity pad = new BlockVec3(this).getTileEntityOnSide(this.world, dir);
+                    final TileEntity pad = thisVec.getTileEntityOnSide(this.world, dir);
 
                     if (pad instanceof TileEntityMulti)
                     {

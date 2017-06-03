@@ -50,7 +50,7 @@ public class NetworkHelper
         final Set<IElectricityNetwork> connectedNetworks = new HashSet<IElectricityNetwork>();
 
         BlockVec3 tileVec = new BlockVec3(tileEntity);
-        for (EnumFacing side : EnumFacing.values())
+        for (EnumFacing side : EnumFacing.VALUES)
         {
             if (approachingDirection.contains(side))
             {

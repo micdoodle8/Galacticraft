@@ -117,7 +117,7 @@ public class ClientProxyCore extends CommonProxyCore
     public static List<String> flagRequestsSent = new ArrayList<>();
     public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
     public static HashSet<BlockMetaList> detectableBlocks = Sets.newHashSet();
-    public static List<BlockVec3> leakTrace;
+    public static List<BlockVec3> leakTrace = null;
     public static Map<String, PlayerGearData> playerItemData = Maps.newHashMap();
     public static double playerPosX;
     public static double playerPosY;
