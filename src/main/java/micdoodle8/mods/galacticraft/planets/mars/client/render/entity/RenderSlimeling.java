@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
@@ -8,12 +9,14 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderSlimeling extends RenderLiving<EntitySlimeling>
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/slimeling/green.png");
+    private boolean texSwitch;
 
     public RenderSlimeling(RenderManager renderManager)
     {
@@ -25,7 +28,7 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
     @Override
     protected ResourceLocation getEntityTexture(EntitySlimeling par1EntityArrow)
     {
-        return RenderSlimeling.landerTexture;
+        return texSwitch ? OverlaySensorGlasses.altTexture : RenderSlimeling.landerTexture;
     }
 
     @Override
@@ -38,6 +41,22 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
         GL11.glColor3f(slimeling.getColorRed(), slimeling.getColorGreen(), slimeling.getColorBlue());
         GL11.glScalef(slimeling.getScale(), slimeling.getScale(), slimeling.getScale());
         GL11.glTranslatef(0.0F, 1.10F, 0.0F);
+        if (texSwitch)
+        {
+            OverlaySensorGlasses.preRenderMobs();
+        }
+    }
+
+    @Override
+    public void doRender(EntitySlimeling entity, double par2, double par4, double par6, float par8, float par9)
+    {
+        texSwitch = false;
+        super.doRender(entity, par2, par4, par6, par8, par9);
+        if (OverlaySensorGlasses.overrideMobTexture())
+        {
+            texSwitch = true;
+            super.doRender(entity, par2, par4, par6, par8, par9);
+        }
     }
 
     @Override
