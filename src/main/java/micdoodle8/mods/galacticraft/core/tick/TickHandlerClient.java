@@ -462,6 +462,10 @@ public class TickHandlerClient
                         ClientProxyCore.leakTrace = null;
                     }
                 }
+                else
+                {
+                    ClientProxyCore.leakTrace = null;
+                }
 
                 if (world != null)
                 {
@@ -652,7 +656,7 @@ public class TickHandlerClient
             int nx = i - 2;
             if (i > 2 && rand.nextInt(3) == 0) nx --;
             BlockVec3 vec;
-            if (i > 1) vec = ClientProxyCore.leakTrace.get(i - 2).clone();
+            if (i > 1) vec = ClientProxyCore.leakTrace.get(nx).clone();
             else
             {
                 vec = curr.clone().translate(0, -2, 0);
