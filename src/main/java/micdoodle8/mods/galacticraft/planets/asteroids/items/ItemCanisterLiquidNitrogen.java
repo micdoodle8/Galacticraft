@@ -108,7 +108,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 
         RayTraceResult movingobjectposition = this.rayTrace(worldIn, playerIn, true);
 
-        if (movingobjectposition.typeOfHit == RayTraceResult.Type.MISS)
+        if (movingobjectposition == null || movingobjectposition.typeOfHit == RayTraceResult.Type.MISS)
         {
             return new ActionResult<>(EnumActionResult.PASS, itemStack);
         }
