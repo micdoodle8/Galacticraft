@@ -440,7 +440,7 @@ public class GCPlayerHandler
 
     protected void checkThermalStatus(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode)
+        if (player.worldObj.provider instanceof IGalacticraftWorldProvider && !player.capabilities.isCreativeMode && !CompatibilityManager.isAndroid(player))
         {
         	final ItemStack thermalPaddingHelm = playerStats.extendedInventory.getStackInSlot(6);
         	final ItemStack thermalPaddingChestplate = playerStats.extendedInventory.getStackInSlot(7);
@@ -598,7 +598,7 @@ public class GCPlayerHandler
 
 	protected void checkOxygen(EntityPlayerMP player, GCPlayerStats playerStats)
     {
-        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake))
+        if ((player.dimension == 0 || player.worldObj.provider instanceof IGalacticraftWorldProvider) && (!(player.dimension == 0 || ((IGalacticraftWorldProvider) player.worldObj.provider).hasBreathableAtmosphere()) || player.posY > GCPlayerHandler.OXYGENHEIGHTLIMIT) && !player.capabilities.isCreativeMode && !(player.ridingEntity instanceof EntityLanderBase) && !(player.ridingEntity instanceof EntityAutoRocket) && !(player.ridingEntity instanceof EntityCelestialFake) && !CompatibilityManager.isAndroid(player))
         {
             final ItemStack tankInSlot = playerStats.extendedInventory.getStackInSlot(2);
             final ItemStack tankInSlot2 = playerStats.extendedInventory.getStackInSlot(3);
