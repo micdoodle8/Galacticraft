@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.Explosion;
@@ -377,5 +378,20 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
             return EnumSortCategoryBlock.BRICKS;
         }
         return EnumSortCategoryBlock.GENERAL;
+    }
+
+    @Override
+    public int getExpDrop(IBlockAccess world, BlockPos pos, int fortune)
+    {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getBlock() != this) return 0;
+        
+        int meta = this.getMetaFromState(state);
+        if (meta == 2 || meta == 6)
+        {
+            Random rand = world instanceof World ? ((World)world).rand : new Random();
+            return MathHelper.getRandomIntegerInRange(rand, 2, 5) + (meta == 6 ? 1 : 0);
+        }
+        return 0;
     }
 }
