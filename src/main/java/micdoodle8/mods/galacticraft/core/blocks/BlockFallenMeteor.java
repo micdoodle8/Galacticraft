@@ -25,9 +25,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
 import java.util.Random;
 
 public class BlockFallenMeteor extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
@@ -276,5 +278,14 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.GENERAL;
+    }
+
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        if (state.getBlock() != this) return 0;
+        
+        Random rand = world instanceof World ? ((World)world).rand : new Random();
+        return MathHelper.getInt(rand, 3, 7);
     }
 }

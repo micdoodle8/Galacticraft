@@ -22,7 +22,7 @@ You should download the __latest__ GC version from http://micdoodle8.com/mods/ga
 5. GIVE US THE LOGS!
 If reporting a crash, please always post your full crash report or log, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
 6. IS IT AN ADD-ON?
-Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/MCCommanderTH/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
+Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/SteveKunG/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
 
 Issue reports not meeting these guidelines will be flagged as __Invalid__ and closed.
 

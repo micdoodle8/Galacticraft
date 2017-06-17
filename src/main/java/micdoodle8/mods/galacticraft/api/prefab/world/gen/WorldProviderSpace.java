@@ -428,13 +428,16 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public void setWorldTime(long time)
     {
         world.getWorldInfo().setWorldTime(time);
-        long diff = - this.timeCurrentOffset;
-        this.timeCurrentOffset = time - world.getWorldInfo().getWorldTime();
-        diff += this.timeCurrentOffset;
-        this.preTickTime += diff;
-        if (diff != 0L)
+        if (!world.isRemote)
         {
-            this.saveTime();
+            long newTCO = time - world.getWorldInfo().getWorldTime();
+            long diff = newTCO - this.timeCurrentOffset;
+            if (diff > 1L)
+            {
+                this.timeCurrentOffset = newTCO; 
+                this.preTickTime += diff;
+                this.saveTime();
+            }
         }
     }
 

@@ -17,6 +17,7 @@ import java.lang.reflect.Method;
 
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.entity.player.EntityPlayer;
 
 
 public class CompatibilityManager
@@ -40,6 +41,7 @@ public class CompatibilityManager
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded = Loader.isModLoaded("biomesoplenty");
     private static boolean spongeLoaded;
+    private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
     public static boolean isMFRLoaded = Loader.isModLoaded("minefactoryreloaded");
     public static boolean isSmartMovingLoaded = Loader.isModLoaded("smartmoving");
@@ -61,6 +63,8 @@ public class CompatibilityManager
     public static Class classIC2tileEventUnload;
     public static Class classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
+    private static Method androidPlayerGet;
+    private static Method androidPlayerIsAndroid;
 	
     public static void checkForCompatibleMods()
     {
@@ -268,6 +272,17 @@ public class CompatibilityManager
 //        catch (Exception e)
 //        {
 //        }
+
+        if (Loader.isModLoaded("mo"))
+        {
+            try {
+                Class<?> androidPlayer = Class.forName("matteroverdrive.entity.player.AndroidPlayer");
+                CompatibilityManager.androidPlayerGet = androidPlayer.getMethod("get", EntityPlayer.class);
+                CompatibilityManager.androidPlayerIsAndroid = androidPlayer.getMethod("isAndroid");
+                CompatibilityManager.modMatterOverdriveLoaded = true;
+            }
+            catch (Exception e) { e.printStackTrace(); }
+        }
     }
 
     public static boolean isIc2Loaded()
@@ -405,5 +420,26 @@ public class CompatibilityManager
         catch (Exception e)
         {
         }
+    }
+
+    public static boolean isAndroid(EntityPlayer player)
+    {
+        if (CompatibilityManager.modMatterOverdriveLoaded)
+        {
+//          Equivalent to:
+//            AndroidPlayer androidPlayer = AndroidPlayer.get(player);
+//            return (androidPlayer != null && androidPlayer.isAndroid());
+            try
+            {
+                Object androidPlayer = CompatibilityManager.androidPlayerGet.invoke(null, player);
+                if (androidPlayer != null)
+                {
+                    return (Boolean) CompatibilityManager.androidPlayerIsAndroid.invoke(androidPlayer);
+                }
+            } catch (Exception ignore)
+            {
+            }
+        }
+        return false;
     }
 }
