@@ -317,11 +317,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             if (!stack.isEmpty())
             {
                 stack.shrink(1);
-
-                if (stack.isEmpty())
-                {
-                    this.stacks.set(this.getSelectiveStack(2, 6), ItemStack.EMPTY);
-                }
             }
         }
 
@@ -333,11 +328,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             if (!stack.isEmpty())
             {
                 stack.shrink(1);
-
-                if (stack.isEmpty())
-                {
-                    this.stacks.set(this.saplingIndex, ItemStack.EMPTY);
-                }
             }
             break;
         case 1:
@@ -348,11 +338,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 if (!stack.isEmpty())
                 {
                     stack.shrink(1);
-
-                    if (stack.isEmpty())
-                    {
-                        this.stacks.set(this.getSelectiveStack(10, 14), ItemStack.EMPTY);
-                    }
                 }
             }
             break;
