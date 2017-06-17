@@ -1067,6 +1067,9 @@ public class WorldUtil
         return FMLClientHandler.instance().getClientPlayerEntity();
     }
 
+    /**
+     * This is similar to World.removeEntityDangerously() but without the risk of concurrent modification error 
+     */
     private static void removeEntityFromWorld(World var0, Entity var1, boolean directlyRemove)
     {
         if (var1 instanceof EntityPlayer)
@@ -1075,6 +1078,14 @@ public class WorldUtil
             var2.closeScreen();
             var0.playerEntities.remove(var2);
             var0.updateAllPlayersSleepingFlag();
+        }
+        
+        int i = var1.chunkCoordX;
+        int j = var1.chunkCoordZ;
+
+        if (var1.addedToChunk && var0.isBlockLoaded(new BlockPos(i << 4, 63, j << 4), true))
+        {
+            var0.getChunkFromChunkCoords(i, j).removeEntity(var1);
         }
 
         if (directlyRemove)
