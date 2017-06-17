@@ -774,29 +774,6 @@ public class WorldUtil
             {
                 player = (EntityPlayerMP) entity;
                 World worldOld = player.worldObj;
-                if (ConfigManagerCore.enableDebug)
-                {
-                    try
-                    {
-                        GCLog.info("DEBUG: Attempting to remove player from old dimension " + oldDimID);
-                        ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
-                        GCLog.info("DEBUG: Successfully removed player from old dimension " + oldDimID);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        ((WorldServer) worldOld).getPlayerManager().removePlayer(player);
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
 
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
@@ -830,7 +807,6 @@ public class WorldUtil
                     spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
                 }
                 forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, true);
-                player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldNew);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
@@ -1068,10 +1044,10 @@ public class WorldUtil
             var2.closeScreen();
             var0.playerEntities.remove(var2);
             var0.updateAllPlayersSleepingFlag();
-            }
+        }
 
-            if (directlyRemove)
-            {
+        if (directlyRemove)
+        {
             List l = new ArrayList<Entity>();
             l.add(var1);
             var0.unloadEntities(l);
