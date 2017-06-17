@@ -1028,9 +1028,7 @@ public class WorldUtil
         WorldServer fromWorld = ((WorldServer) entity.worldObj); 
         if (spawnRequired)
         {
-            fromWorld.removeEntityDangerously(entity);
-            entity.setDropItemsWhenDead(true);
-            entity.isDead = false;
+            ((WorldServer) entity.worldObj).getEntityTracker().untrackEntity(entity);
             entity.forceSpawn = true;
             worldNew.spawnEntityInWorld(entity);
             entity.setWorld(worldNew);
