@@ -27,6 +27,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -297,5 +298,19 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return EnumSortCategoryBlock.INGOT_BLOCK;
         }
         return EnumSortCategoryBlock.GENERAL;
+    }
+
+    @Override
+    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune)
+    {
+        if (state.getBlock() != this) return 0;
+        
+        int meta = this.getMetaFromState(state);
+        if (meta == 2)
+        {
+            Random rand = world instanceof World ? ((World)world).rand : new Random();
+            return MathHelper.getRandomIntegerInRange(rand, 2, 5);
+        }
+        return 0;
     }
 }

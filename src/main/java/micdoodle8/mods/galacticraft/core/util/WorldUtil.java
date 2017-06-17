@@ -796,29 +796,6 @@ public class WorldUtil
             {
                 player = (EntityPlayerMP) entity;
                 World worldOld = player.worldObj;
-                if (ConfigManagerCore.enableDebug)
-                {
-                    try
-                    {
-                        GCLog.info("DEBUG: Attempting to remove player from old dimension " + oldDimID);
-                        ((WorldServer) worldOld).getPlayerChunkMap().removePlayer(player);
-                        GCLog.info("DEBUG: Successfully removed player from old dimension " + oldDimID);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        ((WorldServer) worldOld).getPlayerChunkMap().removePlayer(player);
-                    }
-                    catch (Exception e)
-                    {
-                    }
-                }
 
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
@@ -852,7 +829,6 @@ public class WorldUtil
                     spawnPos = type.getPlayerSpawnLocation((WorldServer) worldNew, player);
                 }
                 forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, true);
-                player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldNew);
 
                 GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
                 if (worldNew.provider instanceof WorldProviderSpaceStation)

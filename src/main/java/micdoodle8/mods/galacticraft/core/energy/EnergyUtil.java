@@ -28,6 +28,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -58,6 +60,7 @@ public class EnergyUtil
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
+    private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
@@ -337,10 +340,19 @@ public class EnergyUtil
     
     public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
-        if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput && tileAdj instanceof IStrictEnergyAcceptor)
+        if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
         {
-            IStrictEnergyAcceptor tileMek = (IStrictEnergyAcceptor) tileAdj;
-            if (tileMek.canReceiveEnergy(inputAdj))
+            IStrictEnergyAcceptor tileMek = null;
+            if (tileAdj instanceof IStrictEnergyAcceptor)
+            {
+                tileMek = (IStrictEnergyAcceptor) tileAdj;
+            }
+            else if (mekCableAcceptor != null && hasCapability(tileAdj, mekCableAcceptor, inputAdj))
+            {
+                tileMek = getCapability(tileAdj, mekCableAcceptor, inputAdj);
+            }
+
+            if (tileMek != null && tileMek.canReceiveEnergy(inputAdj))
             {
                 float transferredMek;
                 if (simulate)
@@ -569,6 +581,18 @@ public class EnergyUtil
         {
         }
 
+        if (isMekLoaded)
+        {
+            try
+            {
+                Class mekCap = Class.forName("mekanism.common.capabilities.Capabilities");
+                EnergyUtil.mekCableAcceptor = (Capability) mekCap.getField("ENERGY_ACCEPTOR_CAPABILITY").get(null);
+            }
+            catch (Exception e)
+            {
+            }
+        }
+
         if (isIC2Loaded)
         {
             GCLog.debug("Initialising IC2 methods OK");
@@ -753,5 +777,15 @@ public class EnergyUtil
         }
                     
         return false;
+    }
+    
+    public static boolean hasCapability(ICapabilityProvider provider, Capability<?> capability, EnumFacing side)
+    {
+        return (provider == null || capability == null) ? false : provider.hasCapability(capability, side);
+    }
+
+    public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability, EnumFacing side)
+    {
+        return (provider == null || capability == null) ? null : provider.getCapability(capability, side);
     }
 }

@@ -206,7 +206,10 @@ public class EntityGrapple extends Entity implements IProjectile
                     if (shootingEntity.worldObj.isRemote && shootingEntity.worldObj.provider instanceof IZeroGDimension)
                     {
                         GCPlayerStatsClient stats = GCPlayerStatsClient.get(shootingEntity);
-                        stats.getFreefallHandler().updateFreefall(shootingEntity);
+                        if (stats != null)
+                        {
+                            stats.getFreefallHandler().updateFreefall(shootingEntity);
+                        }
                     }
                 }
             }

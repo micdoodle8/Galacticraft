@@ -17,6 +17,7 @@ public class PersistantInventoryCrafting extends InventoryCrafting
      * the width of the crafting inventory
      */
     private int inventoryWidth;
+    private int inventoryHeight;
 
     /**
      * Class containing the callbacks for the events on_GUIClosed and
@@ -30,6 +31,7 @@ public class PersistantInventoryCrafting extends InventoryCrafting
         int k = 9;
         this.stackList = new ItemStack[k];
         this.inventoryWidth = 3;
+        this.inventoryHeight = 3;
     }
 
     /**
@@ -57,7 +59,7 @@ public class PersistantInventoryCrafting extends InventoryCrafting
     @Override
     public ItemStack getStackInRowAndColumn(int par1, int par2)
     {
-        if (par1 >= 0 && par1 < this.inventoryWidth)
+        if (par1 >= 0 && par1 < this.inventoryWidth && par2 >= 0 && par2 < this.inventoryHeight)
         {
             int k = par1 + par2 * this.inventoryWidth;
             return this.getStackInSlot(k);
