@@ -261,8 +261,14 @@ public class GalacticraftRegistry
     	screen.setFrameSize(0.098F);
     	return maxScreenTypes - 1;
     }
+    
+    public static void registerScreensServer(int maxTypes)
+    {
+        maxScreenTypes = maxTypes;
+    }
 
-    public static int getMaxScreenTypes() {
+    public static int getMaxScreenTypes()
+    {
         return maxScreenTypes;
     }
 

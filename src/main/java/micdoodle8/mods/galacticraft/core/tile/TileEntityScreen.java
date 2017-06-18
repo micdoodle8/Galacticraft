@@ -38,6 +38,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     public int screenOffsetz = 0;
 
     private int requiresUpdate = 0;
+    private boolean doneClientUpdate = false;
     //Used on client side only
     public boolean refreshOnUpdate = false;
     private AxisAlignedBB renderAABB;
@@ -369,10 +370,14 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
                 flag = true;
             }
 
+            this.doneClientUpdate = false;
             this.refreshConnections(true);
             this.markDirty();
 
-            this.updateAllInDimension();
+            if (!this.doneClientUpdate)
+            {
+                this.updateAllInDimension();
+            }
         }
     }
 
@@ -658,6 +663,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     {
         if (up + down + left + right == 0 || up < 0 || down < 0 || left < 0 || right < 0)
         {
+            this.doneClientUpdate = true;
        	    this.resetToSingle();
             return true;
         }
