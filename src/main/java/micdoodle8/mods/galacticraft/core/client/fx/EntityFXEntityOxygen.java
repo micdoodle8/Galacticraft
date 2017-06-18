@@ -1,9 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -15,6 +19,8 @@ public class EntityFXEntityOxygen extends EntityFX
     private final double portalPosX;
     private final double portalPosY;
     private final double portalPosZ;
+    private static long tick = -1L;
+    private static Map<BlockPos, Integer> cacheLighting = new HashMap<>();
 
     public EntityFXEntityOxygen(World par1World, Vector3 position, Vector3 motion, Vector3 color)
     {
@@ -48,7 +54,23 @@ public class EntityFXEntityOxygen extends EntityFX
     @Override
     public int getBrightnessForRender(float par1)
     {
-        final int var2 = super.getBrightnessForRender(par1);
+        long time = this.worldObj.getWorldTime(); 
+        if (time > tick)
+        {
+            cacheLighting.clear();
+            tick = time;
+        }
+        BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+        int var2;
+        if (cacheLighting.containsKey(blockpos))
+        {
+            var2 = cacheLighting.get(blockpos);
+        }
+        else
+        {
+            var2 = this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
+            cacheLighting.put(blockpos, var2);
+        }
         float var3 = (float) this.particleAge / (float) this.particleMaxAge;
         var3 *= var3;
         var3 *= var3;
