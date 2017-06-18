@@ -1029,7 +1029,7 @@ public class WorldUtil
         WorldServer fromWorld = ((WorldServer) entity.world); 
         if (spawnRequired)
         {
-            ((WorldServer) entity.worldObj).getEntityTracker().untrackEntity(entity);
+            ((WorldServer) entity.world).getEntityTracker().untrack(entity);
             entity.forceSpawn = true;
             worldNew.spawnEntity(entity);
             entity.setWorld(worldNew);
