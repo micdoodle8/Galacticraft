@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -95,7 +96,7 @@ public class ContainerExtendedInventory extends Container
 
                 if (!flag)
                 {
-                    if (stack.getItem() instanceof ItemOxygenTank)
+                    if (stack.getItem() instanceof ItemOxygenTank || stack.getItem() instanceof ItemCanisterOxygenInfinite)
                     {
                         if (!this.mergeOneItem(stack, 42, 44, false))
                         {
