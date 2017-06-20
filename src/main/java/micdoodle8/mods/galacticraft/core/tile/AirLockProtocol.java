@@ -108,6 +108,13 @@ class AirLockProtocol
             return -1;
         }
 
+        this.minX = 6000000;
+        this.maxX = -6000000;
+        this.minY = 6000000;
+        this.maxY = -6000000;
+        this.minZ = 6000000;
+        this.maxZ = -6000000;
+
         this.adjacentAirLocks = new ArrayList<BlockPos>();
         this.checked.clear();
         final BlockPos headPos = this.head.getPos();
