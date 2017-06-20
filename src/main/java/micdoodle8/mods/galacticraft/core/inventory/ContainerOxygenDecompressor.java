@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,7 +74,7 @@ public class ContainerOxygenDecompressor extends Container
                         return null;
                     }
                 }
-                else if (stack.getItem() instanceof ItemOxygenTank && stack.getItemDamage() < stack.getMaxDamage())
+                else if (stack.getItem() instanceof ItemCanisterOxygenInfinite || (stack.getItem() instanceof ItemOxygenTank && stack.getItemDamage() < stack.getMaxDamage()))
                 {
                     if (!this.mergeItemStack(stack, 0, 1, false))
                     {
