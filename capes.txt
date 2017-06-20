@@ -100,3 +100,4 @@ Nomad043:capeLightGray
 Malstrim:capePurple
 CthulhuTheElder:capeCyan
 Akahito666:capeRainbow
+Timsuper2:capeOrange

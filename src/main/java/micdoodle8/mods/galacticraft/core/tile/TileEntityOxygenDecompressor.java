@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
@@ -43,6 +44,11 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
                 if (tank1.getItem() instanceof ItemOxygenTank && tank1.getItemDamage() < tank1.getMaxDamage())
                 {
                     tank1.setItemDamage(tank1.getItemDamage() + 1);
+                    this.receiveOxygen(1, true);
+                    this.usingEnergy = true;
+                }
+                else if (tank1.getItem() instanceof ItemCanisterOxygenInfinite)
+                {
                     this.receiveOxygen(1, true);
                     this.usingEnergy = true;
                 }
@@ -234,7 +240,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront().rotateY();
+        return getFront();
     }
 
     @Override

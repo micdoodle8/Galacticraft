@@ -272,10 +272,7 @@ public class GalacticraftCore
         }
 
         FMLInterModComms.sendMessage("OpenBlocks", "donateUrl", "http://www.patreon.com/micdoodle8");
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            registerCoreGameScreens();
-        }
+        registerCoreGameScreens();
 
         GCFluids.registerLegacyFluids();
 
@@ -489,13 +486,20 @@ public class GalacticraftCore
 
     private static void registerCoreGameScreens()
     {
-        IGameScreen rendererBasic = new GameScreenBasic();
-        IGameScreen rendererCelest = new GameScreenCelestial();
-        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 0 - blank
-        GalacticraftRegistry.registerScreen(rendererBasic);  //Type 1 - local satellite view
-        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 2 - solar system
-        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 3 - local planet
-        GalacticraftRegistry.registerScreen(rendererCelest);  //Type 4 - render test
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        {
+            IGameScreen rendererBasic = new GameScreenBasic();
+            IGameScreen rendererCelest = new GameScreenCelestial();
+            GalacticraftRegistry.registerScreen(rendererBasic);  //Type 0 - blank
+            GalacticraftRegistry.registerScreen(rendererBasic);  //Type 1 - local satellite view
+            GalacticraftRegistry.registerScreen(rendererCelest);  //Type 2 - solar system
+            GalacticraftRegistry.registerScreen(rendererCelest);  //Type 3 - local planet
+            GalacticraftRegistry.registerScreen(rendererCelest);  //Type 4 - render test
+        }
+        else
+        {
+            GalacticraftRegistry.registerScreensServer(5);
+        }
     }
 
     private void registerTileEntities()

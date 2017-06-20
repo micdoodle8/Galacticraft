@@ -85,8 +85,16 @@ public class OxygenUtil
 
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
+        double offsetXZ = 0.0;
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.world, new AxisAlignedBB(x - smin, y - smin, z - smin, x + smin, y + smin, z + smin), testThermal);
+        // If entity is within air lock wall, check adjacent blocks for oxygen
+        // The value is equal to the max distance from an adjacent oxygen block to the edge of a sealer wall
+        if (entity.world.getBlockState(entity.getPosition()).getBlock() == GCBlocks.airLockSeal)
+        {
+            offsetXZ = 0.75F;
+        }
+
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.world, new AxisAlignedBB(x - smin - offsetXZ, y - smin, z - smin - offsetXZ, x + smin + offsetXZ, y + smin, z + smin + offsetXZ), testThermal);
     }
 
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
@@ -123,7 +131,7 @@ public class OxygenUtil
         int zm = MathHelper.floor(bb.minZ + 0.001D);
         int zz = MathHelper.floor(bb.maxZ - 0.001D);
 
-        OxygenUtil.checked = new HashSet();
+        OxygenUtil.checked = new HashSet<>();
         if (world.isAreaLoaded(new BlockPos(xm, ym, zm), new BlockPos(xx, yy, zz)))
         {
             for (int x = xm; x <= xx; ++x)
@@ -251,7 +259,7 @@ public class OxygenUtil
             else if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
             {
                 ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
-                if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(state.getBlock().getMetaFromState(state)))
+                if (metaList.contains(-1) || metaList.contains(state.getBlock().getMetaFromState(state)))
                 {
                     return -1;
                 }
