@@ -67,14 +67,14 @@ public abstract class BlockAdvanced extends Block
                 if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
                 {
                     playerIn.swingArm(hand);
-                    return !worldIn.isRemote;
+                    return true;
                 }
             }
 
             if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
             {
                 playerIn.swingArm(hand);
-                return !worldIn.isRemote;
+                return true;
             }
         }
 
