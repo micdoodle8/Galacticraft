@@ -793,7 +793,7 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                     int splitLocation = line.indexOf(":");
                     String username = line.substring(0, splitLocation);
-                    ClientProxyCore.capeMap.put(username, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/capes/" + line.substring(splitLocation + 1) + ".png"));
+                    ClientProxyCore.capeMap.put(username, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/capes/" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
                 }
             }
         }
@@ -812,6 +812,22 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+    }
+
+    private static String convertCapeString(String capeName)
+    {
+        StringBuilder underscoreCase = new StringBuilder();
+        for (int i = 0; i < capeName.length(); ++i)
+        {
+            char c = capeName.charAt(i);
+            if (!Character.isLowerCase(c))
+            {
+                underscoreCase.append("_");
+                c = Character.toLowerCase(c);
+            }
+            underscoreCase.append(c);
+        }
+        return underscoreCase.toString();
     }
 
     public static void registerInventoryTabs()
