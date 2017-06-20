@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
 public class ParticleOxygen extends Particle
@@ -60,7 +60,7 @@ public class ParticleOxygen extends Particle
             cacheLighting.clear();
             tick = time;
         }
-        BlockPos blockpos = new BlockPos(this.posX, this.posY + (double)this.getEyeHeight(), this.posZ);
+        BlockPos blockpos = new BlockPos(this.posX, this.posY + 0.17, this.posZ);
         int var2;
         if (cacheLighting.containsKey(blockpos))
         {
