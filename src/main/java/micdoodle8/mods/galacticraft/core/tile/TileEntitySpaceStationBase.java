@@ -8,7 +8,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -20,7 +19,6 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
         super(null);
     }
 
-    public String ownerUsername = "bobby";
     private boolean initialised;
 
     @Override
@@ -30,30 +28,6 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
         {
             this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
         }
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.readFromNBT(par1NBTTagCompound);
-        this.ownerUsername = par1NBTTagCompound.getString("ownerUsername");
-    }
-
-    @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
-    {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setString("ownerUsername", this.ownerUsername);
-    }
-
-    public void setOwner(String username)
-    {
-        this.ownerUsername = username;
-    }
-
-    public String getOwner()
-    {
-        return this.ownerUsername;
     }
 
     @Override
