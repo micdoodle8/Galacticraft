@@ -9,10 +9,7 @@ import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ContainerChest;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryLargeChest;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -24,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Iterator;
 import java.util.List;
 
-public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable
+public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, ISidedInventory
 {
     private ItemStack[] chestContents = new ItemStack[27];
     public boolean adjacentChestChecked;
@@ -539,5 +536,23 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    {
+        return false;
     }
 }
