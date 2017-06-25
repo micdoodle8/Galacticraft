@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.DelayTimer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -42,7 +43,10 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             if (!this.worldObj.isRemote && fluidTank.getFluidAmount() > 1000)
             {
                 Block b = fluidTank.getFluid().getFluid().getBlock();
-                TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.worldObj), new ScheduledBlockChange(pos, b, 0, 3));
+                if (!(b == null || b instanceof BlockAir))
+                {
+                    TickHandlerServer.scheduleNewBlockChange(GCCoreUtil.getDimensionID(this.worldObj), new ScheduledBlockChange(pos, b, 0, 3));
+                }
             }
         }
     }
