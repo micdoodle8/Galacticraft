@@ -76,7 +76,15 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         GlStateManager.translate(-0.5F, -0.5F, -0.5F);
         RenderHelper.disableStandardItemLighting();
 
-        ColorUtil.setGLColor(tileEntity.color);
+        if (tileEntity.getEnabled())
+        {
+            ColorUtil.setGLColor(tileEntity.color);
+        }
+        else
+        {
+            float greyLevel = 24F / 255F;
+            GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
+        }
         
         //Save the lighting state
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;

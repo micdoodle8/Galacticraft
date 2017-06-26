@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
@@ -31,6 +32,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -246,7 +248,17 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
         {
             return 0;
         }
+        if (world instanceof World && RedstoneUtil.isBlockReceivingRedstone((World) world, pos))
+        {
+            return 0;
+        }
         return ((PanelType) bs.getValue(BlockPanelLighting.TYPE)).getLight();
+    }
+    
+    @Override
+    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    {
+        worldIn.checkLightFor(EnumSkyBlock.BLOCK, pos);
     }
 
     @SideOnly(value=Side.CLIENT)
