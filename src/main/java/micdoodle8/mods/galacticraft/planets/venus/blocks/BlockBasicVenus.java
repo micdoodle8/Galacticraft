@@ -14,11 +14,15 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
@@ -99,13 +103,40 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
     {
-        super.breakBlock(worldIn, pos, state);
+        player.triggerAchievement(StatList.mineBlockStatArray[Block.getIdFromBlock(this)]);
+        player.addExhaustion(0.025F);
 
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
-        if (type == EnumBlockBasicVenus.ROCK_MAGMA)
+        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getSilkTouchModifier(player))
         {
+            java.util.List<ItemStack> items = new java.util.ArrayList<ItemStack>();
+            ItemStack itemstack = this.createStackedBlock(state);
+
+            if (itemstack != null)
+            {
+                items.add(itemstack);
+            }
+
+            net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, worldIn.getBlockState(pos), 0, 1.0f, true, player);
+
+            for (ItemStack is : items)
+            {
+                spawnAsEntity(worldIn, pos, is);
+            }
+        }
+        else
+        {
+            if (worldIn.provider.doesWaterVaporize())
+            {
+                worldIn.setBlockToAir(pos);
+                return;
+            }
+
+            int i = EnchantmentHelper.getFortuneModifier(player);
+            harvesters.set(player);
+            this.dropBlockAsItem(worldIn, pos, state, i);
+            harvesters.set(null);
             worldIn.setBlockState(pos, Blocks.flowing_lava.getDefaultState());
         }
     }
