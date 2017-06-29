@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -117,6 +118,11 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public int quantityDropped(IBlockState state, int fortune, Random random)
     {
+        int bonus = 0;
+        if (ConfigManagerCore.quickMode && this.getMetaFromState(state) == 8)
+        {
+            bonus = 1;
+        }
         if (fortune > 0 && Item.getItemFromBlock(this) != this.getItemDropped(state, random, fortune))
         {
             int j = random.nextInt(fortune + 2) - 1;
@@ -126,11 +132,11 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
                 j = 0;
             }
 
-            return this.quantityDropped(random) * (j + 1);
+            return this.quantityDropped(random) * (j + 1) + bonus;
         }
         else
         {
-            return this.quantityDropped(random);
+            return this.quantityDropped(random) + bonus;
         }
     }
 

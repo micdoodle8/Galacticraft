@@ -29,7 +29,7 @@ public class LayerEvolvedEndermanEyes implements LayerRenderer<EntityEvolvedEnde
     }
 
     @Override
-    public void doRenderLayer(EntityEvolvedEnderman entity, float par2, float par3, float partialTicks, float par5, float par6, float par7, float scale)
+    public void doRenderLayer(EntityEvolvedEnderman entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         this.render.bindTexture(LayerEvolvedEndermanEyes.eyesTexture);
         GlStateManager.enableBlend();
@@ -41,7 +41,7 @@ public class LayerEvolvedEndermanEyes implements LayerRenderer<EntityEvolvedEnde
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
         GlStateManager.enableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.render.getMainModel().render(entity, par2, par3, par5, par6, par7, scale);
+        this.render.getMainModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.render.setLightmap(entity, partialTicks);
         GlStateManager.depthMask(true);
         GlStateManager.disableBlend();

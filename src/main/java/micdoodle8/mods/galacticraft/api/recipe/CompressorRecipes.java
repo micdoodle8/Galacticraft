@@ -2,30 +2,28 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftConfigAccess;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 public class CompressorRecipes
 {
-    private static List<IRecipe> recipes = new ArrayList<IRecipe>();
-    private static List<IRecipe> recipesAdventure = new ArrayList<IRecipe>();
+    private static List<IRecipe> recipes = new ArrayList<>();
+    private static List<IRecipe> recipesAdventure = new ArrayList<>();
     private static boolean adventureOnly = false;
     private static Field adventureFlag;
     private static boolean flagNotCached = true;
 
     public static ShapedRecipesGC addRecipe(ItemStack output, Object... inputList)
     {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         int i = 0;
         int j = 0;
         int k = 0;
@@ -38,7 +36,7 @@ public class CompressorRecipes
             {
                 ++k;
                 j = s1.length();
-                s = s + s1;
+                s.append(s1);
             }
         }
         else
@@ -48,7 +46,7 @@ public class CompressorRecipes
                 String s2 = (String) inputList[i++];
                 ++k;
                 j = s2.length();
-                s = s + s2;
+                s.append(s2);
             }
         }
 
@@ -81,9 +79,9 @@ public class CompressorRecipes
         {
             char c0 = s.charAt(i1);
 
-            if (hashmap.containsKey(Character.valueOf(c0)))
+            if (hashmap.containsKey(c0))
             {
-                aitemstack[i1] = hashmap.get(Character.valueOf(c0)).copy();
+                aitemstack[i1] = hashmap.get(c0).copy();
             }
             else
             {
@@ -102,10 +100,8 @@ public class CompressorRecipes
         ArrayList<Object> arraylist = new ArrayList<>();
         int i = par2ArrayOfObj.length;
 
-        for (int j = 0; j < i; ++j)
+        for (Object object1 : par2ArrayOfObj)
         {
-            Object object1 = par2ArrayOfObj[j];
-
             if (object1 instanceof ItemStack)
             {
                 arraylist.add(((ItemStack) object1).copy());
@@ -147,10 +143,9 @@ public class CompressorRecipes
     	adventureOnly = true;
     	CompressorRecipes.addShapelessRecipe(par1ItemStack, par2ArrayOfObj);
     	adventureOnly = false;
-    	return;
     }
     
-    public static ItemStack findMatchingRecipe(IInventory inventory, World par2World)
+    public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World par2World)
     {
         int i = 0;
         ItemStack itemstack = null;
@@ -199,11 +194,11 @@ public class CompressorRecipes
             {
                 IRecipe irecipe = theRecipes.get(j);
 
-                if (irecipe instanceof ShapedRecipesGC && CompressorRecipes.matches((ShapedRecipesGC) irecipe, inventory, par2World))
+                if (irecipe instanceof ShapedRecipesGC && irecipe.matches(inventory, par2World))
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
-                else if (irecipe instanceof ShapelessOreRecipeGC && CompressorRecipes.matchesShapeless((ShapelessOreRecipeGC) irecipe, inventory, par2World))
+                else if (irecipe instanceof ShapelessOreRecipeGC && irecipe.matches(inventory, par2World))
                 {
                     return irecipe.getRecipeOutput().copy();
                 }
@@ -213,130 +208,6 @@ public class CompressorRecipes
         }
     }
 
-    private static boolean matches(ShapedRecipesGC recipe, IInventory inventory, World par2World)
-    {
-        for (int i = 0; i <= 3 - recipe.recipeWidth; ++i)
-        {
-            for (int j = 0; j <= 3 - recipe.recipeHeight; ++j)
-            {
-                if (CompressorRecipes.checkMatch(recipe, inventory, i, j, true))
-                {
-                    return true;
-                }
-
-                if (CompressorRecipes.checkMatch(recipe, inventory, i, j, false))
-                {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private static boolean checkMatch(ShapedRecipesGC recipe, IInventory inventory, int par2, int par3, boolean par4)
-    {
-        for (int k = 0; k < 3; ++k)
-        {
-            for (int l = 0; l < 3; ++l)
-            {
-                int i1 = k - par2;
-                int j1 = l - par3;
-                ItemStack itemstack = null;
-
-                if (i1 >= 0 && j1 >= 0 && i1 < recipe.recipeWidth && j1 < recipe.recipeHeight)
-                {
-                    if (par4)
-                    {
-                        itemstack = recipe.recipeItems[recipe.recipeWidth - i1 - 1 + j1 * recipe.recipeWidth];
-                    }
-                    else
-                    {
-                        itemstack = recipe.recipeItems[i1 + j1 * recipe.recipeWidth];
-                    }
-                }
-
-                ItemStack itemstack1 = null;
-
-                if (k >= 0 && l < 3)
-                {
-                    int k2 = k + l * 3;
-                    itemstack1 = inventory.getStackInSlot(k2);
-                }
-
-                if (itemstack1 != null || itemstack != null)
-                {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
-                    {
-                        return false;
-                    }
-
-                    if (itemstack.getItem() != itemstack1.getItem())
-                    {
-                        return false;
-                    }
-
-                    if (itemstack.getItemDamage() != 32767 && itemstack.getItemDamage() != itemstack1.getItemDamage())
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private static boolean matchesShapeless(ShapelessOreRecipeGC recipe, IInventory var1, World par2World)
-    {
-        ArrayList<Object> required = new ArrayList<Object>(recipe.getInput());
-
-        for (int x = 0; x < var1.getSizeInventory(); x++)
-        {
-            ItemStack slot = var1.getStackInSlot(x);
-
-            if (slot != null)
-            {
-                boolean inRecipe = false;
-                Iterator<Object> req = required.iterator();
-
-                while (req.hasNext())
-                {
-                    boolean match = false;
-
-                    Object next = req.next();
-
-                    if (next instanceof ItemStack)
-                    {
-                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
-                    }
-                    else if (next instanceof List)
-                    {
-                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
-                        while (itr.hasNext() && !match)
-                        {
-                            match = OreDictionary.itemMatches(itr.next(), slot, false);
-                        }
-                    }
-
-                    if (match)
-                    {
-                        inRecipe = true;
-                        required.remove(next);
-                        break;
-                    }
-                }
-
-                if (!inRecipe)
-                {
-                    return false;
-                }
-            }
-        }
-
-        return required.isEmpty();
-    }
-
     public static List<IRecipe> getRecipeList()
     {
     	return (GalacticraftConfigAccess.getChallengeRecipes()) ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
@@ -344,11 +215,6 @@ public class CompressorRecipes
     
     public static void removeRecipe(ItemStack match)
     {
-    	for (Iterator<IRecipe> it = CompressorRecipes.getRecipeList().iterator(); it.hasNext(); )
-        {
-            IRecipe irecipe = it.next();
-            if (ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()))
-            	it.remove();
-        }
+        CompressorRecipes.getRecipeList().removeIf(irecipe -> ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
     }
 }
