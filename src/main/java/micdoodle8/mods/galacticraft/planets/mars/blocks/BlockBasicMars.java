@@ -106,11 +106,15 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
     {
-        IBlockState state = world.getBlockState(pos);
+        EnumBlockBasic type = (EnumBlockBasic) world.getBlockState(pos).getValue(BASIC_TYPE);
 
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
+        if (type == EnumBlockBasic.DUNGEON_BRICK)
         {
             return 40.0F;
+        }
+        else if (type == EnumBlockBasic.DESH_BLOCK)
+        {
+            return 60.0F;
         }
 
         return super.getExplosionResistance(world, pos, exploder, explosion);
