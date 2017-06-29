@@ -28,6 +28,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     {
         super(Material.rock);
         this.blockHardness = 3.0F;
+        this.setResistance(35F);
         this.setUnlocalizedName(assetName);
         this.setStepSound(soundTypeMetal);
     }
