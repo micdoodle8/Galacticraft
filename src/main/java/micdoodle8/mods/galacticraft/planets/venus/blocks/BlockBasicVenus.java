@@ -137,7 +137,10 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             harvesters.set(player);
             this.dropBlockAsItem(worldIn, pos, state, i);
             harvesters.set(null);
-            worldIn.setBlockState(pos, Blocks.flowing_lava.getDefaultState());
+            if ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS) == EnumBlockBasicVenus.ROCK_MAGMA)
+            {
+                worldIn.setBlockState(pos, Blocks.flowing_lava.getDefaultState());
+            }
         }
     }
 

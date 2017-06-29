@@ -174,7 +174,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
         noMineList.add(Blocks.bedrock);
-        noMineList.add(Blocks.lava);
+        noMineList.add(Blocks.flowing_lava);
         noMineList.add(Blocks.mossy_cobblestone);
         noMineList.add(Blocks.end_portal);
         noMineList.add(Blocks.end_portal_frame);
