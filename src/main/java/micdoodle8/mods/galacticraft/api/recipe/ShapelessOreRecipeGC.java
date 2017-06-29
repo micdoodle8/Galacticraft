@@ -76,7 +76,7 @@ public class ShapelessOreRecipeGC implements IRecipe
         {
             ItemStack slot = var1.getStackInSlot(x);
 
-            if (slot != null)
+            if (!slot.isEmpty())
             {
                 boolean inRecipe = false;
                 Iterator<Object> req = required.iterator();

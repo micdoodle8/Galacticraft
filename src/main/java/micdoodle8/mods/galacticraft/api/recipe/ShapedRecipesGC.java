@@ -71,7 +71,7 @@ public class ShapedRecipesGC implements IRecipe
             {
                 int k = i - p_77573_2_;
                 int l = j - p_77573_3_;
-                ItemStack itemstack = null;
+                ItemStack itemstack = ItemStack.EMPTY;
 
                 if (k >= 0 && l >= 0 && k < this.recipeWidth && l < this.recipeHeight)
                 {
@@ -87,9 +87,9 @@ public class ShapedRecipesGC implements IRecipe
 
                 ItemStack itemstack1 = p_77573_1_.getStackInRowAndColumn(i, j);
 
-                if (itemstack1 != null || itemstack != null)
+                if (!itemstack1.isEmpty() || !itemstack.isEmpty())
                 {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+                    if (itemstack1.isEmpty() && !itemstack.isEmpty() || !itemstack1.isEmpty() && itemstack.isEmpty())
                     {
                         return false;
                     }
