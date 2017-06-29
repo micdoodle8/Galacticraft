@@ -29,7 +29,7 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
     }
 
     @Override
-    public void doRenderLayer(EntityEvolvedEnderman entity, float par2, float par3, float partialTicks, float par5, float par6, float par7, float scale)
+    public void doRenderLayer(EntityEvolvedEnderman entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         IBlockState iblockstate = entity.getHeldBlockState();
 

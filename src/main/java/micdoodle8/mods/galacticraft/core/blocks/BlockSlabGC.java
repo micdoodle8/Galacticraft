@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
@@ -58,13 +59,19 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(this);
+        return Item.getItemFromBlock(GCBlocks.slabGCHalf);
+    }
+
+    @Override
+    public int quantityDropped(Random rand)
+    {
+        return this.isDouble() ? 2 : 1;
     }
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
     {
-        return GalacticraftCore.galacticraftBlocksTab;
+        return this.isDouble() ? null : GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
