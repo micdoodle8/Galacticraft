@@ -60,11 +60,12 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -289,6 +290,8 @@ public class GalacticraftCore
 
 		Biome.registerBiome(ConfigManagerCore.biomeIDbase, Constants.TEXTURE_PREFIX + BiomeMoon.moonFlat.getBiomeName(), BiomeMoon.moonFlat);
 		Biome.registerBiome(ConfigManagerCore.biomeIDbase + 3, Constants.TEXTURE_PREFIX + BiomeOrbit.space.getBiomeName(), BiomeOrbit.space);
+
+        PermissionAPI.registerNode(Constants.PERMISSION_CREATE_STATION, DefaultPermissionLevel.ALL, "Allows players to create space stations");
 
 //        switch (this.getSlotIndex())
 //        {
