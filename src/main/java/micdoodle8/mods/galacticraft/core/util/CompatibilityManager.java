@@ -24,13 +24,13 @@ public class CompatibilityManager
 {
 	public final static String modidIC2 = "ic2";
 	public final static String modidMekanism = "mekanism";
-	public final static String modidBuildcraft = "buildcraft|core";
+	public final static String modidBuildcraft = "buildcraftcore";
 	
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
     private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
-	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraft|energy");
+	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraftenergy");
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
     private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");
@@ -178,13 +178,13 @@ public class CompatibilityManager
             GCLog.info("Galacticraft: activating BuildCraft Oil compatibility features.");
         }
 
-        if (Loader.isModLoaded("buildCraft|transport"))
+        if (Loader.isModLoaded("buildcrafttransport"))
         {
             CompatibilityManager.modBCraftTransportLoaded = true;
 
             try
             {
-            	BlockEnclosed.blockPipeBC = (BlockContainer) Block.REGISTRY.getObject(new ResourceLocation("BuildCraft|Transport", "pipeBlock"));
+            	BlockEnclosed.blockPipeBC = (BlockContainer) Block.REGISTRY.getObject(new ResourceLocation("buildcrafttransport", "pipeBlock"));
             	classBCBlockGenericPipe = BlockEnclosed.blockPipeBC.getClass(); 
 
             	for (Method m : classBCBlockGenericPipe.getMethods())
