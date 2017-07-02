@@ -62,4 +62,10 @@ public class ItemArmorGC extends ItemArmor implements ISortableItem
     {
         return EnumSortCategoryItem.ARMOR;
     }
+    
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+    {
+        return repair.getItem() == GCItems.basicItem && repair.getItemDamage() == 9;
+    }
 }
