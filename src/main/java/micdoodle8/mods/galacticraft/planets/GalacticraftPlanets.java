@@ -28,6 +28,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 
 import java.io.File;
@@ -109,7 +110,7 @@ public class GalacticraftPlanets
         	GCLog.exception(e);
         }
 
-        this.loadLanguagePlanets("en_US");
+        if (event.getSide() == Side.SERVER) this.loadLanguagePlanets("en_US");
     }
 
     public void loadLanguagePlanets(String lang)

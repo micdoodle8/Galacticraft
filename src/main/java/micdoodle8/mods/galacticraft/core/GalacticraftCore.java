@@ -33,7 +33,6 @@ import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -66,6 +65,7 @@ import net.minecraftforge.server.permission.PermissionAPI;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -414,10 +414,9 @@ public class GalacticraftCore
 
         RecipeManagerGC.setConfigurableRecipes();
 
-        this.loadLanguageCore("en_US");
-        if (event.getSide() == Side.CLIENT)
+        if (event.getSide() == Side.SERVER)
         {
-            TickHandlerClient.savedLang = "none_";  //force an update first client tick
+            this.loadLanguageCore("en_US");
         }
     }
 

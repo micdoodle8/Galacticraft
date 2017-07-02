@@ -51,10 +51,12 @@ import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -67,6 +69,9 @@ import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
@@ -102,6 +107,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.vecmath.Quat4f;
 import javax.vecmath.Vector3f;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -112,7 +118,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
-public class ClientProxyCore extends CommonProxyCore
+public class ClientProxyCore extends CommonProxyCore implements IResourceManagerReloadListener
 {
     public static List<String> flagRequestsSent = new ArrayList<>();
     public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
@@ -215,8 +221,26 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+        
+        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
     }
 
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager)
+    {
+        String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
+        GCLog.debug("Reloading entity names for language " + lang);
+        if (lang == null)
+        {
+            lang = "en_US";
+        }
+        GalacticraftCore.instance.loadLanguageCore(lang);
+        if (GalacticraftCore.isPlanetsLoaded && !GCCoreUtil.langDisable)
+        {
+            GalacticraftPlanets.instance.loadLanguagePlanets(lang);
+        }
+    }
+    
     @Override
     public void postRegisterItem(Item item)
     {
