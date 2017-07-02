@@ -92,4 +92,17 @@ public class ItemBasicMars extends Item implements ISortableItem
         }
         return EnumSortCategoryItem.GENERAL;
     }
+
+    @Override
+    public float getSmeltingExperience(ItemStack item)
+    {
+        switch (item.getItemDamage())
+        {
+        case 3:
+            return 1.5F;
+        case 5:
+            return 1F;
+        }
+        return -1F;
+    }
 }

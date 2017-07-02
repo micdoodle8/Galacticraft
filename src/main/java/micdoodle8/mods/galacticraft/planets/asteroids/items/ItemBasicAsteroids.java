@@ -116,4 +116,17 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
         }
         return EnumSortCategoryItem.GENERAL;
     }
+
+    @Override
+    public float getSmeltingExperience(ItemStack item)
+    {
+        switch (item.getItemDamage())
+        {
+        case 5:
+            return 2F;
+        case 6:
+            return 1F;
+        }
+        return -1F;
+    }
 }
