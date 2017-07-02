@@ -101,11 +101,13 @@ public class GuiCelestialSelection extends GuiScreen
     protected int lastMovePosX = -1;
     protected int lastMovePosY = -1;
     protected boolean errorLogged = false;
+    protected boolean canCreateStations = false;
 
-    public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
+    public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies, boolean canCreateStations)
     {
         this.mapMode = mapMode;
         this.possibleBodies = possibleBodies;
+        this.canCreateStations = canCreateStations;
     }
 
     @Override
@@ -451,7 +453,7 @@ public class GuiCelestialSelection extends GuiScreen
 
     protected boolean canCreateSpaceStation(CelestialBody atBody)
     {
-        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation)
+        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation || !this.canCreateStations)
         {
             return false;
         }

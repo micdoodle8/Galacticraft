@@ -2470,6 +2470,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+        if (world.isRemote) return;
         final NBTTagList var2 = new NBTTagList();
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);

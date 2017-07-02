@@ -33,7 +33,6 @@ import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicMoonBuggy;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicRocketT1;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -61,6 +60,8 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -292,6 +293,8 @@ public class GalacticraftCore
         GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidOil, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png"));
 		GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidFuel, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underfuel.png"));
 
+        PermissionAPI.registerNode(Constants.PERMISSION_CREATE_STATION, DefaultPermissionLevel.ALL, "Allows players to create space stations");
+
 //        switch (this.getSlotIndex())
 //        {
 //        case 0:
@@ -413,10 +416,9 @@ public class GalacticraftCore
 
         RecipeManagerGC.setConfigurableRecipes();
 
-        this.loadLanguageCore("en_US");
-        if (event.getSide() == Side.CLIENT)
+        if (event.getSide() == Side.SERVER)
         {
-            TickHandlerClient.savedLang = "none_";  //force an update first client tick
+            this.loadLanguageCore("en_US");
         }
     }
 
