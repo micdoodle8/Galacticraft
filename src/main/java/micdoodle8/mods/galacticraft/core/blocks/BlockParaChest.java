@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -150,26 +149,13 @@ public class BlockParaChest extends BlockContainer implements ITileEntityProvide
                     float f1 = syncRandom.nextFloat() * 0.8F + 0.1F;
                     EntityItem entityitem;
 
-                    for (float f2 = syncRandom.nextFloat() * 0.8F + 0.1F; itemstack.getCount() > 0; worldIn.spawnEntity(entityitem))
+                    for (float f2 = syncRandom.nextFloat() * 0.8F + 0.1F; !itemstack.isEmpty(); worldIn.spawnEntity(entityitem))
                     {
-                        int k1 = syncRandom.nextInt(21) + 10;
-
-                        if (k1 > itemstack.getCount())
-                        {
-                            k1 = itemstack.getCount();
-                        }
-
-                        itemstack.shrink(k1);
-                        entityitem = new EntityItem(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
+                        entityitem = new EntityItem(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack.splitStack(syncRandom.nextInt(21) + 10));
                         float f3 = 0.05F;
                         entityitem.motionX = (float) syncRandom.nextGaussian() * f3;
                         entityitem.motionY = (float) syncRandom.nextGaussian() * f3 + 0.2F;
                         entityitem.motionZ = (float) syncRandom.nextGaussian() * f3;
-
-                        if (itemstack.hasTagCompound())
-                        {
-                            entityitem.getEntityItem().setTagCompound((NBTTagCompound) itemstack.getTagCompound().copy());
-                        }
                     }
                 }
             }
