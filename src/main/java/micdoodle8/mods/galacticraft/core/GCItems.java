@@ -110,7 +110,7 @@ public class GCItems
         GCItems.oxygenVent = new ItemBase("air_vent");
         GCItems.oxygenFan = new ItemBase("air_fan");
         GCItems.oxygenConcentrator = new ItemBase("oxygen_concentrator");
-        GCItems.heavyPlatingTier1 = new ItemBase("heavy_plating");
+        GCItems.heavyPlatingTier1 = new ItemBase("heavy_plating").setSmeltingXP(1F);
         GCItems.rocketEngine = new ItemRocketEngineGC("engine");
         GCItems.partFins = new ItemBase("rocket_fins");
         GCItems.partNoseCone = new ItemBase("nose_cone");

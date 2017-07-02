@@ -272,4 +272,20 @@ public class ItemBasic extends Item implements ISortableItem
         }
         return EnumSortCategoryItem.GENERAL;
     }
+    
+    @Override
+    public float getSmeltingExperience(ItemStack item)
+    {
+        switch (item.getItemDamage())
+        {
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+            return 1F;
+        }
+        return -1F;
+    }
 }

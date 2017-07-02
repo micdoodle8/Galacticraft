@@ -119,4 +119,15 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     {
         return meta == 2;
     }
+
+    @Override
+    public float getSmeltingExperience(ItemStack item)
+    {
+        switch (item.getItemDamage())
+        {
+        case 1:
+            return 1F;
+        }
+        return -1F;
+    }
 }

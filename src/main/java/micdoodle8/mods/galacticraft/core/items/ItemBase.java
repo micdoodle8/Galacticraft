@@ -18,6 +18,8 @@ import java.util.List;
 
 public class ItemBase extends Item implements ISortableItem
 {
+    float smeltingXP = -1F;
+    
     public ItemBase(String assetName)
     {
         super();
@@ -57,5 +59,17 @@ public class ItemBase extends Item implements ISortableItem
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.GENERAL;
+    }
+
+    public Item setSmeltingXP(float f)
+    {
+        this.smeltingXP = f;
+        return this;
+    }
+    
+    @Override
+    public float getSmeltingExperience(ItemStack item)
+    {
+        return this.smeltingXP;
     }
 }
