@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
@@ -526,5 +527,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     public float getArrowGravity()
     {
         return 0.002F;
+    }
+
+    @Override
+    public String getDungeonChestType()
+    {
+        return RoomChest.MOONCHEST;
     }
 }

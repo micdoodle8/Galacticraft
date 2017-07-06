@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.WorldChunkManagerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomChestVenus;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -183,5 +184,11 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     public float getArrowGravity()
     {
         return 0.0275F;
+    }
+
+    @Override
+    public String getDungeonChestType()
+    {
+        return RoomChestVenus.VENUSCHEST;
     }
 }

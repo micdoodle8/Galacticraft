@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
@@ -121,7 +123,12 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
                         chest.setInventorySlotContents(k, null);
                     }
 
-                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+                    String chesttype = RoomChest.MOONCHEST;
+                    if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+                    {
+                        chesttype = ((IGalacticraftWorldProvider)this.worldObj.provider).getDungeonChestType();
+                    }
+                    ChestGenHooks info = ChestGenHooks.getInfo(chesttype);
 
                     // Generate twice, since it's an extra special chest
                     WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));

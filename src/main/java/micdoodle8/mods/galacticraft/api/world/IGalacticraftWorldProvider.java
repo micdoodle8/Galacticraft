@@ -153,4 +153,9 @@ public interface IGalacticraftWorldProvider
      * If your world has no dungeons you can safely return 0 here.
      */
     int getDungeonSpacing();
+    
+    /**
+     * The ChestGenHooks identifier of the dungeon chests to generate in this world
+     */
+    String getDungeonChestType();
 }

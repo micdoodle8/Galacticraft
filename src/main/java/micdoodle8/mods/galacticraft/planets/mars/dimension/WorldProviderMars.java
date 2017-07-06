@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
+import micdoodle8.mods.galacticraft.planets.mars.world.gen.RoomTreasureMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
@@ -165,5 +166,11 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public float getArrowGravity()
     {
         return 0.015F;
+    }
+
+    @Override
+    public String getDungeonChestType()
+    {
+        return RoomTreasureMars.MARSCHEST;
     }
 }

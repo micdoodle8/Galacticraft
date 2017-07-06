@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -156,5 +157,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public int getDungeonSpacing()
     {
         return 704;
+    }
+
+    @Override
+    public String getDungeonChestType()
+    {
+        return RoomChest.MOONCHEST;
     }
 }

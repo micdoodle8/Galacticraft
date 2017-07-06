@@ -1,18 +1,53 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraftforge.common.ChestGenHooks;
 
+import java.util.List;
 import java.util.Random;
+
+import com.google.common.collect.Lists;
 
 public class RoomTreasureMars extends RoomTreasure
 {
+    public static String MARSCHEST = "moonchest";
+
+    static
+    {
+        List<WeightedRandomChestContent> list = Lists.newArrayList(new WeightedRandomChestContent[] {
+                new WeightedRandomChestContent(MarsItems.carbonFragments, 0, 18, 64, 10),
+                new WeightedRandomChestContent(GCItems.basicItem, 15, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.basicItem, 16, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.basicItem, 17, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.basicItem, 18, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.oilCanister, ItemCanisterGeneric.EMPTY, 1, 1, 5),
+                new WeightedRandomChestContent(MarsItems.deshBoots, 0, 1, 1, 2),
+                new WeightedRandomChestContent(MarsItems.deshChestplate, 0, 1, 1, 2),
+                new WeightedRandomChestContent(MarsItems.deshHelmet, 0, 1, 1, 2),
+                new WeightedRandomChestContent(MarsItems.deshLeggings, 0, 1, 1, 2),
+                new WeightedRandomChestContent(Items.redstone, 0, 4, 21, 10),
+                new WeightedRandomChestContent(Items.record_mall, 0, 1, 1, 4),
+                new WeightedRandomChestContent(Items.record_mellohi, 0, 1, 1, 4),
+                new WeightedRandomChestContent(MarsItems.marsItemBasic, 0, 1, 2, 5),
+                new WeightedRandomChestContent(MarsItems.marsItemBasic, 1, 1, 1, 5)
+                });;
+        ChestGenHooks.init(MARSCHEST, list, 6, 9);
+        ChestGenHooks.addItem(MARSCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
+        ChestGenHooks.addItem(MARSCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
+    }
+
     public RoomTreasureMars()
     {
     }

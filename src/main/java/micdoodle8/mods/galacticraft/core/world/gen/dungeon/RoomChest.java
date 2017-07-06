@@ -1,7 +1,11 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.BlockPos;
@@ -11,10 +15,39 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraftforge.common.ChestGenHooks;
 
+import java.util.List;
 import java.util.Random;
+
+import com.google.common.collect.Lists;
 
 public class RoomChest extends RoomEmpty
 {
+    public static String MOONCHEST = "moonchest";
+
+    static
+    {
+        List<WeightedRandomChestContent> list = Lists.newArrayList(new WeightedRandomChestContent[] {
+                new WeightedRandomChestContent(GCItems.cheeseCurd, 0, 1, 4, 10),
+                new WeightedRandomChestContent(Items.iron_ingot, 0, 2, 14, 10),
+                new WeightedRandomChestContent(GCItems.basicItem, 15, 1, 2, 6),  //Food cans
+                new WeightedRandomChestContent(GCItems.basicItem, 16, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.basicItem, 17, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.basicItem, 18, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.oilCanister, ItemCanisterGeneric.EMPTY, 1, 1, 5),
+                new WeightedRandomChestContent(Items.golden_apple, 0, 1, 1, 2),
+                new WeightedRandomChestContent(Items.redstone, 0, 4, 21, 10),
+                new WeightedRandomChestContent(Items.record_blocks, 0, 1, 1, 4),
+                new WeightedRandomChestContent(Items.record_far, 0, 1, 1, 4),
+                new WeightedRandomChestContent(GCItems.steelSpade, 0, 1, 1, 10),
+                new WeightedRandomChestContent(GCItems.itemBasicMoon, 2, 1, 2, 2),  //sapphire
+                new WeightedRandomChestContent(GCItems.meteoricIronRaw, 0, 1, 5, 5),
+                new WeightedRandomChestContent(GCItems.basicItem, 19, 1, 1, 1)  //Frequency Module
+                });;
+        ChestGenHooks.init(MOONCHEST, list, 5, 8);
+        ChestGenHooks.addItem(MOONCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
+        ChestGenHooks.addItem(MOONCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
+    }
+
     public RoomChest()
     {
     }
@@ -45,7 +78,12 @@ public class RoomChest extends RoomEmpty
                     chest.setInventorySlotContents(i, null);
                 }
 
-                ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+                String chesttype = MOONCHEST;
+                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                {
+                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                }
+                ChestGenHooks info = ChestGenHooks.getInfo(chesttype);
 
                 WeightedRandomChestContent.generateChestContents(rand, info.getItems(rand), chest, info.getCount(rand));
             }
