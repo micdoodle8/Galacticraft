@@ -4,6 +4,9 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeHandler;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeMaker;
@@ -16,6 +19,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.M
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeHandler;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeMaker;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -38,5 +42,11 @@ public class GalacticraftMarsJEI extends BlankModPlugin
         registry.addRecipes(GasLiquefierRecipeMaker.getRecipesList());
         registry.addRecipes(CargoRocketRecipeMaker.getRecipesList());
         registry.addRecipes(MethaneSynthesizerRecipeMaker.getRecipesList());
+
+        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T2_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_CARGO_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2, 1, 4), RecipeCategories.METHANE_SYNTHESIZER_ID);
     }
 }
