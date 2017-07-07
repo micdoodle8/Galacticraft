@@ -10,6 +10,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.BiomeProvider;
@@ -157,5 +159,11 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public int getDungeonSpacing()
     {
         return 704;
+    }
+
+    @Override
+    public ResourceLocation getDungeonChestType()
+    {
+        return RoomTreasure.MOONCHEST;
     }
 }

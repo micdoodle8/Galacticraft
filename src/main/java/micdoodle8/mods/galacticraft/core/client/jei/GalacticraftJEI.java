@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeWrapper;
@@ -26,6 +27,7 @@ import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -58,6 +60,13 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(CompressorRecipes.getRecipeList(), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipes(RefineryRecipeMaker.getRecipesList(), RecipeCategories.REFINERY_ID);
         
+        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T1_ID);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.BUGGY_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
+
         GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
     }
 }

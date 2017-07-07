@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -478,11 +479,11 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
         if (chest != null)
         {
-            System.out.println("Found chest to generate boss loot in: " + chest.pos);
+            GCLog.debug("Found chest to generate boss loot in: " + chest.pos);
         }
         else
         {
-            System.out.println("Could not find chest to generate boss loot in!");
+            GCLog.debug("Could not find chest to generate boss loot in!");
         }
 
         return chest;

@@ -1,18 +1,26 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTier3TreasureChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Random;
 
 public class RoomTreasureVenus extends SizedPieceVenus
 {
+    public static ResourceLocation VENUSCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_3");
+    public static final ResourceLocation TABLE_TIER_3_DUNGEON = LootTableList.register(VENUSCHEST);
+    
     public RoomTreasureVenus()
     {
     }
@@ -91,7 +99,21 @@ public class RoomTreasureVenus extends SizedPieceVenus
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
-                        this.setBlockState(worldIn, VenusBlocks.treasureChestTier3.getDefaultState().withProperty(BlockTier3TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
+                        BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
+                        if (boundingBox.isVecInside(blockpos))
+                        {
+                            worldIn.setBlockState(blockpos, VenusBlocks.treasureChestTier3.getDefaultState().withProperty(BlockTier3TreasureChest.FACING, this.getDirection().getOpposite()), 2);
+                            TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
+                            if (treasureChest != null)
+                            {
+                                ResourceLocation chesttype = TABLE_TIER_3_DUNGEON;
+                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                {
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                }
+                                treasureChest.setLootTable(chesttype, random.nextLong());
+                            }
+                        }
                     }
                     else
                     {

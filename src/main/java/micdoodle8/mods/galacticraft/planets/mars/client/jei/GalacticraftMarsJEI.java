@@ -7,6 +7,8 @@ import mezz.jei.api.JEIPlugin;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeWrapper;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier.GasLiquefierRecipeCategory;
@@ -17,6 +19,7 @@ import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.M
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.MethaneSynthesizerRecipeWrapper;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -41,5 +44,11 @@ public class GalacticraftMarsJEI extends BlankModPlugin
         registry.addRecipes(GasLiquefierRecipeMaker.getRecipesList(), RecipeCategories.GAS_LIQUEFIER_ID);
         registry.addRecipes(GalacticraftRegistry.getCargoRocketRecipes(), RecipeCategories.ROCKET_CARGO_ID);
         registry.addRecipes(MethaneSynthesizerRecipeMaker.getRecipesList(), RecipeCategories.METHANE_SYNTHESIZER_ID);
+
+        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T2_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_CARGO_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2, 1, 4), RecipeCategories.METHANE_SYNTHESIZER_ID);
     }
 }

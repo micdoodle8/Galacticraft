@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
@@ -17,7 +18,8 @@ import java.util.Random;
 
 public class RoomTreasure extends SizedPiece
 {
-    public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTableList.register(new ResourceLocation(Constants.ASSET_PREFIX, "chests/dungeon_tier_1"));
+    public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_1");
+    public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTableList.register(MOONCHEST);
 
     public RoomTreasure()
     {
@@ -103,7 +105,12 @@ public class RoomTreasure extends SizedPiece
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {
-                                treasureChest.setLootTable(TABLE_TIER_1_DUNGEON, random.nextLong());
+                                ResourceLocation chesttype = TABLE_TIER_1_DUNGEON;
+                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                {
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                }
+                                treasureChest.setLootTable(chesttype, random.nextLong());
                             }
                         }
                     }

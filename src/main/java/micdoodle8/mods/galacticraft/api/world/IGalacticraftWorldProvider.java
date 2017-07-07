@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.world;
 
+import net.minecraft.util.ResourceLocation;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 
@@ -153,4 +154,9 @@ public interface IGalacticraftWorldProvider
      * If your world has no dungeons you can safely return 0 here.
      */
     int getDungeonSpacing();
+    
+    /**
+     * The ChestGenHooks identifier of the dungeon chests to generate in this world
+     */
+    ResourceLocation getDungeonChestType();
 }
