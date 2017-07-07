@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
@@ -236,5 +237,11 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public int getDungeonSpacing()
     {
         return 0;
+    }
+
+    @Override
+    public ResourceLocation getDungeonChestType()
+    {
+        return RoomTreasure.MOONCHEST;
     }
 }

@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
@@ -15,6 +16,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.IChunkGenerator;
@@ -524,8 +526,15 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         return GCPlanetDimensions.ASTEROIDS;
     }
 
+    @Override
     public float getArrowGravity()
     {
         return 0.002F;
+    }
+
+    @Override
+    public ResourceLocation getDungeonChestType()
+    {
+        return RoomTreasure.MOONCHEST;
     }
 }

@@ -1,18 +1,27 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.storage.loot.LootTableList;
 
 import java.util.Random;
 
 public class RoomTreasureMars extends RoomTreasure
 {
+    public static ResourceLocation MARSCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_2");
+    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTableList.register(MARSCHEST);
+
     public RoomTreasureMars()
     {
     }
@@ -86,7 +95,21 @@ public class RoomTreasureMars extends RoomTreasure
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
-                        this.setBlockState(worldIn, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
+                        BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
+                        if (boundingBox.isVecInside(blockpos))
+                        {
+                            worldIn.setBlockState(blockpos, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), 2);
+                            TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
+                            if (treasureChest != null)
+                            {
+                                ResourceLocation chesttype = TABLE_TIER_2_DUNGEON;
+                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                {
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                }
+                                treasureChest.setLootTable(chesttype, random.nextLong());
+                            }
+                        }
                     }
                     else
                     {

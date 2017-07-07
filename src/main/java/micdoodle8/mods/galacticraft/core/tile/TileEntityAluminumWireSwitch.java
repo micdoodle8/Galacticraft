@@ -41,6 +41,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
         {
             this.tier = 1;
         }
+        this.disableConnections = this.disableConnections();
     }
 
     @Override

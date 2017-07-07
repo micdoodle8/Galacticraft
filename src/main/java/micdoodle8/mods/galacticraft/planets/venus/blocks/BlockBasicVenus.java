@@ -132,12 +132,6 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         }
         else
         {
-            if (worldIn.provider.doesWaterVaporize())
-            {
-                worldIn.setBlockToAir(pos);
-                return;
-            }
-
             int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
             harvesters.set(player);
             this.dropBlockAsItem(worldIn, pos, state, i);
