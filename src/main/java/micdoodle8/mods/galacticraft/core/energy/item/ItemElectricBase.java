@@ -164,6 +164,11 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
                 energyStored = ((NBTTagFloat) obj).getFloat();
             }
         }
+        else //First time check item - maybe from addInformation() in a JEI recipe display?
+        {
+            energyStored = this.getMaxElectricityStored(itemStack) * ((100F - itemStack.getItemDamage()) / 100F);
+            itemStack.getTagCompound().setFloat("electricity", energyStored);
+        }
 
         /** Sets the damage as a percentage to render the bar properly. */
         itemStack.setItemDamage((int) (100 - energyStored / this.getMaxElectricityStored(itemStack) * 100));
