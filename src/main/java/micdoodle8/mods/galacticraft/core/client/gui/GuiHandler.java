@@ -136,6 +136,10 @@ public class GuiHandler implements IGuiHandler
             {
                 return new ContainerOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile, player);
             }
+            else if (tile instanceof TileEntityDeconstructor)
+            {
+                return new ContainerDeconstructor(player.inventory, (TileEntityDeconstructor) tile);
+            }
             else if (tile instanceof TileEntityPainter)
             {
                 return new ContainerPainter(player.inventory, (TileEntityPainter) tile);
@@ -278,6 +282,10 @@ public class GuiHandler implements IGuiHandler
             else if (tile instanceof TileEntityOxygenDecompressor)
             {
                 return new GuiOxygenDecompressor(player.inventory, (TileEntityOxygenDecompressor) tile);
+            }
+            else if (tile instanceof TileEntityDeconstructor)
+            {
+                return new GuiDeconstructor(player.inventory, (TileEntityDeconstructor) tile);
             }
             else if (tile instanceof TileEntityPainter)
             {

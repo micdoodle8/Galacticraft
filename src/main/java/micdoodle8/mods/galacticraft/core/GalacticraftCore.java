@@ -511,6 +511,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityAirLock.class, "GC Air Lock Frame");
         GameRegistry.registerTileEntity(TileEntityRefinery.class, "GC Refinery");
         GameRegistry.registerTileEntity(TileEntityNasaWorkbench.class, "GC NASA Workbench");
+        GameRegistry.registerTileEntity(TileEntityDeconstructor.class, "GC Deconstructor");
         GameRegistry.registerTileEntity(TileEntityOxygenCompressor.class, "GC Air Compressor");
         GameRegistry.registerTileEntity(TileEntityFuelLoader.class, "GC Fuel Loader");
         GameRegistry.registerTileEntity(TileEntityLandingPadSingle.class, "GC Landing Pad");
