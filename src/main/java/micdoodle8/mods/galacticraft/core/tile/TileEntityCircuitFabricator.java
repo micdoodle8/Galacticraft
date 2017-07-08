@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -137,18 +136,8 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
             {
                 if (this.containingItems[6].stackSize + resultItemStack.stackSize > 64)
                 {
-                    for (int i = 0; i < this.containingItems[6].stackSize + resultItemStack.stackSize - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.worldObj.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.worldObj, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.setPickupDelay(10);
-
-                        this.worldObj.spawnEntityInWorld(entityitem);
-                    }
+                    resultItemStack.stackSize = this.containingItems[6].stackSize + resultItemStack.stackSize - 64;
+                    GCCoreUtil.spawnItem(this.worldObj, this.getPos(), resultItemStack);
                     this.containingItems[6].stackSize = 64;
                 }
                 else

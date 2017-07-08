@@ -411,12 +411,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             this.containingItems[i].stackSize = this.getInventoryStackLimit();
             stack.stackSize -= this.getInventoryStackLimit() - size;
         }
-        int spawnCount = stack.stackSize;
-        stack.stackSize = 1;
-        for (int i = 0; i < spawnCount; i++)
-        {
-            GCCoreUtil.spawnItem(this.worldObj, this.getPos(), stack);
-        }
+        GCCoreUtil.spawnItem(this.worldObj, this.getPos(), stack);
     }
 
     @Override
