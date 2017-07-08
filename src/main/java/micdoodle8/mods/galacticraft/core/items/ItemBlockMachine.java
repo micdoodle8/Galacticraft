@@ -81,6 +81,10 @@ public class ItemBlockMachine extends ItemBlockDesc
             {
                 index = 4;
             }
+            else if (typenum == BlockMachine2.DECONSTRUCTOR_METADATA)
+            {
+                index = 10;
+            }
         }
         else //machineBase3
         {
