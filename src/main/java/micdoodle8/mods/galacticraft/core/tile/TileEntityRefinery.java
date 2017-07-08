@@ -340,7 +340,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         {
             final String liquidName = FluidRegistry.getFluidName(resource);
 
-            if (liquidName != null && liquidName.startsWith("oil"))
+            if (liquidName != null && FluidUtil.testOil(liquidName))
             {
                 if (liquidName.equals(GCFluids.fluidOil.getName()))
                 {
