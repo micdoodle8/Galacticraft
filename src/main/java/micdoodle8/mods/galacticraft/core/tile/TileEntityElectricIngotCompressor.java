@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -159,18 +158,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 if (this.stacks.get(slot).getCount() + resultItemStack.getCount() > 64)
                 {
-                    for (int i = 0; i < this.stacks.get(slot).getCount() + resultItemStack.getCount() - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.world, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.setPickupDelay(10);
-
-                        this.world.spawnEntity(entityitem);
-                    }
+                    GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
                     this.stacks.get(slot).setCount(64);
                 }
                 else
