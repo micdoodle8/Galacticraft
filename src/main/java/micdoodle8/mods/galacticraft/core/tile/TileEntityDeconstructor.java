@@ -1,26 +1,22 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import mezz.jei.api.recipe.BlankRecipeWrapper;
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeMaker;
-import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeMaker;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.astrominer.AstroMinerRecipeMaker;
-import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.tier3rocket.Tier3RocketRecipeMaker;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRocketRecipeMaker;
-import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeMaker;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
@@ -53,7 +49,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     private ItemStack[] containingItems = new ItemStack[11];
     
     public static List<ItemStack> salvageable = new LinkedList<>();
-    public static List<BlankRecipeWrapper> knownRecipes = new LinkedList<>();
+    public static List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
     private int recursiveCount;
     
     static
@@ -73,6 +69,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 5));  //Compressed desh
             addSalvage(new ItemStack(MarsItems.marsItemBasic, 1, 2));  //Desh ingot
         }
+        addSalvage(new ItemStack(GCItems.flagPole));
         addSalvage(new ItemStack(GCItems.heavyPlatingTier1));
         addSalvage(new ItemStack(GCItems.itemBasicMoon, 1, 1));  //Compressed meteoric iron
         addSalvage(new ItemStack(GCItems.itemBasicMoon, 1, 0));  //Meteoric iron ingot
@@ -92,14 +89,14 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     private static void initialiseRecipeList()
     {
-        knownRecipes.addAll(Tier1RocketRecipeMaker.getRecipesList());
-        knownRecipes.addAll(BuggyRecipeMaker.getRecipesList());
+        knownRecipes.addAll(GalacticraftRegistry.getRocketT1Recipes());
+        knownRecipes.addAll(GalacticraftRegistry.getBuggyBenchRecipes());
         if (GalacticraftCore.isPlanetsLoaded)
         {
-            knownRecipes.addAll(Tier2RocketRecipeMaker.getRecipesList());
-            knownRecipes.addAll(CargoRocketRecipeMaker.getRecipesList());
-            knownRecipes.addAll(Tier3RocketRecipeMaker.getRecipesList());
-            knownRecipes.addAll(AstroMinerRecipeMaker.getRecipesList());
+            knownRecipes.addAll(GalacticraftRegistry.getRocketT2Recipes());
+            knownRecipes.addAll(GalacticraftRegistry.getCargoRocketRecipes());
+            knownRecipes.addAll(GalacticraftRegistry.getRocketT3Recipes());
+            knownRecipes.addAll(GalacticraftRegistry.getAstroMinerRecipes());
         }
     }
 
@@ -288,12 +285,12 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     private List<ItemStack> getIngredients(ItemStack stack)
     {
-        for (BlankRecipeWrapper recipe : knownRecipes)
+        for (INasaWorkbenchRecipe recipe : knownRecipes)
         {
-            ItemStack test = (ItemStack) recipe.getOutputs().get(0);
+            ItemStack test = (ItemStack) recipe.getRecipeOutput();
             if (ItemStack.areItemsEqual(test, stack) && test.stackSize == 1)
             {
-                return toItemStackList(recipe.getInputs());
+                return toItemStackList(recipe.getRecipeInput().values());
             }
         }
         List<IRecipe> standardRecipes = CraftingManager.getInstance().getRecipeList();
@@ -382,25 +379,12 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         return null;
     }
 
-    private List<ItemStack> toItemStackList(List<Object> inputs)
+    private List<ItemStack> toItemStackList(Collection<ItemStack> inputs)
     {
         List<ItemStack> ret = new LinkedList<>();
-        for (Object o : inputs)
+        for (ItemStack o : inputs)
         {
-            if (o instanceof ItemStack)
-            {
-                ret.add(((ItemStack) o).copy());
-                continue;
-            }
-            
-            if (o instanceof List<?>)
-            {
-                Object p = ((List<?>)o).get(0);
-                if (p instanceof ItemStack)
-                {
-                    ret.add(((ItemStack) p).copy());
-                }
-            }
+            ret.add(o.copy());
         }
         return ret;
     }
