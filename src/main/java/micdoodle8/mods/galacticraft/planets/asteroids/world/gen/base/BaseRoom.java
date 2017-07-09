@@ -22,8 +22,10 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.util.EnumFacing;
@@ -572,10 +574,10 @@ public class BaseRoom extends SizedPiece
             else if (tile instanceof TileEntityBrewingStand)
             {
                 TileEntityBrewingStand stand = (TileEntityBrewingStand) tile;
-                stand.setInventorySlotContents(0, new ItemStack(Items.POTIONITEM, 1, 8196));  //Poison
-                stand.setInventorySlotContents(1, new ItemStack(Items.POTIONITEM, 1, 8200));  //Weakness
-                stand.setInventorySlotContents(2, new ItemStack(Items.POTIONITEM, 1, 8204)); //Harming
-            }
+                stand.setInventorySlotContents(0, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.POISON));
+                stand.setInventorySlotContents(1, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WEAKNESS));
+                stand.setInventorySlotContents(2, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING));
+                        }
             else if (tile instanceof TileEntityEnergyStorageModule)
             {
                 TileEntityEnergyStorageModule store = (TileEntityEnergyStorageModule) tile;
