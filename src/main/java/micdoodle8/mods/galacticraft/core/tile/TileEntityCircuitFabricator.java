@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory
+public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMachineSides
 {
     public static final int PROCESS_TIME_REQUIRED = 300;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -159,6 +159,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         super.readFromNBT(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -167,6 +168,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         super.writeToNBT(par1NBTTagCompound);
         par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
         this.writeStandardItemsToNBT(par1NBTTagCompound);
+        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -264,6 +266,66 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront().rotateY();
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
     }
+
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+    }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.LEFT };
+    }
+    
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
+    
+    @Override
+    public void onLoad()
+    {
+        this.clientOnLoad();
+    }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+    }
+    //------------------END OF IMachineSides implementation
 }

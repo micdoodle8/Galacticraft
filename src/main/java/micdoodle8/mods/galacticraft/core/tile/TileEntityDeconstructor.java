@@ -36,7 +36,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-public class TileEntityDeconstructor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory
+public class TileEntityDeconstructor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
     public static final float SALVAGE_CHANCE = 0.75F;
     public static final int PROCESS_TIME_REQUIRED_BASE = 250;
@@ -432,6 +432,8 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
             }
         }
+        
+        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -452,8 +454,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 var2.appendTag(var4);
             }
         }
-
         par1NBTTagCompound.setTag("Items", var2);
+
+        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
 
     @Override
@@ -616,10 +619,28 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         return EnumFacing.NORTH;
     }
 
+    public ItemStack[] getContainingItems()
+    {
+        return this.containingItems;
+    }
+
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront().rotateY();
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
     }
 
     @Override
@@ -628,8 +649,50 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         return this.getStackInSlot(0);
     }
 
-    public ItemStack[] getContainingItems()
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
+    @Override
+    public MachineSide[] listConfigurableSides()
     {
-        return this.containingItems;
+        return new MachineSide[] { MachineSide.ELECTRIC_IN };
     }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.LEFT };
+    }
+    
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
+    
+    @Override
+    public void onLoad()
+    {
+        this.clientOnLoad();
+    }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+    }
+    //------------------END OF IMachineSides implementation
 }
