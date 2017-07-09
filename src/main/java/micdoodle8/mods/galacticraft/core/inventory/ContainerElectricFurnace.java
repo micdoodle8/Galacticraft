@@ -27,6 +27,10 @@ public class ContainerElectricFurnace extends Container
 
         // Smelting result
         this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
+        if (tileEntity.tierGC == 2)
+        {
+            this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 3, 127, 25));
+        }
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -67,15 +71,16 @@ public class ContainerElectricFurnace extends Container
     {
         ItemStack var2 = null;
         Slot var3 = (Slot) this.inventorySlots.get(par1);
+        int off = this.tileEntity.tierGC == 2 ? 1 : 0;
 
         if (var3 != null && var3.getHasStack())
         {
             ItemStack var4 = var3.getStack();
             var2 = var4.copy();
 
-            if (par1 == 2)
+            if (par1 >= 2 && par1 <= 2 + off)
             {
-                if (!this.mergeItemStack(var4, 3, 39, true))
+                if (!this.mergeItemStack(var4, 3 + off, 39 + off, true))
                 {
                     return null;
                 }
@@ -98,19 +103,19 @@ public class ContainerElectricFurnace extends Container
                         return null;
                     }
                 }
-                else if (par1 >= 3 && par1 < 30)
+                else if (par1 >= 3 + off && par1 < 30 + off)
                 {
-                    if (!this.mergeItemStack(var4, 30, 39, false))
+                    if (!this.mergeItemStack(var4, 30 + off, 39 + off, false))
                     {
                         return null;
                     }
                 }
-                else if (par1 >= 30 && par1 < 39 && !this.mergeItemStack(var4, 3, 30, false))
+                else if (par1 >= 30 + off && par1 < 39 + off && !this.mergeItemStack(var4, 3 + off, 30 + off, false))
                 {
                     return null;
                 }
             }
-            else if (!this.mergeItemStack(var4, 3, 39, false))
+            else if (!this.mergeItemStack(var4, 3 + off, 39 + off, false))
             {
                 return null;
             }

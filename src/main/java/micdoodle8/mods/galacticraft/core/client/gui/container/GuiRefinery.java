@@ -114,7 +114,7 @@ public class GuiRefinery extends GuiContainerGC
             missingInput= EnumColor.RED + GCCoreUtil.translate("gui.status.nooil.name");
         }
         String activeString = this.tileEntity.canProcess() ? EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.refining.name") : null;
-        displayText = this.tileEntity.getGUIstatus(missingInput, activeString);
+        displayText = this.tileEntity.getGUIstatus(missingInput, activeString, false);
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
         this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine.name") : GCCoreUtil.translate("gui.button.stoprefine.name");

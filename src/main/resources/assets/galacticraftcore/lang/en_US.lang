@@ -367,6 +367,7 @@ gui.status.idle.name=Idle
 gui.status.missingleaves.name=Not Enough Leaf Blocks
 gui.status.missingoxygen.name=Not Enough Oxygen
 gui.status.missingpower.name=Not Enough Power
+gui.status.missingpower.short.name=No Power
 gui.status.missingtank.name=No Valid Oxygen Tank
 gui.status.nofuel.name=No Fuel to Load!
 gui.status.noinvtarget.name=No Inventory on Target!

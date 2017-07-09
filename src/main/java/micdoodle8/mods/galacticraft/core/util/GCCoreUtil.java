@@ -522,14 +522,18 @@ public class GCCoreUtil
     
     public static void spawnItem(World world, BlockPos pos, ItemStack stack)
     {
-        float var = 0.7F;
-        double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-        EntityItem entityitem = new EntityItem(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack);
-
-        entityitem.setPickupDelay(10);
-
-        world.spawnEntityInWorld(entityitem);
+        int spawnCount = stack.stackSize;
+        for (int i = 0; i < spawnCount; i++)
+        {
+            float var = 0.7F;
+            double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+            EntityItem entityitem = new EntityItem(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, new ItemStack(stack.getItem(), 1, stack.getItemDamage()));
+    
+            entityitem.setPickupDelay(10);
+    
+            world.spawnEntityInWorld(entityitem);
+        }
     }
 }
