@@ -40,7 +40,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
     private boolean initialised = false;
@@ -140,25 +140,40 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.stacks.get(1).isEmpty() || FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1)).isEmpty())
+        if (this.stacks.get(1).isEmpty())
+        {
+            return false;
+        }
+        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1));
+        if (result.isEmpty())
         {
             return false;
         }
 
-        if (!this.stacks.get(2).isEmpty())
-        {
-            if (!this.stacks.get(2).isItemEqual(FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1))))
-            {
-                return false;
-            }
 
-            if (this.stacks.get(2).getCount() > 63)
+		if (this.tierGC == 1)
+        {
+	        if (!this.stacks.get(2).isEmpty())
             {
-                return false;
+                return (this.stacks.get(2).isItemEqual(result) && this.stacks.get(2).getCount() < 64);
             }
         }
-
-        return true;
+        
+        //Electric Arc Furnace
+        if (this.stacks.get(2).isEmpty() || this.stacks.get(3).isEmpty())
+        {
+            return true;
+        }
+        int space = 0;
+        if (this.stacks.get(2).isItemEqual(result))
+        {
+            space = 64 - this.stacks.get(2).getCount();
+        }
+        if (this.stacks.get(3).isItemEqual(result))
+        {
+            space += 64 - this.stacks.get(3).getCount();
+        }
+        return space >= 2;
     }
 
     /**
@@ -170,30 +185,57 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         if (this.canProcess())
         {
             ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1));
-
-            if (this.stacks.get(2).isEmpty())
+            boolean doubleResult = false;
+            if (this.tierGC > 1)
             {
-                this.stacks.set(2, resultItemStack.copy());
-                if (this.tierGC > 1)
+                String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
+                if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
                 {
-                    String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
-                    if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
+                    doubleResult = true;
+                }
+            }
+
+            if (doubleResult)
+            {
+                int space2 = 0;
+                int space3 = 0;
+                if (this.stacks.get(2).isEmpty())
+                {
+                    this.stacks.set(2, resultItemStack.copy());
+                    this.stacks.get(2).grow(resultItemStack.getCount());
+                    space2 = 2;
+                }
+                else if (this.stacks.get(2).isItemEqual(resultItemStack))
+                {
+                    space2 = (64 - this.stacks.get(2).getCount()) / resultItemStack.getCount();
+                    if (space2 > 2) space2 = 2;
+                    this.stacks.get(2).grow(resultItemStack.getCount() * space2);
+                }
+                if (space2 < 2)
+                {
+                    if (this.stacks.get(3).isEmpty())
                     {
-                        this.stacks.get(2).grow(resultItemStack.getCount());
+                        this.stacks.set(3, resultItemStack.copy());
+                        if (space2 == 0)
+                        {
+                            this.stacks.get(3).grow(resultItemStack.getCount());
+                        }
+                    }
+                    else if (this.stacks.get(3).isItemEqual(resultItemStack))
+                    {
+                        space3 = (64 - this.stacks.get(3).getCount()) / resultItemStack.getCount();
+                        if (space3 > 2 - space2) space3 = 2 - space2;
+                        this.stacks.get(3).grow(resultItemStack.getCount() * space3);
                     }
                 }
+            }
+            else if (this.stacks.get(2).isEmpty())
+            {
+                this.stacks.set(2, resultItemStack.copy());
             }
             else if (this.stacks.get(2).isItemEqual(resultItemStack))
             {
                 this.stacks.get(2).grow(resultItemStack.getCount());
-                if (this.tierGC > 1)
-                {
-                    String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
-                    if (resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
-                    {
-                        this.stacks.get(2).grow(resultItemStack.getCount());
-                    }
-                }
             }
 
             this.stacks.get(1).shrink(1);
@@ -241,6 +283,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return this.stacks;
     }
 
+    public int getSizeInventory()
+    {
+        return this.tierGC == 2 ? 4 : 3;
+    }
+
     @Override
     public String getName()
     {
@@ -270,6 +317,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
+        if (this.tierGC == 2)
+        {
+            return new int[] { 0, 1, 2, 3 };
+        }
         return new int[] { 0, 1, 2 };
     }
 
@@ -282,7 +333,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
     {
-        return slotID == 2;
+        return slotID == 2 || this.tierGC == 2 && slotID == 3;
     }
 
     @Override

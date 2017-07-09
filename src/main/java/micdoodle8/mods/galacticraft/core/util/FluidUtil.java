@@ -83,9 +83,29 @@ public class FluidUtil
         return false;
     }
     
+    public static boolean testOil(String name)
+    {
+        if (name.startsWith("oil"))
+        {
+            return true;
+        }
+
+        if (name.equals("crude_oil"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+    
     public static boolean isFuel(FluidStack fluid)
     {
         return fluid != null && testFuel(FluidRegistry.getFluidName(fluid));
+    }
+
+    public static boolean isOil(FluidStack fluid)
+    {
+        return fluid != null && testOil(FluidRegistry.getFluidName(fluid));
     }
 
     public static boolean isFluidFuzzy(FluidStack fluid, String name)
@@ -150,7 +170,7 @@ public class FluidUtil
         }
 
         FluidStack liquid = net.minecraftforge.fluids.FluidUtil.getFluidContained(var4);
-        return liquid != null && FluidRegistry.getFluidName(liquid).startsWith("oil");
+        return isOil(liquid);
     }
 
     /**
