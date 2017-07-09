@@ -20,14 +20,17 @@ import java.util.List;
 public class GuiElectricFurnace extends GuiContainerGC
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_furnace.png");
+    private static final ResourceLocation arcFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_arc_furnace.png");
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
 
     private TileEntityElectricFurnace tileEntity;
+    private ResourceLocation texture;
 
     public GuiElectricFurnace(InventoryPlayer par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
     {
         super(new ContainerElectricFurnace(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
+        texture = tileEntity.tierGC == 2 ? arcFurnaceTexture : electricFurnaceTexture;
     }
 
     @Override
@@ -78,7 +81,7 @@ public class GuiElectricFurnace extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiElectricFurnace.electricFurnaceTexture);
+        this.mc.renderEngine.bindTexture(this.texture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
