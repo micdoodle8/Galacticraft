@@ -68,7 +68,8 @@ public class GuiElectricFurnace extends GuiContainerGC
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
         }
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + displayText, 97, 52, 4210752);
+        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getGUIstatus(null, displayText, true), 107, 62, 4210752);
 //		this.fontRendererObj.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
 //		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
