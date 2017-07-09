@@ -505,7 +505,7 @@ public class BaseDeck extends SizedPiece
             IBlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, chunkBounds);
-            lever = Blocks.LEVER.getStateFromMeta(3);
+            lever = Blocks.LEVER.getStateFromMeta(this.direction.getAxis() == EnumFacing.Axis.Z ? 4 : 3);
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ - 1, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ - 1, chunkBounds);
             

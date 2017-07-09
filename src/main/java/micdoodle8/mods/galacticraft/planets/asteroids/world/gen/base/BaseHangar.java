@@ -288,7 +288,7 @@ public class BaseHangar extends SizedPiece
                 this.setBlockState(worldIn, blockGrid, 17, maxY, zz, structureBoundingBoxIn);
                 if (zz == HANGARLENGTH - 12)
                 {
-                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(2);  //Rotation will be taken care of by getRotation()
+                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(direction.getAxis() == EnumFacing.Axis.Z ? 0 : 2);  //Rotation will be taken care of by getRotation() but seems to be bugged in vanilla
                     this.setBlockState(worldIn, repeater, 11, maxY, zz, structureBoundingBoxIn);
                     this.setBlockState(worldIn, repeater, 15, maxY, zz, structureBoundingBoxIn);
                 }
