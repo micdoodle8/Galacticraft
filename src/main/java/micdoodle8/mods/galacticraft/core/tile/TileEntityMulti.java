@@ -3,7 +3,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -141,6 +144,16 @@ public class TileEntityMulti extends TileEntity
             if (tile instanceof TileEntityMulti)
             {
                 ((TileEntityMulti) tile).mainBlockPosition = pos;
+            }
+            else if (tile == null)
+            {
+                Block b = world.getBlockState(vecToAdd).getBlock();
+                System.out.println("setting up " + b.getUnlocalizedName() + " tile at " + vecToAdd);
+                if (!(b instanceof BlockMulti))
+                {
+                    world.setBlockState(vecToAdd, GCBlocks.fakeBlock.getDefaultState().withProperty(BlockMulti.MULTI_TYPE, thisTile.getMultiType()), 2);
+                }
+                world.setTileEntity(vecToAdd, new TileEntityMulti(pos));
             }
             else
             {
