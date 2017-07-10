@@ -365,7 +365,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                     return stack.copy();
                 }
             }
-            return stacks.get(0).copy();
+            return stacks.get(0) == null ? null : stacks.get(0).copy();
         }
         else if (input instanceof Iterable)
         {
