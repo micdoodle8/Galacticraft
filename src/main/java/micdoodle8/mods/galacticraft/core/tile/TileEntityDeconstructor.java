@@ -362,7 +362,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                     return stack.copy();
                 }
             }
-            return stacks.get(0).copy();
+            return stacks.get(0) == null ? null : stacks.get(0).copy();
         }
         else if (input instanceof Iterable)
         {
@@ -384,7 +384,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         List<ItemStack> ret = new LinkedList<>();
         for (ItemStack o : inputs)
         {
-            ret.add(o.copy());
+            if (o != null)
+            {
+                ret.add(o.copy());
+            }
         }
         return ret;
     }
