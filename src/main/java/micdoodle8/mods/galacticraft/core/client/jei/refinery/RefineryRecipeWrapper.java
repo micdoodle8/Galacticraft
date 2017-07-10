@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.client.jei.refinery;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
-public class RefineryRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class RefineryRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ItemStack input;

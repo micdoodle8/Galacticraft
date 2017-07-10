@@ -5,6 +5,7 @@ import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -113,5 +114,11 @@ public class MethaneSynthesizerRecipeCategory extends BlankRecipeCategory
 
             itemstacks.set(3, ingredients.getOutputs(ItemStack.class).get(0));
         }
+    }
+
+    @Override
+    public String getModName()
+    {
+        return Constants.MOD_ID_PLANETS;
     }
 }

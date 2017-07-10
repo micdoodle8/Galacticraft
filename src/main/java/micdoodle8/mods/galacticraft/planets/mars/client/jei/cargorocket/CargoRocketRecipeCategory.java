@@ -7,6 +7,7 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -75,5 +76,11 @@ public class CargoRocketRecipeCategory extends BlankRecipeCategory
         itemstacks.init(16, false, 138, 91);
 
         itemstacks.set(ingredients);
+    }
+
+    @Override
+    public String getModName()
+    {
+        return Constants.MOD_ID_PLANETS;
     }
 }

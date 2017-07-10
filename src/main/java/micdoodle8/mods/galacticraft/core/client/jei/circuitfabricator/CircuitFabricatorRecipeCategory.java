@@ -73,4 +73,10 @@ public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
         itemstacks.init(5, false, 148, 81);
         itemstacks.set(ingredients);
     }
+
+    @Override
+    public String getModName()
+    {
+        return Constants.MOD_ID_CORE;
+    }
 }

@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class GasLiquefierRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class GasLiquefierRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ItemStack input;

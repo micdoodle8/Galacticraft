@@ -73,4 +73,10 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
         itemstacks.init(9, false, 119, 20);
         itemstacks.set(ingredients);
     }
+
+    @Override
+    public String getModName()
+    {
+        return Constants.MOD_ID_CORE;
+    }
 }

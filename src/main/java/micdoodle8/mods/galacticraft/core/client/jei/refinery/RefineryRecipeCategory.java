@@ -75,4 +75,10 @@ public class RefineryRecipeCategory extends BlankRecipeCategory
 
         itemstacks.set(ingredients);
     }
+
+    @Override
+    public String getModName()
+    {
+        return Constants.MOD_ID_CORE;
+    }
 }
