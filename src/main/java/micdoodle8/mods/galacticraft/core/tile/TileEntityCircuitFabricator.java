@@ -235,7 +235,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-        if (side == EnumFacing.UP)
+        if (side == EnumFacing.DOWN)
         {
             return new int[] { 6 };
         }

@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting.PanelType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
+import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -230,5 +231,10 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean getEnabled()
+    {
+        return !RedstoneUtil.isBlockReceivingRedstone(this.world, this.getPos());
     }
 }

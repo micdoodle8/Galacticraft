@@ -63,4 +63,10 @@ public class ItemArmorAsteroids extends ItemArmor implements ISortableItem
     {
         return EnumSortCategoryItem.ARMOR;
     }
+    
+    @Override
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair)
+    {
+        return repair.getItem() == AsteroidsItems.basicItem && repair.getItemDamage() == 6;
+    }
 }

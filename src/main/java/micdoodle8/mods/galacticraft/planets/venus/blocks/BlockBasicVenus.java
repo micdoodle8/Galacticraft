@@ -16,12 +16,16 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.StatList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -35,6 +39,7 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class BlockBasicVenus extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
@@ -104,14 +109,44 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack tool)
     {
-        super.breakBlock(worldIn, pos, state);
+        player.addStat(StatList.getBlockStats(this));
+        player.addExhaustion(0.025F);
 
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
-        if (type == EnumBlockBasicVenus.ROCK_MAGMA)
+        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0)
         {
-            worldIn.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
+            ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+            ItemStack itemstack = this.getSilkTouchDrop(state);
+
+            if (itemstack != null)
+            {
+                items.add(itemstack);
+            }
+
+            net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, worldIn.getBlockState(pos), 0, 1.0f, true, player);
+
+            for (ItemStack is : items)
+            {
+                spawnAsEntity(worldIn, pos, is);
+            }
+        }
+        else
+        {
+            if (worldIn.provider.doesWaterVaporize())
+            {
+                worldIn.setBlockToAir(pos);
+                return;
+            }
+
+            int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
+            harvesters.set(player);
+            this.dropBlockAsItem(worldIn, pos, state, i);
+            harvesters.set(null);
+            if ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS) == EnumBlockBasicVenus.ROCK_MAGMA)
+            {
+                worldIn.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
+            }
         }
     }
 

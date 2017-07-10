@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -62,29 +61,15 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
                 {
                     ItemStack var7 = inventory.getStackInSlot(var6);
 
-                    if (var7 != null)
+                    if (var7 != null && !var7.isEmpty())
                     {
                         float var8 = syncRandom.nextFloat() * 0.8F + 0.1F;
                         float var9 = syncRandom.nextFloat() * 0.8F + 0.1F;
                         float var10 = syncRandom.nextFloat() * 0.8F + 0.1F;
 
-                        while (var7.getCount() > 0)
+                        while (!var7.isEmpty())
                         {
-                            int var11 = syncRandom.nextInt(21) + 10;
-
-                            if (var11 > var7.getCount())
-                            {
-                                var11 = var7.getCount();
-                            }
-
-                            var7.shrink(var11);
-                            EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, new ItemStack(var7.getItem(), var11, var7.getItemDamage()));
-
-                            if (var7.hasTagCompound())
-                            {
-                                var12.getEntityItem().setTagCompound((NBTTagCompound) var7.getTagCompound().copy());
-                            }
-
+                            EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
                             float var13 = 0.05F;
                             var12.motionX = (float) syncRandom.nextGaussian() * var13;
                             var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;

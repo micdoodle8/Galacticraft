@@ -184,7 +184,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
         noMineList.add(Blocks.BEDROCK);
-        noMineList.add(Blocks.LAVA);
+        noMineList.add(Blocks.FLOWING_LAVA);
         noMineList.add(Blocks.MOSSY_COBBLESTONE);
         noMineList.add(Blocks.END_PORTAL);
         noMineList.add(Blocks.END_PORTAL_FRAME);
@@ -2470,6 +2470,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+        if (world.isRemote) return;
         final NBTTagList var2 = new NBTTagList();
 
         ItemStackHelper.saveAllItems(nbt, this.stacks);

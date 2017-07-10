@@ -171,7 +171,7 @@ public class GuiHandler implements IGuiHandler
 
         if (ID == GuiIdsCore.GALAXY_MAP)
         {
-            return new GuiCelestialSelection(true, null);
+            return new GuiCelestialSelection(true, null, true);
         }
         else if (ID == GuiIdsCore.ROCKET_INVENTORY && player.getRidingEntity() instanceof EntityTieredRocket)
         {
