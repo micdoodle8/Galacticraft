@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.storage.loot.LootTableList;
-
 import java.util.Random;
 
 public class RoomChest extends RoomEmpty
@@ -37,7 +37,12 @@ public class RoomChest extends RoomEmpty
 
             if (chest != null)
             {
-                chest.setLootTable(LootTableList.CHESTS_SIMPLE_DUNGEON, rand.nextLong());
+                ResourceLocation chesttype = RoomTreasure.MOONCHEST;
+                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                {
+                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                }
+                chest.setLootTable(chesttype, rand.nextLong());
             }
 
             return true;

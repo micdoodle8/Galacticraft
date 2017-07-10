@@ -10,7 +10,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -32,7 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory
+public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
     public static final int PROCESS_TIME_REQUIRED_BASE = 200;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -159,18 +158,8 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             {
                 if (this.stacks.get(slot).getCount() + resultItemStack.getCount() > 64)
                 {
-                    for (int i = 0; i < this.stacks.get(slot).getCount() + resultItemStack.getCount() - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.world, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.setPickupDelay(10);
-
-                        this.world.spawnEntity(entityitem);
-                    }
+					resultItemStack.grow(this.stacks.get(slot).getCount() - 64);
+                    GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
                     this.stacks.get(slot).setCount(64);
                 }
                 else
@@ -218,7 +207,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 this.compressingCraftMatrix.setInventorySlotContents(j - this.stacks.size(), new ItemStack(nbttagcompound));
             }
         }
-
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
         this.updateInput();
     }
 
@@ -251,8 +240,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 var2.appendTag(var4);
             }
         }
-
         nbt.setTag("Items", var2);
+
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
     }
 
@@ -597,7 +587,20 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public EnumFacing getElectricInputDirection()
     {
-        return getFront().rotateY();
+        switch (this.getSide(MachineSide.ELECTRIC_IN))
+        {
+        case RIGHT:
+            return getFront().rotateYCCW();
+        case REAR:
+            return getFront().getOpposite();
+        case TOP:
+            return EnumFacing.UP;
+        case BOTTOM:
+            return EnumFacing.DOWN;
+        case LEFT:
+        default:
+            return getFront().rotateY();
+        }
     }
 
     @Override
@@ -605,4 +608,51 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         return this.getStackInSlot(0);
     }
+
+    //------------------
+    //Added these methods and field to implement IMachineSides properly 
+    //------------------
+    @Override
+    public MachineSide[] listConfigurableSides()
+    {
+        return new MachineSide[] { MachineSide.ELECTRIC_IN };
+    }
+
+    @Override
+    public Face[] listDefaultFaces()
+    {
+        return new Face[] { Face.LEFT };
+    }
+    
+    private MachineSidePack[] machineSides;
+
+    @Override
+    public MachineSidePack[] getAllMachineSides()
+    {
+        if (this.machineSides == null)
+        {
+            this.initialiseSides();
+        }
+
+        return this.machineSides;
+    }
+
+    @Override
+    public void setupMachineSides(int length)
+    {
+        this.machineSides = new MachineSidePack[length];
+    }
+    
+    @Override
+    public void onLoad()
+    {
+        this.clientOnLoad();
+    }
+    
+    @Override
+    public IMachineSidesProperties getConfigurationType()
+    {
+        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+    }
+    //------------------END OF IMachineSides implementation
 }

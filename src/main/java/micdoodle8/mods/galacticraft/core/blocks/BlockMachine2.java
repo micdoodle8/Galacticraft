@@ -4,8 +4,10 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -24,6 +26,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -33,15 +36,19 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
     public static final int CIRCUIT_FABRICATOR_METADATA = 4;
     public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
+    public static final int DECONSTRUCTOR_METADATA = 12;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
+    public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public enum EnumMachineExtendedType implements IStringSerializable
     {
         ELECTRIC_COMPRESSOR(0, "electric_compressor"),
         CIRCUIT_FABRICATOR(1, "circuit_fabricator"),
-        OXYGEN_STORAGE(2, "oxygen_storage");
+        OXYGEN_STORAGE(2, "oxygen_storage"),
+        DECONSTRUCTOR(3, "deconstructor");
 
         private final int meta;
         private final String name;
@@ -100,40 +107,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
-        if (tile instanceof TileEntityCoalGenerator)
-        {
-            TileEntityCoalGenerator tileEntity = (TileEntityCoalGenerator) tile;
-            if (tileEntity.heatGJperTick > 0)
-            {
-                int metadata = getMetaFromState(stateIn);
-                float particlePosX = pos.getX() + 0.5F;
-                float particlePosY = pos.getY() + 0.0F + rand.nextFloat() * 6.0F / 16.0F;
-                float particlePosZ = pos.getZ() + 0.5F;
-                float particleSize0 = 0.52F;
-                float particleSize1 = rand.nextFloat() * 0.6F - 0.3F;
-
-                if (metadata == 3)
-                {
-                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
-                }
-                else if (metadata == 2)
-                {
-                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
-                }
-                else if (metadata == 1)
-                {
-                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize1, particlePosY, particlePosZ - particleSize0, 0.0D, 0.0D, 0.0D);
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize1, particlePosY, particlePosZ - particleSize0, 0.0D, 0.0D, 0.0D);
-                }
-                else if (metadata == 0)
-                {
-                    worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX + particleSize1, particlePosY, particlePosZ + particleSize0, 0.0D, 0.0D, 0.0D);
-                    worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX + particleSize1, particlePosY, particlePosZ + particleSize0, 0.0D, 0.0D, 0.0D);
-                }
-            }
-        }
     }
 
     @Override
@@ -143,19 +116,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
 
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
-
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + change), 3);
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.CIRCUIT_FABRICATOR_METADATA + change), 3);
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachine2.ELECTRIC_COMPRESSOR_METADATA + change), 3);
-        }
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & 0x0c) + change), 3);
     }
 
     @Override
@@ -182,7 +143,11 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         int metadata = getMetaFromState(state);
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        if (metadata >= BlockMachine2.DECONSTRUCTOR_METADATA)
+        {
+            return new TileEntityDeconstructor();
+        }
+        else if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
         {
             return new TileEntityOxygenStorageModule();
         }
@@ -215,34 +180,25 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
         return new ItemStack(this, 1, BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
     }
 
+    public ItemStack getDeconstructor()
+    {
+        return new ItemStack(this, 1, BlockMachine2.DECONSTRUCTOR_METADATA);
+    }
+
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
     {
         list.add(this.getElectricCompressor());
         list.add(this.getCircuitFabricator());
         list.add(this.getOxygenStorageModule());
+        list.add(this.getDeconstructor());
     }
 
     @Override
     public int damageDropped(IBlockState state)
     {
         int metadata = getMetaFromState(state);
-        if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            return BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA;
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            return BlockMachine2.CIRCUIT_FABRICATOR_METADATA;
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            return BlockMachine2.ELECTRIC_COMPRESSOR_METADATA;
-        }
-        else
-        {
-            return 0;
-        }
+        return metadata & 0x0c;
     }
 
     @Override
@@ -256,6 +212,8 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
             return GCCoreUtil.translate("tile.compressor_electric.description");
         case OXYGEN_STORAGE_MODULE_METADATA:
             return GCCoreUtil.translate("tile.oxygen_storage_module.description");
+        case DECONSTRUCTOR_METADATA:
+            return GCCoreUtil.translate("tile.deconstructor.description");
         }
         return "";
     }
@@ -270,7 +228,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata((int) Math.floor(meta / 4.0));
+        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata(meta / 4);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
@@ -283,12 +241,31 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE, SIDES);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    {
+        TileEntity tile = worldIn.getTileEntity(pos);
+        return IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);
     }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+    
+    @Override
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof IMachineSides)
+        {
+            ((IMachineSides)tile).nextSideConfiguration(tile);
+            return true;
+        }
+        return false;
     }
 }

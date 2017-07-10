@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -223,18 +222,8 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             {
                 if (this.stacks.get(1).getCount() + resultItemStack.getCount() > 64)
                 {
-                    for (int i = 0; i < this.stacks.get(1).getCount() + resultItemStack.getCount() - 64; i++)
-                    {
-                        float var = 0.7F;
-                        double dx = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dy = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        double dz = this.world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-                        EntityItem entityitem = new EntityItem(this.world, this.getPos().getX() + dx, this.getPos().getY() + dy, this.getPos().getZ() + dz, new ItemStack(resultItemStack.getItem(), 1, resultItemStack.getItemDamage()));
-
-                        entityitem.setPickupDelay(10);
-
-                        this.world.spawnEntity(entityitem);
-                    }
+                    resultItemStack.grow(this.stacks.get(1).getCount() - 64);
+                    GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
                     this.stacks.get(1).setCount(64);
                 }
                 else

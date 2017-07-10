@@ -13,6 +13,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -454,5 +455,21 @@ public class GCCoreUtil
         result.add(new BlockPos(x, y, z + 1));
         result.add(new BlockPos(x - 1, y, z));
         result.add(new BlockPos(x + 1, y, z));
+    }
+    
+    public static void spawnItem(World world, BlockPos pos, ItemStack stack)
+    {
+        float var = 0.7F;
+        while (!stack.isEmpty())
+        {
+	        double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+	        double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+	        double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
+	        EntityItem entityitem = new EntityItem(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.splitStack(world.rand.nextInt(21) + 10));
+	
+	        entityitem.setPickupDelay(10);
+	
+	        world.spawnEntity(entityitem);
+        }
     }
 }

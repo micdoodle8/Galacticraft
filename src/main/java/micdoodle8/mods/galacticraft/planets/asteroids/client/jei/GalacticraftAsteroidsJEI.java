@@ -6,11 +6,13 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.astrominer.AstroMinerRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.astrominer.AstroMinerRecipeWrapper;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.tier3rocket.Tier3RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.jei.tier3rocket.Tier3RocketRecipeWrapper;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -29,5 +31,8 @@ public class GalacticraftAsteroidsJEI extends BlankModPlugin
 
         registry.addRecipes(GalacticraftRegistry.getRocketT3Recipes(), RecipeCategories.ROCKET_T3_ID);
         registry.addRecipes(GalacticraftRegistry.getAstroMinerRecipes(), RecipeCategories.ASTRO_MINER_ID);
+        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T3_ID);
+        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ASTRO_MINER_ID);
     }
 }

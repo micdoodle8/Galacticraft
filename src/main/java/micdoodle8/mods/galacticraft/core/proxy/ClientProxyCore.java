@@ -658,6 +658,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase2, 0, "electric_ingot_compressor");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase2, 4, "circuit_fabricator");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase2, 8, "oxygen_storage_module");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase2, 12, "deconstructor");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 0, "energy_storage");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 4, "electric_furnace");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
@@ -723,7 +724,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         addCoreVariant("enclosed", "enclosed_hv_cable", "enclosed_fluid_pipe", "enclosed_copper_cable", "enclosed_gold_cable", "enclosed_te_conduit", "enclosed_glass_fibre_cable", "enclosed_lv_cable", "enclosed_pipe_items_stone", "enclosed_pipe_items_cobblestone", "enclosed_pipe_fluids_stone", "enclosed_pipe_fluids_cobblestone", "enclosed_pipe_power_stone", "enclosed_pipe_power_gold", "enclosed_me_cable", "enclosed", "enclosed_heavy_aluminum_wire");
         addCoreVariant("solar", "advanced_solar", "solar");
         addCoreVariant("machine", "coal_generator", "ingot_compressor");
-        addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor");
+        addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor", "deconstructor");
         addCoreVariant("machine3", "painter");
         addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
         addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "basic_block_moon", "moon_turf", "ore_sapphire_moon", "moon_dungeon_brick");

@@ -19,6 +19,7 @@ public class GCSounds
     public static SoundEvent closeAirLock;
     public static SoundEvent singleDrip;
     public static SoundEvent scaryScape;
+    public static SoundEvent deconstructor;
 
     public static SoundEvent music;
 
@@ -37,6 +38,7 @@ public class GCSounds
         singleDrip = registerSound("ambience.singledrip");
         scaryScape = registerSound("ambience.scaryscape");
         music = registerSound("galacticraft.musicSpace");
+        deconstructor = registerSound("block.deconstructor");
     }
 
     private static SoundEvent registerSound(String soundName)

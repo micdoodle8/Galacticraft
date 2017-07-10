@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.biome.BiomeProvider;
@@ -191,5 +193,11 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     public float getArrowGravity()
     {
         return 0.0275F;
+    }
+
+    @Override
+    public ResourceLocation getDungeonChestType()
+    {
+        return RoomTreasureVenus.VENUSCHEST;
     }
 }

@@ -291,7 +291,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             {
                 BlockVec3 onEitherSide = thisvec.newVecSide(i);
                 IBlockState state = onEitherSide.getBlockStateSafe_noChunkLoad(world);
-                if (state.getBlock().getLightOpacity(state) < 15)
+                if (state != null && state.getBlock().getLightOpacity(state) < 15)
                 {
                     currentLayer.add(onEitherSide);
                 }
@@ -302,13 +302,13 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         {
             inFront = inFront.newVecSide(this.facingSide);
             IBlockState state = inFront.getBlockStateSafe_noChunkLoad(world);
-            if (state.getBlock().getLightOpacity(state) == 15)
+            if (state != null && state.getBlock().getLightOpacity(state) == 15)
             {
                 break;
             }
             inFront = inFront.newVecSide(sideskip1 ^ 1);
             state = inFront.getBlockStateSafe_noChunkLoad(world);
-            if (state.getBlock().getLightOpacity(state) < 15)
+            if (state != null && state.getBlock().getLightOpacity(state) < 15)
             {
                 currentLayer.add(inFront);
             }
@@ -397,6 +397,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                         }
 
                         IBlockState bs = sideVec.getBlockStateSafe_noChunkLoad(world);
+                        if (bs == null)
+                        {
+                            side++;
+                            continue;
+                        }
                         Block b = bs.getBlock();
                         if (b instanceof BlockAir)
                         {
