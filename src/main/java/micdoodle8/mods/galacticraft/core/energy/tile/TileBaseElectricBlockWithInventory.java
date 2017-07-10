@@ -31,8 +31,8 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     public void writeStandardItemsToNBT(NBTTagCompound nbt)
     {
         final NBTTagList list = new NBTTagList();
-        int length = this.getSizeInventory();
         ItemStack containingItems[] = this.getContainingItems();
+        int length = containingItems.length;
 
         for (int var3 = 0; var3 < length; ++var3)
         {
