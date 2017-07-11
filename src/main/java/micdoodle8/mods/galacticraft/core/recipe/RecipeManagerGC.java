@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -633,7 +634,7 @@ public class RecipeManagerGC
         try
         {
 //            BuildcraftRecipeRegistry.refinery.addRecipe("buildcraft:fuel", new FluidStack(GCFluids.fluidOil, 1), new FluidStack(FluidRegistry.getFluid("fuel"), 1), 120, 1);
-            refineryDone = true;
+//            refineryDone = true;
         }
         catch (Exception e)
         {
@@ -646,22 +647,16 @@ public class RecipeManagerGC
 
         try
         {
-            Class<?> clazz = Class.forName("buildcraft.BuildCraftTransport");
-
-            Object pipeItemsStone = clazz.getField("pipeItemsStone").get(null);
-            Object pipeItemsCobblestone = clazz.getField("pipeItemsCobblestone").get(null);
-            Object pipeFluidsCobblestone = clazz.getField("pipeFluidsCobblestone").get(null);
-            Object pipeFluidsStone = clazz.getField("pipeFluidsStone").get(null);
-            Object pipePowerStone = clazz.getField("pipePowerStone").get(null);
-            Object pipePowerGold = clazz.getField("pipePowerGold").get(null);
-
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_COBBLESTONEPIPE.getMeta()), new Object[] { "XYX", 'Y', pipeItemsCobblestone, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta()), new Object[] { "XYX", 'Y', pipeItemsStone, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_FLUIDS_COBBLESTONEPIPE.getMeta()), new Object[] { "XYX", 'Y', pipeFluidsCobblestone, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_FLUIDS_STONEPIPE.getMeta()), new Object[] { "XYX", 'Y', pipeFluidsStone, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_POWER_STONEPIPE.getMeta()), new Object[] { "XYX", 'Y', pipePowerStone, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-            RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta()), new Object[] { "XYX", 'Y', pipePowerGold, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-
+        	if (CompatibilityManager.classBCTransport != null)
+        	{
+        		//TODO: Add the two Power pipes once they are included in Buildcraft 8.0.x
+	            for (int i = BlockEnclosed.EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta(); i <= BlockEnclosed.EnumEnclosedBlockType.BC_FLUIDS_COBBLESTONEPIPE.getMeta(); i++)
+	            {
+	                String pipeName = EnumEnclosedBlockType.values()[i].getBCPipeType();
+	                Object pipeItemBC = (Item) CompatibilityManager.classBCTransport.getField(pipeName).get(null);
+	                RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, i), new Object[] { "XYX", 'Y', pipeItemBC, 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+	            }
+        	}
         }
         catch (Exception e)
         {

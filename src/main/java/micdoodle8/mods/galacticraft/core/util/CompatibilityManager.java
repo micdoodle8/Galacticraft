@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.util;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
@@ -12,8 +10,9 @@ import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+
 
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,13 +24,14 @@ public class CompatibilityManager
 	public final static String modidIC2 = "ic2";
 	public final static String modidMekanism = "mekanism";
 	public final static String modidBuildcraft = "buildcraftcore";
-	
+    public final static String modBCraftTransport = "buildcrafttransport";
+    	
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
     private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraftenergy");
-    private static boolean modBCraftTransportLoaded;
+   private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
     private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");
     private static boolean modMekLoaded = Loader.isModLoaded(modidMekanism);
@@ -49,11 +49,10 @@ public class CompatibilityManager
     public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
 //    public static int isBG2Loaded = 0;
 
-	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
-	public static Method methodBCBlockPipe_createPipe = null;
     private static Method spongeOverride = null;
-    public static Field fieldBCoilBucket;
+    public static Class classBCTransport;
+    public static Class classBCTransportPipeTile;
 	public static Class classBOPWorldType = null;
 	public static Class classBOPws = null;
     public static Class classBOPwcm = null;
@@ -154,47 +153,14 @@ public class CompatibilityManager
 
         }
 
-        if (CompatibilityManager.modBCraftEnergyLoaded)
-        {
-            try
-            {
-                Class<?> buildCraftClass = null;
-                if ((buildCraftClass = Class.forName("buildcraft.BuildCraftEnergy")) != null)
-                {
-                    for (final Field f : buildCraftClass.getFields())
-                    {
-                        if (f.getName().equals("bucketOil"))
-                        {
-                            fieldBCoilBucket = f;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            GCLog.info("Galacticraft: activating BuildCraft Oil compatibility features.");
-        }
-
-        if (Loader.isModLoaded("buildcrafttransport"))
+        if (Loader.isModLoaded(modBCraftTransport))
         {
             CompatibilityManager.modBCraftTransportLoaded = true;
 
             try
             {
-            	BlockEnclosed.blockPipeBC = (BlockContainer) Block.REGISTRY.getObject(new ResourceLocation("buildcrafttransport", "pipeBlock"));
-            	classBCBlockGenericPipe = BlockEnclosed.blockPipeBC.getClass(); 
-
-            	for (Method m : classBCBlockGenericPipe.getMethods())
-                {
-                	if (m.getName().equals("createPipe") && m.getParameterTypes().length == 1)
-                    {
-                		methodBCBlockPipe_createPipe = m;
-                        break;
-                    }
-                }
+            	classBCTransport = Class.forName("buildcraft.transport.BCTransportItems");
+                classBCTransportPipeTile = Class.forName("buildcraft.transport.tile.TilePipeHolder");
             }
             catch (Exception e)
             {
@@ -203,7 +169,7 @@ public class CompatibilityManager
 
             BlockEnclosed.initialiseBC();
 
-            if (CompatibilityManager.methodBCBlockPipe_createPipe == null)
+            if (CompatibilityManager.classBCTransportPipeTile == null)
             {
                 CompatibilityManager.modBCraftTransportLoaded = false;
             }
