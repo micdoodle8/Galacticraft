@@ -1,10 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import micdoodle8.mods.galacticraft.core.items.ItemOilCanister;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class SlotRefinery extends Slot
@@ -15,23 +13,8 @@ public class SlotRefinery extends Slot
     }
 
     @Override
-    public boolean isItemValid(ItemStack par1ItemStack)
+    public boolean isItemValid(ItemStack stack)
     {
-        if (CompatibilityManager.fieldBCoilBucket != null)
-        {
-            try
-            {
-                if (par1ItemStack.getItem() == (Item) CompatibilityManager.fieldBCoilBucket.get(null))
-                {
-                    return true;
-                }
-            }
-            catch (Exception ignore)
-            {
-            }
-        }
-
-        return par1ItemStack.getItem() instanceof ItemOilCanister && par1ItemStack.getItemDamage() > 0;
-
+        return FluidUtil.isOilContainerAny(stack);
     }
 }
