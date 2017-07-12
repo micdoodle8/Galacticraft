@@ -632,6 +632,8 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
             Block block;
             int meta;
             int yRange = ChunkProviderAsteroids.MAX_ASTEROID_Y - ChunkProviderAsteroids.MIN_ASTEROID_Y;
+            x += 4;
+            z += 4;
 
             for (int i = 0; i < numOfBlocks; i++)
             {

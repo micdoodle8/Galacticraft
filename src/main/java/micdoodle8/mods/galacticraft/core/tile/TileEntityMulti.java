@@ -152,7 +152,6 @@ public class TileEntityMulti extends TileEntity
             else if (tile == null)
             {
                 Block b = world.getBlockState(vecToAdd).getBlock();
-                System.out.println("setting up " + b.getUnlocalizedName() + " tile at " + vecToAdd);
                 if (!(b instanceof BlockMulti))
                 {
                     world.setBlockState(vecToAdd, GCBlocks.fakeBlock.getDefaultState().withProperty(BlockMulti.MULTI_TYPE, thisTile.getMultiType()), 2);
