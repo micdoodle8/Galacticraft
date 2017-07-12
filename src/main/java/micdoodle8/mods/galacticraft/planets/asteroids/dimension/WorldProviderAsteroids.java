@@ -537,4 +537,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     {
         return RoomTreasure.MOONCHEST;
     }
+    
+    @Override
+    public boolean hasSkyLight()
+    {
+        return false;
+    }
 }
