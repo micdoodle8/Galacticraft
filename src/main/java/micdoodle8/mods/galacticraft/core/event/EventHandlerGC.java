@@ -403,7 +403,7 @@ public class EventHandlerGC
         final int worldX = event.chunkX << 4;
         final int worldZ = event.chunkZ << 4;
 
-        EventHandlerGC.generateOil(event.world, event.rand, worldX + 8, worldZ + 8, false);
+        EventHandlerGC.generateOil(event.world, event.rand, worldX + 15, worldZ + 15, false);
     }
 
     public static boolean oilPresent(World world, Random rand, int x, int z, BlockVec3 pos)
@@ -457,8 +457,8 @@ public class EventHandlerGC
         if (flag1 || flag2)
         {
             pos.y = 17 + rand.nextInt(10) + rand.nextInt(5);
-            pos.x = x + 15 - rand.nextInt(32);  //do not change without thinking about chunk loading, see notes in generateOil()
-            pos.z = z + 15 - rand.nextInt(32);  //do not change without thinking about chunk loading, see notes in generateOil()
+            pos.x = x + 8 - rand.nextInt(16);  //do not change without thinking about chunk loading, see notes in generateOil()
+            pos.z = z + 8 - rand.nextInt(16);  //do not change without thinking about chunk loading, see notes in generateOil()
             return true;
         }
 
@@ -466,8 +466,8 @@ public class EventHandlerGC
     }
 
     /**
-     * xx, zz are the central position of the chunk currently being populated
-     * We must not stray more than 1 chunk away from this position, that's 24 blocks
+     * xx, zz are the central position of 4 chunks: the chunk currently being populated + 1 in the x,z plane 
+     * We must not stray more than 1 chunk away from this position, that's 16 blocks
      */
     public static void generateOil(World world, Random rand, int xx, int zz, boolean testFirst)
     {
@@ -480,8 +480,8 @@ public class EventHandlerGC
             int r = 3 + rand.nextInt(5);
 
             //The method loads blocks in the range (x - r - 1) to (x + r + 1) - whatever the randoms, all these positions must be inside the +/-1 chunk range
-            //This can be minimum xx - 16 - 7 - 1, that's OK!
-            //This can be maximum xx + 15 + 7 + 1, that's also OK!
+            //This can be minimum xx - 7 - 7 - 1, that's OK!
+            //This can be maximum xx + 8 + 7 + 1, that's also OK!
             
             if (testFirst && checkOilPresent(world, x, cy, z, r))
             {
