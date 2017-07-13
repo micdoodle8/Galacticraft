@@ -5,7 +5,6 @@ import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -166,6 +165,6 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
     @Override
     public String getModName()
     {
-        return Constants.MOD_ID_PLANETS;
+        return GalacticraftPlanets.NAME;
     }
 }

@@ -8,6 +8,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.ResourceLocation;
@@ -81,6 +82,6 @@ public class Tier1RocketRecipeCategory extends BlankRecipeCategory
     @Override
     public String getModName()
     {
-        return Constants.MOD_ID_CORE;
+        return GalacticraftCore.NAME;
     }
 }
