@@ -431,6 +431,7 @@ public class ClientProxyCore extends CommonProxyCore
         RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, (RenderManager manager) -> new RenderMeteorChunk(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, (RenderManager manager) -> new RenderSchematic(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedEnderman.class, (RenderManager manager) -> new RenderEvolvedEnderman(manager));
+		RenderingRegistry.registerEntityRendeingHandler(EntitySpaceChicken.class, (RenderManager manager) -> new RenderSpaceChicken(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedWitch.class, (RenderManager manager) -> new RenderEvolvedWitch(manager));
     }
 
