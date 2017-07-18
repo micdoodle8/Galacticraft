@@ -45,6 +45,7 @@ entity.evolved_spider.name=Evolved Spider
 entity.evolved_zombie.name=Evolved Zombie
 entity.evolved_enderman.name=Evolved Enderman
 entity.evolved_witch.name=Evolved Witch
+entity.space_chicken.name=Space Chicken
 entity.flag.name=Flag
 entity.gcflag.name=Flag
 entity.gravity_arrow.name=Arrow
