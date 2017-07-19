@@ -480,42 +480,26 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double getEnergy()
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
             return 0.0;
         }
 
-        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
+        return this.receiveElectricity(side, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, simulate) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public void setEnergy(double energy)
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return;
-        }
-
-        this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double getMaxEnergy()
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return 0.0;
-        }
-
-        return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-    public boolean canOutputTo(EnumFacing side)
+    public boolean canOutputEnergy(double energy)
     {
         return false;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = "Mekanism")
+    public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        return 0D;
     }
 
     @Override

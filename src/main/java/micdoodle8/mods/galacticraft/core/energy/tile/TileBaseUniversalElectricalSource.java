@@ -203,8 +203,8 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     }
 
     @Override
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-    public boolean canOutputTo(EnumFacing side)
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = "Mekanism")
+    public boolean canOutputEnergy(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
