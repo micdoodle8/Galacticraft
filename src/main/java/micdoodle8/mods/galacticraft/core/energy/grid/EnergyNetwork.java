@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.grid;
 import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
+import mekanism.api.energy.IStrictEnergyStorage;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -258,9 +259,9 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = ((IElectrical) acceptor).getRequest(sideFrom);
                     }
-                    else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
+                    else if (isMekLoaded && acceptor instanceof IStrictEnergyStorage)
                     {
-                        e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
+                        e = (float) ((((IStrictEnergyStorage) acceptor).getMaxEnergy() - ((IStrictEnergyStorage) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
                     }
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
@@ -377,7 +378,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     }
                     else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
                     {
-                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
+                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).acceptEnergy(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO,false) / EnergyConfigHandler.TO_MEKANISM_RATIO;
                     }
                     else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                     {
