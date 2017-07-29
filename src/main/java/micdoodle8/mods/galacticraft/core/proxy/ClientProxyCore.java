@@ -53,6 +53,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -394,7 +395,16 @@ public class ClientProxyCore extends CommonProxyCore
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
         ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":panel_lighting", "normal");
-        event.modelRegistry.putObject(blockLoc, new ModelPanelLightBase(blockLoc));
+        ModelResourceLocation defaultLoc;
+        if (GalacticraftCore.isPlanetsLoaded)
+        {
+            defaultLoc = new ModelResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":asteroids_block", "basictypeasteroids=asteroid_deco");
+        }
+        else
+        {
+            defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":basic_block_core", "basictype=deco_block_1");
+        }
+        event.modelRegistry.putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
 //        {
