@@ -755,6 +755,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile //im
     	return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
+    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
+    {
+        return 0;
+    }
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(ForgeDirection from, double amount)
     {
