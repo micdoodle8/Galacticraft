@@ -82,7 +82,9 @@ public class MapGenDungeon extends MapGenStructure
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        Random random = world.setRandomSeed(k, l, 10387340 + world.provider.getDimension());
+        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimension());
+        Random random = new Random();
+        random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
         l = l * numChunks + random.nextInt(numChunks);
         return (((long) k) << 32) + l;

@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -16,7 +18,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
@@ -24,8 +25,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -411,16 +410,16 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         for (IRecipe recipe : CompressorRecipes.getRecipeList())
         {
-            if (recipe instanceof ShapedRecipes)
+            if (recipe instanceof ShapedRecipesGC)
             {
-                if (id >= ((ShapedRecipes) recipe).recipeItems.length) continue;
-            	ItemStack itemstack1 = ((ShapedRecipes) recipe).recipeItems[id];
+                if (id >= ((ShapedRecipesGC) recipe).recipeItems.length) continue;
+            	ItemStack itemstack1 = ((ShapedRecipesGC) recipe).recipeItems[id];
                 if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
                 {
-                	for (int i = 0; i < ((ShapedRecipes) recipe).recipeItems.length; i++)
+                	for (int i = 0; i < ((ShapedRecipesGC) recipe).recipeItems.length; i++)
                 	{
                 		if (i == id) continue;
-                        ItemStack itemstack2 = ((ShapedRecipes) recipe).recipeItems[i];
+                        ItemStack itemstack2 = ((ShapedRecipesGC) recipe).recipeItems[i];
                         if (stack.getItem() == itemstack2.getItem() && (itemstack2.getItemDamage() == 32767 || stack.getItemDamage() == itemstack2.getItemDamage()))
                         {
                         	ItemStack is3 = this.getStackInSlot(id + 3);
@@ -431,10 +430,10 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 	return true;
                 }
             }
-            else if (recipe instanceof ShapelessOreRecipe)
+            else if (recipe instanceof ShapelessOreRecipeGC)
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipe) recipe).getInput());
+                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
                 
                 Iterator<Object> req = required.iterator();
 

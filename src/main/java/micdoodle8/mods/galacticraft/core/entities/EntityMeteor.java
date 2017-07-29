@@ -137,9 +137,9 @@ public class EntityMeteor extends Entity
             if (movingObjPos != null)
             {
                 BlockPos above = movingObjPos.getBlockPos().up();
-                if (this.world.getBlockState(movingObjPos.getBlockPos().up()).getBlock().isAir(world.getBlockState(above), world, above))
+                if (this.world.getBlockState(above).getBlock().isAir(world.getBlockState(above), world, above))
                 {
-                    this.world.setBlockState(movingObjPos.getBlockPos().up(), GCBlocks.fallenMeteor.getDefaultState(), 3);
+                    this.world.setBlockState(above, GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
 
                 if (movingObjPos.entityHit != null)

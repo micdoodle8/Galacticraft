@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedConta
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityMeteor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -373,7 +374,13 @@ public class EventHandlerGC
     @SubscribeEvent
     public void entityUpdateCancelInFreefall(EntityEvent.CanUpdate event)
     {
-        if (event.getEntity().world.provider instanceof IZeroGDimension)
+        if (event.getEntity() instanceof EntityMeteor)
+        {
+            event.setCanUpdate(true);
+            return;
+        }
+        
+		if (event.getEntity().world.provider instanceof IZeroGDimension)
         {
             if (((IZeroGDimension)event.getEntity().world.provider).inFreefall(event.getEntity()))
             {

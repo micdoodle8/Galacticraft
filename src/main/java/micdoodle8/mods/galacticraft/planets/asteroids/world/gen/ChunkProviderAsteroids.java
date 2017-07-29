@@ -30,6 +30,7 @@ import net.minecraft.world.gen.feature.WorldGenTrees;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -113,7 +114,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
     private static final int LAVA_CHANCE = 2;
     private static final int GLOWSTONE_CHANCE = 20;
 
-    private ArrayList<AsteroidData> largeAsteroids = new ArrayList<AsteroidData>();
+    private LinkedList<AsteroidData> largeAsteroids = new LinkedList<AsteroidData>();
     private int largeCount = 0;
     private static HashSet<BlockVec3> chunksDone = new HashSet<BlockVec3>();
     private int largeAsteroidsLastChunkX;
@@ -709,7 +710,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
         //Look for hollow asteroids to populate
         if (!this.largeAsteroids.isEmpty())
         {
-            for (AsteroidData asteroidIndex : this.largeAsteroids)
+            for (AsteroidData asteroidIndex : new ArrayList<AsteroidData>(this.largeAsteroids))
             {
                 if (!asteroidIndex.isHollow)
                 {

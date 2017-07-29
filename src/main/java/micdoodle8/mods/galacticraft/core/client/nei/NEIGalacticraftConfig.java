@@ -5,6 +5,8 @@
 //import codechicken.nei.api.ItemInfo;
 //import codechicken.nei.api.stack.PositionedStack;
 //import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+//import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+//import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 //import micdoodle8.mods.galacticraft.core.Constants;
 //import micdoodle8.mods.galacticraft.core.GCBlocks;
 //import micdoodle8.mods.galacticraft.core.GCItems;
@@ -16,9 +18,7 @@
 //import net.minecraft.item.Item;
 //import net.minecraft.item.ItemStack;
 //import net.minecraft.item.crafting.IRecipe;
-//import net.minecraft.item.crafting.ShapedRecipes;
 //import net.minecraftforge.oredict.OreDictionary;
-//import net.minecraftforge.oredict.ShapelessOreRecipe;
 //
 //import java.util.HashMap;
 //import java.util.Map;
@@ -287,9 +287,9 @@
 //            HashMap<Integer, PositionedStack> input1 = new HashMap<Integer, PositionedStack>();
 //            IRecipe rec = CompressorRecipes.getRecipeList().get(i);
 //
-//            if (rec instanceof ShapedRecipes)
+//            if (rec instanceof ShapedRecipesGC)
 //            {
-//                ShapedRecipes recipe = (ShapedRecipes) rec;
+//                ShapedRecipesGC recipe = (ShapedRecipesGC) rec;
 //
 //                for (int j = 0; j < recipe.recipeItems.length; j++)
 //                {
@@ -298,9 +298,9 @@
 //                    input1.put(j, new PositionedStack(stack, 21 + j % 3 * 18, 26 + j / 3 * 18));
 //                }
 //            }
-//            else if (rec instanceof ShapelessOreRecipe)
+//            else if (rec instanceof ShapelessOreRecipeGC)
 //            {
-//                ShapelessOreRecipe recipe = (ShapelessOreRecipe) rec;
+//                ShapelessOreRecipeGC recipe = (ShapelessOreRecipeGC) rec;
 //
 //                for (int j = 0; j < recipe.getInput().size(); j++)
 //                {

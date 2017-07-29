@@ -91,7 +91,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
             {
                 ItemCanisterLiquidOxygen.craftingvalues.remove(itemstack);
                 itemstack.setItemDamage(saved);
-                return itemstack;
+                return itemstack.copy();
             }
             return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
         }

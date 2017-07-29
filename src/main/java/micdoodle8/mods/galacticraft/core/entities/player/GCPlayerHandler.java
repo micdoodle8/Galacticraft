@@ -873,7 +873,7 @@ public class GCPlayerHandler
         {
             if (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() > 0 && ConfigManagerCore.meteorSpawnMod > 0.0)
             {
-                final int f = (int) (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() * 1000D * (1.0 / ConfigManagerCore.meteorSpawnMod));
+                final int f = (int) (((IGalacticraftWorldProvider) world.provider).getMeteorFrequency() * 750D * (1.0 / ConfigManagerCore.meteorSpawnMod));
 
                 if (world.rand.nextInt(f) == 0)
                 {
@@ -881,15 +881,20 @@ public class GCPlayerHandler
 
                     if (closestPlayer == null || closestPlayer.getEntityId() <= player.getEntityId())
                     {
-                        int x, y, z;
+                        int r = world.getMinecraftServer().getPlayerList().getViewDistance();
+                        int x, z;
                         double motX, motZ;
-                        x = world.rand.nextInt(20) - 10;
-                        y = world.rand.nextInt(20) + 200;
+                        x = world.rand.nextInt(20) + 160;
                         z = world.rand.nextInt(20) - 10;
-                        motX = world.rand.nextDouble() * 5;
-                        motZ = world.rand.nextDouble() * 5;
+                        motX = world.rand.nextDouble() * 2 - 2.5D;
+                        motZ = world.rand.nextDouble() * 5 - 2.5D;
+                        int px = MathHelper.floor(player.posX);
+                        if ((x + px >> 4) - (px >> 4) >= r)
+                        {
+                            x = ((px >> 4) + r << 4) - 1 - px;
+                        }
 
-                        final EntityMeteor meteor = new EntityMeteor(world, player.posX + x, player.posY + y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 1);
+                        final EntityMeteor meteor = new EntityMeteor(world, player.posX + x, 355D, player.posZ + z, motX, 0, motZ, 1);
 
                         if (!world.isRemote)
                         {
@@ -904,15 +909,20 @@ public class GCPlayerHandler
 
                     if (closestPlayer == null || closestPlayer.getEntityId() <= player.getEntityId())
                     {
-                        int x, y, z;
+                        int r = world.getMinecraftServer().getPlayerList().getViewDistance();
+                        int x, z;
                         double motX, motZ;
-                        x = world.rand.nextInt(20) - 10;
-                        y = world.rand.nextInt(20) + 200;
+                        x = world.rand.nextInt(20) + 160;
                         z = world.rand.nextInt(20) - 10;
-                        motX = world.rand.nextDouble() * 5;
-                        motZ = world.rand.nextDouble() * 5;
+                        motX = world.rand.nextDouble() * 2 - 2.5D;
+                        motZ = world.rand.nextDouble() * 5 - 2.5D;
+                        int px = MathHelper.floor(player.posX);
+                        if ((x + px >> 4) - (px >> 4) >= r)
+                        {
+                            x = ((px >> 4) + r << 4) - 1 - px;
+                        }
 
-                        final EntityMeteor meteor = new EntityMeteor(world, player.posX + x, player.posY + y, player.posZ + z, motX - 2.5D, 0, motZ - 2.5D, 6);
+                        final EntityMeteor meteor = new EntityMeteor(world, player.posX + x, 355D, player.posZ + z, motX, 0, motZ, 6);
 
                         if (!world.isRemote)
                         {
