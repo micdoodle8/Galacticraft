@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -12,7 +14,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -20,8 +21,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
 import java.util.*;
 
 public class TileEntityIngotCompressor extends TileEntityAdvanced implements IInventoryDefaults, ISidedInventory
@@ -140,9 +139,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         for (IRecipe recipe : CompressorRecipes.getRecipeList())
         {
-            if (recipe instanceof ShapedRecipes)
+            if (recipe instanceof ShapedRecipesGC)
             {
-                for (ItemStack itemstack1 : ((ShapedRecipes) recipe).recipeItems)
+                for (ItemStack itemstack1 : ((ShapedRecipesGC) recipe).recipeItems)
                 {
                     if (stack.getItem() == itemstack1.getItem() && (itemstack1.getItemDamage() == 32767 || stack.getItemDamage() == itemstack1.getItemDamage()))
                     {
@@ -150,10 +149,10 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                     }
                 }
             }
-            else if (recipe instanceof ShapelessOreRecipe)
+            else if (recipe instanceof ShapelessOreRecipeGC)
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipe) recipe).getInput());
+                ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
 
                 Iterator<Object> req = required.iterator();
 
