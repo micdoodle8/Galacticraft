@@ -16,6 +16,9 @@ public interface IStrictEnergyAcceptor extends IStrictEnergyStorage
 	 */
 	public double transferEnergyToAcceptor(EnumFacing side, double amount);
 
+	//Hacky solution to the Mekanism updated/legacy API
+	public double acceptEnergy(EnumFacing side, double amount, boolean simulate);
+	
 	/**
 	 * Whether or not this tile entity accepts energy from a certain side.
 	 * @param side - side to check
