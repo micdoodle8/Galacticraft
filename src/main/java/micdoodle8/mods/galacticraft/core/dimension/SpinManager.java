@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -259,11 +260,11 @@ public class SpinManager
                     }
                     BlockVec3 sideVec = vec.newVecSide(side);
 
-                    if (!this.checked.contains(sideVec))
+                    if (sideVec != null && !this.checked.contains(sideVec))
                     {
                         this.checked.add(sideVec);
                         Block b = sideVec.getBlockID(this.worldProvider.worldObj);
-                        if (b != null && !b.isAir(this.worldProvider.worldObj, sideVec.toBlockPos()))
+                        if (b != null && !b.isAir(this.worldProvider.worldObj, sideVec.toBlockPos()) && !(b instanceof BlockDynamicLiquid))
                         {
                             nextLayer.add(sideVec);
                             if (bStart.isAir(this.worldProvider.worldObj, this.oneSSBlock))
