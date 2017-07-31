@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -271,12 +272,34 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
         if (!this.canReceiveEnergy(side))
         {
-            return 0;
+            return 0.0;
         }
 
         return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    //----------- NEWER MEKANISM API FOR COMPATIBILITY WITH FINAL 1.10.2 MEKANISM ----------
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        if (!this.canReceiveEnergy(side))
+        {
+            return 0.0;
+        }
+
+        return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, !simulate, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")

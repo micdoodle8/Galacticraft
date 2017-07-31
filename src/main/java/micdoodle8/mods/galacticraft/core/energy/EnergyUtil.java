@@ -12,6 +12,8 @@ import ic2.api.item.ISpecialElectricItem;
 import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
+import mekanism.api.energy.IStrictEnergyOutputter;
+import mekanism.api.energy.IStrictEnergyStorage;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -39,6 +41,7 @@ import java.util.Set;
 public class EnergyUtil
 {
     private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
+    public static boolean isMekanismLegacy = true;
     private static boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
     private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
     private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
@@ -60,7 +63,13 @@ public class EnergyUtil
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
+    private static Field fieldCableAcceptor = null;
+    public static Field fieldEnergyStorage = null;
+    public static Field fieldCableOutput = null;
     private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
+    public static Capability<IStrictEnergyStorage> mekEnergyStorage = null;
+    public static Capability<IStrictEnergyOutputter> mekCableOutput = null;
+    public static Class<?> mekCapabilities;
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
@@ -90,7 +99,7 @@ public class EnergyUtil
                 continue;
             }
 
-            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
+            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || (isMekanismLegacy && tileEntity instanceof ICableOutputter) || (!isMekanismLegacy && tileEntity instanceof IStrictEnergyOutputter)))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
                 try
@@ -109,7 +118,11 @@ public class EnergyUtil
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
-                else if (tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
+                else if (isMekanismLegacy && tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
+                {
+                    adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+                else if (!isMekanismLegacy && tileEntity instanceof IStrictEnergyOutputter && ((IStrictEnergyOutputter) tileEntity).canOutputEnergy(direction.getOpposite()))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -343,6 +356,19 @@ public class EnergyUtil
         if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
         {
             IStrictEnergyAcceptor tileMek = null;
+            if (EnergyUtil.mekCableAcceptor == null)
+            {
+                try
+                {
+                    if (fieldCableAcceptor == null)
+                    {
+                        EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
+                    }
+                    EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
+                } catch (Exception ignore)
+                {
+                }
+            }
             if (tileAdj instanceof IStrictEnergyAcceptor)
             {
                 tileMek = (IStrictEnergyAcceptor) tileAdj;
@@ -352,18 +378,28 @@ public class EnergyUtil
                 tileMek = getCapability(tileAdj, mekCableAcceptor, inputAdj);
             }
 
-            if (tileMek != null && tileMek.canReceiveEnergy(inputAdj))
+            if (tileMek != null)
             {
-                float transferredMek;
-                if (simulate)
+                if (tileMek.canReceiveEnergy(inputAdj))
                 {
-                    transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
+                    float transferredMek;
+                    if (EnergyUtil.isMekanismLegacy)
+                    {
+                        if (simulate)
+                        {
+                            transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
+                        }
+                        else
+                        {
+                            transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
+                        }
+                    }
+                    else
+                    {
+                        transferredMek = (float) tileMek.acceptEnergy(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO, simulate);
+                    }
+                    return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
                 }
-                else
-                {
-                    transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                }
-                return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
             }
         }
         else if (isIC2Loaded && !EnergyConfigHandler.disableIC2Output && tileAdj instanceof IEnergySink)
@@ -585,10 +621,23 @@ public class EnergyUtil
         {
             try
             {
-                Class mekCap = Class.forName("mekanism.common.capabilities.Capabilities");
-                EnergyUtil.mekCableAcceptor = (Capability) mekCap.getField("ENERGY_ACCEPTOR_CAPABILITY").get(null);
+                EnergyUtil.mekCapabilities = Class.forName("mekanism.common.capabilities.Capabilities");
+                EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
+                EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
+                EnergyUtil.fieldEnergyStorage = mekCapabilities.getField("ENERGY_STORAGE_CAPABILITY");
+                EnergyUtil.mekEnergyStorage = (Capability) fieldEnergyStorage.get(null);
+                EnergyUtil.fieldCableOutput = mekCapabilities.getField("ENERGY_OUTPUTTER_CAPABILITY");
+                EnergyUtil.mekCableOutput = (Capability) fieldCableOutput.get(null);
             }
-            catch (Exception e)
+            catch (Exception ignore)
+            {
+            }
+            try
+            {
+                Class temp = Class.forName("mekanism.api.energy.IStrictEnergyOutputter");
+                EnergyUtil.isMekanismLegacy = false;
+            }
+            catch (Exception ignore)
             {
             }
         }

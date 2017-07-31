@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.EnumSet;
 
@@ -202,6 +203,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.tierGC + 1;
     }
 
+    //----------- DEPRECATED MEKANISM 1.10.2 API FOR BACKWARDS COMPATIBILITY WITH OLDER MEKANISM ----------
     @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
     public boolean canOutputTo(EnumFacing side)
@@ -209,6 +211,65 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.getElectricalOutputDirections().contains(side);
     }
 
+    //----------- NEWER MEKANISM API FOR COMPATIBILITY WITH FINAL 1.10.2 MEKANISM ----------
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = "Mekanism")
+    public boolean canOutputEnergy(EnumFacing side)
+    {
+        return this.getElectricalOutputDirections().contains(side);
+    }
+    
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = "Mekanism")
+    public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (this.canOutputEnergy(side))
+        {
+            float amountGC = (float) amount / EnergyConfigHandler.TO_MEKANISM_RATIO;
+            return this.storage.extractEnergyGC(amountGC, simulate) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+        }
+        return 0D;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = "Mekanism")
+    public double getEnergy()
+    {
+        return this.storage.getEnergyStoredGC() * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = "Mekanism")
+    public double getMaxEnergy()
+    {
+        return this.storage.getCapacityGC() * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = "Mekanism")
+    public void setEnergy(double energy)
+    {
+        this.storage.setEnergyStored((float) energy / EnergyConfigHandler.TO_MEKANISM_RATIO);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> cap, EnumFacing side)
+    {
+        if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        {
+            return this.canOutputEnergy(side);
+        }
+        return false;
+    }
+    
+    @Override
+    public <T> T getCapability(Capability<T> cap, EnumFacing side)
+    {
+        if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        {
+            return (T) this;
+        }
+        return null;
+    }
+    
     @Override
     public float getProvide(EnumFacing direction)
     {

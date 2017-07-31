@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
@@ -473,6 +474,23 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
+    //----------- NEWER MEKANISM API FOR COMPATIBILITY WITH FINAL 1.10.2 MEKANISM ----------
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        if (!this.getElectricalInputDirections().contains(side))
+        {
+            return 0;
+        }
+
+        return this.receiveElectricity(side, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, !simulate) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public boolean canReceiveEnergy(EnumFacing side)
     {
@@ -512,6 +530,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
+    //----------- DEPRECATED MEKANISM 1.10.2 API FOR BACKWARDS COMPATIBILITY WITH OLDER MEKANISM ----------
     @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
     public boolean canOutputTo(EnumFacing side)
     {
