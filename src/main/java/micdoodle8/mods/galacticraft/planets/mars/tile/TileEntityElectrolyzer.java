@@ -469,14 +469,12 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
             amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
-            System.out.println("Can output hydrogen " + amountH);
             return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
         }
         else if (from == this.getOxygenOutputDirection() && this.liquidTank.getFluid() != null)
         {
             int amountO = Math.min(8, this.liquidTank.getFluidAmount());
             amountO = this.liquidTank.drain(amountO, doTransfer).amount;
-            System.out.println("Can output hydrogen " + amountO);
             return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
         }
         return null;
@@ -505,7 +503,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             return type.getName().equals("oxygen");
         }
-        System.out.println(type.getName());
         return false;
     }
 

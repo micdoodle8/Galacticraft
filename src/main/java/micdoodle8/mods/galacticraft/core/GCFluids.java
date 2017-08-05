@@ -124,6 +124,10 @@ public class GCFluids
             FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
             returnFluid = FluidRegistry.getFluid(fluidName);
         }
+        else
+        {
+            returnFluid.setGaseous(gaseous);
+        }
 
         return returnFluid;
     }
