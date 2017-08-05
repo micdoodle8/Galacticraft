@@ -14,6 +14,8 @@ import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import mekanism.api.energy.IStrictEnergyOutputter;
 import mekanism.api.energy.IStrictEnergyStorage;
+import mekanism.api.gas.IGasHandler;
+import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -69,6 +71,8 @@ public class EnergyUtil
     private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
     public static Capability<IStrictEnergyStorage> mekEnergyStorage = null;
     public static Capability<IStrictEnergyOutputter> mekCableOutput = null;
+    public static Capability<ITubeConnection> mekTubeConnection = null;
+    public static Capability<IGasHandler> mekGasHandler = null;
     public static Class<?> mekCapabilities;
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
@@ -78,12 +82,12 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (EnumFacing direction : EnumFacing.VALUES)
         {
-        	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
             {
                 continue;
             }
-        	
-        	TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+            
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
             {
@@ -275,7 +279,7 @@ public class EnergyUtil
             
             if (tileEntity == null || tileEntity instanceof IConductor)  //world.getTileEntity will not have returned an invalid tile, invalid tiles are null
             {
-            	continue;
+                continue;
             }
             
             EnumFacing sideFrom = direction.getOpposite();
@@ -306,7 +310,7 @@ public class EnergyUtil
             
             if (isBCReallyLoaded && clazzPipeTile.isInstance(tileEntity))
             {
-            	continue;
+                continue;
             }
 
             if (isIC2Loaded && !world.isRemote)
@@ -331,21 +335,21 @@ public class EnergyUtil
             
             if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
             {
-            	if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
-            	{
-            		continue;
-            	}
-            	if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
-            	{
-            		continue;
-            	}
+                if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+                if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
 
-            	if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
-            	{
-            		connectedAcceptors.add(tileEntity);
-            		directions.add(sideFrom);
-            	}
-            	continue;
+                if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
+                {
+                    connectedAcceptors.add(tileEntity);
+                    directions.add(sideFrom);
+                }
+                continue;
             }
         }
         return;
@@ -358,16 +362,7 @@ public class EnergyUtil
             IStrictEnergyAcceptor tileMek = null;
             if (EnergyUtil.mekCableAcceptor == null)
             {
-                try
-                {
-                    if (fieldCableAcceptor == null)
-                    {
-                        EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
-                    }
-                    EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
-                } catch (Exception ignore)
-                {
-                }
+                initialiseMekCapabilities();
             }
             if (tileAdj instanceof IStrictEnergyAcceptor)
             {
@@ -455,7 +450,7 @@ public class EnergyUtil
         else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
         {
             float sent = ((IEnergyReceiver) tileAdj).receiveEnergy(inputAdj, (int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-//        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
+//          GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
             return sent;
         }
 
@@ -622,12 +617,6 @@ public class EnergyUtil
             try
             {
                 EnergyUtil.mekCapabilities = Class.forName("mekanism.common.capabilities.Capabilities");
-                EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
-                EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
-                EnergyUtil.fieldEnergyStorage = mekCapabilities.getField("ENERGY_STORAGE_CAPABILITY");
-                EnergyUtil.mekEnergyStorage = (Capability) fieldEnergyStorage.get(null);
-                EnergyUtil.fieldCableOutput = mekCapabilities.getField("ENERGY_OUTPUTTER_CAPABILITY");
-                EnergyUtil.mekCableOutput = (Capability) fieldCableOutput.get(null);
             }
             catch (Exception ignore)
             {
@@ -707,7 +696,7 @@ public class EnergyUtil
             }
         }
         if (clazzPipeTile == null)
-        	isBCReallyLoaded = false;
+            isBCReallyLoaded = false;
         
         return true;
     }
@@ -836,5 +825,56 @@ public class EnergyUtil
     public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability, EnumFacing side)
     {
         return (provider == null || capability == null) ? null : provider.getCapability(capability, side);
+    }
+    
+    public static void initialiseMekCapabilities()
+    {
+        try
+        {
+            EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
+            if (EnergyUtil.fieldCableAcceptor != null)
+            {
+                EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
+            }
+            EnergyUtil.fieldEnergyStorage = mekCapabilities.getField("ENERGY_STORAGE_CAPABILITY");
+            if (EnergyUtil.fieldEnergyStorage != null)
+            {
+                EnergyUtil.mekEnergyStorage = (Capability) fieldEnergyStorage.get(null);
+            }
+            if (!EnergyUtil.isMekanismLegacy)
+            {
+                Field gasHandlerCapability = mekCapabilities.getField("GAS_HANDLER_CAPABILITY");
+                if (gasHandlerCapability != null)
+                {
+                    EnergyUtil.mekGasHandler = (Capability) gasHandlerCapability.get(null);
+                }
+                Field gasTubeConnection = mekCapabilities.getField("TUBE_CONNECTION_CAPABILITY");
+                if (gasTubeConnection != null)
+                {
+                    EnergyUtil.mekTubeConnection = (Capability) gasTubeConnection.get(null);
+                }
+                EnergyUtil.fieldCableOutput = mekCapabilities.getField("ENERGY_OUTPUTTER_CAPABILITY");
+                if (EnergyUtil.fieldCableOutput != null)
+                {
+                    EnergyUtil.mekCableOutput = (Capability) fieldCableOutput.get(null);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+    public static boolean checkMekGasHandler(Capability<?> capability)
+    {
+        if (!EnergyConfigHandler.isMekanismLoaded() || capability == null || EnergyUtil.mekCapabilities == null)
+        {
+            return false;
+        }
+        if (EnergyUtil.mekGasHandler == null)
+        {
+            initialiseMekCapabilities();
+        }
+        return capability == EnergyUtil.mekGasHandler || capability == EnergyUtil.mekTubeConnection;
     }
 }

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
@@ -8,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
@@ -20,6 +23,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -92,7 +96,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return true;
+
+        return EnergyUtil.checkMekGasHandler(capability);  
     }
 
     @Override
@@ -102,6 +109,12 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         {
             return (T) new FluidHandlerWrapper(this, facing);
         }
+
+        if (EnergyUtil.checkMekGasHandler(capability))
+        {
+            return (T) this;
+        }
+
         return null;
     }
 
@@ -874,5 +887,56 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public EnumFacing getGasInputDirection()
     {
         return this.getFront().rotateY();
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    {
+        if (!stack.getGas().getName().equals("oxygen") || !this.shouldPullOxygen())
+        {
+            return 0;
+        }
+        int used = 0;
+        if (this.gasTank.getFluidAmount() < this.gasTank.getCapacity())
+        {
+            used = this.gasTank.fill(FluidRegistry.getFluidStack("oxygen", stack.amount), doTransfer);
+        }
+        return used;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
+    {
+        return this.receiveGas(side, stack, true);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    {
+        return null;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount)
+    {
+        return null;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
+    {
+        return this.shouldPullOxygen() && type.getName().equals("oxygen") && side.equals(this.getGasInputDirection());
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing side, Gas type)
+    {
+        return false;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing side)
+    {
+        return side.equals(this.getGasInputDirection());
     }
 }

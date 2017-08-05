@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -65,7 +66,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return true;
+
+        return EnergyUtil.checkMekGasHandler(capability);  
     }
 
     @Override
@@ -75,6 +79,12 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         {
             return (T) new FluidHandlerWrapper(this, facing);
         }
+
+        if (EnergyUtil.checkMekGasHandler(capability))
+        {
+            return (T) this;
+        }
+
         return null;
     }
 

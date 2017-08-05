@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
@@ -45,7 +46,10 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return true;
+
+        return EnergyUtil.checkMekGasHandler(capability);  
     }
 
     @Override
@@ -55,6 +59,12 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         {
             return (T) new FluidHandlerWrapper(this, facing);
         }
+
+        if (EnergyUtil.checkMekGasHandler(capability))
+        {
+            return (T) this;
+        }
+
         return null;
     }
 
