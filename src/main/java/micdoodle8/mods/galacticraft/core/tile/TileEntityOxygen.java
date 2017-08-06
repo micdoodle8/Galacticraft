@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
@@ -26,8 +27,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-import javax.annotation.Nullable;
-
 import java.util.EnumSet;
 
 public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandlerWrapper
@@ -42,6 +41,34 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         this.tank = new FluidTankGC(maxOxygen, this);
         this.oxygenPerTick = oxygenPerTick;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    		return true;
+
+    	if (EnergyUtil.checkMekGasHandler(capability))
+    		return true;
+
+    	return super.hasCapability(capability, facing);  
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    	{
+    		return (T) new FluidHandlerWrapper(this, facing);
+    	}
+
+    	if (EnergyUtil.checkMekGasHandler(capability))
+    	{
+    		return (T) this;
+    	}
+
+    	return super.getCapability(capability, facing);
     }
 
     public int getScaledOxygenLevel(int scale)
@@ -421,22 +448,5 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         }
 
         return new FluidTankInfo[] {};
-    }
-
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
-    {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
-    }
-
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
-    {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-        {
-            return (T) new FluidHandlerWrapper(this, facing);
-        }
-        return super.getCapability(capability, facing);
     }
 }

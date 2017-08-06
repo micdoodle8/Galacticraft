@@ -271,12 +271,33 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
         if (!this.canReceiveEnergy(side))
         {
-            return 0;
+            return 0.0;
         }
 
         return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        if (!this.canReceiveEnergy(side))
+        {
+            return 0.0;
+        }
+
+        return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, !simulate, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)

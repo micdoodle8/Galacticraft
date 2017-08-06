@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -202,23 +203,24 @@ public class SpinManager
         this.checked.clear();
         currentLayer.add(new BlockVec3(this.oneSSBlock));
         this.checked.add(new BlockVec3(this.oneSSBlock));
-        Block bStart = this.worldProvider.world.getBlockState(this.oneSSBlock).getBlock();
+        IBlockState bsStart = this.worldProvider.world.getBlockState(this.oneSSBlock);
+        Block bStart = bsStart.getBlock();
         if (bStart instanceof BlockSpinThruster)
         {
             foundThrusters.add(this.oneSSBlock);
         }
 
-        float thismass = 0.1F; //Mass of a thruster
-        float thismassCentreX = 0.1F * this.oneSSBlock.getX();
-        float thismassCentreY = 0.1F * this.oneSSBlock.getY();
-        float thismassCentreZ = 0.1F * this.oneSSBlock.getZ();
-        float thismoment = 0F;
         int thisssBoundsMaxX = this.oneSSBlock.getX();
-        int thisssBoundsMinX = this.oneSSBlock.getX();
+        int thisssBoundsMinX = thisssBoundsMaxX;
         int thisssBoundsMaxY = this.oneSSBlock.getY();
-        int thisssBoundsMinY = this.oneSSBlock.getY();
+        int thisssBoundsMinY = thisssBoundsMaxY;
         int thisssBoundsMaxZ = this.oneSSBlock.getZ();
-        int thisssBoundsMinZ = this.oneSSBlock.getZ();
+        int thisssBoundsMinZ = thisssBoundsMaxZ;
+        float thismass = 0.1F; //Mass of a thruster
+        float thismassCentreX = 0.1F * thisssBoundsMaxX;
+        float thismassCentreY = 0.1F * thisssBoundsMaxY;
+        float thismassCentreZ = 0.1F * thisssBoundsMaxZ;
+        float thismoment = 0F;
 
         while (currentLayer.size() > 0)
         {
@@ -259,15 +261,19 @@ public class SpinManager
                     }
                     BlockVec3 sideVec = vec.newVecSide(side);
 
-                    if (!this.checked.contains(sideVec))
+                    if (sideVec != null && !this.checked.contains(sideVec))
                     {
                         this.checked.add(sideVec);
                         IBlockState state = sideVec.getBlockState(this.worldProvider.world);
+                        if (state == null)
+                        {
+                        	continue;
+                        }
                         Block b = state.getBlock();
-                        if (b != null && !b.isAir(this.worldProvider.world.getBlockState(sideVec.toBlockPos()), this.worldProvider.world, sideVec.toBlockPos()))
+                        if (b != null && !b.isAir(state, this.worldProvider.world, sideVec.toBlockPos()) && !(b instanceof BlockDynamicLiquid))
                         {
                             nextLayer.add(sideVec);
-                            if (bStart.isAir(this.worldProvider.world.getBlockState(this.oneSSBlock), this.worldProvider.world, this.oneSSBlock))
+                            if (bStart.isAir(bsStart, this.worldProvider.world, this.oneSSBlock))
                             {
                                 this.oneSSBlock = sideVec.toBlockPos();
                                 bStart = b;
@@ -277,7 +283,7 @@ public class SpinManager
                             if (!(b instanceof BlockLiquid))
                             {
                                 //For most blocks, hardness gives a good idea of mass
-                                m = b.getBlockHardness(this.worldProvider.world.getBlockState(sideVec.toBlockPos()), this.worldProvider.world, sideVec.toBlockPos());
+                                m = b.getBlockHardness(state, this.worldProvider.world, sideVec.toBlockPos());
                                 if (m < 0.1F)
                                 {
                                     m = 0.1F;

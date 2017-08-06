@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.EnumSet;
 
@@ -203,13 +204,63 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         return this.tierGC + 1;
     }
 
-    @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
     public boolean canOutputEnergy(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
+    
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
+    public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (this.canOutputEnergy(side))
+        {
+            float amountGC = (float) amount / EnergyConfigHandler.TO_MEKANISM_RATIO;
+            return this.storage.extractEnergyGC(amountGC, simulate) * EnergyConfigHandler.TO_MEKANISM_RATIO;
+        }
+        return 0D;
+    }
 
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = CompatibilityManager.modidMekanism)
+    public double getEnergy()
+    {
+        return this.storage.getEnergyStoredGC() * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = CompatibilityManager.modidMekanism)
+    public double getMaxEnergy()
+    {
+        return this.storage.getCapacityGC() * EnergyConfigHandler.TO_MEKANISM_RATIO;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyStorage", modID = CompatibilityManager.modidMekanism)
+    public void setEnergy(double energy)
+    {
+        this.storage.setEnergyStored((float) energy / EnergyConfigHandler.TO_MEKANISM_RATIO);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> cap, EnumFacing side)
+    {
+        if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        {
+            return this.canOutputEnergy(side);
+        }
+        return false;
+    }
+    
+    @Override
+    public <T> T getCapability(Capability<T> cap, EnumFacing side)
+    {
+        if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        {
+            return (T) this;
+        }
+        return null;
+    }
+    
     @Override
     public float getProvide(EnumFacing direction)
     {
