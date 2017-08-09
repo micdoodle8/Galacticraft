@@ -101,6 +101,10 @@ public class MapGenAbandonedBase extends MapGenStructure
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
         BlockVec3 asteroid = ((WorldProviderAsteroids) this.worldObj.provider).getClosestAsteroidXZ((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, false);
+        if (asteroid == null)
+        {
+            return new MapGenAbandonedBase.Start(this.worldObj, this.rand, (chunkX << 4) + 8, (chunkZ << 4) + 8, 15, new BaseConfiguration(148, this.rand));
+        }
         return new MapGenAbandonedBase.Start(this.worldObj, this.rand, asteroid.x, asteroid.z, asteroid.sideDoneBits - 5, new BaseConfiguration(asteroid.y - 10, this.rand));
     }
 
