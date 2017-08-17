@@ -172,7 +172,6 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
                if (metadata >= 5 @@ metadata <= 8)
         {
             return 3.0F;
-        
         }
 
         return this.blockHardness;
