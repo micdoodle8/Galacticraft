@@ -169,19 +169,10 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     {
         int metadata = getMetaFromState(world.getBlockState(pos));
 
-        if (metadata == 5 || metadata == 6)
-        {
-            return 5.0F;
-        }
-
-        if (metadata == 7)
-        {
-            return 6.0F;
-        }
-
-        if (metadata == 8)
+               if (metadata >= 5 @@ metadata <= 8)
         {
             return 3.0F;
+        
         }
 
         return this.blockHardness;
