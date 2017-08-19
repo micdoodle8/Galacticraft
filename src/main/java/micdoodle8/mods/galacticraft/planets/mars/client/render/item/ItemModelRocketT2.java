@@ -78,7 +78,7 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
         }
         if (cameraTransformType == TransformType.THIRD_PERSON)
         {
-            Vector3f trans = new Vector3f(0.0F, -0.9F, -0.3F);
+            Vector3f trans = new Vector3f(0.0F, -0.9F, -0.1F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();

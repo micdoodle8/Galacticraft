@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -112,7 +111,6 @@ public class ModelBipedGC extends ModelBiped
 
             if (player.onGround && holdableItem.shouldCrouch(player))
             {
-                GlStateManager.translate(0.0F, player.isSneaking() ? 0.0F : 0.1F, 0.0F);
                 biped.bipedBody.rotateAngleX = 0.5F;
                 biped.bipedRightLeg.rotationPointZ = 4.0F;
                 biped.bipedLeftLeg.rotationPointZ = 4.0F;
