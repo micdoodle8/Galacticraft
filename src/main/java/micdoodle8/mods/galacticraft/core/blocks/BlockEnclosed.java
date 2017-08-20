@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileCableIC2Sealed;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
@@ -34,6 +35,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import ic2.api.network.INetworkManager;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -56,10 +58,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 //        tin(1, 1, 0.25F, 0.2D, 32),
 //        detector(0, 2147483647, 0.5F, 0.5D, 8192),
 //        splitter(0, 2147483647, 0.5F, 0.5D, 8192);
-        IC2_HV_CABLE(0, "iron", 1, "enclosed_hv_cable"),
+        IC2_HV_CABLE(0, "iron", 2, "enclosed_hv_cable"),
         OXYGEN_PIPE(1, "enclosed_fluid_pipe"),
         IC2_COPPER_CABLE(2, "copper", 1, "enclosed_copper_cable"),
-        IC2_GOLD_CABLE(3, "gold", 1, "enclosed_gold_cable"),
+        IC2_GOLD_CABLE(3, "gold", 2, "enclosed_gold_cable"),
         TE_CONDUIT(4, "enclosed_te_conduit"), //CURRENTLY UNUSED
         IC2_GLASS_FIBRE_CABLE(5, "glass", 0, "enclosed_glass_fibre_cable"),
         IC2_LV_CABLE(6, "tin", 1, "enclosed_lv_cable"),
@@ -328,12 +330,11 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                         }
                     }
 
-                    CompatibilityManager.constructorIC2cableTE.setAccessible(true);
-                    return (TileEntity) CompatibilityManager.constructorIC2cableTE.newInstance(foundEnum, enclosedType.getIc2Insulation());
+                    return new TileCableIC2Sealed().setupInsulation(foundEnum, enclosedType.getIc2Insulation());
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    e.printStackTrace();
+                    ex.printStackTrace();
                 }
             }
         }
@@ -412,7 +413,25 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 BlockEnclosed.initialiseBCPipe(worldIn, pos, metadata);
             }
-        }       
+        }
+        else if (!worldIn.isRemote && metadata <= EnumEnclosedBlockType.IC2_LV_CABLE.getMeta() && metadata != EnumEnclosedBlockType.OXYGEN_PIPE.getMeta() && metadata != EnumEnclosedBlockType.TE_CONDUIT.getMeta() && CompatibilityManager.isIc2Loaded())
+        {
+            TileEntity te = worldIn.getTileEntity(pos);
+            if (te != null)
+            {
+                INetworkManager manager = null;
+                try {
+                    Object network = CompatibilityManager.fieldIC2networkManager.get(null);
+                    Method get = network.getClass().getMethod("get", boolean.class);
+                    manager = (INetworkManager)get.invoke(network, true);
+                }
+                catch (Exception e) { e.printStackTrace(); }
+                if (manager != null)
+                {
+                    manager.sendInitialData(te);
+                }
+            }
+        }
     }
 
     public static void initialiseBCPipe(World world, BlockPos pos, int metadata)

@@ -18,6 +18,7 @@ import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileCableIC2Sealed;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
@@ -550,6 +551,10 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
         GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
         GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
+        if (CompatibilityManager.isIc2Loaded())
+        {
+            GameRegistry.registerTileEntity(TileCableIC2Sealed.class, "GC Sealed IC2 Cable");
+        }
     }
 
     private void registerCreatures()
