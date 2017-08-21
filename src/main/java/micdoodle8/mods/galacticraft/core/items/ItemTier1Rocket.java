@@ -137,7 +137,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                 return EnumActionResult.FAIL;
             }
         }
-        return EnumActionResult.PASS;
+        return EnumActionResult.SUCCESS;
     }
 
     @Override
