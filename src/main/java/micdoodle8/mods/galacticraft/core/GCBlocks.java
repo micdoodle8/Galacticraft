@@ -276,16 +276,16 @@ public class GCBlocks
 
     public static void setHarvestLevels()
     {
-        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 5); //Copper ore
-        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 6); //Tin ore
-        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 7); //Aluminium ore
-        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 1, 8); //Silicon ore
+        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 1, 5); //Copper ore
+        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 1, 6); //Tin ore
+        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 1, 7); //Aluminium ore
+        setHarvestLevel(GCBlocks.basicBlock, "pickaxe", 2, 8); //Silicon ore
         setHarvestLevel(GCBlocks.fallenMeteor, "pickaxe", 3, 0);
-        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 2, 0); //Copper ore
-        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 2, 1); //Tin ore
+        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 0); //Copper ore
+        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 1); //Tin ore
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 2); //Cheese ore
         setHarvestLevel(GCBlocks.blockMoon, "shovel", 0, 3); //Moon dirt
-        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 1, 4); //Moon rock
+        setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 0, 4); //Moon rock
 
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 0);
         setHarvestLevel(GCBlocks.slabGCHalf, "pickaxe", 1, 1);
