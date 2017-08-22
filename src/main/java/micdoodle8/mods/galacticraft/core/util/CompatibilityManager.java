@@ -10,9 +10,8 @@ import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-
 
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
@@ -31,7 +30,7 @@ public class CompatibilityManager
 
     private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraftenergy");
-   private static boolean modBCraftTransportLoaded;
+    private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
     private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");
     private static boolean modMekLoaded = Loader.isModLoaded(modidMekanism);
@@ -60,6 +59,8 @@ public class CompatibilityManager
     public static Class classIC2wrenchElectric = null;
     public static Class classIC2tileEventLoad;
     public static Class classIC2tileEventUnload;
+    public static Field fieldIC2tickhandler;
+    public static Field fieldIC2networkManager;
     public static Class classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
     private static Method androidPlayerGet;
@@ -120,6 +121,12 @@ public class CompatibilityManager
                 try {
                     classIC2tileEventLoad = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
                     classIC2tileEventUnload = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
+                } catch (ClassNotFoundException e) { }
+                
+                try {
+                    Class clazzIC2 = Class.forName("ic2.core.IC2");
+                    fieldIC2tickhandler = clazzIC2.getDeclaredField("tickHandler");
+                    fieldIC2networkManager  = clazzIC2.getDeclaredField("network");
                 } catch (ClassNotFoundException e) { }
                 
                 Class classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");

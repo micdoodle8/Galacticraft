@@ -90,12 +90,12 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
 
         if (cameraTransformType == TransformType.THIRD_PERSON_RIGHT_HAND || cameraTransformType == TransformType.THIRD_PERSON_LEFT_HAND)
         {
-            Vector3f trans = new Vector3f(0.0F, -3.9F, 1.5F);
+            Vector3f trans = new Vector3f(0.0F, -3.9F, 1.45F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 15, 0));
+            Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(75, 15, 5));
             mul.setRotation(rot);
             ret.mul(mul);
             mul.setIdentity();
