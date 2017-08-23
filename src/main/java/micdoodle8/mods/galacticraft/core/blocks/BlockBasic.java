@@ -49,6 +49,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         DECO_BLOCK_TIN(10, "block_tin_gc"),
         DECO_BLOCK_ALUMINUM(11, "block_aluminum_gc"),
         DECO_BLOCK_METEOR_IRON(12, "block_meteoric_iron_gc");
+        DECO_BLOCK_SILICON(13, "block_silicon_gc");
 
         private final int meta;
         private final String name;
@@ -191,7 +192,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tabs, List<ItemStack> list)
     {
-        for (int var4 = 3; var4 < 13; ++var4)
+        for (int var4 = 3; var4 <= 13; ++var4)
         {
             list.add(new ItemStack(itemIn, 1, var4));
         }
@@ -259,6 +260,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         case 10:
         case 11:
         case 12:
+        case 13:
             return EnumSortCategoryBlock.INGOT_BLOCK;
         }
         return EnumSortCategoryBlock.GENERAL;
