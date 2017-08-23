@@ -48,7 +48,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         DECO_BLOCK_COPPER(9, "block_copper_gc"),
         DECO_BLOCK_TIN(10, "block_tin_gc"),
         DECO_BLOCK_ALUMINUM(11, "block_aluminum_gc"),
-        DECO_BLOCK_METEOR_IRON(12, "block_meteoric_iron_gc");
+        DECO_BLOCK_METEOR_IRON(12, "block_meteoric_iron_gc"),
         DECO_BLOCK_SILICON(13, "block_silicon_gc");
 
         private final int meta;
