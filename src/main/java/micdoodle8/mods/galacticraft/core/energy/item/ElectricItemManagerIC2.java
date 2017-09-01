@@ -17,9 +17,9 @@ public class ElectricItemManagerIC2
     public int charge(ItemStack itemStack, int amount, int tier,
                       boolean ignoreTransferLimit, boolean simulate)
     {
-        if (itemStack.getItem() instanceof ItemElectricBase)
+        if (itemStack.getItem() instanceof IItemElectric)
         {
-            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            IItemElectric item = (IItemElectric) itemStack.getItem();
             float energy = amount * EnergyConfigHandler.IC2_RATIO;
             float rejectedElectricity = Math.max(item.getElectricityStored(itemStack) + energy - item.getMaxElectricityStored(itemStack), 0);
             float energyToReceive = energy - rejectedElectricity;
@@ -43,9 +43,9 @@ public class ElectricItemManagerIC2
     public int discharge(ItemStack itemStack, int amount, int tier,
                          boolean ignoreTransferLimit, boolean simulate)
     {
-        if (itemStack.getItem() instanceof ItemElectricBase)
+        if (itemStack.getItem() instanceof IItemElectric)
         {
-            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            IItemElectric item = (IItemElectric) itemStack.getItem();
             float energy = amount / EnergyConfigHandler.TO_IC2_RATIO;
             float energyToTransfer = Math.min(item.getElectricityStored(itemStack), energy);
             if (!ignoreTransferLimit)
@@ -66,9 +66,9 @@ public class ElectricItemManagerIC2
     @Annotations.RuntimeInterface(clazz = "ic2.api.item.IElectricItemManager", modID = "IC2")
     public int getCharge(ItemStack itemStack)
     {
-        if (itemStack.getItem() instanceof ItemElectricBase)
+        if (itemStack.getItem() instanceof IItemElectric)
         {
-            ItemElectricBase item = (ItemElectricBase) itemStack.getItem();
+            IItemElectric item = (IItemElectric) itemStack.getItem();
             return (int) (item.getElectricityStored(itemStack) * EnergyConfigHandler.TO_IC2_RATIO);
         }
         return 0;
@@ -77,7 +77,7 @@ public class ElectricItemManagerIC2
     @Annotations.RuntimeInterface(clazz = "ic2.api.item.IElectricItemManager", modID = "IC2")
     public boolean canUse(ItemStack itemStack, int amount)
     {
-        if (itemStack.getItem() instanceof ItemElectricBase)
+        if (itemStack.getItem() instanceof IItemElectric)
         {
             return this.getCharge(itemStack) >= amount;
         }
@@ -87,7 +87,7 @@ public class ElectricItemManagerIC2
     @Annotations.RuntimeInterface(clazz = "ic2.api.item.IElectricItemManager", modID = "IC2")
     public boolean use(ItemStack itemStack, int amount, EntityLivingBase entity)
     {
-        if (itemStack.getItem() instanceof ItemElectricBase)
+        if (itemStack.getItem() instanceof IItemElectric)
         {
             return this.discharge(itemStack, amount, 1, true, false) >= amount - 1;
         }
