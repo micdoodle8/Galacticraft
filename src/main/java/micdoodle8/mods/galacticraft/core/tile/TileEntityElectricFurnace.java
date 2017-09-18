@@ -283,11 +283,6 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         return this.stacks;
     }
 
-    public int getSizeInventory()
-    {
-        return this.tierGC == 2 ? 4 : 3;
-    }
-
     @Override
     public String getName()
     {
