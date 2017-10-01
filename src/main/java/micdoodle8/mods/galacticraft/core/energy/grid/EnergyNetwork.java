@@ -34,6 +34,7 @@ public class EnergyNetwork implements IElectricityNetwork
     private boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
+    private boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
 
     /* Re-written by radfast for better performance
      *
@@ -291,6 +292,14 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
                     }
+                    else if (isFELoaded && acceptor instanceof net.minecraftforge.energy.IEnergyStorage)
+                    {
+                        net.minecraftforge.energy.IEnergyStorage forgeEnergy = (net.minecraftforge.energy.IEnergyStorage)acceptor;
+                        if (forgeEnergy.canReceive())
+                        {
+                            e = forgeEnergy.receiveEnergy(Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
+                        }
+                    }
 
                     if (e > 0.0F)
                     {
@@ -432,6 +441,11 @@ public class EnergyNetwork implements IElectricityNetwork
                     {
                         final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
                         sentToAcceptor = ((IEnergyReceiver) tileEntity).receiveEnergy(sideFrom, currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
+                    }
+                    else if (isFELoaded && tileEntity instanceof net.minecraftforge.energy.IEnergyStorage)
+                    {
+                        final int currentSendinginRF = (currentSending >= Integer.MAX_VALUE / EnergyConfigHandler.TO_RF_RATIO) ? Integer.MAX_VALUE : (int) (currentSending * EnergyConfigHandler.TO_RF_RATIO);
+                        sentToAcceptor = ((net.minecraftforge.energy.IEnergyStorage)tileEntity).receiveEnergy(currentSendinginRF, false) / EnergyConfigHandler.TO_RF_RATIO;
                     }
                     else
                     {

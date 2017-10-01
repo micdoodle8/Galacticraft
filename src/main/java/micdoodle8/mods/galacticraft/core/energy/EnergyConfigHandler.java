@@ -104,6 +104,8 @@ public class EnergyConfigHandler
     public static boolean disableBuildCraftOutput = false;
     public static boolean disableRFInput = false;
     public static boolean disableRFOutput = false;
+    public static boolean disableFEInput = false;
+    public static boolean disableFEOutput = false;
     public static boolean disableIC2Input = false;
     public static boolean disableIC2Output = false;
     public static boolean disableMekanismInput = false;
@@ -147,6 +149,8 @@ public class EnergyConfigHandler
         EnergyConfigHandler.disableBuildCraftOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of BuildCraft energy", false).getBoolean(false);
         EnergyConfigHandler.disableRFInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of RF energy", false).getBoolean(false);
         EnergyConfigHandler.disableRFOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of RF energy", false).getBoolean(false);
+        EnergyConfigHandler.disableFEInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Forge Energy to GC machines", false).getBoolean(false);
+        EnergyConfigHandler.disableFEOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of Forge Energy from GC machines", false).getBoolean(false);
         EnergyConfigHandler.disableIC2Input = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of IC2 energy", false).getBoolean(false);
         EnergyConfigHandler.disableIC2Output = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of IC2 energy", false).getBoolean(false);
         EnergyConfigHandler.disableMekanismInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Mekanism energy", false).getBoolean(false);
