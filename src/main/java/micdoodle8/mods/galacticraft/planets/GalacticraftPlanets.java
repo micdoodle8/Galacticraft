@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -95,6 +96,7 @@ public class GalacticraftPlanets
     public void postInit(FMLPostInitializationEvent event)
     {
         GalacticraftPlanets.proxy.postInit(event);
+        TileEntityDeconstructor.initialiseRecipeListPlanets();
         try {
         	if (CompatibilityManager.isMFRLoaded)
         	{
