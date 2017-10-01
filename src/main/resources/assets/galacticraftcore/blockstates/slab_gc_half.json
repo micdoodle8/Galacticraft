@@ -4,18 +4,18 @@
         "inventory": [{ "model": "galacticraftcore:half_slab_tin_1" }],
         "half=bottom,variant=tin_slab_1":  { "model": "galacticraftcore:half_slab_tin_1" },
         "half=bottom,variant=tin_slab_2":  { "model": "galacticraftcore:half_slab_tin_2" },
-        "half=bottom,variant=moon_stone_slab":  { "model": "galacticraftcore:half_slab_moon_stone" },
-        "half=bottom,variant=moon_dungeon_brick_slab":  { "model": "galacticraftcore:half_slab_moon_dungeon_brick" },
-        "half=bottom,variant=mars_cobblestone_slab":  { "model": "galacticraftcore:half_slab_mars_cobblestone" },
-        "half=bottom,variant=mars_dungeon_slab":  { "model": "galacticraftcore:half_slab_mars_dungeon_brick" },
-        "half=bottom,variant=asteroids_deco":  { "model": "galacticraftcore:half_slab_asteroid" },
+        "half=bottom,variant=moon_slab":  { "model": "galacticraftcore:half_slab_moon_stone" },
+        "half=bottom,variant=moon_bricks_slab":  { "model": "galacticraftcore:half_slab_moon_dungeon_brick" },
+        "half=bottom,variant=mars_slab":  { "model": "galacticraftcore:half_slab_mars_cobblestone" },
+        "half=bottom,variant=mars_bricks_slab":  { "model": "galacticraftcore:half_slab_mars_dungeon_brick" },
+        "half=bottom,variant=asteroids_slab":  { "model": "galacticraftcore:half_slab_asteroid" },
 		
         "half=top,variant=tin_slab_1":  { "model": "galacticraftcore:upper_slab_tin_1" },
         "half=top,variant=tin_slab_2":  { "model": "galacticraftcore:upper_slab_tin_2" },
-        "half=top,variant=moon_stone_slab":  { "model": "galacticraftcore:upper_slab_moon_stone" },
-        "half=top,variant=moon_dungeon_brick_slab":  { "model": "galacticraftcore:upper_slab_moon_dungeon_brick" },
-        "half=top,variant=mars_cobblestone_slab":  { "model": "galacticraftcore:upper_slab_mars_cobblestone" },
-        "half=top,variant=mars_dungeon_slab":  { "model": "galacticraftcore:upper_slab_mars_dungeon_brick" },
-        "half=top,variant=asteroids_deco":  { "model": "galacticraftcore:upper_slab_asteroid" }
+        "half=top,variant=moon_slab":  { "model": "galacticraftcore:upper_slab_moon_stone" },
+        "half=top,variant=moon_bricks_slab":  { "model": "galacticraftcore:upper_slab_moon_dungeon_brick" },
+        "half=top,variant=mars_slab":  { "model": "galacticraftcore:upper_slab_mars_cobblestone" },
+        "half=top,variant=mars_bricks_slab":  { "model": "galacticraftcore:upper_slab_mars_dungeon_brick" },
+        "half=top,variant=asteroids_slab":  { "model": "galacticraftcore:upper_slab_asteroid" }
     }
 }

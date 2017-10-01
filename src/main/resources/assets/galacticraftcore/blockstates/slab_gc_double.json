@@ -4,10 +4,10 @@
         "inventory": [{ "model": "galacticraftcore:deco_block_0_model" }],
         "variant=tin_slab_1":  { "model": "galacticraftcore:deco_block_0_model" },
         "variant=tin_slab_2":  { "model": "galacticraftcore:deco_block_1_model" },
-        "variant=moon_stone_slab":  { "model": "galacticraftcore:moon_stone_model" },
-        "variant=moon_dungeon_brick_slab":  { "model": "galacticraftcore:moon_dungeon_brick_model" },
-        "variant=mars_cobblestone_slab":  { "model": "galacticraftplanets:cobblestone_model" },
-        "variant=mars_dungeon_slab":  { "model": "galacticraftplanets:dungeon_brick_model" },
-        "variant=asteroids_deco":  { "model": "galacticraftplanets:asteroid_deco_model" }
+        "variant=moon_slab":  { "model": "galacticraftcore:moon_stone_model" },
+        "variant=moon_bricks_slab":  { "model": "galacticraftcore:moon_dungeon_brick_model" },
+        "variant=mars_slab":  { "model": "galacticraftplanets:cobblestone_model" },
+        "variant=mars_bricks_slab":  { "model": "galacticraftplanets:dungeon_brick_model" },
+        "variant=asteroids_slab":  { "model": "galacticraftplanets:asteroid_deco_model" }
     }
 }
