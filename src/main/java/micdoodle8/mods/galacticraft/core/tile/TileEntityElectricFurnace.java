@@ -99,10 +99,10 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             {
                 if (this.hasEnoughEnergyToRun)
                 {
-                    //50% extra speed boost for Tier 2 machine if powered by Tier 2 power
-                    if (this.tierGC == 2)
+                    //100% extra speed boost for Tier 2 machine if powered by Tier 2 power
+                    if (this.tierGC >= 2)
                     {
-                        this.processTimeRequired = 200 / (1 + this.poweredByTierGC);
+                        this.processTimeRequired = PROCESS_TIME_REQUIRED / 2 / this.poweredByTierGC;
                     }
 
                     if (this.processTicks == 0)
@@ -130,6 +130,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             else
             {
                 this.processTicks = 0;
+            }
+        } else
+        {
+            //Smoother client side animation before the networked fields get updated
+            if (this.processTicks > 0 && this.processTicks < this.processTimeRequired)
+            {
+                this.processTicks--;
             }
         }
     }
@@ -283,7 +290,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public int getSizeInventory()
     {
-        return this.tierGC == 2 ? 4 : 3;
+        return this.tierGC == 1 && this.initialised ? 3 : 4;
     }
    
     @Override
