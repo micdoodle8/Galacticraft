@@ -22,6 +22,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerS
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1506,12 +1507,16 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         }
 
         this.tryBlockLimit--;
-
-        ItemStack drops = gtFlag ? getGTDrops(this.world, pos, b) : getPickBlock(this.world, pos, b);
-        if (drops != null && !this.addToInventory(drops))
+        
+        //Collect the mined block - unless it's a plant or leaves in which case just break it
+        if (!(b instanceof IPlantable || b instanceof BlockLeaves))
         {
-            //drop itemstack if AstroMiner can't hold it
-            dropStack(pos, drops);
+		    ItemStack drops = gtFlag ? getGTDrops(this.world, pos, b) : getPickBlock(this.world, pos, b);
+		    if (drops != null && !this.addToInventory(drops))
+            {
+                //drop itemstack if AstroMiner can't hold it
+                dropStack(pos, drops);
+            }
         }
 
         this.world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);

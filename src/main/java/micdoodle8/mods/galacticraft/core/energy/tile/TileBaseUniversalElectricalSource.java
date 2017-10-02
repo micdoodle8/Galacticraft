@@ -303,4 +303,21 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
 
         return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
+    
+    //ForgeEnergy
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
+        if (!canExtract())
+            return 0;
+
+        return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public boolean canExtract()
+    {
+        return !EnergyConfigHandler.disableFEOutput;
+    }
 }

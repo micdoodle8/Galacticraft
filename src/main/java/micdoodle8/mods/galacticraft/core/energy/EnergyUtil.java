@@ -249,6 +249,15 @@ public class EnergyUtil
                     } catch (Exception e) { e.printStackTrace(); }                   
                 }
             }
+            
+            if (hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite()))
+            {
+                net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite());
+                if (forgeEnergy.canReceive() && !EnergyConfigHandler.disableFEOutput || forgeEnergy.canExtract() && !EnergyConfigHandler.disableFEInput)
+                {
+                    adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+            }
         }
 
         return adjacentConnections;
@@ -320,14 +329,17 @@ public class EnergyUtil
                 {
                     continue;
                 }
-                if (IC2tile instanceof IEnergyAcceptor && ((IEnergyAcceptor) IC2tile).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                if (IC2tile instanceof IEnergyAcceptor)
                 {
-                    connectedAcceptors.add(IC2tile);
-                    directions.add(sideFrom);
+                    if (((IEnergyAcceptor) IC2tile).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                    {
+                        connectedAcceptors.add(IC2tile);
+                        directions.add(sideFrom);
+                    }
+                    continue;
                 }
-                continue;
             }
-            
+
             if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
             {
                 if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
@@ -345,6 +357,16 @@ public class EnergyUtil
                     directions.add(sideFrom);
                 }
                 continue;
+            }
+            
+            if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom))
+            {
+                net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom); 
+                if (forgeEnergy.canReceive())
+                {
+                    connectedAcceptors.add(forgeEnergy);
+                    directions.add(sideFrom);
+                }
             }
         }
         return;
@@ -430,6 +452,15 @@ public class EnergyUtil
 //          GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
             return sent;
         }
+        else if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
+            if (forgeEnergy.canReceive())
+            {
+                float sent = forgeEnergy.receiveEnergy((int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                return sent;
+            }
+        }
 
         return 0F;
     }
@@ -483,6 +514,15 @@ public class EnergyUtil
             float sent = ((IEnergyProvider) tileAdj).extractEnergy(inputAdj, (int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
             return sent;
         }
+        else if (!EnergyConfigHandler.disableFEInput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
+            if (forgeEnergy.canExtract())
+            {
+                float sent = forgeEnergy.extractEnergy((int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                return sent;
+            }
+        }
 
         return 0F;
     }
@@ -515,6 +555,10 @@ public class EnergyUtil
         {
             return ((IEnergyConnection) tileAdj).canConnectEnergy(inputAdj);
         }
+        else if (hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            return (getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj).canReceive());
+        }
 
         return false;
     }
@@ -538,6 +582,11 @@ public class EnergyUtil
         if (isIC2Loaded && tileAdj instanceof IEnergyEmitter)
         {
             return ((IEnergyEmitter) tileAdj).emitsEnergyTo(null, side);
+        }
+
+        if (hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, side))
+        {
+            return (getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, side).canExtract());
         }
 
         return false;

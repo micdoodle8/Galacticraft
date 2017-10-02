@@ -344,7 +344,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
      * @param held   The frequency module
      * @param player
      */
-    public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player)
+    public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player, boolean remove)
     {
         if (held == null)
         {
@@ -368,9 +368,10 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 TileEntity te = wp.world.getTileEntity(new BlockPos(x, y, z));
                 if (te instanceof TileEntityTelemetry)
                 {
-                    if (player == null)
+                    if (remove)
                     {
-                        ((TileEntityTelemetry) te).removeTrackedEntity();
+                        if (((TileEntityTelemetry) te).linkedEntity == player)
+                            ((TileEntityTelemetry) te).removeTrackedEntity();
                     }
                     else
                     {

@@ -50,6 +50,7 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
@@ -785,7 +786,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         catch (MalformedURLException e)
         {
             FMLLog.severe("Error getting capes list URL");
-            e.printStackTrace();
+            if (ConfigManagerCore.enableDebug) e.printStackTrace();
             return;
         }
 
@@ -797,7 +798,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            if (ConfigManagerCore.enableDebug) e.printStackTrace();
             return;
         }
 
@@ -811,7 +812,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            if (ConfigManagerCore.enableDebug) e.printStackTrace();
             return;
         }
 
@@ -833,7 +834,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            if (ConfigManagerCore.enableDebug) e.printStackTrace();
         }
         finally
         {
@@ -843,7 +844,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
             catch (IOException e)
             {
-                e.printStackTrace();
+                if (ConfigManagerCore.enableDebug) e.printStackTrace();
             }
         }
     }

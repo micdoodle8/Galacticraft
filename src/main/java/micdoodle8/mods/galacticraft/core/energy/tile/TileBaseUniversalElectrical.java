@@ -25,12 +25,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.EnumSet;
 
 
-public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
+public abstract class TileBaseUniversalElectrical extends EnergyStorageTile implements net.minecraftforge.energy.IEnergyStorage
 {
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;
@@ -422,6 +424,51 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 
         return this.getElectricalInputDirections().contains(direction);
     }
+    
+    //ForgeEnergy
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate)
+    {
+        if (!canReceive())
+            return 0;
+
+        return MathHelper.floor(super.receiveElectricity(null, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+    }
+    
+    //ForgeEnergy
+    @Override
+    public boolean canReceive()
+    {
+        return !EnergyConfigHandler.disableFEInput;
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getEnergyStored()
+    {
+        return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getMaxEnergyStored()
+    {
+        return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
+         return 0;
+    }
+
+    //ForgeEnergy
+    @Override
+    public boolean canExtract()
+    {
+        return false;
+    }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
@@ -570,5 +617,25 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
+    }
+    
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return this.getElectricalInputDirections().contains(facing);
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return this.getElectricalInputDirections().contains(facing) ? (T) this : null;
+        }
+        return super.getCapability(capability, facing);
     }
 }
