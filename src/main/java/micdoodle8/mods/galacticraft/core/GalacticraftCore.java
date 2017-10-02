@@ -390,6 +390,7 @@ public class GalacticraftCore
 
         CompatibilityManager.checkForCompatibleMods();
         RecipeManagerGC.loadRecipes();
+        TileEntityDeconstructor.initialiseRecipeList();
         ItemSchematic.registerSchematicItems();
         NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
         MinecraftForge.EVENT_BUS.register(new TickHandlerServer());

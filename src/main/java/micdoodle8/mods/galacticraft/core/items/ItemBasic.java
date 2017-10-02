@@ -217,7 +217,7 @@ public class ItemBasic extends Item implements ISortableItem
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
                 ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
 
-                if (gear == null)
+                if (gear == null && itemStackIn.getTagCompound() == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(5, itemStackIn.copy());
                     itemStackIn.stackSize = 0;

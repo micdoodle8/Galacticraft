@@ -1318,12 +1318,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.spaceship.name");
-    }
-
-    @Override
     public int getInventoryStackLimit()
     {
         return 64;
@@ -1332,7 +1326,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public boolean hasCustomName()
     {
-        return true;
+        return false;
     }
 
     @Override
