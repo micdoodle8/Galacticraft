@@ -236,7 +236,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState state = this.worldObj.getBlockState(pos);
 
-        if (state.getBlock().getMaterial(state) != Material.AIR)
+        if (state.getMaterial() != Material.AIR)
         {
             this.worldObj.playSound(null, x, y, z, GCSounds.closeAirLock, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }

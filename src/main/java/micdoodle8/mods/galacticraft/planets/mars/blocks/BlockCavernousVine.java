@@ -101,7 +101,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     public boolean canBlockStay(World worldIn, BlockPos pos)
     {
         IBlockState stateAbove = worldIn.getBlockState(pos.up());
-        return (stateAbove.getBlock() == this || stateAbove.getBlock().getMaterial(stateAbove).isSolid());
+        return (stateAbove.getBlock() == this || stateAbove.getMaterial().isSolid());
     }
 
     @Override

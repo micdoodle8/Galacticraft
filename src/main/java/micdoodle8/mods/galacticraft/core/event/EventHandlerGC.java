@@ -917,7 +917,7 @@ public class EventHandlerGC
         {
             WorldClient worldclient = Minecraft.getMinecraft().theWorld;
 
-            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.getState().getBlock().getMaterial(event.getState()) == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
+            if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.getState().getMaterial() == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {
                 Vec3d vec = worldclient.getFogColor(1.0F);
                 event.setRed((float) vec.xCoord);

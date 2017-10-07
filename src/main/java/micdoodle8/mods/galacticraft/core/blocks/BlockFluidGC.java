@@ -66,7 +66,7 @@ public class BlockFluidGC extends BlockFluidClassic
         {
             BlockPos below = pos.down();
             IBlockState state = worldIn.getBlockState(below);
-            if (state.getBlock().isSideSolid(state, worldIn, below, EnumFacing.UP) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial(worldIn.getBlockState(pos)).blocksMovement())
+            if (state.getBlock().isSideSolid(state, worldIn, below, EnumFacing.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
             {
                 GalacticraftCore.proxy.spawnParticle("oilDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
             }
@@ -76,7 +76,7 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean canDisplace(IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
@@ -87,7 +87,7 @@ public class BlockFluidGC extends BlockFluidClassic
     @Override
     public boolean displaceIfPossible(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
@@ -183,7 +183,7 @@ public class BlockFluidGC extends BlockFluidClassic
 
     private boolean isFluid(IBlockState state)
     {
-        return state.getBlock().getMaterial(state).isLiquid() || state.getBlock() instanceof IFluidBlock;
+        return state.getMaterial().isLiquid() || state.getBlock() instanceof IFluidBlock;
     }
 
     private float getFluidHeightForRender(IBlockAccess world, BlockPos pos, IBlockState up)
@@ -192,7 +192,7 @@ public class BlockFluidGC extends BlockFluidClassic
 
         if (here.getBlock() == this)
         {
-            if (up.getBlock().getMaterial(here).isLiquid() || up.getBlock() instanceof IFluidBlock)
+            if (up.getMaterial().isLiquid() || up.getBlock() instanceof IFluidBlock)
             {
                 return 1;
             }
@@ -205,6 +205,6 @@ public class BlockFluidGC extends BlockFluidClassic
         {
             return Math.min(1 - BlockLiquid.getLiquidHeightPercent(here.getValue(BlockLiquid.LEVEL)), 14f / 16);
         }
-        return !here.getBlock().getMaterial(here).isSolid() && up.getBlock() == this ? 1 : this.getQuantaPercentage(world, pos) * 0.875F;
+        return !here.getMaterial().isSolid() && up.getBlock() == this ? 1 : this.getQuantaPercentage(world, pos) * 0.875F;
     }
 }

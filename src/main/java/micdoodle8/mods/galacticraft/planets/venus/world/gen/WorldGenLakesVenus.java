@@ -77,7 +77,7 @@ public class WorldGenLakesVenus extends WorldGenerator
                         if (flag)
                         {
                             IBlockState state = worldIn.getBlockState(position.add(k1, k, l2));
-                            Material material = state.getBlock().getMaterial(state);
+                            Material material = state.getMaterial();
 
                             if (k >= 4 && material.isLiquid())
                             {
@@ -144,7 +144,7 @@ public class WorldGenLakesVenus extends WorldGenerator
                         boolean flag1 = !aboolean[(j2 * 16 + k3) * 8 + k4] && (j2 < 15 && aboolean[((j2 + 1) * 16 + k3) * 8 + k4] || j2 > 0 && aboolean[((j2 - 1) * 16 + k3) * 8 + k4] || k3 < 15 && aboolean[(j2 * 16 + k3 + 1) * 8 + k4] || k3 > 0 && aboolean[(j2 * 16 + (k3 - 1)) * 8 + k4] || k4 < 7 && aboolean[(j2 * 16 + k3) * 8 + k4 + 1] || k4 > 0 && aboolean[(j2 * 16 + k3) * 8 + (k4 - 1)]);
 
                         IBlockState state = worldIn.getBlockState(position.add(j2, k4, k3));
-                        if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && state.getBlock().getMaterial(state).isSolid())
+                        if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && state.getMaterial().isSolid())
                         {
                             worldIn.setBlockState(position.add(j2, k4, k3), VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA), 2);
                         }

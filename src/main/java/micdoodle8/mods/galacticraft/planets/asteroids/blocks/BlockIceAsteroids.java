@@ -91,7 +91,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
             this.dropBlockAsItem(worldIn, pos, state, i1);
             harvesters.set(null);
             IBlockState state1 = worldIn.getBlockState(pos.down());
-            Material material = state1.getBlock().getMaterial(state1);
+            Material material = state1.getMaterial();
 
             if (material.blocksMovement() || material.isLiquid())
             {

@@ -338,7 +338,7 @@ public class SpinManager
             {
                 this.oneSSBlock = baseBlock;
                 IBlockState state = this.worldProvider.worldObj.getBlockState(this.oneSSBlock);
-                if (state.getBlock().getMaterial(state) != Material.AIR)
+                if (state.getMaterial() != Material.AIR)
                 {
                     return this.refresh(baseBlock, true);
                 }

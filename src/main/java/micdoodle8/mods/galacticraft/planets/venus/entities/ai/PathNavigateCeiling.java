@@ -146,7 +146,7 @@ public class PathNavigateCeiling extends PathNavigate
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
                         IBlockState state = this.worldObj.getBlockState(new BlockPos(k, y + 1, l));
-                        Material material = state.getBlock().getMaterial(state);
+                        Material material = state.getMaterial();
 
                         if (material == Material.AIR)
                         {

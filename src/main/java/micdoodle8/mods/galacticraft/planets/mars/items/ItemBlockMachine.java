@@ -51,7 +51,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
 
                 if (this.getBlock() == MarsBlocks.machine)
                 {
-                    if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
+                    if (!stateAt.getMaterial().isReplaceable())
                     {
                         if (world.isRemote)
                         {

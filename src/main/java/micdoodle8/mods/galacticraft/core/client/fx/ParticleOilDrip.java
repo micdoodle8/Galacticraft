@@ -69,7 +69,7 @@ public class ParticleOilDrip extends Particle
 
         BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
         IBlockState state = this.worldObj.getBlockState(pos);
-        Material material = state.getBlock().getMaterial(state);
+        Material material = state.getMaterial();
 
         if (material.isLiquid() || material.isSolid())
         {

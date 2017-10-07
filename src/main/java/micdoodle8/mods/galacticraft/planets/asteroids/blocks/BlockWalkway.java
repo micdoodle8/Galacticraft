@@ -127,7 +127,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public boolean isNormalCube(IBlockState state)
     {
-        return state.getBlock().getMaterial(state).blocksMovement() && state.getBlock().isFullCube(state);
+        return state.getMaterial().blocksMovement() && state.getBlock().isFullCube(state);
     }
 
     @Override
