@@ -39,7 +39,7 @@ public class NEIGalacticraftAsteroidsConfig implements IConfigureNEI
     @Override
     public String getVersion()
     {
-        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
+        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALPATCHVERSION;
     }
 
     public void registerRocketBenchRecipe(ArrayList<PositionedStack> input, PositionedStack output)
