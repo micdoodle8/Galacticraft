@@ -13,6 +13,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -411,6 +412,23 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         return 3;
     }
 
+    @Override
+    public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
+    {
+        final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        entityitem.motionY = -2.0D;
+        entityitem.setDefaultPickupDelay();
+        if (this.captureDrops)
+        {
+            this.capturedDrops.add(entityitem);
+        }
+        else
+        {
+            this.worldObj.spawnEntityInWorld(entityitem);
+        }
+        return entityitem;
+    }
+    
     @Override
     public void dropKey()
     {

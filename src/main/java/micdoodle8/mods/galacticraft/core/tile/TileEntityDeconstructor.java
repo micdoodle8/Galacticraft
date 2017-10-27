@@ -55,7 +55,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     static
     {
         initialiseItemList();
-        initialiseRecipeList();
     }
     
     private static void initialiseItemList()
@@ -87,17 +86,18 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         addSalvage(new ItemStack(Items.gold_nugget));
     }
 
-    private static void initialiseRecipeList()
+    public static void initialiseRecipeList()
     {
         knownRecipes.addAll(GalacticraftRegistry.getRocketT1Recipes());
         knownRecipes.addAll(GalacticraftRegistry.getBuggyBenchRecipes());
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            knownRecipes.addAll(GalacticraftRegistry.getRocketT2Recipes());
-            knownRecipes.addAll(GalacticraftRegistry.getCargoRocketRecipes());
-            knownRecipes.addAll(GalacticraftRegistry.getRocketT3Recipes());
-            knownRecipes.addAll(GalacticraftRegistry.getAstroMinerRecipes());
-        }
+    }
+    
+    public static void initialiseRecipeListPlanets()
+    {
+        knownRecipes.addAll(GalacticraftRegistry.getRocketT2Recipes());
+        knownRecipes.addAll(GalacticraftRegistry.getCargoRocketRecipes());
+        knownRecipes.addAll(GalacticraftRegistry.getRocketT3Recipes());
+        knownRecipes.addAll(GalacticraftRegistry.getAstroMinerRecipes());
     }
 
     public TileEntityDeconstructor()

@@ -71,7 +71,7 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
         }
         if (cameraTransformType == TransformType.THIRD_PERSON)
         {
-            Vector3f trans = new Vector3f(-0.2F, -0.0F, 0.7F);
+            Vector3f trans = new Vector3f(-0.2F, -0.0F, 0.5F);
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();

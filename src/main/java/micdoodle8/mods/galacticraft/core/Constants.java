@@ -8,8 +8,9 @@ public class Constants
 
     public static final int LOCALMAJVERSION = 4;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 0;
-    public static final String COMBINEDVERSION = LOCALMAJVERSION + "." + LOCALMINVERSION + "." + LOCALBUILDVERSION;
+    public static final int LOCALPATCHVERSION = 1;
+    public static final int LOCALBUILDVERSION = 119;
+    public static final String COMBINEDVERSION = LOCALMAJVERSION + "." + LOCALMINVERSION + "." + LOCALPATCHVERSION + "." + LOCALBUILDVERSION;
     
     public static final String MCVERSION = "[1.8.9]";
     public static final String DEPENDENCIES_FORGE = "required-after:Forge@[11.15.1.1764,); required-after:FML@[8.0.99.99,); ";  //Keep the space at the end!

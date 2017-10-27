@@ -232,7 +232,7 @@ public class GCPlayerHandler
                 if (stats.getFrequencyModuleInSlot() == null)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.FREQUENCY_MODULE);
-                    TileEntityTelemetry.frequencyModulePlayer(stats.getLastFrequencyModuleInSlot(), null);
+                    TileEntityTelemetry.frequencyModulePlayer(stats.getLastFrequencyModuleInSlot(), player, true);
                 }
                 else if (stats.getLastFrequencyModuleInSlot() == null)
                 {
@@ -241,7 +241,7 @@ public class GCPlayerHandler
                     if (gearID >= 0)
                     {
                         GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.FREQUENCY_MODULE, gearID);
-                        TileEntityTelemetry.frequencyModulePlayer(stats.getFrequencyModuleInSlot(), player);
+                        TileEntityTelemetry.frequencyModulePlayer(stats.getFrequencyModuleInSlot(), player, false);
                     }
                 }
             }

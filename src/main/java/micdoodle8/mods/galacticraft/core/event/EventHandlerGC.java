@@ -443,7 +443,7 @@ public class EventHandlerGC
         long j1 = rand.nextInt() / 2L * 2L + 1L;
         rand.setSeed(x * i1 + z * j1 ^ world.getSeed());
 
-        double randMod = Math.min(0.2D, 0.08D * ConfigManagerCore.oilGenFactor);
+        double randMod = Math.min(0.2D, 0.05D * ConfigManagerCore.oilGenFactor);
 
         if (biomegenbase.minHeight >= 0.45F)
         {
