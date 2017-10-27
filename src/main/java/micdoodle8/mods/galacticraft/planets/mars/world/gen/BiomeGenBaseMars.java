@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class BiomeGenBaseMars extends BiomeGenBaseGC
@@ -13,6 +14,12 @@ public class BiomeGenBaseMars extends BiomeGenBaseGC
     {
         super(var1);
         this.rainfall = 0F;
+    }
+
+    @Override
+    public BiomeDecorator createBiomeDecorator()
+    {
+        return new BiomeDecoratorMars();
     }
 
     @Override
