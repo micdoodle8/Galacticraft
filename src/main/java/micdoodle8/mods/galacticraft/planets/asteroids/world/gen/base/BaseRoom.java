@@ -528,7 +528,6 @@ public class BaseRoom extends SizedPiece
             else if (tile instanceof TileEntityCargoLoader)
             {
                 TileEntityCargoLoader loader = (TileEntityCargoLoader) tile;
-                loader.locked = true;
                 //Looks like the food supplies have gone off!
                 loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
                 loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
