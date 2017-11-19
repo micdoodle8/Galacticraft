@@ -5,6 +5,7 @@ import java.util.Map;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -56,7 +57,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
 
             if (worldIn != null && player != null && !flag1)
             {
-                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                if (worldIn.provider instanceof IGalacticraftWorldProvider && player.inventory.hasItem(GCItems.dungeonFinder))
                 {
                     double direction = GCPlayerStatsClient.get(player).getDungeonDirection();
                     angle = (angle - direction) % 360.0D;
