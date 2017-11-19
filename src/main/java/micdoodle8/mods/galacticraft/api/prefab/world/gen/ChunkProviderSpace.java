@@ -345,25 +345,25 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return true;
     }
 
-    public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
+    public void decoratePlanet(World world, Random rand, int x, int z)
     {
-        this.getBiomeGenerator().decorate(par1World, par2Random, par3, par4);
+        this.getBiomeGenerator().decorate(world, rand, x, z);
     }
 
     @Override
-    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
+    public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ)
     {
         BlockFalling.fallInstantly = true;
-        int var4 = par2 * 16;
-        int var5 = par3 * 16;
-        this.worldObj.getBiomeGenForCoords(new BlockPos(var4 + 16, 0, var5 + 16));
+        int x = chunkX * 16;
+        int z = chunkZ * 16;
+        BlockPos pos = new BlockPos(x, 0, z);
+        BiomeGenBase biome = this.worldObj.getBiomeGenForCoords(pos.add(16, 0, 16));
         this.rand.setSeed(this.worldObj.getSeed());
         final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-        this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-        this.onPopulate(par1IChunkProvider, par2, par3);
-
+        this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.worldObj.getSeed());
+        this.decoratePlanet(this.worldObj, this.rand, x, z);
+        this.onPopulate(chunkProvider, chunkX, chunkZ);
         BlockFalling.fallInstantly = false;
     }
 

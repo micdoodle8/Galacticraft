@@ -7,6 +7,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
+
 public class WorldGenEggs extends WorldGenerator
 {
     private Block eggBlock;
@@ -17,20 +20,18 @@ public class WorldGenEggs extends WorldGenerator
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, BlockPos pos)
+    public boolean generate(World world, Random rand, BlockPos pos)
     {
-        int i1 = pos.getX() + par2Random.nextInt(8) - par2Random.nextInt(8);
-        int j1 = pos.getY() + par2Random.nextInt(4) - par2Random.nextInt(4);
-        int k1 = pos.getZ() + par2Random.nextInt(8) - par2Random.nextInt(8);
-        BlockPos newPos = new BlockPos(i1, j1, k1);
+        BlockPos newPos = pos.add(rand.nextInt(8) - rand.nextInt(8), rand.nextInt(4) - rand.nextInt(4), rand.nextInt(8) - rand.nextInt(8));
 
-        if (!par1World.isBlockLoaded(newPos)) return false;
-
-        if (par1World.isAirBlock(newPos) && (!par1World.provider.getHasNoSky() || j1 < 127) && this.eggBlock.canPlaceBlockAt(par1World, newPos))
+        if (!world.isBlockLoaded(newPos))
         {
-            par1World.setBlockState(newPos, this.eggBlock.getStateFromMeta(par2Random.nextInt(3)), 2);
+            return false;
         }
-
+        if (world.isAirBlock(newPos) && newPos.getY() < 127 && world.getBlockState(newPos.down()).getBlock() == MarsBlocks.marsBlock && world.getBlockState(newPos.down()).getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)
+        {
+            world.setBlockState(newPos, this.eggBlock.getStateFromMeta(rand.nextInt(3)), 2);
+        }
         return true;
     }
 }
