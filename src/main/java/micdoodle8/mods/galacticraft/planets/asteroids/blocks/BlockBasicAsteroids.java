@@ -228,6 +228,8 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             return EnumSortCategoryBlock.ORE;
         case 6:
             return EnumSortCategoryBlock.DECORATION;
+        case 7:
+            return EnumSortCategoryBlock.INGOT_BLOCK;
         }
         return EnumSortCategoryBlock.GENERAL;
     }
