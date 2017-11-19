@@ -377,6 +377,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         case DUNGEON_BRICK_1:
         case DUNGEON_BRICK_2:
             return EnumSortCategoryBlock.BRICKS;
+        case LEAD_BLOCK:
+            return EnumSortCategoryBlock.INGOT_BLOCK;
         default:
             return EnumSortCategoryBlock.GENERAL;
         }
