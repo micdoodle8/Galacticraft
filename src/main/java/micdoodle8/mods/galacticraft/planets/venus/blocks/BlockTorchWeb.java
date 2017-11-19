@@ -153,7 +153,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
         if (meta == 0)
         {
-            return blockUp.getBlock().getMaterial(blockUp).isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
+            return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
         }
         else
         {

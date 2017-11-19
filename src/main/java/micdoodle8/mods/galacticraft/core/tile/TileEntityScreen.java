@@ -417,9 +417,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     @Override
     public NBTTagCompound getUpdateTag()
     {
-        NBTTagCompound tag = new NBTTagCompound();
-        this.writeToNBT(new NBTTagCompound());
-        return tag;
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     public void checkScreenSize()

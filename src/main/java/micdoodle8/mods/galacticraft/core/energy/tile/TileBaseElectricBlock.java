@@ -152,6 +152,12 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);

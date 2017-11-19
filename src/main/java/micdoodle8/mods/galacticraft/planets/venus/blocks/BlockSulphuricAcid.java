@@ -30,7 +30,7 @@ public class BlockSulphuricAcid extends BlockFluidClassic
     @Override
     public boolean canDisplace(IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
@@ -40,7 +40,7 @@ public class BlockSulphuricAcid extends BlockFluidClassic
     @Override
     public boolean displaceIfPossible(World world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getBlock().getMaterial(world.getBlockState(pos)).isLiquid())
+        if (world.getBlockState(pos).getMaterial().isLiquid())
         {
             return false;
         }
@@ -61,7 +61,7 @@ public class BlockSulphuricAcid extends BlockFluidClassic
         {
             BlockPos below = pos.down();
             IBlockState state = worldIn.getBlockState(below);
-            if (state.getBlock().isSideSolid(state, worldIn, below, EnumFacing.UP) && !worldIn.getBlockState(pos.down(2)).getBlock().getMaterial(worldIn.getBlockState(pos)).blocksMovement())
+            if (state.getBlock().isSideSolid(state, worldIn, below, EnumFacing.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
             {
                 GalacticraftPlanets.spawnParticle("bacterialDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0));
             }

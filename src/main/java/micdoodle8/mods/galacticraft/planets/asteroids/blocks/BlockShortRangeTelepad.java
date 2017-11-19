@@ -116,7 +116,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
                     {
                         IBlockState stateAt = worldIn.getBlockState(pos.add(x, y, z));
 
-                        if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
+                        if (!stateAt.getMaterial().isReplaceable())
                         {
                             validSpot = false;
                         }

@@ -37,7 +37,7 @@ public class ItemBlockNasaWorkbench extends ItemBlockDesc
 
                             if ((y == 0 || y == 3) && x == 0 && z == 0)
                             {
-                                if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
+                                if (!stateAt.getMaterial().isReplaceable())
                                 {
                                     if (world.isRemote)
                                     {
@@ -48,7 +48,7 @@ public class ItemBlockNasaWorkbench extends ItemBlockDesc
                             }
                             else if (y != 0 && y != 3)
                             {
-                                if (!stateAt.getBlock().getMaterial(stateAt).isReplaceable())
+                                if (!stateAt.getMaterial().isReplaceable())
                                 {
                                     if (world.isRemote)
                                     {

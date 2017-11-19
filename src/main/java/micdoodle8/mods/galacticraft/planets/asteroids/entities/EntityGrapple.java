@@ -226,7 +226,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             IBlockState state = this.world.getBlockState(this.hitVec);
 
-            if (state.getBlock().getMaterial(state) != Material.AIR)
+            if (state.getMaterial() != Material.AIR)
             {
                 AxisAlignedBB axisalignedbb = state.getBlock().getCollisionBoundingBox(state, this.world, this.hitVec);
 

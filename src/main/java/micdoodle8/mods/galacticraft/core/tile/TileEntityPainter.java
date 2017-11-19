@@ -173,6 +173,12 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
     private static Set<BlockVec3> getLoadedTiles(World world)
     {
         int dimID = GCCoreUtil.getDimensionID(world);

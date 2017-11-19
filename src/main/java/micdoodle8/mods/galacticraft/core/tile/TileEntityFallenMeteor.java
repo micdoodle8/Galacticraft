@@ -71,6 +71,12 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public double getPacketRange()
     {
         return 50;

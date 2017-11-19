@@ -129,6 +129,12 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
     /**
      * Reads a blockstate from the given tag.  In MC1.10+ use NBTUtil instead!
      */

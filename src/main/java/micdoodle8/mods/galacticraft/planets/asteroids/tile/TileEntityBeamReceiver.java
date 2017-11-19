@@ -371,6 +371,12 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
         return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
     private AxisAlignedBB renderAABB;
     
     @Override

@@ -38,6 +38,12 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
         return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+    
     public abstract ReceiverMode getModeFromDirection(EnumFacing direction);
 
     @Override

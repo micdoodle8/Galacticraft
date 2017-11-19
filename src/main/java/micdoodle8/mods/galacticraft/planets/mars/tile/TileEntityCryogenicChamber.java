@@ -194,4 +194,10 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
         nbt.setBoolean("IsChamberOccupied", this.isOccupied);
         return nbt;
     }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
 }

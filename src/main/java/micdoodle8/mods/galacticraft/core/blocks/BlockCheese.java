@@ -122,7 +122,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 
     private boolean canBlockStay(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock().getMaterial(worldIn.getBlockState(pos)).isSolid();
+        return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
     }
 
     @Override
