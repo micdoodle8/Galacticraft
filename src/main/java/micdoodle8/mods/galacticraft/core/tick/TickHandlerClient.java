@@ -283,7 +283,7 @@ public class TickHandlerClient
                 OverlayLaunchCountdown.renderCountdownOverlay();
             }
 
-            if (player.world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.provider) && !playerBaseClient.isSpectator())
+            if (player.world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.provider) && !playerBaseClient.isSpectator() && !minecraft.gameSettings.showDebugInfo)
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 

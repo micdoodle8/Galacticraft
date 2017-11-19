@@ -59,7 +59,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         ORE_GALENA(8, "venus_ore_galena"),
         ORE_QUARTZ(9, "venus_ore_quartz"),
         ORE_SILICON(10, "venus_ore_silicon"),
-        ORE_TIN(11, "venus_ore_tin");
+        ORE_TIN(11, "venus_ore_tin"),
+        LEAD_BLOCK(12, "lead_block");
 
         private final int meta;
         private final String name;
@@ -383,6 +384,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         case DUNGEON_BRICK_1:
         case DUNGEON_BRICK_2:
             return EnumSortCategoryBlock.BRICKS;
+        case LEAD_BLOCK:
+            return EnumSortCategoryBlock.INGOT_BLOCK;
         default:
             return EnumSortCategoryBlock.GENERAL;
         }

@@ -11,6 +11,7 @@
         "basictype=block_copper_gc": { "model": "galacticraftcore:block_copper_gc_model" },
         "basictype=block_tin_gc": { "model": "galacticraftcore:block_tin_gc_model" },
         "basictype=block_aluminum_gc": { "model": "galacticraftcore:block_aluminum_gc_model" },
-        "basictype=block_meteoric_iron_gc": { "model": "galacticraftcore:block_meteoric_iron_gc_model" }
+        "basictype=block_meteoric_iron_gc": { "model": "galacticraftcore:block_meteoric_iron_gc_model" },
+        "basictype=block_silicon_gc": { "model": "galacticraftcore:block_silicon_gc_model" }
     }
 }
