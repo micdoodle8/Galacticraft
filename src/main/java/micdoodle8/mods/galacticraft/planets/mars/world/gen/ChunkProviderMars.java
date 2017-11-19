@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.ChunkProviderSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class ChunkProviderMars extends ChunkProviderSpace
 {
+    private final BiomeDecoratorMars marsBiomeDecorator = new BiomeDecoratorMars();
     private final MapGenCavernMars caveGenerator = new MapGenCavernMars();
     private final MapGenCaveMars cavernGenerator = new MapGenCaveMars();
 
@@ -27,6 +29,12 @@ public class ChunkProviderMars extends ChunkProviderSpace
     public ChunkProviderMars(World par1World, long seed, boolean mapFeaturesEnabled)
     {
         super(par1World, seed, mapFeaturesEnabled);
+    }
+
+    @Override
+    protected BiomeDecoratorSpace getBiomeGenerator()
+    {
+        return this.marsBiomeDecorator;
     }
 
     @Override

@@ -345,6 +345,11 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return true;
     }
 
+    public void decoratePlanet(World world, Random rand, int x, int z)
+    {
+        this.getBiomeGenerator().decorate(world, rand, x, z);
+    }
+
     @Override
     public void populate(IChunkProvider chunkProvider, int chunkX, int chunkZ)
     {
@@ -357,7 +362,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed(chunkX * var7 + chunkZ * var9 ^ this.worldObj.getSeed());
-        biome.decorate(this.worldObj, this.rand, pos);
+        this.decoratePlanet(this.worldObj, this.rand, x, z);
         this.onPopulate(chunkProvider, chunkX, chunkZ);
         BlockFalling.fallInstantly = false;
     }
@@ -386,6 +391,14 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
         return biomegenbase.getSpawnableList(creatureType);
     }
+
+    /**
+     * Do not return null
+     *
+     * @return The biome generator for this world, handles ore, flower, etc
+     * generation. See GCBiomeDecoratorBase.
+     */
+    protected abstract BiomeDecoratorSpace getBiomeGenerator();
 
     /**
      * Do not return null, have at least one biome for generation
