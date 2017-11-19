@@ -414,6 +414,12 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
     public void checkScreenSize()
     {
         this.log("Checking screen size");

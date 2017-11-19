@@ -136,6 +136,12 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+    
+    @Override
     public void setOxygenStored(int oxygen)
     {
         this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));

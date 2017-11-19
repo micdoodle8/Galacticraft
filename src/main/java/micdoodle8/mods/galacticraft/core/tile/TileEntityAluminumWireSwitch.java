@@ -53,6 +53,12 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public int getTierGC()
     {
         return this.tier;

@@ -356,4 +356,10 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         return nbt;
     }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
 }

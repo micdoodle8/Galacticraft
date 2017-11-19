@@ -225,6 +225,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public int getInventoryStackLimit()
     {
         return 64;

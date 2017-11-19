@@ -325,6 +325,12 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public double getPacketRange()
     {
         return 20.0D;

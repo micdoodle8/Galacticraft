@@ -163,7 +163,13 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
         return tagCompound;
     }
-        
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+       
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
