@@ -27,8 +27,8 @@ public class RecipeManagerVenus
         Object leadIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(VenusItems.basicItem, 1, 1) : "ingotLead";
         
         // Lead block
-        RecipeUtil.addRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 12), new Object[] { "XXX", "XXX", "XXX", 'X', leadIngot});
-        RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 9, 1), new Object[] {"X", 'X', newItemStack(VenusBlocks.venusBlock, 1, 12)});
+        RecipeUtil.addBlockRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 12), "ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
+        RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 9, 1), new Object[] {"X", 'X', new ItemStack(VenusBlocks.venusBlock, 1, 12)});
         
         // Smelting
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);

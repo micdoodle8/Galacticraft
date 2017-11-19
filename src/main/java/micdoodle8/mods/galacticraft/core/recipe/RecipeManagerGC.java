@@ -464,7 +464,7 @@ public class RecipeManagerGC
 
         RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 11), "ingotAluminum", new ItemStack(GCItems.basicItem, 1, 5));
 
-	RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 13), "silicon", new ItemStack(GCItems.basicItem, 1, 2));
+        RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 13), ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
 	
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 12), new Object[] { "YYY", "YYY", "YYY", 'Y', meteoricIronIngot });
 	
@@ -476,7 +476,7 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 2), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 13) });
 	
-	RecipeUtil.addRecipe(new ItemStack(GCItems.itemBasicMoon, 9, 0), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 12) });
+        RecipeUtil.addRecipe(new ItemStack(GCItems.itemBasicMoon, 9, 0), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 12) });
 	
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Items.milk_bucket, 'Y', GCItems.cheeseCurd });
 
