@@ -15,10 +15,17 @@ public abstract class BiomeDecoratorSpace
 {
     protected Random rand;
 
-    protected int chunkX;
-    protected int chunkZ;
+    protected int posX;
+    protected int posZ;
 
-    public void decorate(World world, Random random, int chunkX, int chunkZ)
+    /**
+     * Note: the passed X,Z co-ordinates are now block co-ordinates, not chunk co-ordinates
+     * @param world
+     * @param random
+     * @param posX
+     * @param posZ
+     */
+    public void decorate(World world, Random random, int posX, int posZ)
     {
         if (this.getCurrentWorld() != null)
         {
@@ -28,9 +35,9 @@ public abstract class BiomeDecoratorSpace
         {
             this.setCurrentWorld(world);
             this.rand = random;
-            this.chunkX = chunkX;
-            this.chunkZ = chunkZ;
-            BlockPos pos = new BlockPos(this.chunkX * 16, 0, this.chunkZ * 16);
+            this.posX = posX;
+            this.posZ = posZ;
+            BlockPos pos = new BlockPos(this.posX, 0, this.posZ);
             MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(world, this.rand, pos));
             this.decorate();
             MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(world, this.rand, pos));
@@ -48,9 +55,9 @@ public abstract class BiomeDecoratorSpace
         World currentWorld = this.getCurrentWorld();
 		for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
-            final int var6 = this.chunkX + this.rand.nextInt(16);
+            final int var6 = this.posX + this.rand.nextInt(16);
             final int var7 = this.rand.nextInt(maxY - minY) + minY;
-            final int var8 = this.chunkZ + this.rand.nextInt(16);
+            final int var8 = this.posZ + this.rand.nextInt(16);
             worldGenerator.generate(currentWorld, this.rand, new BlockPos(var6, var7, var8));
         }
     }

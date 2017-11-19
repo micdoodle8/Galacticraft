@@ -233,7 +233,7 @@ public class RoomBossVenus extends SizedPieceVenus
     public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
         DirectionalPieceVenus corridor = (DirectionalPieceVenus) getCorridor(rand, startPiece, 10, true);
-        this.exitDirection = corridor.getDirection().getOpposite();
+        this.exitDirection = corridor == null ? null : corridor.getDirection().getOpposite();
         return corridor;
     }
 }

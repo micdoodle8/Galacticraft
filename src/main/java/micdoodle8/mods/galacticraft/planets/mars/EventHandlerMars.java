@@ -147,7 +147,7 @@ public class EventHandlerMars
 
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
-                blockpos = event.pos.add(event.rand.nextInt(16), event.rand.nextInt(128), event.rand.nextInt(16));
+                blockpos = event.pos.add(event.rand.nextInt(16), event.rand.nextInt(104) + 24, event.rand.nextInt(16));
                 this.eggGenerator.generate(event.worldObj, event.rand, blockpos);
             }
         }

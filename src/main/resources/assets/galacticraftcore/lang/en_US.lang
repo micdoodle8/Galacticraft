@@ -556,6 +556,7 @@ tile.basic_block_core.block_aluminum_gc.name=Aluminum Block
 tile.basic_block_core.block_copper_gc.name=Copper Block
 tile.basic_block_core.block_meteoric_iron_gc.name=Solid Meteoric Iron
 tile.basic_block_core.block_tin_gc.name=Block of Tin
+tile.basic_block_core.block_silicon_gc.name=Silicon Block
 tile.basic_block_core.deco_block_0.name=Tin Decoration Block
 tile.basic_block_core.deco_block_1.name=Tin Wall Block
 tile.basic_block_core.ore_aluminum_gc.name=Aluminum Ore

@@ -25,7 +25,11 @@ public class RecipeManagerVenus
         OreDictionary.registerOre("ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
         Object deshIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : "ingotDesh";
         Object leadIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(VenusItems.basicItem, 1, 1) : "ingotLead";
-
+        
+        // Lead block
+        RecipeUtil.addBlockRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 12), "ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
+        RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 9, 1), new Object[] {"X", 'X', new ItemStack(VenusBlocks.venusBlock, 1, 12)});
+        
         // Smelting
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 7), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
