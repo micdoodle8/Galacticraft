@@ -43,7 +43,8 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         ORE_ALUMINUM(3, "ore_aluminum_asteroids"),
         ORE_ILMENITE(4, "ore_ilmenite_asteroids"),
         ORE_IRON(5, "ore_iron_asteroids"),
-        DECO(6, "asteroid_deco");
+        DECO(6, "asteroid_deco"),
+        TITANIUM_BLOCK(7, "titanium_block");
 
         private final int meta;
         private final String name;

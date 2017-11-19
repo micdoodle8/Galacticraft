@@ -464,16 +464,20 @@ public class RecipeManagerGC
 
         RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 11), "ingotAluminum", new ItemStack(GCItems.basicItem, 1, 5));
 
+	RecipeUtil.addBlockRecipe(new ItemStack(GCBlocks.basicBlock, 1, 13), "silicon", new ItemStack(GCItems.basicItem, 1, 2));
+	
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 12), new Object[] { "YYY", "YYY", "YYY", 'Y', meteoricIronIngot });
-
+	
         RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 3), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 9) });
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 4), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 10) });
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 5), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 11) });
 
-        RecipeUtil.addRecipe(new ItemStack(GCItems.itemBasicMoon, 9, 0), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 12) });
-
+        RecipeUtil.addRecipe(new ItemStack(GCItems.basicItem, 9, 2), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 13) });
+	
+	RecipeUtil.addRecipe(new ItemStack(GCItems.itemBasicMoon, 9, 0), new Object[] { "X", 'X', new ItemStack(GCBlocks.basicBlock, 1, 12) });
+	
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.cheeseBlock, 1), new Object[] { "YYY", "YXY", "YYY", 'X', Items.milk_bucket, 'Y', GCItems.cheeseCurd });
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.spaceGlassClear, 5), new Object[] { "YXY", "XXX", "YXY", 'X', Blocks.glass, 'Y', "ingotAluminum" });

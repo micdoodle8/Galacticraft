@@ -39,7 +39,10 @@ public class RecipeManagerAsteroids
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 5), new ItemStack(Items.iron_ingot), 0.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.iron_ingot), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
-
+        
+        RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 7), new Object[] {"XXX", "XXX", "XXX", 'X', titaniumIngot});
+	RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 9, 0), new Object[] {"X", 'X', new ItemStack(AsteroidBlocks.blockBasic, 1, 7)});
+	
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.heavyNoseCone, 1), new Object[] { " Y ", " X ", "X X", 'X', platingTier3, 'Y', Blocks.redstone_torch });
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 7), new Object[] { " X ", "XYX", " X ", 'X', Blocks.wool, 'Y', Items.redstone });
