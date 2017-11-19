@@ -78,7 +78,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
     @Override
     public String getVersion()
     {
-        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALBUILDVERSION;
+        return Constants.LOCALMAJVERSION + "." + Constants.LOCALMINVERSION + "." + Constants.LOCALPATCHVERSION;
     }
 
     public void registerIngotCompressorRecipe(HashMap<Integer, PositionedStack> input, PositionedStack output)
