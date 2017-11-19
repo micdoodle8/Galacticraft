@@ -1,6 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -26,9 +29,13 @@ public class WorldGenEggs extends WorldGenerator
 
         if (!par1World.isBlockLoaded(newPos)) return false;
 
-        if (par1World.isAirBlock(newPos) && (!par1World.provider.getHasNoSky() || j1 < 127) && this.eggBlock.canPlaceBlockAt(par1World, newPos))
+        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.getHasNoSky()))
         {
-            par1World.setBlockState(newPos, this.eggBlock.getStateFromMeta(par2Random.nextInt(3)), 2);
+            IBlockState below = par1World.getBlockState(newPos.down()); 
+            if (below.getBlock() == MarsBlocks.marsBlock && below.getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)
+            {
+                par1World.setBlockState(newPos, this.eggBlock.getStateFromMeta(par2Random.nextInt(3)), 2);
+            }
         }
 
         return true;
