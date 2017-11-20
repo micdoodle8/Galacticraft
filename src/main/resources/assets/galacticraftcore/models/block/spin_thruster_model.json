@@ -4,13 +4,6 @@
     "texture": "galacticraftcore:blocks/thruster",
     "particle": "galacticraftcore:blocks/thruster"
 },
-"display": {
-	"gui": {
-		"rotation": [ 30, 315, 0 ],
-		"translation": [ -2.0, -1.0, 0.0 ],
-		"scale": [ 0.7, 0.7, 0.7 ]
-	}
-},
 "elements": [ 
 {
     "from": [ 1, 1, 0 ],

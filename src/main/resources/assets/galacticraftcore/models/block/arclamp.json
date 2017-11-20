@@ -4,13 +4,6 @@
 		"texture": "galacticraftcore:blocks/arc_lamp_on",
 		"particle": "galacticraftcore:blocks/arc_lamp_on"
 	},
-    "display": {
-        "gui": {
-            "rotation": [ 30, 45, 0 ],
-            "translation": [ 0, 0, 0],
-            "scale":[ 0.625, 0.625, 0.625 ]
-        }
-    },
 	"elements": [ 
 	{
 		"from": [ 2, 0, 2 ],
