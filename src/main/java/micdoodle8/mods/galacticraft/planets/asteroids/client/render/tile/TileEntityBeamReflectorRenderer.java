@@ -52,6 +52,7 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
     @Override
     public void renderTileEntityAt(TileEntityBeamReflector tile, double d, double d1, double d2, float f, int i)
     {
+        GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);

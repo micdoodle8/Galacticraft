@@ -57,6 +57,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
             return;
         }
 
+        GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y, (float) z + 0.5F);
         GlStateManager.scale(0.85F, 0.85F, 0.85F);
