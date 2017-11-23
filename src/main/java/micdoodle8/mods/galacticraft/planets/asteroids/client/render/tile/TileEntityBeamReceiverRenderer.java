@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -142,5 +143,6 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         ClientUtil.drawBakedModel(reflectorModelRing);
         GlStateManager.popMatrix();
+        RenderHelper.enableStandardItemLighting();
     }
 }

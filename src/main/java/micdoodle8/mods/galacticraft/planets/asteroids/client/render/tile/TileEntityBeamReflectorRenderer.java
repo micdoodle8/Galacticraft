@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -83,5 +84,6 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
         GlStateManager.translate(-dX, -dY, -dZ);
         ClientUtil.drawBakedModel(reflectorModelRing);
         GlStateManager.popMatrix();
+        RenderHelper.enableStandardItemLighting();
     }
 }
