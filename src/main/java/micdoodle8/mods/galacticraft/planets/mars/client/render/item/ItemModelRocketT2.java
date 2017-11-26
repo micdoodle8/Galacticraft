@@ -122,27 +122,26 @@ public class ItemModelRocketT2 extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.5F);
+            mul.setScale(0.1F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.25F, 0.25F, 0.25F));
+            mul.setTranslation(new Vector3f(0.5F, 0.0F, 0.5F));
             ret.mul(mul);
             return ret;
         }
-
         if (cameraTransformType == TransformType.FIXED)
         {
             Matrix4f ret = new Matrix4f();
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.225F);
+            mul.setScale(0.135F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY(0.0125F);
+            mul.rotY(0.0F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.25F, -1.75F, 0.25F));
+            mul.setTranslation(new Vector3f(0.5F, -2.75F, 0.5F));
             ret.mul(mul);
             return ret;
         }

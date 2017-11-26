@@ -118,7 +118,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     public boolean shouldHoldLeftHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
 
     }
 
@@ -126,7 +126,7 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     public boolean shouldHoldRightHandUp(EntityPlayer player)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA;
+        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
     }
 
     @Override
