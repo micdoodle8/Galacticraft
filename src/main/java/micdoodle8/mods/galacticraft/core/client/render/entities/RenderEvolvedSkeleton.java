@@ -27,7 +27,7 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
 
     public RenderEvolvedSkeleton(RenderManager manager)
     {
-        super(manager, new ModelEvolvedSkeleton(), 1.0F);
+        super(manager, new ModelEvolvedSkeleton(), 0.6F);
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerBipedArmor(this)
         {

@@ -150,7 +150,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GlStateManager.disableRescaleNormal();
+        GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
 
         final float rotPitch = astroMiner.prevRotationPitch + (astroMiner.rotationPitch - astroMiner.prevRotationPitch) * partialTickTime;
@@ -444,10 +444,6 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         float xD = mainLaserX - 0.5F;
         float yD = mainLaserY - 0.5F;
         float zD = mainLaserZ - 0.5F;
-//        Math.abs(xD);
-//        Math.abs(yD);
-//        Math.abs(zD);
-
         float xx, yy, zz;
 
         if (entity.facing.getIndex() > EnumFacing.SOUTH.getIndex())
