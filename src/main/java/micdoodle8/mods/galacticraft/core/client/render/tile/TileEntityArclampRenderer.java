@@ -32,8 +32,11 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
         int side = tileEntity.getBlockMetadata();
         int metaFacing = tileEntity.facing;
 
+        GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        RenderHelper.enableStandardItemLighting();
+        GlStateManager.enableRescaleNormal();
 
         switch (side)
         {
@@ -88,12 +91,12 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
             break;
         }
 
-        RenderHelper.disableStandardItemLighting();
         this.bindTexture(TileEntityArclampRenderer.lampTexture);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.rotate(45F, -1F, 0, 0);
         GlStateManager.scale(0.048F, 0.048F, 0.048F);
         ClientUtil.drawBakedModel(TileEntityArclampRenderer.lampMetal);
+        RenderHelper.disableStandardItemLighting();
 
         float greyLevel = tileEntity.getEnabled() ? 1.0F : 26F / 255F;
         //Save the lighting state
@@ -124,7 +127,6 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
         //Restore the lighting state
         GlStateManager.enableLighting();
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
-        RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
     }
 
