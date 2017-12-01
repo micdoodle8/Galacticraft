@@ -67,7 +67,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
 
         for (int j = 0; j < 9; j++)
         {
-            itemstacks.init(j, true, 21 + j % 3 * 18, 26 + j / 3 * 18);
+            itemstacks.init(j, true, j % 3 * 18, j / 3 * 18);
         }
 
         itemstacks.init(9, false, 140, 46);
