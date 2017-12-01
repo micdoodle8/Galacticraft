@@ -57,7 +57,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 77, 36);
+        this.progressBar.draw(minecraft, 59, 20);
     }
 
     @Override
