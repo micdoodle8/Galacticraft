@@ -127,10 +127,10 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.75F);
+            mul.setScale(0.2F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.25F, 0.25F, 0.25F));
+            mul.setTranslation(new Vector3f(0.5F, 1.0F, 0.5F));
             ret.mul(mul);
             return ret;
         }
@@ -141,13 +141,13 @@ public class ItemModelAstroMiner extends ModelTransformWrapper
             ret.setIdentity();
             Matrix4f mul = new Matrix4f();
             mul.setIdentity();
-            mul.setScale(0.5F);
+            mul.setScale(0.3F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.rotY(1.6F);
+            mul.rotY(1.5F);
             ret.mul(mul);
             mul.setIdentity();
-            mul.setTranslation(new Vector3f(0.25F, 0.25F, 0.3F));
+            mul.setTranslation(new Vector3f(0.5F, 0.5F, 0.6F));
             ret.mul(mul);
             return ret;
         }

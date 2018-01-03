@@ -1,10 +1,25 @@
 {
     "parent":"galacticraftplanets:block/slimeling_egg_blue",
     "display": {
-        "thirdperson": {
-            "rotation": [ 10, -45, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.375, 0.375, 0.375 ]
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ 0.00, 1.25, 1.00 ],
+            "scale": [ 0.37, 0.37, 0.37 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ 0.00, 1.25, 1.00 ],
+            "scale": [ 0.37, 0.37, 0.37 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 45, 0 ],
+            "translation": [ 0.00, 4.00, -0.00 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ -180, -45, -180 ],
+            "translation": [ 0.00, 4.00, 0.00 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
         }
     }
 }

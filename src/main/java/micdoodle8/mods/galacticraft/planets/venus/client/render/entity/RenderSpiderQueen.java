@@ -30,7 +30,7 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
 
     public RenderSpiderQueen(RenderManager renderManager)
     {
-        super(renderManager, new ModelSpiderQueen(), 0.5F);
+        super(renderManager, new ModelSpiderQueen(), 1.0F);
     }
 
     private void updateModels()

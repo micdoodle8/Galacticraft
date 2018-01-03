@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
@@ -295,7 +296,7 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
     public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
     {
         final float floatPI = 3.1415927F;
-        
+
         final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
         super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
         this.upperHead.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
@@ -372,6 +373,18 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         {
             this.rightArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
             this.leftArm.rotateAngleX -= MathHelper.cos((boss.throwTimer + boss.postThrowDelay) * 0.05F) * 1.2F + 0.05F;
+        }
+    }
+
+    public void postRenderArm(float scale, ItemCameraTransforms.TransformType type)
+    {
+        if (type == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND)
+        {
+            this.rightArm.postRender(scale);
+        }
+        else
+        {
+            this.leftArm.postRender(scale);
         }
     }
 }

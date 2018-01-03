@@ -30,7 +30,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeT
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityCryoFX;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -55,8 +54,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.util.vector.Vector3f;
 
 import java.util.List;
 
@@ -104,8 +101,8 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, new ItemTransformVec3f(new Vector3f(30, 225, 0), new Vector3f(-1.0F, 0.0F, 0.0F), new Vector3f(1.0F, 1.0F, 1.0F)), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
-        replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, new ItemTransformVec3f(new Vector3f(30, 225, 0), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)), "inventory", "normal");
+        replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, TRSRTransformation.identity(), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
+        replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, TRSRTransformation.identity(), "inventory", "normal");
         replaceModelDefault(event, "telepad_short", "block/telepad_short.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, TRSRTransformation.identity(), "inventory", "normal");
         replaceModelDefault(event, "grapple", "grapple.obj", ImmutableList.of("Grapple"), ItemModelGrapple.class, TRSRTransformation.identity());
         replaceModelDefault(event, "rocket_t3", "tier3rocket.obj", ImmutableList.of("Boosters", "Cube", "NoseCone", "Rocket"), ItemModelRocketT3.class, TRSRTransformation.identity());

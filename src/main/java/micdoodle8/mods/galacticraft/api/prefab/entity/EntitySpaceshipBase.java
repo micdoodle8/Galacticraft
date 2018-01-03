@@ -267,7 +267,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
 	        if (this.posY < 0.0D)
 	        {
-	            this.kill();
+	            this.setDead();
 	        }
 	        else if (this.posY > (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200) + 100)
 	        {
@@ -278,11 +278,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                         GCPlayerStats stats = GCPlayerStats.get(e);
                         if (stats.isUsingPlanetSelectionGui())
                         {
-                            this.kill();
+                            this.setDead();
                         }
                     }
                     else
-                        this.kill();
+                        this.setDead();
                 }
 
                 if (this.timeSinceLaunch > 50 && this.onGround)

@@ -118,6 +118,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayer>
 
                 for (int i = 0; i < 2; ++i)
                 {
+                    GlStateManager.enableRescaleNormal();
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.175F, 0.0F, 0.0F);
                     GlStateManager.translate(0.0F, 0.2F, 0.0F);

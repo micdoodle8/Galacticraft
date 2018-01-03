@@ -581,6 +581,14 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
 
     private void revertAir()
     {
+        if (this.airToRestore.isEmpty())
+            return;
+        
+        if (this.usingLightList == null)
+        {
+            this.usingLightList = this.world.isRemote ? usingLightListClient : usingLightListServer;   
+        }
+
         int index = 0;
         for (BlockVec3 vec : this.airToRestore)
         {

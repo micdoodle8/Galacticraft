@@ -51,10 +51,8 @@ public class SpaceRaceManager
             boolean playerOnline = false;
 
             PlayerList playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList();
-            for (int j = 0; j < playerList.getPlayers().size(); j++)
+            for (EntityPlayer player: playerList.getPlayers()) 
             {
-                EntityPlayer player = playerList.getPlayers().get(j);
-
                 if (race.getPlayerNames().contains(player.getGameProfile().getName()))
                 {
                     CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.world.provider.getDimension());

@@ -48,6 +48,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayer>
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedHeadwear, this.oxygenMask);
                 this.oxygenMask.rotationPointY = this.playerRenderer.getMainModel().bipedHeadwear.rotationPointY * 8.0F;
 
+                GlStateManager.enableRescaleNormal();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
 

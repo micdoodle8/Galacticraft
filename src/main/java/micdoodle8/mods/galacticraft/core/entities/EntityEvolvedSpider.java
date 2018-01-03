@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -37,8 +36,10 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         switch (this.world.getDifficulty())
         {
         case HARD : difficulty = 2D;
-            break;
+        break;
         case NORMAL : difficulty = 1D;
+        break;
+        default:
             break;
         }
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3 + 0.05 * difficulty);
@@ -51,12 +52,6 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         return true;
     }
 
-    /*@Override
-    public boolean isAIEnabled()
-    {
-        return false;
-    }*/
-
     @Override
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
     {
@@ -64,7 +59,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
 
         if (this.world.rand.nextInt(100) == 0)
         {
-            EntitySkeleton entityskeleton = new EntitySkeleton(this.world);
+            EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(this.world);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
             entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
             this.world.spawnEntity(entityskeleton);
@@ -98,6 +93,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     protected void jump()
     {
         this.motionY = 0.52D / WorldUtil.getGravityFactor(this);
+
         if (this.motionY < 0.26D)
         {
             this.motionY = 0.26D;
@@ -145,7 +141,10 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             this.dropItem(GCItems.oxygenConcentrator, 1);
             break;
         default:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.NETHER_WART, 1);
+            if (ConfigManagerCore.challengeMobDropsAndSpawning)
+            {
+                this.dropItem(Items.NETHER_WART, 1);
+            }
             break;
         }
     }
