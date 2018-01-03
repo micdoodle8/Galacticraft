@@ -433,9 +433,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         return Math.min(1.0F, this.buffer.amount / (float) this.getCapacity());
     }
 
-    public Set<Pair<BlockPos, TileEntity>> getAcceptors(FluidStack toSend)
+    public List<Pair<BlockPos, TileEntity>> getAcceptors(FluidStack toSend)
     {
-        Set<Pair<BlockPos, TileEntity>> toReturn = new HashSet<>();
+        List<Pair<BlockPos, TileEntity>> toReturn = new LinkedList<>();
 
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
@@ -447,7 +447,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             this.refreshAcceptors();
         }
 
-        List<BlockPos> acceptorsCopy = new LinkedList();
+        List<BlockPos> acceptorsCopy = new ArrayList();
         acceptorsCopy.addAll(acceptors.keySet());
 
         for (BlockPos coords : acceptorsCopy)
@@ -475,6 +475,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     if (tanks != null && tanks.length > 0 && tanks[0] != null && tanks[0].canFill())
                     {
                         toReturn.add(Pair.of(coords, tile));
+                        break;
                     }
                 }
                 else if (tile instanceof IFluidHandler)
@@ -482,6 +483,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     if (((IFluidHandler)tile).canFill(side, fluidToSend))
                     {
                         toReturn.add(Pair.of(coords, tile));
+                        break;
                     }
                 }
             }

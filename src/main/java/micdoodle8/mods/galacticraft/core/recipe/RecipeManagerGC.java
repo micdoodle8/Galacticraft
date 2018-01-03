@@ -22,11 +22,8 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -272,9 +269,9 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.aluminumWire, 1, 1), new Object[] { "Z", "Y", "X", 'X', Blocks.WOOL, 'Y', new ItemStack(GCBlocks.aluminumWire, 1), 'Z', "ingotAluminum" });
 
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCBlocks.aluminumWire, 1, 2), new ItemStack(GCBlocks.aluminumWire, 1), Items.REPEATER );
+        RecipeUtil.addShapelessRecipe(new ItemStack(GCBlocks.aluminumWire, 1, 2), new ItemStack(GCBlocks.aluminumWire, 1), Items.REPEATER );
 
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCBlocks.aluminumWire, 1, 3), new ItemStack(GCBlocks.aluminumWire, 1, 1), Items.REPEATER );
+        RecipeUtil.addShapelessRecipe(new ItemStack(GCBlocks.aluminumWire, 1, 3), new ItemStack(GCBlocks.aluminumWire, 1, 1), Items.REPEATER );
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.machineBase, 1, 0), new Object[] { "WWW", "XZX", "XYX", 'W', "ingotCopper", 'X', Items.IRON_INGOT, 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 0), 'Z', Blocks.FURNACE });
         //Energy Storage Module:
@@ -352,7 +349,7 @@ public class RecipeManagerGC
 
         for (int var2 = 0; var2 < 16; ++var2)
         {
-            CraftingManager.getInstance().addShapelessRecipe(new ItemStack(GCItems.parachute, 1, ItemParaChute.getParachuteDamageValueFromDye(var2)), new Object[] { new ItemStack(Items.DYE, 1, var2), new ItemStack(GCItems.parachute, 1, 0) });
+            RecipeUtil.addShapelessRecipe(new ItemStack(GCItems.parachute, 1, ItemParaChute.getParachuteDamageValueFromDye(var2)), new Object[] { new ItemStack(Items.DYE, 1, var2), new ItemStack(GCItems.parachute, 1, 0) });
         }
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.partFins, 1), new Object[] { " Y ", "XYX", "X X", 'X', GCItems.heavyPlatingTier1, 'Y', "compressedSteel" });
@@ -407,7 +404,7 @@ public class RecipeManagerGC
 
         RecipeUtil.addRecipe(new ItemStack(GCItems.flagPole, 2, 0), new Object[] { "X", "X", "X", 'X', "compressedSteel" });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.oxygenVent, 1), new Object[] { "compressedTin", "compressedTin", "compressedTin", "compressedSteel" }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.oxygenVent, 1), new Object[] { "compressedTin", "compressedTin", "compressedTin", "compressedSteel" });
 
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.airLockFrame, 4, 0), new Object[] { "XXX", "YZY", "XXX", 'X', "compressedAluminum", 'Y', "compressedSteel", 'Z', GCItems.oxygenConcentrator });
 
@@ -494,7 +491,7 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 4), new Object[] { " X ", "XY ", " Z ", 'X', Blocks.GLASS_PANE, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
         
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.machineBase3, 1, BlockMachine3.PAINTER_METADATA), new Object[] { "ABC", "DEF", "GHI", 'A', "dyeRed", 'B', "dyeMagenta", 'C', "dyeBlue", 'D', "dyeOrange", 'E', "compressedSteel", 'F', "dyeCyan", 'G', "dyeYellow", 'H', "dyeLime", 'I', "dyeGreen" });
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCBlocks.crafting, 1), Blocks.CRAFTING_TABLE, "compressedIron"));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCBlocks.crafting, 1), Blocks.CRAFTING_TABLE, "compressedIron");
 
         // Furnace on moon
         RecipeUtil.addRecipe(new ItemStack(Blocks.FURNACE), new Object[] { "XXX", "X X", "XXX", 'X', new ItemStack(GCBlocks.blockMoon, 1, 4) });
@@ -533,15 +530,15 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRedstone, 4, 0), new Object[] { " X ", "XYX", " X ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', "dustRedstone" });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRepeater_Unpowered, 1, 0), new Object[] { "   ", "XYX", "   ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', Items.REPEATER });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 15), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.APPLE, Items.APPLE }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 15), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.APPLE, Items.APPLE });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 16), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.CARROT, Items.CARROT }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 16), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.CARROT, Items.CARROT });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 17), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.MELON, Items.MELON }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 17), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.MELON, Items.MELON });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.POTATO, Items.POTATO }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.POTATO, Items.POTATO });
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw });
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
@@ -563,7 +560,7 @@ public class RecipeManagerGC
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.itemBasicMoon, 1, 1), meteoricIronIngot);
         CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 2, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
 
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(new ItemStack(GCItems.prelaunchChecklist), new Object[] { new ItemStack(Items.DYE, 1, 1), GCItems.canvas }));
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.prelaunchChecklist), new Object[] { new ItemStack(Items.DYE, 1, 1), GCItems.canvas });
     }
 
     public static void setConfigurableRecipes()

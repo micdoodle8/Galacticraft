@@ -394,7 +394,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     {
         if (this.posY < -64.0D)
         {
-            this.kill();
+            this.setDead();
             return;
         }
 
@@ -2104,7 +2104,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 {
                     ((EntityPlayer) e).addChatMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
                 }
-                this.kill();
+                this.setDead();
                 return true;
             }
 
@@ -2128,7 +2128,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
 
                 if (this.shipDamage > 90)
                 {
-                    this.kill();
+                    this.setDead();
                     this.dropShipAsItem();
                     return true;
                 }

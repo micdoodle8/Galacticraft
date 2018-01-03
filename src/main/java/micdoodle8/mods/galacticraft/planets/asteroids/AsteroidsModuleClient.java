@@ -56,8 +56,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import org.lwjgl.util.vector.Vector3f;
-
 import java.util.List;
 
 public class AsteroidsModuleClient implements IPlanetsModuleClient

@@ -39,14 +39,14 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     {
         super(world);
         this.moveHelper = new EntityMoveHelperCeiling(this);
-        this.setSize(1F, 0.6F);
+        this.setSize(0.95F, 0.6F);
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0, true));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.timeSinceLastJump = this.rand.nextInt(100) + 50;
+        this.timeSinceLastJump = this.rand.nextInt(200) + 50;
     }
 
     @Override
@@ -144,11 +144,12 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
 
         if (!this.worldObj.isRemote)
         {
-            if (this.jumpTarget == null && this.moveForward < 0.005F)
+            if (this.jumpTarget == null)
             {
                 if (this.timeSinceLastJump <= 0)
                 {
-                    IBlockState blockAbove = this.worldObj.getBlockState(new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ));
+                    BlockPos posAbove = new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ);
+                    IBlockState blockAbove = this.worldObj.getBlockState(posAbove);
 
                     if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                             blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
@@ -222,22 +223,26 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         {
             if (this.jumpTarget != null)
             {
-                double diff = this.jumpTarget.getY() - this.posY + 0.6;
-                this.motionY = diff > 0 ? Math.min(diff / 2.0F, 0.2123F) : Math.max(diff / 2.0F, -0.2123F);
-                if (diff > 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.4F)
+                double diffX = this.jumpTarget.getX() - this.posX + 0.5;
+                double diffY = this.jumpTarget.getY() - this.posY + 0.6;
+                double diffZ = this.jumpTarget.getZ() - this.posZ + 0.5;
+                this.motionY = diffY > 0 ? Math.min(diffY / 2.0F, 0.2123F) : Math.max(diffY / 2.0F, -0.2123F);
+                this.motionX = diffX > 0 ? Math.min(diffX / 2.0F, 0.2123F) : Math.max(diffX / 2.0F, -0.2123F);
+                this.motionZ = diffZ > 0 ? Math.min(diffZ / 2.0F, 0.2123F) : Math.max(diffZ / 2.0F, -0.2123F);
+                if (diffY > 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.4F)
                 {
-                    this.setPosition(this.posX, this.jumpTarget.getY() + 0.2, this.posZ);
+                    this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 0.2, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;
                     this.setFalling(false);
-                    this.timeSinceLastJump = this.rand.nextInt(80) + 40;
+                    this.timeSinceLastJump = this.rand.nextInt(180) + 60;
                     this.setHanging(true);
                 }
-                else if (diff < 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.8F)
+                else if (diffY < 0.0F && Math.abs(this.jumpTarget.getY() - (this.posY + this.motionY)) < 0.8F)
                 {
-                    this.setPosition(this.posX, this.jumpTarget.getY() + 1.0, this.posZ);
+                    this.setPosition(this.jumpTarget.getX() + 0.5, this.jumpTarget.getY() + 1.0, this.jumpTarget.getZ() + 0.5);
                     this.jumpTarget = null;
                     this.setFalling(false);
-                    this.timeSinceLastJump = this.rand.nextInt(80) + 40;
+                    this.timeSinceLastJump = this.rand.nextInt(180) + 60;
                     this.setHanging(false);
                 }
                 else

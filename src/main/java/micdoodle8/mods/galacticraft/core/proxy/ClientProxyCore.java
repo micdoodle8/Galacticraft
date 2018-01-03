@@ -114,7 +114,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
@@ -784,7 +783,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         {
             capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes.txt");
         }
-        catch (MalformedURLException e)
+        catch (IOException e)
         {
             FMLLog.severe("Error getting capes list URL");
             if (ConfigManagerCore.enableDebug) e.printStackTrace();
