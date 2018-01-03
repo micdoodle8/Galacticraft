@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -78,8 +77,8 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 5, 0), new Object[] { "XXX", " X ", 'X', titaniumPlate });
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 5, 1), new Object[] { "XXX", "YXY", "YYY", 'X', titaniumPlate, 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1) });
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 5, 2), new Object[] { "XXX", "YXY", "YYY", 'X', titaniumPlate, 'Y', new ItemStack(GCBlocks.oxygenPipe) });
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 1, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.aluminumWire, 1, 1));
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 1, 2), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.oxygenPipe, 1));
+        RecipeUtil.addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 1, 1), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.aluminumWire, 1, 1));
+        RecipeUtil.addShapelessRecipe(new ItemStack(AsteroidBlocks.blockWalkway, 1, 2), new ItemStack(AsteroidBlocks.blockWalkway, 1), new ItemStack(GCBlocks.oxygenPipe, 1));
 
         RecipeUtil.addRecipe(new ItemStack(AsteroidBlocks.shortRangeTelepad), new Object[] { "XWX", "ZYZ", "XXX", 'W', new ItemStack(AsteroidsItems.basicItem, 1, 8), 'X', titaniumPlate, 'Y', Items.redstone, 'Z', Items.ender_pearl });
 
@@ -93,11 +92,11 @@ public class RecipeManagerAsteroids
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.orionDrive, 1, 0), new Object[] { "ABC", "DOE", "FGH", 'A', "oreDiamond", 'B', "oreLapis", 'C', "oreGold", 'D', "oreRedstone", 'E', "oreCoal", 'F', "oreCheese", 'G', "oreDesh", 'H', "oreIlmenite", 'O', new ItemStack(AsteroidsItems.basicItem, 1, 8) });
 
         //Cobblestone recipe
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 1));
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
+        RecipeUtil.addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 1));
+        RecipeUtil.addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 0), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
+        RecipeUtil.addShapelessRecipe(new ItemStack(Blocks.cobblestone, 2), new ItemStack(AsteroidBlocks.blockBasic, 1, 1), new ItemStack(AsteroidBlocks.blockBasic, 1, 2));
         //Green dye from yellow and blue
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(Items.dye, 2, 2), new ItemStack(Items.dye, 1, 11), new ItemStack(Items.dye, 1, 4));
+        RecipeUtil.addShapelessRecipe(new ItemStack(Items.dye, 2, 2), new ItemStack(Items.dye, 1, 11), new ItemStack(Items.dye, 1, 4));
 
         //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
         CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.gravel, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.cobblestone, 1));
@@ -139,8 +138,8 @@ public class RecipeManagerAsteroids
         list1.add(new ItemStack(GCItems.oxTankHeavy, 1, 2700));
         list2.add(new ItemStack(GCItems.oxTankMedium, 1, 1800));
         list3.add(new ItemStack(GCItems.oxTankLight, 1, 900));
-        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
-        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
-        CraftingManager.getInstance().getRecipeList().add(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));
+        RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
+        RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
+        RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));
     }
 }

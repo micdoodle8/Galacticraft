@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -90,11 +89,11 @@ public class RecipeManagerMars
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.wallGC, 6, 4), new Object[] { "XXX", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 4) });
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.wallGC, 6, 5), new Object[] { "XXX", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 7) });
 
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 8, 0), new ItemStack(Items.coal, 1, 0));
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 32, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0));
+        RecipeUtil.addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 8, 0), new ItemStack(Items.coal, 1, 0));
+        RecipeUtil.addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 32, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0), new ItemStack(Items.coal, 1, 0));
 
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 4, 0), new ItemStack(Items.coal, 1, 1));
-        CraftingManager.getInstance().addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 16, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1));
+        RecipeUtil.addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 4, 0), new ItemStack(Items.coal, 1, 1));
+        RecipeUtil.addShapelessRecipe(new ItemStack(MarsItems.carbonFragments, 16, 0), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1), new ItemStack(Items.coal, 1, 1));
 
         // Smelting
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 0), new ItemStack(MarsItems.marsItemBasic, 1, 2), 0.2F);
