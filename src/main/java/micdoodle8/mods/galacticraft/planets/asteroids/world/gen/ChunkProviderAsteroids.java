@@ -942,7 +942,7 @@ public class ChunkProviderAsteroids extends ChunkGeneratorOverworld
                             ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y >> 4];
                             if (extendedblockstorage != null)
                             {
-                                extendedblockstorage.setExtBlocklightValue(x - 1, y & 15, z, count + 2);
+                                extendedblockstorage.setBlockLight(x - 1, y & 15, z, count + 2);
                             }
                         }
                     }

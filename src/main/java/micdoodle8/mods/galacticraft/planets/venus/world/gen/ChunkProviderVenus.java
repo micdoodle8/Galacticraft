@@ -383,6 +383,12 @@ public class ChunkProviderVenus implements IChunkGenerator
     }
 
     @Override
+    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
+    {
+        return false;
+    }
+
+    @Override
     public void recreateStructures(Chunk chunk, int x, int z)
     {
         this.dungeonGenerator.generate(this.world, x, z, null);

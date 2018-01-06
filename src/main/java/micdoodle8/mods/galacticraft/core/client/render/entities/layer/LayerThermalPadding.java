@@ -41,7 +41,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     @Override
     protected void setModelSlotVisible(ModelBiped model, EntityEquipmentSlot slotIn)
     {
-        model.setInvisible(false);
+        model.setVisible(false);
 
         switch (slotIn)
         {

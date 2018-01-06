@@ -81,7 +81,7 @@ public class FreefallHandler
                 {
                     BlockPos offsetPos = new BlockPos(xx, playerFeetOnY, zz);
                     AxisAlignedBB collisionBox = b.getCollisionBoundingBox(player.world.getBlockState(offsetPos), player.world, offsetPos);
-                    if (collisionBox != null && collisionBox.intersectsWith(player.getEntityBoundingBox()))
+                    if (collisionBox != null && collisionBox.intersects(player.getEntityBoundingBox()))
                     {
                         player.posY -= player.getEntityBoundingBox().minY - blockYmax;
                         player.setEntityBoundingBox(player.getEntityBoundingBox().offset(0, blockYmax - player.getEntityBoundingBox().minY, 0));

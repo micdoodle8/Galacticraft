@@ -43,7 +43,7 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
             {
                 if (gearData.getShieldController() != GCPlayerHandler.GEAR_NOT_PRESENT)
                 {
-                    this.shieldModel.setInvisible(false);
+                    this.shieldModel.setVisible(false);
                     this.shieldModel.bipedRightLeg.showModel = true;
                     this.shieldModel.bipedLeftLeg.showModel = true;
                     this.shieldModel.bipedBody.showModel = true;

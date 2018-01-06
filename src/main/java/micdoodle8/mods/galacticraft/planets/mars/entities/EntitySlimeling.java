@@ -630,7 +630,6 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         this.dataManager.set(COLOR_BLUE, color);
     }
 
-    @Override
     public int getAge()
     {
         return this.dataManager.get(AGE);
@@ -743,7 +742,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 if (e instanceof EntityLivingBase)
                 {
                     EntityLivingBase living = (EntityLivingBase) e;
-                    return living == null ? true : (this.theEntity.getDistanceSq(living) < 144.0D && living.getAITarget() != null ? false : this.isSitting);
+                    return living == null ? true : (this.theEntity.getDistanceSq(living) < 144.0D && living.getRevengeTarget() != null ? false : this.isSitting);
                 }
                 return false;
             }

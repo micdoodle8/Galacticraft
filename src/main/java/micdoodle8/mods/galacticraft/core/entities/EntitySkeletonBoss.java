@@ -22,7 +22,6 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
@@ -248,24 +247,6 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         }
 
         super.onLivingUpdate();
-    }
-
-    @Override
-    public void onDeath(DamageSource par1DamageSource)
-    {
-        super.onDeath(par1DamageSource);
-
-        if (par1DamageSource.getImmediateSource() instanceof EntityArrow && par1DamageSource.getTrueSource() instanceof EntityPlayer)
-        {
-            final EntityPlayer entityPlayer = (EntityPlayer) par1DamageSource.getTrueSource();
-            final double var3 = entityPlayer.posX - this.posX;
-            final double var5 = entityPlayer.posZ - this.posZ;
-
-            if (var3 * var3 + var5 * var5 >= 2500.0D)
-            {
-                entityPlayer.addStat(AchievementList.SNIPE_SKELETON);
-            }
-        }
     }
 
     @Override

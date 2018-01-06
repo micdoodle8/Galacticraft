@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileEntityFluidTank>
 {
     @Override
-    public void renderTileEntityAt(TileEntityFluidTank tank, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileEntityFluidTank tank, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         FluidTankInfo[] info = tank.getTankInfo(EnumFacing.DOWN);
 

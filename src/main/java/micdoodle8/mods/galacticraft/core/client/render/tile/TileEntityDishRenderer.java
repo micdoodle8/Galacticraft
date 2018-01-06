@@ -57,7 +57,7 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         this.updateModels();
         TileEntityDish dish = (TileEntityDish) tile;

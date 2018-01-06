@@ -23,7 +23,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
      * Renders the TileEntity for the chest at a position.
      */
     @Override
-    public void renderTileEntityAt(TileEntityTreasureChest chest, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityTreasureChest chest, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         int var9;
 

@@ -26,7 +26,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
     private static OBJModel.OBJBakedModel lampMetal;
 
     @Override
-    public void renderTileEntityAt(TileEntityArclamp tileEntity, double d, double d1, double d2, float f, int par9)
+    public void render(TileEntityArclamp tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
         this.updateModels();
         int side = tileEntity.getBlockMetadata();

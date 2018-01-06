@@ -581,7 +581,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     @Override
     protected void updateEquipmentIfNeeded(EntityItem itemEntity)
     {
-        ItemStack itemstack = itemEntity.getEntityItem();
+        ItemStack itemstack = itemEntity.getItem();
         Item item = itemstack.getItem();
 
         if (this.canVillagerPickupItem(item))

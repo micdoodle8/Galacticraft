@@ -283,7 +283,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 if ((aABB.minY % 1D) == 0.5D) this.setEntityBoundingBox(aABB.offset(0D, 0.00001D, 0D));
                 //-----------END CUSTOM
                 
-                this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
+                //NOTE: No Elytra movement from this.updateElytra() in a zero G dimension
+                this.travel(this.moveStrafing, this.moveVertical, this.moveForward);
                 this.world.profiler.endSection();
                 this.world.profiler.startSection("push");
 

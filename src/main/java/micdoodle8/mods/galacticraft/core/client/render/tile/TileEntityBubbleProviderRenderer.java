@@ -55,7 +55,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
     }
 
     @Override
-    public void renderTileEntityAt(E provider, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(E provider, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (!provider.getBubbleVisible())
         {

@@ -1237,7 +1237,7 @@ public class GCPlayerHandler
                 {
                     Chunk chunkOld = worldOld.getChunkFromChunkCoords(player.chunkCoordX, player.chunkCoordZ);
                     chunkOld.removeEntity(player);
-                    chunkOld.setChunkModified();
+                    chunkOld.setModified(true);
                 }
 
                 WorldServer worldNew = WorldUtil.getStartWorld(worldOld);

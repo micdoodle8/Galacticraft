@@ -1183,7 +1183,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
 
             if (missingObjects.length() > 0)
             {
-                playerBase.connection.disconnect("Missing Galacticraft Celestial Objects:\n\n " + missingObjects);
+                playerBase.connection.disconnect(new TextComponentString("Missing Galacticraft Celestial Objects:\n\n " + missingObjects));
             }
 
             break;

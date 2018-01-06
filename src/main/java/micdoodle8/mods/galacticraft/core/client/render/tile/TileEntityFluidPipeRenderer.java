@@ -56,7 +56,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         updateModels();
 

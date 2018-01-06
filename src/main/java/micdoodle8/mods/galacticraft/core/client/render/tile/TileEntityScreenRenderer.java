@@ -24,7 +24,7 @@ public class TileEntityScreenRenderer extends TileEntitySpecialRenderer<TileEnti
     float frame = 0.098F;
 
     @Override
-    public void renderTileEntityAt(TileEntityScreen screen, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityScreen screen, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         GL11.glPushMatrix();
         // Texture file

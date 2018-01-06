@@ -155,7 +155,7 @@ public class EntityMeteor extends Entity
     }
 
     @Override
-    public boolean verifyExplosion(Explosion explosionIn, World worldIn, BlockPos pos, IBlockState blockStateIn, float p_174816_5_)
+    public boolean canExplosionDestroyBlock(Explosion explosionIn, World worldIn, BlockPos pos, IBlockState blockStateIn, float p_174816_5_)
     {
         return ConfigManagerCore.meteorBlockDamageEnabled;
     }
