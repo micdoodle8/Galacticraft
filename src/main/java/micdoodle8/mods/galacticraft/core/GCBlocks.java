@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Ordering;
+
 import micdoodle8.mods.galacticraft.core.blocks.*;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
@@ -25,6 +26,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -332,7 +334,6 @@ public class GCBlocks
         {
             block.setRegistryName(name);
         }
-        GameRegistry.register(block);
         ItemBlock item = null;
 
         if (itemClass != null)
@@ -356,7 +357,7 @@ public class GCBlocks
 
             if (item != null)
             {
-                GameRegistry.register(item.setRegistryName(name));
+                GCCoreUtil.registerGalacticraftItem(name, item);
             }
         }
 
@@ -364,6 +365,12 @@ public class GCBlocks
         {
             GCBlocks.registerSorted(block);
         }
+    }
+    
+    public static void registerBlocks(IForgeRegistry<Block> registry)
+    {
+        Block[] itemsArray = (Block[]) GalacticraftCore.blocksList.entrySet().toArray();
+        registry.registerAll(itemsArray);
     }
 
     public static boolean registeringSorted = false;

@@ -44,6 +44,8 @@ public class GCSounds
     private static SoundEvent registerSound(String soundName)
     {
         ResourceLocation soundID = new ResourceLocation(Constants.ASSET_PREFIX, soundName);
-        return GameRegistry.register(new SoundEvent(soundID).setRegistryName(soundID));
+        SoundEvent result = new SoundEvent(soundID).setRegistryName(soundID);
+        SoundEvent.REGISTRY.register(SoundEvent.soundEventId++, soundID, result);
+        return result;
     }
 }

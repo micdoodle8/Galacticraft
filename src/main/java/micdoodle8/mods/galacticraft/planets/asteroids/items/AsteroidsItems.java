@@ -127,7 +127,7 @@ public class AsteroidsItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
-        GameRegistry.register(item.setRegistryName(name));
+        item.setRegistryName(name);
         GalacticraftPlanets.proxy.postRegisterItem(item);
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {

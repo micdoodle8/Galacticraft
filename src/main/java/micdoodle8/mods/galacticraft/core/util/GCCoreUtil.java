@@ -146,32 +146,42 @@ public class GCCoreUtil
 
     public static void registerGalacticraftItem(String key, Item item)
     {
-        GalacticraftCore.itemList.put(key, new ItemStack(item));
+        registerGalacticraftItem(key, new ItemStack(item));
     }
 
     public static void registerGalacticraftItem(String key, Item item, int metadata)
     {
-        GalacticraftCore.itemList.put(key, new ItemStack(item, 1, metadata));
+        registerGalacticraftItem(key, new ItemStack(item, 1, metadata));
     }
 
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
-        GalacticraftCore.itemList.put(key, stack);
+        ItemStack result = GalacticraftCore.itemList.put(key, stack);
+        if (result != null)
+        {
+            System.out.println("GC -------- DUPLICATE ITEM NAME REGISTERED, PLS FIX: " + key);
+            Thread.dumpStack();
+        }
     }
 
     public static void registerGalacticraftBlock(String key, Block block)
     {
-        GalacticraftCore.blocksList.put(key, new ItemStack(block));
+        registerGalacticraftBlock(key, new ItemStack(block));
     }
 
     public static void registerGalacticraftBlock(String key, Block block, int metadata)
     {
-        GalacticraftCore.blocksList.put(key, new ItemStack(block, 1, metadata));
+        registerGalacticraftBlock(key, new ItemStack(block, 1, metadata));
     }
 
     public static void registerGalacticraftBlock(String key, ItemStack stack)
     {
-        GalacticraftCore.blocksList.put(key, stack);
+        ItemStack result = GalacticraftCore.blocksList.put(key, stack);
+        if (result != null)
+        {
+            System.out.println("GC -------- DUPLICATE BLOCK NAME REGISTERED, PLS FIX: " + key);
+            Thread.dumpStack();
+        }
     }
 
     public static String translate(String key)

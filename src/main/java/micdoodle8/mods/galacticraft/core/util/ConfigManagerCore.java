@@ -18,7 +18,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
@@ -448,7 +447,7 @@ public class ConfigManagerCore
 
             try
             {
-                prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { GameData.getBlockRegistry().getNameForObject(Blocks.GLASS_PANE) + ":0" });
+                prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Sealable IDs", new String[] { Block.REGISTRY.getNameForObject(Blocks.GLASS_PANE) + ":0" });
                 prop.setComment("List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata");
                 prop.setLanguageKey("gc.configgui.sealable_i_ds").setRequiresMcRestart(true);
                 sealableIDs = prop.getStringList();
@@ -460,13 +459,13 @@ public class ConfigManagerCore
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] {
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.COAL_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.DIAMOND_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.GOLD_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.IRON_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.LAPIS_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.REDSTONE_ORE)).getResourcePath(),
-                    ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.LIT_REDSTONE_ORE)).getResourcePath() });
+                    Block.REGISTRY.getNameForObject(Blocks.COAL_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.DIAMOND_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.GOLD_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.IRON_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.LAPIS_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.REDSTONE_ORE).getResourcePath(),
+                    Block.REGISTRY.getNameForObject(Blocks.LIT_REDSTONE_ORE).getResourcePath() });
             prop.setComment("List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.");
             prop.setLanguageKey("gc.configgui.detectable_i_ds").setRequiresMcRestart(true);
             detectableIDs = prop.getStringList();
@@ -817,7 +816,7 @@ public class ConfigManagerCore
         try
         {
             Integer.parseInt(name);
-            String bName = (String) GameData.getBlockRegistry().getNameForObject(block).toString();
+            String bName = (String) Block.REGISTRY.getNameForObject(block).toString();
             if (logging)
             {
                 GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);

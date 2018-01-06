@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -294,11 +295,17 @@ public class GCItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
-        GameRegistry.register(item.setRegistryName(name));
+        item.setRegistryName(name);
         GalacticraftCore.proxy.postRegisterItem(item);
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
             GCItems.registerSorted(item);
         }
+    }
+    
+    public static void registerItems(IForgeRegistry<Item> registry)
+    {
+        Item[] itemsArray = (Item[]) GalacticraftCore.itemList.entrySet().toArray();
+        registry.registerAll(itemsArray);
     }
 }
