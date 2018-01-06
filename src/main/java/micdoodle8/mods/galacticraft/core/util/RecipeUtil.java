@@ -49,29 +49,29 @@ public class RecipeUtil
     @SuppressWarnings("unchecked")
     public static void addRecipe(ItemStack result, Object[] obj)
     {
-        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+//        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
 
     public static void addShapelessRecipe(ItemStack result, Object... obj)
     {
-        CraftingManager.getInstance().addShapelessRecipe(result, obj);
+//        CraftingManager.getInstance().addShapelessRecipe(result, obj);
     }
 
     public static void addShapelessOreRecipe(ItemStack result, Object... obj)
     {
-        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, obj));
+//        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, obj));
     }
 
     public static void addCustomRecipe(IRecipe rec)
     {
-        CraftingManager.getInstance().getRecipeList().add(rec);
+//        CraftingManager.getInstance().getRecipeList().add(rec);
     }
 
     public static void addBlockRecipe(ItemStack result, String oreDictIngot, ItemStack gcIngot)
     {
         if (OreDictionary.getOres(oreDictIngot).size() > 1)
         {
-            CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
+//            CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
         }
         else
         {
