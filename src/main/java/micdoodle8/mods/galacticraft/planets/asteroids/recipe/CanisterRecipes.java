@@ -6,7 +6,9 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOx
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class CanisterRecipes extends ShapelessRecipes
 {
     public CanisterRecipes(ItemStack stack, List list)
     {
-        super(stack, list);
+        super("canisters", stack, (NonNullList<Ingredient>) list);
     }
 
     /**
@@ -160,8 +162,8 @@ public class CanisterRecipes extends ShapelessRecipes
     }
 
     @Override
-    public int getRecipeSize()
+    public boolean canFit(int width, int height)
     {
-        return 2;
+        return width * height >= 2;
     }
 }

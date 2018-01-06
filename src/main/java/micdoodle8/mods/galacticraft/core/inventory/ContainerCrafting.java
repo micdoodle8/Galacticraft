@@ -89,7 +89,7 @@ public class ContainerCrafting extends Container
     @Override
     public void onCraftMatrixChanged(IInventory inventoryIn)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.tileEntity.getWorld()));
+        this.craftResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.craftMatrix, this.tileEntity.getWorld()));
     }
 
     /**

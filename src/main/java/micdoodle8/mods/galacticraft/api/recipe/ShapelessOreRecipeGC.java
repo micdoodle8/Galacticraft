@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ShapelessOreRecipeGC implements IRecipe
+public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
@@ -58,8 +58,11 @@ public class ShapelessOreRecipeGC implements IRecipe
     }
 
     @Override
-    public int getRecipeSize(){ return input.size(); }
-
+    public boolean canFit(int width, int height)
+    {
+        return width * height >= input.size();
+    }
+    
     @Override
     public ItemStack getRecipeOutput(){ return output; }
 

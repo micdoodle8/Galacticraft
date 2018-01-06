@@ -46,7 +46,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
     public void updateMemory()
     {
-        if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) == ItemStack.EMPTY) return;
+        if (CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()) == ItemStack.EMPTY) return;
         for (int i = 0; i < SIZEINVENTORY; i++)
         {
             ItemStack stack = this.craftMatrix.getStackInSlot(i);
@@ -80,7 +80,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         if (par1 < SIZEINVENTORY)
             return this.craftMatrix.getStackInSlot(par1);
         
-        return CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
+        return CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
     }
 
     @Override
@@ -110,10 +110,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             }
             if (stillMatchesRecipe)
             {
-                ItemStack craftingResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
+                ItemStack craftingResult = CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
                 if (!craftingResult.isEmpty())
                 {
-                    NonNullList<ItemStack> aitemstack = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, this.world);
+                    NonNullList<ItemStack> aitemstack = CraftingManager.getRemainingItems(this.craftMatrix, this.world);
 
                     for (int i = 0; i < aitemstack.size(); ++i)
                     {
@@ -338,7 +338,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
     public boolean overrideMemory(ItemStack itemstack1, NonNullList<ItemStack> memory2)
     {
-        if (!CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()).isEmpty())
+        if (!CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()).isEmpty())
         {
             //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
             boolean fuzzyMatch = true;
@@ -372,7 +372,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     
     public boolean overriddenMemory()
     {
-        if (!CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()).isEmpty())
+        if (!CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()).isEmpty())
         {
             //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
             for (int i = 0; i < 9; i++)

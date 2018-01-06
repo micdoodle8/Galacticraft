@@ -27,6 +27,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -296,27 +297,26 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 return toItemStackList(recipe.getRecipeInput().values());
             }
         }
-        List<IRecipe> standardRecipes = CraftingManager.getInstance().getRecipeList();
-        for (IRecipe recipe : standardRecipes)
+        for (IRecipe recipe : CraftingManager.REGISTRY)
         {
             ItemStack test = recipe.getRecipeOutput();
             if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
                 if (recipe instanceof ShapedRecipes)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapedRecipes) recipe).recipeItems));
+                    return expandRecipeInputs(((ShapedRecipes) recipe).recipeItems);
                 }
                 else if (recipe instanceof ShapelessRecipes)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapelessRecipes) recipe).recipeItems));
+                    return expandRecipeInputs(((ShapelessRecipes) recipe).recipeItems);
                 }
                 else if (recipe instanceof ShapedOreRecipe)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapedOreRecipe) recipe).getInput()));
+                    return expandRecipeInputs(((ShapedOreRecipe) recipe).getIngredients());
                 }
                 else if (recipe instanceof ShapelessOreRecipe)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapelessOreRecipe) recipe).getInput()));
+                    return expandRecipeInputs(((ShapelessOreRecipe) recipe).getIngredients());
                 }
             }
         }
@@ -339,7 +339,18 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     
     private ItemStack parseRecipeInput(Object input)
     {
-        if (input instanceof ItemStack)
+        if (input instanceof Ingredient)
+        {
+            for (ItemStack obj : ((Ingredient) input).getMatchingStacks())
+            {
+                ItemStack ret = parseRecipeInput(obj);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+        }
+        else if (input instanceof ItemStack)
         {
             ItemStack stack = (ItemStack) input;
             if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE)

@@ -6,7 +6,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class ShapedRecipesGC implements IRecipe
+public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     public final int recipeWidth;
     public final int recipeHeight;
@@ -117,8 +117,8 @@ public class ShapedRecipesGC implements IRecipe
     }
 
     @Override
-    public int getRecipeSize()
+    public boolean canFit(int width, int height)
     {
-        return this.recipeWidth * this.recipeHeight;
+        return width >= 3 && height >= 3;
     }
 }
