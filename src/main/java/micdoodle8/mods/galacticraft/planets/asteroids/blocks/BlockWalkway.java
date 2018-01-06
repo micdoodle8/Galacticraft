@@ -80,7 +80,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         this.setHardness(1.0F);
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.METAL);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
 
@@ -367,11 +367,11 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(itemIn, 1, 0));
-        list.add(new ItemStack(itemIn, 1, 1));
-        list.add(new ItemStack(itemIn, 1, 2));
+        list.add(new ItemStack(this, 1, 0));
+        list.add(new ItemStack(this, 1, 1));
+        list.add(new ItemStack(this, 1, 2));
     }
 
     @Override

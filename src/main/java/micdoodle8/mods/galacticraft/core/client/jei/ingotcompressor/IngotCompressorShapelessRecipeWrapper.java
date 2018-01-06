@@ -52,7 +52,7 @@ public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper im
         if (experience > 0)
         {
             String experienceString = GCCoreUtil.translateWithFormat("gui.jei.category.smelting.experience", experience);
-            FontRenderer fontRendererObj = mc.fontRendererObj;
+            FontRenderer fontRendererObj = mc.fontRenderer;
             int stringWidth = fontRendererObj.getStringWidth(experienceString);
             fontRendererObj.drawString(experienceString, recipeWidth + 6 - stringWidth, 8, Color.gray.getRGB());
         }

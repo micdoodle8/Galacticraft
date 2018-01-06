@@ -79,7 +79,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         int k;
         for (k = 0; k < buttonList.size(); ++k)
         {
-            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2);
+            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
         }
 
         for (k = 0; k < labelList.size(); ++k)
@@ -164,15 +164,15 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String displayString = GCCoreUtil.translate("gui.launch_controller.owner") + ": " + this.launchController.getOwnerName();
-        this.fontRendererObj.drawString(displayString, this.xSize - this.fontRendererObj.getStringWidth(displayString) - 5, 5, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize - this.fontRenderer.getStringWidth(displayString) - 5, 5, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
     }
 
     @Override

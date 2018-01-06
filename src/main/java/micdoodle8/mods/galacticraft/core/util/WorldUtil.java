@@ -1024,8 +1024,8 @@ public class WorldUtil
     {
         CompatibilityManager.forceLoadChunks(worldNew);
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
-        GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
-        worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
+        GCLog.debug("Loading first chunk in new dimension at " + pair.x + "," + pair.z);
+        worldNew.getChunkProvider().loadChunk(pair.x, pair.z);
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         WorldServer fromWorld = ((WorldServer) entity.world); 
         if (spawnRequired)

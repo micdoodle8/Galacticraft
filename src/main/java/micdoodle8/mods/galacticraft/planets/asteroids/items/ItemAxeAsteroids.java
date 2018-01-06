@@ -27,7 +27,7 @@ public class ItemAxeAsteroids extends ItemTool implements ISortableItem
     {
         super(GCItems.TOOL_STEEL, EFFECTIVE_ON);
         this.setUnlocalizedName(assetName);
-        this.damageVsEntity = 6.0F;
+        this.attackDamage = 6.0F;
         this.attackSpeed = -3.0F;
     }
 
@@ -51,9 +51,9 @@ public class ItemAxeAsteroids extends ItemTool implements ISortableItem
     }
 
     @Override
-    public float getStrVsBlock(ItemStack stack, IBlockState state)
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
     {
         Material material = state.getMaterial();
-        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getStrVsBlock(stack, state) : this.efficiencyOnProperMaterial;
+        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getDestroySpeed(stack, state) : this.efficiency;
     }
 }

@@ -151,7 +151,7 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         list.add(this.getPainter());
     }

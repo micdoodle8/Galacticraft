@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
 import java.util.List;
 import java.util.Random;
@@ -20,7 +20,7 @@ import java.util.Random;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class ChunkProviderSpace extends ChunkProviderOverworld
+public abstract class ChunkProviderSpace extends ChunkGeneratorOverworld
 {
     protected final Random rand;
 

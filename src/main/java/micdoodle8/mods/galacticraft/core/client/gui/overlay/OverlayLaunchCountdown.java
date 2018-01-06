@@ -34,13 +34,13 @@ public class OverlayLaunchCountdown extends Overlay
         {
             GL11.glScalef(4.0F, 4.0F, 0.0F);
 
-            OverlayLaunchCountdown.minecraft.fontRendererObj.drawString(String.valueOf(count), width / 8 - OverlayLaunchCountdown.minecraft.fontRendererObj.getStringWidth(String.valueOf(count)) / 2, height / 20, ColorUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 8 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 20, ColorUtil.to32BitColor(255, 255, 0, 0));
         }
         else
         {
             GL11.glScalef(2.0F, 2.0F, 0.0F);
 
-            OverlayLaunchCountdown.minecraft.fontRendererObj.drawString(String.valueOf(count), width / 4 - OverlayLaunchCountdown.minecraft.fontRendererObj.getStringWidth(String.valueOf(count)) / 2, height / 8, ColorUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLaunchCountdown.minecraft.fontRenderer.drawString(String.valueOf(count), width / 4 - OverlayLaunchCountdown.minecraft.fontRenderer.getStringWidth(String.valueOf(count)) / 2, height / 8, ColorUtil.to32BitColor(255, 255, 0, 0));
         }
 
         GL11.glPopMatrix();

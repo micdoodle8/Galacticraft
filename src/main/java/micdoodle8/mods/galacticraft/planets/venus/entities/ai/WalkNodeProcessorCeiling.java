@@ -228,7 +228,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
                         double d3 = (double)(z - facing.getFrontOffsetZ()) + 0.5D;
                         AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double)y + 0.001D, d3 - d1, d2 + d1, (double)((float)y + this.entity.height), d3 + d1);
                         AxisAlignedBB axisalignedbb1 = this.blockaccess.getBlockState(blockpos).getBoundingBox(this.blockaccess, blockpos);
-                        AxisAlignedBB axisalignedbb2 = axisalignedbb.addCoord(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
+                        AxisAlignedBB axisalignedbb2 = axisalignedbb.expand(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
 
                         if (this.entity.world.collidesWithAnyBlock(axisalignedbb2))
                         {

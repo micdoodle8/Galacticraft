@@ -57,8 +57,8 @@ public class GuiSchematicTier2Rocket extends GuiPositionedContainer implements I
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(MarsItems.rocketMars.getItemStackDisplayName(new ItemStack(MarsItems.rocketMars, 1, 0)), 7, -20 + 27, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 27, 4210752);
+        this.fontRenderer.drawString(MarsItems.rocketMars.getItemStackDisplayName(new ItemStack(MarsItems.rocketMars, 1, 0)), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 27, 4210752);
     }
 
     @Override

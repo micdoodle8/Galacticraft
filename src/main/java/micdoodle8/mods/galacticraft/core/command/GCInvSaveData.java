@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.command;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class GCInvSaveData extends WorldSavedData
 {

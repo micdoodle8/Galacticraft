@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 {
@@ -51,11 +54,11 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 4; i++)
         {
-            list.add(new ItemStack(itemIn, 1, i));
+            list.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -89,7 +92,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             final Vec3d var25 = playerIn.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().addCoord(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
+            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)
@@ -156,7 +159,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getItemDamage() != 0)
         {

@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -118,25 +118,25 @@ public class GuiAstroMinerDock extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tile.getName(), 7, 6, 4210752);
-        this.fontRendererObj.drawString(this.getStatus(), 177, 141, 4210752);
+        this.fontRenderer.drawString(this.tile.getName(), 7, 6, 4210752);
+        this.fontRenderer.drawString(this.getStatus(), 177, 141, 4210752);
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394x: " + getDeltaString(this.tile.linkedMinerDataDX), 186, 152, 2536735);
+            this.fontRenderer.drawString("\u0394x: " + getDeltaString(this.tile.linkedMinerDataDX), 186, 152, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394y: " + getDeltaString(this.tile.linkedMinerDataDY), 186, 162, 2536735);
+            this.fontRenderer.drawString("\u0394y: " + getDeltaString(this.tile.linkedMinerDataDY), 186, 162, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString("\u0394z: " + getDeltaString(this.tile.linkedMinerDataDZ), 186, 172, 2536735);
+            this.fontRenderer.drawString("\u0394z: " + getDeltaString(this.tile.linkedMinerDataDZ), 186, 172, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.miner.mined") + ": " + this.tile.linkedMinerDataCount, 177, 183, 2536735);
+            this.fontRenderer.drawString(GCCoreUtil.translate("gui.miner.mined") + ": " + this.tile.linkedMinerDataCount, 177, 183, 2536735);
         }
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 7, this.ySize - 92, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 7, this.ySize - 92, 4210752);
     }
 
     private String getStatus()
@@ -198,7 +198,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);

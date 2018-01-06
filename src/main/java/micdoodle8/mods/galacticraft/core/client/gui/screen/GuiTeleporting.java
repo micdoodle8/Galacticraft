@@ -33,7 +33,7 @@ public class GuiTeleporting extends GuiScreen
     {
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.drawBackground(0);
-        this.drawCenteredString(this.fontRendererObj, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
+        this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
     }
 
     @Override

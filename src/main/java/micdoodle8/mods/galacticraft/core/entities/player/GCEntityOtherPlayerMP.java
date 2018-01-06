@@ -51,7 +51,7 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.posY + (double)this.getEyeHeight();
         if (height > 255D) height = 255D;

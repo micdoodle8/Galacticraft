@@ -57,8 +57,8 @@ public class GuiSchematicAstroMiner extends GuiPositionedContainer implements IS
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(AsteroidsItems.astroMiner.getItemStackDisplayName(new ItemStack(AsteroidsItems.astroMiner, 1, 0)), 7, -20 + 25, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 - 16, 4210752);
+        this.fontRenderer.drawString(AsteroidsItems.astroMiner.getItemStackDisplayName(new ItemStack(AsteroidsItems.astroMiner, 1, 0)), 7, -20 + 25, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 - 16, 4210752);
     }
 
     @Override

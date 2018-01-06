@@ -150,7 +150,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         }
         else
         {
-            Entity e = var1.getEntity();
+            Entity e = var1.getTrueSource();
             if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;

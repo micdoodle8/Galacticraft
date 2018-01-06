@@ -275,7 +275,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_SPIDER_HURT;
     }

@@ -8,7 +8,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
 import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.world.gen.ChunkProviderSettings;
+import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.GenLayer;
@@ -61,7 +61,7 @@ public class MapGen extends BiomeProvider implements Runnable
     private World world;
     private WorldType worldType;
     private WorldInfo worldInfo;
-    private ChunkProviderSettings settings = null;
+    private ChunkGeneratorSettings settings = null;
     
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
     private Biome[] biomesGridHeights = null;
@@ -129,7 +129,7 @@ public class MapGen extends BiomeProvider implements Runnable
         try {
             if (options != null)
             {
-                this.settings = ChunkProviderSettings.Factory.jsonToFactory(options).build();
+                this.settings = ChunkGeneratorSettings.Factory.jsonToFactory(options).build();
             }
             if (CompatibilityManager.isBOPWorld(this.worldType))
             {

@@ -124,7 +124,7 @@ public class GuiElementGradientList extends Gui
         Gui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 15, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
 
         int currentDrawHeight = this.yPosition + 1 - (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
-        FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRendererObj;
+        FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
 
         for (int i = 0; i < this.listContents.size(); i++)
         {

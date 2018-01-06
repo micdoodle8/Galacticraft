@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -50,7 +50,7 @@ public class GuiElementCheckbox extends GuiButton
     }
 
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3)
+    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partial)
     {
         if (this.isSelected == null)
         {
@@ -61,10 +61,10 @@ public class GuiElementCheckbox extends GuiButton
         {
             par1Minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
-            this.drawTexturedModalRect(this.xPosition, this.yPosition, this.isSelected ? this.texX + this.texWidth : this.texX, this.hovered ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
+            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+            this.drawTexturedModalRect(this.x, this.y, this.isSelected ? this.texX + this.texWidth : this.texX, this.hovered ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);
-            par1Minecraft.fontRendererObj.drawString(this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, this.textColor, false);
+            par1Minecraft.fontRenderer.drawString(this.displayString, this.x + this.width + 3, this.y + (this.height - 6) / 2, this.textColor, false);
         }
     }
 
@@ -74,7 +74,7 @@ public class GuiElementCheckbox extends GuiButton
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + this.texHeight) * f1).endVertex();
         worldRenderer.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + this.texWidth) * f, (par4 + this.texHeight) * f1).endVertex();
@@ -86,7 +86,7 @@ public class GuiElementCheckbox extends GuiButton
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
+        if (this.enabled && this.visible && par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height)
         {
             if (this.parentGui.canPlayerEdit(this, par1Minecraft.player))
             {

@@ -239,7 +239,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, BlockMachineMarsT2.GAS_LIQUEFIER_META));
         list.add(new ItemStack(this, 1, BlockMachineMarsT2.METHANE_SYNTHESIZER_META));

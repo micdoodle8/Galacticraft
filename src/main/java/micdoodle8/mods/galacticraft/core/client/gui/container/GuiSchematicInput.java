@@ -70,8 +70,8 @@ public class GuiSchematicInput extends GuiPositionedContainer implements ISchema
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.addnewsch.name"), 7, -22, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 56, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.addnewsch.name"), 7, -22, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 56, 4210752);
     }
 
     @Override

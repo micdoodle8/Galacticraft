@@ -71,11 +71,11 @@ public class ItemCanister extends Item implements ISortableItem
     }*/
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 2; i++)
         {
-            list.add(new ItemStack(itemIn, 1, i));
+            list.add(new ItemStack(this, 1, i));
         }
     }
 

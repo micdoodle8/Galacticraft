@@ -113,16 +113,16 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         this.drawTexturedModalRect(var5 + 11, var6 + 51, 181, 0, 7, 9);
 
         String displayString = GCCoreUtil.translateWithFormat("gui.title.air_lock.name", this.controller.ownerName);
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRenderer.drawString(this.controller.ownerName, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
         displayString = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
         displayString = EnumColor.RED + GCCoreUtil.translate("gui.status.air_lock_closed.name");
 
         if (!this.controller.active)
@@ -130,7 +130,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
             displayString = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.air_lock_open.name");
         }
 
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
 
         super.drawScreen(par1, par2, par3);
     }

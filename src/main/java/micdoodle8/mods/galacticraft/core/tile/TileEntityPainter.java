@@ -102,7 +102,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         else if (item instanceof ItemBlock)
         {
             color = ColorUtil.lighten(color, 0.03F);
-            Block b = ((ItemBlock)item).block;
+            Block b = ((ItemBlock)item).getBlock();
             int result = 0;
             if (b instanceof IPaintable)
             {

@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -115,7 +115,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
@@ -200,7 +200,7 @@ public class GameScreenCelestial implements IGameScreen
     private void drawTexturedRect(float x, float y, float width, float height)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(x, y + height, 0F).tex(0, 1.0F).endVertex();
         worldRenderer.pos(x + width, y + height, 0F).tex(1.0F, 1.0F).endVertex();
@@ -356,7 +356,7 @@ public class GameScreenCelestial implements IGameScreen
         float yba = y + height * y2;
         float ybb = y + height * y3;
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         if (prog <= 0.75F)
         {
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

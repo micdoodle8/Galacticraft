@@ -154,7 +154,7 @@ public class FreefallHandler
             {
                 xreach = -0.2D;
             }
-            AxisAlignedBB playerReach = p.getEntityBoundingBox().addCoord(xreach, 0, zreach);
+            AxisAlignedBB playerReach = p.getEntityBoundingBox().expand(xreach, 0, zreach);
 
             boolean checkBlockWithinReach;
             if (worldProvider instanceof WorldProviderSpaceStation)

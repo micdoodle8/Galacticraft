@@ -82,7 +82,7 @@ public class MapGenVillageMoon extends MapGenStructure
     }
 
     @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean p_180706_3_)
     {
         this.world = worldIn;
         return findNearestStructurePosBySpacing(worldIn, this, pos, 32, 8, 10387312, false, 100, p_180706_3_);

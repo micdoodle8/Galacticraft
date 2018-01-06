@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.stats.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -38,9 +39,9 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     private boolean checkedCape = false;
     private ResourceLocation galacticraftCape = null;
 
-    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter, RecipeBook book)
     {
-        super(mcIn, worldIn, netHandler, statFileWriter);
+        super(mcIn, worldIn, netHandler, statFileWriter, book);
     }
 
     @Override
@@ -182,7 +183,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     this.setSprinting(true);
                 }
 
-                if (this.isSprinting() && (this.movementInput.moveForward < sprintlevel || this.isCollidedHorizontally || !flag4))
+                if (this.isSprinting() && (this.movementInput.moveForward < sprintlevel || this.collidedHorizontally || !flag4))
                 {
                     this.setSprinting(false);
                 }
@@ -524,7 +525,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.posY + (double)this.getEyeHeight();
         if (height > 255D) height = 255D;

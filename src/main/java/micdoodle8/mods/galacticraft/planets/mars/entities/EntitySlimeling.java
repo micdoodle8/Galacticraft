@@ -274,7 +274,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         this.playSound(SoundEvents.BLOCK_SLIME_STEP, this.getSoundVolume(), 1.1F);
         return null;
@@ -368,10 +368,10 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         }
         else
         {
-            Entity entity = par1DamageSource.getEntity();
+            Entity entity = par1DamageSource.getTrueSource();
             this.setSittingAI(false);
 
-            if (entity != null && !(entity instanceof EntityPlayer) && !(entity instanceof EntityArrow))
+            if (entity != null && !(entity instanceof EntityPlayer))
             {
                 par2 = (par2 + 1.0F) / 2.0F;
             }
@@ -477,7 +477,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 if (this.rand.nextInt(3) == 0)
                 {
                     this.setTamed(true);
-                    this.getNavigator().clearPathEntity();
+                    this.getNavigator().clearPath();
                     this.setAttackTarget(null);
                     this.setSittingAI(true);
                     this.setHealth(20.0F);
@@ -743,7 +743,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
                 if (e instanceof EntityLivingBase)
                 {
                     EntityLivingBase living = (EntityLivingBase) e;
-                    return living == null ? true : (this.theEntity.getDistanceSqToEntity(living) < 144.0D && living.getAITarget() != null ? false : this.isSitting);
+                    return living == null ? true : (this.theEntity.getDistanceSq(living) < 144.0D && living.getAITarget() != null ? false : this.isSitting);
                 }
                 return false;
             }
@@ -752,7 +752,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
         @Override
         public void startExecuting()
         {
-            this.theEntity.getNavigator().clearPathEntity();
+            this.theEntity.getNavigator().clearPath();
             this.theEntity.setSitting(true);
         }
 

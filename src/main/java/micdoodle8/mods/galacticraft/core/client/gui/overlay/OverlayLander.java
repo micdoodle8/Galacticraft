@@ -37,11 +37,11 @@ public class OverlayLander extends Overlay
 
         if (OverlayLander.minecraft.player.getRidingEntity().motionY < -2.0)
         {
-            OverlayLander.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayLander.minecraft.fontRendererObj.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
+            OverlayLander.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
             final int alpha = (int) (255 * Math.sin(OverlayLander.screenTicks / 20.0F));
             final String press1 = GCCoreUtil.translate("gui.lander.warning2");
             final String press2 = GCCoreUtil.translate("gui.lander.warning3");
-            OverlayLander.minecraft.fontRendererObj.drawString(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRendererObj.getStringWidth(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, ColorUtil.to32BitColor(alpha, alpha, alpha, alpha));
+            OverlayLander.minecraft.fontRenderer.drawString(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2, width / 4 - OverlayLander.minecraft.fontRenderer.getStringWidth(press1 + GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()) + press2) / 2, height / 8, ColorUtil.to32BitColor(alpha, alpha, alpha, alpha));
         }
 
         GL11.glPopMatrix();
@@ -50,7 +50,7 @@ public class OverlayLander extends Overlay
         {
             String string = GCCoreUtil.translate("gui.lander.velocity") + ": " + Math.round(((EntityLander) OverlayLander.minecraft.player.getRidingEntity()).motionY * 1000) / 100.0D + " " + GCCoreUtil.translate("gui.lander.velocityu");
             int color = ColorUtil.to32BitColor(255, (int) Math.floor(Math.abs(OverlayLander.minecraft.player.getRidingEntity().motionY) * 51.0D), 255 - (int) Math.floor(Math.abs(OverlayLander.minecraft.player.getRidingEntity().motionY) * 51.0D), 0);
-            OverlayLander.minecraft.fontRendererObj.drawString(string, width / 2 - OverlayLander.minecraft.fontRendererObj.getStringWidth(string) / 2, height / 3, color);
+            OverlayLander.minecraft.fontRenderer.drawString(string, width / 2 - OverlayLander.minecraft.fontRenderer.getStringWidth(string) / 2, height / 3, color);
         }
     }
 }

@@ -56,17 +56,17 @@ public class GuiRocketInventory extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.fuel.name"), 8, 2 + 3, 4210752);
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 34 + 2 + 3, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 34 + 2 + 3, 4210752);
 
         if (this.mc.player != null && this.mc.player.getRidingEntity() != null && this.mc.player.getRidingEntity() instanceof EntitySpaceshipBase)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
+            this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.fuel.name") + ":", 125, 15 + 3, 4210752);
             final double percentage = ((EntitySpaceshipBase) this.mc.player.getRidingEntity()).getScaledFuelLevel(100);
             final String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
             final String str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
-            this.fontRendererObj.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
+            this.fontRenderer.drawString(color + str, 117 - str.length() / 2, 20 + 8, 4210752);
         }
     }
 

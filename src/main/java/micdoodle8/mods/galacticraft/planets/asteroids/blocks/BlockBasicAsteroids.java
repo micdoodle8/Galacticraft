@@ -140,13 +140,13 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         int var4;
 
         for (var4 = 0; var4 < EnumBlockBasic.values().length; ++var4)
         {
-            list.add(new ItemStack(itemIn, 1, var4));
+            list.add(new ItemStack(this, 1, var4));
         }
     }
 

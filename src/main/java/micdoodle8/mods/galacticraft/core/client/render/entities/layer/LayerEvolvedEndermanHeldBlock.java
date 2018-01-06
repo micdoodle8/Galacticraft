@@ -44,7 +44,7 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
             GlStateManager.translate(0.25F, 0.1875F, 0.25F);
             float f7 = 0.5F;
             GlStateManager.scale(-f7, -f7, f7);
-            int i = entity.getBrightnessForRender(partialTicks);
+            int i = entity.getBrightnessForRender();
             int j = i % 65536;
             int k = i / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);

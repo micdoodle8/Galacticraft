@@ -380,7 +380,7 @@ public class GCBlocks
                 return;
             }
             registeringSorted = true;
-            block.getSubBlocks(item, null, blocks);
+            block.getSubBlocks(null, blocks);
             registeringSorted = false;
             for (ItemStack stack : blocks)
             {

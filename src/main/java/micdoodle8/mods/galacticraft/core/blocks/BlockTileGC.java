@@ -17,7 +17,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
     public BlockTileGC(Material material)
     {
         super(material);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
     }
 
     /**

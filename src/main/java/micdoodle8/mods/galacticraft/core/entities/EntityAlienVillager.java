@@ -280,7 +280,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         return SoundEvents.ENTITY_VILLAGER_HURT;
     }
@@ -344,7 +344,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     {
         if (this.villageObj != null)
         {
-            Entity entity = cause.getEntity();
+            Entity entity = cause.getTrueSource();
 
             if (entity != null)
             {

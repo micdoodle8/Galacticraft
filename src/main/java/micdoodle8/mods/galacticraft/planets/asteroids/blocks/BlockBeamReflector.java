@@ -90,9 +90,9 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(itemIn, 1, 0));
+        list.add(new ItemStack(this, 1, 0));
     }
 
     @Override

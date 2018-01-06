@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -79,7 +79,7 @@ public class RenderSchematic extends Render<EntityHangingSchematic>
                 float f21 = (float)(height - j * 16) / 32.0F;
                 float f22 = (float)(height - (j + 1) * 16) / 32.0F;
                 Tessellator tessellator = Tessellator.getInstance();
-                VertexBuffer worldrenderer = tessellator.getBuffer();
+                BufferBuilder worldrenderer = tessellator.getBuffer();
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
                 worldrenderer.pos(a, d, (-f2)).tex(f20, f21).normal(0.0F, 0.0F, -1.0F).endVertex();
                 worldrenderer.pos(b, d, (-f2)).tex(f19, f21).normal(0.0F, 0.0F, -1.0F).endVertex();

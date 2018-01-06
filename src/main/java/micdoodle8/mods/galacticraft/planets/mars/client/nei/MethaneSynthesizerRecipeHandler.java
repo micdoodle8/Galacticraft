@@ -34,7 +34,7 @@
 //    int extra = 0;
 //
 //    boolean fillAtmos = false;
-//    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRendererObj;
+//    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRenderer;
 //
 //    public String getRecipeId()
 //    {
@@ -99,9 +99,9 @@
 //            String text1 = " * " + GCCoreUtil.translate("gui.message.with_atmosphere0.name");
 //            String text2 = " " + GCCoreUtil.lowerCaseNoun(gasname);
 //            String text3 = GCCoreUtil.translate("gui.message.with_atmosphere1.name");
-//            this.fontRendererObj.drawString(text1, 4, 85, 4210752);
-//            this.fontRendererObj.drawString(text2, 18, 95, 4210752);
-//            this.fontRendererObj.drawString(text3, 18, 105, 4210752);
+//            this.fontRenderer.drawString(text1, 4, 85, 4210752);
+//            this.fontRenderer.drawString(text2, 18, 95, 4210752);
+//            this.fontRenderer.drawString(text3, 18, 105, 4210752);
 //        }
 //    }
 //

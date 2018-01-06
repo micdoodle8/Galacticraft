@@ -29,7 +29,7 @@ public class WorldGenEggs extends WorldGenerator
 
         if (!par1World.isBlockLoaded(newPos)) return false;
 
-        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.hasNoSky()))
+        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.isNether()))
         {
             IBlockState below = par1World.getBlockState(newPos.down()); 
             if (below.getBlock() == MarsBlocks.marsBlock && below.getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)

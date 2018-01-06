@@ -74,10 +74,10 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(itemIn, 1, BlockCargoLoader.METADATA_CARGO_LOADER));
-        list.add(new ItemStack(itemIn, 1, BlockCargoLoader.METADATA_CARGO_UNLOADER));
+        list.add(new ItemStack(this, 1, BlockCargoLoader.METADATA_CARGO_LOADER));
+        list.add(new ItemStack(this, 1, BlockCargoLoader.METADATA_CARGO_UNLOADER));
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
@@ -46,7 +46,7 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glEndList();
         GL11.glPopMatrix();
         final Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         this.glSkyList = this.starGLCallList + 1;
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
@@ -157,7 +157,7 @@ public class SkyProviderOrbit extends IRenderHandler
                 var10 = var13;
             }
 
-            VertexBuffer worldRenderer = var23.getBuffer();
+            BufferBuilder worldRenderer = var23.getBuffer();
             worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
             worldRenderer.pos(0.0D, 100.0D, 0.0D).color(var8, var9, var10, var24[3]).endVertex();
             final byte var26 = 16;
@@ -219,7 +219,7 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
             var12 = 8.0F;
-            VertexBuffer worldRenderer = var23.getBuffer();
+            BufferBuilder worldRenderer = var23.getBuffer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
             worldRenderer.pos(var12, 99.9D, -var12).endVertex();
@@ -245,7 +245,7 @@ public class SkyProviderOrbit extends IRenderHandler
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
             var12 = 11.3F;
-            VertexBuffer worldRenderer = var23.getBuffer();
+            BufferBuilder worldRenderer = var23.getBuffer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             worldRenderer.pos(-var12, -99.9D, var12).endVertex();
             worldRenderer.pos(var12, -99.9D, var12).endVertex();
@@ -289,7 +289,7 @@ public class SkyProviderOrbit extends IRenderHandler
             var10 = 1.0F;
             final float alpha = 0.5F;
             GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
-            VertexBuffer worldRenderer = var23.getBuffer();
+            BufferBuilder worldRenderer = var23.getBuffer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(-var10, 0, var10).tex(0.0F, 1.0F).endVertex();
             worldRenderer.pos(var10, 0, var10).tex(1.0F, 1.0F).endVertex();

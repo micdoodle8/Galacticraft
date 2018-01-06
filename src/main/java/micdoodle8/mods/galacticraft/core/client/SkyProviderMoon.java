@@ -12,7 +12,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -46,7 +46,7 @@ public class SkyProviderMoon extends IRenderHandler
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -148,7 +148,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         var12 = 20.0F / 3.5F;
-        VertexBuffer worldRenderer = var23.getBuffer();
+        BufferBuilder worldRenderer = var23.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
         worldRenderer.pos(var12, 99.9D, -var12).endVertex();
@@ -257,7 +257,7 @@ public class SkyProviderMoon extends IRenderHandler
     {
         final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        VertexBuffer worldRenderer = var2.getBuffer();
+        BufferBuilder worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)

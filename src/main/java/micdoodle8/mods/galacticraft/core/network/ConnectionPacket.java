@@ -137,7 +137,7 @@ public class ConnectionPacket
     {
         FMLProxyPacket pkt = event.getPacket();
 
-        onFMLProxyPacketData(event.getManager(), pkt, ((NetHandlerPlayServer) event.getHandler()).playerEntity);
+        onFMLProxyPacketData(event.getManager(), pkt, ((NetHandlerPlayServer) event.getHandler()).player);
     }
 
     public void onFMLProxyPacketData(NetworkManager manager, FMLProxyPacket packet, EntityPlayer player)

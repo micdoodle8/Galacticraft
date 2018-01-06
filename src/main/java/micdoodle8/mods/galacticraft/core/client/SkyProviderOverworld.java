@@ -12,7 +12,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.math.MathHelper;
@@ -54,7 +54,7 @@ public class SkyProviderOverworld extends IRenderHandler
     {
         GL11.glPushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldrenderer = tessellator.getBuffer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         final Random rand = new Random(10842L);
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
         this.renderStars(worldrenderer, rand);
@@ -82,7 +82,7 @@ public class SkyProviderOverworld extends IRenderHandler
         final byte byte2 = 5;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -187,7 +187,7 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glColor3f(i, x, var5);
         final Tessellator var23 = Tessellator.getInstance();
-        VertexBuffer worldRenderer = var23.getBuffer();
+        BufferBuilder worldRenderer = var23.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(i, x, var5);
@@ -419,7 +419,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderStars(VertexBuffer worldRenderer, Random rand)
+    private void renderStars(BufferBuilder worldRenderer, Random rand)
     {
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 

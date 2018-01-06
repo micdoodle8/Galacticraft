@@ -142,7 +142,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         this.playSound(GCSounds.bossOoh, this.getSoundVolume(), this.getSoundPitch() + 1.0F);
         return null;
@@ -181,7 +181,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
         if (player != null && !player.equals(this.targetEntity))
         {
-            if (this.getDistanceSqToEntity(player) < 400.0D)
+            if (this.getDistanceSq(player) < 400.0D)
             {
                 this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
@@ -255,9 +255,9 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         super.onDeath(par1DamageSource);
 
-        if (par1DamageSource.getSourceOfDamage() instanceof EntityArrow && par1DamageSource.getEntity() instanceof EntityPlayer)
+        if (par1DamageSource.getImmediateSource() instanceof EntityArrow && par1DamageSource.getTrueSource() instanceof EntityPlayer)
         {
-            final EntityPlayer entityPlayer = (EntityPlayer) par1DamageSource.getEntity();
+            final EntityPlayer entityPlayer = (EntityPlayer) par1DamageSource.getTrueSource();
             final double var3 = entityPlayer.posX - this.posX;
             final double var5 = entityPlayer.posZ - this.posZ;
 

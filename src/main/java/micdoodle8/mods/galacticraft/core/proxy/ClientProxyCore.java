@@ -346,7 +346,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     {
         if (handler instanceof NetHandlerPlayServer)
         {
-            return ((NetHandlerPlayServer) handler).playerEntity;
+            return ((NetHandlerPlayServer) handler).player;
         }
         else
         {

@@ -70,10 +70,10 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(itemIn, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
-        list.add(new ItemStack(itemIn, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
+        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_FRAME.getMeta()));
+        list.add(new ItemStack(this, 1, EnumAirLockType.AIR_LOCK_CONTROLLER.getMeta()));
     }
 
     @Override

@@ -234,7 +234,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         list.add(this.getTerraformer());
         list.add(this.getChamber());

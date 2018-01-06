@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -132,18 +132,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public String getSaveFolder()
     {
         return "DIM" + this.getCelestialBody().getDimensionID();
-    }
-
-    @Override
-    public String getWelcomeMessage()
-    {
-        return "Entering " + this.getCelestialBody().getLocalizedName();
-    }
-
-    @Override
-    public String getDepartMessage()
-    {
-        return "Leaving " + this.getCelestialBody().getLocalizedName();
     }
 
     @Override

@@ -29,9 +29,9 @@ public class GCEntityPlayerMP extends EntityPlayerMP
 
     //Server-only method
     @Override
-    public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
+    public void copyFrom(EntityPlayerMP oldPlayer, boolean keepInv)
     {
-        super.clonePlayer(oldPlayer, keepInv);
+        super.copyFrom(oldPlayer, keepInv);
         GalacticraftCore.proxy.player.clonePlayer(this, oldPlayer, keepInv);
         TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, this);
     }

@@ -28,7 +28,7 @@ public abstract class EntityFXLaunchParticle extends Particle
         double origX = x;
         double origZ = z;
 
-        List<AxisAlignedBB> list = this.getCollidingBoundingBoxes(this.getBoundingBox().addCoord(x, y, z));
+        List<AxisAlignedBB> list = this.getCollidingBoundingBoxes(this.getBoundingBox().expand(x, y, z));
 
         for (AxisAlignedBB axisalignedbb : list)
         {

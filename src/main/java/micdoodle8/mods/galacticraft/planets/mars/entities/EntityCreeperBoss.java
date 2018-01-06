@@ -70,7 +70,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             }
             else if (super.attackEntityFrom(damageSource, damage))
             {
-                Entity entity = damageSource.getEntity();
+                Entity entity = damageSource.getTrueSource();
 
                 if (this.getPassengers().contains(entity) && this.getRidingEntity() != entity)
                 {
@@ -121,7 +121,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected SoundEvent getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
         this.playSound(GCSounds.bossOuch, this.getSoundVolume(), this.getSoundPitch() - 0.15F);
         return null;
@@ -182,7 +182,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
 
         if (player != null && !player.equals(this.targetEntity))
         {
-            if (this.getDistanceSqToEntity(player) < 400.0D)
+            if (this.getDistanceSq(player) < 400.0D)
             {
                 this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;

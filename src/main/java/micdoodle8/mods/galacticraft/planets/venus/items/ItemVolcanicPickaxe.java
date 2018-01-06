@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,6 +29,8 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, IShiftDescription
 {
     public ItemVolcanicPickaxe(String assetName)
@@ -38,13 +41,13 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> info, boolean advanced)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> info, ITooltipFlag flagIn)
     {
         if (this.showDescription(stack.getItemDamage()))
         {
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
             {
-                info.addAll(FMLClientHandler.instance().getClient().fontRendererObj.listFormattedStringToWidth(this.getShiftDescription(stack.getItemDamage()), 150));
+                info.addAll(FMLClientHandler.instance().getClient().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack.getItemDamage()), 150));
             }
             else
             {

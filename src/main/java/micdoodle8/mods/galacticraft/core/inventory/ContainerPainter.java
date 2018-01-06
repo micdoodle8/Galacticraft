@@ -81,7 +81,7 @@ public class ContainerPainter extends Container
             else if (index != 1 && index != 0)
             {
                 Item item = stack.getItem();
-                if (item instanceof IPaintable || (item instanceof ItemBlock && ((ItemBlock)item).block instanceof IPaintable))
+                if (item instanceof IPaintable || (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof IPaintable))
                 {
                     if (!this.mergeOneItem(stack, 1, 2, false))
                     {

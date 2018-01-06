@@ -803,7 +803,7 @@ public class ConfigManagerCore
             Item item = (Item) Item.REGISTRY.getObject(new ResourceLocation(name));
             if (item instanceof ItemBlock)
             {
-                block = ((ItemBlock) item).block;
+                block = ((ItemBlock) item).getBlock();
             }
             if (block == null)
             {

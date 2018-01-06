@@ -691,7 +691,7 @@ public class SpinManager
                 int collisions = 0;
                 do
                 {
-                    List<AxisAlignedBB> list = p.world.getCollisionBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
+                    List<AxisAlignedBB> list = p.world.getCollisionBoxes(p, p.getEntityBoundingBox().expand(offsetX, 0.0D, offsetZ));
                     collisions = list.size();
                     if (collisions > 0)
                     {

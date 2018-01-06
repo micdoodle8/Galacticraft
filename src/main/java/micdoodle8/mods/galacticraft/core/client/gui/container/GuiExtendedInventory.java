@@ -130,7 +130,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         GlStateManager.translate(0.0F, (float) mc.player.getYOffset(), 0.0F);
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
-        rendermanager.doRenderEntity(mc.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        rendermanager.renderEntity(mc.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         rendermanager.setRenderShadow(true);
         mc.player.renderYawOffset = f2;
         mc.player.rotationYaw = f3;

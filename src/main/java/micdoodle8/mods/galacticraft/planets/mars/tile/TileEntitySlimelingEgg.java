@@ -62,7 +62,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                 }
 
                 slimeling.setTamed(true);
-                slimeling.getNavigator().clearPathEntity();
+                slimeling.getNavigator().clearPath();
                 slimeling.setAttackTarget((EntityLivingBase) null);
                 slimeling.setHealth(20.0F);
 

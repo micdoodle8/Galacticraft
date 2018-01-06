@@ -89,21 +89,21 @@ public class GuiCargoRocket extends GuiContainerGC
     {
         if (this.rocket.rocketType.getInventorySpace() == 2)
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRenderer.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 76 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
         else
         {
-            this.fontRendererObj.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
+            this.fontRenderer.drawString(GCCoreUtil.translate(this.upperChestInventory.getName()), 8, 89 + (this.rocket.rocketType.getInventorySpace() - 20) / 9 * 18, 4210752);
         }
 
         String str = GCCoreUtil.translate("gui.message.fuel.name") + ":";
-        this.fontRendererObj.drawString(str, 140 - this.fontRendererObj.getStringWidth(str) / 2, 5, 4210752);
+        this.fontRenderer.drawString(str, 140 - this.fontRenderer.getStringWidth(str) / 2, 5, 4210752);
         final double percentage = this.rocket.getScaledFuelLevel(100);
         String color = percentage > 80.0D ? EnumColor.BRIGHT_GREEN.getCode() : percentage > 40.0D ? EnumColor.ORANGE.getCode() : EnumColor.RED.getCode();
         str = percentage + "% " + GCCoreUtil.translate("gui.message.full.name");
-        this.fontRendererObj.drawString(color + str, 140 - this.fontRendererObj.getStringWidth(str) / 2, 15, 4210752);
+        this.fontRenderer.drawString(color + str, 140 - this.fontRenderer.getStringWidth(str) / 2, 15, 4210752);
         str = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.fontRendererObj.drawString(str, 40 - this.fontRendererObj.getStringWidth(str) / 2, 9, 4210752);
+        this.fontRenderer.drawString(str, 40 - this.fontRenderer.getStringWidth(str) / 2, 9, 4210752);
 
         String[] spltString = { "" };
         String colour = EnumColor.YELLOW.toString();
@@ -131,7 +131,7 @@ public class GuiCargoRocket extends GuiContainerGC
         int y = 2;
         for (String splitString : spltString)
         {
-            this.fontRendererObj.drawString(colour + splitString, 35 - this.fontRendererObj.getStringWidth(splitString) / 2, 9 * y, 4210752);
+            this.fontRenderer.drawString(colour + splitString, 35 - this.fontRenderer.getStringWidth(splitString) / 2, 9 * y, 4210752);
             y++;
         }
 

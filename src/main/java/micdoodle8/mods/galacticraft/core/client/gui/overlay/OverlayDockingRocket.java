@@ -57,21 +57,21 @@ public class OverlayDockingRocket extends Overlay
 //                if (dMY > 25)
 //                {
 //                    String warning = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
-//                    OverlayDockingRocket.minecraft.fontRendererObj.drawString(warning, width / 2 - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(warning) / 2, height / 3 - 50, green);
+//                    OverlayDockingRocket.minecraft.fontRenderer.drawString(warning, width / 2 - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(warning) / 2, height / 3 - 50, green);
 //                }
 //                else if (dMY < -25)
 //                {
 //                    String warning2 = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
-//                    OverlayDockingRocket.minecraft.fontRendererObj.drawString(warning2, width / 2 - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(warning2) / 2, height / 3 - 35, red);
+//                    OverlayDockingRocket.minecraft.fontRenderer.drawString(warning2, width / 2 - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(warning2) / 2, height / 3 - 35, red);
 //                }
 
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRendererObj.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString(targetMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString(currentMotionYStr, width - OverlayDockingRocket.minecraft.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
 
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3 + 15, grey);
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
-                OverlayDockingRocket.minecraft.fontRendererObj.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3 + 15, grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : OverlayDockingRocket.screenTicks / 10 % 2 == 0 ? red : grey);
+                OverlayDockingRocket.minecraft.fontRenderer.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);
             }
         }
     }

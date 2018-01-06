@@ -219,7 +219,7 @@ public class GCItems
         {
             ISortableItem sortableItem = (ISortableItem) item;
             NonNullList<ItemStack> items = NonNullList.create();
-            item.getSubItems(item, null, items);
+            item.getSubItems(null, items);
             for (ItemStack stack : items)
             {
                 EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getItemDamage());

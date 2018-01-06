@@ -207,7 +207,7 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         list.add(this.getCoalGenerator());
         list.add(this.getCompressor());

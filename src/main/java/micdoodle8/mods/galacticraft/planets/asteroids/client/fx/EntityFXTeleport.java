@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +40,7 @@ public class EntityFXTeleport extends Particle
     }
 
     @Override
-    public void renderParticle(VertexBuffer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(BufferBuilder worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         float f6 = (this.particleAge + f0) / this.particleMaxAge;
         f6 = 1.0F - f6;

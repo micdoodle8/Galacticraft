@@ -215,8 +215,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
         }
         else
         {
-            Entity e = var1.getEntity();
-            boolean flag = var1.getEntity() instanceof EntityPlayer && ((EntityPlayer) var1.getEntity()).capabilities.isCreativeMode;
+            Entity e = var1.getTrueSource();
+            boolean flag = e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode;
 
             if (this.isEntityInvulnerable(var1) || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
@@ -276,7 +276,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
             if (item.hasTagCompound())
             {
-                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
             }
         }
     }
@@ -405,7 +405,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
             this.speed = this.maxSpeed;
         }
 
-        if (this.isCollidedHorizontally && this.shouldClimb)
+        if (this.collidedHorizontally && this.shouldClimb)
         {
             this.speed *= 0.9;
             this.motionY = 0.15D * ((-Math.pow((this.timeClimbing) - 1, 2)) / 250.0F) + 0.15F;
@@ -570,7 +570,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     @Override
     public boolean isUsableByPlayer(EntityPlayer var1)
     {
-        return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
+        return !this.isDead && var1.getDistanceSq(this) <= 64.0D;
     }
 
     @Override

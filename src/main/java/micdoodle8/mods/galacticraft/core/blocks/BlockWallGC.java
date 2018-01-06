@@ -205,7 +205,7 @@ public class BlockWallGC extends Block /* Do not extend BlockWall */ implements 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); ++i)
         {

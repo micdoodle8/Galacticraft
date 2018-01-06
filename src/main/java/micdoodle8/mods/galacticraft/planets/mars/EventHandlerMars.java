@@ -49,9 +49,9 @@ public class EventHandlerMars
         {
             EntityDamageSource source = (EntityDamageSource) event.getSource();
 
-            if (source.getEntity() instanceof EntitySlimeling && !source.getEntity().world.isRemote)
+            if (source.getTrueSource() instanceof EntitySlimeling && !source.getTrueSource().world.isRemote)
             {
-                ((EntitySlimeling) source.getEntity()).kills++;
+                ((EntitySlimeling) source.getTrueSource()).kills++;
             }
         }
     }
@@ -61,7 +61,7 @@ public class EventHandlerMars
     {
         if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
         {
-            Entity entity = event.getSource().getEntity();
+            Entity entity = event.getSource().getTrueSource();
 
             if (entity instanceof EntitySlimeling)
             {

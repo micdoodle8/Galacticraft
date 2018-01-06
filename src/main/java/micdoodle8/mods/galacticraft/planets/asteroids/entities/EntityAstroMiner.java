@@ -327,7 +327,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     public boolean isUsableByPlayer(EntityPlayer var1)
     {
-        return !this.isDead && var1.getDistanceSqToEntity(this) <= 64.0D;
+        return !this.isDead && var1.getDistanceSq(this) <= 64.0D;
     }
 
     @Override
@@ -2078,7 +2078,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
 
         if (!this.world.isRemote)
         {
-            Entity e = par1DamageSource.getEntity();
+            Entity e = par1DamageSource.getTrueSource();
 
             //If creative mode player, kill the entity (even if player owner is offline) and drop nothing
             if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
@@ -2276,7 +2276,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
 
             if (item.hasTagCompound())
             {
-                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
             }
         }
     }

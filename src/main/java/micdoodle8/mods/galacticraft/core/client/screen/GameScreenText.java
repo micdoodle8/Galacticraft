@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -344,7 +344,7 @@ public class GameScreenText implements IGameScreen
 
     private void drawText(String str, int colour)
     {
-        Minecraft.getMinecraft().fontRendererObj.drawString(str, 0, yPos, colour, false);
+        Minecraft.getMinecraft().fontRenderer.drawString(str, 0, yPos, colour, false);
         yPos += 10;
     }
 
@@ -353,7 +353,7 @@ public class GameScreenText implements IGameScreen
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();

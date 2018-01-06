@@ -44,7 +44,7 @@ public abstract class GuiContainerGC extends GuiContainer
         {
             Slot slot = this.inventorySlots.inventorySlots.get(i1);
 
-            if (slot.canBeHovered() && this.isPointInRegion(slot.xPos, slot.yPos, 16, 16, par1, par2))
+            if (slot.isEnabled() && this.isPointInRegion(slot.xPos, slot.yPos, 16, 16, par1, par2))
             {
                 ItemStack itemStack = slot.getStack();
 

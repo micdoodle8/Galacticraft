@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -110,7 +110,7 @@ public class GameScreenBasic implements IGameScreen
     private void draw2DTexture()
     {
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
@@ -127,7 +127,7 @@ public class GameScreenBasic implements IGameScreen
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 

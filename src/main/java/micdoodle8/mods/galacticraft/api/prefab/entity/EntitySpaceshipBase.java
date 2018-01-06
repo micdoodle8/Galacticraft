@@ -139,8 +139,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     {
         if (!this.world.isRemote && !this.isDead)
         {
-			boolean flag = par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer)par1DamageSource.getEntity()).capabilities.isCreativeMode;
-        	Entity e = par1DamageSource.getEntity(); 
+            Entity e = par1DamageSource.getTrueSource(); 
+			boolean flag = e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode;
             if (this.isEntityInvulnerable(par1DamageSource) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
             {
                 return false;
@@ -194,7 +194,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
             if (item.hasTagCompound())
             {
-                entityItem.getEntityItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
             }
         }
     }
@@ -739,7 +739,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.posY + (double)this.getEyeHeight();
         if (height > 255D) height = 255D;

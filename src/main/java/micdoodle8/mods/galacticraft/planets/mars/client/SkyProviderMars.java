@@ -54,7 +54,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glPopMatrix();
 
         final Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
@@ -116,7 +116,7 @@ public class SkyProviderMars extends IRenderHandler
 
         GL11.glColor3f(f1, f2, f3);
         Tessellator tessellator1 = Tessellator.getInstance();
-        VertexBuffer worldRenderer1 = tessellator1.getBuffer();
+        BufferBuilder worldRenderer1 = tessellator1.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(f1, f2, f3);
@@ -339,7 +339,7 @@ public class SkyProviderMars extends IRenderHandler
     {
         final Random rand = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        VertexBuffer worldRenderer = var2.getBuffer();
+        BufferBuilder worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int starIndex = 0; starIndex < (ConfigManagerCore.moreStars ? 35000 : 6000); ++starIndex)

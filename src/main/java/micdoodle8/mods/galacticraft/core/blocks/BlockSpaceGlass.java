@@ -60,7 +60,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         this.color = frame.getDefaultColor();
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.GLASS);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
     }
 
@@ -72,14 +72,14 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         //The plain block variety produces items carrying all variants as damage values
         //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
         if (this.frame == GlassFrame.PLAIN)
         {
             for (int i = 0; i < GlassFrame.values().length; i++)
-                list.add(new ItemStack(itemIn, 1, i));
+                list.add(new ItemStack(this, 1, i));
         }
     }
 

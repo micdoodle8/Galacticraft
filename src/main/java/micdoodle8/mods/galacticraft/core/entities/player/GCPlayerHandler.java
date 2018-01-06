@@ -1261,7 +1261,7 @@ public class GCPlayerHandler
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.world, player);
             ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
             GCLog.debug("Loading first chunk in new dimension.");
-            ((WorldServer) player.world).getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
+            ((WorldServer) player.world).getChunkProvider().loadChunk(pair.x, pair.z);
             player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
             type.setupAdventureSpawn(player);
             type.onSpaceDimensionChanged(player.world, player, false);

@@ -318,7 +318,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         final double vMax = sprite.getMaxV();
 
         Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
 
         double uDiff = (uMax - uMin);
         double vDiff = (vMax - vMin);

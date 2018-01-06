@@ -218,7 +218,7 @@ public class PacketSimpleMars extends PacketBase
                     {
                         slimeling.setSittingAI(!slimeling.isSitting());
                         slimeling.setJumping(false);
-                        slimeling.getNavigator().clearPathEntity();
+                        slimeling.getNavigator().clearPath();
                         slimeling.setAttackTarget(null);
                     }
                     break;

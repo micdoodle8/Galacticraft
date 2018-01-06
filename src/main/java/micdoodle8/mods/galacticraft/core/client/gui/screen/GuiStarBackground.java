@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +30,7 @@ public abstract class GuiStarBackground extends GuiScreen
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         this.mc.getTextureManager().bindTexture(GuiStarBackground.blackTexture);
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(0.0D, var7, -90.0D).tex(0.0D, 1.0D).endVertex();
         worldRenderer.pos(var6, var7, -90.0D).tex(1.0D, 1.0D).endVertex();
@@ -46,7 +46,7 @@ public abstract class GuiStarBackground extends GuiScreen
     private void drawPanorama2(float par1)
     {
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -157,7 +157,7 @@ public abstract class GuiStarBackground extends GuiScreen
     private void drawPanorama(float par1)
     {
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
@@ -276,7 +276,7 @@ public abstract class GuiStarBackground extends GuiScreen
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         this.rotateAndBlurSkybox();
         final Tessellator tess = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tess.getBuffer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         final float var5 = this.width > this.height ? 120.0F / this.width : 120.0F / this.height;
         final float var6 = this.height * var5 / 256.0F;

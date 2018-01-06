@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
@@ -105,7 +105,7 @@ public class RenderPlanet
         float yba = y + height * y2;
         float ybb = y + height * y3;
         Tessellator tessellator = Tessellator.getInstance();
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         if (prog <= 1F - span)
         {
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);

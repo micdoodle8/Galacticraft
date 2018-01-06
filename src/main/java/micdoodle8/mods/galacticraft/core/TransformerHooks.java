@@ -21,7 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,7 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -625,7 +625,7 @@ public class TransformerHooks
         }
 
         Tessellator tessellator = Tessellator.getInstance();
-        float f1 = ClientProxyCore.mc.player.getBrightness(partialTicks) / 3.0F;
+        float f1 = ClientProxyCore.mc.player.getBrightness() / 3.0F;
         GL11.glColor4f(f1, f1, f1, 1.0F);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -638,7 +638,7 @@ public class TransformerHooks
         float f7 = -0.25F;
         float f8 = -ClientProxyCore.mc.player.rotationYaw / 64.0F;
         float f9 = ClientProxyCore.mc.player.rotationPitch / 64.0F;
-        VertexBuffer worldRenderer = tessellator.getBuffer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(f3, f5, f7).tex(f2 + f8, f2 + f9).endVertex();
         worldRenderer.pos(f4, f5, f7).tex(0.0F + f8, f2 + f9).endVertex();

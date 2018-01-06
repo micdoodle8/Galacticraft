@@ -515,7 +515,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.posY + (double)this.getEyeHeight();
         if (height > 255D) height = 255D;

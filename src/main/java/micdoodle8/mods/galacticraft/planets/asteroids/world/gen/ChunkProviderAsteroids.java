@@ -22,7 +22,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderAsteroids extends ChunkProviderOverworld
+public class ChunkProviderAsteroids extends ChunkGeneratorOverworld
 {
     final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
     final byte ASTEROID_STONE_META_0 = 0;
@@ -950,7 +950,7 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
             }
         }
 
-        chunk.isModified = true;
+        chunk.setModified(true);
     }
 
     public void resetBase()

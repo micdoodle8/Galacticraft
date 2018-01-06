@@ -73,7 +73,7 @@ public class MapGenDungeonVenus extends MapGenStructure
     }
 
     @Override
-    public BlockPos getClosestStrongholdPos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean p_180706_3_)
     {
         return null;
     }

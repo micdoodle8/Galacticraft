@@ -132,7 +132,7 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
 //
 //    protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
 //    {
-//        double d3 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
+//        double d3 = par1EntityLivingBase.getDistanceSq(this.renderManager.livingPlayer);
 //
 //        if (d3 <= par9 * par9)
 //        {

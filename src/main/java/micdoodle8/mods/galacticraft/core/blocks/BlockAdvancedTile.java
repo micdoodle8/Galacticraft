@@ -19,7 +19,7 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
     public BlockAdvancedTile(Material par3Material)
     {
         super(par3Material);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
     }
 
     @Override
