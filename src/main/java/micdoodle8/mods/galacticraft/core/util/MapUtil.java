@@ -187,7 +187,7 @@ public class MapUtil
             return;
         }
 
-        File baseFolder = new File(overworld.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        File baseFolder = new File(overworld.getMinecraftServer().getWorld(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
@@ -211,7 +211,7 @@ public class MapUtil
         {
             try
             {
-                File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                File baseFolder = new File(client.world.getMinecraftServer().getWorld(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                 if (!baseFolder.exists())
                 {
                     GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -247,7 +247,7 @@ public class MapUtil
         
         try
         {
-            File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+            File baseFolder = new File(client.world.getMinecraftServer().getWorld(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
             {
                 GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -348,7 +348,7 @@ public class MapUtil
             return false;
         }
 
-        File baseFolder = new File(world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        File baseFolder = new File(world.getMinecraftServer().getWorld(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());

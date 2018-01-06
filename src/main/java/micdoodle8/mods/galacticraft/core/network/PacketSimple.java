@@ -1237,7 +1237,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             }
             break;
         case S_REQUEST_DATA:
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension((Integer) this.data.get(0));
+            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld((Integer) this.data.get(0));
             if (worldServer != null)
             {
                 TileEntity requestedTile = worldServer.getTileEntity((BlockPos) this.data.get(1));

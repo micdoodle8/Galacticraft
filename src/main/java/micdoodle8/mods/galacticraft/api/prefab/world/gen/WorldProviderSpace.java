@@ -95,7 +95,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 int savedTick = 0;
                 try {
                     tickCounter.setAccessible(true);
-                    savedTick = tickCounter.getInt(this.world.villageCollectionObj);
+                    savedTick = tickCounter.getInt(this.world.villageCollection);
                     if (savedTick < 0) savedTick = 0;
                 } catch (Exception ignore) { }
                 this.timeCurrentOffset = savedTick - newTime;
@@ -455,7 +455,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     private void saveTime()
     {
         try {
-            VillageCollection vc = this.world.villageCollectionObj;
+            VillageCollection vc = this.world.villageCollection;
             tickCounter.setAccessible(true);
             tickCounter.setInt(vc, (int) (this.getWorldTime()));
             vc.markDirty();

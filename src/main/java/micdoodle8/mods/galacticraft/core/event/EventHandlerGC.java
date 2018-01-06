@@ -625,8 +625,8 @@ public class EventHandlerGC
 
     public static void retrogenOil(World world, Chunk chunk)
     {
-        int cx = chunk.xPosition;
-        int cz = chunk.zPosition;
+        int cx = chunk.x;
+        int cz = chunk.z;
 
         generateOil(world, new Random(), cx << 4, cz << 4, true);
     }
@@ -920,18 +920,18 @@ public class EventHandlerGC
             if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.getState().getMaterial() == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {
                 Vec3d vec = worldclient.getFogColor(1.0F);
-                event.setRed((float) vec.xCoord);
-                event.setGreen((float) vec.yCoord);
-                event.setBlue((float) vec.zCoord);
+                event.setRed((float) vec.x);
+                event.setGreen((float) vec.y);
+                event.setBlue((float) vec.z);
                 return;
             }
 
             if (worldclient.provider.getSkyRenderer() instanceof SkyProviderOverworld && event.getEntity().posY > Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT)
             {
                 Vec3d vec = TransformerHooks.getFogColorHook(event.getEntity().world);
-                event.setRed((float) vec.xCoord);
-                event.setGreen((float) vec.yCoord);
-                event.setBlue((float) vec.zCoord);
+                event.setRed((float) vec.x);
+                event.setGreen((float) vec.y);
+                event.setBlue((float) vec.z);
                 return;
             }
         }

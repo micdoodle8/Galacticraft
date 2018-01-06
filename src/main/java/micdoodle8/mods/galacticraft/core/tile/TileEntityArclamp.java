@@ -195,7 +195,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             }
                             if (vecOldTarget == null || distanceCurrent > vecOldTarget.squareDistanceTo(thisVec3))
                             {
-                                nav.tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 1.3D);
+                                nav.tryMoveToXYZ(vecNewTarget.x, vecNewTarget.y, vecNewTarget.z, 1.3D);
                             }
                         }
                     }

@@ -320,7 +320,7 @@ public class WorldUtil
             GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
             return null;
         }
-        World ws = theServer.worldServerForDimension(id);
+        World ws = theServer.getWorld(id);
         if (ws != null)
         {
             return ws.provider;
@@ -504,7 +504,7 @@ public class WorldUtil
                             WorldUtil.registeredSpaceStations.put(registeredID, providerID);
                             if (id >= 0)
                             {
-                                theServer.worldServerForDimension(registeredID);
+                                theServer.getWorld(registeredID);
                             }
                             WorldUtil.dimNames.put(registeredID, "Space Station " + registeredID);
                         }
@@ -530,7 +530,7 @@ public class WorldUtil
 //	            if (id >= 0)
 //	            {
 //	                DimensionManager.registerDimension(registeredID, ConfigManagerCore.idDimensionOverworldOrbitStatic);
-//	                theServer.worldServerForDimension(registeredID);
+//	                theServer.getWorld(registeredID);
 //                }
 //	            else
 //	            {
@@ -587,7 +587,7 @@ public class WorldUtil
                     return false;
                 }
             }
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(id);
+            World w = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(id);
             WorldUtil.dimNames.put(id, getDimensionName(w.provider));
             return true;
         }
@@ -718,7 +718,7 @@ public class WorldUtil
 
             if (mcServer != null)
             {
-                final WorldServer var6 = mcServer.worldServerForDimension(dimensionID);
+                final WorldServer var6 = mcServer.getWorld(dimensionID);
 
                 if (var6 == null)
                 {

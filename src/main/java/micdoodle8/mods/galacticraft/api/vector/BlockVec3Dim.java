@@ -377,7 +377,7 @@ public class BlockVec3Dim implements Cloneable
         {
             MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
             if (theServer == null) return null;
-            return theServer.worldServerForDimension(dimensionID);
+            return theServer.getWorld(dimensionID);
         }
         else
         {

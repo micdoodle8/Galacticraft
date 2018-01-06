@@ -70,7 +70,7 @@ public class CommonProxyCore
         {
             return null;
         }
-        return theServer.worldServerForDimension(dimensionID);
+        return theServer.getWorld(dimensionID);
     }
 
     public EntityPlayer getPlayerFromNetHandler(INetHandler handler)

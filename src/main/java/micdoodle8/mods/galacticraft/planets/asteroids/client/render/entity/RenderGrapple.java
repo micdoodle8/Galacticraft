@@ -29,9 +29,9 @@ public class RenderGrapple extends Render<EntityGrapple>
 
         if (shootingEntity != null && grapple.getPullingEntity())
         {
-            double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.xCoord;
-            double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.yCoord;
-            double d5 = shootingEntity.prevPosZ + (shootingEntity.posZ - shootingEntity.prevPosZ) * partialTicks + vec3.zCoord;
+            double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.x;
+            double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.y;
+            double d5 = shootingEntity.prevPosZ + (shootingEntity.posZ - shootingEntity.prevPosZ) * partialTicks + vec3.z;
 
             Tessellator tessellator = Tessellator.getInstance();
             GL11.glDisable(GL11.GL_TEXTURE_2D);

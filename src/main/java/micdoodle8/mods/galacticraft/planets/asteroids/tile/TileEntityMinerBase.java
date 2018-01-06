@@ -87,7 +87,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             Entry<Integer, List<BlockPos>> entry = entries.next();
             if (entry.getValue().isEmpty()) continue;
             
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(entry.getKey());
+            World w = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(entry.getKey());
             if (w == null)
             {
                 GCLog.severe("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());

@@ -193,7 +193,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     if (mcserver != null)
                     {
 	                	BlockVec3 coords = this.preGenIterator.next();
-	                    World w = mcserver.worldServerForDimension(coords.y);
+	                    World w = mcserver.getWorld(coords.y);
                         if (w != null)
                         {
                             w.getChunkFromChunkCoords(coords.x, coords.z);
@@ -201,7 +201,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                             if (this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
                             {
                                 coords = this.preGenIterator.next();
-                                w = mcserver.worldServerForDimension(coords.y);
+                                w = mcserver.getWorld(coords.y);
                                 w.getChunkFromChunkCoords(coords.x, coords.z);
                             }
                         }

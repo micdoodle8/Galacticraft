@@ -32,27 +32,27 @@ public class PathNavigateCeiling extends PathNavigate
     @Override
     protected boolean canNavigate()
     {
-        return this.theEntity.onGround || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.getRidingEntity() instanceof EntityChicken;
+        return this.entity.onGround || this.entity.isRiding() && this.entity instanceof EntityZombie && this.entity.getRidingEntity() instanceof EntityChicken;
     }
 
     @Override
     protected Vec3d getEntityPosition()
     {
-        return new Vec3d(this.theEntity.posX, (double)this.getPathablePosY(), this.theEntity.posZ);
+        return new Vec3d(this.entity.posX, (double)this.getPathablePosY(), this.entity.posZ);
     }
 
     private int getPathablePosY()
     {
-        return (int)(this.theEntity.getEntityBoundingBox().minY + 0.5D);
+        return (int)(this.entity.getEntityBoundingBox().minY + 0.5D);
     }
 
     @Override
     protected boolean isDirectPathBetweenPoints(Vec3d current, Vec3d target, int sizeX, int sizeY, int sizeZ)
     {
-        int i = MathHelper.floor(current.xCoord);
-        int j = MathHelper.floor(current.zCoord);
-        double d0 = target.xCoord - current.xCoord;
-        double d1 = target.zCoord - current.zCoord;
+        int i = MathHelper.floor(current.x);
+        int j = MathHelper.floor(current.z);
+        double d0 = target.x - current.x;
+        double d1 = target.z - current.z;
         double d2 = d0 * d0 + d1 * d1;
 
         if (d2 < 1.0E-8D)
@@ -67,7 +67,7 @@ public class PathNavigateCeiling extends PathNavigate
             sizeX = sizeX + 2;
             sizeZ = sizeZ + 2;
 
-            if (!this.isSafeToStandAt(i, (int)current.yCoord, j, sizeX, sizeY, sizeZ, current, d0, d1))
+            if (!this.isSafeToStandAt(i, (int)current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
             {
                 return false;
             }
@@ -77,8 +77,8 @@ public class PathNavigateCeiling extends PathNavigate
                 sizeZ = sizeZ - 2;
                 double d4 = 1.0D / Math.abs(d0);
                 double d5 = 1.0D / Math.abs(d1);
-                double d6 = (double)(i) - current.xCoord;
-                double d7 = (double)(j) - current.zCoord;
+                double d6 = (double)(i) - current.x;
+                double d7 = (double)(j) - current.z;
 
                 if (d0 >= 0.0D)
                 {
@@ -94,8 +94,8 @@ public class PathNavigateCeiling extends PathNavigate
                 d7 = d7 / d1;
                 int k = d0 < 0.0D ? -1 : 1;
                 int l = d1 < 0.0D ? -1 : 1;
-                int i1 = MathHelper.floor(target.xCoord);
-                int j1 = MathHelper.floor(target.zCoord);
+                int i1 = MathHelper.floor(target.x);
+                int j1 = MathHelper.floor(target.z);
                 int k1 = i1 - i;
                 int l1 = j1 - j;
 
@@ -114,7 +114,7 @@ public class PathNavigateCeiling extends PathNavigate
                         l1 = j1 - j;
                     }
 
-                    if (!this.isSafeToStandAt(i, (int)current.yCoord, j, sizeX, sizeY, sizeZ, current, d0, d1))
+                    if (!this.isSafeToStandAt(i, (int)current.y, j, sizeX, sizeY, sizeZ, current, d0, d1))
                     {
                         return false;
                     }
@@ -140,8 +140,8 @@ public class PathNavigateCeiling extends PathNavigate
             {
                 for (int l = j; l < j + sizeZ; ++l)
                 {
-                    double d0 = (double)k + 0.5D - currentPos.xCoord;
-                    double d1 = (double)l + 0.5D - currentPos.zCoord;
+                    double d0 = (double)k + 0.5D - currentPos.x;
+                    double d1 = (double)l + 0.5D - currentPos.z;
 
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
@@ -153,7 +153,7 @@ public class PathNavigateCeiling extends PathNavigate
                             return false;
                         }
 
-                        if (material == Material.WATER && !this.theEntity.isInWater())
+                        if (material == Material.WATER && !this.entity.isInWater())
                         {
                             return false;
                         }
@@ -174,8 +174,8 @@ public class PathNavigateCeiling extends PathNavigate
     {
         for (BlockPos blockpos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(minX + sizeX - 1, minY + sizeY - 1, minZ + sizeZ - 1)))
         {
-            double d0 = (double)blockpos.getX() + 0.5D - currentPos.xCoord;
-            double d1 = (double)blockpos.getZ() + 0.5D - currentPos.zCoord;
+            double d0 = (double)blockpos.getX() + 0.5D - currentPos.x;
+            double d1 = (double)blockpos.getZ() + 0.5D - currentPos.z;
 
             if (d0 * distanceX + d1 * distanceZ >= 0.0D)
             {

@@ -99,9 +99,9 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         Vec3d vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
-        float f1 = (float) vec3.xCoord;
-        float f2 = (float) vec3.yCoord;
-        float f3 = (float) vec3.zCoord;
+        float f1 = (float) vec3.x;
+        float f2 = (float) vec3.y;
+        float f3 = (float) vec3.z;
         float f6;
 
         if (mc.gameSettings.anaglyph)

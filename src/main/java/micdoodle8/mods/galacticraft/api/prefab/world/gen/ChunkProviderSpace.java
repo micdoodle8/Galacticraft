@@ -230,7 +230,7 @@ public abstract class ChunkProviderSpace extends ChunkGeneratorOverworld
     }
 
     @Override
-    public Chunk provideChunk(int x, int z)
+    public Chunk generateChunk(int x, int z)
     {
         ChunkPrimer primer = new ChunkPrimer();
         this.rand.setSeed(x * 341873128712L + z * 132897987541L);

@@ -57,7 +57,7 @@ public class AsteroidsTickHandlerServer
             
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
-                World world = server.worldServerForDimension(0);
+                World world = server.getWorld(0);
                 AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.getMapStorage().getOrLoadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
 
                 if (AsteroidsTickHandlerServer.spaceRaceData == null)

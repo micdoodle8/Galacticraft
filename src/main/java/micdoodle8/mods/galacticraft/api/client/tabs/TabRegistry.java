@@ -94,8 +94,8 @@ public class TabRegistry
 			if (t.shouldAddToList())
 			{
 				t.id = count;
-				t.xPosition = cornerX + (count - 2) * 28;
-				t.yPosition = cornerY - 28;
+				t.x = cornerX + (count - 2) * 28;
+				t.y = cornerY - 28;
 				t.enabled = !t.getClass().equals(selectedButton);
 				t.potionOffsetLast = getPotionOffsetNEI();
 				count++;

@@ -289,7 +289,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.spaceRaceData == null)
             {
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+                World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
                 TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
@@ -335,7 +335,7 @@ public class TickHandlerServer
                             while (iterator.hasNext())
                             {
                                 Chunk chunk = (Chunk) iterator.next();
-                                long chunkKey = ChunkPos.asLong(chunk.xPosition, chunk.zPosition);
+                                long chunkKey = ChunkPos.asLong(chunk.x, chunk.z);
 
                                 List<Footprint> footprints = footprintMap.get(chunkKey);
 
@@ -409,7 +409,7 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    File baseFolder = new File(server.worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                    File baseFolder = new File(server.getWorld(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 

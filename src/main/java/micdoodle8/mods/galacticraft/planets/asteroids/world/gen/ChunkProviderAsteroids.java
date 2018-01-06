@@ -531,7 +531,7 @@ public class ChunkProviderAsteroids extends ChunkGeneratorOverworld
     }
 
     @Override
-    public Chunk provideChunk(int par1, int par2)
+    public Chunk generateChunk(int par1, int par2)
     {
         ChunkPrimer primer = new ChunkPrimer();
 //        long time1 = System.nanoTime();

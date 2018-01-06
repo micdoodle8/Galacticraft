@@ -307,7 +307,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
             if (movingobjectposition != null)
             {
-                vec3 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+                vec3 = new Vec3d(movingobjectposition.hitVec.x, movingobjectposition.hitVec.y, movingobjectposition.hitVec.z);
             }
 
             Entity entity = null;
@@ -364,9 +364,9 @@ public class EntityGrapple extends Entity implements IProjectile
                     IBlockState state = this.world.getBlockState(this.hitVec);
                     this.hitBlock = state.getBlock();
                     this.inData = state.getBlock().getMetaFromState(state);
-                    this.motionX = (float) (movingobjectposition.hitVec.xCoord - this.posX);
-                    this.motionY = (float) (movingobjectposition.hitVec.yCoord - this.posY);
-                    this.motionZ = (float) (movingobjectposition.hitVec.zCoord - this.posZ);
+                    this.motionX = (float) (movingobjectposition.hitVec.x - this.posX);
+                    this.motionY = (float) (movingobjectposition.hitVec.y - this.posY);
+                    this.motionZ = (float) (movingobjectposition.hitVec.z - this.posZ);
                     motion = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                     this.posX -= this.motionX / motion * 0.05000000074505806D;
                     this.posY -= this.motionY / motion * 0.05000000074505806D;

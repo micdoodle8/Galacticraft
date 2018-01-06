@@ -260,7 +260,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     this.motionZ = 0.0D;
                 }
 
-                this.world.theProfiler.startSection("ai");
+                this.world.profiler.startSection("ai");
 
                 if (this.isMovementBlocked())
                 {
@@ -272,8 +272,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 else
                     this.updateEntityActionState();
                 
-                this.world.theProfiler.endSection();
-                this.world.theProfiler.startSection("travel");
+                this.world.profiler.endSection();
+                this.world.profiler.startSection("travel");
                 this.moveStrafing *= 0.98F;
                 this.moveForward *= 0.98F;
                 this.randomYawVelocity *= 0.9F;
@@ -284,15 +284,15 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 //-----------END CUSTOM
                 
                 this.moveEntityWithHeading(this.moveStrafing, this.moveForward);
-                this.world.theProfiler.endSection();
-                this.world.theProfiler.startSection("push");
+                this.world.profiler.endSection();
+                this.world.profiler.startSection("push");
 
                 if (!this.world.isRemote)
                 {
                     this.collideWithNearbyEntities();
                 }
 
-                this.world.theProfiler.endSection();
+                this.world.profiler.endSection();
 
                 // -from: EntityPlayer
                 

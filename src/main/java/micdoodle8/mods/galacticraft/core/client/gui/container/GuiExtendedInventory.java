@@ -97,7 +97,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
                 GuiButton b = (GuiButton) this.buttonList.get(k);
                 if (!(b instanceof AbstractTab))
                 {
-                    b.xPosition += diff;
+                    b.x += diff;
                 }
             }
         }

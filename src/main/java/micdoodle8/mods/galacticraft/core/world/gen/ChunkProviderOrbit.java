@@ -27,7 +27,7 @@ public class ChunkProviderOrbit extends ChunkGeneratorOverworld
     }
 
     @Override
-    public Chunk provideChunk(int par1, int par2)
+    public Chunk generateChunk(int par1, int par2)
     {
         ChunkPrimer chunkprimer = new ChunkPrimer();
         this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);

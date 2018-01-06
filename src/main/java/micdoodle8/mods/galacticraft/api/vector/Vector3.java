@@ -73,7 +73,7 @@ public class Vector3 implements Cloneable
 
     public Vector3(Vec3d par1)
     {
-        this(par1.xCoord, par1.yCoord, par1.zCoord);
+        this(par1.x, par1.y, par1.z);
 
     }
 
@@ -722,7 +722,7 @@ public class Vector3 implements Cloneable
         Vec3d startingPosition = this.toVec3();
         Vec3d look = target.toVec3();
         double reachDistance = this.distance(target);
-        Vec3d reachPoint = new Vec3d(startingPosition.xCoord + look.xCoord * reachDistance, startingPosition.yCoord + look.yCoord * reachDistance, startingPosition.zCoord + look.zCoord * reachDistance);
+        Vec3d reachPoint = new Vec3d(startingPosition.x + look.x * reachDistance, startingPosition.y + look.y * reachDistance, startingPosition.z + look.z * reachDistance);
 
         double checkBorder = 1.1 * reachDistance;
         AxisAlignedBB boxToScan = new AxisAlignedBB(-checkBorder, -checkBorder, -checkBorder, checkBorder, checkBorder, checkBorder).offset(this.x, this.y, this.z);

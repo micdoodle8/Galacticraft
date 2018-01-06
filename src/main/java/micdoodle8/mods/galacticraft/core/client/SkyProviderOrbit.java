@@ -102,9 +102,9 @@ public class SkyProviderOrbit extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
-        float var3 = (float) var2.xCoord;
-        float var4 = (float) var2.yCoord;
-        float var5 = (float) var2.zCoord;
+        float var3 = (float) var2.x;
+        float var4 = (float) var2.y;
+        float var5 = (float) var2.z;
         float var8;
 
         if (this.minecraft.gameSettings.anaglyph)

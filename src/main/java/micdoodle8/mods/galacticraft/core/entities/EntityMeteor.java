@@ -74,7 +74,7 @@ public class EntityMeteor extends Entity
 
         if (var3 != null)
         {
-            var2 = new Vec3d(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+            var2 = new Vec3d(var3.hitVec.x, var3.hitVec.y, var3.hitVec.z);
         }
 
         Entity var4 = null;

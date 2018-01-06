@@ -58,7 +58,7 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
-                    WorldServer worldserver = server.worldServerForDimension(GCCoreUtil.getDimensionID(server.worlds[0]));
+                    WorldServer worldserver = server.getWorld(GCCoreUtil.getDimensionID(server.worlds[0]));
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.setRocketStacks(NonNullList.withSize(2, ItemStack.EMPTY));

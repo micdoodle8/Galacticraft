@@ -170,9 +170,9 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
-        float i = (float) var2.xCoord * var21;
-        float x = (float) var2.yCoord * var21;
-        float var5 = (float) var2.zCoord * var21;
+        float i = (float) var2.x * var21;
+        float x = (float) var2.y * var21;
+        float var5 = (float) var2.z * var21;
         float z;
 
         if (this.minecraft.gameSettings.anaglyph)
