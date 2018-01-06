@@ -80,11 +80,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
         this.motionX = -MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
         this.motionZ = MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
         this.motionY = -MathHelper.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES);
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed * 1.5F, 1.0F);
+        this.shoot(this.motionX, this.motionY, this.motionZ, speed * 1.5F, 1.0F);
     }
 
     @Override
-    public void setThrowableHeading(double headingX, double headingY, double headingZ, float speed, float randMod)
+    public void shoot(double headingX, double headingY, double headingZ, float speed, float randMod)
     {
         float f2 = MathHelper.sqrt(headingX * headingX + headingY * headingY + headingZ * headingZ);
         headingX /= f2;
@@ -158,7 +158,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
         {
             AxisAlignedBB axisalignedbb = stateIn.getCollisionBoundingBox(this.world, pos);
 
-            if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+            if (axisalignedbb != null && axisalignedbb.contains(new Vec3d(this.posX, this.posY, this.posZ)))
             {
                 this.inGround = true;
             }

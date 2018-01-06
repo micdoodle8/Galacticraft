@@ -92,7 +92,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             final Vec3d var25 = playerIn.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(var25.xCoord * var21, var25.yCoord * var21, var25.zCoord * var21).expand(var27, var27, var27));
+            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)
@@ -104,7 +104,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
                     final float var31 = var30.getCollisionBorderSize();
                     final AxisAlignedBB var32 = var30.getEntityBoundingBox().expand(var31, var31, var31);
 
-                    if (var32.isVecInside(var13))
+                    if (var32.contains(var13))
                     {
                         var26 = true;
                     }

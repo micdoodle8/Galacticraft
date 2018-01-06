@@ -160,7 +160,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
                 this.rockDirection = -this.rockDirection;
                 this.timeSinceHit = 10;
                 this.currentDamage = this.currentDamage + var2 * 10;
-                this.setBeenAttacked();
+                this.markVelocityChanged();
 
                 if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
                 {

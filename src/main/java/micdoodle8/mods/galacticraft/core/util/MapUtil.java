@@ -139,6 +139,7 @@ public class MapUtil
             for (int z0 = -12; z0 <= 12; z0++)
             {
                 Chunk chunk = world.getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
+                BlockPos pos = null;
 
                 if (chunk != null)
                 {
@@ -156,10 +157,10 @@ public class MapUtil
                                     --l4;
                                     state = chunk.getBlockState(x, l4, z);
                                 }
-                                while (state.getBlock().getMapColor(state) == MapColor.AIR && l4 > 0);
+                                while (state.getMapColor(world, pos) == MapColor.AIR && l4 > 0);
                             }
 
-                            int col = state.getBlock().getMapColor(state).colorValue;
+                            int col = pos != null ? state.getMapColor(world, pos).colorValue : 0;
                             image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                         }
                     }
@@ -1221,11 +1222,12 @@ public class MapUtil
 
     public static void makeVanillaMap(int dim, int chunkXPos, int chunkZPos, File baseFolder, BufferedImage image)
     {
+        World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(dim);
         for (int x0 = -12; x0 <= 12; x0++)
         {
             for (int z0 = -12; z0 <= 12; z0++)
             {
-                Chunk chunk = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim).getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
+                Chunk chunk = world.getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
 
                 if (chunk != null)
                 {
@@ -1235,19 +1237,20 @@ public class MapUtil
                         {
                             int l4 = chunk.getHeightValue(x, z) + 1;
                             IBlockState state = Blocks.AIR.getDefaultState();
+                            BlockPos pos = null;
 
                             if (l4 > 1)
                             {
                                 do
                                 {
                                     --l4;
-                                    BlockPos pos = new BlockPos(x, l4, z);
+                                    pos = new BlockPos(x, l4, z);
                                     state = chunk.getBlockState(pos);
                                 }
-                                while (state.getBlock().getMapColor(state) == MapColor.AIR && l4 > 0);
+                                while (state.getMapColor(world, pos) == MapColor.AIR && l4 > 0);
                             }
 
-                            int col = state.getBlock().getMapColor(state).colorValue;
+                            int col = pos != null ? state.getMapColor(world, pos).colorValue : 0;
                             image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                         }
                     }

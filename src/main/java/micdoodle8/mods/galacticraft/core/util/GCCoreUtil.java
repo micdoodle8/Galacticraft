@@ -133,7 +133,7 @@ public class GCCoreUtil
         {
             eggID++;
         }
-        while (net.minecraftforge.fml.common.registry.GameData.getEntityRegistry().getObjectById(eggID) != null);
+        while (net.minecraftforge.registries.GameData.getEntityRegistry().getValue(eggID) != null);
 
         return eggID;
     }

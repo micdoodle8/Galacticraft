@@ -63,7 +63,7 @@ public class EntityWebShot extends Entity implements IProjectile
             double d5 = d2 / d3;
             this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f, f1);
             float f2 = (float)(d3 * 0.20000000298023224D);
-            this.setThrowableHeading(d0, d1 + (double)f2, d2, p_i1755_4_, p_i1755_5_);
+            this.shoot(d0, d1 + (double)f2, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 
@@ -86,7 +86,7 @@ public class EntityWebShot extends Entity implements IProjectile
         this.motionX = (double)(-MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
         this.motionZ = (double)(MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
         this.motionY = (double)(-MathHelper.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
+        this.shoot(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    public void setThrowableHeading(double x, double y, double z, float velocity, float inaccuracy)
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy)
     {
         float f = MathHelper.sqrt(x * x + y * y + z * z);
         x = x / (double)f;
@@ -187,7 +187,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (movingobjectposition != null)
         {
-            vec3 = new Vec3d(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3 = new Vec3d(movingobjectposition.hitVec.x, movingobjectposition.hitVec.y, movingobjectposition.hitVec.z);
         }
 
         Entity entity = null;
@@ -256,9 +256,9 @@ public class EntityWebShot extends Entity implements IProjectile
             }
             else
             {
-                this.motionX = (double)((float)(movingobjectposition.hitVec.xCoord - this.posX));
-                this.motionY = (double)((float)(movingobjectposition.hitVec.yCoord - this.posY));
-                this.motionZ = (double)((float)(movingobjectposition.hitVec.zCoord - this.posZ));
+                this.motionX = (double)((float)(movingobjectposition.hitVec.x - this.posX));
+                this.motionY = (double)((float)(movingobjectposition.hitVec.y - this.posY));
+                this.motionZ = (double)((float)(movingobjectposition.hitVec.z - this.posZ));
                 float f5 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                 this.posX -= this.motionX / (double)f5 * 0.05000000074505806D;
                 this.posY -= this.motionY / (double)f5 * 0.05000000074505806D;

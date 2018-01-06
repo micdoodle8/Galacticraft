@@ -71,8 +71,12 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         {
             Block b = ((ItemBlock)item).getBlock();
             IBlockState bs = b.getStateFromMeta(itemStack.getItemDamage());
-            MapColor mc = b.getMapColor(bs);
-            color = mc.colorValue;
+            try
+            {
+                MapColor mc = b.getMapColor(bs, null, null);
+                color = mc.colorValue;
+            }
+            catch (Exception e) { }
         }
         else
         {

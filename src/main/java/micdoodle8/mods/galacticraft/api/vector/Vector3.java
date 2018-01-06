@@ -744,7 +744,7 @@ public class Vector3 implements Cloneable
 
                 if (hitMOP != null)
                 {
-                    if (aabb.isVecInside(startingPosition))
+                    if (aabb.contains(startingPosition))
                     {
                         if (0.0D < closestEntity || closestEntity == 0.0D)
                         {

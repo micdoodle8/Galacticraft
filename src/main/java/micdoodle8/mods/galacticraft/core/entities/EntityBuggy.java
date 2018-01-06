@@ -227,7 +227,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
                 this.dataManager.set(ROCK_DIRECTION, -this.dataManager.get(ROCK_DIRECTION));
                 this.dataManager.set(TIME_SINCE_HIT, 10);
                 this.dataManager.set(CURRENT_DAMAGE, (int) (this.dataManager.get(CURRENT_DAMAGE) + var2 * 10));
-                this.setBeenAttacked();
+                this.markVelocityChanged();
 
                 if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
                 {

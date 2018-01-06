@@ -148,7 +148,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             else
             {
                 this.rollAmplitude = 10;
-                this.setBeenAttacked();
+                this.markVelocityChanged();
                 this.shipDamage += par2 * 10;
 
                 if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)

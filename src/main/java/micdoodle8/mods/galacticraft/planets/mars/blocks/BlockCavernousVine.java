@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -166,7 +167,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     @Override
     public boolean canPlaceBlockOnSide(World world, BlockPos pos, EnumFacing facing)
     {
-        return facing == EnumFacing.DOWN && this.isBlockSolid(world, pos.up(), facing);
+        return facing == EnumFacing.DOWN && world.getBlockState(pos.up()).getBlockFaceShape(world, pos.up(), facing) == BlockFaceShape.SOLID;
     }
 
     public int getVineLength(IBlockAccess world, BlockPos pos)

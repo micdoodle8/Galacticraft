@@ -317,4 +317,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     {
         return BossInfo.Color.YELLOW;
     }
+
+    @Override
+    public void setSwingingArms(boolean swingingArms)
+    {
+        // TODO Auto-generated method stub
+        //TODO for 1.12.2
+    }
 }

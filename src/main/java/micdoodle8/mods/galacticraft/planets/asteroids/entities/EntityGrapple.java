@@ -75,7 +75,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.posZ += this.motionZ;
 //        this.yOffset = -1.5F;
         this.setPosition(this.posX, this.posY, this.posZ);
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
+        this.shoot(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
     }
 
     @Override
@@ -106,7 +106,7 @@ public class EntityGrapple extends Entity implements IProjectile
     }
 
     @Override
-    public void setThrowableHeading(double par1, double par3, double par5, float par7, float par8)
+    public void shoot(double par1, double par3, double par5, float par7, float par8)
     {
         float f2 = MathHelper.sqrt(par1 * par1 + par3 * par3 + par5 * par5);
         par1 /= f2;
@@ -230,7 +230,7 @@ public class EntityGrapple extends Entity implements IProjectile
             {
                 AxisAlignedBB axisalignedbb = state.getBlock().getCollisionBoundingBox(state, this.world, this.hitVec);
 
-                if (axisalignedbb != null && axisalignedbb.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+                if (axisalignedbb != null && axisalignedbb.contains(new Vec3d(this.posX, this.posY, this.posZ)))
                 {
                     this.inGround = true;
                 }

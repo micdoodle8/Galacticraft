@@ -2098,7 +2098,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             }
             else
             {
-                this.setBeenAttacked();
+                this.markVelocityChanged();
 //                this.dataManager.set(this.timeSinceHit, Integer.valueOf(10));
 //                this.dataManager.set(this.currentDamage, Integer.valueOf((int) (this.dataManager.get(this.currentDamage) + par2 * 10)));
                 this.shipDamage += par2 * 10;
