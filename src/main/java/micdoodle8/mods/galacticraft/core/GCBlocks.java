@@ -192,7 +192,10 @@ public class GCBlocks
 
         //Complete registration of various types of torches
         BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.TORCH);
-
+    }
+    
+    public static void oreDictRegistrations()
+    {
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
         OreDictionary.registerOre("oreTin", new ItemStack(GCBlocks.basicBlock, 1, 6));
@@ -217,7 +220,14 @@ public class GCBlocks
             if (!GalacticraftCore.isPlanetsLoaded && type == EnumSortCategoryBlock.EGG)
                 continue;
             List<StackSorted> stackSorteds = sortMapBlocks.get(type);
-            itemOrderListBlocks.addAll(stackSorteds);
+            if (stackSorteds != null)
+            {
+                itemOrderListBlocks.addAll(stackSorteds);
+            }
+            else
+            {
+                System.out.println("ERROR: null sort stack: " + type.toString());
+            }
         }
         Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
         GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
@@ -329,15 +339,15 @@ public class GCBlocks
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... itemCtorArgs)
     {
         String name = block.getUnlocalizedName().substring(5);
-        GCCoreUtil.registerGalacticraftBlock(name, block);
         if (block.getRegistryName() == null)
         {
             block.setRegistryName(name);
         }
-        ItemBlock item = null;
+        GCCoreUtil.registerGalacticraftBlock(name, block);
 
         if (itemClass != null)
         {
+            ItemBlock item = null;
             Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
             ctorArgClasses[0] = Block.class;
             for (int idx = 1; idx < ctorArgClasses.length; idx++)
@@ -358,19 +368,20 @@ public class GCBlocks
             if (item != null)
             {
                 GCCoreUtil.registerGalacticraftItem(name, item);
+                if (item.getRegistryName() == null)
+                {
+                    item.setRegistryName(name);
+                }
             }
-        }
-
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCBlocks.registerSorted(block);
         }
     }
     
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
-        Block[] itemsArray = (Block[]) GalacticraftCore.blocksList.entrySet().toArray();
-        registry.registerAll(itemsArray);
+        for (Block block : GalacticraftCore.blocksList.values())
+        {
+            registry.register(block);
+        }
     }
 
     public static boolean registeringSorted = false;
@@ -379,13 +390,13 @@ public class GCBlocks
     {
         if (block instanceof ISortableBlock)
         {
-            ISortableBlock sortableBlock = (ISortableBlock) block;
-            NonNullList<ItemStack> blocks = NonNullList.create();
             Item item = Item.getItemFromBlock(block);
             if (item == Items.AIR)
             {
                 return;
             }
+            ISortableBlock sortableBlock = (ISortableBlock) block;
+            NonNullList<ItemStack> blocks = NonNullList.create();
             registeringSorted = true;
             block.getSubBlocks(null, blocks);
             registeringSorted = false;

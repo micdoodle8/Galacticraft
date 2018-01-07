@@ -26,6 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -145,6 +146,12 @@ public class GCItems
 
         GCItems.registerItems();
 
+        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
+        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+    }
+    
+    public static void oreDictRegistrations()
+    {
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
@@ -161,11 +168,10 @@ public class GCItems
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 0));
-
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
-        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
         OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
     }
+    
+    
 
     /**
      * Do not call this until after mod loading is complete
@@ -199,7 +205,15 @@ public class GCItems
         List<StackSorted> itemOrderListItems = Lists.newArrayList();
         for (EnumSortCategoryItem type : EnumSortCategoryItem.values())
         {
-            itemOrderListItems.addAll(sortMapItems.get(type));
+            List stackSorteds = sortMapItems.get(type);
+            if (stackSorteds != null)
+            {
+                itemOrderListItems.addAll(stackSorteds);
+            }
+            else
+            {
+                System.out.println("ERROR: null sort stack: " + type.toString());
+            }
         }
 
         Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
@@ -294,8 +308,11 @@ public class GCItems
     public static void registerItem(Item item)
     {
         String name = item.getUnlocalizedName().substring(5);
+        if (item.getRegistryName() == null)
+        {
+            item.setRegistryName(name);
+        }
         GCCoreUtil.registerGalacticraftItem(name, item);
-        item.setRegistryName(name);
         GalacticraftCore.proxy.postRegisterItem(item);
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
@@ -305,7 +322,9 @@ public class GCItems
     
     public static void registerItems(IForgeRegistry<Item> registry)
     {
-        Item[] itemsArray = (Item[]) GalacticraftCore.itemList.entrySet().toArray();
-        registry.registerAll(itemsArray);
+        for (ItemStack item : GalacticraftCore.itemList.values())
+        {
+            registry.register(item.getItem());
+        }
     }
 }

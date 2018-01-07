@@ -736,11 +736,6 @@ public class ConfigManagerCore
             challengeAsteroidPopulation = false;
             challengeSpawnHandling = false;
     	}
-
-    	//This enables Endermen on Asteroids in Asteroids Challenge mode
-    	if (GalacticraftCore.isPlanetsLoaded)
-    		((BiomeAsteroids)BiomeAsteroids.asteroid).resetMonsterListByMode(challengeMobDropsAndSpawning);
-    	//TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Moon and Mars?
     }
     
     /**

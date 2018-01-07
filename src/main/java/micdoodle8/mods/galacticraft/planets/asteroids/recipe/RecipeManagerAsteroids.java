@@ -13,6 +13,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
@@ -129,15 +131,15 @@ public class RecipeManagerAsteroids
         CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         //All this is for NEI's benefit
-        List<ItemStack> list1 = new ArrayList();
-        List<ItemStack> list2 = new ArrayList();
-        List<ItemStack> list3 = new ArrayList();
-        list1.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 751));
-        list2.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 834));
-        list3.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 918));
-        list1.add(new ItemStack(GCItems.oxTankHeavy, 1, 2700));
-        list2.add(new ItemStack(GCItems.oxTankMedium, 1, 1800));
-        list3.add(new ItemStack(GCItems.oxTankLight, 1, 900));
+        NonNullList<Ingredient> list1 = NonNullList.create();
+        NonNullList<Ingredient> list2 = NonNullList.create();
+        NonNullList<Ingredient> list3 = NonNullList.create();
+        list1.add(Ingredient.fromStacks(new ItemStack(AsteroidsItems.canisterLOX, 1, 751)));
+        list2.add(Ingredient.fromStacks(new ItemStack(AsteroidsItems.canisterLOX, 1, 834)));
+        list3.add(Ingredient.fromStacks(new ItemStack(AsteroidsItems.canisterLOX, 1, 918)));
+        list1.add(Ingredient.fromStacks(new ItemStack(GCItems.oxTankHeavy, 1, 2700)));
+        list2.add(Ingredient.fromStacks(new ItemStack(GCItems.oxTankMedium, 1, 1800)));
+        list3.add(Ingredient.fromStacks(new ItemStack(GCItems.oxTankLight, 1, 900)));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));

@@ -37,7 +37,6 @@ public class VenusBlocks
 
         VenusBlocks.registerBlocks();
         VenusBlocks.setHarvestLevels();
-        VenusBlocks.oreDictRegistration();
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)

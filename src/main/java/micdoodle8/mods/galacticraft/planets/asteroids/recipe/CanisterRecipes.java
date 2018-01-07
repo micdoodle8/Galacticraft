@@ -15,9 +15,9 @@ import java.util.List;
 
 public class CanisterRecipes extends ShapelessRecipes
 {
-    public CanisterRecipes(ItemStack stack, List list)
+    public CanisterRecipes(ItemStack stack, NonNullList<Ingredient> list)
     {
-        super("canisters", stack, (NonNullList<Ingredient>) list);
+        super("canisters", stack, list);
     }
 
     /**

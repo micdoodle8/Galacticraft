@@ -9,11 +9,13 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenText;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
@@ -47,6 +49,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
@@ -75,6 +78,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 @Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
 public class GalacticraftCore
@@ -111,7 +115,8 @@ public class GalacticraftCore
     public static Satellite satelliteSpaceStation;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<>();
-    public static HashMap<String, ItemStack> blocksList = new HashMap<>();
+    public static HashMap<String, Block> blocksList = new HashMap<>();
+    public static LinkedList<BiomeGenBaseGC> biomesList = new LinkedList<>();
 
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
@@ -174,6 +179,9 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
+        GCBlocks.oreDictRegistrations();
+        GCItems.oreDictRegistrations();
+
         GCBlocks.doOtherModsTorches();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.machineBase2)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTier1));
@@ -491,18 +499,6 @@ public class GalacticraftCore
         MapUtil.saveMapProgress();
     }
 
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event)
-    {
-        GCBlocks.registerBlocks(event.getRegistry());
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event)
-    {
-        GCItems.registerItems(event.getRegistry());
-    }
-
     private static void registerCoreGameScreens()
     {
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
@@ -630,5 +626,54 @@ public class GalacticraftCore
         info.url = "https://micdoodle8.com/";
         info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
         info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
+    }
+    
+    @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
+    public static class RegistrationHandler
+    {
+        @SubscribeEvent
+        public static void registerBlocks(RegistryEvent.Register<Block> event)
+        {
+            GCBlocks.registerBlocks(event.getRegistry());
+        }
+
+        @SubscribeEvent
+        public static void registerItems(RegistryEvent.Register<Item> event)
+        {
+            GCItems.registerItems(event.getRegistry());
+
+            //RegisterSorted for blocks cannot be run until all the items have been registered 
+            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+            {
+                for (Block block : GalacticraftCore.blocksList.values())
+                {
+                    GCBlocks.registerSorted(block);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void registerBiomes(RegistryEvent.Register<Biome> event)
+        {
+            for (BiomeGenBaseGC biome : GalacticraftCore.biomesList)
+            {
+                event.getRegistry().register(biome);
+                if (!ConfigManagerCore.disableBiomeTypeRegistrations)
+                {
+                    biome.registerTypes();
+                }
+            }
+        }
+        
+        @SubscribeEvent
+        public static void registerSounds(RegistryEvent.Register<SoundEvent> event)
+        {
+            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+            {
+                GCSounds.registerSounds(event.getRegistry());
+            }
+            else
+                System.out.println("SOUNDEVENT reg on Server???????????????????????");
+        }
     }
 }

@@ -118,6 +118,7 @@ public class MarsModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
+        MarsBlocks.oreDictRegistration();
         this.registerMicroBlocks();
         SchematicRegistry.registerSchematicRecipe(new SchematicTier2Rocket());
         SchematicRegistry.registerSchematicRecipe(new SchematicCargoRocket());

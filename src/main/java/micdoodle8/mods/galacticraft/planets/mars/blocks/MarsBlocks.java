@@ -43,7 +43,6 @@ public class MarsBlocks
 
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
-        MarsBlocks.oreDictRegistration();
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)

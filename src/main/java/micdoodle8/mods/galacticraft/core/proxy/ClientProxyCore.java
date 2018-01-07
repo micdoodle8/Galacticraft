@@ -189,8 +189,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                 return BlockFallenMeteor.colorMultiplier(worldIn, pos);
             }
         }, new Block[] { GCBlocks.fallenMeteor });
-
-        GCSounds.registerSounds();
     }
 
     @Override

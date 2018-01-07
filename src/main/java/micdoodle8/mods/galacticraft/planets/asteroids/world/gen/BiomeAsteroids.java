@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.world.biome.Biome;
 
-public class BiomeAsteroids extends Biome
+public class BiomeAsteroids extends BiomeGenBaseGC
 {
     public static final Biome asteroid = new BiomeAsteroids(new BiomeProperties("Asteroids").setRainfall(0.0F));
 
@@ -18,7 +20,7 @@ public class BiomeAsteroids extends Biome
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
-        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 2, GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName(), this);
+        this.setRegistryName(GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName());
     }
 
     public void resetMonsterListByMode(boolean challengeMode)

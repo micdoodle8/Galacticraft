@@ -109,6 +109,7 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void init(FMLInitializationEvent event)
     {
+        VenusBlocks.oreDictRegistration();
         this.registerMicroBlocks();
 
 //        GalacticraftCore.packetPipeline.addDiscriminator(8, PacketSimpleVenus.class);

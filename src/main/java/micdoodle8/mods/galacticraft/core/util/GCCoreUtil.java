@@ -156,32 +156,22 @@ public class GCCoreUtil
 
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
-        ItemStack result = GalacticraftCore.itemList.put(key, stack);
-        if (result != null)
+        while (GalacticraftCore.itemList.containsKey(key))
         {
-            System.out.println("GC -------- DUPLICATE ITEM NAME REGISTERED, PLS FIX: " + key);
-            Thread.dumpStack();
+            key = key + "_";
+            System.out.println("GC -------- DUPLICATE ITEM NAME CHANGED TO: " + key);
         }
+        GalacticraftCore.itemList.put(key, stack);
     }
 
     public static void registerGalacticraftBlock(String key, Block block)
     {
-        registerGalacticraftBlock(key, new ItemStack(block));
-    }
-
-    public static void registerGalacticraftBlock(String key, Block block, int metadata)
-    {
-        registerGalacticraftBlock(key, new ItemStack(block, 1, metadata));
-    }
-
-    public static void registerGalacticraftBlock(String key, ItemStack stack)
-    {
-        ItemStack result = GalacticraftCore.blocksList.put(key, stack);
-        if (result != null)
+        while (GalacticraftCore.blocksList.containsKey(key))
         {
-            System.out.println("GC -------- DUPLICATE BLOCK NAME REGISTERED, PLS FIX: " + key);
-            Thread.dumpStack();
+            key = key + "_";
+            System.out.println("GC -------- DUPLICATE BLOCK NAME CHANGED TO: " + key);
         }
+        GalacticraftCore.blocksList.put(key, block);
     }
 
     public static String translate(String key)

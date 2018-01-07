@@ -19,11 +19,11 @@ public class BiomeGenVenusValley extends BiomeVenus
     public BiomeGenVenusValley(BiomeProperties properties)
     {
         super(properties);
-        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 6, GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName(), this);
-        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-        {
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
-        }
+    }
+
+    public void registerTypes()
+    {
+        BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
     }
 
     @Override

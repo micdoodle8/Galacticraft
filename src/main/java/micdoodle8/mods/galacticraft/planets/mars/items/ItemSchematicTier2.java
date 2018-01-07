@@ -52,20 +52,17 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if (worldIn.isRemote)
+        switch (par1ItemStack.getItemDamage())
         {
-            switch (par1ItemStack.getItemDamage())
-            {
-            case 0:
-                tooltip.add(GCCoreUtil.translate("schematic.rocket_t3.name"));
-                break;
-            case 1:
-                tooltip.add(GCCoreUtil.translate("schematic.cargo_rocket.name"));
-                break;
-            case 2:
-                tooltip.add(GCCoreUtil.translate("schematic.astro_miner.name"));
-                break;
-            }
+        case 0:
+            tooltip.add(GCCoreUtil.translate("schematic.rocket_t3.name"));
+            break;
+        case 1:
+            tooltip.add(GCCoreUtil.translate("schematic.cargo_rocket.name"));
+            break;
+        case 2:
+            tooltip.add(GCCoreUtil.translate("schematic.astro_miner.name"));
+            break;
         }
     }
 

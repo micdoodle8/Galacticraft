@@ -75,22 +75,19 @@ public class ItemSchematic extends ItemHangingEntity implements ISchematicItem, 
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
-        if (worldIn.isRemote)
+        switch (par1ItemStack.getItemDamage())
         {
-            switch (par1ItemStack.getItemDamage())
-            {
-            case 0:
-                tooltip.add(GCCoreUtil.translate("schematic.moonbuggy.name"));
-                break;
-            case 1:
-                tooltip.add(GCCoreUtil.translate("schematic.rocket_t2.name"));
+        case 0:
+            tooltip.add(GCCoreUtil.translate("schematic.moonbuggy.name"));
+            break;
+        case 1:
+            tooltip.add(GCCoreUtil.translate("schematic.rocket_t2.name"));
 
-                if (!GalacticraftCore.isPlanetsLoaded)
-                {
-                    tooltip.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
-                }
-                break;
+            if (!GalacticraftCore.isPlanetsLoaded)
+            {
+                tooltip.add(EnumColor.DARK_AQUA + "\"Galacticraft: Planets\" Not Installed!");
             }
+            break;
         }
     }
 
