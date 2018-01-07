@@ -28,7 +28,7 @@ public class ThreadRequirementMissing extends Thread
     @Override
     public void run()
     {
-        if (!Loader.isModLoaded("Micdoodlecore"))
+        if (!Loader.isModLoaded("micdoodlecore"))
         {
             if (ThreadRequirementMissing.threadSide.isServer())
             {

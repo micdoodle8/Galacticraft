@@ -170,21 +170,17 @@ public class TransformerHooks
         return world.prevRainingStrength + (world.rainingStrength - world.prevRainingStrength) * partialTicks;
     }
 
-    public static boolean otherModPreventGenerate(int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator)
+    public static void otherModGenerate(int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
     {
-        IChunkProvider chunkProvider = world.getChunkProvider();
-
-        if (!(world.provider instanceof IGalacticraftWorldProvider))
-        {
-            return false;
-        }
         if (world.provider instanceof WorldProviderSpaceStation)
         {
-            return true;
+            return;
         }
-        if (ConfigManagerCore.enableOtherModsFeatures)
+
+        if (!(world.provider instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures)
         {
-            return false;
+            net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+            return;
         }
 
         if (!generatorsInitialised)
@@ -387,7 +383,6 @@ public class TransformerHooks
                 e.printStackTrace();
             }
         }
-        return true;
     }
 
     @SideOnly(Side.CLIENT)
