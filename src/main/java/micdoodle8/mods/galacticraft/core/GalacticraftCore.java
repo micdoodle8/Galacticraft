@@ -44,6 +44,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -166,8 +167,6 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
-
-        proxy.registerVariants();
 
         GCFluids.registerFluids();
 
@@ -649,6 +648,12 @@ public class GalacticraftCore
                 {
                     GCBlocks.registerSorted(block);
                 }
+            }
+
+            proxy.registerVariants();
+            if (isPlanetsLoaded)
+            {
+                GalacticraftPlanets.proxy.registerVariants();
             }
         }
 

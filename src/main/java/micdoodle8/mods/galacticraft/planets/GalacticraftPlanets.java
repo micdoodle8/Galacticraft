@@ -79,7 +79,6 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.commonModules.add(new VenusModule());
         GalacticraftPlanets.proxy.preInit(event);
-        GalacticraftPlanets.proxy.registerVariants();
         
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
         Biome biomeMarsPreInit = BiomeMars.marsFlat;
