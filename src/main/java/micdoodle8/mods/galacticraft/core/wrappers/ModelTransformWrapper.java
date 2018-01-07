@@ -26,7 +26,8 @@ abstract public class ModelTransformWrapper extends PerspectiveMapWrapper
 			buildIt.put(tt, TRSRTransformation.blockCenterToCorner(new TRSRTransformation(m)));
 		}
 		try {
-			Field f = this.getClass().getSuperclass().getDeclaredField("transforms");
+			Field f = this.getClass().getSuperclass().getSuperclass().getDeclaredField("transforms");
+			f.setAccessible(true);
 			f.set(this, buildIt.build());
 		} catch (Exception e) {
 			e.printStackTrace();

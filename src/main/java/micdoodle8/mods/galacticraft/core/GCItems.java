@@ -313,11 +313,8 @@ public class GCItems
             item.setRegistryName(name);
         }
         GCCoreUtil.registerGalacticraftItem(name, item);
+        GalacticraftCore.itemListTrue.add(item);
         GalacticraftCore.proxy.postRegisterItem(item);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCItems.registerSorted(item);
-        }
     }
     
     public static void registerItems(IForgeRegistry<Item> registry)

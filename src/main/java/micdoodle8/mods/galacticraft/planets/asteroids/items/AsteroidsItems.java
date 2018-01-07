@@ -130,11 +130,8 @@ public class AsteroidsItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
+        GalacticraftCore.itemListTrue.add(item);
         item.setRegistryName(name);
         GalacticraftPlanets.proxy.postRegisterItem(item);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCItems.registerSorted(item);
-        }
     }
 }

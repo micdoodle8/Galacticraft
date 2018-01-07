@@ -79,6 +79,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 @Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
@@ -116,6 +117,7 @@ public class GalacticraftCore
     public static Satellite satelliteSpaceStation;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<>();
+    public static HashSet<Item> itemListTrue = new HashSet<>();
     public static HashMap<String, Block> blocksList = new HashMap<>();
     public static LinkedList<BiomeGenBaseGC> biomesList = new LinkedList<>();
 
@@ -644,6 +646,10 @@ public class GalacticraftCore
             //RegisterSorted for blocks cannot be run until all the items have been registered 
             if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
             {
+                for (Item item : GalacticraftCore.itemListTrue)
+                {
+                    GCItems.registerSorted(item);
+                }
                 for (Block block : GalacticraftCore.blocksList.values())
                 {
                     GCBlocks.registerSorted(block);

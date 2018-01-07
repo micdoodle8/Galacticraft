@@ -46,7 +46,12 @@ public class CreativeTabGC extends CreativeTabs
         super.displayAllRelevantItems(list);
         if (this.tabSorter != null)
         {
-            Collections.sort(list, tabSorter);
+            try {
+                Collections.sort(list, tabSorter);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 

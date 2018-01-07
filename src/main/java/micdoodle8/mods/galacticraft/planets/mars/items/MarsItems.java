@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.init.SoundEvents;
@@ -88,11 +89,8 @@ public class MarsItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
+        GalacticraftCore.itemListTrue.add(item);
         item.setRegistryName(name);
         GalacticraftPlanets.proxy.postRegisterItem(item);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCItems.registerSorted(item);
-        }
     }
 }

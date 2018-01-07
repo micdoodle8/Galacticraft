@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.items.*;
@@ -49,11 +50,8 @@ public class VenusItems
     {
         String name = item.getUnlocalizedName().substring(5);
         GCCoreUtil.registerGalacticraftItem(name, item);
+        GalacticraftCore.itemListTrue.add(item);
         item.setRegistryName(name);
         GalacticraftPlanets.proxy.postRegisterItem(item);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCItems.registerSorted(item);
-        }
     }
 }
