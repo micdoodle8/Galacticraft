@@ -118,8 +118,8 @@ public class GalacticraftCore
     public static Satellite satelliteSpaceStation;
 
     public static HashMap<String, ItemStack> itemList = new HashMap<>();
-    public static HashSet<Item> itemListTrue = new HashSet<>();
-    public static HashMap<String, Block> blocksList = new HashMap<>();
+    public static LinkedList<Item> itemListTrue = new LinkedList<>();
+    public static LinkedList<Block> blocksList = new LinkedList<>();
     public static LinkedList<BiomeGenBaseGC> biomesList = new LinkedList<>();
 
     public static ImageWriter jpgWriter;
@@ -651,7 +651,7 @@ public class GalacticraftCore
                 {
                     GCItems.registerSorted(item);
                 }
-                for (Block block : GalacticraftCore.blocksList.values())
+                for (Block block : GalacticraftCore.blocksList)
                 {
                     GCBlocks.registerSorted(block);
                 }

@@ -62,9 +62,12 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
-        for (int i = 0; i < ItemThermalPaddingTier2.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            subItems.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < ItemThermalPaddingTier2.names.length; i++)
+            {
+                subItems.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

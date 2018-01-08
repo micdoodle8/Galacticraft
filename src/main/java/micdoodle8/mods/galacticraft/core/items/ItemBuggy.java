@@ -56,9 +56,12 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < 4; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < 4; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

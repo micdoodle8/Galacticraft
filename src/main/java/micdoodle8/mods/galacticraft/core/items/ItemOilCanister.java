@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -84,8 +85,11 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(this, 1, this.getMaxDamage()));
-        list.add(new ItemStack(this, 1, 1));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, this.getMaxDamage()));
+            list.add(new ItemStack(this, 1, 1));
+        }
     }
 
     @Override

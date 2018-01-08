@@ -159,19 +159,13 @@ public class GCCoreUtil
         while (GalacticraftCore.itemList.containsKey(key))
         {
             key = key + "_";
-            System.out.println("GC -------- DUPLICATE ITEM NAME CHANGED TO: " + key);
         }
         GalacticraftCore.itemList.put(key, stack);
     }
 
     public static void registerGalacticraftBlock(String key, Block block)
     {
-        while (GalacticraftCore.blocksList.containsKey(key))
-        {
-            key = key + "_";
-            System.out.println("GC -------- DUPLICATE BLOCK NAME CHANGED TO: " + key);
-        }
-        GalacticraftCore.blocksList.put(key, block);
+        GalacticraftCore.blocksList.add(block);
     }
 
     public static String translate(String key)

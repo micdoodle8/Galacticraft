@@ -44,7 +44,10 @@ public class ItemPickaxeMars extends ItemPickaxe implements ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(this, 1, 0));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, 0));
+        }
     }
 
     @Override

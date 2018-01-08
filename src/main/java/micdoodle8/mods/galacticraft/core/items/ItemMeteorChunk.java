@@ -94,8 +94,11 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, 1));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, 0));
+            list.add(new ItemStack(this, 1, 1));
+        }
     }
 
     @SideOnly(Side.CLIENT)

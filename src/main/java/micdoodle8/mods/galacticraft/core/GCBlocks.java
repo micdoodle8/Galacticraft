@@ -378,7 +378,7 @@ public class GCBlocks
     
     public static void registerBlocks(IForgeRegistry<Block> registry)
     {
-        for (Block block : GalacticraftCore.blocksList.values())
+        for (Block block : GalacticraftCore.blocksList)
         {
             registry.register(block);
         }
@@ -400,6 +400,10 @@ public class GCBlocks
             registeringSorted = true;
             block.getSubBlocks(null, blocks);
             registeringSorted = false;
+            if (blocks.isEmpty())
+            {
+                blocks.add(new ItemStack(block));
+            }
             for (ItemStack stack : blocks)
             {
                 EnumSortCategoryBlock categoryBlock = sortableBlock.getCategory(stack.getItemDamage());

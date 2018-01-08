@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.energy.item;
 import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.items.ItemBatteryInfinite;
@@ -183,8 +184,11 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
-        list.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
+            list.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));
+        }
     }
 
     public static boolean isElectricItem(Item item)

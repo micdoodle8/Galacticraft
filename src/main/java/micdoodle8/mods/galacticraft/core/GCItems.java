@@ -234,7 +234,7 @@ public class GCItems
         {
             ISortableItem sortableItem = (ISortableItem) item;
             NonNullList<ItemStack> items = NonNullList.create();
-            item.getSubItems(null, items);
+            item.getSubItems(GalacticraftCore.galacticraftItemsTab, items);
             for (ItemStack stack : items)
             {
                 EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getItemDamage());

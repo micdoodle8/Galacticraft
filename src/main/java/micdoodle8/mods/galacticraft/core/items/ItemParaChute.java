@@ -61,9 +61,12 @@ public class ItemParaChute extends Item implements ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < ItemParaChute.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < ItemParaChute.names.length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

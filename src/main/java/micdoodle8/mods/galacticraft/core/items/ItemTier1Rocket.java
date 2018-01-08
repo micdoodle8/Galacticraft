@@ -146,9 +146,12 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < EnumRocketType.values().length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < EnumRocketType.values().length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

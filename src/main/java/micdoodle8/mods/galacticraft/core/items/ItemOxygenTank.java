@@ -40,8 +40,11 @@ public class ItemOxygenTank extends Item implements ISortableItem
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, this.getMaxDamage()));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, 0));
+            list.add(new ItemStack(this, 1, this.getMaxDamage()));
+        }
     }
 
     @Override

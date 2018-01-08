@@ -66,7 +66,10 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(new ItemStack(this, 1, 1));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, 1));
+        }
     }
 
     @Override

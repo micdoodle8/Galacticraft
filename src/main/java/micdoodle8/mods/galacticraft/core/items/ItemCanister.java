@@ -73,9 +73,12 @@ public class ItemCanister extends Item implements ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < 2; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < 2; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

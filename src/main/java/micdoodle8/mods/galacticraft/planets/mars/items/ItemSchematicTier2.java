@@ -41,9 +41,12 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < 3; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(this, 1, i));
+            for (int i = 0; i < 3; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
