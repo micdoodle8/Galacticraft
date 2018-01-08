@@ -367,7 +367,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("FacingSide", this.facing.ordinal());
+        nbt.setInteger("FacingSide", this.facing == null ? this.preLoadFacing : this.facing.ordinal());
         return nbt;
     }
 

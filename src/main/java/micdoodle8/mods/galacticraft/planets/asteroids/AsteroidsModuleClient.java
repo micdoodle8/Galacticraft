@@ -72,6 +72,12 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @Override
     public void registerVariants()
     {
+        addPlanetVariants("asteroids_block", "asteroids_block", "asteroid_rock_1", "asteroid_rock_2", "ore_aluminum_asteroids", "ore_ilmenite_asteroids", "ore_iron_asteroids", "asteroid_deco", "titanium_block");
+        addPlanetVariants("thermal_padding", "thermal_padding", "thermal_chestplate", "thermal_leggings", "thermal_boots");
+        addPlanetVariants("item_basic_asteroids", "item_basic_asteroids", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core");
+        addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
+        addPlanetVariants("strange_seed", "strange_seed", "strange_seed1");
+
         Item receiver = Item.getItemFromBlock(AsteroidBlocks.beamReceiver);
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beam_receiver", "inventory");
         ModelLoader.setCustomModelResourceLocation(receiver, 0, modelResourceLocation);
@@ -159,12 +165,6 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        addPlanetVariants("asteroids_block", "asteroids_block", "asteroid_rock_1", "asteroid_rock_2", "ore_aluminum_asteroids", "ore_ilmenite_asteroids", "ore_iron_asteroids", "asteroid_deco", "titanium_block");
-        addPlanetVariants("thermal_padding", "thermal_padding", "thermal_chestplate", "thermal_leggings", "thermal_boots");
-        addPlanetVariants("item_basic_asteroids", "item_basic_asteroids", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core");
-        addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
-        addPlanetVariants("strange_seed", "strange_seed", "strange_seed1");
-
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());

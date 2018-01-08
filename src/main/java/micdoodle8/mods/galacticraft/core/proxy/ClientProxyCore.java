@@ -195,7 +195,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public void postInit(FMLPostInitializationEvent event)
     {
         ClientProxyCore.registerInventoryTabs();
-        ClientProxyCore.addVariants();
         ItemSchematic.registerTextures();
 
         MinecraftForge.EVENT_BUS.register(new TabRegistry());
@@ -251,6 +250,8 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     @Override
     public void registerVariants()
     {
+        ClientProxyCore.addVariants();
+
         Item fuel = Item.getItemFromBlock(GCBlocks.fuel);
         ModelBakery.registerItemVariants(fuel, new ResourceLocation("galacticraftcore:fuel"));
         ModelLoader.setCustomMeshDefinition(fuel, IItemMeshDefinitionCustom.create((ItemStack stack) -> fuelLocation));

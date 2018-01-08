@@ -56,6 +56,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -655,7 +656,11 @@ public class GalacticraftCore
                     GCBlocks.registerSorted(block);
                 }
             }
+        }
 
+        @SubscribeEvent
+        public static void registerModels(ModelRegistryEvent event)
+        {
             proxy.registerVariants();
             if (isPlanetsLoaded)
             {
