@@ -67,6 +67,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, (RenderManager manager) -> new RenderEntryPod(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, (RenderManager manager) -> new RenderTier3Rocket(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner(manager));
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -159,7 +160,6 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         MinecraftForge.EVENT_BUS.register(clientEventHandler);
         FluidTexturesGC.init();
         AsteroidsModuleClient.registerBlockRenderers();
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override

@@ -166,6 +166,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         {
             ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
         }
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
@@ -500,7 +501,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientRegistry.registerKeyBinding(KeyHandlerClient.galaxyMap);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.openFuelGui);
         ClientRegistry.registerKeyBinding(KeyHandlerClient.toggleAdvGoggles);
-        MinecraftForge.EVENT_BUS.register(GalacticraftCore.proxy);
         MinecraftForge.EVENT_BUS.register(new EventHandlerClient());
     }
 
