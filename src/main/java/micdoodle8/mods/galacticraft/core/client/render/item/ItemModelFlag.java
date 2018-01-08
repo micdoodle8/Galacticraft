@@ -59,7 +59,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             ret.mul(mul);
             mul.setIdentity();
             EntityLivingBase player = Minecraft.getMinecraft().player;
-            if (player.isHandActive() && player.getActiveItemStack() != null)
+            if (player.isHandActive() && !player.getActiveItemStack().isEmpty())
             {
                 final int useTime = Minecraft.getMinecraft().player.getItemInUseMaxCount();
                 float interpolate0 = useTime / 20.0F;
