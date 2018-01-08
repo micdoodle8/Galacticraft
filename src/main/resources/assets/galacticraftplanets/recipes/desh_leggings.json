@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_leggings"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    }
+  }
+}

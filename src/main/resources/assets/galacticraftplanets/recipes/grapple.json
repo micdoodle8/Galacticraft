@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftplanets:grapple"
+  },
+  "pattern": [
+    "  Z",
+    "XZ ",
+    "XX "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Z": {
+      "item": "minecraft:string"
+    }
+  }
+}

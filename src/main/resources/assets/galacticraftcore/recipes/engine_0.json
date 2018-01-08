@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "galacticraftcore:engine",
+    "data": 0
+  },
+  "pattern": [
+    " YV",
+    "XWX",
+    "XZX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "minecraft:stone_button"
+    },
+    "W": {
+      "item": "galacticraftcore:canister",
+      "data": 32767
+    },
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "Z": {
+      "item": "galacticraftcore:air_vent"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftcore:sensor_lens"
+  },
+  "pattern": [
+    "ZXZ",
+    "XYX",
+    "ZXZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "item": "galacticraftcore:item_basic_moon",
+      "data": 1
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  }
+}

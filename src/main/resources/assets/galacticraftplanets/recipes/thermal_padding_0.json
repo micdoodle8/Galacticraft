@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:thermal_padding",
+    "data": 0
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 7
+    }
+  }
+}

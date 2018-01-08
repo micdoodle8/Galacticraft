@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_block_core",
+    "data": 12
+  },
+  "pattern": [
+    "YYY",
+    "YYY",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "Y": {
+      "item": "galacticraftcore:item_basic_moon",
+      "data": 0
+    }
+  }
+}

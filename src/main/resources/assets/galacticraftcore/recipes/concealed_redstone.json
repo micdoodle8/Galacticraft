@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:concealed_redstone",
+    "count": 4
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 4
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  }
+}

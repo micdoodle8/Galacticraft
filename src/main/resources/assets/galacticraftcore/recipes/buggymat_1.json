@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:buggymat",
+    "data": 1
+  },
+  "pattern": [
+    "  Y",
+    " ZY",
+    "XXX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "compressedIron"
+    }
+  }
+}

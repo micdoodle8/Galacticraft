@@ -1,0 +1,50 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine3",
+    "data": 0
+  },
+  "pattern": [
+    "ABC",
+    "DEF",
+    "GHI"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "dyeRed"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "dyeMagenta"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "dyeBlue"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "dyeOrange"
+    },
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "dyeCyan"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "dyeYellow"
+    },
+    "H": {
+      "type": "forge:ore_dict",
+      "ore": "dyeLime"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "dyeGreen"
+    }
+  }
+}

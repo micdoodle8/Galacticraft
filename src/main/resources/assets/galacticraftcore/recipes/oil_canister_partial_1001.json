@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:oil_canister_partial",
+    "data": 1001
+  },
+  "pattern": [
+    "WXW",
+    "WYW",
+    "WZW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "minecraft:glass"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    }
+  }
+}

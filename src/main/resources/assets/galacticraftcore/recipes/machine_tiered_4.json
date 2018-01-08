@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine_tiered",
+    "data": 4
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "Z": {
+      "item": "minecraft:furnace"
+    }
+  }
+}

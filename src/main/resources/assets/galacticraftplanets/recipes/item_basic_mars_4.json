@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_mars",
+    "data": 4
+  },
+  "pattern": [
+    "XWX",
+    "XYX",
+    " Z "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "W": {
+      "item": "minecraft:diamond"
+    },
+    "X": {
+      "item": "minecraft:leather"
+    },
+    "Y": {
+      "item": "minecraft:slime_ball"
+    },
+    "Z": {
+      "item": "minecraft:chest"
+    }
+  }
+}

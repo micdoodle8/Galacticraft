@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:canister",
+    "data": 0,
+    "count": 2
+  },
+  "pattern": [
+    "X X",
+    "X X",
+    "XXX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "ingotTin"
+    }
+  }
+}

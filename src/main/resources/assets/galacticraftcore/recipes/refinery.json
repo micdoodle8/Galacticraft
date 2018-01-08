@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:refinery"
+  },
+  "pattern": [
+    " Z ",
+    "WZW",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "minecraft:furnace"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister",
+      "data": 1
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:moon_stairs_brick",
+    "count": 4
+  },
+  "pattern": [
+    "X  ",
+    "XX ",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_moon",
+      "data": 14
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:fluid_tank"
+  },
+  "pattern": [
+    " X ",
+    "X X",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

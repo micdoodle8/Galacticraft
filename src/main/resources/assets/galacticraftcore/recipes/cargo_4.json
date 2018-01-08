@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:cargo",
+    "data": 4
+  },
+  "pattern": [
+    "XXX",
+    "YZY",
+    "XWX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "item": "minecraft:hopper"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "Z": {
+      "item": "minecraft:chest"
+    }
+  }
+}

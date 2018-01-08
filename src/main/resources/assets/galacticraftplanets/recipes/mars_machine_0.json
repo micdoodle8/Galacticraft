@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars_machine",
+    "data": 0
+  },
+  "pattern": [
+    "XWX",
+    "XZX",
+    "WVW"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    },
+    "W": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 5
+    },
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    },
+    "Z": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    }
+  }
+}

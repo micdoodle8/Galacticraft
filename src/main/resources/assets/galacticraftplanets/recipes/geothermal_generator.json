@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "galacticraftplanets:geothermal_generator"
+  },
+  "pattern": [
+    "XVX",
+    "WGW",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftplanets:atmospheric_valve"
+    },
+    "W": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "G": {
+      "item": "galacticraftcore:machine",
+      "data": 0
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedBronze"
+    },
+    "Y": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 1
+    }
+  }
+}

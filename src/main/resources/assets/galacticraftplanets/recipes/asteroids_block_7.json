@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftplanets:asteroids_block",
+    "data": 7
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 0
+    }
+  }
+}

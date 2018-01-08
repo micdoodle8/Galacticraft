@@ -1,0 +1,33 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_item",
+    "data": 20
+  },
+  "pattern": [
+    "WVW",
+    "YXY",
+    "YZY"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedBronze"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    }
+  }
+}

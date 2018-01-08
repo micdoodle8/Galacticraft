@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars",
+    "data": 8
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    }
+  }
+}

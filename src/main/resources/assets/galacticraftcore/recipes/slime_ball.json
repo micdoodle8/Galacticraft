@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "minecraft:slime_ball"
+  },
+  "pattern": [
+    "XFX",
+    "FEF",
+    "XFX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "E": {
+      "item": "galacticraftcore:cheese_curd"
+    },
+    "F": {
+      "item": "minecraft:sugar"
+    },
+    "X": {
+      "item": "minecraft:dye",
+      "data": 2
+    }
+  }
+}

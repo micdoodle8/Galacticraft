@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftplanets:walkway",
+    "data": 1,
+    "count": 5
+  },
+  "pattern": [
+    "XXX",
+    "YXY",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 6
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    }
+  }
+}

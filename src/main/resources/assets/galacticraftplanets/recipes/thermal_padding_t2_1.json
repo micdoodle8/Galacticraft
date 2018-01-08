@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftplanets:thermal_padding_t2",
+    "data": 1
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 3
+    }
+  }
+}

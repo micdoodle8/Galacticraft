@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_axe"
+  },
+  "pattern": [
+    "XX",
+    "YX",
+    "Y "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 1
+    }
+  }
+}

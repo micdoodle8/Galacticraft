@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_item",
+    "data": 0,
+    "count": 2
+  },
+  "pattern": [
+    "XXX",
+    "YYY",
+    "ZZZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferSolar"
+    },
+    "Z": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    }
+  }
+}

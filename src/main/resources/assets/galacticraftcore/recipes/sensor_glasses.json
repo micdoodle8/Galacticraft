@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:sensor_glasses"
+  },
+  "pattern": [
+    "ZWZ",
+    "Z Z",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "X": {
+      "item": "galacticraftcore:sensor_lens"
+    },
+    "Y": {
+      "item": "galacticraftcore:item_basic_moon",
+      "data": 0
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine",
+    "data": 12
+  },
+  "pattern": [
+    "WXW",
+    "WYW",
+    "WZW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "ingotAluminum"
+    },
+    "X": {
+      "item": "minecraft:anvil",
+      "data": 0
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCopper"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    }
+  }
+}

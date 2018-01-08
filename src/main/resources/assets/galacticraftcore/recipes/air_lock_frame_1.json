@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:air_lock_frame",
+    "data": 1
+  },
+  "pattern": [
+    "YYY",
+    "WZW",
+    "YYY"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "item": "galacticraftcore:item_basic_moon",
+      "data": 1
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Z": {
+      "item": "galacticraftcore:basic_item",
+      "data": 13
+    }
+  }
+}

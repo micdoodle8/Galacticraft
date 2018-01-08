@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    }
+  }
+}

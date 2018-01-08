@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:atmospheric_valve"
+  },
+  "pattern": [
+    "   ",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    }
+  }
+}

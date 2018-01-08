@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:aluminum_wire",
+    "data": 2
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    {
+      "item": "minecraft:repeater"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

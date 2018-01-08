@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_receiver"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 6
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    }
+  }
+}

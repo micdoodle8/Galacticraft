@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine_tiered",
+    "data": 12
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "item": "galacticraftcore:item_basic_moon",
+      "data": 0
+    },
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    },
+    "Z": {
+      "item": "galacticraftcore:machine_tiered",
+      "data": 4
+    }
+  }
+}

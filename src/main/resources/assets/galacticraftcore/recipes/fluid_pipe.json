@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:fluid_pipe",
+    "count": 6
+  },
+  "pattern": [
+    "XXX",
+    "   ",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

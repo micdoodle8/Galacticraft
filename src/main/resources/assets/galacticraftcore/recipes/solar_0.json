@@ -1,0 +1,33 @@
+{
+  "result": {
+    "item": "galacticraftcore:solar",
+    "data": 0
+  },
+  "pattern": [
+    "XYX",
+    "XZX",
+    "VWV"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "galacticraftcore:basic_item",
+      "data": 1
+    },
+    "Z": {
+      "item": "galacticraftcore:steel_pole"
+    }
+  }
+}

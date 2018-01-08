@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:cheese"
+  },
+  "pattern": [
+    "YYY",
+    "YXY",
+    "YYY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:milk_bucket"
+    },
+    "Y": {
+      "item": "galacticraftcore:cheese_curd"
+    }
+  }
+}

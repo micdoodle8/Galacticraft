@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_chestplate"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 2
+    }
+  }
+}

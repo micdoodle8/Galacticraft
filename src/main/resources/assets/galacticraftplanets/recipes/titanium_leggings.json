@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:titanium_leggings"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 6
+    }
+  }
+}

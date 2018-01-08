@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:atomic_battery"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 1
+    },
+    "Y": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 2
+    }
+  }
+}

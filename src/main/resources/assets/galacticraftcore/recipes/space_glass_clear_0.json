@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:space_glass_clear",
+    "data": 0,
+    "count": 5
+  },
+  "pattern": [
+    "YXY",
+    "XXX",
+    "YXY"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "ingotAluminum"
+    }
+  }
+}

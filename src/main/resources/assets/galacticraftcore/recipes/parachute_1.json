@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:parachute",
+    "data": 1
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:dye",
+      "data": 0
+    },
+    {
+      "item": "galacticraftcore:parachute",
+      "data": 0
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

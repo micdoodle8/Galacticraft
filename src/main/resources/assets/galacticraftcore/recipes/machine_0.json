@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine",
+    "data": 0
+  },
+  "pattern": [
+    "WWW",
+    "XZX",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "ingotCopper"
+    },
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "Z": {
+      "item": "minecraft:furnace"
+    }
+  }
+}

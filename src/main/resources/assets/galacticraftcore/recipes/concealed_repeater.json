@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:concealed_repeater"
+  },
+  "pattern": [
+    "   ",
+    "XYX",
+    "   "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 4
+    },
+    "Y": {
+      "item": "minecraft:repeater"
+    }
+  }
+}
