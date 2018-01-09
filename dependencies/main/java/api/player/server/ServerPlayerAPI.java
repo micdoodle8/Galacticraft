@@ -572,9 +572,9 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideCanTriggerWalkingHookTypes, "canTriggerWalking");
 		addMethod(id, baseClass, afterCanTriggerWalkingHookTypes, "afterCanTriggerWalking");
 
-		addMethod(id, baseClass, beforeClonePlayerHookTypes, "beforeClonePlayer", net.minecraft.entity.player.EntityPlayer.class, boolean.class);
-		addMethod(id, baseClass, overrideClonePlayerHookTypes, "clonePlayer", net.minecraft.entity.player.EntityPlayer.class, boolean.class);
-		addMethod(id, baseClass, afterClonePlayerHookTypes, "afterClonePlayer", net.minecraft.entity.player.EntityPlayer.class, boolean.class);
+		addMethod(id, baseClass, beforeClonePlayerHookTypes, "beforeClonePlayer", net.minecraft.entity.player.EntityPlayerMP.class, boolean.class);
+		addMethod(id, baseClass, overrideClonePlayerHookTypes, "clonePlayer", net.minecraft.entity.player.EntityPlayerMP.class, boolean.class);
+		addMethod(id, baseClass, afterClonePlayerHookTypes, "afterClonePlayer", net.minecraft.entity.player.EntityPlayerMP.class, boolean.class);
 
 		addMethod(id, baseClass, beforeDamageEntityHookTypes, "beforeDamageEntity", net.minecraft.util.DamageSource.class, float.class);
 		addMethod(id, baseClass, overrideDamageEntityHookTypes, "damageEntity", net.minecraft.util.DamageSource.class, float.class);
@@ -612,9 +612,9 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideGetDistanceSqHookTypes, "getDistanceSq", double.class, double.class, double.class);
 		addMethod(id, baseClass, afterGetDistanceSqHookTypes, "afterGetDistanceSq", double.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeGetBrightnessHookTypes, "beforeGetBrightness", float.class);
-		addMethod(id, baseClass, overrideGetBrightnessHookTypes, "getBrightness", float.class);
-		addMethod(id, baseClass, afterGetBrightnessHookTypes, "afterGetBrightness", float.class);
+		addMethod(id, baseClass, beforeGetBrightnessHookTypes, "beforeGetBrightness");
+		addMethod(id, baseClass, overrideGetBrightnessHookTypes, "getBrightness");
+		addMethod(id, baseClass, afterGetBrightnessHookTypes, "afterGetBrightness");
 
 		addMethod(id, baseClass, beforeGetEyeHeightHookTypes, "beforeGetEyeHeight");
 		addMethod(id, baseClass, overrideGetEyeHeightHookTypes, "getEyeHeight");
@@ -664,13 +664,13 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
 		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class);
-		addMethod(id, baseClass, overrideMoveEntityWithHeadingHookTypes, "moveEntityWithHeading", float.class, float.class);
-		addMethod(id, baseClass, afterMoveEntityWithHeadingHookTypes, "afterMoveEntityWithHeading", float.class, float.class);
+		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class, float.class);
+		addMethod(id, baseClass, overrideMoveEntityWithHeadingHookTypes, "moveEntityWithHeading", float.class, float.class, float.class);
+		addMethod(id, baseClass, afterMoveEntityWithHeadingHookTypes, "afterMoveEntityWithHeading", float.class, float.class, float.class);
 
-		addMethod(id, baseClass, beforeMoveFlyingHookTypes, "beforeMoveFlying", float.class, float.class, float.class);
-		addMethod(id, baseClass, overrideMoveFlyingHookTypes, "moveFlying", float.class, float.class, float.class);
-		addMethod(id, baseClass, afterMoveFlyingHookTypes, "afterMoveFlying", float.class, float.class, float.class);
+		addMethod(id, baseClass, beforeMoveFlyingHookTypes, "beforeMoveFlying", float.class, float.class, float.class, float.class);
+		addMethod(id, baseClass, overrideMoveFlyingHookTypes, "moveFlying", float.class, float.class, float.class, float.class);
+		addMethod(id, baseClass, afterMoveFlyingHookTypes, "afterMoveFlying", float.class, float.class, float.class, float.class);
 
 		addMethod(id, baseClass, beforeOnDeathHookTypes, "beforeOnDeath", net.minecraft.util.DamageSource.class);
 		addMethod(id, baseClass, overrideOnDeathHookTypes, "onDeath", net.minecraft.util.DamageSource.class);
@@ -3143,29 +3143,29 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterCanTriggerWalkingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterCanTriggerWalkingInferiors = new Hashtable<String, String[]>(0);
 
-	public static void clonePlayer(IServerPlayerAPI target, net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public static void clonePlayer(IServerPlayerAPI target, net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isClonePlayerModded)
-			serverPlayerAPI.clonePlayer(paramEntityPlayer, paramBoolean);
+			serverPlayerAPI.clonePlayer(paramEntityPlayerMP, paramBoolean);
 		else
-			target.localClonePlayer(paramEntityPlayer, paramBoolean);
+			target.localClonePlayer(paramEntityPlayerMP, paramBoolean);
 	}
 
-	private void clonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	private void clonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 		if(beforeClonePlayerHooks != null)
 			for(int i = beforeClonePlayerHooks.length - 1; i >= 0 ; i--)
-				beforeClonePlayerHooks[i].beforeClonePlayer(paramEntityPlayer, paramBoolean);
+				beforeClonePlayerHooks[i].beforeClonePlayer(paramEntityPlayerMP, paramBoolean);
 
 		if(overrideClonePlayerHooks != null)
-			overrideClonePlayerHooks[overrideClonePlayerHooks.length - 1].clonePlayer(paramEntityPlayer, paramBoolean);
+			overrideClonePlayerHooks[overrideClonePlayerHooks.length - 1].clonePlayer(paramEntityPlayerMP, paramBoolean);
 		else
-			player.localClonePlayer(paramEntityPlayer, paramBoolean);
+			player.localClonePlayer(paramEntityPlayerMP, paramBoolean);
 
 		if(afterClonePlayerHooks != null)
 			for(int i = 0; i < afterClonePlayerHooks.length; i++)
-				afterClonePlayerHooks[i].afterClonePlayer(paramEntityPlayer, paramBoolean);
+				afterClonePlayerHooks[i].afterClonePlayer(paramEntityPlayerMP, paramBoolean);
 
 	}
 
@@ -3743,32 +3743,32 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetDistanceSqSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetDistanceSqInferiors = new Hashtable<String, String[]>(0);
 
-	public static float getBrightness(IServerPlayerAPI target, float paramFloat)
+	public static float getBrightness(IServerPlayerAPI target)
 	{
 		float _result;
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isGetBrightnessModded)
-			_result = serverPlayerAPI.getBrightness(paramFloat);
+			_result = serverPlayerAPI.getBrightness();
 		else
-			_result = target.localGetBrightness(paramFloat);
+			_result = target.localGetBrightness();
 		return _result;
 	}
 
-	private float getBrightness(float paramFloat)
+	private float getBrightness()
 	{
 		if(beforeGetBrightnessHooks != null)
 			for(int i = beforeGetBrightnessHooks.length - 1; i >= 0 ; i--)
-				beforeGetBrightnessHooks[i].beforeGetBrightness(paramFloat);
+				beforeGetBrightnessHooks[i].beforeGetBrightness();
 
 		float _result;
 		if(overrideGetBrightnessHooks != null)
-			_result = overrideGetBrightnessHooks[overrideGetBrightnessHooks.length - 1].getBrightness(paramFloat);
+			_result = overrideGetBrightnessHooks[overrideGetBrightnessHooks.length - 1].getBrightness();
 		else
-			_result = player.localGetBrightness(paramFloat);
+			_result = player.localGetBrightness();
 
 		if(afterGetBrightnessHooks != null)
 			for(int i = 0; i < afterGetBrightnessHooks.length; i++)
-				afterGetBrightnessHooks[i].afterGetBrightness(paramFloat);
+				afterGetBrightnessHooks[i].afterGetBrightness();
 
 		return _result;
 	}
@@ -4533,29 +4533,29 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterMoveEntitySuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterMoveEntityInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveEntityWithHeading(IServerPlayerAPI target, float paramFloat1, float paramFloat2)
+	public static void moveEntityWithHeading(IServerPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isMoveEntityWithHeadingModded)
-			serverPlayerAPI.moveEntityWithHeading(paramFloat1, paramFloat2);
+			serverPlayerAPI.moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else
-			target.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			target.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 	}
 
-	private void moveEntityWithHeading(float paramFloat1, float paramFloat2)
+	private void moveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		if(beforeMoveEntityWithHeadingHooks != null)
 			for(int i = beforeMoveEntityWithHeadingHooks.length - 1; i >= 0 ; i--)
-				beforeMoveEntityWithHeadingHooks[i].beforeMoveEntityWithHeading(paramFloat1, paramFloat2);
+				beforeMoveEntityWithHeadingHooks[i].beforeMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 		if(overrideMoveEntityWithHeadingHooks != null)
-			overrideMoveEntityWithHeadingHooks[overrideMoveEntityWithHeadingHooks.length - 1].moveEntityWithHeading(paramFloat1, paramFloat2);
+			overrideMoveEntityWithHeadingHooks[overrideMoveEntityWithHeadingHooks.length - 1].moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else
-			player.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			player.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 		if(afterMoveEntityWithHeadingHooks != null)
 			for(int i = 0; i < afterMoveEntityWithHeadingHooks.length; i++)
-				afterMoveEntityWithHeadingHooks[i].afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+				afterMoveEntityWithHeadingHooks[i].afterMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 	}
 
@@ -4591,29 +4591,29 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterMoveEntityWithHeadingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterMoveEntityWithHeadingInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveFlying(IServerPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3)
+	public static void moveFlying(IServerPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isMoveFlyingModded)
-			serverPlayerAPI.moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			serverPlayerAPI.moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else
-			target.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			target.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 	}
 
-	private void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	private void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		if(beforeMoveFlyingHooks != null)
 			for(int i = beforeMoveFlyingHooks.length - 1; i >= 0 ; i--)
-				beforeMoveFlyingHooks[i].beforeMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+				beforeMoveFlyingHooks[i].beforeMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 		if(overrideMoveFlyingHooks != null)
-			overrideMoveFlyingHooks[overrideMoveFlyingHooks.length - 1].moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			overrideMoveFlyingHooks[overrideMoveFlyingHooks.length - 1].moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else
-			player.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			player.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 		if(afterMoveFlyingHooks != null)
 			for(int i = 0; i < afterMoveFlyingHooks.length; i++)
-				afterMoveFlyingHooks[i].afterMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+				afterMoveFlyingHooks[i].afterMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 	}
 

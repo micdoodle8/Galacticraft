@@ -140,17 +140,17 @@ public interface IClientPlayer
 
 	float localGetBedOrientationInDegrees();
 
-	float realGetBrightness(float paramFloat);
+	float realGetBrightness();
 
-	float superGetBrightness(float paramFloat);
+	float superGetBrightness();
 
-	float localGetBrightness(float paramFloat);
+	float localGetBrightness();
 
-	int realGetBrightnessForRender(float paramFloat);
+	int realGetBrightnessForRender();
 
-	int superGetBrightnessForRender(float paramFloat);
+	int superGetBrightnessForRender();
 
-	int localGetBrightnessForRender(float paramFloat);
+	int localGetBrightnessForRender();
 
 	float realGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos);
 
@@ -176,11 +176,11 @@ public interface IClientPlayer
 
 	float localGetFovModifier();
 
-	net.minecraft.util.SoundEvent realGetHurtSound();
+	net.minecraft.util.SoundEvent realGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
-	net.minecraft.util.SoundEvent superGetHurtSound();
+	net.minecraft.util.SoundEvent superGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
-	net.minecraft.util.SoundEvent localGetHurtSound();
+	net.minecraft.util.SoundEvent localGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
 	java.lang.String realGetName();
 
@@ -266,17 +266,17 @@ public interface IClientPlayer
 
 	void localMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
 	void realOnDeath(net.minecraft.util.DamageSource paramDamageSource);
 
@@ -402,6 +402,10 @@ public interface IClientPlayer
 
 	void localWriteEntityToNBT(net.minecraft.nbt.NBTTagCompound paramNBTTagCompound);
 
+	net.minecraft.network.datasync.DataParameter getLEFT_SHOULDER_ENTITYField();
+
+	net.minecraft.network.datasync.DataParameter getRIGHT_SHOULDER_ENTITYField();
+
 	net.minecraft.util.EnumHand getActiveHandField();
 
 	void setActiveHandField(net.minecraft.util.EnumHand activeHand);
@@ -502,9 +506,9 @@ public interface IClientPlayer
 
 	void setDistanceWalkedOnStepModifiedField(float distanceWalkedOnStepModified);
 
-	int getEntityAgeField();
+	net.minecraft.inventory.InventoryEnderChest getEnderChestField();
 
-	void setEntityAgeField(int entityAge);
+	void setEnderChestField(net.minecraft.inventory.InventoryEnderChest enderChest);
 
 	float getEntityCollisionReductionField();
 
@@ -589,6 +593,10 @@ public interface IClientPlayer
 	int getHurtTimeField();
 
 	void setHurtTimeField(int hurtTime);
+
+	int getIdleTimeField();
+
+	void setIdleTimeField(int idleTime);
 
 	boolean getIgnoreFrustumCheckField();
 
@@ -755,6 +763,10 @@ public interface IClientPlayer
 	float getMoveStrafingField();
 
 	void setMoveStrafingField(float moveStrafing);
+
+	float getMoveVerticalField();
+
+	void setMoveVerticalField(float moveVertical);
 
 	float getMovedDistanceField();
 
@@ -926,6 +938,8 @@ public interface IClientPlayer
 
 	void setRecentlyHitField(int recentlyHit);
 
+	net.minecraft.stats.RecipeBook getRecipeBookField();
+
 	float getRenderArmPitchField();
 
 	void setRenderArmPitchField(float renderArmPitch);
@@ -1008,10 +1022,6 @@ public interface IClientPlayer
 
 	void setSpeedInAirField(float speedInAir);
 
-	float getSpeedOnGroundField();
-
-	void setSpeedOnGroundField(float speedOnGround);
-
 	int getSprintToggleTimerField();
 
 	void setSprintToggleTimerField(int sprintToggleTimer);
@@ -1077,5 +1087,9 @@ public interface IClientPlayer
 	int getXpCooldownField();
 
 	void setXpCooldownField(int xpCooldown);
+
+	int getXpSeedField();
+
+	void setXpSeedField(int xpSeed);
 
 }

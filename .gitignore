@@ -12,8 +12,10 @@
 /logs/*
 /modsrc/*
 /reobf/*
+/run/*
 /runtime/*
 /temp/*
+/temporary/*
 LICENSE.txt
 CHANGELOG
 

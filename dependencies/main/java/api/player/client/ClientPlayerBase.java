@@ -35,11 +35,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager)
+	public void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 	}
 
-	public void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager)
+	public void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 	}
 
@@ -462,49 +462,49 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeGetBrightness(float paramFloat)
+	public void beforeGetBrightness()
 	{
 	}
 
-	public float getBrightness(float paramFloat)
+	public float getBrightness()
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenGetBrightness(this);
 
 		float _result;
 		if(overwritten == null)
-			_result = playerAPI.localGetBrightness(paramFloat);
+			_result = playerAPI.localGetBrightness();
 		else if(overwritten != this)
-			_result = overwritten.getBrightness(paramFloat);
+			_result = overwritten.getBrightness();
 		else
 			_result = 0;
 
 		return _result;
 	}
 
-	public void afterGetBrightness(float paramFloat)
+	public void afterGetBrightness()
 	{
 	}
 
-	public void beforeGetBrightnessForRender(float paramFloat)
+	public void beforeGetBrightnessForRender()
 	{
 	}
 
-	public int getBrightnessForRender(float paramFloat)
+	public int getBrightnessForRender()
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenGetBrightnessForRender(this);
 
 		int _result;
 		if(overwritten == null)
-			_result = playerAPI.localGetBrightnessForRender(paramFloat);
+			_result = playerAPI.localGetBrightnessForRender();
 		else if(overwritten != this)
-			_result = overwritten.getBrightnessForRender(paramFloat);
+			_result = overwritten.getBrightnessForRender();
 		else
 			_result = 0;
 
 		return _result;
 	}
 
-	public void afterGetBrightnessForRender(float paramFloat)
+	public void afterGetBrightnessForRender()
 	{
 	}
 
@@ -600,26 +600,26 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeGetHurtSound()
+	public void beforeGetHurtSound(net.minecraft.util.DamageSource paramDamageSource)
 	{
 	}
 
-	public net.minecraft.util.SoundEvent getHurtSound()
+	public net.minecraft.util.SoundEvent getHurtSound(net.minecraft.util.DamageSource paramDamageSource)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenGetHurtSound(this);
 
 		net.minecraft.util.SoundEvent _result;
 		if(overwritten == null)
-			_result = playerAPI.localGetHurtSound();
+			_result = playerAPI.localGetHurtSound(paramDamageSource);
 		else if(overwritten != this)
-			_result = overwritten.getHurtSound();
+			_result = overwritten.getHurtSound(paramDamageSource);
 		else
 			_result = null;
 
 		return _result;
 	}
 
-	public void afterGetHurtSound()
+	public void afterGetHurtSound(net.minecraft.util.DamageSource paramDamageSource)
 	{
 	}
 
@@ -929,41 +929,41 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void moveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void moveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenMoveEntityWithHeading(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else if(overwritten != this)
-			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2);
+			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 	}
 
-	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 
-	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenMoveFlying(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else if(overwritten != this)
-			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 	}
 
-	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 
