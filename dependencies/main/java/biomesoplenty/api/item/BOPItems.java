@@ -10,14 +10,6 @@ package biomesoplenty.api.item;
 
 import net.minecraft.item.Item;
 
-/** 
- * This is a composite of this class for different MC versions of BOP, so that Galacticraft compiles
- * correctly against the BOP API in a development environment across all MC versions.
- * The buckets are not in BOP for MC 1.10+!  The amethyst items and darts are not in BOP for MC 1.8.9!
- * (So take care if referencing those items!)
- * 
- * This class will not be included in Galacticraft's .jar for distribution. 
- */
 public class BOPItems
 {
     
@@ -56,9 +48,6 @@ public class BOPItems
     public static Item pinecone;
     public static Item other_slab;
     
-    public static Item dart;
-    public static Item dart_blower;
-
     public static Item sacred_oak_door;
     public static Item cherry_door;
     public static Item umbran_door;
@@ -79,55 +68,16 @@ public class BOPItems
     public static Item wood_slab_0;
     public static Item wood_slab_1;
     
-    public static Item wading_boots;
-    public static Item flippers;
-    public static Item plain_flower_band;
-    public static Item lush_flower_band;
-    public static Item exotic_flower_band;
-    public static Item dull_flower_band;
-    
-    public static Item mud_helmet;
-    public static Item mud_chestplate;
-    public static Item mud_leggings;
-    public static Item mud_boots;
-    public static Item amethyst_helmet;
-    public static Item amethyst_chestplate;
-    public static Item amethyst_leggings;
-    public static Item amethyst_boots;
-    
-    public static Item mud_axe;
-    public static Item mud_hoe;
-    public static Item mud_pickaxe;
-    public static Item mud_shovel;
-    public static Item mud_sword;
-    public static Item amethyst_axe;
-    public static Item amethyst_hoe;
-    public static Item amethyst_pickaxe;
-    public static Item amethyst_shovel;
-    public static Item amethyst_sword;
-    
-    public static Item mud_scythe;
-    public static Item wood_scythe;
-    public static Item stone_scythe;
-    public static Item iron_scythe;
-    public static Item gold_scythe;
-    public static Item diamond_scythe;
-    public static Item amethyst_scythe;
-    
     public static Item biome_finder;
     public static Item biome_essence;
-    public static Item enderporter;
     public static Item flower_basket;
     public static Item jar_empty;
     public static Item jar_filled;
-
-    public static Item honey_bucket;
-    public static Item blood_bucket;
-    public static Item poison_bucket;
-    public static Item hot_spring_water_bucket;
-
-    public static Item record_wanderer;
-    public static Item record_corruption;
     
-    public static Item spawn_egg;
+    public static Item record_wanderer;
+
+    // TODO: public static Item ancientStaff;
+    // TODO: public static Item bop_bucket;
+    
+    
 }
