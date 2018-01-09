@@ -8,7 +8,8 @@ public class Constants
 
     public static final int LOCALMAJVERSION = 4;
     public static final int LOCALMINVERSION = 0;
-    public static final int LOCALBUILDVERSION = 0;
+    public static final int LOCALPATCHVERSION = 1;
+    public static final int LOCALBUILDVERSION = 121;
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
