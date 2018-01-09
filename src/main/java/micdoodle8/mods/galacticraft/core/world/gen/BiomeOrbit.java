@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeOrbit extends BiomeGenBaseGC
 {
@@ -23,6 +24,10 @@ public class BiomeOrbit extends BiomeGenBaseGC
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedZombie.class, 10, 4, 4));
         this.spawnableMonsterList.add(new SpawnListEntry(EntityEvolvedSpider.class, 10, 4, 4));
         this.setRegistryName(Constants.TEXTURE_PREFIX + this.getBiomeName());
+        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
+        {
+            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        }
     }
 
     @Override

@@ -81,6 +81,8 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
     {
         switch (meta)
         {
+        case 0:
+            return EnumSortCategoryItem.GEAR;
         case 1:
             return EnumSortCategoryItem.INGOT;
         default:

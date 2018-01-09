@@ -9,7 +9,7 @@ public class Constants
     public static final int LOCALMAJVERSION = 4;
     public static final int LOCALMINVERSION = 0;
     public static final int LOCALPATCHVERSION = 1;
-    public static final int LOCALBUILDVERSION = 120;
+    public static final int LOCALBUILDVERSION = 121;
     public static final String COMBINEDVERSION = LOCALMAJVERSION + "." + LOCALMINVERSION + "." + LOCALPATCHVERSION + "." + LOCALBUILDVERSION;
     
     public static final String MCVERSION = "[1.12.2]";
