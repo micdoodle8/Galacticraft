@@ -271,22 +271,22 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void beforeClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 	}
 
-	public void clonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void clonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenClonePlayer(this);
 
 		if(overwritten == null)
-			playerAPI.localClonePlayer(paramEntityPlayer, paramBoolean);
+			playerAPI.localClonePlayer(paramEntityPlayerMP, paramBoolean);
 		else if(overwritten != this)
-			overwritten.clonePlayer(paramEntityPlayer, paramBoolean);
+			overwritten.clonePlayer(paramEntityPlayerMP, paramBoolean);
 
 	}
 
-	public void afterClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void afterClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 	}
 
@@ -481,26 +481,26 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeGetBrightness(float paramFloat)
+	public void beforeGetBrightness()
 	{
 	}
 
-	public float getBrightness(float paramFloat)
+	public float getBrightness()
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenGetBrightness(this);
 
 		float _result;
 		if(overwritten == null)
-			_result = playerAPI.localGetBrightness(paramFloat);
+			_result = playerAPI.localGetBrightness();
 		else if(overwritten != this)
-			_result = overwritten.getBrightness(paramFloat);
+			_result = overwritten.getBrightness();
 		else
 			_result = 0;
 
 		return _result;
 	}
 
-	public void afterGetBrightness(float paramFloat)
+	public void afterGetBrightness()
 	{
 	}
 
@@ -764,41 +764,41 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void moveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void moveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveEntityWithHeading(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else if(overwritten != this)
-			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2);
+			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 	}
 
-	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 
-	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveFlying(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else if(overwritten != this)
-			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 	}
 
-	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 

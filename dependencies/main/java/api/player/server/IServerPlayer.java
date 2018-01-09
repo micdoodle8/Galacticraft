@@ -86,11 +86,9 @@ public interface IServerPlayer
 
 	boolean localCanTriggerWalking();
 
-	void realClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean);
+	void realClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean);
 
-	void superClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean);
-
-	void localClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean);
+	void localClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean);
 
 	void realDamageEntity(net.minecraft.util.DamageSource paramDamageSource, float paramFloat);
 
@@ -146,11 +144,11 @@ public interface IServerPlayer
 
 	double localGetDistanceSq(double paramDouble1, double paramDouble2, double paramDouble3);
 
-	float realGetBrightness(float paramFloat);
+	float realGetBrightness();
 
-	float superGetBrightness(float paramFloat);
+	float superGetBrightness();
 
-	float localGetBrightness(float paramFloat);
+	float localGetBrightness();
 
 	float realGetEyeHeight();
 
@@ -224,17 +222,17 @@ public interface IServerPlayer
 
 	void localMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
 	void realOnDeath(net.minecraft.util.DamageSource paramDamageSource);
 
@@ -340,6 +338,10 @@ public interface IServerPlayer
 
 	void localWriteEntityToNBT(net.minecraft.nbt.NBTTagCompound paramNBTTagCompound);
 
+	net.minecraft.network.datasync.DataParameter getLEFT_SHOULDER_ENTITYField();
+
+	net.minecraft.network.datasync.DataParameter getRIGHT_SHOULDER_ENTITYField();
+
 	net.minecraft.item.ItemStack getActiveItemStackField();
 
 	void setActiveItemStackField(net.minecraft.item.ItemStack activeItemStack);
@@ -351,6 +353,8 @@ public interface IServerPlayer
 	boolean getAddedToChunkField();
 
 	void setAddedToChunkField(boolean addedToChunk);
+
+	net.minecraft.advancements.PlayerAdvancements getAdvancementsField();
 
 	int getArrowHitTimerField();
 
@@ -438,6 +442,10 @@ public interface IServerPlayer
 
 	void setDimensionField(int dimension);
 
+	boolean getDisconnectedField();
+
+	void setDisconnectedField(boolean disconnected);
+
 	float getDistanceWalkedModifiedField();
 
 	void setDistanceWalkedModifiedField(float distanceWalkedModified);
@@ -446,9 +454,13 @@ public interface IServerPlayer
 
 	void setDistanceWalkedOnStepModifiedField(float distanceWalkedOnStepModified);
 
-	int getEntityAgeField();
+	net.minecraft.inventory.InventoryEnderChest getEnderChestField();
 
-	void setEntityAgeField(int entityAge);
+	void setEnderChestField(net.minecraft.inventory.InventoryEnderChest enderChest);
+
+	net.minecraft.util.math.Vec3d getEnteredNetherPositionField();
+
+	void setEnteredNetherPositionField(net.minecraft.util.math.Vec3d enteredNetherPosition);
 
 	float getEntityCollisionReductionField();
 
@@ -517,6 +529,10 @@ public interface IServerPlayer
 	int getHurtTimeField();
 
 	void setHurtTimeField(int hurtTime);
+
+	int getIdleTimeField();
+
+	void setIdleTimeField(int idleTime);
 
 	boolean getIgnoreFrustumCheckField();
 
@@ -660,6 +676,14 @@ public interface IServerPlayer
 
 	void setLastTickPosZField(double lastTickPosZ);
 
+	int getLevitatingSinceField();
+
+	void setLevitatingSinceField(int levitatingSince);
+
+	net.minecraft.util.math.Vec3d getLevitationStartPosField();
+
+	void setLevitationStartPosField(net.minecraft.util.math.Vec3d levitationStartPos);
+
 	float getLimbSwingField();
 
 	void setLimbSwingField(float limbSwing);
@@ -710,6 +734,10 @@ public interface IServerPlayer
 
 	void setMoveStrafingField(float moveStrafing);
 
+	float getMoveVerticalField();
+
+	void setMoveVerticalField(float moveVertical);
+
 	float getMovedDistanceField();
 
 	void setMovedDistanceField(float movedDistance);
@@ -741,10 +769,6 @@ public interface IServerPlayer
 	int getPingField();
 
 	void setPingField(int ping);
-
-	boolean getPlayerConqueredTheEndField();
-
-	void setPlayerConqueredTheEndField(boolean playerConqueredTheEnd);
 
 	long getPlayerLastActiveTimeField();
 
@@ -848,6 +872,10 @@ public interface IServerPlayer
 
 	void setPreventEntitySpawningField(boolean preventEntitySpawning);
 
+	boolean getQueuedEndExitField();
+
+	void setQueuedEndExitField(boolean queuedEndExit);
+
 	java.util.Random getRandField();
 
 	void setRandField(java.util.Random rand);
@@ -867,6 +895,8 @@ public interface IServerPlayer
 	int getRecentlyHitField();
 
 	void setRecentlyHitField(int recentlyHit);
+
+	net.minecraft.stats.RecipeBookServer getRecipeBookField();
 
 	float getRenderOffsetXField();
 
@@ -908,6 +938,10 @@ public interface IServerPlayer
 
 	void setScoreValueField(int scoreValue);
 
+	boolean getSeenCreditsField();
+
+	void setSeenCreditsField(boolean seenCredits);
+
 	long getServerPosXField();
 
 	void setServerPosXField(long serverPosX);
@@ -931,10 +965,6 @@ public interface IServerPlayer
 	float getSpeedInAirField();
 
 	void setSpeedInAirField(float speedInAir);
-
-	float getSpeedOnGroundField();
-
-	void setSpeedOnGroundField(float speedOnGround);
 
 	net.minecraft.stats.StatisticsManagerServer getStatsFileField();
 
@@ -997,5 +1027,9 @@ public interface IServerPlayer
 	int getXpCooldownField();
 
 	void setXpCooldownField(int xpCooldown);
+
+	int getXpSeedField();
+
+	void setXpSeedField(int xpSeed);
 
 }

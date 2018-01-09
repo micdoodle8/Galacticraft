@@ -22,7 +22,7 @@ import java.util.*;
 
 import net.minecraftforge.fml.relauncher.*;
 
-@IFMLLoadingPlugin.MCVersion("1.11")
+@IFMLLoadingPlugin.MCVersion("1.12")
 @IFMLLoadingPlugin.TransformerExclusions("api.player.forge")
 public class PlayerAPIPlugin implements IFMLLoadingPlugin
 {
