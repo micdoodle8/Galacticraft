@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 AlgorithmX2
+ * Copyright (c) 2017 AlgorithmX2
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,29 +21,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package appeng.api.networking.security;
+package appeng.api.storage.channels;
 
 
-import net.minecraft.entity.player.EntityPlayer;
+import appeng.api.storage.IStorageChannel;
+import appeng.api.storage.data.IAEFluidStack;
 
-/**
- * TODO: Consider refactoring.
- */
-public class PlayerSource extends BaseActionSource
+
+public interface IFluidStorageChannel extends IStorageChannel<IAEFluidStack>
 {
 
-	public final EntityPlayer player;
-	public final IActionHost via;
-
-	public PlayerSource( final EntityPlayer p, final IActionHost v )
-	{
-		this.player = p;
-		this.via = v;
-	}
-
-	@Override
-	public boolean isPlayer()
-	{
-		return true;
-	}
 }

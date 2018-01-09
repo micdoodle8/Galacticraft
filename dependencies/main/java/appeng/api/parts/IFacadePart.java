@@ -24,8 +24,6 @@
 package appeng.api.parts;
 
 
-import javax.annotation.Nullable;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -71,7 +69,6 @@ public interface IFacadePart
 	/**
 	 * The item that this facade masquerades as.
 	 */
-	@Nullable
 	ItemStack getTextureItem();
 
 	/**

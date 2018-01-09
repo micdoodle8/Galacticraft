@@ -19,11 +19,11 @@
 package appeng.api.exceptions;
 
 
-public class CoreInaccessibleException extends RuntimeException
+public class MissingDefinitionException extends RuntimeException
 {
-	private static final long serialVersionUID = -7434641554655517242L;
+	private static final long serialVersionUID = -6547396584255825761L;
 
-	public CoreInaccessibleException( final String message )
+	public MissingDefinitionException( final String message )
 	{
 		super( message );
 	}

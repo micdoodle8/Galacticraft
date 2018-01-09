@@ -21,24 +21,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package appeng.api.networking.security;
+package appeng.api.exceptions;
 
-/**
- * TODO: Consider refactoring.
- */
-public class MachineSource extends BaseActionSource
+
+public class RecipeException extends Exception
 {
 
-	public final IActionHost via;
+	private static final long serialVersionUID = -6602870588617670262L;
 
-	public MachineSource( final IActionHost v )
+	public RecipeException( final String n )
 	{
-		this.via = v;
-	}
-
-	@Override
-	public boolean isMachine()
-	{
-		return true;
+		super( n );
 	}
 }

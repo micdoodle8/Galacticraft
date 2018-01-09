@@ -21,21 +21,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package appeng.api.networking.security;
+package appeng.api.exceptions;
 
-/**
- * TODO: Consider refactoring.
- */
-public class BaseActionSource
+
+public class RegistrationException extends Exception
 {
 
-	public boolean isPlayer()
-	{
-		return false;
-	}
+	private static final long serialVersionUID = -6602870588617670263L;
 
-	public boolean isMachine()
+	public RegistrationException( final String n )
 	{
-		return false;
+		super( n );
 	}
 }

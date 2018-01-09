@@ -1,6 +1,6 @@
 /*
  * This file is part of Applied Energistics 2.
- * Copyright (c) 2013 - 2014, AlgorithmX2, All rights reserved.
+ * Copyright (c) 2013 - 2017, AlgorithmX2, All rights reserved.
  *
  * Applied Energistics 2 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,13 +16,26 @@
  * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
 
-package appeng.api.exceptions;
+package appeng.api.storage;
 
 
-public class MissingDefinition extends RuntimeException
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+
+public interface ISpatialDimension
 {
-	public MissingDefinition( final String message )
-	{
-		super( message );
-	}
+	World getWorld();
+
+	int createNewCellDimension( BlockPos contentSize, int playerId );
+
+	void deleteCellDimension( int cellDimId );
+
+	boolean isCellDimension( int cellDimID );
+
+	int getCellDimensionOwner( int cellDimId );
+
+	BlockPos getCellDimensionOrigin( int cellDimId );
+
+	BlockPos getCellContentSize( int cellDimId );
 }

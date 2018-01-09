@@ -21,44 +21,16 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package appeng.api.storage;
+package appeng.api.exceptions;
 
 
-import appeng.api.AEApi;
-import appeng.api.storage.data.IAEFluidStack;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IAEStack;
-import appeng.api.storage.data.IItemList;
-
-
-public enum StorageChannel
+public class ModNotInstalledException extends Exception
 {
-	/**
-	 * AE2's Default Storage.
-	 */
-	ITEMS( IAEItemStack.class ),
 
-	/**
-	 * AE2's Fluid Based Storage ( mainly added to better support ExtraCells )
-	 */
-	FLUIDS( IAEFluidStack.class );
+	private static final long serialVersionUID = -9052435206368425494L;
 
-	public final Class<? extends IAEStack> type;
-
-	StorageChannel( final Class<? extends IAEStack> t )
+	public ModNotInstalledException( final String t )
 	{
-		this.type = t;
-	}
-
-	public IItemList createList()
-	{
-		if( this == ITEMS )
-		{
-			return AEApi.instance().storage().createItemList();
-		}
-		else
-		{
-			return AEApi.instance().storage().createFluidList();
-		}
+		super( t );
 	}
 }

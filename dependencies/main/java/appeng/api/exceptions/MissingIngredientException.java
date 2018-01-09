@@ -24,13 +24,13 @@
 package appeng.api.exceptions;
 
 
-public class ModNotInstalled extends Exception
+public class MissingIngredientException extends Exception
 {
 
-	private static final long serialVersionUID = -9052435206368425494L;
+	private static final long serialVersionUID = -998858343831371697L;
 
-	public ModNotInstalled( final String t )
+	public MissingIngredientException( final String n )
 	{
-		super( t );
+		super( n );
 	}
 }
