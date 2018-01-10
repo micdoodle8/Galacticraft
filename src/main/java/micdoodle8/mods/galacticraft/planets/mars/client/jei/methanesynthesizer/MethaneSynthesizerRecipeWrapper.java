@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class MethaneSynthesizerRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class MethaneSynthesizerRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ItemStack input;

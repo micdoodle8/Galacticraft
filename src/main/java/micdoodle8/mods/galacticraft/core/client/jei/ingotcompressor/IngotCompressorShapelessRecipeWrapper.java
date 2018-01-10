@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 
 import java.awt.Color;
 
-public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ShapelessOreRecipeGC recipe;

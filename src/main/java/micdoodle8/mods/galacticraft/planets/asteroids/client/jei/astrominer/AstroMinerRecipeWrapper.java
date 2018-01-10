@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class AstroMinerRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class AstroMinerRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;

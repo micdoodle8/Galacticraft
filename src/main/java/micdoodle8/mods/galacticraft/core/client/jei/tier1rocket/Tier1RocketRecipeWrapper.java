@@ -9,7 +9,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
-public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class Tier1RocketRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;

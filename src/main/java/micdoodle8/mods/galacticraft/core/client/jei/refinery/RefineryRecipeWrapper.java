@@ -6,7 +6,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
-public class RefineryRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class RefineryRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ItemStack input;

@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class CircuitFabricatorRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final List<ItemStack> input;

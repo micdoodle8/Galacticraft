@@ -15,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.util.Arrays;
 
-public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
+public class IngotCompressorShapedRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ShapedRecipesGC recipe;

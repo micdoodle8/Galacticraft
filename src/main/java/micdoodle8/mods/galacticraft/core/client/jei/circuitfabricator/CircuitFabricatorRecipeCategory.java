@@ -4,6 +4,7 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -14,7 +15,7 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
+public class CircuitFabricatorRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation circuitFabTex = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuit_fabricator.png");
 
