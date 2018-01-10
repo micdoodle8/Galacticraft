@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
-import mezz.jei.api.IItemBlacklist;
 import mezz.jei.api.ingredients.IIngredientBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
