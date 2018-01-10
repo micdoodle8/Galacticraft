@@ -5,11 +5,11 @@ import javax.annotation.Nonnull;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
-public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class Tier1RocketRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;

@@ -8,6 +8,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.ResourceLocation;
@@ -79,5 +80,11 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
         itemstacks.init(19, false, 138, 100);
 
         itemstacks.set(ingredients);
+    }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

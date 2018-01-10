@@ -114,4 +114,10 @@ public class MethaneSynthesizerRecipeCategory extends BlankRecipeCategory
             itemstacks.set(3, ingredients.getOutputs(ItemStack.class).get(0));
         }
     }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
+    }
 }
