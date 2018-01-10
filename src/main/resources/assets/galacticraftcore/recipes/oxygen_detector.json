@@ -21,9 +21,6 @@
       "type": "forge:ore_dict",
       "ore": "compressedSteel"
     },
-    "X": {
-      "item": "galacticraftcore:air_fan"
-    },
     "Y": {
       "item": "galacticraftcore:air_vent"
     },

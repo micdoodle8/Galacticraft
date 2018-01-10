@@ -13,14 +13,6 @@
       "type": "forge:ore_dict",
       "ore": "compressedAluminum"
     },
-    "V": {
-      "item": "galacticraftcore:aluminum_wire",
-      "data": 0
-    },
-    "W": {
-      "type": "forge:ore_dict",
-      "ore": "compressedSteel"
-    },
     "X": {
       "item": "galacticraftcore:air_fan"
     },
