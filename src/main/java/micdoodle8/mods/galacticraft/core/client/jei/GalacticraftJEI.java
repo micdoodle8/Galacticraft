@@ -4,6 +4,7 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapperFactory;
 import mezz.jei.api.recipe.IStackHelper;
@@ -37,13 +38,7 @@ public class GalacticraftJEI extends BlankModPlugin
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
-        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         IStackHelper stackHelper = registry.getJeiHelpers().getStackHelper();
-        registry.addRecipeCategories(new Tier1RocketRecipeCategory(guiHelper),
-                new BuggyRecipeCategory(guiHelper),
-                new CircuitFabricatorRecipeCategory(guiHelper),
-                new IngotCompressorRecipeCategory(guiHelper),
-                new RefineryRecipeCategory(guiHelper));
 
         registry.handleRecipes(INasaWorkbenchRecipe.class, Tier1RocketRecipeWrapper::new, RecipeCategories.ROCKET_T1_ID);
         registry.handleRecipes(INasaWorkbenchRecipe.class, BuggyRecipeWrapper::new, RecipeCategories.BUGGY_ID);
@@ -59,14 +54,23 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList(), RecipeCategories.CIRCUIT_FABRICATOR_ID);
         registry.addRecipes(CompressorRecipes.getRecipeList(), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipes(RefineryRecipeMaker.getRecipesList(), RecipeCategories.REFINERY_ID);
-        
-        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
-        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T1_ID);
-        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.BUGGY_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
-        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
 
-        GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T1_ID, RecipeCategories.BUGGY_ID);
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
+
+        GCItems.hideItemsJEI(registry.getJeiHelpers().getIngredientBlacklist());
+    }
+
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry)
+    {
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        registry.addRecipeCategories(new Tier1RocketRecipeCategory(guiHelper),
+                new BuggyRecipeCategory(guiHelper),
+                new CircuitFabricatorRecipeCategory(guiHelper),
+                new IngotCompressorRecipeCategory(guiHelper),
+                new RefineryRecipeCategory(guiHelper));
     }
 }

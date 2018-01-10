@@ -4,6 +4,7 @@ import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
+import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -22,17 +23,19 @@ public class GalacticraftAsteroidsJEI extends BlankModPlugin
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
-        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
-        registry.addRecipeCategories(new Tier3RocketRecipeCategory(guiHelper),
-                new AstroMinerRecipeCategory(guiHelper));
-
         registry.handleRecipes(INasaWorkbenchRecipe.class, Tier3RocketRecipeWrapper::new, RecipeCategories.ROCKET_T3_ID);
         registry.handleRecipes(INasaWorkbenchRecipe.class, AstroMinerRecipeWrapper::new, RecipeCategories.ASTRO_MINER_ID);
 
         registry.addRecipes(GalacticraftRegistry.getRocketT3Recipes(), RecipeCategories.ROCKET_T3_ID);
         registry.addRecipes(GalacticraftRegistry.getAstroMinerRecipes(), RecipeCategories.ASTRO_MINER_ID);
-        ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
-        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T3_ID);
-        registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ASTRO_MINER_ID);
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T3_ID, RecipeCategories.ASTRO_MINER_ID);
+    }
+
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registry)
+    {
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        registry.addRecipeCategories(new Tier3RocketRecipeCategory(guiHelper),
+                new AstroMinerRecipeCategory(guiHelper));
     }
 }

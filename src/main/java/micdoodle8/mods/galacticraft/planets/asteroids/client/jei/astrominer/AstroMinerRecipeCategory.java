@@ -74,4 +74,10 @@ public class AstroMinerRecipeCategory extends BlankRecipeCategory
 
         itemstacks.set(ingredients);
     }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
+    }
 }

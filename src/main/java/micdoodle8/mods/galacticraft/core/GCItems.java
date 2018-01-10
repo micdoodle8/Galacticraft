@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
 import mezz.jei.api.IItemBlacklist;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -172,22 +173,22 @@ public class GCItems
      * until it services an FMLLoadCompleteEvent.
      * (Seriously?!)
      */
-    public static void hideItemsJEI(IItemBlacklist jeiHidden)
+    public static void hideItemsJEI(IIngredientBlacklist jeiHidden)
     {
         if (jeiHidden != null)
         {
             for (Item item : GCItems.hiddenItems)
             {
-                jeiHidden.addItemToBlacklist(new ItemStack(item, 1, 0));
+                jeiHidden.addIngredientToBlacklist(new ItemStack(item, 1, 0));
             }
 
             for (Block block : GCBlocks.hiddenBlocks)
             {
-                jeiHidden.addItemToBlacklist(new ItemStack(block, 1, 0));
+                jeiHidden.addIngredientToBlacklist(new ItemStack(block, 1, 0));
                 if (block == GCBlocks.slabGCDouble)
                 {
                     for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); j++)
-                        jeiHidden.addItemToBlacklist(new ItemStack(block, 1, j));
+                        jeiHidden.addIngredientToBlacklist(new ItemStack(block, 1, j));
                 }
             }
         }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
-import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -17,7 +17,7 @@ import javax.annotation.Nonnull;
 
 import java.awt.Color;
 
-public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
+public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
 {
     @Nonnull
     private final ShapelessOreRecipeGC recipe;

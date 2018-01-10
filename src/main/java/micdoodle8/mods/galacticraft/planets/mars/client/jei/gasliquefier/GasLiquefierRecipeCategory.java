@@ -161,4 +161,10 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
             itemstacks.set(this.outputGas == 0 || this.outputGas == 3 ? 2 : 1, output);
         }
     }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
+    }
 }
