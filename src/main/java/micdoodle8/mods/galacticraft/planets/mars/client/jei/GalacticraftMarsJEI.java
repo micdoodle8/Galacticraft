@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.jei;
 
+import java.lang.reflect.Method;
+
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -30,6 +32,26 @@ public class GalacticraftMarsJEI extends BlankModPlugin
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
+        boolean JEIversion450plus = false;
+        Method[] methods = registry.getClass().getMethods();
+        for (Method m : methods)
+        {
+            if (m.getName().equals("addRecipeCatalyst"))
+            {
+                JEIversion450plus = true;
+                break;
+            }
+        }
+        
+        if (!JEIversion450plus)
+        {
+            IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+            registry.addRecipeCategories(new Tier2RocketRecipeCategory(guiHelper),
+                    new GasLiquefierRecipeCategory(guiHelper),
+                    new CargoRocketRecipeCategory(guiHelper),
+                    new MethaneSynthesizerRecipeCategory(guiHelper));
+        }
+        
         registry.handleRecipes(INasaWorkbenchRecipe.class, Tier2RocketRecipeWrapper::new, RecipeCategories.ROCKET_T2_ID);
         registry.handleRecipes(GasLiquefierRecipeWrapper.class, recipe -> recipe, RecipeCategories.GAS_LIQUEFIER_ID);
         registry.handleRecipes(INasaWorkbenchRecipe.class, CargoRocketRecipeWrapper::new, RecipeCategories.ROCKET_CARGO_ID);
@@ -40,9 +62,20 @@ public class GalacticraftMarsJEI extends BlankModPlugin
         registry.addRecipes(GalacticraftRegistry.getCargoRocketRecipes(), RecipeCategories.ROCKET_CARGO_ID);
         registry.addRecipes(MethaneSynthesizerRecipeMaker.getRecipesList(), RecipeCategories.METHANE_SYNTHESIZER_ID);
 
-        registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T2_ID, RecipeCategories.ROCKET_CARGO_ID);
-        registry.addRecipeCatalyst(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
-        registry.addRecipeCatalyst(new ItemStack(MarsBlocks.machineT2, 1, 4), RecipeCategories.METHANE_SYNTHESIZER_ID);
+        if (JEIversion450plus)
+        {
+            registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T2_ID, RecipeCategories.ROCKET_CARGO_ID);
+            registry.addRecipeCatalyst(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
+            registry.addRecipeCatalyst(new ItemStack(MarsBlocks.machineT2, 1, 4), RecipeCategories.METHANE_SYNTHESIZER_ID);
+        }
+        else
+        {
+            ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+            registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T2_ID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
+            registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_CARGO_ID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(MarsBlocks.machineT2, 1, 4), RecipeCategories.METHANE_SYNTHESIZER_ID);
+        }
     }
 
     @Override

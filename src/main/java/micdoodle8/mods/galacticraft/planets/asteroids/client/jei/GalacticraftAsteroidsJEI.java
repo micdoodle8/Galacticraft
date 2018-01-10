@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.jei;
 
+import java.lang.reflect.Method;
+
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IModRegistry;
@@ -23,12 +25,40 @@ public class GalacticraftAsteroidsJEI extends BlankModPlugin
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
+        boolean JEIversion450plus = false;
+        Method[] methods = registry.getClass().getMethods();
+        for (Method m : methods)
+        {
+            if (m.getName().equals("addRecipeCatalyst"))
+            {
+                JEIversion450plus = true;
+                break;
+            }
+        }
+
+        if (!JEIversion450plus)
+        {
+            IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+            registry.addRecipeCategories(new Tier3RocketRecipeCategory(guiHelper),
+                    new AstroMinerRecipeCategory(guiHelper));
+        }
+
         registry.handleRecipes(INasaWorkbenchRecipe.class, Tier3RocketRecipeWrapper::new, RecipeCategories.ROCKET_T3_ID);
         registry.handleRecipes(INasaWorkbenchRecipe.class, AstroMinerRecipeWrapper::new, RecipeCategories.ASTRO_MINER_ID);
 
         registry.addRecipes(GalacticraftRegistry.getRocketT3Recipes(), RecipeCategories.ROCKET_T3_ID);
         registry.addRecipes(GalacticraftRegistry.getAstroMinerRecipes(), RecipeCategories.ASTRO_MINER_ID);
-        registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T3_ID, RecipeCategories.ASTRO_MINER_ID);
+
+        if (JEIversion450plus)
+        {
+            registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T3_ID, RecipeCategories.ASTRO_MINER_ID);
+        }
+        else
+        {
+            ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
+            registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ROCKET_T3_ID);
+            registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.ASTRO_MINER_ID);
+        }
     }
 
     @Override
