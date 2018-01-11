@@ -17,8 +17,8 @@
       "item": "galacticraftcore:sensor_lens"
     },
     "Y": {
-      "item": "galacticraftcore:item_basic_moon",
-      "data": 0
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
     },
     "Z": {
       "type": "forge:ore_dict",

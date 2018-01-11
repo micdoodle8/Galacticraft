@@ -25,8 +25,8 @@
       "data": 4
     },
     "Z": {
-      "item": "galacticraftcore:item_basic_moon",
-      "data": 1
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_plate"
     }
   }
 }

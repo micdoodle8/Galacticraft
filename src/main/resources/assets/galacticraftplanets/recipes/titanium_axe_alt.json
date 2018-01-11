@@ -13,8 +13,8 @@
       "item": "minecraft:iron_ingot"
     },
     "Y": {
-      "item": "galacticraftplanets:item_basic_asteroids",
-      "data": 6
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
     }
   }
 }

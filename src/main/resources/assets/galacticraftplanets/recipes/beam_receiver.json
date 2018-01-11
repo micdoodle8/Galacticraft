@@ -10,8 +10,8 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "galacticraftplanets:item_basic_asteroids",
-      "data": 6
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
     },
     "Y": {
       "item": "galacticraftplanets:item_basic_asteroids",

@@ -23,12 +23,12 @@
       "data": 14
     },
     "Y": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 5
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
     },
     "Z": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 2
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
     }
   }
 }

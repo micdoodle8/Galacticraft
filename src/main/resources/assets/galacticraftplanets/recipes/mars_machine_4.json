@@ -11,8 +11,8 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "X": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 5
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
     },
     "Y": {
       "item": "galacticraftplanets:item_basic_mars",

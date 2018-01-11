@@ -22,8 +22,8 @@
       "data": 8
     },
     "X": {
-      "type": "forge:ore_dict",
-      "ore": "compressedDesh"
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
     }
   }
 }

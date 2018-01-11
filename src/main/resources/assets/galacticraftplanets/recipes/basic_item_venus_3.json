@@ -15,8 +15,8 @@
       "data": 7
     },
     "Y": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 2
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
     }
   }
 }

@@ -14,8 +14,8 @@
       "data": 8
     },
     "X": {
-      "item": "galacticraftplanets:item_basic_asteroids",
-      "data": 6
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
     },
     "Y": {
       "item": "minecraft:redstone"

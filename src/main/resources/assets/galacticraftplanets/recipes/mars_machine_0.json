@@ -14,12 +14,12 @@
       "item": "galacticraftcore:oxygen_concentrator"
     },
     "W": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 5
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
     },
     "X": {
-      "item": "galacticraftplanets:item_basic_mars",
-      "data": 2
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
     },
     "Z": {
       "item": "galacticraftcore:canister",
