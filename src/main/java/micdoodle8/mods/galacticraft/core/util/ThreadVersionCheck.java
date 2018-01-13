@@ -19,7 +19,7 @@ public class ThreadVersionCheck extends Thread
 
     public static int remoteMajVer;
     public static int remoteMinVer;
-    public static int remoteBuildVer;
+    public static int remotePatchVer = -1;
 
     public ThreadVersionCheck()
     {
@@ -42,7 +42,7 @@ public class ThreadVersionCheck extends Thread
             return;
         }
 
-        while (this.count < 3 && remoteBuildVer == 0)
+        while (this.count < 3 && remotePatchVer == -1)
         {
             BufferedReader in = null;
             try
@@ -64,26 +64,27 @@ public class ThreadVersionCheck extends Thread
 
                         str2 = str.split("#");
 
-                        if (str2.length == 3)
+                        if (str2.length >= 3)
                         {
                             remoteMajVer = Integer.parseInt(str2[0]);
                             remoteMinVer = Integer.parseInt(str2[1]);
-                            remoteBuildVer = Integer.parseInt(str2[2]);
+                            remotePatchVer = Integer.parseInt(str2[2]);
                         }
 
-                        if (remoteMajVer == Constants.LOCALMAJVERSION && (remoteMinVer > Constants.LOCALMINVERSION || (remoteMinVer == Constants.LOCALMINVERSION && remoteBuildVer > Constants.LOCALPATCHVERSION)))
+                        if (remoteMajVer == Constants.LOCALMAJVERSION && (remoteMinVer > Constants.LOCALMINVERSION || (remoteMinVer == Constants.LOCALMINVERSION && remotePatchVer > Constants.LOCALPATCHVERSION)))
                         {
                             Thread.sleep(5000);
 
                             if (sideToCheck.equals(Side.CLIENT))
                             {
-                                FMLClientHandler.instance().getClient().player.sendMessage(new TextComponentString(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
+                                FMLClientHandler.instance().getClient().player.sendMessage(new TextComponentString(EnumColor.GREY + "New " + EnumColor.DARK_AQUA + Constants.MOD_NAME_SIMPLE + EnumColor.GREY + " version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + EnumColor.DARK_BLUE + " http://micdoodle8.com/"));
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {
-                                GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remoteBuildVer) + " http://micdoodle8.com/");
+                                GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + " http://micdoodle8.com/");
                             }
                         }
+                        break;
                     }
                 }
 
@@ -105,7 +106,7 @@ public class ThreadVersionCheck extends Thread
                 }
             }
 
-            if (remoteBuildVer == 0)
+            if (remotePatchVer == -1)
             {
                 try
                 {
@@ -118,7 +119,7 @@ public class ThreadVersionCheck extends Thread
             }
             else
             {
-                GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remoteBuildVer);
+                GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer);
             }
 
             this.count++;
