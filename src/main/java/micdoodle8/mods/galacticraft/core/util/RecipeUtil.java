@@ -7,7 +7,14 @@ import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.registries.GameData;
+
 import javax.annotation.Nonnull;
 
 import java.util.HashMap;
@@ -42,15 +49,28 @@ public class RecipeUtil
         return ItemStack.EMPTY;
     }
 
-    @SuppressWarnings("unchecked")
     public static void addRecipe(ItemStack result, Object[] obj)
     {
-//        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
+        CraftingHelper.ShapedPrimer pattern = CraftingHelper.parseShaped(obj);
+        addCustomRecipe(new ShapedRecipes(result.getItem().getRegistryName().toString(), pattern.width, pattern.height, pattern.input, result));
     }
 
     public static void addCustomRecipe(IRecipe rec)
     {
-//        CraftingManager.getInstance().getRecipeList().add(rec);
+        String modID = Loader.instance().activeModContainer().getModId();
+        ResourceLocation newLocation = new ResourceLocation(modID, rec.getRecipeOutput().getItem().getRegistryName().getResourcePath());
+        if (CraftingManager.REGISTRY.containsKey(newLocation))
+        {
+            int count = 1;
+            String newNameBase = newLocation.getResourcePath() + "_";
+            while (CraftingManager.REGISTRY.containsKey(newLocation))
+            {
+                newLocation = new ResourceLocation(modID, newNameBase + count++);
+            }
+        }
+        rec.setRegistryName(newLocation);
+
+        GameData.register_impl(rec);
     }
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
