@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -16,9 +14,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecipeManagerAsteroids
 {

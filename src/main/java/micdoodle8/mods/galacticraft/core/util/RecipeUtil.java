@@ -7,17 +7,10 @@ import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-
 import javax.annotation.Nonnull;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class RecipeUtil
 {

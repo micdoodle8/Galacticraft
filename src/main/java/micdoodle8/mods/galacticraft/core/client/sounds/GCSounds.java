@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.sounds;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public class GCSounds

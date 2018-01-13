@@ -3,8 +3,6 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.world.biome.Biome;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.world.biome.BiomeDecorator;
 
 public class BiomeMoon extends BiomeGenBaseGC

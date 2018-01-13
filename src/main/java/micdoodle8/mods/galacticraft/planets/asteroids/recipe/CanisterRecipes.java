@@ -11,8 +11,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-import java.util.List;
-
 public class CanisterRecipes extends ShapelessRecipes
 {
     public CanisterRecipes(ItemStack stack, NonNullList<Ingredient> list)

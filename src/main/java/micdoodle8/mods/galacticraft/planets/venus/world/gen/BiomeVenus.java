@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;

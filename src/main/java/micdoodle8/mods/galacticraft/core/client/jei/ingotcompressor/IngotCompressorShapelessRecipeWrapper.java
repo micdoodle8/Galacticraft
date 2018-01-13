@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 import java.util.List;
 
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;

@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeFlatMoon extends BiomeMoon

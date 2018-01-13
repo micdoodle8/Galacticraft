@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.item.ItemStack;
 

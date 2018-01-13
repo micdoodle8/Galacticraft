@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.jei.buggy;
 
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;

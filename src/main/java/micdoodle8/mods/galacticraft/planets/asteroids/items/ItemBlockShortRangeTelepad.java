@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;

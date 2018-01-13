@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;

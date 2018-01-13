@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
