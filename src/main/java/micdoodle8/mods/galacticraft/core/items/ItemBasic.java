@@ -266,6 +266,8 @@ public class ItemBasic extends Item implements ISortableItem
         case 10:
         case 11:
             return EnumSortCategoryItem.PLATE;
+        case 19:
+            return EnumSortCategoryItem.GEAR;
         }
         return EnumSortCategoryItem.GENERAL;
     }

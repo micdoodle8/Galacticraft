@@ -91,8 +91,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.fml.server.FMLServerHandler;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -1209,7 +1207,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             break;
         case S_REQUEST_PLAYERSKIN:
             String strName = (String) this.data.get(0);
-            EntityPlayerMP playerRequested = FMLServerHandler.instance().getServer().getPlayerList().getPlayerByUsername(strName);
+            EntityPlayerMP playerRequested = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerByUsername(strName);
 
             //Player not online
             if (playerRequested == null)
