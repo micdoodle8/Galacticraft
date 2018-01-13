@@ -32,7 +32,6 @@ public class RecipeManagerAsteroids
     private static void addUniversalRecipes()
     {
     	Object titaniumIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(AsteroidsItems.basicItem, 1, 0) : "ingotTitanium";
-    	Object titaniumPlate = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(AsteroidsItems.basicItem, 1, 6) : "compressedTitanium";
     	ItemStack platingTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
     	
     	FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.basicItem, 1, 5), 0.0F);
@@ -40,8 +39,6 @@ public class RecipeManagerAsteroids
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 5), new ItemStack(Items.IRON_INGOT), 0.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.IRON_INGOT), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
-
-        RecipeUtil.addBlockRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 7), "ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
 
         //Cobblestone->Gravel, Gravel->Sand, Sand->Clay
         CompressorRecipes.addRecipeAdventure(new ItemStack(Blocks.GRAVEL, 9, 0), "XXX", "XXX", "XXX", 'X', new ItemStack(Blocks.COBBLESTONE, 1));

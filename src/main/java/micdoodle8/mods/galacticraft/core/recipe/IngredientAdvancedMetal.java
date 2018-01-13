@@ -15,6 +15,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreIngredient;
 
 import javax.annotation.Nonnull;
 
@@ -27,31 +28,31 @@ public class IngredientAdvancedMetal implements IIngredientFactory
         String metal = JsonUtils.getString(json, "metal");
         if (metal.equals("meteoric_iron_ingot"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(GCItems.itemBasicMoon, 1, 0)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("ingotMeteoricIron").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(GCItems.itemBasicMoon, 1, 0)) : new OreIngredient("ingotMeteoricIron");
         }
         if (metal.equals("meteoric_iron_plate"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(GCItems.itemBasicMoon, 1, 1)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("compressedMeteoricIron").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(GCItems.itemBasicMoon, 1, 1)) : new OreIngredient("compressedMeteoricIron");
         }
         if (metal.equals("desh_ingot"))
         {
-            return GalacticraftCore.isPlanetsLoaded ? (ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(MarsItems.marsItemBasic, 1, 2)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("ingotDesh").toArray())) : Ingredient.fromItem(GCItems.heavyPlatingTier1);
+            return GalacticraftCore.isPlanetsLoaded ? (ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(MarsItems.marsItemBasic, 1, 2)) : new OreIngredient("ingotDesh")) : Ingredient.fromItem(GCItems.heavyPlatingTier1);
         }
         if (metal.equals("desh_plate"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(MarsItems.marsItemBasic, 1, 5)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("compressedDesh").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(MarsItems.marsItemBasic, 1, 5)) : new OreIngredient("compressedDesh");
         }
         if (metal.equals("titanium_ingot"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 0)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("ingotTitanium").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 0)) : new OreIngredient("ingotTitanium");
         }
         if (metal.equals("titanium_plate"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 6)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("compressedTitanium").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 6)) : new OreIngredient("compressedTitanium");
         }
         if (metal.equals("lead_ingot"))
         {
-            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(VenusItems.basicItem, 1, 1)) : Ingredient.fromStacks((ItemStack[]) OreDictionary.getOres("ingotLead").toArray());
+            return ConfigManagerCore.recipesRequireGCAdvancedMetals ? Ingredient.fromStacks(new ItemStack(VenusItems.basicItem, 1, 1)) : new OreIngredient("ingotLead");
         }
         return Ingredient.fromItem(GCItems.infiniteBatery);
     }

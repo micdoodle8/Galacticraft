@@ -9,12 +9,15 @@ import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
+
 import java.util.HashMap;
+import java.util.List;
 
 public class RecipeUtil
 {
@@ -52,28 +55,10 @@ public class RecipeUtil
 //        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
 
-    public static void addShapelessOreRecipe(ItemStack result, Object... obj)
-    {
-//        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, obj));
-    }
-
     public static void addCustomRecipe(IRecipe rec)
     {
 //        CraftingManager.getInstance().getRecipeList().add(rec);
     }
-
-    public static void addBlockRecipe(ItemStack result, String oreDictIngot, ItemStack gcIngot)
-    {
-        if (OreDictionary.getOres(oreDictIngot).size() > 1)
-        {
-            addShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot });
-        }
-        else
-        {
-            RecipeUtil.addRecipe(result, new Object[] { "XXX", "XXX", "XXX", 'X', gcIngot });
-        }
-    }
-
 
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
     {
