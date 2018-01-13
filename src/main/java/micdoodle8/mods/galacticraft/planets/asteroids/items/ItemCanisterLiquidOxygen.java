@@ -98,6 +98,10 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
             }
             return new ItemStack(this.getContainerItem(), 1, ItemCanisterGeneric.EMPTY);
         }
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        {
+            return itemstack.copy();
+        }
         return super.getContainerItem(itemstack);
     }
 
