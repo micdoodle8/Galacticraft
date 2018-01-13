@@ -52,11 +52,6 @@ public class RecipeUtil
 //        CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));
     }
 
-    public static void addShapelessRecipe(ItemStack result, Object... obj)
-    {
-//        CraftingManager.getInstance().addShapelessRecipe(result, obj);
-    }
-
     public static void addShapelessOreRecipe(ItemStack result, Object... obj)
     {
 //        CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, obj));
@@ -71,7 +66,7 @@ public class RecipeUtil
     {
         if (OreDictionary.getOres(oreDictIngot).size() > 1)
         {
-//            CraftingManager.getInstance().getRecipeList().add(new ShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot }));
+            addShapelessOreRecipe(result, new Object[] { gcIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot, oreDictIngot });
         }
         else
         {
