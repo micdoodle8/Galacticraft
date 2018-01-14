@@ -194,19 +194,22 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
 
     public static int colorMultiplier(IBlockAccess worldIn, BlockPos pos)
     {
-        TileEntity tile = worldIn.getTileEntity(pos);
-
-        if (tile instanceof TileEntityFallenMeteor)
+        if (worldIn != null && pos != null)
         {
-            TileEntityFallenMeteor meteor = (TileEntityFallenMeteor) tile;
-
-            Vector3 col = new Vector3(198, 108, 58);
-            col.translate(200 - meteor.getScaledHeatLevel() * 200);
-            col.x = Math.min(255, col.x);
-            col.y = Math.min(255, col.y);
-            col.z = Math.min(255, col.z);
-
-            return ColorUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
+            TileEntity tile = worldIn.getTileEntity(pos);
+    
+            if (tile instanceof TileEntityFallenMeteor)
+            {
+                TileEntityFallenMeteor meteor = (TileEntityFallenMeteor) tile;
+    
+                Vector3 col = new Vector3(198, 108, 58);
+                col.translate(200 - meteor.getScaledHeatLevel() * 200);
+                col.x = Math.min(255, col.x);
+                col.y = Math.min(255, col.y);
+                col.z = Math.min(255, col.z);
+    
+                return ColorUtil.to32BitColor(255, (byte) col.x, (byte) col.y, (byte) col.z);
+            }
         }
 
         return 16777215;
