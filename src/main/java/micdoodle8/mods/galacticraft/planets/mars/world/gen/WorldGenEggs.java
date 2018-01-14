@@ -27,7 +27,7 @@ public class WorldGenEggs extends WorldGenerator
         int k1 = pos.getZ() + par2Random.nextInt(8) - par2Random.nextInt(8);
         BlockPos newPos = new BlockPos(i1, j1, k1);
 
-        if (!par1World.isBlockLoaded(newPos)) return false;
+        if (!par1World.isBlockLoaded(newPos.add(1, 0, 1))) return false;
 
         if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.getHasNoSky()))
         {
