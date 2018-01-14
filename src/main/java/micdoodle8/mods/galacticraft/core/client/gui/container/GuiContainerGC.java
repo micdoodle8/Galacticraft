@@ -24,7 +24,9 @@ public abstract class GuiContainerGC extends GuiContainer
     @Override
     public void drawScreen(int par1, int par2, float par3)
     {
+        this.drawDefaultBackground();
         super.drawScreen(par1, par2, par3);
+        this.renderHoveredToolTip(par1, par2);
 
         for (int k = 0; k < this.infoRegions.size(); ++k)
         {
