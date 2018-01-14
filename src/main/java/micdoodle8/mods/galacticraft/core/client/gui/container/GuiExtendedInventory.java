@@ -147,13 +147,17 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     //Instanced method of this to have the instance field initWithPotion
     public int getPotionOffset()
     {
+/*Disabled in 1.12.2 because a vanilla bug means potion offsets are currently not a thing
+ *The vanilla bug is that GuiInventory.initGui() resets GuiLeft to the recipe book version of GuiLeft,
+ *and in GuiRecipeBook.updateScreenPosition() it takes no account of potion offset even if the recipe book is inactive.
+
         // If at least one potion is active...
-        if (!Minecraft.getMinecraft().player.getActivePotionEffects().isEmpty())
+        if (this.hasActivePotionEffects)
         {
             this.initWithPotion = true;
             return 60 + TabRegistry.getPotionOffsetJEI() + getPotionOffsetNEI();
         }
-
+*/
         // No potions, no offset needed
         this.initWithPotion = false;
         return 0;

@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.api.client.tabs;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.inventory.ContainerPlayer;
 import net.minecraft.network.play.client.CPacketCloseWindow;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -67,15 +69,17 @@ public class TabRegistry
 		{
 			int guiLeft = (event.getGui().width - 176) / 2;
 			int guiTop = (event.getGui().height - 166) / 2;
-			guiLeft += getPotionOffset();
+			recipeBookOffset = getRecipeBookOffset((GuiInventory) event.getGui());
+			guiLeft += getPotionOffset() + recipeBookOffset;
 
 			TabRegistry.updateTabValues(guiLeft, guiTop, InventoryTabVanilla.class);
 			TabRegistry.addTabsToList(event.getButtonList());
 		}
 	}
 
-	private static Minecraft mc = FMLClientHandler.instance().getClient();
+    private static Minecraft mc = FMLClientHandler.instance().getClient();
 	private static boolean initWithPotion;
+    public static int recipeBookOffset;
 
 	public static void openInventoryGui()
 	{
@@ -116,16 +120,33 @@ public class TabRegistry
 	
 	public static int getPotionOffset()
 	{
+/*Disabled in 1.12.2 because a vanilla bug means potion offsets are currently not a thing
+ *The vanilla bug is that GuiInventory.initGui() resets GuiLeft to the recipe book version of GuiLeft,
+ *and in GuiRecipeBook.updateScreenPosition() it takes no account of potion offset even if the recipe book is inactive.
+
 		// If at least one potion is active...
-		if (!mc.player.getActivePotionEffects().isEmpty())
+		if (doPotionOffsetVanilla())
 		{
 			initWithPotion = true;
 			return 60 + getPotionOffsetJEI() + getPotionOffsetNEI();
 		}
+ */
 		
 		// No potions, no offset needed
 		initWithPotion = false;
 		return 0;
+	}
+	
+	public static boolean doPotionOffsetVanilla()
+	{
+	    for (PotionEffect potioneffect : mc.player.getActivePotionEffects())
+	    {
+	        if (potioneffect.getPotion().shouldRender(potioneffect))
+	        {
+	            return true;
+	        }
+	    }
+	    return false;
 	}
 
     public static int getPotionOffsetJEI()
@@ -182,4 +203,11 @@ public class TabRegistry
 		//No NEI, no change
 		return 0;
 	}
+
+    public static int getRecipeBookOffset(GuiInventory gui)
+    {
+        boolean widthTooNarrow = gui.width < 379;
+        gui.func_194310_f().func_194303_a(gui.width, gui.height, mc, widthTooNarrow, ((ContainerPlayer)gui.inventorySlots).craftMatrix);
+        return gui.func_194310_f().updateScreenPosition(widthTooNarrow, gui.width, gui.xSize) - (gui.width - 176) / 2;
+    }
 }

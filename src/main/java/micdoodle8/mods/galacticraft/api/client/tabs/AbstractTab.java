@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
@@ -27,6 +29,11 @@ public abstract class AbstractTab extends GuiButton
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
 	{
 		int newPotionOffset = TabRegistry.getPotionOffsetNEI();
+		GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
+		if (screen instanceof GuiInventory)
+		{
+		    newPotionOffset += TabRegistry.getRecipeBookOffset((GuiInventory) screen) - TabRegistry.recipeBookOffset;
+		}
 		if (newPotionOffset != this.potionOffsetLast)
 		{
 	    	this.x += newPotionOffset - this.potionOffsetLast;
