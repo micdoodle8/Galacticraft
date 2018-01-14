@@ -21,10 +21,11 @@ public class BiomeAsteroids extends BiomeGenBaseGC
         this.spawnableCaveCreatureList.clear();
         this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
         this.setRegistryName(GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName());
-        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-        {
-            BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
-        }
+    }
+
+    public void registerTypes()
+    {
+        BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
     }
 
     public void resetMonsterListByMode(boolean challengeMode)

@@ -1455,7 +1455,7 @@ public class WorldUtil
 
         if (GCCoreUtil.getDimensionID(wp) == ConfigManagerCore.idDimensionOverworld)
         {
-            return "Overworld";
+            return "overworld";
         }
 
         return wp.getDimensionType().getName();
