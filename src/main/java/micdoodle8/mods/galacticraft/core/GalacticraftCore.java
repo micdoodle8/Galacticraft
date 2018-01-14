@@ -79,7 +79,6 @@ import javax.imageio.ImageWriter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 @Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
@@ -116,7 +115,7 @@ public class GalacticraftCore
     public static Moon moonMoon;
     public static Satellite satelliteSpaceStation;
 
-    public static HashMap<String, ItemStack> itemList = new HashMap<>();
+    public static LinkedList<ItemStack> itemList = new LinkedList<>();
     public static LinkedList<Item> itemListTrue = new LinkedList<>();
     public static LinkedList<Block> blocksList = new LinkedList<>();
     public static LinkedList<BiomeGenBaseGC> biomesList = new LinkedList<>();

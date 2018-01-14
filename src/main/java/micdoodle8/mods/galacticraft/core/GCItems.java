@@ -316,7 +316,7 @@ public class GCItems
     
     public static void registerItems(IForgeRegistry<Item> registry)
     {
-        for (ItemStack item : GalacticraftCore.itemList.values())
+        for (ItemStack item : GalacticraftCore.itemList)
         {
             registry.register(item.getItem());
         }

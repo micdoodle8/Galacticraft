@@ -156,11 +156,7 @@ public class GCCoreUtil
 
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
-        while (GalacticraftCore.itemList.containsKey(key))
-        {
-            key = key + "_";
-        }
-        GalacticraftCore.itemList.put(key, stack);
+        GalacticraftCore.itemList.add(stack);
     }
 
     public static void registerGalacticraftBlock(String key, Block block)
