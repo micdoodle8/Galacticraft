@@ -5,7 +5,7 @@ import api.player.server.ServerPlayerBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 
 public class GCPlayerBaseMP extends ServerPlayerBase
@@ -21,7 +21,7 @@ public class GCPlayerBaseMP extends ServerPlayerBase
     }
 
     @Override
-    public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
+    public void clonePlayer(EntityPlayerMP oldPlayer, boolean keepInv)
     {
         super.clonePlayer(oldPlayer, keepInv);
         this.getClientHandler().clonePlayer(this.player, oldPlayer, keepInv);

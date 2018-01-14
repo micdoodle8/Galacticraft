@@ -89,9 +89,9 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     }
 
     @Override
-    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
     {
-        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
         if (CompatibilityManager.isSmartMovingLoaded && !this.player.capabilities.isFlying)
         {
@@ -143,7 +143,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.player.posY + (double)this.player.getEyeHeight();
         if (height > 255D) height = 255D;
