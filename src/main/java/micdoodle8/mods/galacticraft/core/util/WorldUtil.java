@@ -123,7 +123,7 @@ public class WorldUtil
 
         for (Map.Entry<Integer, String> element : WorldUtil.dimNames.entrySet())
         {
-            if (nameToFind.equals(element.getValue()))
+            if (nameToFind.equalsIgnoreCase(element.getValue()))
             {
                 return WorldUtil.getProviderForDimensionServer(element.getKey());
             }
@@ -149,7 +149,7 @@ public class WorldUtil
 
         for (Map.Entry<Integer, String> element : WorldUtil.dimNames.entrySet())
         {
-            if (nameToFind.equals(element.getValue()))
+            if (nameToFind.equalsIgnoreCase(element.getValue()))
             {
                 return WorldUtil.getProviderForDimensionClient(element.getKey());
             }

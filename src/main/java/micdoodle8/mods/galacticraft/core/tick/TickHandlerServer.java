@@ -256,14 +256,21 @@ public class TickHandlerServer
                 {
                     GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
                     final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
-                    final Integer dim = GCCoreUtil.getDimensionID(provider);
-                    GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
-
-                    if (change.getPlayer().worldObj instanceof WorldServer)
+                    if (provider != null)
                     {
-                        final WorldServer world = (WorldServer) change.getPlayer().worldObj;
-
-                        WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
+                        final Integer dim = GCCoreUtil.getDimensionID(provider);
+                        GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
+    
+                        if (change.getPlayer().worldObj instanceof WorldServer)
+                        {
+                            final WorldServer world = (WorldServer) change.getPlayer().worldObj;
+    
+                            WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
+                        }
+                    }
+                    else
+                    {
+                        GCLog.severe("World not found when attempting to transfer entity to dimension: " + change.getDimensionName());
                     }
 
                     stats.setTeleportCooldown(10);
