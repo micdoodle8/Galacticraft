@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -14,7 +15,7 @@ import javax.annotation.Nonnull;
 import java.awt.Color;
 import java.util.Arrays;
 
-public class IngotCompressorShapedRecipeWrapper implements IRecipeWrapper
+public class IngotCompressorShapedRecipeWrapper implements IRecipeWrapper, ICraftingRecipeWrapper
 {
     @Nonnull
     private final ShapedRecipesGC recipe;

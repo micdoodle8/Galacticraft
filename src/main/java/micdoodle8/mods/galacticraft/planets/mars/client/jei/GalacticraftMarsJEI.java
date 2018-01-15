@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.jei;
 
-import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.IModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
@@ -25,7 +25,7 @@ import net.minecraft.item.ItemStack;
 import javax.annotation.Nonnull;
 
 @JEIPlugin
-public class GalacticraftMarsJEI extends BlankModPlugin
+public class GalacticraftMarsJEI implements IModPlugin
 {
     @Override
     public void register(@Nonnull IModRegistry registry)
