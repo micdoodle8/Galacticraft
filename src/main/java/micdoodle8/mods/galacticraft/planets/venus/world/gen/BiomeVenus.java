@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.material.Material;
@@ -24,7 +23,6 @@ public class BiomeVenus extends BiomeGenBaseGC
     BiomeVenus(BiomeProperties properties)
     {
         super(properties);
-        this.setRegistryName(GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName());
     }
 
     @Override

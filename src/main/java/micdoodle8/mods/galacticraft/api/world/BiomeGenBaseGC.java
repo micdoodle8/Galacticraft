@@ -17,6 +17,7 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
     protected BiomeGenBaseGC(BiomeProperties var1)
     {
         super(var1);
+        this.setRegistryName(var1.biomeName);
         GalacticraftCore.biomesList.add(this);
     }
 

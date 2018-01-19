@@ -686,8 +686,6 @@ public class GalacticraftCore
             {
                 GCSounds.registerSounds(event.getRegistry());
             }
-            else
-                System.out.println("SOUNDEVENT reg on Server???????????????????????");
         }
     }
 }

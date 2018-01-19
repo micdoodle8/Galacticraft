@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -20,9 +19,9 @@ public class BiomeAsteroids extends BiomeGenBaseGC
         this.spawnableCreatureList.clear();
         this.spawnableCaveCreatureList.clear();
         this.resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
-        this.setRegistryName(GalacticraftPlanets.TEXTURE_PREFIX + this.getBiomeName());
     }
 
+    @Override
     public void registerTypes()
     {
         BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
