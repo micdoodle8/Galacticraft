@@ -30,9 +30,6 @@ import java.util.List;
 import appeng.api.AEApi;
 import appeng.api.util.AEColor;
 
-//import appeng.api.AEApi;
-//import appeng.api.util.AEColor;
-
 public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();

@@ -36,7 +36,7 @@ import net.minecraft.item.ItemStack;
  *
  * Don't Implement.
  *
- * Construct with Util.createItemStack( ItemStack )
+ * Construct with AEApi.instance().storage().getStorageChannel( IItemStorageChannel.class).createStack( ItemStack )
  */
 public interface IAEItemStack extends IAEStack<IAEItemStack>
 {
@@ -46,7 +46,7 @@ public interface IAEItemStack extends IAEStack<IAEItemStack>
 	 *
 	 * @return new ItemStack
 	 */
-	ItemStack getItemStack();
+	ItemStack createItemStack();
 
 	/**
 	 * is there NBT Data for this item?
@@ -105,4 +105,11 @@ public interface IAEItemStack extends IAEStack<IAEItemStack>
 	 * @return true if it is the same type (same item, damage, nbt)
 	 */
 	boolean isSameType( ItemStack stored );
+
+	/**
+	 * DO NOT MODIFY THIS STACK! NEVER. If you think about it .. DON'T
+	 * 
+	 * @return definition stack
+	 */
+	ItemStack getDefinition();
 }

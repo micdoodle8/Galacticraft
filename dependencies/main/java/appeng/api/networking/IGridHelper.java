@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2013 AlgorithmX2
+ * Copyright (c) 2017 AlgorithmX2
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -21,44 +21,44 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package appeng.api.client;
+package appeng.api.networking;
 
 
-import java.util.List;
+import appeng.api.exceptions.FailedConnectionException;
 
-import com.google.common.collect.ImmutableList;
-
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.util.EnumFacing;
 
 /**
- * TODO: Needs to be moved to an internal class. API is only allowed to contain interfaces and/or data.
- *
- * @deprecated
+ * A helper responsible for creating new {@link IGridNode}, {@link IGridConnection} or potentially similar tasks.
+ * 
+ * @author yueh
+ * @version rv5
+ * @since rv5
  */
-@Deprecated
-public class BakingPipeline<F, T> implements BakingPipelineElement<F, T>
+public interface IGridHelper
 {
 
-	private final ImmutableList<BakingPipelineElement<?, ?>> pipeline;
-
-	public BakingPipeline( BakingPipelineElement<?, ?>... pipeline )
-	{
-		this.pipeline = ImmutableList.copyOf( pipeline );
-	}
+	/**
+	 * Create a grid node for your {@link IGridHost}
+	 * 
+	 * The passed {@link IGridBlock} represents the definition for properties like connectable sides.
+	 * Refer to its documentation for further details.
+	 *
+	 * @param block grid block
+	 *
+	 * @return grid node of block
+	 */
+	IGridNode createGridNode( IGridBlock block );
 
 	/**
-	 * TODO: fix generics
+	 * Create a direct connection between two {@link IGridNode}.
+	 * 
+	 * This will be considered as having a distance of 1, regardless of the location of both nodes.
+	 * 
+	 * @param a to be connected gridnode
+	 * @param b to be connected gridnode
+	 *
+	 * @throws appeng.api.exceptions.FailedConnectionException
 	 */
-	@Override
-	public List pipe( List things, IBakedModel parent, IBlockState state, EnumFacing side, long rand )
-	{
-		for( BakingPipelineElement pipe : pipeline )
-		{
-			things = pipe.pipe( things, parent, state, side, rand );
-		}
-		return things;
-	}
+	IGridConnection createGridConnection( IGridNode a, IGridNode b ) throws FailedConnectionException;
 
 }

@@ -38,7 +38,9 @@ public interface IParts
 
 	AEColoredItemDefinition cableGlass();
 
-	AEColoredItemDefinition cableDense();
+	AEColoredItemDefinition cableDenseCovered();
+	
+	AEColoredItemDefinition cableDenseSmart();
 
 	AEColoredItemDefinition lumenCableSmart();
 
@@ -46,7 +48,7 @@ public interface IParts
 
 	AEColoredItemDefinition lumenCableGlass();
 
-	AEColoredItemDefinition lumenCableDense();
+	AEColoredItemDefinition lumenDenseCableSmart();
 
 	IItemDefinition quartzFiber();
 
@@ -80,7 +82,7 @@ public interface IParts
 
 	IItemDefinition p2PTunnelEU();
 
-	// IItemDefinition p2PTunnelRF();
+	IItemDefinition p2PTunnelFE();
 
 	IItemDefinition p2PTunnelLight();
 

@@ -28,13 +28,14 @@ import java.io.IOException;
 
 import io.netty.buffer.ByteBuf;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import appeng.api.config.FuzzyMode;
-import appeng.api.storage.StorageChannel;
+import appeng.api.storage.IStorageChannel;
 
 
-public interface IAEStack<StackType extends IAEStack>
+public interface IAEStack<T extends IAEStack<T>>
 {
 
 	/**
@@ -42,7 +43,7 @@ public interface IAEStack<StackType extends IAEStack>
 	 *
 	 * @param is added item
 	 */
-	void add( StackType is );
+	void add( T is );
 
 	/**
 	 * number of items in the stack.
@@ -56,7 +57,7 @@ public interface IAEStack<StackType extends IAEStack>
 	 *
 	 * @param stackSize , ItemStack.stackSize = N
 	 */
-	StackType setStackSize( long stackSize );
+	T setStackSize( long stackSize );
 
 	/**
 	 * Same as getStackSize, but for requestable items. ( LP )
@@ -70,7 +71,7 @@ public interface IAEStack<StackType extends IAEStack>
 	 *
 	 * @return basically itemStack.stackSize = N but for setStackSize items.
 	 */
-	StackType setCountRequestable( long countRequestable );
+	T setCountRequestable( long countRequestable );
 
 	/**
 	 * true, if the item can be crafted.
@@ -84,12 +85,12 @@ public interface IAEStack<StackType extends IAEStack>
 	 *
 	 * @param isCraftable can item be crafted
 	 */
-	StackType setCraftable( boolean isCraftable );
+	T setCraftable( boolean isCraftable );
 
 	/**
 	 * clears, requestable, craftable, and stack sizes.
 	 */
-	StackType reset();
+	T reset();
 
 	/**
 	 * returns true, if the item can be crafted, requested, or extracted.
@@ -173,21 +174,14 @@ public interface IAEStack<StackType extends IAEStack>
 	 *
 	 * @return a new Stack, which is copied from the original.
 	 */
-	StackType copy();
+	T copy();
 
 	/**
 	 * create an empty stack.
 	 *
 	 * @return a new stack, which represents an empty copy of the original.
 	 */
-	StackType empty();
-
-	/**
-	 * obtain the NBT Data for the item.
-	 *
-	 * @return nbt data
-	 */
-	IAETagCompound getTagCompound();
+	T empty();
 
 	/**
 	 * @return true if the stack is a {@link IAEItemStack}
@@ -202,5 +196,12 @@ public interface IAEStack<StackType extends IAEStack>
 	/**
 	 * @return ITEM or FLUID
 	 */
-	StorageChannel getChannel();
+	IStorageChannel<T> getChannel();
+
+	/**
+	 * Returns itemstack for display and similar purposes. Always has a count of 1.
+	 * 
+	 * @return itemstack
+	 */
+	ItemStack asItemStackRepresentation();
 }

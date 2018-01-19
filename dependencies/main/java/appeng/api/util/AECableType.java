@@ -47,15 +47,21 @@ public enum AECableType
 	SMART,
 
 	/**
-	 * Dense Cable, represents a tier 2 block that can carry 32 channels.
+	 * Smart Dense Cable, represents a tier 2 block that can carry 32 channels.
 	 */
-	DENSE;
+	DENSE_COVERED,
+
+	/**
+	 * Smart Dense Cable, represents a tier 2 block that can carry 32 channels.
+	 */
+	DENSE_SMART;
 
 	public static final AECableType[] VALIDCABLES = {
 			GLASS,
 			COVERED,
 			SMART,
-			DENSE
+			DENSE_COVERED,
+			DENSE_SMART
 	};
 
 }
