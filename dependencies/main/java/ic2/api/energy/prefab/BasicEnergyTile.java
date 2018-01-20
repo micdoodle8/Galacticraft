@@ -106,7 +106,7 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	 */
 	public void readFromNBT(NBTTagCompound tag) {
 		NBTTagCompound data = tag.getCompoundTag(getNbtTagName());
-		energyStored = data.getDouble("energy");
+		setEnergyStored(data.getDouble("energy"));
 	}
 
 	/**
@@ -117,7 +117,7 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		NBTTagCompound data = new NBTTagCompound();
 
-		data.setDouble("energy", energyStored);
+		data.setDouble("energy", getEnergyStored());
 		tag.setTag(getNbtTagName(), data);
 
 		return tag;
@@ -171,7 +171,7 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	 * @return amount in EU
 	 */
 	public double getFreeCapacity() {
-		return capacity - energyStored;
+		return getCapacity() - getEnergyStored();
 	}
 
 	/**
@@ -182,9 +182,13 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	 */
 	public double addEnergy(double amount) {
 		if (getWorldObj().isRemote) return 0;
+
+		double energyStored = getEnergyStored();
+		double capacity = getCapacity();
+
 		if (amount > capacity - energyStored) amount = capacity - energyStored;
 
-		energyStored += amount;
+		setEnergyStored(energyStored + amount);
 
 		return amount;
 	}
@@ -196,7 +200,7 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	 * @return true if the amount is available
 	 */
 	public boolean canUseEnergy(double amount) {
-		return energyStored >= amount;
+		return getEnergyStored() >= amount;
 	}
 
 	/**
@@ -208,7 +212,7 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	public boolean useEnergy(double amount) {
 		if (!canUseEnergy(amount) || getWorldObj().isRemote) return false;
 
-		energyStored -= amount;
+		setEnergyStored(getEnergyStored() - amount);
 
 		return true;
 	}
@@ -222,9 +226,10 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	public boolean charge(ItemStack stack) {
 		if (stack == null || !Info.isIc2Available() || getWorldObj().isRemote) return false;
 
+		double energyStored = getEnergyStored();
 		double amount = ElectricItem.manager.charge(stack, energyStored, Math.max(getSinkTier(), getSourceTier()), false, false);
 
-		energyStored -= amount;
+		setEnergyStored(energyStored - amount);
 
 		return amount > 0;
 	}
@@ -239,14 +244,15 @@ abstract class BasicEnergyTile implements ILocatable, IEnergyTile {
 	public boolean discharge(ItemStack stack, double limit) {
 		if (stack == null || !Info.isIc2Available() || getWorldObj().isRemote) return false;
 
-		double amount = capacity - energyStored;
+		double energyStored = getEnergyStored();
+		double amount = getCapacity() - energyStored;
 		if (amount <= 0) return false;
 
 		if (limit > 0 && limit < amount) amount = limit;
 
 		amount = ElectricItem.manager.discharge(stack, amount, Math.max(getSinkTier(), getSourceTier()), limit > 0, true, false);
 
-		energyStored += amount;
+		setEnergyStored(energyStored + amount);
 
 		return amount > 0;
 	}

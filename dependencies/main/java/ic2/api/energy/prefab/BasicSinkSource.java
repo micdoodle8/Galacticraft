@@ -19,31 +19,40 @@ public abstract class BasicSinkSource extends BasicEnergyTile implements IEnergy
 	public BasicSinkSource(TileEntity parent, double capacity, int sinkTier, int sourceTier) {
 		super(parent, capacity);
 
+		if (sinkTier < 0) throw new IllegalArgumentException("invalid sink tier: "+sinkTier);
+		if (sourceTier < 0) throw new IllegalArgumentException("invalid source tier: "+sourceTier);
+
 		this.sinkTier = sinkTier;
 		this.sourceTier = sourceTier;
-		this.sourcePower = EnergyNet.instance.getPowerFromTier(sourceTier);
+		double power = EnergyNet.instance.getPowerFromTier(sourceTier);
 
-		if (getCapacity() < sourcePower) setCapacity(sourcePower);
+		if (getCapacity() < power) setCapacity(power);
 	}
 
 	public BasicSinkSource(ILocatable parent, double capacity, int sinkTier, int sourceTier) {
 		super(parent, capacity);
 
+		if (sinkTier < 0) throw new IllegalArgumentException("invalid sink tier: "+sinkTier);
+		if (sourceTier < 0) throw new IllegalArgumentException("invalid source tier: "+sourceTier);
+
 		this.sinkTier = sinkTier;
 		this.sourceTier = sourceTier;
-		this.sourcePower = EnergyNet.instance.getPowerFromTier(sourceTier);
+		double power = EnergyNet.instance.getPowerFromTier(sourceTier);
 
-		if (getCapacity() < sourcePower) setCapacity(sourcePower);
+		if (getCapacity() < power) setCapacity(power);
 	}
 
 	public BasicSinkSource(World world, BlockPos pos, double capacity, int sinkTier, int sourceTier) {
 		super(world, pos, capacity);
 
+		if (sinkTier < 0) throw new IllegalArgumentException("invalid sink tier: "+sinkTier);
+		if (sourceTier < 0) throw new IllegalArgumentException("invalid source tier: "+sourceTier);
+
 		this.sinkTier = sinkTier;
 		this.sourceTier = sourceTier;
-		this.sourcePower = EnergyNet.instance.getPowerFromTier(sourceTier);
+		double power = EnergyNet.instance.getPowerFromTier(sourceTier);
 
-		if (getCapacity() < sourcePower) setCapacity(sourcePower);
+		if (getCapacity() < power) setCapacity(power);
 	}
 
 	/**
@@ -52,6 +61,8 @@ public abstract class BasicSinkSource extends BasicEnergyTile implements IEnergy
 	 * @param tier IC2 Tier.
 	 */
 	public void setSinkTier(int tier) {
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		this.sinkTier = tier;
 	}
 
@@ -61,24 +72,25 @@ public abstract class BasicSinkSource extends BasicEnergyTile implements IEnergy
 	 * @param tier IC2 Tier.
 	 */
 	public void setSourceTier(int tier) {
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		double power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (getCapacity() < power) setCapacity(power);
 
 		this.sourceTier = tier;
-		this.sourcePower = power;
 	}
 
 	// energy net interface >>
 
 	@Override
 	public double getDemandedEnergy() {
-		return Math.max(0, capacity - energyStored);
+		return Math.max(0, getCapacity() - getEnergyStored());
 	}
 
 	@Override
 	public double injectEnergy(EnumFacing directionFrom, double amount, double voltage) {
-		energyStored += amount;
+		setEnergyStored(getEnergyStored() + amount);
 
 		return 0;
 	}
@@ -90,12 +102,12 @@ public abstract class BasicSinkSource extends BasicEnergyTile implements IEnergy
 
 	@Override
 	public double getOfferedEnergy() {
-		return Math.min(energyStored, sourcePower);
+		return getEnergyStored();
 	}
 
 	@Override
 	public void drawEnergy(double amount) {
-		energyStored -= amount;
+		setEnergyStored(getEnergyStored() - amount);
 	}
 
 	@Override
@@ -112,5 +124,4 @@ public abstract class BasicSinkSource extends BasicEnergyTile implements IEnergy
 
 	protected int sinkTier;
 	protected int sourceTier;
-	protected double sourcePower;
 }

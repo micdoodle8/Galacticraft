@@ -95,8 +95,10 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 	public BasicSource(TileEntity parent, double capacity, int tier) {
 		super(parent, capacity);
 
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		this.tier = tier;
-		this.power = EnergyNet.instance.getPowerFromTier(tier);
+		double power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (getCapacity() < power) setCapacity(power);
 	}
@@ -104,8 +106,10 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 	public BasicSource(ILocatable parent, double capacity, int tier) {
 		super(parent, capacity);
 
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		this.tier = tier;
-		this.power = EnergyNet.instance.getPowerFromTier(tier);
+		double power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (getCapacity() < power) setCapacity(power);
 	}
@@ -113,8 +117,10 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 	public BasicSource(World world, BlockPos pos, double capacity, int tier) {
 		super(world, pos, capacity);
 
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		this.tier = tier;
-		this.power = EnergyNet.instance.getPowerFromTier(tier);
+		double power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (getCapacity() < power) setCapacity(power);
 	}
@@ -125,12 +131,13 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 	 * @param tier1 IC2 Tier.
 	 */
 	public void setSourceTier(int tier) {
+		if (tier < 0) throw new IllegalArgumentException("invalid tier: "+tier);
+
 		double power = EnergyNet.instance.getPowerFromTier(tier);
 
 		if (getCapacity() < power) setCapacity(power);
 
 		this.tier = tier;
-		this.power = power;
 	}
 
 	// energy net interface >>
@@ -142,12 +149,12 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 
 	@Override
 	public double getOfferedEnergy() {
-		return Math.min(energyStored, power);
+		return getEnergyStored();
 	}
 
 	@Override
 	public void drawEnergy(double amount) {
-		energyStored -= amount;
+		setEnergyStored(getEnergyStored() - amount);
 	}
 
 	@Override
@@ -163,5 +170,4 @@ public class BasicSource extends BasicEnergyTile implements IEnergySource {
 	}
 
 	protected int tier;
-	protected double power;
 }

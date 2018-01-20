@@ -1,6 +1,7 @@
 package ic2.api.recipe;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import net.minecraftforge.fluids.Fluid;
 
@@ -14,4 +15,6 @@ public interface IRecipeInputFactory {
 	IRecipeInput forFluidContainer(Fluid fluid, int amount);
 	IRecipeInput forAny(IRecipeInput... options);
 	IRecipeInput forAny(Iterable<IRecipeInput> options);
+	IRecipeInput forIngredient(Ingredient ingredient);
+	Ingredient getIngredient(IRecipeInput input);
 }
