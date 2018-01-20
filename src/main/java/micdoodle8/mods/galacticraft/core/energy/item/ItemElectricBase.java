@@ -235,25 +235,25 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     //For RF compatibility
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyContainerItem", modID = "")
     public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate)
     {
         return (int) (this.recharge(container, maxReceive * EnergyConfigHandler.RF_RATIO, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyContainerItem", modID = "")
     public int extractEnergy(ItemStack container, int maxExtract, boolean simulate)
     {
         return (int) (this.discharge(container, maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyContainerItem", modID = "")
     public int getEnergyStored(ItemStack container)
     {
         return (int) (this.getElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyContainerItem", modID = "")
     public int getMaxEnergyStored(ItemStack container)
     {
         return (int) (this.getMaxElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);

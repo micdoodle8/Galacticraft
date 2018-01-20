@@ -1,5 +1,10 @@
-package cofh.api.energy;
+/*
+ * (C) 2014-2017 Team CoFH / CoFH / Cult of the Full Hub
+ * http://www.teamcofh.com
+ */
+package cofh.redstoneflux.impl;
 
+import cofh.redstoneflux.api.IEnergyContainerItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -8,7 +13,6 @@ import net.minecraft.nbt.NBTTagCompound;
  * Reference implementation of {@link IEnergyContainerItem}. Use/extend this or implement your own.
  *
  * @author King Lemming
- *
  */
 public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 
@@ -43,20 +47,20 @@ public class ItemEnergyContainer extends Item implements IEnergyContainerItem {
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxTransfer(int maxTransfer) {
+	public ItemEnergyContainer setMaxTransfer(int maxTransfer) {
 
 		setMaxReceive(maxTransfer);
 		setMaxExtract(maxTransfer);
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxReceive(int maxReceive) {
+	public ItemEnergyContainer setMaxReceive(int maxReceive) {
 
 		this.maxReceive = maxReceive;
 		return this;
 	}
 
-	public ItemEnergyContainer  setMaxExtract(int maxExtract) {
+	public ItemEnergyContainer setMaxExtract(int maxExtract) {
 
 		this.maxExtract = maxExtract;
 		return this;

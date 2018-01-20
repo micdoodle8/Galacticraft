@@ -1,16 +1,21 @@
-package cofh.api.energy;
+/*
+ * (C) 2014-2017 Team CoFH / CoFH / Cult of the Full Hub
+ * http://www.teamcofh.com
+ */
+package cofh.redstoneflux.impl;
 
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
 /**
  * Reference implementation of {@link IEnergyReceiver} and {@link IEnergyProvider}. Use/extend this or implement your own.
- * 
+ *
  * This class is really meant to summarize how each interface is properly used.
  *
  * @author King Lemming
- *
  */
 public class TileEnergyHandler extends TileEntity implements IEnergyReceiver, IEnergyProvider {
 

@@ -270,7 +270,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         return false;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
         if (this.getNetwork() == null)
@@ -282,13 +282,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyProvider", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyProvider", modID = "")
     public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
     {
         return 0;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(EnumFacing from)
     {
         //Do not form wire-to-wire connections with EnderIO conduits
@@ -310,13 +310,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         return true;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
         return 0;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
         if (this.getNetwork() == null)

@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;

@@ -470,7 +470,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
         return false;
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFInput)
@@ -486,19 +486,19 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
         return MathHelper.floor(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(EnumFacing from)
     {
         return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
         return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
         return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);

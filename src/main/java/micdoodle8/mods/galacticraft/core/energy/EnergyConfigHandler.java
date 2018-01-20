@@ -296,11 +296,11 @@ public class EnergyConfigHandler
         int count2 = 0;
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyConnection") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyConnection") != null)
             {
                 count++;
             }
-            if (Class.forName("cofh.api.energy.IEnergyHandler") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyHandler") != null)
             {
                 count += 2;
             }
@@ -310,7 +310,7 @@ public class EnergyConfigHandler
         }
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyProvider") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyProvider") != null)
             {
                 count2++;
             }
@@ -320,7 +320,7 @@ public class EnergyConfigHandler
         }
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyReceiver") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyReceiver") != null)
             {
                 count2++;
             }
