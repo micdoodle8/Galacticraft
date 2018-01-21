@@ -49,6 +49,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.DimensionType;
@@ -233,7 +234,6 @@ public class GalacticraftCore
         EnergyConfigHandler.initGas();
         LootHandlerGC.registerAll();
 
-        CompatibilityManager.registerMicroBlocks();
         this.registerCreatures();
         this.registerOtherEntities();
         this.registerTileEntities();
@@ -399,7 +399,7 @@ public class GalacticraftCore
         GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);
 
         CompatibilityManager.checkForCompatibleMods();
-        RecipeManagerGC.loadRecipes();
+        RecipeManagerGC.loadCompatibilityRecipes();
         TileEntityDeconstructor.initialiseRecipeList();
         ItemSchematic.registerSchematicItems();
         NetworkRegistry.INSTANCE.registerGuiHandler(GalacticraftCore.instance, new GuiHandler());
@@ -423,8 +423,6 @@ public class GalacticraftCore
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
-
-        RecipeManagerGC.setConfigurableRecipes();
 
         if (event.getSide() == Side.SERVER)
         {
@@ -632,6 +630,7 @@ public class GalacticraftCore
         public static void registerBlocks(RegistryEvent.Register<Block> event)
         {
             GCBlocks.registerBlocks(event.getRegistry());
+            CompatibilityManager.registerMicroBlocks();
         }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -668,6 +667,12 @@ public class GalacticraftCore
             GalacticraftCore.handler.registerTorchTypes();
         }
 
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void registerRecipes(RegistryEvent.Register<IRecipe> event)
+        {
+            RecipeManagerGC.addUniversalRecipes();
+            RecipeManagerGC.setConfigurableRecipes();
+        }
 
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent event)

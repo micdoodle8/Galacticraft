@@ -34,7 +34,7 @@ public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
 
-    public static void loadRecipes()
+    public static void loadCompatibilityRecipes()
     {
         if (CompatibilityManager.isBCraftTransportLoaded())
         {
@@ -51,13 +51,12 @@ public class RecipeManagerGC
             RecipeManagerGC.addAppEngRecipes();
         }
 
-        RecipeManagerGC.addUniversalRecipes();
-
-        RecipeManagerGC.addExNihiloRecipes();
+        RecipeManagerGC.addExNihiloHeatSource();
     }
 
     @SuppressWarnings("unchecked")
-    private static void addUniversalRecipes()
+    public
+    static void addUniversalRecipes()
     {
     	Object meteoricIronIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(GCItems.itemBasicMoon, 1, 0) : "ingotMeteoricIron";
     	
@@ -389,7 +388,7 @@ public class RecipeManagerGC
          RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
     }
 
-    private static void addExNihiloRecipes()
+    private static void addExNihiloHeatSource()
     {
         try
         {
