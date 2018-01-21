@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author aidancbrady
  *
  */
-public class GasTank
+public class GasTank implements GasTankInfo
 {
 	public GasStack stored;
 
@@ -147,7 +147,7 @@ public class GasTank
 
 	/**
 	 * Gets the amount of gas needed by this GasTank.
-	 * @return
+	 * @return Amount of gas needed
 	 */
 	public int getNeeded()
 	{

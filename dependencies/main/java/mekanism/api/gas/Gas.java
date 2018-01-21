@@ -1,5 +1,6 @@
 package mekanism.api.gas;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +30,8 @@ public class Gas
 
 	private boolean from_fluid = false;
 
+	private int tint = 0xFFFFFF;
+
 	/**
 	 * Creates a new Gas object with a defined name or key value.
 	 * @param s - name or key to associate this Gas with
@@ -37,6 +40,11 @@ public class Gas
 	{
 		unlocalizedName = name = s;
 		iconLocation = new ResourceLocation(icon);
+	}
+
+	public Gas(String s, ResourceLocation icon){
+		unlocalizedName = name = s;
+		iconLocation = icon;
 	}
 
 	/**
@@ -48,6 +56,7 @@ public class Gas
 		iconLocation = f.getStill();
 		fluid = f;
 		from_fluid = true;
+		tint = f.getColor() & 0xFFFFFF;
 	}
 
 	/**
@@ -134,13 +143,21 @@ public class Gas
 //		{
 //			return MekanismRenderer.getFluidTexture(fluid, FluidType.STILL);
 //		}
+
+		if (sprite == null){
+			sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(getIcon().toString());
+		}
 		
+		return sprite;
+	}
+
+	TextureAtlasSprite getSpriteRaw(){
 		return sprite;
 	}
 
 	/**
 	 * Sets this gas's icon.
-	 * @param i - IIcon to associate with this Gas
+	 * @param map - IIcon to associate with this Gas
 	 * @return this Gas object
 	 */
 	public Gas registerIcon(TextureMap map)
@@ -252,5 +269,23 @@ public class Gas
 	public String toString()
 	{
 		return name;
+	}
+
+	/**
+	 * Get the tint for rendering the gas
+	 * @return int representation of color in 0xRRGGBB format
+	 */
+	public int getTint()
+	{
+		return tint;
+	}
+
+	/**
+	 * Sets the tint for the gas
+	 * @param tint int representation of color in 0xRRGGBB format
+	 */
+	public void setTint(int tint)
+	{
+		this.tint = tint;
 	}
 }

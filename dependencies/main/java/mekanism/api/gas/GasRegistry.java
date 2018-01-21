@@ -3,14 +3,23 @@ package mekanism.api.gas;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
+import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class GasRegistry
 {
-	private static ArrayList<Gas> registeredGasses = new ArrayList<Gas>();
+	private static ArrayList<Gas> registeredGasses = new ArrayList<>();
+
+	private static Logger LOG = LogManager.getLogger("Mekanism GasRegistry");
 
 	/**
-	 * Register a new gas into GasRegistry.
+	 * Register a new gas into GasRegistry. Call this BEFORE post-init.
 	 * @param gas - Gas to register
 	 * @return the gas that has been registered, pulled right out of GasRegistry
 	 */
@@ -19,6 +28,15 @@ public class GasRegistry
 		if(gas == null)
 		{
 			return null;
+		}
+
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT){
+			if (hasAlreadyStitched()){
+				gas.updateIcon(Minecraft.getMinecraft().getTextureMapBlocks());
+				if (gas.getSpriteRaw() == null){
+					LOG.error("Gas {} registered post texture stitch without valid sprite!", gas.getName());
+				}
+			}
 		}
 
 		registeredGasses.add(gas);
@@ -75,7 +93,7 @@ public class GasRegistry
 	 */
 	public static List<Gas> getRegisteredGasses()
 	{
-		return (List<Gas>)registeredGasses.clone();
+		return new ArrayList<>(registeredGasses);
 	}
 
 	/**
@@ -109,5 +127,9 @@ public class GasRegistry
 		}
 
 		return registeredGasses.indexOf(gas);
+	}
+
+	private static boolean hasAlreadyStitched(){
+		return Loader.instance().getLoaderState().ordinal() > LoaderState.PREINITIALIZATION.ordinal();
 	}
 }
