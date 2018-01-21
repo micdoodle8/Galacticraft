@@ -187,9 +187,6 @@ public class GCBlocks
         // Register blocks before register ores, so that the ItemStack picks up the correct item
         GCBlocks.registerBlocks();
         GCBlocks.setHarvestLevels();
-
-        //Complete registration of various types of torches
-        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.TORCH);
     }
     
     public static void oreDictRegistrations()
@@ -236,7 +233,7 @@ public class GCBlocks
         block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
     }
 
-    public static void doOtherModsTorches()
+    public static void doOtherModsTorches(IForgeRegistry<Block> registry)
     {
         BlockUnlitTorch torch;
         BlockUnlitTorch torchLit;
@@ -265,6 +262,8 @@ public class GCBlocks
                 GCBlocks.otherModTorchesLit.add(torchLit);
                 registerBlock(torch, ItemBlockGC.class);
                 registerBlock(torchLit, ItemBlockGC.class);
+                registry.register(torch);
+                registry.register(torchLit);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
                 GCLog.info("Galacticraft: activating Tinker's Construct compatibility.");
             }
@@ -380,6 +379,9 @@ public class GCBlocks
         {
             registry.register(block);
         }
+        
+        //Complete registration of various types of torches
+        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.TORCH);
     }
 
     public static boolean registeringSorted = false;

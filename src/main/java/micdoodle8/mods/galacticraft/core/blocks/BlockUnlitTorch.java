@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.api.block.IOxygenReliantBlock;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
@@ -24,6 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +35,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     public Block litVersion;
     public Block unlitVersion;
     public Block fallback;
+    public static HashMap<Block, Block> registeredTorches = new HashMap<>();
 
     public BlockUnlitTorch(boolean lit, String assetName)
     {
@@ -56,7 +57,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         unlittorch.litVersion = littorch;
         unlittorch.unlitVersion = unlittorch;
         unlittorch.fallback = vanillatorch;
-        GalacticraftCore.handler.registerTorchType(littorch, vanillatorch);
+        registeredTorches.put(unlittorch, vanillatorch);
     }
 
     @Override

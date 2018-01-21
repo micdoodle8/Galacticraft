@@ -1000,12 +1000,15 @@ public class GCPlayerHandler
         }
     }
 
-    public void registerTorchType(BlockUnlitTorch spaceTorch, Block vanillaTorch)
+    public void registerTorchTypes()
     {
-        //Space Torch registration must be unique; there may be multiple mappings for vanillaTorch
-        Item itemSpaceTorch = Item.getItemFromBlock(spaceTorch);
-        Item itemVanillaTorch = Item.getItemFromBlock(vanillaTorch);
-        torchItems.put(itemSpaceTorch, itemVanillaTorch);
+        for (Entry<Block, Block> type : BlockUnlitTorch.registeredTorches.entrySet())
+        {
+            //Space Torch registration must be unique; there may be multiple mappings for vanillaTorch
+            Item itemSpaceTorch = Item.getItemFromBlock(type.getKey());
+            Item itemVanillaTorch = Item.getItemFromBlock(type.getValue());
+            torchItems.put(itemSpaceTorch, itemVanillaTorch);
+        }
     }
 
     public static void setUsingParachute(EntityPlayerMP player, GCPlayerStats playerStats, boolean tf)

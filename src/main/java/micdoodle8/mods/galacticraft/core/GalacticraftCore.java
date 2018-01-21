@@ -65,6 +65,7 @@ import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -179,10 +180,6 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        GCBlocks.oreDictRegistrations();
-        GCItems.oreDictRegistrations();
-
-        GCBlocks.doOtherModsTorches();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.machineBase2)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTier1));
 
@@ -637,6 +634,12 @@ public class GalacticraftCore
             GCBlocks.registerBlocks(event.getRegistry());
         }
 
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void registerBlocksLast(RegistryEvent.Register<Block> event)
+        {
+            GCBlocks.doOtherModsTorches(event.getRegistry());
+        }
+
         @SubscribeEvent
         public static void registerItems(RegistryEvent.Register<Item> event)
         {
@@ -654,7 +657,17 @@ public class GalacticraftCore
                     GCBlocks.registerSorted(block);
                 }
             }
+            
+            GCBlocks.oreDictRegistrations();
+            GCItems.oreDictRegistrations();
         }
+
+        @SubscribeEvent(priority = EventPriority.LOWEST)
+        public static void registerItemsLast(RegistryEvent.Register<Item> event)
+        {
+            GalacticraftCore.handler.registerTorchTypes();
+        }
+
 
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent event)
