@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
@@ -20,6 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation implements IOrbitDimension, IZeroGDimension, ISolarLevel, IExitHeight
@@ -243,5 +245,11 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public ResourceLocation getDungeonChestType()
     {
         return RoomTreasure.MOONCHEST;
+    }
+
+    @Override
+    public List<Block> getSurfaceBlocks()
+    {
+        return null;
     }
 }
