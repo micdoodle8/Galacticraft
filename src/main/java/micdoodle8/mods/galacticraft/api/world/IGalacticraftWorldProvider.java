@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.api.world;
 
-import net.minecraft.util.ResourceLocation;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
+
+import java.util.List;
 
 public interface IGalacticraftWorldProvider
 {
@@ -159,4 +162,6 @@ public interface IGalacticraftWorldProvider
      * The ChestGenHooks identifier of the dungeon chests to generate in this world
      */
     ResourceLocation getDungeonChestType();
+
+    List<Block> getSurfaceBlocks();
 }

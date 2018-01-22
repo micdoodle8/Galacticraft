@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -50,6 +51,9 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -64,13 +68,11 @@ import static micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore.submergedT
  */
 public class TransformerHooks
 {
-    private static IWorldGenerator generatorGCGreg = null;
-    private static IWorldGenerator generatorCoFH = null;
-    private static IWorldGenerator generatorDenseOres = null;
+    private static List<IWorldGenerator> otherModGeneratorsWhitelist = new LinkedList<>();
     private static IWorldGenerator generatorTCAuraNodes = null;
-    private static IWorldGenerator generatorAE2meteors = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
+    public static List<Block> spawnListAE2_GC = new LinkedList<>();
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -186,118 +188,19 @@ public class TransformerHooks
         if (!generatorsInitialised)
         {
             generatorsInitialised = true;
-
-            try
-            {
-                Class GCGreg = Class.forName("bloodasp.galacticgreg.GT_Worldgenerator_Space");
-                if (GCGreg != null)
-                {
-                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (GCGreg.isInstance(gen))
-                        {
-                            generatorGCGreg = gen;
-                            break;
-                        }
-                    }
-                }
+            
+            if (ConfigManagerCore.whitelistCoFHCoreGen)
+            {   
+                addWorldGenForName("CoFHCore custom oregen", "cofh.core.world.WorldHandler");
             }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class cofh = Class.forName("cofh.core.world.WorldHandler");
-                if (cofh != null && ConfigManagerCore.whitelistCoFHCoreGen)
-                {
-                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (cofh.isInstance(gen))
-                        {
-                            generatorCoFH = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class denseOres = Class.forName("com.rwtema.denseores.WorldGenOres");
-                if (denseOres != null)
-                {
-                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (denseOres.isInstance(gen))
-                        {
-                            generatorDenseOres = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
-
-            try
-            {
-                Class ae2meteorPlace = null;
-                try
-                {
-                    ae2meteorPlace = Class.forName("appeng.hooks.MeteoriteWorldGen");
-                }
-                catch (ClassNotFoundException e)
-                {
-                }
-
-                if (ae2meteorPlace == null)
-                {
-                    try
-                    {
-                        ae2meteorPlace = Class.forName("appeng.worldgen.MeteoriteWorldGen");
-                    }
-                    catch (ClassNotFoundException e)
-                    {
-                    }
-                }
-
-                if (ae2meteorPlace != null)
-                {
-                    final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
-                    regField.setAccessible(true);
-                    Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
-                    for (IWorldGenerator gen : registeredGenerators)
-                    {
-                        if (ae2meteorPlace.isInstance(gen))
-                        {
-                            generatorAE2meteors = gen;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-            }
+            addWorldGenForName("GalacticGreg oregen", "bloodasp.galacticgreg.GT_Worldgenerator_Space");
+            addWorldGenForName("Dense Ores oregen", "com.rwtema.denseores.WorldGenOres");
+            addWorldGenForName("AE2 meteorites worldgen", "appeng.worldgen.MeteoriteWorldGen");
 
             try
             {
                 Class genThaumCraft = Class.forName("thaumcraft.common.lib.world.ThaumcraftWorldGenerator");
-                if (genThaumCraft != null)
+                if (genThaumCraft != null && ConfigManagerCore.enableThaumCraftNodes)
                 {
                     final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
                     regField.setAccessible(true);
@@ -310,41 +213,20 @@ public class TransformerHooks
                             break;
                         }
                     }
-                    if (generatorTCAuraNodes != null && ConfigManagerCore.enableThaumCraftNodes)
+                    if (generatorTCAuraNodes != null)
                     {
                         generateTCAuraNodes = genThaumCraft.getDeclaredMethod("generateWildNodes", World.class, Random.class, int.class, int.class, boolean.class, boolean.class);
                         generateTCAuraNodes.setAccessible(true);
+                        GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
                     }
                 }
-
             }
             catch (Exception e)
             {
             }
-
-            if (generatorGCGreg != null)
-            {
-                GCLog.info("Whitelisting GalacticGreg oregen on planets.");
-            }
-            if (generatorCoFH != null)
-            {
-                GCLog.info("Whitelisting CoFHCore custom oregen on planets.");
-            }
-            if (generatorDenseOres != null)
-            {
-                GCLog.info("Whitelisting Dense Ores oregen on planets.");
-            }
-            if (generatorAE2meteors != null)
-            {
-                GCLog.info("Whitelisting AE2 meteorites worldgen on planets.");
-            }
-            if (generatorTCAuraNodes != null && generateTCAuraNodes != null)
-            {
-                GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
-            }
         }
 
-        if (generatorGCGreg != null || generatorCoFH != null || generatorDenseOres != null || generatorTCAuraNodes != null || generatorAE2meteors != null)
+        if (otherModGeneratorsWhitelist.size() > 0 || generateTCAuraNodes != null)
         {
             try
             {
@@ -355,27 +237,14 @@ public class TransformerHooks
                 long chunkSeed = (xSeed * chunkX + zSeed * chunkZ) ^ worldSeed;
                 fmlRandom.setSeed(chunkSeed);
 
-                if (generatorCoFH != null)
+                for (IWorldGenerator gen : otherModGeneratorsWhitelist)
                 {
-                    generatorCoFH.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorDenseOres != null)
-                {
-                    generatorDenseOres.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorGCGreg != null)
-                {
-                    generatorGCGreg.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-                }
-                if (generatorAE2meteors != null)
-                {
-                    generatorAE2meteors.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+                    gen.generate(fmlRandom, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
                 }
                 if (generateTCAuraNodes != null)
                 {
                     generateTCAuraNodes.invoke(generatorTCAuraNodes, world, fmlRandom, chunkX, chunkZ, false, true);
                 }
-
             }
             catch (Exception e)
             {
@@ -383,6 +252,46 @@ public class TransformerHooks
                 e.printStackTrace();
             }
         }
+    }
+
+    private static void addWorldGenForName(String logString, String name)
+    {
+        try
+        {
+            Class target = Class.forName(name);
+            if (target != null)
+            {
+                final Field regField = GameRegistry.class.getDeclaredField("worldGenerators");
+                regField.setAccessible(true);
+                Set<IWorldGenerator> registeredGenerators = (Set<IWorldGenerator>) regField.get(null);
+                for (IWorldGenerator gen : registeredGenerators)
+                {
+                    if (target.isInstance(gen))
+                    {
+                        otherModGeneratorsWhitelist.add(gen);
+                        GCLog.info("Whitelisting " + logString + " on planets.");
+                        return;
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+    /*
+     * Used to supplement the hard-coded blocklist in AE2's MeteoritePlacer class
+     */
+    public static boolean addAE2MeteorSpawn(Object o, Block b)
+    {
+        if (o instanceof Collection<?>)
+        {
+            ((Collection<Block>) o).add(b);
+            ((Collection<Block>) o).addAll(spawnListAE2_GC );
+            return true;
+        }
+        return false;
     }
 
     @SideOnly(Side.CLIENT)
