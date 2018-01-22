@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.dimension;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -8,9 +11,11 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
+import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.RoomTreasureMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
+import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -172,5 +177,13 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public String getDungeonChestType()
     {
         return RoomTreasureMars.MARSCHEST;
+    }
+
+    @Override
+    public List<Block> getSurfaceBlocks()
+    {
+        List<Block> list = new LinkedList<>();
+        list.add(MarsBlocks.marsBlock);
+        return list;
     }
 }

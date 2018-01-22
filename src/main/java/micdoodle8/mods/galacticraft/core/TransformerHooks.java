@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
@@ -48,6 +49,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +70,7 @@ public class TransformerHooks
     private static IWorldGenerator generatorTCAuraNodes = null;
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
+    public static List<Block> spawnListAE2_GC = new LinkedList<>();
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -277,6 +280,20 @@ public class TransformerHooks
         catch (Exception e)
         {
         }
+    }
+
+    /*
+     * Used to supplement the hard-coded blocklist in AE2's MeteoritePlacer class
+     */
+    public static boolean addAE2MeteorSpawn(Object o, Block b)
+    {
+        if (o instanceof Collection<?>)
+        {
+            ((Collection<Block>) o).add(b);
+            ((Collection<Block>) o).addAll(spawnListAE2_GC );
+            return true;
+        }
+        return false;
     }
 
     @SideOnly(Side.CLIENT)

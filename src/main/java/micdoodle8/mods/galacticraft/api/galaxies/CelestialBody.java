@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.WorldProvider;
@@ -343,5 +345,20 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
                 }
             }
         }
+    }
+
+    public List<Block> getSurfaceBlocks()
+    {
+        if (this.providerClass != null && IGalacticraftWorldProvider.class.isAssignableFrom(this.providerClass))
+        {
+            try
+            {
+                return ((IGalacticraftWorldProvider)this.providerClass.newInstance()).getSurfaceBlocks();
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }
