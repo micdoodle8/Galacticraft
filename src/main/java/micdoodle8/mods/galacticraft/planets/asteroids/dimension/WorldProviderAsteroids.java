@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TreeMap;
 
 public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
@@ -542,5 +544,11 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     public boolean hasSkyLight()
     {
         return false;
+    }
+
+    @Override
+    public List<Block> getSurfaceBlocks()
+    {
+        return null;
     }
 }

@@ -386,6 +386,11 @@ public class GalacticraftCore
                     GCLog.severe("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());
                 }
             }
+            
+            if (body.getSurfaceBlocks() != null)
+            {
+                TransformerHooks.spawnListAE2_GC.addAll(body.getSurfaceBlocks());
+            }
         }
 
         GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);

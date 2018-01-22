@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.dimension;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -8,10 +11,12 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
@@ -199,5 +204,13 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     public ResourceLocation getDungeonChestType()
     {
         return RoomTreasureVenus.VENUSCHEST;
+    }
+
+    @Override
+    public List<Block> getSurfaceBlocks()
+    {
+        List<Block> list = new LinkedList<>();
+        list.add(VenusBlocks.venusBlock);
+        return list;
     }
 }
