@@ -2,12 +2,11 @@ package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -71,7 +70,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         NBTTagList tagList = new NBTTagList();
 
@@ -87,6 +86,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         }
 
         nbt.setTag("TelepadList", tagList);
+        return nbt;
     }
 
     public static void addShortRangeTelepad(TileEntityShortRangeTelepad telepad)
@@ -95,7 +95,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(GCCoreUtil.getDimensionID(telepad.getWorld()), new BlockVec3(telepad));
+                TelepadEntry newEntry = new TelepadEntry(telepad.getWorld().provider.getDimension(), new BlockVec3(telepad));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
 
                 if (previous == null || !previous.equals(newEntry))

@@ -11,8 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
@@ -181,7 +182,7 @@ public class SpaceStationWorldData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setString("owner", this.owner);
         nbttagcompound.setString("spaceStationName", this.spaceStationName);
@@ -206,6 +207,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
 
         nbttagcompound.setTag("allowedPlayers", var2);
+        return nbttagcompound;
     }
 
     /**
@@ -221,7 +223,7 @@ public class SpaceStationWorldData extends WorldSavedData
      */
     public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, EntityPlayer owner)
     {
-        int providerType = DimensionManager.getProviderType(stationID);
+        DimensionType providerType = DimensionManager.getProviderType(stationID);
 
         boolean foundMatch = false;
 
@@ -229,7 +231,7 @@ public class SpaceStationWorldData extends WorldSavedData
         // being called on an incorrect
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
-            if (satellite.getDimensionIdStatic() == providerType || satellite.getDimensionID() == providerType)
+            if (satellite.getDimensionIdStatic() == providerType.getId() || satellite.getDimensionID() == providerType.getId())
             {
                 foundMatch = true;
                 break;
@@ -243,12 +245,12 @@ public class SpaceStationWorldData extends WorldSavedData
         else
         {
             final String stationIdentifier = SpaceStationWorldData.getSpaceStationID(stationID);
-            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadItemData(SpaceStationWorldData.class, stationIdentifier);
+            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadData(SpaceStationWorldData.class, stationIdentifier);
 
             if (stationData == null)
             {
                 stationData = new SpaceStationWorldData(stationIdentifier);
-                world.setItemData(stationIdentifier, stationData);
+                world.setData(stationIdentifier, stationData);
                 stationData.dataCompound = new NBTTagCompound();
 
                 if (owner != null)
@@ -306,7 +308,7 @@ public class SpaceStationWorldData extends WorldSavedData
         
         if (var0 != null)
         {
-            var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
+            var3 = (SpaceStationWorldData) var0.loadData(SpaceStationWorldData.class, var2);
         }
         else
         {
@@ -316,7 +318,7 @@ public class SpaceStationWorldData extends WorldSavedData
         if (var3 == null)
         {
             var3 = new SpaceStationWorldData(var2);
-            var0.setItemData(var2, var3);
+            var0.setData(var2, var3);
             var3.dataCompound = new NBTTagCompound();
 
             if (player != null)

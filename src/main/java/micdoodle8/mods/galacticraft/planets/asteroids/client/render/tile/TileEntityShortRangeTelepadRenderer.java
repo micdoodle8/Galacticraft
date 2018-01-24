@@ -47,12 +47,12 @@ public class TileEntityShortRangeTelepadRenderer extends TileEntitySpecialRender
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityShortRangeTelepad te, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileEntityShortRangeTelepad te, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         GL11.glPushMatrix();
 
         RenderHelper.disableStandardItemLighting();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         if (Minecraft.isAmbientOcclusionEnabled())
         {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);

@@ -2,18 +2,19 @@ package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
+public class CircuitFabricatorRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation circuitFabTex = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuit_fabricator.png");
 
@@ -55,13 +56,13 @@ public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
+    public void drawExtras(Minecraft minecraft)
     {
         this.progressBar.draw(minecraft, 85, 16);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -71,21 +72,12 @@ public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
         itemstacks.init(3, true, 118, 41);
         itemstacks.init(4, true, 141, 15);
         itemstacks.init(5, false, 148, 81);
+        itemstacks.set(ingredients);
+    }
 
-        if (recipeWrapper instanceof CircuitFabricatorRecipeWrapper)
-        {
-            CircuitFabricatorRecipeWrapper circuitFabricatorRecipeWrapper = (CircuitFabricatorRecipeWrapper) recipeWrapper;
-            List inputs = circuitFabricatorRecipeWrapper.getInputs();
-
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(5, circuitFabricatorRecipeWrapper.getOutputs());
-        }
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

@@ -64,7 +64,7 @@ public class ContainerMethaneSynthesizer extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -74,8 +74,8 @@ public class ContainerMethaneSynthesizer extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -86,7 +86,7 @@ public class ContainerMethaneSynthesizer extends Container
             {
                 if (!this.mergeItemStack(var4, 5, 41, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 2)
@@ -100,7 +100,7 @@ public class ContainerMethaneSynthesizer extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -109,52 +109,52 @@ public class ContainerMethaneSynthesizer extends Container
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (var4.getItem() == MarsItems.carbonFragments)
                     {
                         if (!this.mergeItemStack(var4, 3, 4, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
-                    else if (FluidUtil.isEmptyContainer(var4, AsteroidsItems.methaneCanister))
+                    else if (FluidUtil.isPartialContainer(var4, AsteroidsItems.methaneCanister))
                     {
                         if (!this.mergeItemStack(var4, 4, 5, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 < 32)
                     {
                         if (!this.mergeItemStack(var4, 32, 41, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 5, 32, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

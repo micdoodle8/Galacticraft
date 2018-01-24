@@ -49,14 +49,14 @@ public class ContainerParaChest extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.parachestInventory.isUseableByPlayer(par1EntityPlayer);
+        return this.parachestInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack itemstack = null;
-        Slot slot = (Slot) this.inventorySlots.get(par2);
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(par2);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -68,17 +68,17 @@ public class ContainerParaChest extends Container
             {
                 if (!this.mergeItemStack(itemstack1, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(itemstack1, 0, this.parachestInventory.getSizeInventory(), false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (itemstack1.stackSize == 0)
+            if (itemstack1.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {

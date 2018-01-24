@@ -16,7 +16,7 @@ public class BasePlate extends SizedPiece
     public BasePlate(BaseConfiguration configuration, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeZ, EnumFacing dir)
     {
         super(configuration, sizeX, 1, sizeZ, dir);
-        this.coordBaseMode = dir;
+        this.setCoordBaseMode(dir);
         this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos, blockPosZ + this.sizeZ);
     }
 

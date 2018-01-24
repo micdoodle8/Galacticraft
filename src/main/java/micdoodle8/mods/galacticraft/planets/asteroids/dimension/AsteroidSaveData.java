@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class AsteroidSaveData extends WorldSavedData
 {
@@ -21,8 +21,9 @@ public class AsteroidSaveData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setTag("asteroids", this.datacompound);
+        return nbt;
     }
 }

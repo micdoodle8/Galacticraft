@@ -2,12 +2,13 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.lang.ref.WeakReference;
@@ -26,9 +27,10 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     {
         this.setMainBlockInternal(mainBlock);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.worldObj.markBlockForUpdate(this.getPos());
+            IBlockState state = this.world.getBlockState(this.getPos());
+            this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
         }
     }
 
@@ -79,7 +81,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
 
         if (mainTelepad == null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
+            TileEntity tileEntity = this.world.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity != null)
             {
@@ -92,7 +94,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
 
         if (mainTelepad == null)
         {
-            this.worldObj.setBlockToAir(this.mainBlockPosition);
+            this.world.setBlockToAir(this.mainBlockPosition);
         }
         else
         {
@@ -104,7 +106,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
             }
             else
             {
-                this.worldObj.removeTileEntity(this.getPos());
+                this.world.removeTileEntity(this.getPos());
             }
         }
 
@@ -120,7 +122,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -132,6 +134,8 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
             tagCompound.setInteger("z", this.mainBlockPosition.getZ());
             nbt.setTag("mainBlockPosition", tagCompound);
         }
+
+        return nbt;
     }
 
     @Override
@@ -149,32 +153,32 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @Override
     public boolean isNetworkedTile()
     {
-        return true;
-    }
+            return true;
+        }
     
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
-    {
-        if (this.mainBlockPosition == null)
         {
-            if (this.worldObj.isRemote || !this.resetMainBlockPosition())
-            {
-                return;
-            }
-        }
+    	if (this.mainBlockPosition == null)
+    	{
+    		if (this.world.isRemote || !this.resetMainBlockPosition())
+    		{
+    			return;
+    		}
+    	}
         super.getNetworkedData(sendData);
     }
-    
+
     private boolean resetMainBlockPosition()
-    {
-        for (int x = -1; x <= 1; x++)
         {
-            for (int z = -1; z <= 1; z++)
+            for (int x = -1; x <= 1; x++)
             {
+                for (int z = -1; z <= 1; z++)
+                {
                 for (int y = -2; y < 1; y += 2)
                 {
                     final BlockPos vecToCheck = this.getPos().add(x, y, z);
-                    if (this.worldObj.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
+                    if (this.world.getTileEntity(vecToCheck) instanceof TileEntityShortRangeTelepad)
                     {
                         this.setMainBlock(vecToCheck);
                         return true;
@@ -211,7 +215,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @Override
     public ItemStack getBatteryInSlot()
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     private void updateConnectable()

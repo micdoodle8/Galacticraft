@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.material.Material;
@@ -12,17 +11,16 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class BiomeGenVenusValley extends BiomeGenBaseVenus
+public class BiomeGenVenusValley extends BiomeVenus
 {
-    public BiomeGenVenusValley(int par1)
+    public BiomeGenVenusValley(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(100 << 16 | 100 << 8 | 100);
-        this.setHeight(new Height(-0.4F, 0.2F));
-        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-        {
-            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
-        }
+        super(properties);
+    }
+
+    public void registerTypes()
+    {
+        BiomeDictionary.addTypes(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
     }
 
     @Override
@@ -45,13 +43,13 @@ public class BiomeGenVenusValley extends BiomeGenBaseVenus
         {
             if (j1 <= rand.nextInt(5))
             {
-                chunkPrimerIn.setBlockState(i1, j1, l, Blocks.bedrock.getDefaultState());
+                chunkPrimerIn.setBlockState(i1, j1, l, Blocks.BEDROCK.getDefaultState());
             }
             else
             {
                 IBlockState iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
 
-                if (iblockstate2.getBlock().getMaterial() == Material.air)
+                if (iblockstate2.getMaterial() == Material.AIR)
                 {
                     j = -1;
                 }

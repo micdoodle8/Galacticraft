@@ -1,11 +1,18 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 
 public class EntitySmallAsteroid extends Entity
 {
+    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntitySmallAsteroid.class, DataSerializers.FLOAT);
+    private static final DataParameter<Float> SPIN_YAW = EntityDataManager.createKey(EntitySmallAsteroid.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> ASTEROID_TYPE = EntityDataManager.createKey(EntitySmallAsteroid.class, DataSerializers.VARINT);
     public float spinPitch;
     public float spinYaw;
     public int type;
@@ -38,7 +45,7 @@ public class EntitySmallAsteroid extends Entity
 
         super.onEntityUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.setSpinPitch(this.spinPitch);
             this.setSpinYaw(this.spinYaw);
@@ -62,16 +69,16 @@ public class EntitySmallAsteroid extends Entity
             this.motionZ *= 1.001D;
         }
 
-        this.moveEntity(this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
         this.firstUpdate = false;
     }
 
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(10, 0.0F);
-        this.dataWatcher.addObject(11, 0.0F);
-        this.dataWatcher.addObject(12, 0);
+        this.dataManager.register(SPIN_PITCH, 0.0F);
+        this.dataManager.register(SPIN_YAW, 0.0F);
+        this.dataManager.register(ASTEROID_TYPE, 0);
     }
 
     @Override
@@ -92,31 +99,31 @@ public class EntitySmallAsteroid extends Entity
 
     public float getSpinPitch()
     {
-        return this.dataWatcher.getWatchableObjectFloat(10);
+        return this.dataManager.get(SPIN_PITCH);
     }
 
     public float getSpinYaw()
     {
-        return this.dataWatcher.getWatchableObjectFloat(11);
+        return this.dataManager.get(SPIN_YAW);
     }
 
     public void setSpinPitch(float pitch)
     {
-        this.dataWatcher.updateObject(10, pitch);
+        this.dataManager.set(SPIN_PITCH, pitch);
     }
 
     public void setSpinYaw(float yaw)
     {
-        this.dataWatcher.updateObject(11, yaw);
+        this.dataManager.set(SPIN_YAW, yaw);
     }
 
     public int getAsteroidType()
     {
-        return this.dataWatcher.getWatchableObjectInt(12);
+        return this.dataManager.get(ASTEROID_TYPE);
     }
 
     public void setAsteroidType(int type)
     {
-        this.dataWatcher.updateObject(12, type);
+        this.dataManager.set(ASTEROID_TYPE, type);
     }
 }

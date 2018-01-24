@@ -37,7 +37,7 @@ import org.lwjgl.opengl.GL11;
  * The thermal armor render is done after the corresponding body part of the player is drawn.
  * This ALSO patches RenderPlayer so that it uses ModelPlayerGC in place of ModelPlayer to draw the player.
  * <p>
- * Finally, this also adds a hook into rotateCorpse so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
+ * Finally, this also adds a hook into applyRotations so as to fire a RotatePlayerEvent - used by the Cryogenic Chamber
  *
  * @author User
  */
@@ -90,8 +90,8 @@ public class RenderPlayerGC extends RenderPlayer
                 @Override
                 protected void initArmor()
                 {
-                    this.field_177189_c = new ModelBipedGC(0.5F);
-                    this.field_177186_d = new ModelBipedGC(1.0F);
+                    this.modelLeggings = new ModelBipedGC(0.5F);
+                    this.modelArmor = new ModelBipedGC(1.0F);
                 }
             };
             this.layerRenderers.set(armorLayerIndex, playerArmor);
@@ -167,7 +167,7 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
-    protected void rotateCorpse(AbstractClientPlayer abstractClientPlayer, float par2, float par3, float par4)
+    protected void applyRotations(AbstractClientPlayer abstractClientPlayer, float par2, float par3, float par4)
     {
         if (abstractClientPlayer.isEntityAlive() && abstractClientPlayer.isPlayerSleeping())
         {
@@ -176,7 +176,7 @@ public class RenderPlayerGC extends RenderPlayer
 
             if (!event.vanillaOverride)
             {
-                super.rotateCorpse(abstractClientPlayer, par2, par3, par4);
+                super.applyRotations(abstractClientPlayer, par2, par3, par4);
             }
             else if (event.shouldRotate == null)
             {
@@ -186,18 +186,18 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 float rotation = 0.0F;
 
-                if (abstractClientPlayer.playerLocation != null)
+                if (abstractClientPlayer.bedLocation != null)
                 {
-                    IBlockState bed = abstractClientPlayer.worldObj.getBlockState(abstractClientPlayer.playerLocation);
+                    IBlockState bed = abstractClientPlayer.world.getBlockState(abstractClientPlayer.bedLocation);
 
-                    if (bed.getBlock().isBed(abstractClientPlayer.worldObj, abstractClientPlayer.playerLocation, abstractClientPlayer))
+                    if (bed.getBlock().isBed(bed, abstractClientPlayer.world, abstractClientPlayer.bedLocation, abstractClientPlayer))
                     {
                         if (bed.getBlock() == GCBlocks.fakeBlock && bed.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
                         {
-                            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(abstractClientPlayer.playerLocation);
+                            TileEntity tile = event.getEntityPlayer().world.getTileEntity(abstractClientPlayer.bedLocation);
                             if (tile instanceof TileEntityMulti)
                             {
-                                bed = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                                bed = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
                             }
                         }
 
@@ -231,9 +231,9 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 final EntityPlayer player = (EntityPlayer) abstractClientPlayer;
 
-                if (player.ridingEntity instanceof ICameraZoomEntity)
+                if (player.getRidingEntity() instanceof ICameraZoomEntity)
                 {
-                    Entity rocket = player.ridingEntity;
+                    Entity rocket = player.getRidingEntity();
                     float rotateOffset = ((ICameraZoomEntity)rocket).getRotateOffset();
                     if (rotateOffset > -10F)
                     {
@@ -246,7 +246,7 @@ public class RenderPlayerGC extends RenderPlayer
                     }
                 }
             }
-            super.rotateCorpse(abstractClientPlayer, par2, par3, par4);
+            super.applyRotations(abstractClientPlayer, par2, par3, par4);
         }
     }
 

@@ -8,8 +8,11 @@ import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicCar
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySchematicTier2Rocket;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
+
 public class RecipeUtilMars
 {
+    @Nonnull
     public static ItemStack findMatchingSpaceshipT2Recipe(InventorySchematicTier2Rocket inventoryRocketBench)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT2Recipes())
@@ -20,9 +23,10 @@ public class RecipeUtilMars
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
+    @Nonnull
     public static ItemStack findMatchingCargoRocketRecipe(InventorySchematicCargoRocket inventoryRocketBench)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getCargoRocketRecipes())
@@ -33,9 +37,10 @@ public class RecipeUtilMars
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
+    @Nonnull
     public static ItemStack findMatchingSpaceshipT3Recipe(InventorySchematicTier3Rocket inventoryRocketBench)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getRocketT3Recipes())
@@ -46,9 +51,10 @@ public class RecipeUtilMars
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
+    @Nonnull
     public static ItemStack findMatchingAstroMinerRecipe(InventorySchematicAstroMiner craftMatrix)
     {
         for (INasaWorkbenchRecipe recipe : GalacticraftRegistry.getAstroMinerRecipes())
@@ -59,6 +65,6 @@ public class RecipeUtilMars
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 }

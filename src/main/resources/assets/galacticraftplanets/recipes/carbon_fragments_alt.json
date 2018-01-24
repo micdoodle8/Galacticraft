@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftplanets:carbon_fragments",
+    "count": 32
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    {
+      "item": "minecraft:coal",
+      "data": 0
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

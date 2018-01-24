@@ -7,8 +7,6 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCreeperBoss;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -27,14 +25,6 @@ public class RenderCreeperBoss extends RenderLiving<EntityCreeperBoss>
     protected ResourceLocation getEntityTexture(EntityCreeperBoss entity)
     {
         return RenderCreeperBoss.creeperTexture;
-    }
-
-    @Override
-    public void doRender(EntityCreeperBoss par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
-    {
-        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
-
-        super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
     }
 
 //    protected int func_27006_a(EntityCreeperBoss par1EntityCreeper, int par2, float par3)

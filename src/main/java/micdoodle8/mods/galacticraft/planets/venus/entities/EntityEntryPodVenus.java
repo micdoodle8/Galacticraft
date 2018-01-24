@@ -6,12 +6,13 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -65,7 +66,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
         return null;
     }
@@ -81,7 +82,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     {
         super.tickInAir();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -96,7 +97,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
                 {
                     if (groundPosY == null)
                     {
-                        this.groundPosY = this.worldObj.getTopSolidOrLiquidBlock(new BlockPos(this.posX, this.posY, this.posZ)).getY();
+                        this.groundPosY = this.world.getTopSolidOrLiquidBlock(new BlockPos(this.posX, this.posY, this.posZ)).getY();
                     }
 
                     if (this.posY - this.groundPosY > 5.0F)
@@ -198,36 +199,36 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            if (this.riddenByEntity != null)
+            if (!this.getPassengers().isEmpty())
             {
-                this.riddenByEntity.mountEntity(this);
+                this.removePassengers();
             }
 
             return true;
         }
 
-        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
             return true;
         }
-        else if (var1 instanceof EntityPlayerMP)
+        else if (player instanceof EntityPlayerMP)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            var1.mountEntity(null);
+            this.removePassengers();
             return true;
         }
         else

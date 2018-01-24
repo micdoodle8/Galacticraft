@@ -7,17 +7,24 @@ import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISortableItem
 {
@@ -47,17 +54,20 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         tooltip.add(GCCoreUtil.translate("item.tier2.desc"));
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
-        for (int i = 0; i < ItemThermalPaddingTier2.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < ItemThermalPaddingTier2.names.length; i++)
+            {
+                subItems.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
@@ -97,8 +107,10 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
@@ -112,7 +124,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(6, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 1)
@@ -120,7 +132,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear1 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(7, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 2)
@@ -128,7 +140,7 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear2 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(8, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
             else if (itemStack.getItemDamage() == 3)
@@ -136,10 +148,10 @@ public class ItemThermalPaddingTier2 extends Item implements IItemThermal, ISort
                 if (gear3 == null)
                 {
                     stats.getExtendedInventory().setInventorySlotContents(9, itemStack.copy());
-                    itemStack.stackSize = 0;
+                    itemStack.setCount(0);
                 }
             }
         }
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
     }
 }

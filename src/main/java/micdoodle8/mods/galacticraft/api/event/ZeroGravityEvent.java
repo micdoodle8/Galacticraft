@@ -18,7 +18,7 @@ public abstract class ZeroGravityEvent extends LivingEvent
     public ZeroGravityEvent(EntityLivingBase entity)
     {
         super(entity);
-        this.provider = entity.worldObj.provider;
+        this.provider = entity.world.provider;
     }
 
     /**

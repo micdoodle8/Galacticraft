@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.command;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class GCInvSaveData extends WorldSavedData
 {
@@ -43,7 +43,7 @@ public class GCInvSaveData extends WorldSavedData
                                 System.out.println("GCInv error retrieving savefile: slot was outside range 0-5");
                                 return;
                             }
-                            saveinv[i] = ItemStack.loadItemStackFromNBT(obj1);
+                            saveinv[i] = new ItemStack(obj1);
                         }
                     }
                 }
@@ -53,7 +53,7 @@ public class GCInvSaveData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound toSave)
+    public NBTTagCompound writeToNBT(NBTTagCompound toSave)
     {
         for (String name : CommandGCInv.savedata.keySet())
         {
@@ -72,5 +72,7 @@ public class GCInvSaveData extends WorldSavedData
             }
             toSave.setTag(name, par1NBTTagList);
         }
+
+        return toSave;
     }
 }

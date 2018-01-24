@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -453,7 +453,7 @@ public class NetworkUtil
 
     public static ItemStack readItemStack(ByteBuf buffer) throws IOException
     {
-        ItemStack itemstack = null;
+        ItemStack itemstack = ItemStack.EMPTY;
         short itemID = buffer.readShort();
 
         if (itemID >= 0)
@@ -472,14 +472,14 @@ public class NetworkUtil
 
     public static void writeItemStack(ItemStack itemStack, ByteBuf buffer) throws IOException
     {
-        if (itemStack == null)
+        if (itemStack.isEmpty())
         {
             buffer.writeShort(-1);
         }
         else
         {
             buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
-            buffer.writeByte(itemStack.stackSize);
+            buffer.writeByte(itemStack.getCount());
             buffer.writeShort(itemStack.getItemDamage());
             NBTTagCompound nbttagcompound = null;
 

@@ -14,8 +14,8 @@ public class CircuitFabricatorRecipeMaker
     {
         List<CircuitFabricatorRecipeWrapper> recipes = new ArrayList<>();
 
-        ImmutableMap<ItemStack[], ItemStack> recipesMap = CircuitFabricatorRecipes.getRecipes();
-        for (Map.Entry<ItemStack[], ItemStack> entry : recipesMap.entrySet())
+        ImmutableMap<List<ItemStack>, ItemStack> recipesMap = CircuitFabricatorRecipes.getRecipes();
+        for (Map.Entry<List<ItemStack>, ItemStack> entry : recipesMap.entrySet())
         {
             CircuitFabricatorRecipeWrapper wrapper = new CircuitFabricatorRecipeWrapper(entry.getKey(), entry.getValue());
             recipes.add(wrapper);

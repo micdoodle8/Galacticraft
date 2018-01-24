@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:telemetry"
+  },
+  "pattern": [
+    "XFX",
+    "XWX",
+    "YYY"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "F": {
+      "item": "galacticraftcore:basic_item",
+      "data": 19
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedCopper"
+    }
+  }
+}

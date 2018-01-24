@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
@@ -25,12 +24,16 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -55,7 +58,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     @Override
     public void onLoad()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             loadedList.add(new BlockVec3Dim(this));
         }
@@ -65,7 +68,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     public void invalidate()
     {
         super.invalidate();
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             loadedList.remove(new BlockVec3Dim(this));
         }
@@ -74,7 +77,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote && ++this.ticks % 2 == 0)
+        if (!this.world.isRemote && ++this.ticks % 2 == 0)
         {
             if (this.toUpdate != null)
             {
@@ -82,7 +85,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 this.toUpdate = null;
             }
 
-            String name;
+            String name = null;
             int[] data = { -1, -1, -1, -1, -1 };
             String strUUID = "";
 
@@ -99,11 +102,15 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 {
                     if (linkedEntity instanceof EntityPlayerMP)
                     {
-                        name = "$" + ((EntityPlayerMP) linkedEntity).getName();
+                        name = "$" + linkedEntity.getName();
                     }
                     else
                     {
-                        name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+                        EntityEntry entityEntry = EntityRegistry.getEntry(linkedEntity.getClass());
+                        if (entityEntry != null && entityEntry.getRegistryName() != null)
+                        {
+                            name = entityEntry.getRegistryName().toString();
+                        }
                     }
 
                     if (name == null)
@@ -115,7 +122,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                     double xmotion = linkedEntity.motionX;
                     double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
                     double zmotion = linkedEntity.motionZ;
-                    data[2] = (int) (MathHelper.sqrt_double(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
+                    data[2] = (int) (MathHelper.sqrt(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
 
                     if (linkedEntity instanceof ITelemetry)
                     {
@@ -133,7 +140,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                             this.pulseRate += 100;
                         }
                         this.lastHurttime = eLiving.hurtTime;
-                        if (eLiving.ridingEntity != null)
+                        if (eLiving.getRidingEntity() != null)
                         {
                             data[2] /= 4;  //reduced pulse effect if riding a vehicle
                         }
@@ -166,7 +173,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntityHorse)
                         {
-                            data[3] = ((EntityHorse) eLiving).getHorseType();
+//                            data[3] = ((EntityHorse) eLiving).getType().ordinal();
                             data[4] = ((EntityHorse) eLiving).getHorseVariant();
                         }
                         else if (eLiving instanceof EntityVillager)
@@ -190,11 +197,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntitySkeleton)
                         {
-                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType();
+//                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType().ordinal();
                         }
                         else if (eLiving instanceof EntityZombie)
                         {
-                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0;
+//                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0; TODO Fix for MC 1.10
                             data[4] = ((EntityZombie) eLiving).isChild() ? 1 : 0;
                         }
                     }
@@ -204,7 +211,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.world.provider.getDimension(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.world.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
     
@@ -222,7 +229,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         }
         else
         {
-            this.clientClass = EntityList.stringToClassMapping.get(name);
+            EntityEntry entityEntry = ForgeRegistries.ENTITIES.getValue(new ResourceLocation(name));
+            this.clientClass = entityEntry == null ? null : entityEntry.getEntityClass();
         }
         this.clientData = new int[5];
         for (int i = 2; i < 7; i++)
@@ -240,8 +248,10 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         this.toUpdate = new UUID(msb, lsb);
     }
 
+
+
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         if (this.linkedEntity != null && !this.linkedEntity.isDead)
@@ -249,13 +259,14 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
             nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
         }
+        return nbt;
     }
 
     public void addTrackedEntity(UUID uuid)
     {
         this.pulseRate = 400;
         this.lastHurttime = 0;
-        List<Entity> eList = this.worldObj.loadedEntityList;
+        List<Entity> eList = this.world.loadedEntityList;
         for (Entity e : eList)
         {
             if (e.getUniqueID().equals(uuid))
@@ -348,13 +359,13 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             int z = fmData.getInteger("teCoordZ");
             WorldProvider wp = WorldUtil.getProviderForDimensionServer(dim);
             //TODO
-            if (wp == null || wp.worldObj == null)
+            if (wp == null || wp.world == null)
             {
                 GCLog.debug("Frequency module worn: world provider is null.  This is a bug. " + dim);
             }
             else
             {
-                TileEntity te = wp.worldObj.getTileEntity(new BlockPos(x, y, z));
+                TileEntity te = wp.world.getTileEntity(new BlockPos(x, y, z));
                 if (te instanceof TileEntityTelemetry)
                 {
                     if (remove)

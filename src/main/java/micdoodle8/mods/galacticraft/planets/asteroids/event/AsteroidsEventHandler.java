@@ -9,7 +9,7 @@ public class AsteroidsEventHandler
     @SubscribeEvent
     public void onThermalArmorEvent(ThermalArmorEvent event)
     {
-        if (event.armorStack == null)
+        if (event.armorStack.isEmpty())
         {
             event.setArmorAddResult(ThermalArmorEvent.ArmorAddResult.REMOVE);
         }

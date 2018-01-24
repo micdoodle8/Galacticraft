@@ -48,7 +48,7 @@ public class ContainerEnergyStorageModule extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -58,8 +58,8 @@ public class ContainerEnergyStorageModule extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotID)
     {
-        ItemStack returnStack = null;
-        Slot slot = (Slot) this.inventorySlots.get(slotID);
+        ItemStack returnStack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(slotID);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -77,7 +77,7 @@ public class ContainerEnergyStorageModule extends Container
                         {
                             if (EnergyUtil.isFillableElectricItem(itemStack) && !this.mergeItemStack(itemStack, 0, 1, false))
                             {
-                                return null;
+                                return ItemStack.EMPTY;
                             }
                         }
                     }
@@ -85,7 +85,7 @@ public class ContainerEnergyStorageModule extends Container
                     {
                         if (!this.mergeItemStack(itemStack, 0, 1, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                 }
@@ -95,35 +95,35 @@ public class ContainerEnergyStorageModule extends Container
                     {
                         if (!this.mergeItemStack(itemStack, b - 9, b, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(itemStack, b - 36, b - 9, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
             else if (!this.mergeItemStack(itemStack, 2, 38, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (itemStack.stackSize == 0)
+            if (itemStack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (itemStack.stackSize == returnStack.stackSize)
+            if (itemStack.getCount() == returnStack.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, itemStack);
+            slot.onTake(par1EntityPlayer, itemStack);
         }
 
         return returnStack;

@@ -27,10 +27,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -46,7 +47,7 @@ import java.util.List;
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
     public static final int WATTS_PER_TICK = 1;
-    private ItemStack[] containingItems = new ItemStack[1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
@@ -85,7 +86,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
       		this.controlEnabled = this.launchSchedulingEnabled && this.hasEnoughEnergyToRun && !this.getDisabled(0);
         	
@@ -115,12 +116,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                     for (int i = 0; i < this.connectedPads.size(); i++)
                     {
                         BlockPos coords = this.connectedPads.get(i);
-                        Block block = this.worldObj.getBlockState(coords).getBlock();
+                        Block block = this.world.getBlockState(coords).getBlock();
 
                         if (block != GCBlocks.landingPadFull)
                         {
                             this.connectedPads.remove(i);
-                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkCoordIntPair(coords.getX() >> 4, coords.getZ() >> 4));
+                            ForgeChunkManager.unforceChunk(this.chunkLoadTicket, new ChunkPos(coords.getX() >> 4, coords.getZ() >> 4));
                         }
                     }
                 }
@@ -130,7 +131,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         {
             if (this.frequency == -1 && this.destFrequency == -1)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { 5, this.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.world), new Object[] { 5, this.getPos(), 0 }));
             }
         }
     }
@@ -161,7 +162,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public void onTicketLoaded(Ticket ticket, boolean placed)
     {
-        if (!this.worldObj.isRemote && ConfigManagerMars.launchControllerChunkLoad)
+        if (!this.world.isRemote && ConfigManagerMars.launchControllerChunkLoad)
         {
             if (ticket == null)
             {
@@ -182,7 +183,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             {
                 for (int z = -2; z <= 2; z++)
                 {
-                    Block blockID = this.worldObj.getBlockState(this.getPos().add(x, 0, z)).getBlock();
+                    Block blockID = this.world.getBlockState(this.getPos().add(x, 0, z)).getBlock();
 
                     if (blockID instanceof BlockLandingPadFull)
                     {
@@ -192,18 +193,18 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
                             if (placed)
                             {
-                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
+                                ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.world, this.getPos().getX() + x, this.getPos().getY(), this.getPos().getZ() + z, this.getOwnerName());
                             }
                             else
                             {
-                                ChunkLoadingCallback.addToList(this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
+                                ChunkLoadingCallback.addToList(this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
                             }
                         }
                     }
                 }
             }
 
-            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
+            ChunkLoadingCallback.forceChunk(this.chunkLoadTicket, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getOwnerName());
         }
     }
 
@@ -223,7 +224,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
@@ -237,10 +238,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setString("OwnerName", this.ownerName);
         nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
         nbt.setInteger("ControllerFrequency", this.frequency);
@@ -248,12 +249,13 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
         nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
         nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
+        return nbt;
     }
 
     @Override
-    public ItemStack[] getContainingItems()
+    public NonNullList<ItemStack> getContainingItems()
     {
-        return this.containingItems;
+        return this.stacks;
     }
 
     @Override
@@ -351,7 +353,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         if (this.frequency >= 0 && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.frequencyValid = true;
-            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
 
             worldLoop:
             for (int i = 0; i < servers.length; i++)
@@ -401,12 +403,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void checkDestFrequencyValid()
     {
-        if (!this.worldObj.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+        if (!this.world.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
         {
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
             {
-                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
                 for (int i = 0; i < servers.length; i++)
                 {
                     WorldServer world = servers[i];
@@ -478,7 +480,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }
@@ -491,7 +493,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        IBlockState state = this.world.getBlockState(getPos()); 
         if (state.getBlock() instanceof BlockMachineMars)
         {
             return state.getValue(BlockMachineMars.FACING);

@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -45,8 +45,8 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { this.tileEntity.getPos(), par1GuiButton.id }));
-        tileEntity.buttonPressed(par1GuiButton.id, this.mc.thePlayer, Side.CLIENT);
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tileEntity.getPos(), par1GuiButton.id }));
+        tileEntity.buttonPressed(par1GuiButton.id, this.mc.player, Side.CLIENT);
     }
 
     /**
@@ -56,10 +56,10 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getName(), 45, 6, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getName(), 45, 6, 4210752);
         String displayText = "";
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -80,7 +80,7 @@ public class GuiPainter extends GuiContainerGC
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         ColorUtil.setGLColor(tileEntity.guiColor);
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         int x = guiLeft + this.xSize / 2 - 9;
         int y = guiBottom + this.ySize / 2 - 60;
         int height = 18;

@@ -8,22 +8,20 @@ import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.Explosion;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockSlabGC extends BlockSlab implements ISortableBlock
@@ -44,7 +42,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs creativeTabs, List<ItemStack> list)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); ++i)
         {
@@ -77,16 +75,16 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public float getBlockHardness(World world, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
-        Block block = world.getBlockState(pos).getBlock();
+        Block block = worldIn.getBlockState(pos).getBlock();
 
         if (!(block instanceof BlockSlabGC)) //This will prevent game crashing when harvest block
         {
             return 0;
         }
 
-        switch (this.getMetaFromState(world.getBlockState(pos)))
+        switch (this.getMetaFromState(worldIn.getBlockState(pos)))
         {
         case 2:
         case 3:
@@ -97,13 +95,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
-    {
-        return super.getBlockHardness(world, pos);
-    }
-
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         return new ItemStack(this, 1, this.getMetaFromState(world.getBlockState(pos)) & 7);
     }
@@ -128,9 +120,9 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public Object getVariant(ItemStack itemStack)
+    public Comparable<?> getTypeForItem(ItemStack stack)
     {
-        return BlockType.byMetadata(itemStack.getMetadata() & 7);
+        return BlockType.byMetadata(stack.getMetadata() & 7);
     }
 
     @Override
@@ -159,9 +151,9 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return this.isDouble() ? new BlockState(this, VARIANT) : new BlockState(this, HALF, VARIANT);
+        return this.isDouble() ? new BlockStateContainer(this, VARIANT) : new BlockStateContainer(this, HALF, VARIANT);
     }
 
     @Override

@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

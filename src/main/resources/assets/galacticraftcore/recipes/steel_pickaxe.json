@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_pickaxe"
+  },
+  "pattern": [
+    "YYY",
+    " X ",
+    " X "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

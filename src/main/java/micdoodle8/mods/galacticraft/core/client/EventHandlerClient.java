@@ -28,21 +28,21 @@ public class EventHandlerClient
     {
         GL11.glPushMatrix();
 
-        final EntityPlayer player = event.entityPlayer;
+        final EntityPlayer player = event.getEntityPlayer();
 
-        if (player.ridingEntity instanceof ICameraZoomEntity && player == Minecraft.getMinecraft().thePlayer
+        if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getMinecraft().player
                 && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
         {
-            Entity entity = player.ridingEntity;
+            Entity entity = player.getRidingEntity();
             float rotateOffset = ((ICameraZoomEntity)entity).getRotateOffset();
             if (rotateOffset > -10F)
             {
                 rotateOffset += ClientProxyCore.PLAYER_Y_OFFSET;
                 GL11.glTranslatef(0, -rotateOffset, 0);
-                float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.partialRenderTick;
-                float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialRenderTick;
-                GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
+                float anglePitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * event.getPartialRenderTick();
+                float angleYaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.getPartialRenderTick();
+            GL11.glRotatef(-angleYaw, 0.0F, 1.0F, 0.0F);
+            GL11.glRotatef(anglePitch, 0.0F, 0.0F, 1.0F);
                 GL11.glTranslatef(0, rotateOffset, 0);
             }
         }
@@ -60,7 +60,7 @@ public class EventHandlerClient
     {
         GL11.glPopMatrix();
 
-        if (event.entityPlayer instanceof EntityPlayerSP)
+        if (event.getEntityPlayer() instanceof EntityPlayerSP)
             sneakRenderOverride = false;
     }
 
@@ -71,7 +71,7 @@ public class EventHandlerClient
         {
             if (!ClientProxyCore.overworldTextureRequestSent)
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] {}));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.world), new Object[] {}));
                 ClientProxyCore.overworldTextureRequestSent = true;
             }
 

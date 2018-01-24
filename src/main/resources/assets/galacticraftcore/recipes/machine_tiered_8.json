@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine_tiered",
+    "data": 8
+  },
+  "pattern": [
+    "BSB",
+    "SWS",
+    "BSB"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:machine_tiered",
+      "data": 0
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    }
+  }
+}

@@ -55,7 +55,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
     }
 
     @Override
-    public void renderTileEntityAt(E provider, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(E provider, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (!provider.getBubbleVisible())
         {
@@ -68,7 +68,7 @@ public class TileEntityBubbleProviderRenderer<E extends TileEntity & IBubbleProv
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.0F, (float) z + 0.5F);
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_LIGHTING);

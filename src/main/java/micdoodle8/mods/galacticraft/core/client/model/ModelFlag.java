@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
@@ -67,9 +67,9 @@ public class ModelFlag extends ModelBase
 
             float windLevel = 1.0F;
 
-            if (entity.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (entity.world.provider instanceof IGalacticraftWorldProvider)
             {
-                windLevel = ((IGalacticraftWorldProvider) entity.worldObj.provider).getWindLevel();
+                windLevel = ((IGalacticraftWorldProvider) entity.world.provider).getWindLevel();
             }
 
             for (int i = 0; i < entity.flagData.getWidth(); i++)
@@ -93,7 +93,7 @@ public class ModelFlag extends ModelBase
                     GL11.glColor3f(col.floatX(), col.floatY(), col.floatZ());
 
                     Tessellator tess = Tessellator.getInstance();
-                    WorldRenderer worldRenderer = tess.getWorldRenderer();
+                    BufferBuilder worldRenderer = tess.getBuffer();
                     worldRenderer.begin(GL11.GL_TRIANGLES, DefaultVertexFormats.POSITION);
 
                     worldRenderer.pos(i / 24.0F + 0.0 / 24.0F, j / 24.0F + 0.0 / 24.0F + offset, offset).endVertex();

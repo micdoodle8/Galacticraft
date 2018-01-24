@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:dishbase"
+  },
+  "pattern": [
+    "XFX",
+    " X ",
+    "WYW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "F": {
+      "item": "galacticraftcore:basic_item",
+      "data": 19
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    }
+  }
+}

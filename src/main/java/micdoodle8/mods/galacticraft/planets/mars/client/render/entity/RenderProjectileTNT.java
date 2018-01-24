@@ -31,7 +31,7 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
         float f2 = (1.0F - ((float) entity.ticksExisted - partialTicks + 1.0F) / 100.0F) * 0.1F;
         this.bindEntityTexture(entity);
         GlStateManager.translate(-0.5F, -0.5F, 0.5F);
-        blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), entity.getBrightness(partialTicks));
+        blockrendererdispatcher.renderBlockBrightness(Blocks.TNT.getDefaultState(), entity.getBrightness());
         GlStateManager.translate(0.0F, 0.0F, 1.0F);
 
         if (entity.ticksExisted % 2 == 0)
@@ -43,7 +43,7 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
             GlStateManager.color(1.0F, 1.0F, 1.0F, f2);
             GlStateManager.doPolygonOffset(-3.0F, -3.0F);
             GlStateManager.enablePolygonOffset();
-            blockrendererdispatcher.renderBlockBrightness(Blocks.tnt.getDefaultState(), 0.2F);
+            blockrendererdispatcher.renderBlockBrightness(Blocks.TNT.getDefaultState(), 0.2F);
             GlStateManager.doPolygonOffset(0.0F, 0.0F);
             GlStateManager.disablePolygonOffset();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -59,6 +59,6 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
     @Override
     protected ResourceLocation getEntityTexture(EntityProjectileTNT entity)
     {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:wall_gc",
+    "data": 2,
+    "count": 6
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_moon",
+      "data": 4
+    }
+  }
+}

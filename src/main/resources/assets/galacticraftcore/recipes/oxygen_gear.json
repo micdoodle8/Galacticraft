@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_gear"
+  },
+  "pattern": [
+    " Y ",
+    "YXY",
+    "Y Y"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    },
+    "Y": {
+      "item": "galacticraftcore:fluid_pipe"
+    }
+  }
+}

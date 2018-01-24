@@ -1,0 +1,33 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_item",
+    "data": 19
+  },
+  "pattern": [
+    " X ",
+    "YUY",
+    "ZWZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:repeater"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedIron"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  }
+}

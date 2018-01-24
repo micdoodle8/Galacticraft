@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_compressor",
+    "data": 0
+  },
+  "pattern": [
+    "XWX",
+    "WZW",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedBronze"
+    },
+    "Z": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    }
+  }
+}

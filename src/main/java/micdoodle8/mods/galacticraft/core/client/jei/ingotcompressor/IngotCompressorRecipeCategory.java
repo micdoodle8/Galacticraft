@@ -2,18 +2,19 @@ package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class IngotCompressorRecipeCategory extends BlankRecipeCategory
+public class IngotCompressorRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation compressorTex = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
 
@@ -55,52 +56,28 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 77, 36);
+        this.progressBar.draw(minecraft, 59, 19);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
         for (int j = 0; j < 9; j++)
         {
-            itemstacks.init(j, true, 21 + j % 3 * 18, 26 + j / 3 * 18);
+            itemstacks.init(j, true, j % 3 * 18, j / 3 * 18);
         }
 
-        itemstacks.init(9, false, 140, 46);
+        itemstacks.init(9, false, 119, 20);
+        itemstacks.set(ingredients);
+    }
 
-        if (recipeWrapper instanceof IngotCompressorShapedRecipeWrapper)
-        {
-            IngotCompressorShapedRecipeWrapper ingotCompressorRecipeWrapper = (IngotCompressorShapedRecipeWrapper) recipeWrapper;
-            List inputs = ingotCompressorRecipeWrapper.getInputs();
-
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(9, ingotCompressorRecipeWrapper.getOutputs());
-        }
-        else if (recipeWrapper instanceof IngotCompressorShapelessRecipeWrapper)
-        {
-            IngotCompressorShapelessRecipeWrapper ingotCompressorRecipeWrapper = (IngotCompressorShapelessRecipeWrapper) recipeWrapper;
-            List inputs = ingotCompressorRecipeWrapper.getInputs();
-
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(9, ingotCompressorRecipeWrapper.getOutputs());
-        }
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

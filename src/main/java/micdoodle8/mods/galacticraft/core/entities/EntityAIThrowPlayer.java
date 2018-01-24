@@ -19,7 +19,7 @@ public class EntityAIThrowPlayer extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        final EntityPlayer player = this.skeletonBoss.worldObj.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
+        final EntityPlayer player = this.skeletonBoss.world.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
 
         if (player == null)
         {

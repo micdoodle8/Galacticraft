@@ -1,0 +1,34 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine2",
+    "data": 4
+  },
+  "pattern": [
+    "WXW",
+    "UYU",
+    "VZV"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:stone_button"
+    },
+    "V": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "ingotAluminum"
+    },
+    "X": {
+      "item": "minecraft:lever"
+    },
+    "Y": {
+      "item": "minecraft:furnace"
+    },
+    "Z": {
+      "item": "minecraft:redstone_torch"
+    }
+  }
+}

@@ -17,7 +17,7 @@ public class ContainerCoalGenerator extends Container
     public ContainerCoalGenerator(InventoryPlayer par1InventoryPlayer, TileEntityCoalGenerator tileEntity)
     {
         this.tileEntity = tileEntity;
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, new ItemStack(Items.coal), new ItemStack(Item.getItemFromBlock(Blocks.coal_block))));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 33, 34, new ItemStack(Items.COAL), new ItemStack(Item.getItemFromBlock(Blocks.COAL_BLOCK))));
         int var3;
 
         for (var3 = 0; var3 < 3; ++var3)
@@ -43,7 +43,7 @@ public class ContainerCoalGenerator extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -53,8 +53,8 @@ public class ContainerCoalGenerator extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        Slot var3 = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -63,46 +63,46 @@ public class ContainerCoalGenerator extends Container
 
             if (par1 != 0)
             {
-                if (var4.getItem() == Items.coal)
+                if (var4.getItem() == Items.COAL)
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 >= 28)
                 {
                     if (!this.mergeItemStack(var4, 1, 28, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, 28, 37, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
             }
             else if (!this.mergeItemStack(var4, 1, 37, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
             }
             else
             {
                 var3.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            var3.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

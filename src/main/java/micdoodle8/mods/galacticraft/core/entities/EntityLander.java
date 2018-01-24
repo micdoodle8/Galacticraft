@@ -3,19 +3,20 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.fx.EntityFXLanderFlame;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,7 +45,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     {
         return 2.25;
     }
-    
+
     @Override
     public float getRotateOffset()
     {
@@ -86,36 +87,36 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            if (this.riddenByEntity != null)
+            if (!this.getPassengers().isEmpty())
             {
-                this.riddenByEntity.mountEntity(this);
+                this.removePassengers();
             }
 
             return true;
         }
 
-        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
             return true;
         }
-        else if (var1 instanceof EntityPlayerMP)
+        else if (player instanceof EntityPlayerMP)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            var1.mountEntity(null);
+            this.removePassengers();
             return true;
         }
         else
@@ -183,9 +184,10 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        return new EntityFXLanderFlame(this.worldObj, x, y, z, motX, motY, motZ, this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase) this.riddenByEntity : null);
+        EntityLivingBase passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
+        return new ParticleLanderFlame(this.world, x, y, z, motX, motY, motZ, passenger);
     }
 
     @Override
@@ -193,7 +195,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     {
         super.tickInAir();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -218,23 +220,24 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public void onGroundHit()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (Math.abs(this.lastMotionY) > 2.0D)
             {
-                if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayerMP)
+                for (Entity entity : this.getPassengers())
                 {
-                    EntityPlayerMP entity = (EntityPlayerMP) this.riddenByEntity;
-                    entity.mountEntity(null);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.worldObj), new Object[] {}), entity);
+                    entity.dismountRidingEntity();
+                    if (entity instanceof EntityPlayerMP)
+                    {
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (EntityPlayerMP) entity);
+                    }
                     entity.motionX = 0;
                     entity.motionY = 0;
                     entity.motionZ = 0;
                     entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
-                    this.worldObj.updateEntityWithOptionalForce(entity, false);
+                    this.world.updateEntityWithOptionalForce(entity, false);
                 }
-
-                this.worldObj.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+                this.world.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
 
                 this.setDead();
             }

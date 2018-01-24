@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,14 +38,14 @@ public class EntityProjectileTNT extends EntityFireball
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPosition)
+    protected void onImpact(RayTraceResult movingObjectPosition)
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof EntityCreeper))
             {
                 float difficulty = 0;
-                switch (this.worldObj.getDifficulty())
+                switch (this.world.getDifficulty())
                 {
                 case HARD : difficulty = 2F;
                     break;
@@ -55,7 +55,7 @@ public class EntityProjectileTNT extends EntityFireball
                 movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
             }
 
-            this.worldObj.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.worldObj.getGameRules().getBoolean("mobGriefing"));
+            this.world.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean("mobGriefing"));
             this.setDead();
         }
     }

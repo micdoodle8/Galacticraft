@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:nose_cone"
+  },
+  "pattern": [
+    " Y ",
+    " X ",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "item": "minecraft:redstone_torch"
+    }
+  }
+}

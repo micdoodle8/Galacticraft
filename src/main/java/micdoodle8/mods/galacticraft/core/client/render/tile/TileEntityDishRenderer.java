@@ -57,14 +57,14 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         this.updateModels();
         TileEntityDish dish = (TileEntityDish) tile;
         float hour = dish.rotation(partialTickTime) % 360F;
         float declination = dish.elevation(partialTickTime) % 360F;
         
-        final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+        final EntityPlayer player = FMLClientHandler.instance().getClient().player;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

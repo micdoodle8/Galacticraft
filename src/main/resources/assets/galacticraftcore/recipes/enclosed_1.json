@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:enclosed",
+    "data": 1
+  },
+  "pattern": [
+    "XYX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 4
+    },
+    "Y": {
+      "item": "galacticraftcore:fluid_pipe"
+    }
+  }
+}

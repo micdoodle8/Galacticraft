@@ -14,15 +14,16 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
 {
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [<player>]";
+        return "/" + this.getName() + " [<player>]";
     }
 
     @Override
@@ -32,13 +33,13 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "dimensiontp";
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
@@ -57,11 +58,10 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
-                    MinecraftServer server = MinecraftServer.getServer();
-                    WorldServer worldserver = server.worldServerForDimension(GCCoreUtil.getDimensionID(server.worldServers[0]));
+                    WorldServer worldserver = server.getWorld(GCCoreUtil.getDimensionID(server.worlds[0]));
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
-                    stats.setRocketStacks(new ItemStack[2]);
+                    stats.setRocketStacks(NonNullList.withSize(2, ItemStack.EMPTY));
                     stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
                     stats.setRocketItem(GCItems.rocketTier1);
                     stats.setFuelLevel(1000);
@@ -78,7 +78,7 @@ public class CommandPlanetTeleport extends CommandBase
                         throw e;
                     }
 
-                    CommandBase.notifyOperators(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
+                    CommandBase.notifyCommandListener(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {
@@ -92,7 +92,7 @@ public class CommandPlanetTeleport extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getUsage(sender)), new Object[0]);
         }
     }
 }

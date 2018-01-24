@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_block_core",
+    "data": 4,
+    "count": 4
+  },
+  "pattern": [
+    "XX ",
+    "XX ",
+    " Y "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    }
+  }
+}

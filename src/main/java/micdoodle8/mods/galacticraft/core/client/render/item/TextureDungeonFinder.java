@@ -13,7 +13,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.util.MathHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,9 +37,9 @@ public class TextureDungeonFinder extends TextureAtlasSprite
     {
         Minecraft minecraft = Minecraft.getMinecraft();
 
-        if (minecraft.theWorld != null && minecraft.thePlayer != null)
+        if (minecraft.world != null && minecraft.player != null)
         {
-            this.updateCompass(minecraft.theWorld, minecraft.thePlayer, (double)minecraft.thePlayer.rotationYaw, false, false);
+            this.updateCompass(minecraft.world, minecraft.player, (double)minecraft.player.rotationYaw, false, false);
         }
         else
         {
@@ -57,7 +58,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
 
             if (worldIn != null && player != null && !flag1)
             {
-                if (worldIn.provider instanceof IGalacticraftWorldProvider && player.inventory.hasItem(GCItems.dungeonFinder))
+                if (worldIn.provider instanceof IGalacticraftWorldProvider && player.inventory.hasItemStack(new ItemStack(GCItems.dungeonFinder)))
                 {
                     double direction = GCPlayerStatsClient.get(player).getDungeonDirection();
                     angle = (angle - direction) % 360.0D;
@@ -87,7 +88,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
                     d3 -= (Math.PI * 2D);
                 }
 
-                d3 = MathHelper.clamp_double(d3, -1.0D, 1.0D);
+                d3 = MathHelper.clamp(d3, -1.0D, 1.0D);
                 this.angleDelta += d3 * 0.1D;
                 this.angleDelta *= 0.8D;
                 this.currentAngle += this.angleDelta;

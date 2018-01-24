@@ -37,7 +37,7 @@ public class EventHandlerVenus
     @SubscribeEvent
     public void onThermalArmorEvent(GCPlayerHandler.ThermalArmorEvent event)
     {
-        if (event.armorStack == null)
+        if (event.armorStack.isEmpty())
         {
             event.setArmorAddResult(GCPlayerHandler.ThermalArmorEvent.ArmorAddResult.REMOVE);
         }

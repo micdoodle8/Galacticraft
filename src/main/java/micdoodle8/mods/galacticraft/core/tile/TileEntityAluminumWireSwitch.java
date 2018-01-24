@@ -45,10 +45,17 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("tier", this.tier);
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
@@ -64,7 +71,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     	if (newDisableConnections && !this.disableConnections)
     	{
     		this.disableConnections = newDisableConnections;
-        	if (!this.worldObj.isRemote)
+        	if (!this.world.isRemote)
             {
         		this.disConnect();
             }
@@ -72,13 +79,13 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     	else if (!newDisableConnections && this.disableConnections)
     	{
     		this.disableConnections = newDisableConnections;
-        	if (!this.worldObj.isRemote)
+        	if (!this.world.isRemote)
             {
         		this.setNetwork(null);  //Force a full network refresh of this and conductors either side
             }
     	}
 
-    	if (!this.worldObj.isRemote)
+    	if (!this.world.isRemote)
         {
             this.adjacentConnections = null;
             if (!this.disableConnections)
@@ -90,7 +97,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             	{
             		if (this.canConnect(side, NetworkType.POWER))
             		{
-            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
             			if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor)tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
             			{
@@ -120,7 +127,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 
     private boolean disableConnections()
     {
-    	return RedstoneUtil.isBlockReceivingRedstone(this.worldObj, this.pos);
+    	return RedstoneUtil.isBlockReceivingRedstone(this.world, this.pos);
     }
     
 	@Override
@@ -157,7 +164,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             		EnumFacing side = EnumFacing.getFront(i);
             		if (this.canConnect(side, NetworkType.POWER))
             		{
-            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
             			if (tileEntity instanceof IConnector)
             			{

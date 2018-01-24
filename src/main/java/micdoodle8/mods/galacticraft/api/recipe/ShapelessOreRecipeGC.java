@@ -5,6 +5,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ShapelessOreRecipeGC implements IRecipe
+public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
@@ -57,8 +58,11 @@ public class ShapelessOreRecipeGC implements IRecipe
     }
 
     @Override
-    public int getRecipeSize(){ return input.size(); }
-
+    public boolean canFit(int width, int height)
+    {
+        return width * height >= input.size();
+    }
+    
     @Override
     public ItemStack getRecipeOutput(){ return output; }
 
@@ -75,7 +79,7 @@ public class ShapelessOreRecipeGC implements IRecipe
         {
             ItemStack slot = var1.getStackInSlot(x);
 
-            if (slot != null)
+            if (!slot.isEmpty())
             {
                 boolean inRecipe = false;
                 Iterator<Object> req = required.iterator();
@@ -123,7 +127,7 @@ public class ShapelessOreRecipeGC implements IRecipe
     }
 
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
     {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }

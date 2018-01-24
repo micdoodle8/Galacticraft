@@ -20,17 +20,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.EnumSet;
 
 
-public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
+public abstract class TileBaseUniversalElectrical extends EnergyStorageTile implements net.minecraftforge.energy.IEnergyStorage
 {
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;
@@ -167,10 +169,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         //		nbt.setFloat("energyStored", this.energyStored);
+        return nbt;
     }
 
     public void discharge(ItemStack itemStack)
@@ -194,13 +197,14 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             }
             else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
-                if (item instanceof ISpecialElectricItem)
+                if (item instanceof ISpecialElectricItem && item instanceof IElectricItem)
                 {
-                    ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
+                    IElectricItem electricItem = (IElectricItem) item;
+                    ISpecialElectricItem specialElectricItem = (ISpecialElectricItem) item;
                     if (electricItem.canProvideEnergy(itemStack))
                     {
                         double energyDischargeIC2 = energyToDischarge / EnergyConfigHandler.IC2_RATIO;
-                        double result = electricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
+                        double result = specialElectricItem.getManager(itemStack).discharge(itemStack, energyDischargeIC2, 4, false, false, false);
                         float energyDischarged = (float) result * EnergyConfigHandler.IC2_RATIO;
                         this.storage.receiveEnergyGC(energyDischarged);
                     }
@@ -241,7 +245,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.isAddedToEnergyNet)
             {
@@ -289,15 +293,15 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     @Override
     public void invalidate()
     {
-        this.unloadTileIC2();
         super.invalidate();
+        this.unloadTileIC2();
     }
 
     @Override
     public void onChunkUnload()
     {
-        this.unloadTileIC2();
         super.onChunkUnload();
+        this.unloadTileIC2();
     }
 
     protected void initIC()
@@ -324,9 +328,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 
     private void unloadTileIC2()
     {
-        if (this.isAddedToEnergyNet && this.worldObj != null)
+        if (this.isAddedToEnergyNet && this.world != null)
         {
-            if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+            if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
             {
                 try
                 {
@@ -347,7 +351,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         }
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double getDemandedEnergy()
     {
         if (EnergyConfigHandler.disableIC2Input)
@@ -376,7 +380,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return 0D;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public double injectEnergy(EnumFacing direction, double amount, double voltage)
     {
         //IC2 in 1.8.9 seems to have reversed the sense of direction here, but not in acceptsEnergyFrom.  (Seriously?!)
@@ -402,15 +406,16 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return amount;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
     public int getSinkTier()
     {
         return 3;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = CompatibilityManager.modidIC2)
     public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction)
     {
+        if (this.tileEntityInvalid) return false;
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (emitter instanceof IElectrical || emitter instanceof IConductor || !(emitter instanceof IEnergyTile))
         {
@@ -419,8 +424,53 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 
         return this.getElectricalInputDirections().contains(direction);
     }
+    
+    //ForgeEnergy
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate)
+    {
+        if (!canReceive())
+            return 0;
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
+        return MathHelper.floor(super.receiveElectricity(null, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+    }
+    
+    //ForgeEnergy
+    @Override
+    public boolean canReceive()
+    {
+        return !EnergyConfigHandler.disableFEInput;
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getEnergyStored()
+    {
+        return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getMaxEnergyStored()
+    {
+        return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
+         return 0;
+    }
+
+    //ForgeEnergy
+    @Override
+    public boolean canExtract()
+    {
+        return false;
+    }
+
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFInput)
@@ -433,28 +483,28 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
             return 0;
         }
 
-        return MathHelper.floor_float(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(super.receiveElectricity(from, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public boolean canConnectEnergy(EnumFacing from)
     {
         return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getEnergyStored(EnumFacing from)
     {
-        return MathHelper.floor_float(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "cofh.api.energy.IEnergyHandler", modID = "")
+    @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
     public int getMaxEnergyStored(EnumFacing from)
     {
-        return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double transferEnergyToAcceptor(EnumFacing from, double amount)
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -470,24 +520,29 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveEnergy(EnumFacing side)
     {
         return this.getElectricalInputDirections().contains(side);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double getEnergy()
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
             return 0.0;
         }
 
-        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
+        if (!this.getElectricalInputDirections().contains(side))
+        {
+            return 0;
+        }
+
+        return this.receiveElectricity(side, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, simulate) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public void setEnergy(double energy)
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -498,7 +553,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
     public double getMaxEnergy()
     {
         if (EnergyConfigHandler.disableMekanismInput)
@@ -509,11 +564,17 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
-    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-    public boolean canOutputTo(EnumFacing side)
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
+    public boolean canOutputEnergy(EnumFacing side)
     {
         return false;
     }
+    
+    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
+	public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+	{
+    	return 0D;
+	}
 
     @Override
     public ReceiverMode getModeFromDirection(EnumFacing direction)
@@ -535,7 +596,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
      */
     public void updateFacing()
     {
-        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.worldObj.isRemote)
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded() && !this.world.isRemote)
         {
             //This seems the only method to tell IC2 the connection sides have changed
             //(Maybe there is an internal refresh() method but it's not in the API)
@@ -556,5 +617,25 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         {
             ((TileBaseUniversalElectrical) te).updateFacing();
         }
+    }
+    
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return this.getElectricalInputDirections().contains(facing);
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return this.getElectricalInputDirections().contains(facing) ? (T) this : null;
+        }
+        return super.getCapability(capability, facing);
     }
 }

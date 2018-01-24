@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.network.play.client.C00PacketKeepAlive;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.network.play.client.CPacketKeepAlive;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GuiTeleporting extends GuiScreen
 {
@@ -31,20 +33,23 @@ public class GuiTeleporting extends GuiScreen
     {
         super.drawScreen(mouseX, mouseY, partialTicks);
         this.drawBackground(0);
-        this.drawCenteredString(this.fontRendererObj, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
+        this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
     }
 
     @Override
     public void updateScreen()
     {
         super.updateScreen();
-        if (mc.thePlayer != null && mc.thePlayer.worldObj != null)
+		if (mc.player != null && mc.player.world != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
-            if (mc.thePlayer.worldObj.provider.getDimensionId() == this.targetDimensionID && (mc.thePlayer.worldObj.provider instanceof IZeroGDimension || (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) < 0.0))
+            if (mc.player.world.provider.getDimension() == this.targetDimensionID)
             {
-                mc.displayGuiScreen(null);
-                TickHandlerClient.teleportingGui = null;
+                if ((mc.player.world.provider instanceof IZeroGDimension || (mc.player.posY - mc.player.lastTickPosY) < 0.0))
+                {
+                    mc.displayGuiScreen(null);
+                    TickHandlerClient.teleportingGui = null;
+                }
             }
         }
 
@@ -53,7 +58,7 @@ public class GuiTeleporting extends GuiScreen
 
         if (this.progress % 20 == 0)
         {
-            this.mc.thePlayer.sendQueue.addToSendQueue(new C00PacketKeepAlive());
+            ((NetHandlerPlayClient)FMLCommonHandler.instance().getClientPlayHandler()).sendPacket(new CPacketKeepAlive());
         }
     }
 

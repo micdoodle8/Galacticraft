@@ -1,23 +1,33 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTool;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemAxeGC extends ItemAxe implements ISortableItem
+import java.util.Set;
+
+public class ItemAxeGC extends ItemTool implements ISortableItem
 {
+    private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] { Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE});
+
     public ItemAxeGC(String assetName)
     {
-        super(GCItems.TOOL_STEEL);
+        super(GCItems.TOOL_STEEL, EFFECTIVE_ON);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
+        this.attackDamage = 6.0F;
+        this.attackSpeed = -3.0F;
     }
 
     @Override
@@ -37,5 +47,12 @@ public class ItemAxeGC extends ItemAxe implements ISortableItem
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.TOOLS;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, IBlockState state)
+    {
+        Material material = state.getMaterial();
+        return material != Material.WOOD && material != Material.PLANTS && material != Material.VINE ? super.getDestroySpeed(stack, state) : this.efficiency;
     }
 }

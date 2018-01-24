@@ -37,12 +37,12 @@ public class RenderJuicer extends RenderLiving<EntityJuicer>
     @Override
     public void doRender(EntityJuicer entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        texSwitch = false;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
         }
     }
 

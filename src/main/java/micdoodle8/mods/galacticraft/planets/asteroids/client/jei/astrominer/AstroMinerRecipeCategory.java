@@ -4,7 +4,8 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -12,9 +13,8 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class AstroMinerRecipeCategory extends BlankRecipeCategory
+public class AstroMinerRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation astroMinerGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_astro_miner.png");
 
@@ -52,7 +52,7 @@ public class AstroMinerRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -72,20 +72,12 @@ public class AstroMinerRecipeCategory extends BlankRecipeCategory
         itemstacks.init(13, true, 22, 63);
         itemstacks.init(14, false, 138, 58);
 
-        if (recipeWrapper instanceof AstroMinerRecipeWrapper)
-        {
-            AstroMinerRecipeWrapper astroMinerRecipeWrapper = (AstroMinerRecipeWrapper) recipeWrapper;
-            List inputs = astroMinerRecipeWrapper.getInputs();
+        itemstacks.set(ingredients);
+    }
 
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(14, astroMinerRecipeWrapper.getOutputs());
-        }
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
     }
 }

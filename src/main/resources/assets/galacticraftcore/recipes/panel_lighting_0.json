@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftcore:panel_lighting",
+    "data": 0
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XZX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "item": "galacticraftcore:glowstone_torch"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

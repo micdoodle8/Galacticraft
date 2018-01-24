@@ -6,16 +6,16 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOx
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class CanisterRecipes extends ShapelessRecipes
 {
-    public CanisterRecipes(ItemStack stack, List list)
+    public CanisterRecipes(ItemStack stack, NonNullList<Ingredient> list)
     {
-        super(stack, list);
+        super("canisters", stack, list);
     }
 
     /**
@@ -24,19 +24,19 @@ public class CanisterRecipes extends ShapelessRecipes
     @Override
     public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_)
     {
-        ItemStack itemCanister = null;
-        ItemStack itemTank = null;
+        ItemStack itemCanister = ItemStack.EMPTY;
+        ItemStack itemTank = ItemStack.EMPTY;
 
         for (int i = 0; i < p_77569_1_.getSizeInventory(); ++i)
         {
             ItemStack itemstack1 = p_77569_1_.getStackInSlot(i);
 
-            if (itemstack1 != null)
+            if (!itemstack1.isEmpty())
             {
                 Item testItem = itemstack1.getItem();
                 if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
                 {
-                    if (itemCanister != null)
+                    if (!itemCanister.isEmpty())
                     {
                         //Two canisters
                         return false;
@@ -46,7 +46,7 @@ public class CanisterRecipes extends ShapelessRecipes
                 }
                 else
                 {
-                    if (!(testItem instanceof ItemOxygenTank) || itemTank != null)
+                    if (!(testItem instanceof ItemOxygenTank) || !itemTank.isEmpty())
                     {
                         //Something other than an oxygen tank
                         return false;
@@ -58,7 +58,7 @@ public class CanisterRecipes extends ShapelessRecipes
         }
 
         //Need one canister + one tank
-        if (itemCanister == null || itemTank == null)
+        if (itemCanister.isEmpty() || itemTank.isEmpty())
         {
             return false;
         }
@@ -84,32 +84,34 @@ public class CanisterRecipes extends ShapelessRecipes
     @Override
     public ItemStack getCraftingResult(InventoryCrafting inv)
     {
-        ItemStack itemTank = null;
-        ItemStack itemCanister = null;
+        ItemStack itemTank = null;  //Intentionally null - internal use only
+        ItemStack itemCanister = null;  //Intentionally null - internal use only
 
         for (int i = 0; i < inv.getSizeInventory(); ++i)
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (itemstack1 != null)
+            if (itemstack1 != null && !itemstack1.isEmpty())
             {
                 Item testItem = itemstack1.getItem();
                 if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)
                 {
+                    //Intentional item null check
                     if (itemCanister != null)
                     {
                         //Two canisters
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
                     itemCanister = itemstack1;
                 }
                 else
                 {
+                    //Intentional item null check
                     if (!(testItem instanceof ItemOxygenTank) || itemTank != null)
                     {
                         //Something other than an oxygen tank
-                        return null;
+                        return ItemStack.EMPTY;
                     }
 
                     itemTank = itemstack1;
@@ -117,22 +119,22 @@ public class CanisterRecipes extends ShapelessRecipes
             }
         }
 
-        //Need one canister + one tank
+        //Need one canister + one tank (intentional item null check)
         if (itemCanister == null || itemTank == null)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         //Empty canister
         if (itemCanister.getItemDamage() >= itemCanister.getMaxDamage())
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         //Full tank
         if (itemTank.getItemDamage() <= 0)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         int oxygenAvail = itemCanister.getMaxDamage() - itemCanister.getItemDamage();
@@ -160,8 +162,8 @@ public class CanisterRecipes extends ShapelessRecipes
     }
 
     @Override
-    public int getRecipeSize()
+    public boolean canFit(int width, int height)
     {
-        return 2;
+        return width * height >= 2;
     }
 }

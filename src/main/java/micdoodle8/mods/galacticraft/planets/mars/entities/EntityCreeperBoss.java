@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAIArrowAttack;
@@ -29,8 +29,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -68,9 +70,9 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             }
             else if (super.attackEntityFrom(damageSource, damage))
             {
-                Entity entity = damageSource.getEntity();
+                Entity entity = damageSource.getTrueSource();
 
-                if (this.riddenByEntity != entity && this.ridingEntity != entity)
+                if (this.getPassengers().contains(entity) && this.getRidingEntity() != entity)
                 {
                     if (entity != this && entity instanceof EntityLivingBase)
                     {
@@ -97,8 +99,8 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.05F);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05F);
     }
 
     @Override
@@ -113,34 +115,47 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        this.playSound(Constants.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
+        this.playSound(GCSounds.bossOuch, this.getSoundVolume(), this.getSoundPitch() - 0.15F);
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }
+
+    //    @Override
+//    protected String getHurtSound()
+//    {
+//        this.playSound(Constants.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
+//        return null;
+//    }
+//
+//    @Override
+//    protected String getDeathSound()
+//    {
+//        return null;
+//    }
 
     @Override
     protected void onDeathUpdate()
     {
         super.onDeathUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.deathTicks == 1)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOSS_DEATH, GCCoreUtil.getDimensionID(this.world), new Object[] { getSoundPitch() - 0.1F }), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
         }
     }
@@ -163,11 +178,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             this.headsRemaining = 2;
         }
 
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
-            if (this.getDistanceSqToEntity(player) < 400.0D)
+            if (this.getDistanceSq(player) < 400.0D)
             {
                 this.getNavigator().getPathToEntityLiving(player);
                 this.targetEntity = player;
@@ -184,13 +199,13 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     protected Item getDropItem()
     {
-        return Items.arrow;
+        return Items.ARROW;
     }
 
     @Override
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops)
@@ -199,7 +214,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         }
         else
         {
-            this.worldObj.spawnEntityInWorld(entityitem);
+            this.world.spawnEntity(entityitem);
         }
         return entityitem;
     }
@@ -214,13 +229,13 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
 
         if (i > 0)
         {
-            final ItemStack var2 = new ItemStack(Items.bow);
-            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
+            final ItemStack var2 = new ItemStack(Items.BOW);
+            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5, false);
             this.entityDropItem(var2, 0.0F);
         }
         else
         {
-            this.dropItem(Items.bow, 1);
+            this.dropItem(Items.BOW, 1);
         }
     }
 
@@ -236,7 +251,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
         int range = 2;
         //If player seems to have Tier 3 rocket already then add Astro Miner to the loot
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
@@ -270,19 +285,19 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f)
     {
-        this.worldObj.playAuxSFXAtEntity(null, 1014, new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ), 0);
+        this.world.playEvent(null, 1024, new BlockPos(this), 0);
         double d3 = this.posX;
         double d4 = this.posY + 5.5D;
         double d5 = this.posZ;
         double d6 = entitylivingbase.posX - d3;
         double d7 = entitylivingbase.posY + entitylivingbase.getEyeHeight() * 0.5D - d4;
         double d8 = entitylivingbase.posZ - d5;
-        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(this.worldObj, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
+        EntityProjectileTNT projectileTNT = new EntityProjectileTNT(this.world, this, d6 * 0.5D, d7 * 0.5D, d8 * 0.5D);
 
         projectileTNT.posY = d4;
         projectileTNT.posX = d3;
         projectileTNT.posZ = d5;
-        this.worldObj.spawnEntityInWorld(projectileTNT);
+        this.world.spawnEntity(projectileTNT);
     }
 
     @Override
@@ -295,5 +310,18 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     public void dropKey()
     {
         this.entityDropItem(new ItemStack(MarsItems.key, 1, 0), 0.5F);
+    }
+
+    @Override
+    public BossInfo.Color getHealthBarColor()
+    {
+        return BossInfo.Color.YELLOW;
+    }
+
+    @Override
+    public void setSwingingArms(boolean swingingArms)
+    {
+        // TODO Auto-generated method stub
+        //TODO for 1.12.2
     }
 }

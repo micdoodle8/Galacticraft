@@ -55,18 +55,18 @@ public class ConfigManagerVenus
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDVenus", -31);
-            prop.comment = "Dimension ID for Venus";
+            prop.setComment("Dimension ID for Venus");
             prop.setLanguageKey("gc.configgui.dimensionIDVenus").setRequiresMcRestart(true);
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
                 propCopy.setRequiresMcRestart(prop.requiresMcRestart());
             }
             dimensionIDVenus = prop.getInt();
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "disableAmbientLightning", false);
-            prop.comment = "Disables background thunder and lightning.";
+            prop.setComment("Disables background thunder and lightning.");
             prop.setLanguageKey("gc.configgui.disable_ambient_lightning");
             disableAmbientLightning = prop.getBoolean(false);
 

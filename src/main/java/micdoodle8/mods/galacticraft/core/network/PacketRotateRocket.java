@@ -18,7 +18,7 @@ public class PacketRotateRocket extends PacketBase
 
     public PacketRotateRocket(Entity rotateableEntity)
     {
-        super(GCCoreUtil.getDimensionID(rotateableEntity.worldObj));
+        super(GCCoreUtil.getDimensionID(rotateableEntity.world));
         this.entityID = rotateableEntity.getEntityId();
         this.entityPitch = rotateableEntity.rotationPitch;
         this.entityYaw = rotateableEntity.rotationYaw;
@@ -51,7 +51,7 @@ public class PacketRotateRocket extends PacketBase
     @Override
     public void handleServerSide(EntityPlayer player)
     {
-        Entity entity = player.worldObj.getEntityByID(this.entityID);
+        Entity entity = player.world.getEntityByID(this.entityID);
 
         if (entity != null)
         {

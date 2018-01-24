@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +32,7 @@ public class BaseDeck extends SizedPiece
     
     public enum EnumBaseType 
     {
-        HUMANOID(5, 3, GCBlocks.basicBlock.getStateFromMeta(4), new ItemStack(Items.ghast_tear, 3, 0)),
+        HUMANOID(5, 3, GCBlocks.basicBlock.getStateFromMeta(4), new ItemStack(Items.GHAST_TEAR, 3, 0)),
         AVIAN(4, 3, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 1)),
         TUNNELER(4, 4, GCBlocks.blockMoon.getStateFromMeta(4), new ItemStack(AsteroidsItems.strangeSeed, 1, 0));
         
@@ -59,7 +60,7 @@ public class BaseDeck extends SizedPiece
         this.roomsOnSide = configuration.getRoomsNo();
         this.roomDepth = configuration.getRoomDepth() + (tier == 0 ? 1 : 0);
         this.deckTier = tier;
-        this.coordBaseMode = EnumFacing.NORTH;
+        this.setCoordBaseMode(EnumFacing.NORTH);
         if (this.getDirection().getAxis() == EnumFacing.Axis.X)
         {
             int w = this.sizeX;
@@ -156,9 +157,9 @@ public class BaseDeck extends SizedPiece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(tagCompound, manager);
         try
         {
             int details = tagCompound.getInteger("dD");
@@ -176,7 +177,7 @@ public class BaseDeck extends SizedPiece
                 {
                     NBTTagCompound tagAt = tagList.getCompoundTagAt(i);
                     BaseDeck deck = new BaseDeck();
-                    deck.readStructureFromNBT(tagAt);
+                    deck.readStructureFromNBT(tagAt, manager);
                     this.otherDecks.add(deck);
                 }
             }
@@ -195,7 +196,7 @@ public class BaseDeck extends SizedPiece
         IBlockState blockWall = this.configuration.getWallBlock();
         IBlockState blockGrid = AsteroidBlocks.blockWalkway.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
-        IBlockState blockAir = Blocks.air.getDefaultState();
+        IBlockState blockAir = Blocks.AIR.getDefaultState();
         boolean directionNS = this.getDirection().getAxis() == EnumFacing.Axis.Z;
         int ceilingSpacer = (directionNS ? this.sizeZ : this.sizeX) / this.roomsOnSide + 1;
         int ceilingDeco = ceilingSpacer;
@@ -375,11 +376,11 @@ public class BaseDeck extends SizedPiece
                             {
                                 if (x == ceilingDeco && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(0 ^ top), x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
                                 }
                                 else if (x == ceilingDeco + 1 && top == 4)
                                 {
-                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(1 ^ top), x, y, z, chunkBounds);
+                                    this.setBlockState(worldIn, blockStair.getStateFromMeta(top), x, y, z, chunkBounds);
                                     if (z >= endZ - 2) ceilingDeco += ceilingSpacer;
                                 }
                                 else
@@ -437,11 +438,11 @@ public class BaseDeck extends SizedPiece
         
         if (directionNS)
         {
-            this.coordBaseMode = this.direction;
+            this.setCoordBaseMode(this.direction);
         }
         else
         {
-            this.coordBaseMode = this.direction.getOpposite(); //bug in Vanilla?
+            this.setCoordBaseMode(this.direction.getOpposite()); //bug in Vanilla?
         }
         if (this.configuration.isHangarDeck() && this.deckTier == 1)
         {
@@ -488,28 +489,24 @@ public class BaseDeck extends SizedPiece
             
             //Create two levers
             int facing = 0; 
-            int leverfacing = 4;
             switch (this.direction)
             {
             case NORTH:
                 break;
             case SOUTH:
                 facing = 2;
-                leverfacing = 3;
                 break;
             case EAST:
                 facing = 1;
-                leverfacing = 1;
                 break;
             case WEST:
                 facing = 3;
-                leverfacing = 2;
             }
 
             IBlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ, chunkBounds);
-            lever = Blocks.lever.getStateFromMeta(leverfacing);
+            lever = Blocks.LEVER.getStateFromMeta(this.direction.getAxis() == EnumFacing.Axis.Z ? 4 : 3);
             this.setBlockState(worldIn, lever, endX / 2 - 2, this.sizeY - 1, endZ - 1, chunkBounds);
             this.setBlockState(worldIn, lever, endX / 2 + 2, this.sizeY - 1, endZ - 1, chunkBounds);
             
@@ -523,8 +520,8 @@ public class BaseDeck extends SizedPiece
             this.setBlockState(worldIn, blockAir, 11, 0, 1, chunkBounds);
             this.setBlockState(worldIn, blockAir, 12, 0, 1, chunkBounds);
         }
-        this.coordBaseMode = EnumFacing.NORTH;
-        
+        this.setCoordBaseMode(EnumFacing.NORTH);
+
         return true;
     }
     
@@ -654,7 +651,7 @@ public class BaseDeck extends SizedPiece
         IBlockState blockLintel = GCBlocks.airLockFrame.getDefaultState();
         IBlockState blockAirlock = GCBlocks.airLockFrame.getStateFromMeta(1);
         Block blockStair = GCBlocks.moonStoneStairs;
-        IBlockState blockAir = Blocks.air.getDefaultState();
+        IBlockState blockAir = Blocks.AIR.getDefaultState();
         int meta = directionNS ? 2 : 0;
         
         switch (this.configuration.getDeckType())

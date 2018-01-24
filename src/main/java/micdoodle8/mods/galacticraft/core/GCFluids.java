@@ -3,20 +3,13 @@ package micdoodle8.mods.galacticraft.core;
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 public class GCFluids
 {
@@ -24,15 +17,12 @@ public class GCFluids
     public static Fluid fluidFuel;
     public static Fluid fluidOxygenGas;
     public static Fluid fluidHydrogenGas;
-    public static Material materialOil = new MaterialOleaginous(MapColor.brownColor);
+    public static Material materialOil = new MaterialOleaginous(MapColor.BROWN);
 
     public static void registerFluids()
     {
         fluidOxygenGas = registerFluid("oxygen", 1, 13, 295, true, "oxygen_gas");
         fluidHydrogenGas = registerFluid("hydrogen", 1, 1, 295, true, "hydrogen_gas");
-
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluidFuel, 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-        FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(fluidOil, 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
     }
 
     public static void registerOilandFuel()
@@ -68,15 +58,14 @@ public class GCFluids
             GCBlocks.crudeOil = fluidOil.getBlock();
         }
 
-        if (GCBlocks.crudeOil != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketOil")) == null)
+        if (GCBlocks.crudeOil != null && !FluidRegistry.getBucketFluids().contains(fluidOil))
         {
-            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil);
+        	FluidRegistry.addBucketForFluid(GCFluids.fluidOil);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull oil out of other mods tanks
+            GCItems.bucketOil = new ItemBucketGC(GCBlocks.crudeOil, fluidOil);
             GCItems.bucketOil.setUnlocalizedName("bucket_oil");
             GCItems.registerItem(GCItems.bucketOil);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(oilID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketOil), new ItemStack(Items.bucket));
+            EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
         }
-
-        EventHandlerGC.bucketList.put(GCBlocks.crudeOil, GCItems.bucketOil);
 
         // Fuel:
         if (!FluidRegistry.isFluidRegistered(fuelID))
@@ -103,15 +92,14 @@ public class GCFluids
             GCBlocks.fuel = fluidFuel.getBlock();
         }
 
-        if (GCBlocks.fuel != null && Item.itemRegistry.getObject(new ResourceLocation("buildcraftenergy:items/bucketFuel")) == null)
+        if (GCBlocks.fuel != null && !FluidRegistry.getBucketFluids().contains(fluidFuel))
         {
-            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel);
+        	FluidRegistry.addBucketForFluid(GCFluids.fluidFuel);  //Create a Universal Bucket AS WELL AS our type, this is needed to pull fuel out of other mods tanks
+            GCItems.bucketFuel = new ItemBucketGC(GCBlocks.fuel, fluidFuel);
             GCItems.bucketFuel.setUnlocalizedName("bucket_fuel");
             GCItems.registerItem(GCItems.bucketFuel);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack(fuelID, FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(GCItems.bucketFuel), new ItemStack(Items.bucket));
+            EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
         }
-
-        EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
     }
 
     private static Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)
@@ -124,6 +112,10 @@ public class GCFluids
             FluidRegistry.registerFluid(new Fluid(fluidName, texture, texture).setDensity(density).setViscosity(viscosity).setTemperature(temperature).setGaseous(gaseous));
             returnFluid = FluidRegistry.getFluid(fluidName);
         }
+        else
+        {
+            returnFluid.setGaseous(gaseous);
+        }
 
         return returnFluid;
     }
@@ -131,20 +123,20 @@ public class GCFluids
     public static void registerLegacyFluids()
     {
         //If any other mod has registered "fuel" or "oil" and GC has not, then allow GC's appropriate canisters to be fillable with that one as well
-        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
-        }
-        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
-        {
-            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//        if (ConfigManagerCore.useOldFuelFluidID && FluidRegistry.isFluidRegistered("fuel"))
+//        {
+//            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("fuel"), 1000), new ItemStack(GCItems.fuelCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
+//        }
+//        if (ConfigManagerCore.useOldOilFluidID && FluidRegistry.isFluidRegistered("oil"))
+//        {
+//            FluidContainerRegistry.registerFluidContainer(new FluidContainerRegistry.FluidContainerData(new FluidStack(FluidRegistry.getFluid("oil"), 1000), new ItemStack(GCItems.oilCanister, 1, 1), new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY)));
             //And allow Buildcraft oil buckets to be filled with oilgc
-            if (CompatibilityManager.isBCraftEnergyLoaded())
-            {
+//            if (CompatibilityManager.isBCraftEnergyLoaded())
+//            {
                 // TODO Fix BC Oil compat
-//        		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), GameRegistry.findItemStack("BuildCraft|Core", "bucketOil", 1), new ItemStack(Items.bucket)));
-            }
-        }
+//        		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(GalacticraftCore.fluidOil, 1000), GameRegistry.findItemStack("buildcraftcore", "bucketOil", 1), new ItemStack(Items.bucket)));
+//            }
+//        }
 
         //Register now any unregistered "oil", "fuel", "oilgc" and "fuelgc" fluids
         //This is for legacy compatibility with any 'in the world' tanks and items filled in different GC versions or with different GC config

@@ -50,12 +50,12 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
     @Override
     public void doRender(EntitySlimeling entity, double par2, double par4, double par6, float par8, float par9)
     {
-        texSwitch = false;
         super.doRender(entity, par2, par4, par6, par8, par9);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
         }
     }
 
@@ -132,7 +132,7 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
 //
 //    protected void renderLivingLabelWithColor(EntityLivingBase par1EntityLivingBase, String par2Str, double par3, double par5, double par7, int par9, float cR, float cG, float cB)
 //    {
-//        double d3 = par1EntityLivingBase.getDistanceSqToEntity(this.renderManager.livingPlayer);
+//        double d3 = par1EntityLivingBase.getDistanceSq(this.renderManager.livingPlayer);
 //
 //        if (d3 <= par9 * par9)
 //        {

@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.lang.ref.WeakReference;
 
 @SideOnly(Side.CLIENT)
-public class EntityFXTeleport extends EntityFX
+public class EntityFXTeleport extends Particle
 {
     private float portalParticleScale;
     private double portalPosX;
@@ -32,14 +32,15 @@ public class EntityFXTeleport extends EntityFX
         this.portalPosZ = this.posZ = position.z;
         this.portalParticleScale = this.particleScale = this.rand.nextFloat() * 0.2F + 0.5F;
         this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
-        this.noClip = true;
+        this.canCollide = false;
+        this.canCollide = false;
         this.setParticleTextureIndex((int) (Math.random() * 8.0D));
         this.telepad = new WeakReference<TileEntityShortRangeTelepad>(telepad);
         this.direction = direction;
     }
 
     @Override
-    public void renderParticle(WorldRenderer worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
+    public void renderParticle(BufferBuilder worldRenderer, Entity entity, float f0, float f1, float f2, float f3, float f4, float f5)
     {
         float f6 = (this.particleAge + f0) / this.particleMaxAge;
         f6 = 1.0F - f6;
@@ -68,14 +69,14 @@ public class EntityFXTeleport extends EntityFX
         return j | k << 16;
     }
 
-    @Override
-    public float getBrightness(float par1)
-    {
-        float f1 = super.getBrightness(par1);
-        float f2 = (float) this.particleAge / (float) this.particleMaxAge;
-        f2 = f2 * f2 * f2 * f2;
-        return f1 * (1.0F - f2) + f2;
-    }
+//    @Override
+//    public float getBrightness(float par1)
+//    {
+//        float f1 = super.getBrightness(par1);
+//        float f2 = (float) this.particleAge / (float) this.particleMaxAge;
+//        f2 = f2 * f2 * f2 * f2;
+//        return f1 * (1.0F - f2) + f2;
+//    }
 
     @Override
     public void onUpdate()
@@ -103,7 +104,7 @@ public class EntityFXTeleport extends EntityFX
 
         if (this.particleAge++ >= this.particleMaxAge)
         {
-            this.setDead();
+            this.setExpired();
         }
     }
 }

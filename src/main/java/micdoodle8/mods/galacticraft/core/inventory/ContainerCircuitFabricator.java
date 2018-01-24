@@ -69,7 +69,7 @@ public class ContainerCircuitFabricator extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -85,8 +85,8 @@ public class ContainerCircuitFabricator extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -98,7 +98,7 @@ public class ContainerCircuitFabricator extends Container
             {
                 if (!this.mergeItemStack(var4, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 6)
@@ -113,65 +113,65 @@ public class ContainerCircuitFabricator extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.diamond)
+                else if (i == Items.DIAMOND)
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (i == GCItems.basicItem && i.getDamage(var4) == 2)
                 {
                     if (!this.mergeItemStack(var4, 2, 4, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.redstone)
+                else if (i == Items.REDSTONE)
                 {
                     if (!this.mergeItemStack(var4, 4, 5, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.repeater || i == new ItemStack(Blocks.redstone_torch).getItem() || i == Items.dye && i.getDamage(var4) == 4)
+                else if (i == Items.REPEATER || i == new ItemStack(Blocks.REDSTONE_TORCH).getItem() || i == Items.DYE && i.getDamage(var4) == 4)
                 {
                     if (!this.mergeItemStack(var4, 5, 6, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 < b - 9)
                 {
                     if (!this.mergeItemStack(var4, b - 9, b, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

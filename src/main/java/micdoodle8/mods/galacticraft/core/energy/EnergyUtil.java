@@ -1,17 +1,20 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
+import cofh.redstoneflux.api.IEnergyConnection;
+import cofh.redstoneflux.api.IEnergyContainerItem;
+import cofh.redstoneflux.api.IEnergyHandler;
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.*;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
+import mekanism.api.energy.IStrictEnergyOutputter;
+import mekanism.api.energy.IStrictEnergyStorage;
+import mekanism.api.gas.IGasHandler;
+import mekanism.api.gas.ITubeConnection;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -22,10 +25,11 @@ import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
@@ -60,7 +64,15 @@ public class EnergyUtil
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
+    private static Field fieldCableAcceptor = null;
+    public static Field fieldEnergyStorage = null;
+    public static Field fieldCableOutput = null;
     private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
+    public static Capability<IStrictEnergyStorage> mekEnergyStorage = null;
+    public static Capability<IStrictEnergyOutputter> mekCableOutput = null;
+    public static Capability<ITubeConnection> mekTubeConnection = null;
+    public static Capability<IGasHandler> mekGasHandler = null;
+    public static Class<?> mekCapabilities;
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
@@ -69,12 +81,12 @@ public class EnergyUtil
         BlockVec3 thisVec = new BlockVec3(tile);
         for (EnumFacing direction : EnumFacing.VALUES)
         {
-        	if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
+            if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
             {
                 continue;
             }
-        	
-        	TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
+            
+            TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
             if (tileEntity == null)
             {
@@ -90,7 +102,7 @@ public class EnergyUtil
                 continue;
             }
 
-            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
+            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof IStrictEnergyOutputter))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
                 try
@@ -109,7 +121,7 @@ public class EnergyUtil
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
-                else if (tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
+                else if (tileEntity instanceof IStrictEnergyOutputter && ((IStrictEnergyOutputter) tileEntity).canOutputEnergy(direction.getOpposite()))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -237,6 +249,15 @@ public class EnergyUtil
                     } catch (Exception e) { e.printStackTrace(); }                   
                 }
             }
+            
+            if (hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite()))
+            {
+                net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite());
+                if (forgeEnergy.canReceive() && !EnergyConfigHandler.disableFEOutput || forgeEnergy.canExtract() && !EnergyConfigHandler.disableFEInput)
+                {
+                    adjacentConnections[direction.ordinal()] = tileEntity;
+                }
+            }
         }
 
         return adjacentConnections;
@@ -262,7 +283,7 @@ public class EnergyUtil
             
             if (tileEntity == null || tileEntity instanceof IConductor)  //world.getTileEntity will not have returned an invalid tile, invalid tiles are null
             {
-            	continue;
+                continue;
             }
             
             EnumFacing sideFrom = direction.getOpposite();
@@ -293,7 +314,7 @@ public class EnergyUtil
             
             if (isBCReallyLoaded && clazzPipeTile.isInstance(tileEntity))
             {
-            	continue;
+                continue;
             }
 
             if (isIC2Loaded && !world.isRemote)
@@ -308,31 +329,44 @@ public class EnergyUtil
                 {
                     continue;
                 }
-                if (IC2tile instanceof IEnergyAcceptor && ((IEnergyAcceptor) IC2tile).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                if (IC2tile instanceof IEnergyAcceptor)
                 {
-                    connectedAcceptors.add(IC2tile);
+                    if (((IEnergyAcceptor) IC2tile).acceptsEnergyFrom((IEnergyEmitter) conductor, sideFrom))
+                    {
+                        connectedAcceptors.add(IC2tile);
+                        directions.add(sideFrom);
+                    }
+                    continue;
+                }
+            }
+
+            if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
+            {
+                if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+                if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+
+                if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
+                {
+                    connectedAcceptors.add(tileEntity);
                     directions.add(sideFrom);
                 }
                 continue;
             }
             
-            if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
+            if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom))
             {
-            	if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
-            	{
-            		continue;
-            	}
-            	if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
-            	{
-            		continue;
-            	}
-
-            	if (((IEnergyConnection) tileEntity).canConnectEnergy(sideFrom))
-            	{
-            		connectedAcceptors.add(tileEntity);
-            		directions.add(sideFrom);
-            	}
-            	continue;
+                net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom); 
+                if (forgeEnergy.canReceive())
+                {
+                    connectedAcceptors.add(forgeEnergy);
+                    directions.add(sideFrom);
+                }
             }
         }
         return;
@@ -343,6 +377,10 @@ public class EnergyUtil
         if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
         {
             IStrictEnergyAcceptor tileMek = null;
+            if (EnergyUtil.mekCableAcceptor == null)
+            {
+                initialiseMekCapabilities();
+            }
             if (tileAdj instanceof IStrictEnergyAcceptor)
             {
                 tileMek = (IStrictEnergyAcceptor) tileAdj;
@@ -354,15 +392,7 @@ public class EnergyUtil
 
             if (tileMek != null && tileMek.canReceiveEnergy(inputAdj))
             {
-                float transferredMek;
-                if (simulate)
-                {
-                    transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
-                }
-                else
-                {
-                    transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                }
+                float transferredMek = (float) tileMek.acceptEnergy(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO, simulate);
                 return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
             }
         }
@@ -419,8 +449,17 @@ public class EnergyUtil
         else if (isRF2Loaded && !EnergyConfigHandler.disableRFOutput && tileAdj instanceof IEnergyReceiver)
         {
             float sent = ((IEnergyReceiver) tileAdj).receiveEnergy(inputAdj, (int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
-//        	GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
+//          GCLog.debug("Beam/storage offering RF2 up to " + toSend + " into pipe, it accepted " + sent);
             return sent;
+        }
+        else if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
+            if (forgeEnergy.canReceive())
+            {
+                float sent = forgeEnergy.receiveEnergy((int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                return sent;
+            }
         }
 
         return 0F;
@@ -475,6 +514,15 @@ public class EnergyUtil
             float sent = ((IEnergyProvider) tileAdj).extractEnergy(inputAdj, (int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
             return sent;
         }
+        else if (!EnergyConfigHandler.disableFEInput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
+            if (forgeEnergy.canExtract())
+            {
+                float sent = forgeEnergy.extractEnergy((int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
+                return sent;
+            }
+        }
 
         return 0F;
     }
@@ -507,6 +555,10 @@ public class EnergyUtil
         {
             return ((IEnergyConnection) tileAdj).canConnectEnergy(inputAdj);
         }
+        else if (hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
+        {
+            return (getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj).canReceive());
+        }
 
         return false;
     }
@@ -530,6 +582,11 @@ public class EnergyUtil
         if (isIC2Loaded && tileAdj instanceof IEnergyEmitter)
         {
             return ((IEnergyEmitter) tileAdj).emitsEnergyTo(null, side);
+        }
+
+        if (hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, side))
+        {
+            return (getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, side).canExtract());
         }
 
         return false;
@@ -585,10 +642,9 @@ public class EnergyUtil
         {
             try
             {
-                Class mekCap = Class.forName("mekanism.common.capabilities.Capabilities");
-                EnergyUtil.mekCableAcceptor = (Capability) mekCap.getField("ENERGY_ACCEPTOR_CAPABILITY").get(null);
+                EnergyUtil.mekCapabilities = Class.forName("mekanism.common.capabilities.Capabilities");
             }
-            catch (Exception e)
+            catch (Exception ignore)
             {
             }
         }
@@ -658,7 +714,7 @@ public class EnergyUtil
             }
         }
         if (clazzPipeTile == null)
-        	isBCReallyLoaded = false;
+            isBCReallyLoaded = false;
         
         return true;
     }
@@ -694,7 +750,7 @@ public class EnergyUtil
     
     public static boolean isChargedElectricItem(ItemStack stack)
     {
-        if (stack == null)
+        if (stack.isEmpty())
             return false;
 
         Item item = stack.getItem();
@@ -703,7 +759,7 @@ public class EnergyUtil
             return ((IItemElectric) item).getElectricityStored(stack) > 0;
         }
 
-        if (item == null)
+        if (item == Items.AIR)
             return false;
 
         if (EnergyConfigHandler.isRFAPILoaded())
@@ -717,15 +773,13 @@ public class EnergyUtil
             if (item instanceof ISpecialElectricItem)
             {
                 ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-                return electricItem.canProvideEnergy(stack);
-//TODO            return (Info.itemInfo.getEnergyValue(stack) > 0.0D) || (ElectricItem.manager.discharge(stack, Double.POSITIVE_INFINITY, this.tier, true, true, true) > 0.0D);
-//See also: 
+                return electricItem.getManager(stack).discharge(stack, Double.POSITIVE_INFINITY, 3, true, true, true) > 0.0D;
             }
             else if (item instanceof IElectricItem)
             {
                 IElectricItem electricItem = (IElectricItem) item;
                 return electricItem.canProvideEnergy(stack);
-//TODO            return (Info.itemInfo.getEnergyValue(stack) > 0.0D) || (ElectricItem.manager.discharge(stack, Double.POSITIVE_INFINITY, this.tier, true, true, true) > 0.0D);
+//TODO            return (Info.itemInfo.getEnergyValue(stack) > 0.0D);
             }
         }
 
@@ -740,7 +794,7 @@ public class EnergyUtil
 
     public static boolean isFillableElectricItem(ItemStack stack)
     {
-        if (stack == null)
+        if (stack.isEmpty())
             return false;
 
         Item item = stack.getItem();
@@ -749,7 +803,7 @@ public class EnergyUtil
             return ((IItemElectric) item).getElectricityStored(stack) < ((IItemElectric) item).getMaxElectricityStored(stack);
         }
 
-        if (item == null)
+        if (item == Items.AIR)
             return false;
 
         if (EnergyConfigHandler.isRFAPILoaded())
@@ -763,14 +817,12 @@ public class EnergyUtil
             if (item instanceof ISpecialElectricItem)
             {
                 ISpecialElectricItem electricItem = (ISpecialElectricItem) item;
-                return electricItem.canProvideEnergy(stack);
-//TODO                return ElectricItem.manager.charge(stack, Double.POSITIVE_INFINITY, this.tier, true, true) > 0.0D;
+                return electricItem.getManager(stack).charge(stack, Double.POSITIVE_INFINITY, 3, true, true) > 0.0D;
             }
             else if (item instanceof IElectricItem)
             {
                 IElectricItem electricItem = (IElectricItem) item;
                 return electricItem.canProvideEnergy(stack);
-//TODO                return ElectricItem.manager.charge(stack, Double.POSITIVE_INFINITY, this.tier, true, true) > 0.0D;
             }
         }
 
@@ -791,5 +843,53 @@ public class EnergyUtil
     public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability, EnumFacing side)
     {
         return (provider == null || capability == null) ? null : provider.getCapability(capability, side);
+    }
+    
+    public static void initialiseMekCapabilities()
+    {
+        try
+        {
+            EnergyUtil.fieldCableAcceptor = mekCapabilities.getField("ENERGY_ACCEPTOR_CAPABILITY");
+            if (EnergyUtil.fieldCableAcceptor != null)
+            {
+                EnergyUtil.mekCableAcceptor = (Capability) fieldCableAcceptor.get(null);
+            }
+            EnergyUtil.fieldEnergyStorage = mekCapabilities.getField("ENERGY_STORAGE_CAPABILITY");
+            if (EnergyUtil.fieldEnergyStorage != null)
+            {
+                EnergyUtil.mekEnergyStorage = (Capability) fieldEnergyStorage.get(null);
+            }
+            Field gasHandlerCapability = mekCapabilities.getField("GAS_HANDLER_CAPABILITY");
+            if (gasHandlerCapability != null)
+            {
+            	EnergyUtil.mekGasHandler = (Capability) gasHandlerCapability.get(null);
+            }
+            Field gasTubeConnection = mekCapabilities.getField("TUBE_CONNECTION_CAPABILITY");
+            if (gasTubeConnection != null)
+            {
+            	EnergyUtil.mekTubeConnection = (Capability) gasTubeConnection.get(null);
+            }
+            EnergyUtil.fieldCableOutput = mekCapabilities.getField("ENERGY_OUTPUTTER_CAPABILITY");
+            if (EnergyUtil.fieldCableOutput != null)
+            {
+            	EnergyUtil.mekCableOutput = (Capability) fieldCableOutput.get(null);
+            }
+        }
+        catch (Exception e)
+        {
+        }
+    }
+
+    public static boolean checkMekGasHandler(Capability<?> capability)
+    {
+        if (!EnergyConfigHandler.isMekanismLoaded() || capability == null || EnergyUtil.mekCapabilities == null)
+        {
+            return false;
+        }
+        if (EnergyUtil.mekGasHandler == null)
+        {
+            initialiseMekCapabilities();
+        }
+        return capability == EnergyUtil.mekGasHandler || capability == EnergyUtil.mekTubeConnection;
     }
 }

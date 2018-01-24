@@ -9,7 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,7 +30,7 @@ public class SchematicAdd extends SchematicPage
     @Override
     public ItemStack getRequiredItem()
     {
-        return null;
+        return null;  //This null is OK, it's used only as a flag by SchematicRegistry calling code
     }
 
     @SideOnly(Side.CLIENT)

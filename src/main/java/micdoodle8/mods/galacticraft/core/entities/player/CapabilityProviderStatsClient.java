@@ -27,7 +27,7 @@ public class CapabilityProviderStatsClient implements ICapabilityProvider
     {
         if (GCCapabilities.GC_STATS_CLIENT_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CLIENT_CAPABILITY)
         {
-            return (T)(statsCapability);
+            return GCCapabilities.GC_STATS_CLIENT_CAPABILITY.cast(statsCapability);
         }
 
         return null;

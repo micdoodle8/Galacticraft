@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine_tiered",
+    "data": 0
+  },
+  "pattern": [
+    "SSS",
+    "BBB",
+    "SSS"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:battery",
+      "data": 100
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

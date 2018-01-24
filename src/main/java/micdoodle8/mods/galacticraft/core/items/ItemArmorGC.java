@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorGC extends ItemArmor implements ISortableItem
 {
-    public ItemArmorGC(int armorIndex, String assetSuffix)
+    public ItemArmorGC(EntityEquipmentSlot armorIndex, String assetSuffix)
     {
         super(GCItems.ARMOR_STEEL, 0, armorIndex);
         this.setUnlocalizedName("steel_" + assetSuffix);
@@ -36,7 +37,7 @@ public class ItemArmorGC extends ItemArmor implements ISortableItem
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         if (this.getArmorMaterial() == GCItems.ARMOR_STEEL)
         {

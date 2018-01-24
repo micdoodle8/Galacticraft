@@ -1,10 +1,11 @@
 package mekanism.api.gas;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -29,6 +30,8 @@ public class Gas
 
 	private boolean from_fluid = false;
 
+	private int tint = 0xFFFFFF;
+
 	/**
 	 * Creates a new Gas object with a defined name or key value.
 	 * @param s - name or key to associate this Gas with
@@ -37,6 +40,11 @@ public class Gas
 	{
 		unlocalizedName = name = s;
 		iconLocation = new ResourceLocation(icon);
+	}
+
+	public Gas(String s, ResourceLocation icon){
+		unlocalizedName = name = s;
+		iconLocation = icon;
 	}
 
 	/**
@@ -48,6 +56,7 @@ public class Gas
 		iconLocation = f.getStill();
 		fluid = f;
 		from_fluid = true;
+		tint = f.getColor() & 0xFFFFFF;
 	}
 
 	/**
@@ -95,7 +104,7 @@ public class Gas
 	 */
 	public String getLocalizedName()
 	{
-		return StatCollector.translateToLocal(getUnlocalizedName());
+		return I18n.translateToLocal(getUnlocalizedName());
 	}
 
 	/**
@@ -124,6 +133,33 @@ public class Gas
 		return iconLocation;
 	}
 
+	/**
+	 * Gets the Sprite associated with this Gas.
+	 * @return associated IIcon
+	 */
+	public TextureAtlasSprite getSprite()
+	{
+//		if(from_fluid)
+//		{
+//			return MekanismRenderer.getFluidTexture(fluid, FluidType.STILL);
+//		}
+
+		if (sprite == null){
+			sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(getIcon().toString());
+		}
+		
+		return sprite;
+	}
+
+	TextureAtlasSprite getSpriteRaw(){
+		return sprite;
+	}
+
+	/**
+	 * Sets this gas's icon.
+	 * @param map - IIcon to associate with this Gas
+	 * @return this Gas object
+	 */
 	public Gas registerIcon(TextureMap map)
 	{
 		map.registerSprite(iconLocation);
@@ -202,26 +238,54 @@ public class Gas
 	 * Registers a new fluid out of this Gas or gets one from the FluidRegistry.
 	 * @return this Gas object
 	 */
-	public Gas registerFluid()
+	public Gas registerFluid(String name)
 	{
 		if(fluid == null)
 		{
-			if(FluidRegistry.getFluid(getName()) == null)
+			if(FluidRegistry.getFluid(name) == null)
 			{
-				fluid = new Fluid(getName(), getIcon(), getIcon()).setGaseous(true);
+				fluid = new Fluid(name, getIcon(), getIcon());
 				FluidRegistry.registerFluid(fluid);
 			}
 			else {
-				fluid = FluidRegistry.getFluid(getName());
+				fluid = FluidRegistry.getFluid(name);
 			}
 		}
 
 		return this;
+	}
+	
+	/**
+	 * Registers a new fluid out of this Gas or gets one from the FluidRegistry.
+	 * Uses default gas name.
+	 * @return this Gas object
+	 */
+	public Gas registerFluid()
+	{
+		return registerFluid(getName());
 	}
 
 	@Override
 	public String toString()
 	{
 		return name;
+	}
+
+	/**
+	 * Get the tint for rendering the gas
+	 * @return int representation of color in 0xRRGGBB format
+	 */
+	public int getTint()
+	{
+		return tint;
+	}
+
+	/**
+	 * Sets the tint for the gas
+	 * @param tint int representation of color in 0xRRGGBB format
+	 */
+	public void setTint(int tint)
+	{
+		this.tint = tint;
 	}
 }

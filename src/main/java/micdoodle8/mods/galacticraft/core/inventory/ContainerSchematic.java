@@ -8,18 +8,18 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematic extends Container
 {
     public InventorySchematic craftMatrix = new InventorySchematic(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematic(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
         int var6;
         int var7;
@@ -47,13 +47,13 @@ public class ContainerSchematic extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 0; var2 < 1; ++var2)
             {
                 final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (var3 != null)
+                if (!var3.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(var3, 0.0F);
                 }
@@ -70,7 +70,7 @@ public class ContainerSchematic extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
     {
-        ItemStack var3 = null;
+        ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
 
         if (var4 != null && var4.getHasStack())
@@ -82,17 +82,17 @@ public class ContainerSchematic extends Container
             {
                 if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (!this.mergeItemStack(var5, 0, 1, false))
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            if (var5.stackSize == 0)
+            if (var5.getCount() == 0)
             {
-                var4.putStack((ItemStack) null);
+                var4.putStack(ItemStack.EMPTY);
             }
             else
             {

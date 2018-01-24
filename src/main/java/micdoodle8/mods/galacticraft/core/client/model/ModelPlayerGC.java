@@ -45,7 +45,7 @@ public class ModelPlayerGC extends ModelPlayer
     {
         GlStateManager.pushMatrix();
         EntityPlayer player = (EntityPlayer) entityIn;
-        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(player.ridingEntity instanceof ICameraZoomEntity))
+        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(player.getRidingEntity() instanceof ICameraZoomEntity))
         {
             Item heldItem = player.inventory.getCurrentItem().getItem();
             IHoldableItem holdableItem = (IHoldableItem) heldItem;

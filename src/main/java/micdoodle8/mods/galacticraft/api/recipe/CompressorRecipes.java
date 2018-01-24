@@ -148,15 +148,15 @@ public class CompressorRecipes
     public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World par2World)
     {
         int i = 0;
-        ItemStack itemstack = null;
-        ItemStack itemstack1 = null;
+        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack1 = ItemStack.EMPTY;
         int j;
 
         for (j = 0; j < inventory.getSizeInventory(); ++j)
         {
             ItemStack itemstack2 = inventory.getStackInSlot(j);
 
-            if (itemstack2 != null)
+            if (!itemstack2.isEmpty())
             {
                 if (i == 0)
                 {
@@ -172,7 +172,7 @@ public class CompressorRecipes
             }
         }
 
-        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.getCount() == 1 && itemstack1.getCount() == 1 && itemstack.getItem().isRepairable())
         {
             int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamage();
             int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamage();
@@ -204,7 +204,7 @@ public class CompressorRecipes
                 }
             }
 
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 

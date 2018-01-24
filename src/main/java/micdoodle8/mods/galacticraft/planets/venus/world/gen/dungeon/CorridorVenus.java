@@ -17,7 +17,7 @@ public class CorridorVenus extends SizedPieceVenus
     public CorridorVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
     {
         super(configuration, sizeX, sizeY, sizeZ, direction);
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
         this.boundingBox = new StructureBoundingBox(blockPosX, configuration.getYPosition(), blockPosZ, blockPosX + sizeX, configuration.getYPosition() + sizeY, blockPosZ + sizeZ);
     }
 
@@ -34,30 +34,30 @@ public class CorridorVenus extends SizedPieceVenus
                     {
                         if (i == 0 || i == this.boundingBox.getXSize() - 1)
                         {
-                            this.setBlockState(worldIn, Blocks.lava.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.LAVA.getDefaultState(), i, j, k, this.boundingBox);
                         }
                         else if (i == 1 || i == this.boundingBox.getXSize() - 2)
                         {
-                            this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, this.boundingBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                         }
                     }
                     else if (j == 2 && this.getDirection().getAxis() == EnumFacing.Axis.X && (i + 1) % 4 == 0 && i != this.boundingBox.getXSize() - 1)
                     {
                         if (k == 0 || k == this.boundingBox.getZSize() - 1)
                         {
-                            this.setBlockState(worldIn, Blocks.lava.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.LAVA.getDefaultState(), i, j, k, this.boundingBox);
                         }
                         else if (k == 1 || k == this.boundingBox.getZSize() - 2)
                         {
-                            this.setBlockState(worldIn, Blocks.iron_bars.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.IRON_BARS.getDefaultState(), i, j, k, this.boundingBox);
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                         }
                     }
                     else if ((this.getDirection().getAxis() == EnumFacing.Axis.Z && (i == 1 || i == this.boundingBox.getXSize() - 2)) ||
@@ -75,7 +75,7 @@ public class CorridorVenus extends SizedPieceVenus
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, this.boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, this.boundingBox);
                     }
                 }
             }

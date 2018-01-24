@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -26,11 +26,14 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -43,10 +46,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private ItemStack producingStack = null;
+    private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
-    private ItemStack[] containingItems = new ItemStack[11];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(11, ItemStack.EMPTY);
     
     public static List<ItemStack> salvageable = new LinkedList<>();
     public static List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
@@ -81,9 +84,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         addSalvage(new ItemStack(GCItems.basicItem, 1, 3));
         addSalvage(new ItemStack(GCItems.basicItem, 1, 4));
         addSalvage(new ItemStack(GCItems.basicItem, 1, 5));
-        addSalvage(new ItemStack(Items.iron_ingot));
-        addSalvage(new ItemStack(Items.gold_ingot));
-        addSalvage(new ItemStack(Items.gold_nugget));
+        addSalvage(new ItemStack(Items.IRON_INGOT));
+        addSalvage(new ItemStack(Items.GOLD_INGOT));
+        addSalvage(new ItemStack(Items.GOLD_NUGGET));
     }
 
     public static void initialiseRecipeList()
@@ -131,7 +134,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             boolean updateInv = false;
 
@@ -143,7 +146,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
                     if ((this.processTicks * 5) % this.processTimeRequired == 5)
                     {
-                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_break", 0.25F, 0.4F);
+                        this.world.playSound(null, this.getPos(), GCSounds.deconstructor, SoundCategory.BLOCKS, 0.25F, this.world.rand.nextFloat() * 0.04F + 0.38F);
                     }
 
                     if (this.processTicks >= this.processTimeRequired)
@@ -174,13 +177,13 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     private boolean canDeconstruct()
     {
-        return this.containingItems[1] != null;
+        return !this.stacks.get(1).isEmpty();
     }
 
     public void deconstruct()
     {
         List<ItemStack> ingredients = new LinkedList<>();
-        ingredients.add(new ItemStack(this.containingItems[1].getItem(), 1, this.containingItems[1].getItemDamage()));
+        ingredients.add(new ItemStack(this.stacks.get(1).getItem(), 1, this.stacks.get(1).getItemDamage()));
         this.recursiveCount = 0;
         List<ItemStack> salvaged = this.getSalvageable(ingredients);
         salvaged = this.squashList(salvaged);
@@ -244,7 +247,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 if (ItemStack.areItemsEqual(stack, stack1))
                 {
                     matched = true;
-                    stack1.stackSize += stack.stackSize;
+                    stack1.grow(stack.getCount());
                     break;
                 }
             }
@@ -265,18 +268,18 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         List<ItemStack> ret = new LinkedList<>();
         for (ItemStack stack : ingredients)
         {
-            int count = stack.stackSize;
+            int count = stack.getCount();
             int result = 0;
             for (int i = 0; i < count; i++)
             {
-                if (this.worldObj.rand.nextFloat() < SALVAGE_CHANCE)
+                if (this.world.rand.nextFloat() < SALVAGE_CHANCE)
                 {
                     result++;
                 }
             }
             if (result > 0)
             {
-                stack.stackSize = result;
+                stack.setCount(result);
                 ret.add(stack);
             }
         }
@@ -288,32 +291,31 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         for (INasaWorkbenchRecipe recipe : knownRecipes)
         {
             ItemStack test = (ItemStack) recipe.getRecipeOutput();
-            if (ItemStack.areItemsEqual(test, stack) && test.stackSize == 1)
+            if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
                 return toItemStackList(recipe.getRecipeInput().values());
             }
         }
-        List<IRecipe> standardRecipes = CraftingManager.getInstance().getRecipeList();
-        for (IRecipe recipe : standardRecipes)
+        for (IRecipe recipe : CraftingManager.REGISTRY)
         {
             ItemStack test = recipe.getRecipeOutput();
-            if (ItemStack.areItemsEqual(test, stack) && test.stackSize == 1)
+            if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
                 if (recipe instanceof ShapedRecipes)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapedRecipes) recipe).recipeItems));
+                    return expandRecipeInputs(((ShapedRecipes) recipe).recipeItems);
                 }
                 else if (recipe instanceof ShapelessRecipes)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapelessRecipes) recipe).recipeItems));
+                    return expandRecipeInputs(((ShapelessRecipes) recipe).recipeItems);
                 }
                 else if (recipe instanceof ShapedOreRecipe)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapedOreRecipe) recipe).getInput()));
+                    return expandRecipeInputs(((ShapedOreRecipe) recipe).getIngredients());
                 }
                 else if (recipe instanceof ShapelessOreRecipe)
                 {
-                    return expandRecipeInputs(Arrays.asList(((ShapelessOreRecipe) recipe).getInput()));
+                    return expandRecipeInputs(((ShapelessOreRecipe) recipe).getIngredients());
                 }
             }
         }
@@ -326,7 +328,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         for (Object input : inputs)
         {
             ItemStack toAdd = parseRecipeInput(input);
-            if (toAdd != null)
+            if (toAdd != null && !toAdd.isEmpty())
             {
                 ret.add(toAdd);
             }
@@ -336,12 +338,23 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     
     private ItemStack parseRecipeInput(Object input)
     {
-        if (input instanceof ItemStack)
+        if (input instanceof Ingredient)
+        {
+            for (ItemStack obj : ((Ingredient) input).getMatchingStacks())
+            {
+                ItemStack ret = parseRecipeInput(obj);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+        }
+        else if (input instanceof ItemStack)
         {
             ItemStack stack = (ItemStack) input;
             if (stack.getMetadata() == OreDictionary.WILDCARD_VALUE)
             {
-                return new ItemStack(stack.getItem(), stack.stackSize, 0);
+                return new ItemStack(stack.getItem(), stack.getCount(), 0);
             }
             else
             {
@@ -384,7 +397,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         List<ItemStack> ret = new LinkedList<>();
         for (ItemStack o : inputs)
         {
-            if (o != null)
+            if (o != null && !o.isEmpty())
             {
                 ret.add(o.copy());
             }
@@ -396,25 +409,25 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         for (int i = 2; i < 11; i++)
         {
-            if (this.containingItems[i] == null)
+            if (this.stacks.get(i).isEmpty())
             {
-                this.containingItems[i] = stack;
+                this.stacks.set(i, stack);
                 return;
             }
-            if (!(ItemStack.areItemsEqual(stack, this.containingItems[i])))
+            if (!(ItemStack.areItemsEqual(stack, this.stacks.get(i))))
             {
                 continue;
             }
-            int size = this.containingItems[i].stackSize;
-            if (size + stack.stackSize < this.getInventoryStackLimit())
+            int size = this.stacks.get(i).getCount();
+            if (size + stack.getCount() < this.getInventoryStackLimit())
             {
-                this.containingItems[i].stackSize += stack.stackSize;
+                this.stacks.get(i).grow(stack.getCount());
                 return;
             }
-            this.containingItems[i].stackSize = this.getInventoryStackLimit();
-            stack.stackSize -= this.getInventoryStackLimit() - size;
+            this.stacks.get(i).setCount(this.getInventoryStackLimit());
+            stack.shrink(this.getInventoryStackLimit() - size);
         }
-        GCCoreUtil.spawnItem(this.worldObj, this.getPos(), stack);
+        GCCoreUtil.spawnItem(this.world, this.getPos(), stack);
     }
 
     @Override
@@ -423,16 +436,16 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         super.readFromNBT(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
         NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory()];
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        for (int i = 0; i < var2.tagCount(); ++i)
         {
-            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
+            NBTTagCompound nbttagcompound = var2.getCompoundTagAt(i);
+            int j = nbttagcompound.getByte("Slot") & 255;
 
-            if (var5 < this.containingItems.length)
+            if (j >= 0 && j < this.stacks.size())
             {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
+                this.stacks.set(j, new ItemStack(nbttagcompound));
             }
         }
         
@@ -440,111 +453,108 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
         int var3;
 
-        for (var3 = 0; var3 < this.containingItems.length; ++var3)
+        for (var3 = 0; var3 < this.stacks.size(); ++var3)
         {
-            if (this.containingItems[var3] != null)
+            if (!this.stacks.get(var3).isEmpty())
             {
                 NBTTagCompound var4 = new NBTTagCompound();
                 var4.setByte("Slot", (byte) var3);
-                this.containingItems[var3].writeToNBT(var4);
+                this.stacks.get(var3).writeToNBT(var4);
                 var2.appendTag(var4);
             }
         }
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
 
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        return nbt;
     }
 
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length;
+        return this.stacks.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return this.containingItems[par1];
+    	return this.stacks.get(par1);
     }
 
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (par1 >= this.containingItems.length)
-        {
-            return null;
-        }
-
-        if (this.containingItems[par1] != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
             ItemStack var3;
 
-            if (this.containingItems[par1].stackSize <= par2)
+            if (this.stacks.get(par1).getCount() <= par2)
             {
-                var3 = this.containingItems[par1];
-                this.containingItems[par1] = null;
+                var3 = this.stacks.get(par1);
+                this.stacks.set(par1, ItemStack.EMPTY);
+                this.markDirty();
                 return var3;
             }
             else
             {
-                var3 = this.containingItems[par1].splitStack(par2);
+                var3 = this.stacks.get(par1).splitStack(par2);
 
-                if (this.containingItems[par1].stackSize == 0)
+                if (this.stacks.get(par1).isEmpty())
                 {
-                    this.containingItems[par1] = null;
+                    this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
+                this.markDirty();
                 return var3;
             }
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
     public ItemStack removeStackFromSlot(int par1)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 >= this.stacks.size())
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
 
-        if (this.containingItems[par1] != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
-            ItemStack var2 = this.containingItems[par1];
-            this.containingItems[par1] = null;
+            ItemStack var2 = this.stacks.get(par1);
+            this.stacks.set(par1, ItemStack.EMPTY);
+            this.markDirty();
             return var2;
         }
         else
         {
-            return null;
+        	return ItemStack.EMPTY;
         }
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int par1, ItemStack stack)
     {
-        if (par1 >= this.containingItems.length)
+        if (par1 < this.stacks.size())
         {
-        }
-        else
-        {
-            this.containingItems[par1] = par2ItemStack;
+            this.stacks.set(par1, stack);
 
-            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+            if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
             {
-                par2ItemStack.stackSize = this.getInventoryStackLimit();
+                stack.setCount(this.getInventoryStackLimit());
             }
         }
+        this.markDirty();
     }
 
     @Override
@@ -560,9 +570,23 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 //    @Override
@@ -576,7 +600,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         if (slotID == 0)
         {
-            return itemStack != null && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
         
         return slotID == 1;
@@ -614,17 +638,12 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        IBlockState state = this.world.getBlockState(getPos()); 
         if (state.getBlock() instanceof BlockMachine2)
         {
             return state.getValue(BlockMachine2.FACING);
         }
         return EnumFacing.NORTH;
-    }
-
-    public ItemStack[] getContainingItems()
-    {
-        return this.containingItems;
     }
 
     @Override

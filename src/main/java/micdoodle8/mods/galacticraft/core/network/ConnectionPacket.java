@@ -127,17 +127,17 @@ public class ConnectionPacket
     @SideOnly(Side.CLIENT)
     public void onPacketData(FMLNetworkEvent.ClientCustomPacketEvent event)
     {
-        FMLProxyPacket pkt = event.packet;
+        FMLProxyPacket pkt = event.getPacket();
 
-        onFMLProxyPacketData(event.manager, pkt, Minecraft.getMinecraft().thePlayer);
+        onFMLProxyPacketData(event.getManager(), pkt, Minecraft.getMinecraft().player);
     }
 
     @SubscribeEvent
     public void onPacketData(FMLNetworkEvent.ServerCustomPacketEvent event)
     {
-        FMLProxyPacket pkt = event.packet;
+        FMLProxyPacket pkt = event.getPacket();
 
-        onFMLProxyPacketData(event.manager, pkt, ((NetHandlerPlayServer) event.handler).playerEntity);
+        onFMLProxyPacketData(event.getManager(), pkt, ((NetHandlerPlayServer) event.getHandler()).player);
     }
 
     public void onFMLProxyPacketData(NetworkManager manager, FMLProxyPacket packet, EntityPlayer player)

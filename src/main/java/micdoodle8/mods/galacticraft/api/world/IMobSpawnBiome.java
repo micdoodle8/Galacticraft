@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
 
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 /**
  * Implement this on any Galacticraft World Provider biome registered for a Celestial Body

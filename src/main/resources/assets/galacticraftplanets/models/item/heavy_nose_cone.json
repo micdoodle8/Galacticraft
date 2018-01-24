@@ -1,5 +1,5 @@
 {
-    "parent": "builtin/generated",
+    "parent": "item/generated",
     "textures": {
         "layer0": "galacticraftplanets:items/heavy_nose_cone_joined"
     },

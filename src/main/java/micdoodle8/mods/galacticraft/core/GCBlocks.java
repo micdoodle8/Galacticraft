@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Ordering;
 
 import micdoodle8.mods.galacticraft.core.blocks.*;
@@ -17,13 +18,15 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -96,7 +99,7 @@ public class GCBlocks
     public static Block concealedRepeater_Unpowered;
     public static Block concealedDetector;
 
-    public static final Material machine = new Material(MapColor.ironColor);
+    public static final Material machine = new Material(MapColor.IRON);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
@@ -158,8 +161,8 @@ public class GCBlocks
         GCBlocks.telemetry = new BlockTelemetry("telemetry");
         GCBlocks.fluidTank = new BlockFluidTank("fluid_tank");
         GCBlocks.bossSpawner = new BlockBossSpawner("boss_spawner");
-        GCBlocks.slabGCHalf = new BlockSlabGC("slab_gc_half", Material.rock);
-        GCBlocks.slabGCDouble = new BlockDoubleSlabGC("slab_gc_double", Material.rock);
+        GCBlocks.slabGCHalf = new BlockSlabGC("slab_gc_half", Material.ROCK);
+        GCBlocks.slabGCDouble = new BlockDoubleSlabGC("slab_gc_double", Material.ROCK);
         GCBlocks.tinStairs1 = new BlockStairsGC("tin_stairs_1", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0)).setHardness(2.0F);
         GCBlocks.tinStairs2 = new BlockStairsGC("tin_stairs_2", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_1)).setHardness(2.0F);
         GCBlocks.moonStoneStairs = new BlockStairsGC("moon_stairs_stone", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE)).setHardness(1.5F);
@@ -184,10 +187,10 @@ public class GCBlocks
         // Register blocks before register ores, so that the ItemStack picks up the correct item
         GCBlocks.registerBlocks();
         GCBlocks.setHarvestLevels();
-
-        //Complete registration of various types of torches
-        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.torch);
-
+    }
+    
+    public static void oreDictRegistrations()
+    {
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
         OreDictionary.registerOre("oreTin", new ItemStack(GCBlocks.basicBlock, 1, 6));
@@ -212,7 +215,14 @@ public class GCBlocks
             if (!GalacticraftCore.isPlanetsLoaded && type == EnumSortCategoryBlock.EGG)
                 continue;
             List<StackSorted> stackSorteds = sortMapBlocks.get(type);
-            itemOrderListBlocks.addAll(stackSorteds);
+            if (stackSorteds != null)
+            {
+                itemOrderListBlocks.addAll(stackSorteds);
+            }
+            else
+            {
+                System.out.println("ERROR: null sort stack: " + type.toString());
+            }
         }
         Comparator<ItemStack> tabSorterBlocks = Ordering.explicit(itemOrderListBlocks).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
         GalacticraftCore.galacticraftBlocksTab.setTabSorter(tabSorterBlocks);
@@ -223,7 +233,7 @@ public class GCBlocks
         block.setHarvestLevel(toolClass, level, block.getStateFromMeta(meta));
     }
 
-    public static void doOtherModsTorches()
+    public static void doOtherModsTorches(IForgeRegistry<Block> registry)
     {
         BlockUnlitTorch torch;
         BlockUnlitTorch torchLit;
@@ -252,6 +262,8 @@ public class GCBlocks
                 GCBlocks.otherModTorchesLit.add(torchLit);
                 registerBlock(torch, ItemBlockGC.class);
                 registerBlock(torchLit, ItemBlockGC.class);
+                registry.register(torch);
+                registry.register(torchLit);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
                 GCLog.info("Galacticraft: activating Tinker's Construct compatibility.");
             }
@@ -324,12 +336,52 @@ public class GCBlocks
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... itemCtorArgs)
     {
         String name = block.getUnlocalizedName().substring(5);
-        GCCoreUtil.registerGalacticraftBlock(name, block);
-        GameRegistry.registerBlock(block, itemClass, name, itemCtorArgs);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        if (block.getRegistryName() == null)
         {
-            GCBlocks.registerSorted(block);
+            block.setRegistryName(name);
         }
+        GCCoreUtil.registerGalacticraftBlock(name, block);
+
+        if (itemClass != null)
+        {
+            ItemBlock item = null;
+            Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
+            ctorArgClasses[0] = Block.class;
+            for (int idx = 1; idx < ctorArgClasses.length; idx++)
+            {
+                ctorArgClasses[idx] = itemCtorArgs[idx - 1].getClass();
+            }
+
+            try
+            {
+                Constructor<? extends ItemBlock> constructor = itemClass.getConstructor(ctorArgClasses);
+                item = constructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+            if (item != null)
+            {
+                GCCoreUtil.registerGalacticraftItem(name, item);
+                if (item.getRegistryName() == null)
+                {
+                    item.setRegistryName(name);
+                }
+            }
+        }
+    }
+    
+    public static void registerBlocks(IForgeRegistry<Block> registry)
+    {
+        for (Block block : GalacticraftCore.blocksList)
+        {
+            registry.register(block);
+        }
+        
+        //Complete registration of various types of torches
+        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.TORCH);
     }
 
     public static boolean registeringSorted = false;
@@ -338,11 +390,20 @@ public class GCBlocks
     {
         if (block instanceof ISortableBlock)
         {
+            Item item = Item.getItemFromBlock(block);
+            if (item == Items.AIR)
+            {
+                return;
+            }
             ISortableBlock sortableBlock = (ISortableBlock) block;
-            List<ItemStack> blocks = Lists.newArrayList();
+            NonNullList<ItemStack> blocks = NonNullList.create();
             registeringSorted = true;
-            block.getSubBlocks(Item.getItemFromBlock(block), null, blocks);
+            block.getSubBlocks(null, blocks);
             registeringSorted = false;
+            if (blocks.isEmpty())
+            {
+                blocks.add(new ItemStack(block));
+            }
             for (ItemStack stack : blocks)
             {
                 EnumSortCategoryBlock categoryBlock = sortableBlock.getCategory(stack.getItemDamage());

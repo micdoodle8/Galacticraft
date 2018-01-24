@@ -1,0 +1,40 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars_machine_t2",
+    "data": 4
+  },
+  "pattern": [
+    "TVT",
+    "FWF",
+    "CXO"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "galacticraftcore:machine_tiered",
+      "data": 4
+    },
+    "T": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "F": {
+      "item": "galacticraftcore:fluid_pipe"
+    },
+    "W": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 6
+    },
+    "X": {
+      "item": "galacticraftcore:basic_item",
+      "data": 10
+    },
+    "O": {
+      "item": "galacticraftcore:oxygen_compressor",
+      "data": 0
+    }
+  }
+}

@@ -19,11 +19,11 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
 
     @Override
-    public void renderTileEntityAt(TileEntityTreasureChestMars chest, double x, double y, double z, float par7, int par8)
+    public void render(TileEntityTreasureChestMars chest, double x, double y, double z, float par7, int par8, float alpha)
     {
         int var9;
 
-        if (!chest.hasWorldObj())
+        if (!chest.hasWorld())
         {
             var9 = 0;
         }

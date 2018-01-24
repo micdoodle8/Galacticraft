@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -92,12 +92,12 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
                 if (par6 >= d4 - 16.0D - d6 * 2.0D && par10 >= d5 - 16.0D - d6 * 2.0D && par6 <= d4 + 16.0D + d6 * 2.0D && par10 <= d5 + 16.0D + d6 * 2.0D)
                 {
-                    int l1 = MathHelper.floor_double(par6 - d6) - par3 * 16 - 1;
-                    int i2 = MathHelper.floor_double(par6 + d6) - par3 * 16 + 1;
-                    int j2 = MathHelper.floor_double(par8 - d7) - 1;
-                    int k2 = MathHelper.floor_double(par8 + d7) + 1;
-                    int l2 = MathHelper.floor_double(par10 - d6) - par4 * 16 - 1;
-                    int i3 = MathHelper.floor_double(par10 + d6) - par4 * 16 + 1;
+                    int l1 = MathHelper.floor(par6 - d6) - par3 * 16 - 1;
+                    int i2 = MathHelper.floor(par6 + d6) - par3 * 16 + 1;
+                    int j2 = MathHelper.floor(par8 - d7) - 1;
+                    int k2 = MathHelper.floor(par8 + d7) + 1;
+                    int l2 = MathHelper.floor(par10 - d6) - par4 * 16 - 1;
+                    int i3 = MathHelper.floor(par10 + d6) - par4 * 16 + 1;
 
                     if (l1 < 0)
                     {
@@ -168,18 +168,16 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
                                     if (xfactorSq + zfactorSq < 1.0D)
                                     {
-                                        final int coords = (localX * 16 + localZ) * 256 + localY;
-
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            IBlockState state = primer.getBlockState(coords);
+                                            IBlockState state = primer.getBlockState(localX, localY, localZ);
                                             if (state.getBlock() == testBlock)
                                             {
                                                 int meta = state.getBlock().getMetaFromState(state); 
                                                 if (meta == 3 || meta == 4 || meta == 5)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                             }
                                         }

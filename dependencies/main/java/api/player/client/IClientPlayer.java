@@ -62,17 +62,17 @@ public interface IClientPlayer
 
 	boolean localCanBreatheUnderwater();
 
-	boolean realCanHarvestBlock(net.minecraft.block.Block paramBlock);
+	boolean realCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState);
 
-	boolean superCanHarvestBlock(net.minecraft.block.Block paramBlock);
+	boolean superCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState);
 
-	boolean localCanHarvestBlock(net.minecraft.block.Block paramBlock);
+	boolean localCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState);
 
-	boolean realCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
+	boolean realCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
 
-	boolean superCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
+	boolean superCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
 
-	boolean localCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
+	boolean localCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack);
 
 	boolean realCanTriggerWalking();
 
@@ -140,23 +140,23 @@ public interface IClientPlayer
 
 	float localGetBedOrientationInDegrees();
 
-	float realGetBrightness(float paramFloat);
+	float realGetBrightness();
 
-	float superGetBrightness(float paramFloat);
+	float superGetBrightness();
 
-	float localGetBrightness(float paramFloat);
+	float localGetBrightness();
 
-	int realGetBrightnessForRender(float paramFloat);
+	int realGetBrightnessForRender();
 
-	int superGetBrightnessForRender(float paramFloat);
+	int superGetBrightnessForRender();
 
-	int localGetBrightnessForRender(float paramFloat);
+	int localGetBrightnessForRender();
 
-	float realGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos);
+	float realGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos);
 
-	float superGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos);
+	float superGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos);
 
-	float localGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos);
+	float localGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos);
 
 	double realGetDistanceSq(double paramDouble1, double paramDouble2, double paramDouble3);
 
@@ -176,11 +176,11 @@ public interface IClientPlayer
 
 	float localGetFovModifier();
 
-	java.lang.String realGetHurtSound();
+	net.minecraft.util.SoundEvent realGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
-	java.lang.String superGetHurtSound();
+	net.minecraft.util.SoundEvent superGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
-	java.lang.String localGetHurtSound();
+	net.minecraft.util.SoundEvent localGetHurtSound(net.minecraft.util.DamageSource paramDamageSource);
 
 	java.lang.String realGetName();
 
@@ -260,23 +260,23 @@ public interface IClientPlayer
 
 	void localKnockBack(net.minecraft.entity.Entity paramEntity, float paramFloat, double paramDouble1, double paramDouble2);
 
-	void realMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void realMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void superMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void superMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void localMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3);
+	void localMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3);
 
-	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void realMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void superMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2);
+	void localMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3);
 
-	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void realMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void superMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
-	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3);
+	void localMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
 
 	void realOnDeath(net.minecraft.util.DamageSource paramDamageSource);
 
@@ -308,11 +308,11 @@ public interface IClientPlayer
 
 	void localOnUpdate();
 
-	void realPlayStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
+	void realPlayStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
 
-	void superPlayStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
+	void superPlayStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
 
-	void localPlayStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
+	void localPlayStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock);
 
 	boolean realPushOutOfBlocks(double paramDouble1, double paramDouble2, double paramDouble3);
 
@@ -320,11 +320,11 @@ public interface IClientPlayer
 
 	boolean localPushOutOfBlocks(double paramDouble1, double paramDouble2, double paramDouble3);
 
-	net.minecraft.util.MovingObjectPosition realRayTrace(double paramDouble, float paramFloat);
+	net.minecraft.util.math.RayTraceResult realRayTrace(double paramDouble, float paramFloat);
 
-	net.minecraft.util.MovingObjectPosition superRayTrace(double paramDouble, float paramFloat);
+	net.minecraft.util.math.RayTraceResult superRayTrace(double paramDouble, float paramFloat);
 
-	net.minecraft.util.MovingObjectPosition localRayTrace(double paramDouble, float paramFloat);
+	net.minecraft.util.math.RayTraceResult localRayTrace(double paramDouble, float paramFloat);
 
 	void realReadEntityFromNBT(net.minecraft.nbt.NBTTagCompound paramNBTTagCompound);
 
@@ -366,17 +366,17 @@ public interface IClientPlayer
 
 	void localSetSprinting(boolean paramBoolean);
 
-	net.minecraft.entity.player.EntityPlayer.EnumStatus realTrySleep(net.minecraft.util.BlockPos paramBlockPos);
+	net.minecraft.entity.player.EntityPlayer.SleepResult realTrySleep(net.minecraft.util.math.BlockPos paramBlockPos);
 
-	net.minecraft.entity.player.EntityPlayer.EnumStatus superTrySleep(net.minecraft.util.BlockPos paramBlockPos);
+	net.minecraft.entity.player.EntityPlayer.SleepResult superTrySleep(net.minecraft.util.math.BlockPos paramBlockPos);
 
-	net.minecraft.entity.player.EntityPlayer.EnumStatus localTrySleep(net.minecraft.util.BlockPos paramBlockPos);
+	net.minecraft.entity.player.EntityPlayer.SleepResult localTrySleep(net.minecraft.util.math.BlockPos paramBlockPos);
 
-	void realSwingItem();
+	void realSwingItem(net.minecraft.util.EnumHand paramEnumHand);
 
-	void superSwingItem();
+	void superSwingItem(net.minecraft.util.EnumHand paramEnumHand);
 
-	void localSwingItem();
+	void localSwingItem(net.minecraft.util.EnumHand paramEnumHand);
 
 	void realUpdateEntityActionState();
 
@@ -402,6 +402,22 @@ public interface IClientPlayer
 
 	void localWriteEntityToNBT(net.minecraft.nbt.NBTTagCompound paramNBTTagCompound);
 
+	net.minecraft.network.datasync.DataParameter getLEFT_SHOULDER_ENTITYField();
+
+	net.minecraft.network.datasync.DataParameter getRIGHT_SHOULDER_ENTITYField();
+
+	net.minecraft.util.EnumHand getActiveHandField();
+
+	void setActiveHandField(net.minecraft.util.EnumHand activeHand);
+
+	net.minecraft.item.ItemStack getActiveItemStackField();
+
+	void setActiveItemStackField(net.minecraft.item.ItemStack activeItemStack);
+
+	int getActiveItemStackUseCountField();
+
+	void setActiveItemStackUseCountField(int activeItemStackUseCount);
+
 	boolean getAddedToChunkField();
 
 	void setAddedToChunkField(boolean addedToChunk);
@@ -417,6 +433,18 @@ public interface IClientPlayer
 	net.minecraft.entity.player.EntityPlayer getAttackingPlayerField();
 
 	void setAttackingPlayerField(net.minecraft.entity.player.EntityPlayer attackingPlayer);
+
+	boolean getAutoJumpEnabledField();
+
+	void setAutoJumpEnabledField(boolean autoJumpEnabled);
+
+	int getAutoJumpRequiredField();
+
+	void setAutoJumpRequiredField(int autoJumpRequired);
+
+	java.lang.String getCachedUniqueIdStringField();
+
+	void setCachedUniqueIdStringField(java.lang.String cachedUniqueIdString);
 
 	float getCameraPitchField();
 
@@ -454,13 +482,9 @@ public interface IClientPlayer
 
 	void setChunkCoordZField(int chunkCoordZ);
 
-	java.lang.String getClientBrandField();
+	net.minecraft.network.datasync.EntityDataManager getDataWatcherField();
 
-	void setClientBrandField(java.lang.String clientBrand);
-
-	net.minecraft.entity.DataWatcher getDataWatcherField();
-
-	void setDataWatcherField(net.minecraft.entity.DataWatcher dataWatcher);
+	void setDataWatcherField(net.minecraft.network.datasync.EntityDataManager dataWatcher);
 
 	boolean getDeadField();
 
@@ -482,9 +506,9 @@ public interface IClientPlayer
 
 	void setDistanceWalkedOnStepModifiedField(float distanceWalkedOnStepModified);
 
-	int getEntityAgeField();
+	net.minecraft.inventory.InventoryEnderChest getEnderChestField();
 
-	void setEntityAgeField(int entityAge);
+	void setEnderChestField(net.minecraft.inventory.InventoryEnderChest enderChest);
 
 	float getEntityCollisionReductionField();
 
@@ -510,10 +534,6 @@ public interface IClientPlayer
 
 	void setFallDistanceField(float fallDistance);
 
-	int getFireResistanceField();
-
-	void setFireResistanceField(int fireResistance);
-
 	boolean getFirstUpdateField();
 
 	void setFirstUpdateField(boolean firstUpdate);
@@ -521,6 +541,8 @@ public interface IClientPlayer
 	net.minecraft.entity.projectile.EntityFishHook getFishEntityField();
 
 	void setFishEntityField(net.minecraft.entity.projectile.EntityFishHook fishEntity);
+
+	net.minecraft.network.datasync.DataParameter getFlagsField();
 
 	int getFlyToggleTimerField();
 
@@ -533,6 +555,16 @@ public interface IClientPlayer
 	boolean getForceSpawnField();
 
 	void setForceSpawnField(boolean forceSpawn);
+
+	boolean getGlowingField();
+
+	void setGlowingField(boolean glowing);
+
+	boolean getHandActiveField();
+
+	void setHandActiveField(boolean handActive);
+
+	net.minecraft.network.datasync.DataParameter getHandStatesField();
 
 	boolean getHasValidHealthField();
 
@@ -562,6 +594,10 @@ public interface IClientPlayer
 
 	void setHurtTimeField(int hurtTime);
 
+	int getIdleTimeField();
+
+	void setIdleTimeField(int idleTime);
+
 	boolean getIgnoreFrustumCheckField();
 
 	void setIgnoreFrustumCheckField(boolean ignoreFrustumCheck);
@@ -573,6 +609,22 @@ public interface IClientPlayer
 	boolean getInWaterField();
 
 	void setInWaterField(boolean inWater);
+
+	double getInterpTargetXField();
+
+	void setInterpTargetXField(double interpTargetX);
+
+	double getInterpTargetYField();
+
+	void setInterpTargetYField(double interpTargetY);
+
+	double getInterpTargetYawField();
+
+	void setInterpTargetYawField(double interpTargetYaw);
+
+	double getInterpTargetZField();
+
+	void setInterpTargetZField(double interpTargetZ);
 
 	net.minecraft.entity.player.InventoryPlayer getInventoryField();
 
@@ -602,6 +654,10 @@ public interface IClientPlayer
 
 	void setIsDeadField(boolean isDead);
 
+	boolean getIsElytraFlyingField();
+
+	void setIsElytraFlyingField(boolean isElytraFlying);
+
 	boolean getIsImmuneToFireField();
 
 	void setIsImmuneToFireField(boolean isImmuneToFire);
@@ -626,13 +682,13 @@ public interface IClientPlayer
 
 	void setLastDamageField(float lastDamage);
 
-	net.minecraft.util.BlockPos getLastPortalPosField();
+	net.minecraft.util.math.BlockPos getLastPortalPosField();
 
-	void setLastPortalPosField(net.minecraft.util.BlockPos lastPortalPos);
+	void setLastPortalPosField(net.minecraft.util.math.BlockPos lastPortalPos);
 
-	net.minecraft.util.Vec3 getLastPortalVecField();
+	net.minecraft.util.math.Vec3d getLastPortalVecField();
 
-	void setLastPortalVecField(net.minecraft.util.Vec3 lastPortalVec);
+	void setLastPortalVecField(net.minecraft.util.math.Vec3d lastPortalVec);
 
 	float getLastReportedPitchField();
 
@@ -674,6 +730,8 @@ public interface IClientPlayer
 
 	void setLimbSwingAmountField(float limbSwingAmount);
 
+	net.minecraft.network.datasync.DataParameter getMainHandField();
+
 	int getMaxHurtResistantTimeField();
 
 	void setMaxHurtResistantTimeField(int maxHurtResistantTime);
@@ -706,6 +764,10 @@ public interface IClientPlayer
 
 	void setMoveStrafingField(float moveStrafing);
 
+	float getMoveVerticalField();
+
+	void setMoveVerticalField(float moveVertical);
+
 	float getMovedDistanceField();
 
 	void setMovedDistanceField(float movedDistance);
@@ -721,22 +783,6 @@ public interface IClientPlayer
 	double getNewPosXField();
 
 	void setNewPosXField(double newPosX);
-
-	double getNewPosYField();
-
-	void setNewPosYField(double newPosY);
-
-	double getNewPosZField();
-
-	void setNewPosZField(double newPosZ);
-
-	double getNewRotationPitchField();
-
-	void setNewRotationPitchField(double newRotationPitch);
-
-	double getNewRotationYawField();
-
-	void setNewRotationYawField(double newRotationYaw);
 
 	boolean getNoClipField();
 
@@ -754,9 +800,15 @@ public interface IClientPlayer
 
 	void setOpenContainerField(net.minecraft.inventory.Container openContainer);
 
-	net.minecraft.util.BlockPos getPlayerLocationField();
+	int getPermissionLevelField();
 
-	void setPlayerLocationField(net.minecraft.util.BlockPos playerLocation);
+	void setPermissionLevelField(int permissionLevel);
+
+	net.minecraft.util.math.BlockPos getPlayerLocationField();
+
+	void setPlayerLocationField(net.minecraft.util.math.BlockPos playerLocation);
+
+	net.minecraft.network.datasync.DataParameter getPlayerModelFlagField();
 
 	int getPortalCounterField();
 
@@ -809,6 +861,10 @@ public interface IClientPlayer
 	float getPrevMovedDistanceField();
 
 	void setPrevMovedDistanceField(float prevMovedDistance);
+
+	boolean getPrevOnGroundField();
+
+	void setPrevOnGroundField(boolean prevOnGround);
 
 	float getPrevOnGroundSpeedFactorField();
 
@@ -882,6 +938,8 @@ public interface IClientPlayer
 
 	void setRecentlyHitField(int recentlyHit);
 
+	net.minecraft.stats.RecipeBook getRecipeBookField();
+
 	float getRenderArmPitchField();
 
 	void setRenderArmPitchField(float renderArmPitch);
@@ -889,10 +947,6 @@ public interface IClientPlayer
 	float getRenderArmYawField();
 
 	void setRenderArmYawField(float renderArmYaw);
-
-	double getRenderDistanceWeightField();
-
-	void setRenderDistanceWeightField(double renderDistanceWeight);
 
 	float getRenderOffsetXField();
 
@@ -910,13 +964,9 @@ public interface IClientPlayer
 
 	void setRenderYawOffsetField(float renderYawOffset);
 
-	net.minecraft.entity.Entity getRiddenByEntityField();
+	int getRideCooldownField();
 
-	void setRiddenByEntityField(net.minecraft.entity.Entity riddenByEntity);
-
-	net.minecraft.entity.Entity getRidingEntityField();
-
-	void setRidingEntityField(net.minecraft.entity.Entity ridingEntity);
+	void setRideCooldownField(int rideCooldown);
 
 	float getRotationPitchField();
 
@@ -930,23 +980,31 @@ public interface IClientPlayer
 
 	void setRotationYawHeadField(float rotationYawHead);
 
+	boolean getRowingBoatField();
+
+	void setRowingBoatField(boolean rowingBoat);
+
 	int getScoreValueField();
 
 	void setScoreValueField(int scoreValue);
 
 	net.minecraft.client.network.NetHandlerPlayClient getSendQueueField();
 
-	int getServerPosXField();
+	java.lang.String getServerBrandField();
 
-	void setServerPosXField(int serverPosX);
+	void setServerBrandField(java.lang.String serverBrand);
 
-	int getServerPosYField();
+	long getServerPosXField();
 
-	void setServerPosYField(int serverPosY);
+	void setServerPosXField(long serverPosX);
 
-	int getServerPosZField();
+	long getServerPosYField();
 
-	void setServerPosZField(int serverPosZ);
+	void setServerPosYField(long serverPosY);
+
+	long getServerPosZField();
+
+	void setServerPosZField(long serverPosZ);
 
 	boolean getServerSneakStateField();
 
@@ -964,10 +1022,6 @@ public interface IClientPlayer
 
 	void setSpeedInAirField(float speedInAir);
 
-	float getSpeedOnGroundField();
-
-	void setSpeedOnGroundField(float speedOnGround);
-
 	int getSprintToggleTimerField();
 
 	void setSprintToggleTimerField(int sprintToggleTimer);
@@ -976,7 +1030,7 @@ public interface IClientPlayer
 
 	void setSprintingTicksLeftField(int sprintingTicksLeft);
 
-	net.minecraft.stats.StatFileWriter getStatWriterField();
+	net.minecraft.stats.StatisticsManager getStatWriterField();
 
 	float getStepHeightField();
 
@@ -990,13 +1044,25 @@ public interface IClientPlayer
 
 	void setSwingProgressIntField(int swingProgressInt);
 
+	net.minecraft.util.EnumHand getSwingingHandField();
+
+	void setSwingingHandField(net.minecraft.util.EnumHand swingingHand);
+
 	net.minecraft.util.EnumFacing getTeleportDirectionField();
 
 	void setTeleportDirectionField(net.minecraft.util.EnumFacing teleportDirection);
 
+	int getTicksElytraFlyingField();
+
+	void setTicksElytraFlyingField(int ticksElytraFlying);
+
 	int getTicksExistedField();
 
 	void setTicksExistedField(int ticksExisted);
+
+	int getTicksSinceLastSwingField();
+
+	void setTicksSinceLastSwingField(int ticksSinceLastSwing);
 
 	float getTimeInPortalField();
 
@@ -1021,5 +1087,9 @@ public interface IClientPlayer
 	int getXpCooldownField();
 
 	void setXpCooldownField(int xpCooldown);
+
+	int getXpSeedField();
+
+	void setXpSeedField(int xpSeed);
 
 }

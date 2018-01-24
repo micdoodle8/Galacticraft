@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_asteroids",
+    "data": 2
+  },
+  "pattern": [
+    " Y ",
+    "XYX",
+    "X X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 5
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 3
+    }
+  }
+}

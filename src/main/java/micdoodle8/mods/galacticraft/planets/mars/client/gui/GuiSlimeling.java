@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -16,9 +15,11 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -51,18 +52,20 @@ public class GuiSlimeling extends GuiScreen
     @Override
     public void initGui()
     {
+        super.initGui();
+        this.buttonList.clear();
         Keyboard.enableRepeatEvents(true);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.stayButton = new GuiButton(0, i + 120, j + 122, 50, 20, "");
-        this.stayButton.enabled = this.slimeling.isOwner(this.mc.thePlayer);
+        this.stayButton.enabled = this.slimeling.isOwner(this.mc.player);
         this.stayButton.displayString = this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.button.follow") : GCCoreUtil.translate("gui.slimeling.button.sit");
         this.buttonList.add(this.stayButton);
-        this.nameField = new GuiTextField(0, this.fontRendererObj, i + 44, j + 59, 103, 12);
+        this.nameField = new GuiTextField(0, this.fontRenderer, i + 44, j + 59, 103, 12);
         this.nameField.setText(this.slimeling.getName());
         this.nameField.setEnableBackgroundDrawing(false);
         this.nameField.setMaxStringLength(30);
-        this.nameField.setFocused(this.slimeling.isOwner(this.mc.thePlayer));
+        this.nameField.setFocused(this.slimeling.isOwner(this.mc.player));
         this.nameField.setCanLoseFocus(false);
         this.invX = i + 151;
         this.invY = j + 76;
@@ -71,7 +74,7 @@ public class GuiSlimeling extends GuiScreen
     @Override
     public void updateScreen()
     {
-        if (this.slimeling.isOwner(this.mc.thePlayer))
+        if (this.slimeling.isOwner(this.mc.player))
         {
             this.nameField.updateCursorCounter();
         }
@@ -93,12 +96,12 @@ public class GuiSlimeling extends GuiScreen
     @Override
     protected void keyTyped(char typedChar, int keyCode) throws IOException
     {
-        if (this.slimeling.isOwner(this.mc.thePlayer))
+        if (this.slimeling.isOwner(this.mc.player))
         {
             if (this.nameField.textboxKeyTyped(typedChar, keyCode))
             {
                 this.slimeling.setName(this.nameField.getText());
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.world), new Object[] { this.slimeling.getEntityId(), 1, this.slimeling.getName() }));
             }
         }
         super.keyTyped(typedChar, keyCode);
@@ -112,7 +115,7 @@ public class GuiSlimeling extends GuiScreen
             switch (button.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 0, "" }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.world), new Object[] { this.slimeling.getEntityId(), 0, "" }));
                 break;
             }
         }
@@ -121,14 +124,14 @@ public class GuiSlimeling extends GuiScreen
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
-        if (this.slimeling.isOwner(this.mc.thePlayer))
+        if (this.slimeling.isOwner(this.mc.player))
         {
             this.nameField.mouseClicked(mouseX, mouseY, mouseButton);
         }
         if (mouseX >= this.invX && mouseX < this.invX + this.invWidth && mouseY >= this.invY && mouseY < this.invY + this.invHeight)
         {
-            this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 6, "" }));
+            this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.world), new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
@@ -156,11 +159,11 @@ public class GuiSlimeling extends GuiScreen
         this.drawTexturedModalRect(i + this.xSize - 15, j + 22, 185, 0, 9, 9);
         this.drawTexturedModalRect(i + this.xSize - 15, j + 35, 194, 0, 9, 9);
         String str = "" + Math.round(this.slimeling.getColorRed() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, i + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), j + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
+        this.drawString(this.fontRenderer, str, i + this.xSize - 15 - this.fontRenderer.getStringWidth(str), j + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
         str = "" + Math.round(this.slimeling.getColorGreen() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, i + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), j + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
+        this.drawString(this.fontRenderer, str, i + this.xSize - 15 - this.fontRenderer.getStringWidth(str), j + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, i + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), j + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
+        this.drawString(this.fontRenderer, str, i + this.xSize - 15 - this.fontRenderer.getStringWidth(str), j + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.mc.renderEngine.bindTexture(GuiSlimeling.slimelingPanelGui);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
@@ -176,22 +179,22 @@ public class GuiSlimeling extends GuiScreen
         int height = 15;
         Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
         Gui.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.name") + ": ", dX + i + 55, dY + j - 6, 0x404040);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.owner") + ": " + this.slimeling.getOwnerUsername(), dX + i + 55, dY + j + 7, 0x404040);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.kills") + ": " + this.slimeling.getKillCount(), dX + i + 55, dY + j + 20, 0x404040);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.slimeling.scale") + ": " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + i + 55, dY + j + 33, 0x404040);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.name") + ": ", dX + i + 55, dY + j - 6, 0x404040);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.owner") + ": " + this.slimeling.getOwnerUsername(), dX + i + 55, dY + j + 7, 0x404040);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.kills") + ": " + this.slimeling.getKillCount(), dX + i + 55, dY + j + 20, 0x404040);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.scale") + ": " + Math.round(this.slimeling.getAge() / (float) this.slimeling.MAX_AGE * 1000.0F) / 10.0F + "%", dX + i + 55, dY + j + 33, 0x404040);
         str = "" + (this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.sitting") : GCCoreUtil.translate("gui.slimeling.following"));
-        this.fontRendererObj.drawString(str, i + 145 - this.fontRendererObj.getStringWidth(str) / 2, j + 112, 0x404040);
+        this.fontRenderer.drawString(str, i + 145 - this.fontRenderer.getStringWidth(str) / 2, j + 112, 0x404040);
         str = GCCoreUtil.translate("gui.slimeling.damage") + ": " + Math.round(this.slimeling.getDamage() * 100.0F) / 100.0F;
-        this.fontRendererObj.drawString(str, dX + i + 55, dY + j + 33 + 13, 0x404040);
+        this.fontRenderer.drawString(str, dX + i + 55, dY + j + 33 + 13, 0x404040);
         str = GCCoreUtil.translate("gui.slimeling.food") + ": ";
-        this.fontRendererObj.drawString(str, dX + i + 55, dY + j + 46 + 13, 0x404040);
+        this.fontRenderer.drawString(str, dX + i + 55, dY + j + 46 + 13, 0x404040);
 
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.enableBlend();
         GlStateManager.enableLighting();
         GlStateManager.enableRescaleNormal();
-        this.mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(this.slimeling.getFavoriteFood()), dX + i + 55 + this.fontRendererObj.getStringWidth(str), dY + j + 41 + 14);
+        this.mc.getRenderItem().renderItemAndEffectIntoGUI(new ItemStack(this.slimeling.getFavoriteFood()), dX + i + 55 + this.fontRenderer.getStringWidth(str), dY + j + 41 + 14);
         GlStateManager.disableLighting();
         GlStateManager.disableBlend();
         this.nameField.drawTextBox();
@@ -226,11 +229,8 @@ public class GuiSlimeling extends GuiScreen
         slimeling.rotationPitch = -((float) Math.atan(mouseY / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
         GlStateManager.translate(0.0F, (float) slimeling.getYOffset(), 0.0F);
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
-        rendermanager.setPlayerViewY(180.0F);
-        rendermanager.setRenderShadow(false);
-        rendermanager.renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        rendermanager.setRenderShadow(true);
+        FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
+        FMLClientHandler.instance().getClient().getRenderManager().renderEntity(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;

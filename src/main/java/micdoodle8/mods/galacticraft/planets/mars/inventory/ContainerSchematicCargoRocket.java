@@ -11,19 +11,19 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematicCargoRocket extends Container
 {
     public InventorySchematicCargoRocket craftMatrix = new InventorySchematicCargoRocket(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematicCargoRocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
         int change = 27;
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 69 + change));
         int var6;
         int var7;
@@ -87,13 +87,13 @@ public class ContainerSchematicCargoRocket extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
                 final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (var3 != null)
+                if (!var3.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(var3, 0.0F);
                 }
@@ -116,8 +116,8 @@ public class ContainerSchematicCargoRocket extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot var3 = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -129,7 +129,7 @@ public class ContainerSchematicCargoRocket extends Container
             {
                 if (!this.mergeItemStack(var4, 17, 53, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 0)
@@ -141,12 +141,12 @@ public class ContainerSchematicCargoRocket extends Container
             {
                 for (int i = 1; i < 14; i++)
                 {
-                    Slot testSlot = (Slot) this.inventorySlots.get(i);
+                    Slot testSlot = this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
                     {
                         if (!this.mergeOneItem(var4, i, i + 1, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                         done = true;
                         break;
@@ -155,63 +155,63 @@ public class ContainerSchematicCargoRocket extends Container
 
                 if (!done)
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(14)).getHasStack())
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(14)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 14, 15, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(15)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(15)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 15, 16, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(16)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(16)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 16, 17, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 17 && par1 < 44)
                     {
                         if (!this.mergeItemStack(var4, 44, 53, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 44 && par1 < 53)
                     {
                         if (!this.mergeItemStack(var4, 17, 44, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 17, 53, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
             }
             else
             {
                 var3.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            var3.onTake(par1EntityPlayer, var4);
         }
 
         return var2;
@@ -220,21 +220,21 @@ public class ContainerSchematicCargoRocket extends Container
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (!par1ItemStack.isEmpty())
         {
             Slot slot;
             ItemStack slotStack;
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

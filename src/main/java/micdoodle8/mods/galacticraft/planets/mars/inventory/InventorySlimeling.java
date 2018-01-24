@@ -8,10 +8,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 
 public class InventorySlimeling implements IInventoryDefaults
 {
-    private ItemStack[] stackList = new ItemStack[27 + 3];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(30, ItemStack.EMPTY);
     private EntitySlimeling slimeling;
     public Container currentContainer;
 
@@ -23,13 +24,13 @@ public class InventorySlimeling implements IInventoryDefaults
     @Override
     public int getSizeInventory()
     {
-        return this.stackList.length;
+        return this.stacks.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
     @Override
@@ -41,15 +42,16 @@ public class InventorySlimeling implements IInventoryDefaults
     @Override
     public ItemStack removeStackFromSlot(int par1)
     {
-        if (this.stackList[par1] != null)
+        if (!this.stacks.get(par1).isEmpty())
         {
-            final ItemStack var2 = this.stackList[par1];
-            this.stackList[par1] = null;
+            final ItemStack var2 = this.stacks.get(par1);
+            this.stacks.set(par1, ItemStack.EMPTY);
+            this.markDirty();
             return var2;
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -60,43 +62,42 @@ public class InventorySlimeling implements IInventoryDefaults
         	ContainerSlimeling.removeSlots((ContainerSlimeling) this.currentContainer);
         }
 
-        for (int i = 2; i < this.stackList.length; i++)
+        for (int i = 2; i < this.stacks.size(); i++)
         {
-            if (this.stackList[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
-                if (!this.slimeling.worldObj.isRemote)
+                if (!this.slimeling.world.isRemote)
                 {
-                    this.slimeling.entityDropItem(this.stackList[i], 0.5F);
+                    this.slimeling.entityDropItem(this.stacks.get(i), 0.5F);
                 }
 
-                this.stackList[i] = null;
+                this.stacks.set(i, ItemStack.EMPTY);
             }
         }
     }
     
-    
-    
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-    	if (this.stackList[par1] != null)
+    	if (!this.stacks.get(par1).isEmpty())
         {
             ItemStack var3;
 
             //It's a removal of the Slimeling Inventory Bag
-            if (par1 == 1 && this.stackList[par1].stackSize <= par2)
+            if (par1 == 1 && this.stacks.get(par1).getCount() <= par2)
             {
             	this.removeInventoryBagContents();
-                var3 = this.stackList[par1];
-                this.stackList[par1] = null;
+                var3 = this.stacks.get(par1);
+                this.stacks.set(par1, ItemStack.EMPTY);
+                this.markDirty();
                 return var3;
             }
             else
             //Normal case of decrStackSize for a slot
             {
-                var3 = this.stackList[par1].splitStack(par2);
+                var3 = this.stacks.get(par1).splitStack(par2);
 
-                if (this.stackList[par1].stackSize == 0)
+                if (this.stacks.get(par1).isEmpty())
                 {
                 	//Not sure if this is necessary again, given the above?
                 	if (par1 == 1)
@@ -104,28 +105,43 @@ public class InventorySlimeling implements IInventoryDefaults
                 		this.removeInventoryBagContents();
                     }
 
-                    this.stackList[par1] = null;
+                    this.stacks.set(par1, ItemStack.EMPTY);
                 }
 
+                this.markDirty();
                 return var3;
             }
         }
         else
         {
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
     @Override
     public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
     {
-        if (par1 == 1 && (par2ItemStack == null && this.stackList[par1] != null || !ItemStack.areItemStacksEqual(par2ItemStack, this.stackList[par1])))
+        if (par1 == 1 && (par2ItemStack.isEmpty() && !this.stacks.get(par1).isEmpty() || !ItemStack.areItemStacksEqual(par2ItemStack, this.stacks.get(par1))))
         {
             ContainerSlimeling.addAdditionalSlots((ContainerSlimeling) this.currentContainer, this.slimeling, par2ItemStack);
         }
 
-        this.stackList[par1] = par2ItemStack;
+        this.stacks.set(par1, par2ItemStack);
+        this.markDirty();
+    }
 
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void readFromNBT(NBTTagList tagList)
@@ -135,17 +151,17 @@ public class InventorySlimeling implements IInventoryDefaults
             return;
         }
 
-        this.stackList = new ItemStack[this.stackList.length];
+        this.stacks = NonNullList.withSize(this.stacks.size(), ItemStack.EMPTY);
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {
             final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            final ItemStack itemstack = new ItemStack(nbttagcompound);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
-                this.stackList[j] = itemstack;
+                this.stacks.set(j, itemstack);
             }
         }
     }
@@ -154,13 +170,13 @@ public class InventorySlimeling implements IInventoryDefaults
     {
         NBTTagCompound nbttagcompound;
 
-        for (int i = 0; i < this.stackList.length; ++i)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            if (this.stackList[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
                 nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte) i);
-                this.stackList[i].writeToNBT(nbttagcompound);
+                this.stacks.get(i).writeToNBT(nbttagcompound);
                 tagList.appendTag(nbttagcompound);
             }
         }
@@ -180,9 +196,9 @@ public class InventorySlimeling implements IInventoryDefaults
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return !this.slimeling.isDead && par1EntityPlayer.getDistanceSqToEntity(this.slimeling) <= 64.0D;
+        return !this.slimeling.isDead && par1EntityPlayer.getDistanceSq(this.slimeling) <= 64.0D;
     }
 
     @Override

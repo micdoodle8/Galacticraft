@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -60,7 +61,7 @@ public class MapGenDungeon extends MapGenStructure
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        long dungeonPos = getDungeonPosForCoords(this.worldObj, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.worldObj.provider).getDungeonSpacing());
+        long dungeonPos = getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.provider).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;  //Java automatically gives the 32 least significant bits
         return i == chunkX && j == chunkZ;
@@ -81,7 +82,7 @@ public class MapGenDungeon extends MapGenStructure
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimensionId());
+        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimension());
         Random random = new Random();
         random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
@@ -97,8 +98,8 @@ public class MapGenDungeon extends MapGenStructure
     {
         int spacing = ((IGalacticraftWorldProvider) world.provider).getDungeonSpacing();
         if (spacing == 0) return 0F;
-        int x = MathHelper.floor_double(xpos);
-        int z = MathHelper.floor_double(zpos);
+        int x = MathHelper.floor(xpos);
+        int z = MathHelper.floor(zpos);
         int quadrantX = x % spacing;
         int quadrantZ = z % spacing;
         int searchOffsetX = quadrantX / (spacing / 2);  //0 or 1
@@ -131,7 +132,13 @@ public class MapGenDungeon extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new MapGenDungeon.Start(this.worldObj, this.rand, chunkX, chunkZ, this.configuration);
+        return new MapGenDungeon.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
+    }
+
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    {
+        return null;
     }
 
     public static class Start extends StructureStart

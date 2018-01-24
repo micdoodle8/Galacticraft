@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:steel_pole",
+    "count": 2
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

@@ -4,15 +4,12 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockStairsGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class MarsBlocks
@@ -46,7 +43,6 @@ public class MarsBlocks
 
         MarsBlocks.registerBlocks();
         MarsBlocks.setHarvestLevels();
-        MarsBlocks.oreDictRegistration();
     }
 
     private static void setHarvestLevel(Block block, String toolClass, int level, int meta)
@@ -78,13 +74,7 @@ public class MarsBlocks
 
     public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
     {
-        String name = block.getUnlocalizedName().substring(5);
-        GCCoreUtil.registerGalacticraftBlock(name, block);
-        GameRegistry.registerBlock(block, itemClass, name);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            GCBlocks.registerSorted(block);
-        }
+        GCBlocks.registerBlock(block, itemClass);
     }
 
     public static void registerBlocks()

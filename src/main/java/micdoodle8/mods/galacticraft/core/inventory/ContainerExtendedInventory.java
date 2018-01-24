@@ -63,8 +63,8 @@ public class ContainerExtendedInventory extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -75,7 +75,7 @@ public class ContainerExtendedInventory extends Container
             {
                 if (!this.mergeItemStack(stack, 0, 36, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else
@@ -87,7 +87,7 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeOneItem(stack, j, j + 1, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                         flag = true;
                         break;
@@ -100,7 +100,7 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeOneItem(stack, 42, 44, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                         flag = true;
                     }
@@ -112,7 +112,7 @@ public class ContainerExtendedInventory extends Container
                             {
                                 if (!this.mergeOneItem(stack, j, j + 1, false))
                                 {
-                                    return null;
+                                    return ItemStack.EMPTY;
                                 }
                                 flag = true;
                                 break;
@@ -127,31 +127,31 @@ public class ContainerExtendedInventory extends Container
                     {
                         if (!this.mergeItemStack(stack, 27, 36, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(stack, 0, 27, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
 
-            if (stack.stackSize == 0)
+            if (stack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (stack.stackSize == var2.stackSize)
+            if (stack.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return var2;
@@ -160,21 +160,21 @@ public class ContainerExtendedInventory extends Container
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (par1ItemStack.getCount() > 0)
         {
             Slot slot;
             ItemStack slotStack;
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

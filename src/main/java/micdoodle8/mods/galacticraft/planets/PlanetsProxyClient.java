@@ -21,7 +21,7 @@ public class PlanetsProxyClient extends PlanetsProxy
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        OBJLoader.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX);
+        OBJLoader.INSTANCE.addDomain(GalacticraftPlanets.ASSET_PREFIX);
         GalacticraftPlanets.clientModules.add(new MarsModuleClient());
         GalacticraftPlanets.clientModules.add(new AsteroidsModuleClient());
         GalacticraftPlanets.clientModules.add(new VenusModuleClient());

@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_detector"
+  },
+  "pattern": [
+    "WWW",
+    "YVY",
+    "ZUZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "U": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "V": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  }
+}

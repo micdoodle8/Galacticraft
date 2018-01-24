@@ -2,73 +2,76 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.inventory.IInventoryGC;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+
+import javax.annotation.Nonnull;
 
 public class InventoryExtended implements IInventoryGC
 {
-    public ItemStack[] inventoryStacks = new ItemStack[11];
+    public NonNullList<ItemStack> stacks = NonNullList.withSize(11, ItemStack.EMPTY);
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     @Override
     public int getSizeInventory()
     {
-        return this.inventoryStacks.length;
+        return this.stacks.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int i)
+    @Nonnull
+    public ItemStack getStackInSlot(int index)
     {
-        return this.inventoryStacks[i];
+        return this.stacks.get(index);
     }
 
     @Override
-    public ItemStack decrStackSize(int i, int j)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.inventoryStacks[i] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
-
-            if (this.inventoryStacks[i].stackSize <= j)
-            {
-                var3 = this.inventoryStacks[i];
-                this.inventoryStacks[i] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.inventoryStacks[i].splitStack(j);
-
-                if (this.inventoryStacks[i].stackSize == 0)
-                {
-                    this.inventoryStacks[i] = null;
-                }
-
-                return var3;
-            }
+            this.markDirty();
         }
-        else
-        {
-            return null;
-        }
+
+        return itemstack;
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int i)
+    public ItemStack removeStackFromSlot(int index)
     {
-        return null;
+        return ItemStackHelper.getAndRemove(this.stacks, index);
     }
 
     @Override
-    public void setInventorySlotContents(int i, ItemStack itemstack)
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.inventoryStacks[i] = itemstack;
+        this.stacks.set(index, stack);
 
-        if (itemstack != null && itemstack.stackSize > this.getInventoryStackLimit())
+        if (stack.getCount() > this.getInventoryStackLimit())
         {
-            itemstack.stackSize = this.getInventoryStackLimit();
+            stack.setCount(this.getInventoryStackLimit());
         }
+
+        this.markDirty();
     }
 
     @Override
@@ -96,7 +99,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return true;
     }
@@ -122,35 +125,35 @@ public class InventoryExtended implements IInventoryGC
     @Override
     public void dropExtendedItems(EntityPlayer player)
     {
-        for (int i = 0; i < this.inventoryStacks.length; i++)
+        for (int i = 0; i < this.stacks.size(); i++)
         {
-            ItemStack stack = this.inventoryStacks[i];
+            ItemStack stack = this.stacks.get(i);
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
-                player.dropPlayerItemWithRandomChoice(stack, true);
+                player.dropItem(stack, true);
             }
 
-            this.inventoryStacks[i] = null;
+            this.stacks.set(i, ItemStack.EMPTY);
         }
     }
 
     // Backwards compatibility for old inventory
     public void readFromNBTOld(NBTTagList par1NBTTagList)
     {
-        this.inventoryStacks = new ItemStack[11];
+        this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
             final NBTTagCompound nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            final ItemStack itemstack = new ItemStack(nbttagcompound);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
-                if (j >= 200 && j < this.inventoryStacks.length + 200 - 1)
+                if (j >= 200 && j < this.stacks.size() + 200 - 1)
                 {
-                    this.inventoryStacks[j - 200] = itemstack;
+                    this.stacks.set(j - 200, itemstack);
                 }
             }
         }
@@ -158,17 +161,17 @@ public class InventoryExtended implements IInventoryGC
 
     public void readFromNBT(NBTTagList tagList)
     {
-        this.inventoryStacks = new ItemStack[11];
+        this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {
             final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
-            final ItemStack itemstack = ItemStack.loadItemStackFromNBT(nbttagcompound);
+            final ItemStack itemstack = new ItemStack(nbttagcompound);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
-                this.inventoryStacks[j] = itemstack;
+                this.stacks.set(j, itemstack);
             }
         }
     }
@@ -177,13 +180,13 @@ public class InventoryExtended implements IInventoryGC
     {
         NBTTagCompound nbttagcompound;
 
-        for (int i = 0; i < this.inventoryStacks.length; ++i)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            if (this.inventoryStacks[i] != null)
+            if (!this.stacks.get(i).isEmpty())
             {
                 nbttagcompound = new NBTTagCompound();
                 nbttagcompound.setByte("Slot", (byte) i);
-                this.inventoryStacks[i].writeToNBT(nbttagcompound);
+                this.stacks.get(i).writeToNBT(nbttagcompound);
                 tagList.appendTag(nbttagcompound);
             }
         }
@@ -195,9 +198,9 @@ public class InventoryExtended implements IInventoryGC
     public void copyInventory(IInventoryGC par1InventoryPlayer)
     {
         InventoryExtended toCopy = (InventoryExtended) par1InventoryPlayer;
-        for (int i = 0; i < this.inventoryStacks.length; ++i)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            this.inventoryStacks[i] = ItemStack.copyItemStack(toCopy.inventoryStacks[i]);
+            this.stacks.set(i, toCopy.stacks.get(i).copy());
         }
     }
 
@@ -226,7 +229,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

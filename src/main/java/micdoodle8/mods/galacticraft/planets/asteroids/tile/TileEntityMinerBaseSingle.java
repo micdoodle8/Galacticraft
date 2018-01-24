@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
@@ -14,7 +14,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
             
@@ -31,7 +31,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                     for (int z = 0; z < 2; z++)
                     {
                         BlockPos pos = new BlockPos(x + thisX, y + thisY, z + thisZ);
-                        final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
+                        final TileEntity tile = this.world.isBlockLoaded(pos, false) ? this.world.getTileEntity(pos) : null;
 
                         if (tile instanceof TileEntityMinerBaseSingle && !tile.isInvalid())
                         {
@@ -51,7 +51,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                 TileEntityMinerBase.addNewMinerBase(GCCoreUtil.getDimensionID(this), this.getPos());
                 for (final TileEntity tile : attachedBaseBlocks)
                 {
-                    this.worldObj.setBlockToAir(this.getPos());
+                    this.world.setBlockToAir(this.getPos());
                 }
                 //Don't try setting a new block with a TileEntity, because new tiles can
                 //get removed after the end of this tileEntity.update() tick - setting a new block

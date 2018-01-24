@@ -3,17 +3,19 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class InventorySchematicTier2Rocket implements IInventoryDefaults
 {
-    private final ItemStack[] stackList;
+    private final NonNullList<ItemStack> stacks;
     private final int inventoryWidth;
     private final Container eventHandler;
 
     public InventorySchematicTier2Rocket(Container par1Container)
     {
-        this.stackList = new ItemStack[22];
+        this.stacks = NonNullList.withSize(22, ItemStack.EMPTY);
         this.eventHandler = par1Container;
         this.inventoryWidth = 5;
     }
@@ -21,30 +23,13 @@ public class InventorySchematicTier2Rocket implements IInventoryDefaults
     @Override
     public int getSizeInventory()
     {
-        return this.stackList.length;
+        return this.stacks.size();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
-    }
-
-    public ItemStack getStackInRowAndColumn(int par1, int par2)
-    {
-        if (par1 >= 0 && par1 < this.inventoryWidth)
-        {
-            final int var3 = par1 + par2 * this.inventoryWidth;
-            if (var3 >= 22)
-            {
-                return null;
-            }
-            return this.getStackInSlot(var3);
-        }
-        else
-        {
-            return null;
-        }
+        return par1 >= this.getSizeInventory() ? ItemStack.EMPTY : this.stacks.get(par1);
     }
 
     @Override
@@ -54,58 +39,56 @@ public class InventorySchematicTier2Rocket implements IInventoryDefaults
     }
 
     @Override
-    public ItemStack removeStackFromSlot(int par1)
+    public ItemStack removeStackFromSlot(int index)
     {
-        if (this.stackList[par1] != null)
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
         {
-            final ItemStack var2 = this.stackList[par1];
-            this.stackList[par1] = null;
-            return var2;
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return null;
-        }
+    	return oldstack;
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.stackList[par1] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
-
-            if (this.stackList[par1].stackSize <= par2)
-            {
-                var3 = this.stackList[par1];
-                this.stackList[par1] = null;
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
-            else
-            {
-                var3 = this.stackList[par1].splitStack(par2);
-
-                if (this.stackList[par1].stackSize == 0)
-                {
-                    this.stackList[par1] = null;
-                }
-
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
+            this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
-        else
-        {
-            return null;
-        }
+
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public void setInventorySlotContents(int index, ItemStack stack)
     {
-        this.stackList[par1] = par2ItemStack;
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.stacks.set(index, stack);
+        this.markDirty();
         this.eventHandler.onCraftMatrixChanged(this);
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -120,7 +103,7 @@ public class InventorySchematicTier2Rocket implements IInventoryDefaults
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }

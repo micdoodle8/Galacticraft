@@ -10,6 +10,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,19 +46,22 @@ public class ItemOxygenMask extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(0);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(0, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ItemStack.EMPTY;
+                return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
             }
         }
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.PASS, itemStack);
     }
 }

@@ -11,12 +11,15 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -29,7 +32,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-    public ItemStack[] chestContents = new ItemStack[3];
+    public NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
 
     public boolean adjacentChestChecked = false;
     public float lidAngle;
@@ -46,7 +49,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public void onLoad()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             //Request size + contents information from server
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamicInventory(this));
@@ -64,84 +67,70 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public int getSizeInventory()
     {
-        return this.chestContents.length;
+        return this.stacks.size();
+    }
+
+    @Override
+    public ItemStack getStackInSlot(int index)
+    {
+        return this.stacks.get(index);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count)
+    {
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
+        {
+            this.markDirty();
+        }
+
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
     }
 
     @Override
     public void setSizeInventory(int size)
     {
-        if ((size - 3) % 18 != 0)
-        {
-            size += 18 - ((size - 3) % 18);
-        }
-        this.chestContents = new ItemStack[size];
+        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
     }
 
     @Override
-    public ItemStack getStackInSlot(int par1)
+    public boolean isEmpty()
     {
-        return this.chestContents[par1];
-    }
-
-    @Override
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (this.chestContents[par1] != null)
+        for (ItemStack itemstack : this.stacks)
         {
-            ItemStack itemstack;
-
-            if (this.chestContents[par1].stackSize <= par2)
+            if (!itemstack.isEmpty())
             {
-                itemstack = this.chestContents[par1];
-                this.chestContents[par1] = null;
-                this.markDirty();
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.chestContents[par1].splitStack(par2);
-
-                if (this.chestContents[par1].stackSize == 0)
-                {
-                    this.chestContents[par1] = null;
-                }
-
-                this.markDirty();
-                return itemstack;
+                return false;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (this.chestContents[par1] != null)
-        {
-            ItemStack itemstack = this.chestContents[par1];
-            this.chestContents[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.chestContents[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
-
-        this.markDirty();
+        return true;
     }
 
     @Override
@@ -160,25 +149,15 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 
         int size = nbt.getInteger("chestContentLength");
         if ((size - 3) % 18 != 0)
         {
             size += 18 - ((size - 3) % 18);
         }
-        this.chestContents = new ItemStack[size];
+        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
-            int j = nbttagcompound1.getByte("Slot") & 255;
-
-            if (j < this.chestContents.length)
-            {
-                this.chestContents[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
         if (nbt.hasKey("fuelTank"))
         {
@@ -192,26 +171,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
-        nbt.setInteger("chestContentLength", this.chestContents.length);
-
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.chestContents.length; ++i)
-        {
-            if (this.chestContents[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.chestContents[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-
-        nbt.setTag("Items", nbttaglist);
+        nbt.setInteger("chestContentLength", this.stacks.size());
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         if (this.fuelTank.getFluid() != null)
         {
@@ -219,6 +184,13 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         }
 
         nbt.setInteger("color", this.color.getDyeDamage());
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override
@@ -228,9 +200,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -246,11 +218,11 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         super.update();
         float f;
 
-        if (!this.worldObj.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.getPos().getX() + this.getPos().getY() + this.getPos().getZ()) % 200 == 0)
+        if (!this.world.isRemote && this.numUsingPlayers != 0 && (this.ticks + this.getPos().getX() + this.getPos().getY() + this.getPos().getZ()) % 200 == 0)
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List<?> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.fromBounds(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
+            List<?> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
             Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
@@ -273,7 +245,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
             double d1 = this.getPos().getX() + 0.5D;
             d0 = this.getPos().getZ() + 0.5D;
 
-            this.worldObj.playSoundEffect(d1, this.getPos().getY() + 0.5D, d0, "random.chestopen", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+            this.world.playSound(null, d1, this.getPos().getY() + 0.5D, d0, SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (this.numUsingPlayers == 0 && this.lidAngle > 0.0F || this.numUsingPlayers > 0 && this.lidAngle < 1.0F)
@@ -301,7 +273,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
                 d0 = this.getPos().getX() + 0.5D;
                 double d2 = this.getPos().getZ() + 0.5D;
 
-                this.worldObj.playSoundEffect(d0, this.getPos().getY() + 0.5D, d2, "random.chestclosed", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
+                this.world.playSound(null, d0, this.getPos().getY() + 0.5D, d2, SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, this.world.rand.nextFloat() * 0.1F + 0.9F);
             }
 
             if (this.lidAngle < 0.0F)
@@ -310,15 +282,15 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
             }
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.checkFluidTankTransfer(this.chestContents.length - 1, this.fuelTank);
+            this.checkFluidTankTransfer(this.stacks.size() - 1, this.fuelTank);
         }
     }
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        FluidUtil.tryFillContainerFuel(tank, this.chestContents, slot);
+        FluidUtil.tryFillContainerFuel(tank, this.stacks, slot);
     }
 
 
@@ -345,9 +317,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         }
 
         ++this.numUsingPlayers;
-        this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
-        this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
-        this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
+        this.world.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+        this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType(), false);
+        this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType(), false);
     }
 
     @Override
@@ -356,9 +328,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockParaChest)
         {
             --this.numUsingPlayers;
-            this.worldObj.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
-            this.worldObj.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType());
-            this.worldObj.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType());
+            this.world.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
+            this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType(), false);
+            this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType(), false);
         }
     }
 
@@ -418,7 +390,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }
@@ -430,9 +402,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         super.decodePacketdata(buffer);
 
-        if (this.worldObj.isRemote && color != this.color)
+        if (this.world.isRemote && color != this.color)
         {
-            this.worldObj.markBlockRangeForRenderUpdate(getPos(), getPos());
+            this.world.markBlockRangeForRenderUpdate(getPos(), getPos());
         }
     }
 }

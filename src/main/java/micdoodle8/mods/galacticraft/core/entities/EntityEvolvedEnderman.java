@@ -27,9 +27,12 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
         super.dropFewItems(drop, fortune);
         IBlockState state = this.getHeldBlockState();
         this.entityDropItem(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)), 0.0F);
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)fortune * 0.01F)
+        {
+            this.addRandomDrop();
+        }
     }
 
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(10))
@@ -40,7 +43,7 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
         case 3:
         case 4:
         case 5:
-            this.dropItem(Items.ender_pearl, 1);
+            this.dropItem(Items.ENDER_PEARL, 1);
             break;
         case 6:
             //Oxygen tank half empty or less
@@ -48,7 +51,7 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
             break;
         case 7:
         case 8:
-            this.dropItem(Items.ender_eye, 1);
+            this.dropItem(Items.ENDER_EYE, 1);
             break;
         case 9:
             this.dropItem(GCItems.oxygenConcentrator, 1);

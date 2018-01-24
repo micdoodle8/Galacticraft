@@ -7,21 +7,27 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.*;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemBasic extends Item implements ISortableItem
 {
@@ -87,13 +93,15 @@ public class ItemBasic extends Item implements ISortableItem
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < ItemBasic.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < ItemBasic.names.length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
@@ -106,7 +114,7 @@ public class ItemBasic extends Item implements ISortableItem
     @Override
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
         {
@@ -154,21 +162,24 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
         if (stack.getItemDamage() > 14 && stack.getItemDamage() < 19)
         {
-            --stack.stackSize;
-            playerIn.getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
-            worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+            stack.shrink(1);
+            if (entityLiving instanceof EntityPlayer)
+            {
+                ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
+            }
+            worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
             if (!worldIn.isRemote)
             {
-                playerIn.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
+                entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
             }
             return stack;
         }
 
-        return super.onItemUseFinish(stack, worldIn, playerIn);
+        return super.onItemUseFinish(stack, worldIn, entityLiving);
     }
 
     @Override
@@ -194,27 +205,30 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19 && par3EntityPlayer.canEat(false))
+        ItemStack itemStackIn = playerIn.getHeldItem(hand);
+        if (itemStackIn.getItemDamage() > 14 && itemStackIn.getItemDamage() < 19 && playerIn.canEat(false))
         {
-            par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
+            playerIn.setActiveHand(hand);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
         }
-        if (par1ItemStack.getItemDamage() == 19)
+        else if (itemStackIn.getItemDamage() == 19)
         {
-            if (par3EntityPlayer instanceof EntityPlayerMP)
+            if (playerIn instanceof EntityPlayerMP)
             {
-                GCPlayerStats stats = GCPlayerStats.get(par3EntityPlayer);
+                GCPlayerStats stats = GCPlayerStats.get(playerIn);
                 ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
 
-                if (gear == null && par1ItemStack.getTagCompound() == null)
+                if (gear.isEmpty() && itemStackIn.getTagCompound() == null)
                 {
-                    stats.getExtendedInventory().setInventorySlotContents(5, par1ItemStack.copy());
-                    par1ItemStack.stackSize = 0;
+                    stats.getExtendedInventory().setInventorySlotContents(5, itemStackIn.copy());
+                    itemStackIn = ItemStack.EMPTY;
                 }
             }
         }
-        return par1ItemStack;
+
+        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
     }
 
     @Override
@@ -226,7 +240,7 @@ public class ItemBasic extends Item implements ISortableItem
         }
 
         //Frequency module
-        if (!player.worldObj.isRemote && entity != null && !(entity instanceof EntityPlayer))
+        if (!player.world.isRemote && entity != null && !(entity instanceof EntityPlayer))
         {
             if (itemStack.getTagCompound() == null)
             {
@@ -236,7 +250,7 @@ public class ItemBasic extends Item implements ISortableItem
             itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
             itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
 
-            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.tracking.message")));
+            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.tracking.message")));
             return true;
         }
         return false;

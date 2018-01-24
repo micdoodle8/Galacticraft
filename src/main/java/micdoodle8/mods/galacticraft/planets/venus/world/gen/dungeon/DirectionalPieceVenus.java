@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.Random;
 
@@ -39,9 +40,9 @@ public abstract class DirectionalPieceVenus extends PieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(tagCompound, manager);
 
         if (tagCompound.hasKey("direction"))
         {

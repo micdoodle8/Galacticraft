@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "galacticraftcore:distributor"
+  },
+  "pattern": [
+    "WXW",
+    "YZY",
+    "WXW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "X": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    }
+  }
+}

@@ -114,7 +114,7 @@ public class ModelRendererGC extends ModelRenderer
 
         for (int i = 0; i < this.cubeList.size(); ++i)
         {
-            ((ModelBox) this.cubeList.get(i)).render(tessellator.getWorldRenderer(), par1);
+            ((ModelBox) this.cubeList.get(i)).render(tessellator.getBuffer(), par1);
         }
 
         GL11.glEndList();

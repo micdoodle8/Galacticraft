@@ -12,12 +12,12 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -54,7 +54,7 @@ public class SkyProviderOverworld extends IRenderHandler
     {
         GL11.glPushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldrenderer = tessellator.getBuffer();
         final Random rand = new Random(10842L);
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
         this.renderStars(worldrenderer, rand);
@@ -82,7 +82,7 @@ public class SkyProviderOverworld extends IRenderHandler
         final byte byte2 = 5;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -125,7 +125,7 @@ public class SkyProviderOverworld extends IRenderHandler
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] {}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.world), new Object[] {}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
 
@@ -164,15 +164,15 @@ public class SkyProviderOverworld extends IRenderHandler
             }
         }
 
-        float theta = MathHelper.sqrt_float(((float) (mc.thePlayer.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
+        float theta = MathHelper.sqrt(((float) (mc.player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
-        float i = (float) var2.xCoord * var21;
-        float x = (float) var2.yCoord * var21;
-        float var5 = (float) var2.zCoord * var21;
+        final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        float i = (float) var2.x * var21;
+        float x = (float) var2.y * var21;
+        float var5 = (float) var2.z * var21;
         float z;
 
         if (this.minecraft.gameSettings.anaglyph)
@@ -187,11 +187,11 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glColor3f(i, x, var5);
         final Tessellator var23 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var23.getWorldRenderer();
+        BufferBuilder worldRenderer = var23.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(i, x, var5);
-        if (mc.thePlayer.posY < 214)
+        if (mc.player.posY < 214)
         {
             GL11.glCallList(this.glSkyList);
         }
@@ -200,7 +200,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] costh = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
+        final float[] costh = this.minecraft.world.provider.calcSunriseSunsetColors(this.minecraft.world.getCelestialAngle(partialTicks), partialTicks);
         float var9;
         float size;
         float rand1;
@@ -214,7 +214,7 @@ public class SkyProviderOverworld extends IRenderHandler
             GL11.glShadeModel(GL11.GL_SMOOTH);
             GL11.glPushMatrix();
             GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
+            GL11.glRotatef(MathHelper.sin(this.minecraft.world.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
             z = costh[0] * sunsetModInv;
             var9 = costh[1] * sunsetModInv;
@@ -253,7 +253,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 
         GL11.glPushMatrix();
-        z = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
+        z = 1.0F - this.minecraft.world.getRainStrength(partialTicks);
         var9 = 0.0F;
         size = 0.0F;
         rand1 = 0.0F;
@@ -261,17 +261,17 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glTranslatef(var9, size, rand1);
         GL11.glRotatef(-90.0F, 0.0F, 1.0F, 0.0F);
 
-        GL11.glRotatef(this.minecraft.theWorld.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
-        double playerHeight = this.minecraft.thePlayer.posY;
+        GL11.glRotatef(this.minecraft.world.getCelestialAngle(partialTicks) * 360.0F, 1.0F, 0.0F, 0.0F);
+        double playerHeight = this.minecraft.player.posY;
 
         //Draw stars
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         float threshold;
-        Vec3 vec = TransformerHooks.getFogColorHook(this.minecraft.theWorld);
+        Vec3d vec = TransformerHooks.getFogColorHook(this.minecraft.world);
         threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
-        var20 = MathHelper.sqrt_float(var20);
+        var20 = MathHelper.sqrt(var20);
         float bright1 = Math.min(0.9F, var20 * 3);
 //        float bright2 = Math.min(0.85F, var20 * 2.5F);
 //        float bright3 = Math.min(0.8F, var20 * 2);
@@ -319,7 +319,7 @@ public class SkyProviderOverworld extends IRenderHandler
         //Draw moon
         r = 40.0F;
         this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
-        float sinphi = this.minecraft.theWorld.getMoonPhase();
+        float sinphi = this.minecraft.world.getMoonPhase();
         final int cosphi = (int) (sinphi % 4);
         final int var29 = (int) (sinphi / 4 % 2);
         final float yy = (cosphi) / 4.0F;
@@ -357,7 +357,7 @@ public class SkyProviderOverworld extends IRenderHandler
             float scale = 850 * (0.25F - theta / 10000.0F);
             scale = Math.max(scale, 0.2F);
             GL11.glScalef(scale, 1.0F, scale);
-            GL11.glTranslatef(0.0F, -(float) mc.thePlayer.posY, 0.0F);
+            GL11.glTranslatef(0.0F, -(float) mc.player.posY, 0.0F);
 //	        if (ClientProxyCore.overworldTextureLocal != null)
 //	        {
 //	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
@@ -419,7 +419,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderStars(WorldRenderer worldRenderer, Random rand)
+    private void renderStars(BufferBuilder worldRenderer, Random rand)
     {
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 

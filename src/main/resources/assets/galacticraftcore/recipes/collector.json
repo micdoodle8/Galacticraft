@@ -1,0 +1,34 @@
+{
+  "result": {
+    "item": "galacticraftcore:collector"
+  },
+  "pattern": [
+    "WWW",
+    "YXZ",
+    "UVU"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "U": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "V": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "X": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    },
+    "Y": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "Z": {
+      "item": "galacticraftcore:air_vent"
+    }
+  }
+}

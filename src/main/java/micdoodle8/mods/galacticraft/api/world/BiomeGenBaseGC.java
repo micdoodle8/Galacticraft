@@ -2,22 +2,29 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAmbientCreature;
 import net.minecraft.entity.passive.EntityWaterMob;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 
 /**
  * This extension of BiomeGenBase contains the default initialiseMobLists()
  * called on CelestialBody registration to register mob spawn data
  */
-public abstract class BiomeGenBaseGC extends BiomeGenBase implements IMobSpawnBiome
+public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
 {
-    protected BiomeGenBaseGC(int var1)
+    protected BiomeGenBaseGC(BiomeProperties var1)
     {
         super(var1);
+        this.setRegistryName(var1.biomeName);
+        GalacticraftCore.biomesList.add(this);
     }
 
+    public void registerTypes()
+    {
+    }
+    
     /**
      * The default implementation in BiomeGenBaseGC will attempt to allocate each
      * SpawnListEntry in the CelestialBody's mobInfo to this biome's 

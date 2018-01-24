@@ -49,9 +49,9 @@ public class GuiIngotCompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getName(), 10, 6, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getName(), 10, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
-        this.fontRendererObj.drawString(displayText, 50 - this.fontRendererObj.getStringWidth(displayText), 79, 4210752);
+        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 79, 4210752);
 
         if (this.tileEntity.processTicks > 0)
         {
@@ -63,10 +63,10 @@ public class GuiIngotCompressor extends GuiContainerGC
         }
 
         String str = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.fontRendererObj.getStringWidth(str) / 2, 70, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.fontRenderer.getStringWidth(str) / 2, 70, 4210752);
         str = displayText;
-        this.fontRendererObj.drawString(displayText, 120 - this.fontRendererObj.getStringWidth(str) / 2, 80, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(displayText, 120 - this.fontRenderer.getStringWidth(str) / 2, 80, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**

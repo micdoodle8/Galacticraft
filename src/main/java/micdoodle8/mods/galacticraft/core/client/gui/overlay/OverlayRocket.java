@@ -8,7 +8,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -56,7 +56,7 @@ public class OverlayRocket extends Overlay
         float sizeScale = 0.65F;
 
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(var1 + 0, var2 + 242.0F * sizeScale, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();
         worldRenderer.pos(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0).tex((var3 + var5) * var7, (var4 + var6) * var8).endVertex();
@@ -66,7 +66,7 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
 
-        Entity rocket = OverlayRocket.minecraft.thePlayer.ridingEntity;
+        Entity rocket = OverlayRocket.minecraft.player.getRidingEntity();
         float headOffset = 0;
         if (rocket instanceof EntityTier1Rocket)
         {
@@ -74,7 +74,7 @@ public class OverlayRocket extends Overlay
         }
         Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(rocket.getClass());
 
-        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.thePlayer) / 10.5F);
+        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.player) / 10.5F);
         var1 = 2.5F;
         var2 = y1;
         var3 = 8;
@@ -86,7 +86,7 @@ public class OverlayRocket extends Overlay
         var8 = 1.0F / 64.0F;
 
         GlStateManager.pushMatrix();
-        final int i = rocket.getBrightnessForRender(1);
+        final int i = rocket.getBrightnessForRender();
         final int j = i % 65536;
         final int k = i / 65536;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
@@ -99,7 +99,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(rocket.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.thePlayer.worldObj), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(rocket.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.player.world), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
@@ -108,7 +108,7 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.popMatrix();
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(ClientProxyCore.playerHead);
+        OverlayRocket.minecraft.renderEngine.bindTexture(ClientProxyCore.playerHead);
 
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();

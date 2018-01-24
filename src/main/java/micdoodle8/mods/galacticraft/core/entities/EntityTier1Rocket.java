@@ -16,8 +16,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     {
         super(par1World, par2, par4, par6);
         this.rocketType = rocketType;
-        this.cargoItems = new ItemStack[this.getSizeInventory()];
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         this.setSize(1.2F, 3.5F);
 //        this.yOffset = 1.5F;
     }
@@ -55,7 +56,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     }
 
     @Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
+    public ItemStack getPickedResult(RayTraceResult target)
     {
         return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
     }
@@ -79,7 +80,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
         if ((this.getLaunched() || this.launchPhase == EnumLaunchPhase.IGNITED.ordinal() && this.rand.nextInt(i) == 0) && !ConfigManagerCore.disableSpaceshipParticles && this.hasValidFuel())
         {
-            if (this.worldObj.isRemote)
+            if (this.world.isRemote)
             {
                 this.spawnParticles(this.getLaunched());
             }
@@ -91,13 +92,13 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.worldObj.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.worldObj.provider).hasNoAtmosphere())
+                if (this.world.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.provider).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 1.6);
                 }
                 else
                 {
-                    d = Math.min(d, 1);
+                d = Math.min(d, 1);
                 }
 
                 if (d != 0.0)
@@ -112,9 +113,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
             double multiplier = 1.0D;
 
-            if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
+            if (this.world.provider instanceof IGalacticraftWorldProvider)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.worldObj.provider).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftWorldProvider) this.world.provider).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {
@@ -122,7 +123,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 }
             }
 
-            if (this.timeSinceLaunch % MathHelper.floor_double(3 * (1 / multiplier)) == 0)
+            if (this.timeSinceLaunch % MathHelper.floor(3 * (1 / multiplier)) == 0)
             {
                 this.removeFuel(1);
                 if (!this.hasValidFuel())
@@ -131,7 +132,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 }
             }
         }
-        else if (!this.hasValidFuel() && this.getLaunched() && !this.worldObj.isRemote)
+        else if (!this.hasValidFuel() && this.getLaunched() && !this.world.isRemote)
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {
@@ -149,13 +150,13 @@ public class EntityTier1Rocket extends EntityTieredRocket
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
 
-            if (this.cargoItems == null || this.cargoItems.length == 0)
+            if (this.stacks == null || this.stacks.isEmpty())
             {
-                stats.setRocketStacks(new ItemStack[2]);
+                stats.setRocketStacks(NonNullList.withSize(2, ItemStack.EMPTY));
             }
             else
             {
-                stats.setRocketStacks(this.cargoItems);
+                stats.setRocketStacks(this.stacks);
             }
 
             stats.setRocketType(this.rocketType.getIndex());
@@ -187,7 +188,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             final double x2 = this.posX + x1 - this.motionX;
             final double z2 = this.posZ + z1 - this.motionZ;
 
-            EntityLivingBase riddenByEntity = this.riddenByEntity instanceof EntityLivingBase ? (EntityLivingBase) this.riddenByEntity : null;
+            EntityLivingBase riddenByEntity = !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityLivingBase ? (EntityLivingBase) this.getPassengers().get(0) : null;
 
             if (this.getLaunched())
             {
@@ -205,18 +206,18 @@ public class EntityTier1Rocket extends EntityTieredRocket
             }
             else
             {
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 + 0.7), new Object[] { riddenByEntity });
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 + 0.7), new Object[] { riddenByEntity });
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 - 0.7, y1 - 1D, z1 - 0.7), new Object[] { riddenByEntity });
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(x1 + 0.7, y1 - 1D, z1 - 0.7), new Object[] { riddenByEntity });
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y + 0.9, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), new Object[] { riddenByEntity });
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y + 0.9, z2 + 0.4 - this.rand.nextDouble() / 10), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), new Object[] { riddenByEntity });
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10, y + 0.9, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), new Object[] { riddenByEntity });
+                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10, y + 0.9, z2 - 0.4 + this.rand.nextDouble() / 10), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), new Object[] { riddenByEntity });
             }
         }
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return !this.isDead && par1EntityPlayer.getDistanceSqToEntity(this) <= 64.0D;
+        return !this.isDead && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
     }
 
     @Override

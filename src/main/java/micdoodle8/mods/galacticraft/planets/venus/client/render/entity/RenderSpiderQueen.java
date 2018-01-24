@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
@@ -31,7 +30,7 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
 
     public RenderSpiderQueen(RenderManager renderManager)
     {
-        super(renderManager, new ModelSpiderQueen(), 0.5F);
+        super(renderManager, new ModelSpiderQueen(), 1.0F);
     }
 
     private void updateModels()
@@ -69,7 +68,6 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
     @Override
     public void doRender(EntitySpiderQueen entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        BossStatus.setBossStatus(entity, false);
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
         GL11.glPushMatrix();
@@ -81,7 +79,7 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
         this.updateModels();
 
         RenderHelper.disableStandardItemLighting();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

@@ -6,7 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -17,7 +17,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
     public BlockTileGC(Material material)
     {
         super(material);
-        this.isBlockContainer = true;
+        this.hasTileEntity = true;
     }
 
     /**
@@ -38,15 +38,17 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
         super.breakBlock(worldIn, pos, state);
     }
 
+
+
     /**
      * Called when the block receives a BlockEvent - see World.addBlockEvent. By
      * default, passes it on to the tile entity at this location. Args: world,
      * x, y, z, blockID, EventID, event parameter
      */
     @Override
-    public boolean onBlockEventReceived(World worldIn, BlockPos pos, IBlockState state, int eventID, int eventParam)
+    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
     {
-        super.onBlockEventReceived(worldIn, pos, state, eventID, eventParam);
+        super.eventReceived(state, worldIn, pos, eventID, eventParam);
         TileEntity tileentity = worldIn.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
     }

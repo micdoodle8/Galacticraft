@@ -4,7 +4,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class EntityAIArrowAttack extends EntityAIBase
 {
@@ -70,7 +70,7 @@ public class EntityAIArrowAttack extends EntityAIBase
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean continueExecuting()
+    public boolean shouldContinueExecuting()
     {
         return this.shouldExecute() || !this.entityHost.getNavigator().noPath();
     }
@@ -106,7 +106,7 @@ public class EntityAIArrowAttack extends EntityAIBase
                 return;
             }
 
-            f = MathHelper.sqrt_double(d0) / this.field_96562_i;
+            f = MathHelper.sqrt(d0) / this.field_96562_i;
             float f1 = f;
 
             if (f < 0.1F)
@@ -120,12 +120,12 @@ public class EntityAIArrowAttack extends EntityAIBase
             }
 
             this.rangedAttackEntityHost.attackEntityWithRangedAttack(this.attackTarget, f1);
-            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
+            this.rangedAttackTime = MathHelper.floor(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
         }
         else if (this.rangedAttackTime < 0)
         {
-            f = MathHelper.sqrt_double(d0) / this.field_96562_i;
-            this.rangedAttackTime = MathHelper.floor_float(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
+            f = MathHelper.sqrt(d0) / this.field_96562_i;
+            this.rangedAttackTime = MathHelper.floor(f * (this.maxRangedAttackTime - this.field_96561_g) + this.field_96561_g);
         }
     }
 }

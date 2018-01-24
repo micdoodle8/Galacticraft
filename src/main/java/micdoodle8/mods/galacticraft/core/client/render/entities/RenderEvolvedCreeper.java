@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -30,7 +30,7 @@ public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
     {
         float f = entity.getCreeperFlashIntensity(partialTicks);
         float f1 = 1.0F + MathHelper.sin(f * 100.0F) * f * 0.01F;
-        f = MathHelper.clamp_float(f, 0.0F, 1.0F);
+        f = MathHelper.clamp(f, 0.0F, 1.0F);
         f = f * f;
         f = f * f;
         float f2 = (1.0F + f * 0.4F) * f1;
@@ -57,7 +57,7 @@ public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
         else
         {
             int i = (int)(f * 0.2F * 255.0F);
-            i = MathHelper.clamp_int(i, 0, 255);
+            i = MathHelper.clamp(i, 0, 255);
             return i << 24 | 16777215;
         }
     }
@@ -71,13 +71,12 @@ public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
     @Override
     public void doRender(EntityEvolvedCreeper entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.texSwitch = false;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-
         if (OverlaySensorGlasses.overrideMobTexture())
         {
-            this.texSwitch = true;
+            texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
         }
     }
 }
