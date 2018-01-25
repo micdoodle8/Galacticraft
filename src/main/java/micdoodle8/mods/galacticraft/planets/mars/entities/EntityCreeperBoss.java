@@ -244,13 +244,19 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             {
                 for (ISchematicPage page : stats.getUnlockedSchematics())
                 {
-                    if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
+                    // Check to see if player as the Astro Miner schematic, if so add all schematics to the mix
+                	if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3 + 1) // ID for Astro Miner Schematic Page
+                    {
+                        range = stackList.size();
+                        break;
+                    }
+                	else if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
                     {
                         range = 3;
                         break;
                     }
                 }
-                if (stats.getRocketItem() == AsteroidsItems.tier3Rocket)
+                if (stats.getRocketItem() == AsteroidsItems.tier3Rocket) // Is this really needed?
                 {
                     range = 3;
                 }
