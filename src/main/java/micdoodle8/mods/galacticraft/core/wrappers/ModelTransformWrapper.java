@@ -64,7 +64,7 @@ abstract public class ModelTransformWrapper implements IBakedModel
 
 		if (matrix4f == null)
 		{
-			return Pair.of(this, TRSRTransformation.blockCornerToCenter(new TRSRTransformation(ItemTransformVec3f.DEFAULT)).getMatrix());
+			return Pair.of(this, TRSRTransformation.blockCornerToCenter(TRSRTransformation.identity()).getMatrix());
 		}
 
 		return Pair.of(this, matrix4f);
