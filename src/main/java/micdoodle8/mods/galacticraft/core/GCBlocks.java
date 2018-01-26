@@ -6,6 +6,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Ordering;
 
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon.EnumBlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
@@ -205,6 +206,8 @@ public class GCBlocks
         OreDictionary.registerOre("blockTin", new ItemStack(GCBlocks.basicBlock, 1, 10));
         OreDictionary.registerOre("blockAluminum", new ItemStack(GCBlocks.basicBlock, 1, 11));
         OreDictionary.registerOre("blockAluminium", new ItemStack(GCBlocks.basicBlock, 1, 11));
+        
+        OreDictionary.registerOre("turfMoon", new ItemStack(GCBlocks.blockMoon, EnumBlockBasicMoon.MOON_TURF.getMeta(), 1));
     }
 
     public static void finalizeSort()

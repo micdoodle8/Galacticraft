@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -22,19 +22,15 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GuiAstroMinerDock extends GuiContainerGC
 {
     private static final ResourceLocation dockGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gui_astro_miner_dock.png");
-
-    private TileEntityMinerBase tile;
-
+    private final TileEntityMinerBase tile;
     private GuiButton recallButton;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 233, (this.height - this.ySize) / 2 + 31, 10, 68, new ArrayList<String>(), this.width, this.height, this);
-
     private boolean extraLines;
 
     public GuiAstroMinerDock(InventoryPlayer playerInventory, TileEntityMinerBase dock)
@@ -46,9 +42,10 @@ public class GuiAstroMinerDock extends GuiContainerGC
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.recallButton.enabled = true;
+
         if (this.tile.linkedMinerID == null)
         {
             this.recallButton.enabled = false;
@@ -61,18 +58,16 @@ public class GuiAstroMinerDock extends GuiContainerGC
             }
         }
         this.recallButton.displayString = GCCoreUtil.translate("gui.button.recall.name");
-
-        super.drawScreen(par1, par2, par3);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
         super.initGui();
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.tile.getEnergyStoredGC()) + " / " + (int) Math.floor(this.tile.getMaxEnergyStoredGC())));
         this.electricInfoRegion.tooltipStrings = electricityDesc;
@@ -81,7 +76,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        List<String> batterySlotDesc = new ArrayList<String>();
+        List<String> batterySlotDesc = new ArrayList<>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xPos + 230, yPos + 108, 18, 18, batterySlotDesc, this.width, this.height, this));
@@ -89,22 +84,14 @@ public class GuiAstroMinerDock extends GuiContainerGC
     }
 
     @Override
-    protected void mouseClicked(int px, int py, int par3) throws IOException
+    protected void actionPerformed(GuiButton button)
     {
-        super.mouseClicked(px, py, par3);
-    }
-
-    @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
-    {
-        if (par1GuiButton.enabled)
+        if (button.enabled)
         {
-            switch (par1GuiButton.id)
+            switch (button.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, mc.world.provider.getDimension(), new Object[] { this.tile.getPos(), 0 }));
-                break;
-            default:
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tile.getPos(), 0 }));
                 break;
             }
         }
@@ -112,25 +99,26 @@ public class GuiAstroMinerDock extends GuiContainerGC
 
     private String getDeltaString(int num)
     {
-        return (num > 0) ? "+" + num : "" + num;
+        return num > 0 ? "+" + num : "" + num;
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
         this.fontRenderer.drawString(this.tile.getName(), 7, 6, 4210752);
         this.fontRenderer.drawString(this.getStatus(), 177, 141, 4210752);
+
         if (this.extraLines)
         {
-            this.fontRenderer.drawString("\u0394x: " + getDeltaString(this.tile.linkedMinerDataDX), 186, 152, 2536735);
+            this.fontRenderer.drawString("\u0394x: " + this.getDeltaString(this.tile.linkedMinerDataDX), 186, 152, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRenderer.drawString("\u0394y: " + getDeltaString(this.tile.linkedMinerDataDY), 186, 162, 2536735);
+            this.fontRenderer.drawString("\u0394y: " + this.getDeltaString(this.tile.linkedMinerDataDY), 186, 162, 2536735);
         }
         if (this.extraLines)
         {
-            this.fontRenderer.drawString("\u0394z: " + getDeltaString(this.tile.linkedMinerDataDZ), 186, 172, 2536735);
+            this.fontRenderer.drawString("\u0394z: " + this.getDeltaString(this.tile.linkedMinerDataDZ), 186, 172, 2536735);
         }
         if (this.extraLines)
         {
@@ -142,6 +130,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     private String getStatus()
     {
         this.extraLines = false;
+
         switch (this.tile.linkedMinerDataAIState)
         {
         case -3:  //no linked miner
@@ -171,19 +160,20 @@ public class GuiAstroMinerDock extends GuiContainerGC
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
         this.mc.getTextureManager().bindTexture(GuiAstroMinerDock.dockGui);
         this.drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
-        List<String> electricityDesc = new ArrayList<String>();
+        List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.tile.getEnergyStoredGC(), this.tile.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
         this.mc.getTextureManager().bindTexture(GuiCargoLoader.loaderTexture);
+
         if (this.tile.getEnergyStoredGC() > 0)
         {
             this.drawTexturedModalRect(xPos + 233, yPos + 17, 176, 0, 11, 10);
@@ -193,22 +183,21 @@ public class GuiAstroMinerDock extends GuiContainerGC
         this.drawColorModalRect(xPos + 234, yPos + 29 + 66 - level, 8, level, 0xc1aa24);
     }
 
-    public void drawColorModalRect(int x, int y, int width, int height, int color)
+    private void drawColorModalRect(int x, int y, int width, int height, int color)
     {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-        worldRenderer.pos((double) (x + 0), (double) (y + height), (double) this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos((double) (x + width), (double) (y + height), (double) this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos((double) (x + width), (double) (y + 0), (double) this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
-        worldRenderer.pos((double) (x + 0), (double) (y + 0), (double) this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + 0, y + height, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + width, y + height, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + width, y + 0, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
+        worldRenderer.pos(x + 0, y + 0, this.zLevel).color((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, 1.0F).endVertex();
         tessellator.draw();
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.blendFunc(770, 771);
     }
 }
