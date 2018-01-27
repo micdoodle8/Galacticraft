@@ -381,7 +381,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             switch (slotID)
             {
             case 0:
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 3:
                 return itemstack.getItem() == MarsItems.carbonFragments;
             case 4:
@@ -401,7 +401,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+                return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
             case 4:
                 return FluidUtil.isFullContainer(itemstack);
             default:

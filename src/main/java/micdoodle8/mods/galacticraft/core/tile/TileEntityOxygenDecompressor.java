@@ -204,7 +204,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
             case 0:
                 return itemstack.getItemDamage() < itemstack.getMaxDamage();
             case 1:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             default:
                 return false;
             }
@@ -222,7 +222,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
             case 0:
                 return itemstack.getItemDamage() == itemstack.getMaxDamage();
             case 1:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
             default:
                 return false;
             }

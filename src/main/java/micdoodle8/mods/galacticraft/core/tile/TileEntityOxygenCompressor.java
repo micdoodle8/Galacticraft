@@ -217,7 +217,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
             case 0:
                 return itemstack.getItemDamage() > 1;
             case 1:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 2:
                 return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
             default:
@@ -235,7 +235,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         case 0:
             return itemstack.getItem() instanceof ItemOxygenTank && itemstack.getItemDamage() == 0;
         case 1:
-            return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            return ItemElectricBase.isElectricItemEmpty(itemstack);
         case 2:
             return FluidUtil.isEmptyContainer(itemstack);
         default:

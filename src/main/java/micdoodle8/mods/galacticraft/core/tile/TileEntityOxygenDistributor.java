@@ -441,7 +441,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
                 return itemstack.getItemDamage() < itemstack.getItem().getMaxDamage();
             default:
@@ -457,7 +457,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         switch (slotID)
         {
         case 0:
-            return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            return ItemElectricBase.isElectricItemEmpty(itemstack);
         case 1:
             return FluidUtil.isEmptyContainer(itemstack);
         default:
