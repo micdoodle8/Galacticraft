@@ -35,7 +35,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     public boolean lastActive;
 
     private ItemStack[] containingItems = new ItemStack[2];
-    public static HashSet<BlockVec3Dim> loadedTiles = new HashSet();
+    public static HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean shouldRenderBubble = true;

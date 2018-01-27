@@ -38,7 +38,7 @@ import java.util.Random;
 
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
 {
-    public static final PropertyEnum MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
+    public static final PropertyEnum<EnumBlockMultiType> MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
     public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("renderType", 0, 7);
 
     public enum EnumBlockMultiType implements IStringSerializable
@@ -120,7 +120,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
         int meta = getMetaFromState(state);
 

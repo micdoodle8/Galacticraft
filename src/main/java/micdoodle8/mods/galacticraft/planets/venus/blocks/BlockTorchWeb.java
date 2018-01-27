@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webType", EnumWebType.class);
+    public static final PropertyEnum<EnumWebType> WEB_TYPE = PropertyEnum.create("webType", EnumWebType.class);
 
     public enum EnumWebType implements IStringSerializable
     {

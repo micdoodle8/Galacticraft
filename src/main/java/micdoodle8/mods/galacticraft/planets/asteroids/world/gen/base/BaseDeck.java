@@ -504,6 +504,8 @@ public class BaseDeck extends SizedPiece
             case WEST:
                 facing = 3;
                 leverfacing = 2;
+            default:
+                break;
             }
 
             IBlockState lever = GCBlocks.concealedDetector.getStateFromMeta(8 + facing + (this.configuration.getDeckType() == EnumBaseType.HUMANOID ? 0 : 4));

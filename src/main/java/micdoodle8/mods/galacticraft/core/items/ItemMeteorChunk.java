@@ -32,7 +32,6 @@ public class ItemMeteorChunk extends Item implements ISortableItem
         this.maxStackSize = 16;
         this.setCreativeTab(CreativeTabs.tabMaterials);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName("arrow");
     }
 
     @Override
@@ -95,7 +94,6 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EnergyDisplayHelper
 {
-    public static void getEnergyDisplayTooltip(float energyVal, float maxEnergy, List strList)
+    public static void getEnergyDisplayTooltip(float energyVal, float maxEnergy, List<String> strList)
     {
         strList.add(EnumChatFormatting.GREEN + GCCoreUtil.translate("gui.message.energy") + ": " + getEnergyDisplayS(energyVal));
         strList.add(EnumChatFormatting.RED + GCCoreUtil.translate("gui.message.max_energy") + ": " + getEnergyDisplayS(maxEnergy));

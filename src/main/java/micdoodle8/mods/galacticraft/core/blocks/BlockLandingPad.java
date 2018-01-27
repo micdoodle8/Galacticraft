@@ -28,7 +28,7 @@ import java.util.List;
 
 public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
+    public static final PropertyEnum<EnumLandingPadType> PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
 
     public enum EnumLandingPadType implements IStringSerializable
     {

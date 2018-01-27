@@ -48,7 +48,6 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
         this.transferMax = 200;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> tooltip, boolean par4)
     {
@@ -177,7 +176,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectric
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
         par3List.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));

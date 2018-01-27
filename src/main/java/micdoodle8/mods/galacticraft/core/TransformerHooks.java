@@ -388,7 +388,7 @@ public class TransformerHooks
     }
 
     @SideOnly(Side.CLIENT)
-    public static float getWorldBrightness(WorldClient world)
+    public static float getWorldBrightness(World world)
     {
         if (world.provider instanceof WorldProviderMoon)
         {

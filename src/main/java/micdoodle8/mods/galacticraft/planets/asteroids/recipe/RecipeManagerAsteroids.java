@@ -129,9 +129,9 @@ public class RecipeManagerAsteroids
         CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         //All this is for NEI's benefit
-        List<ItemStack> list1 = new ArrayList();
-        List<ItemStack> list2 = new ArrayList();
-        List<ItemStack> list3 = new ArrayList();
+        List<ItemStack> list1 = new ArrayList<>();
+        List<ItemStack> list2 = new ArrayList<>();
+        List<ItemStack> list3 = new ArrayList<>();
         list1.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 751));
         list2.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 834));
         list3.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 918));

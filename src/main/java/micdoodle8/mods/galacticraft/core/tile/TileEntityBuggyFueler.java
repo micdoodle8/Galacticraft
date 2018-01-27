@@ -48,11 +48,11 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
-                    this.getPos().getX() + 1.5D, this.getPos().getY() + 4.0, this.getPos().getZ() + 1.5D), new Predicate()
+            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
+                    this.getPos().getX() + 1.5D, this.getPos().getY() + 4.0, this.getPos().getZ() + 1.5D), new Predicate<Entity>()
             {
                 @Override
-                public boolean apply(Object input)
+                public boolean apply(Entity input)
                 {
                     return input instanceof IFuelable;
                 }
@@ -101,7 +101,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
@@ -130,7 +130,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

@@ -407,11 +407,8 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             else if (recipe instanceof ShapelessOreRecipeGC)
             {
-                @SuppressWarnings("unchecked")
                 ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
-                
                 Iterator<Object> req = required.iterator();
-
                 int match = 0;
 
                 while (req.hasNext())
@@ -468,7 +465,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             return new int[] { 1, 2 };
         }
         int[] slots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-        ArrayList<Integer> removeSlots = new ArrayList();
+        ArrayList<Integer> removeSlots = new ArrayList<>();
 
         for (int i = 3; i < 12; i++)
         {

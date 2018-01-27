@@ -234,6 +234,8 @@ public class BaseRoom extends SizedPiece
             facing2 = 3;
             facingLamp = 4;
             facingScreen = 3;
+        default:
+            break;
         }
 
         //Offset from centre - used for some rooms
@@ -513,7 +515,7 @@ public class BaseRoom extends SizedPiece
 
             if (tile instanceof IMultiBlock)
             {
-                List<BlockPos> positions = new LinkedList();
+                List<BlockPos> positions = new LinkedList<>();
                 ((IMultiBlock)tile).getPositions(blockpos, positions);
                 for (BlockPos pos : positions)
                 {

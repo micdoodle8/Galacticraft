@@ -35,8 +35,7 @@ import java.util.List;
 
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    //    private IIcon[] icons;
-    public static final PropertyEnum EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
+    public static final PropertyEnum<EnumEggColor> EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
     public static final PropertyBool BROKEN = PropertyBool.create("broken");
 
     public enum EnumEggColor implements IStringSerializable
@@ -74,20 +73,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         this.setDefaultState(this.blockState.getBaseState().withProperty(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister)
-    {
-        this.icons = new IIcon[6];
-        this.icons[0] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "redEgg_0");
-        this.icons[1] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "blueEgg_0");
-        this.icons[2] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "yellowEgg_0");
-        this.icons[3] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "redEgg_1");
-        this.icons[4] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "blueEgg_1");
-        this.icons[5] = iconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "yellowEgg_1");
-        this.blockIcon = this.icons[0];
-    }*/
-
     @Override
     public boolean isFullCube()
     {
@@ -99,13 +84,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     {
         return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
     }
-
-//    @Override
-//    public boolean canBlockStay(World par1World, int par2, int par3, int par4)
-//    {
-//        Block block = par1World.getBlock(par2, par3 - 1, par4);
-//        return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
-//    }
 
     private boolean beginHatch(World world, BlockPos pos, EntityPlayer player)
     {
@@ -183,13 +161,6 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         }
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int metadata)
-    {
-        return this.icons[metadata % 6];
-    }*/
-
     @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
@@ -203,23 +174,11 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         return false;
     }
 
-//    @Override
-//    public Item getItemDropped(int meta, Random random, int par3)
-//    {
-//        return Item.getItemFromBlock(this);
-//    }
-
     @Override
     public int damageDropped(IBlockState state)
     {
         return getMetaFromState(state);
     }
-
-//    @Override
-//    public int quantityDropped(int meta, int fortune, Random random)
-//    {
-//        return 1;
-//    }
 
     @SideOnly(Side.CLIENT)
     @Override

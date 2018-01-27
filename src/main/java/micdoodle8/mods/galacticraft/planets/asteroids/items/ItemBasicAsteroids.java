@@ -18,7 +18,6 @@ import java.util.List;
 public class ItemBasicAsteroids extends Item implements ISortableItem
 {
     public static String[] names = { "ingot_titanium", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "reinforced_plate_t3", "compressed_titanium", "thermal_cloth", "beam_core" };
-//    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
     public ItemBasicAsteroids(String name)
     {
@@ -42,32 +41,8 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        int i = 0;
-
-        for (String name : ItemBasicAsteroids.names)
-        {
-            this.icons[i++] = iconRegister.registerIcon(GalacticraftPlanets.TEXTURE_PREFIX + name);
-        }
-    }
-
     @Override
-    public IIcon getIconFromDamage(int damage)
-    {
-        if (this.icons.length > damage)
-        {
-            return this.icons[damage];
-        }
-
-        return super.getIconFromDamage(damage);
-    }*/
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < ItemBasicAsteroids.names.length; i++)
         {
@@ -86,7 +61,6 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
         return "unnamed";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)

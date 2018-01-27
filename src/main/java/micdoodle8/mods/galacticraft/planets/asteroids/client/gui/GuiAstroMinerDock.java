@@ -65,7 +65,6 @@ public class GuiAstroMinerDock extends GuiContainerGC
         super.drawScreen(par1, par2, par3);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

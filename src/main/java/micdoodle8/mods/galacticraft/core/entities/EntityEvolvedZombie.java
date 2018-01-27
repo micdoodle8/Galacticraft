@@ -57,6 +57,8 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
             break;
         case NORMAL : difficulty = 1D;
             break;
+        default:
+            break;
         }
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.26D + 0.04D * difficulty);
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3D + difficulty);
@@ -70,9 +72,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityIronGolem.class, 1.0D, true));
         this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
         this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] { EntityPigZombie.class }));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityVillager.class, false));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
     }
 
     @Override

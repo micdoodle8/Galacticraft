@@ -57,8 +57,8 @@ public class MapUtil
     private static Thread threadCurrentMap = null;
     private static Thread threadSlowMap = null;
     public static boolean doneOverworldTexture = false;
-    private static LinkedList<MapGen> queuedMaps = new LinkedList();
-    public static LinkedList<String> clientRequests = new LinkedList();
+    private static LinkedList<MapGen> queuedMaps = new LinkedList<>();
+    public static LinkedList<String> clientRequests = new LinkedList<>();
 
     public static ArrayList<BlockVec3> biomeColours = new ArrayList<BlockVec3>(40);
     private static Random rand = new Random();
@@ -587,8 +587,8 @@ public class MapUtil
     public static BufferedImage convertTo12pxTexture(BufferedImage overworldImage, BufferedImage paletteImage)
     {
         BufferedImage result = new BufferedImage(overworldImage.getWidth(), overworldImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-        TreeMap<Integer, Integer> mapColPos = new TreeMap();
-        TreeMap<Integer, Integer> mapColPosB = new TreeMap();
+        TreeMap<Integer, Integer> mapColPos = new TreeMap<>();
+        TreeMap<Integer, Integer> mapColPosB = new TreeMap<>();
         int count = 0;
         for (int x = 0; x < overworldImage.getWidth(); x += 4)
         {

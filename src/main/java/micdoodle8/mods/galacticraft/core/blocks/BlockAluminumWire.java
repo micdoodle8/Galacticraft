@@ -27,7 +27,7 @@ import java.util.List;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
+    public static final PropertyEnum<EnumWireType> WIRE_TYPE = PropertyEnum.create("wireType", EnumWireType.class);
 
     public enum EnumWireType implements IStringSerializable
     {

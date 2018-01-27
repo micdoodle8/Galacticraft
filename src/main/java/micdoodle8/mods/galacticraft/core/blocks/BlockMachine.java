@@ -32,7 +32,7 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     public static final int COMPRESSOR_METADATA = 12;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
+    public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements IStringSerializable
     {
@@ -118,6 +118,8 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
                 case WEST:
                     worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
                     worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
+                    break;
+                default:
                     break;
                 }
             }

@@ -987,7 +987,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
         return "RandomLevelSource";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {

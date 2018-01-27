@@ -42,18 +42,18 @@ public class CompatibilityManager
     public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
 //    public static int isBG2Loaded = 0;
 
-	public static Class classBCBlockGenericPipe = null;
+	public static Class<?> classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
     public static Field fieldBCoilBucket;
-	public static Class classBOPWorldType = null;
-	public static Class classBOPws = null;
-    public static Class classBOPwcm = null;
-    public static Class classIC2wrench = null;
-    public static Class classIC2wrenchElectric = null;
-    public static Class classIC2tileEventLoad;
-    public static Class classIC2tileEventUnload;
-    public static Class classIC2cableType = null;
+	public static Class<?> classBOPWorldType = null;
+	public static Class<?> classBOPws = null;
+    public static Class<?> classBOPwcm = null;
+    public static Class<?> classIC2wrench = null;
+    public static Class<?> classIC2wrenchElectric = null;
+    public static Class<?> classIC2tileEventLoad;
+    public static Class<?> classIC2tileEventUnload;
+    public static Class<?> classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
     private static Method androidPlayerGet;
     private static Method androidPlayerIsAndroid;
@@ -115,7 +115,7 @@ public class CompatibilityManager
                     classIC2tileEventUnload = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
                 } catch (ClassNotFoundException e) { }
                 
-                Class classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                Class<?> classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");
                 classIC2cableType = Class.forName("ic2.core.block.wiring.CableType");
                 if (classIC2cable != null)
                 {

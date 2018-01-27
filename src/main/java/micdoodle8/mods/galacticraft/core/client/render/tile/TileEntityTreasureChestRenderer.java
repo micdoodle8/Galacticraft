@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
-import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChestLarge;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -43,7 +42,6 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
         }
 
         ModelTreasureChest var14 = null;
-        ModelTreasureChestLarge var14b = null;
 
         var14 = this.chestModel;
         this.bindTexture(TileEntityTreasureChestRenderer.treasureChestTexture);
@@ -89,12 +87,6 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
         {
             var14.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
             var14.renderAll(!chest.locked);
-        }
-
-        if (var14b != null)
-        {
-            var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
-            var14b.renderAll(!chest.locked);
         }
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);

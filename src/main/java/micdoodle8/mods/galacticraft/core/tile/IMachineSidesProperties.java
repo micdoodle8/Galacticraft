@@ -22,7 +22,7 @@ public class IMachineSidesProperties
     public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
     public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedAll(), Face.AllAvailable);
 
-    public PropertyEnum asProperty;
+    public PropertyEnum<MachineSidesModel> asProperty;
     private Predicate<MachineSidesModel> filter;
     private Face[] toFaces;
     
@@ -134,7 +134,7 @@ public class IMachineSidesProperties
             return configurationType.getDefault();
         }
 
-        private static Predicate oneFacedAll()
+        private static Predicate<MachineSidesModel> oneFacedAll()
         {
             return new Predicate<MachineSidesModel>()
             {
@@ -146,12 +146,12 @@ public class IMachineSidesProperties
             };
         }
 
-        private static Predicate twoFacedAll()
+        private static Predicate<MachineSidesModel> twoFacedAll()
         {
-            return Predicates.<MachineSidesModel>alwaysTrue();
+            return Predicates.alwaysTrue();
         }
 
-        private static Predicate oneFacedHoriz()
+        private static Predicate<MachineSidesModel> oneFacedHoriz()
         {
             return new Predicate<MachineSidesModel>()
             {
@@ -163,7 +163,7 @@ public class IMachineSidesProperties
             };
         }
         
-        private static Predicate twoFacedHoriz()
+        private static Predicate<MachineSidesModel> twoFacedHoriz()
         {
             return new Predicate<MachineSidesModel>()
             {
@@ -175,7 +175,7 @@ public class IMachineSidesProperties
             };
         }
 
-        private static Predicate noneConfigurable()
+        private static Predicate<MachineSidesModel> noneConfigurable()
         {
             return new Predicate<MachineSidesModel>()
             {

@@ -83,6 +83,8 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
         case EAST:
             GL11.glRotatef(270F, 0, 1F, 0);
             break;
+        default:
+            break;
         }
 
         RenderHelper.disableStandardItemLighting();

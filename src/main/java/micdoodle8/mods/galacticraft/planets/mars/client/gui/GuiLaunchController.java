@@ -75,9 +75,9 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name");
         this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest.name") : GCCoreUtil.translate("gui.button.hide_dest.name");
         // Hacky way of rendering buttons properly, possibly bugs here:
-        List buttonList = new ArrayList(this.buttonList);
-        List labelList = new ArrayList(this.labelList);
-        List<GuiElementInfoRegion> infoRegions = new ArrayList(this.infoRegions);
+        List<GuiButton> buttonList = new ArrayList<>(this.buttonList);
+        List<GuiLabel> labelList = new ArrayList<>(this.labelList);
+        List<GuiElementInfoRegion> infoRegions = new ArrayList<>(this.infoRegions);
         this.buttonList.clear();
         this.labelList.clear();
         this.infoRegions.clear();
@@ -176,7 +176,6 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

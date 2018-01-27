@@ -42,7 +42,6 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         this.bossClass = bossClass;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void update()
     {

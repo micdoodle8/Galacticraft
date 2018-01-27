@@ -40,7 +40,7 @@ import java.util.Random;
 
 public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
+    public static final PropertyEnum<EnumBlockBasicMoon> BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
 
     public enum EnumBlockBasicMoon implements IStringSerializable
     {
@@ -376,8 +376,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
             return EnumSortCategoryBlock.ORE;
         case MOON_DUNGEON_BRICK:
             return EnumSortCategoryBlock.BRICKS;
+        default:
+            return EnumSortCategoryBlock.GENERAL;
         }
-        return EnumSortCategoryBlock.GENERAL;
     }
 
     @Override
