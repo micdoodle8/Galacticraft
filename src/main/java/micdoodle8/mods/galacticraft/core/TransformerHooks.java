@@ -20,7 +20,6 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -295,7 +294,7 @@ public class TransformerHooks
     }
 
     @SideOnly(Side.CLIENT)
-    public static float getWorldBrightness(WorldClient world)
+    public static float getWorldBrightness(World world)
     {
         if (world.provider instanceof WorldProviderMoon)
         {
