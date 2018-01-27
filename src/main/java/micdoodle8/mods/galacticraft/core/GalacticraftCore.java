@@ -361,6 +361,11 @@ public class GalacticraftCore
                     body.setUnreachable();
                 }
             }
+            
+            if (body.getSurfaceBlocks() != null)
+            {
+                TransformerHooks.spawnListAE2_GC.addAll(body.getSurfaceBlocks());
+            }
         }
 
         CompatibilityManager.checkForCompatibleMods();

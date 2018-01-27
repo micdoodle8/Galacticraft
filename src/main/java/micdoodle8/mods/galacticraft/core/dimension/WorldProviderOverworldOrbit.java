@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
@@ -15,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
 import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -248,5 +250,11 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     public String getDungeonChestType()
     {
         return RoomChest.MOONCHEST;
+    }
+
+    @Override
+    public List<Block> getSurfaceBlocks()
+    {
+        return null;
     }
 }

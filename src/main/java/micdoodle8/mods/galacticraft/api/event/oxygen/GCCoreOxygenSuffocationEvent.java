@@ -24,11 +24,9 @@ public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
     /**
      * This event is posted just before the living entity suffocates
      * <p/>
-     * Set the event as canceled to stop the living entity from suffocating
-<<<<<<< HEAD
-=======
-     * IF THE PRE EVENT IS CANCELED, THE "WARNING: OXYGEN SETUP INVALID!" HUD MESSAGE WILL NOT BE SHOWN
->>>>>>> refs/remotes/origin/master
+     * Set the event as cancelled to stop the living entity from suffocating
+     * <p/>
+     * IF THE Pre EVENT IS CANCELLED, THE "WARNING: OXYGEN SETUP INVALID!" HUD MESSAGE WILL NOT BE SHOWN
      */
     @Cancelable
     public static class Pre extends GCCoreOxygenSuffocationEvent

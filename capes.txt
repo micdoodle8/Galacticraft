@@ -101,3 +101,5 @@ Malstrim:capePurple
 CthulhuTheElder:capeCyan
 Akahito666:capeRainbow
 Timsuper2:capeOrange
+Sonic_Blender:capeLightGray
+xX_CreeperMr_Xx:capeRainbow

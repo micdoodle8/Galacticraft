@@ -182,7 +182,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         {
             if (slotID == 0)
             {
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
             }
             else
             {
