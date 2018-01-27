@@ -48,6 +48,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         this.transferMax = 200;
     }
 
+    @Override
     public float getMaxTransferGC(ItemStack itemStack)
     {
         return this.transferMax;
@@ -190,7 +191,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
     public static boolean isElectricItem(Item item)
     {
-        if (item instanceof ItemElectricBase)
+        if (item instanceof IItemElectricBase)
         {
             return true;
         }
@@ -214,9 +215,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
         Item item = itemstack.getItem();
 
-        if (item instanceof ItemElectricBase)
+        if (item instanceof IItemElectricBase)
         {
-            return ((ItemElectricBase) item).getElectricityStored(itemstack) <= 0;
+            return ((IItemElectricBase) item).getElectricityStored(itemstack) <= 0;
         }
 
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
@@ -229,7 +230,28 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
         return false;
     }
+    
+    public static boolean isElectricItemCharged(ItemStack itemstack)
+    {
+        if (itemstack == null) return false;        
+        Item item = itemstack.getItem();
+        
+        if (item instanceof IItemElectricBase)
+        {
+            return ((IItemElectricBase) item).getElectricityStored(itemstack) > 0;
+        }
 
+        if (EnergyConfigHandler.isIndustrialCraft2Loaded())
+        {
+            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            {
+                return ((ic2.api.item.ISpecialElectricItem) item).canProvideEnergy(itemstack);
+            }
+        }
+
+        return false;
+    }
+    
     //For RF compatibility
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyContainerItem", modID = "")
