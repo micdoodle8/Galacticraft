@@ -49,6 +49,7 @@ CHANGELOG
 .metadata
 bin/
 tmp/
+run
 *.tmp
 *.bak
 *.swp
@@ -228,3 +229,4 @@ gradle/wrapper/gradle-wrapper.jar
 dependencies/main/java/micdoodle8/mods/miccore/MicdoodleModContainer.java
 gradlew
 dependencies/main/java/micdoodle8/mods/miccore/IIntCache.java
+dependencies/main/java/codechicken/core/CCUpdateChecker.java
