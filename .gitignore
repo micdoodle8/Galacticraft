@@ -49,7 +49,6 @@ CHANGELOG
 .metadata
 bin/
 tmp/
-run
 *.tmp
 *.bak
 *.swp
@@ -214,19 +213,3 @@ pip-log.txt
 .DS_Store
 
 *.xcf
-dependencies/main/resources/micdoodlecore_at.deobf
-dependencies/main/resources/micdoodlecore_at.cfg
-dependencies/main/resources/META-INF/MANIFEST.MF
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleTransformer.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodlePlugin.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleAccessTransformerDeObf.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleAccessTransformer.java
-dependencies/main/java/micdoodle8/mods/miccore/IntCache.java
-dependencies/main/java/micdoodle8/mods/miccore/ConfigManagerMicCore.java
-dependencies/main/java/micdoodle8/mods/miccore/Annotations.java
-gradle/wrapper/gradle-wrapper.properties
-gradle/wrapper/gradle-wrapper.jar
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleModContainer.java
-gradlew
-dependencies/main/java/micdoodle8/mods/miccore/IIntCache.java
-dependencies/main/java/codechicken/core/CCUpdateChecker.java
