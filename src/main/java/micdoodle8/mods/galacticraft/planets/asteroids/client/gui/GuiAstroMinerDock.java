@@ -93,6 +93,8 @@ public class GuiAstroMinerDock extends GuiContainerGC
             case 0:
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tile.getPos(), 0 }));
                 break;
+            default:
+                break;
             }
         }
     }

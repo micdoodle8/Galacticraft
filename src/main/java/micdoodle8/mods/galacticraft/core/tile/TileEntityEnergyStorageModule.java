@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.item.IItemElectricBase;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -259,15 +260,15 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (itemstack.getItem() instanceof ItemElectricBase)
+        if (itemstack.getItem() instanceof IItemElectricBase)
         {
             if (slotID == 0)
             {
-                return ((ItemElectricBase) itemstack.getItem()).getTransfer(itemstack) > 0;
+                return ((IItemElectricBase) itemstack.getItem()).getTransfer(itemstack) > 0;
             }
             else if (slotID == 1)
             {
-                return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ((IItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
             }
         }
         return false;
@@ -276,15 +277,15 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (itemstack.getItem() instanceof ItemElectricBase)
+        if (itemstack.getItem() instanceof IItemElectricBase)
         {
             if (slotID == 0)
             {
-                return ((ItemElectricBase) itemstack.getItem()).getTransfer(itemstack) <= 0;
+                return ((IItemElectricBase) itemstack.getItem()).getTransfer(itemstack) <= 0;
             }
             else if (slotID == 1)
             {
-                return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
+                return ((IItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || this.getEnergyStoredGC() >= this.getMaxEnergyStoredGC();
             }
         }
 

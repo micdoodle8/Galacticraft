@@ -627,7 +627,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
                 return FluidUtil.isMethaneContainerAny(itemstack);
             case 2:
@@ -647,7 +647,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         switch (slotID)
         {
         case 0:
-            return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+        	return ItemElectricBase.isElectricItemEmpty(itemstack);
         case 1:
             return FluidUtil.isEmptyContainer(itemstack);
         case 2:

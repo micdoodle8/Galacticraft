@@ -224,7 +224,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
-        return new int[0];
+        return new int[] { 0 };
     }
 
     @Override
