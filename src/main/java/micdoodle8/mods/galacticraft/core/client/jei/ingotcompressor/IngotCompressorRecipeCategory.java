@@ -57,7 +57,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 77, 36);
+        this.progressBar.draw(minecraft, 59, 20);
     }
 
     @Override
@@ -67,10 +67,10 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
 
         for (int j = 0; j < 9; j++)
         {
-            itemstacks.init(j, true, 21 + j % 3 * 18, 26 + j / 3 * 18);
+            itemstacks.init(j, true, j % 3 * 18, j / 3 * 18);
         }
 
-        itemstacks.init(9, false, 140, 46);
+        itemstacks.init(9, false, 119, 20);
 
         if (recipeWrapper instanceof IngotCompressorShapedRecipeWrapper)
         {
