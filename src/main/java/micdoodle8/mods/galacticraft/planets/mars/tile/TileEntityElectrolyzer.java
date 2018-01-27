@@ -247,7 +247,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             switch (slotID)
             {
             case 0:
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
             	return itemstack.getItem() == Items.water_bucket;
             default:
@@ -265,7 +265,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
             case 1:
             	return itemstack.getItem() == Items.bucket;
             default:

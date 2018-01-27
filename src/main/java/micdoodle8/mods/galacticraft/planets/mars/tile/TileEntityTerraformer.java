@@ -508,7 +508,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     	}
     	if (slotID == 1)
     	{
-    		return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+    		return ItemElectricBase.isElectricItemEmpty(itemstack);
     	}
     	
     	return false;
