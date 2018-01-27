@@ -6,8 +6,6 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
-import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.IBoss;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -16,9 +14,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTreasureChestMars;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -42,6 +38,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -406,33 +403,59 @@ public class EntityCreeperBoss extends EntityMob implements IEntityBreathable, I
 
     public ItemStack getGuaranteedLoot(Random rand)
     {
-        List<ItemStack> stackList = GalacticraftRegistry.getDungeonLoot(2);
-        int range = 2;
-        //If player seems to have Tier 3 rocket already then add Astro Miner to the loot
+        List<ItemStack> stackList = new LinkedList<ItemStack>();
+        stackList.addAll(GalacticraftRegistry.getDungeonLoot(2));
+        boolean hasT3Rocket = false;
+        boolean hasAstroMiner = false;
+        // Check if player seems to have Tier 3 rocket or Astro Miner already - in that case we don't want more
+        // (we don't really want him giving powerful schematics to his friends who are still on Overworld) 
         final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
         if (player != null)
         {
-	        GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
-	        if (stats != null)
-	        {
-		        for (ISchematicPage page : stats.unlockedSchematics)
-		        {
-		        	if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
-		        	{
-		        		range = 3;
-		        		break;
-		        	}
-		        }
-		        if (stats.rocketItem == AsteroidsItems.tier3Rocket)
-		        	range = 3;
-	        }
-	        if (range == 2)
-	        {
-	        	SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
-	        	if (race != null && race.getCelestialBodyStatusList().containsKey(AsteroidsModule.planetAsteroids))
-	        		range = 3;        	
-	        }
+            GCPlayerStats stats = GCPlayerStats.get((EntityPlayerMP) player);
+            if (stats != null)
+            {
+                for (ISchematicPage page : stats.unlockedSchematics)
+                {
+                    if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3)
+                    {
+                        hasT3Rocket = true;
+                    }
+                    else if (page.getPageID() == ConfigManagerAsteroids.idSchematicRocketT3 + 1)
+                    {
+                        hasAstroMiner = true;
+                    }
+                }
+            }
         }
+        // The following code assumes the list start is hard coded to: Cargo Rocket, T3 Rocket, Astro Miner in that order
+        // (see MarsModule.init())
+        //
+        // Remove schematics which he already has
+        if (hasT3Rocket && hasAstroMiner)
+        {
+            // (but do not remove both, otherwise the list is too short)
+            if (stackList.size() == 3)
+            {
+                stackList.remove(1 + rand.nextInt(2));
+            }
+            else
+            {
+                stackList.remove(2);
+                stackList.remove(1);
+            }
+        }
+        else if (hasT3Rocket)
+        {
+            stackList.remove(1);
+        }
+        else if (hasAstroMiner)
+        {
+            stackList.remove(2);
+        }
+        // If he does not yet have the T3 rocket, limit the list size to 2 so 50% chance of getting it
+        // otherwise return the full list (note: addons could have added more schematics to the list)
+        int range = (!hasT3Rocket) ? 2 : stackList.size();
         return stackList.get(rand.nextInt(range)).copy();
     }
 
