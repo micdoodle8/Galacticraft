@@ -284,12 +284,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                     else
                         this.setDead();
                 }
+            }
 
-                if (this.timeSinceLaunch > 50 && this.onGround)
-                {
-                    this.failRocket();
-                }
-	        }
+            if (this.timeSinceLaunch > 50 && this.onGround)
+            {
+                this.failRocket();
+            }
         }
         
         if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal())

@@ -374,16 +374,13 @@ public class GCPlayerHandler
 
         if (stats.getParachuteInSlot() != stats.getLastParachuteInSlot() || forceSend)
         {
-            if (stats.getParachuteInSlot().isEmpty())
+            if (stats.isUsingParachute())
             {
-                if (stats.isUsingParachute())
+                if (stats.getParachuteInSlot().isEmpty())
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.REMOVE, EnumExtendedInventorySlot.PARACHUTE);
                 }
-            }
-            else if (stats.getLastParachuteInSlot().isEmpty() || forceSend)
-            {
-                if (stats.isUsingParachute())
+                else if (forceSend || stats.getLastParachuteInSlot().isEmpty() || stats.getParachuteInSlot().getItemDamage() != stats.getLastParachuteInSlot().getItemDamage())
                 {
                     int gearID = GalacticraftRegistry.findMatchingGearID(stats.getParachuteInSlot(), EnumExtendedInventorySlot.PARACHUTE);
 
@@ -391,15 +388,6 @@ public class GCPlayerHandler
                     {
                         GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.PARACHUTE, stats.getParachuteInSlot().getItemDamage());
                     }
-                }
-            }
-            else if (stats.getParachuteInSlot().getItemDamage() != stats.getLastParachuteInSlot().getItemDamage())
-            {
-                int gearID = GalacticraftRegistry.findMatchingGearID(stats.getParachuteInSlot(), EnumExtendedInventorySlot.PARACHUTE);
-
-                if (gearID >= 0)
-                {
-                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.PARACHUTE, stats.getParachuteInSlot().getItemDamage());
                 }
             }
 
