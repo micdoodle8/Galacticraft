@@ -333,23 +333,20 @@ public class GCPlayerHandler
 
         if (GCPlayer.parachuteInSlot != GCPlayer.lastParachuteInSlot || forceSend)
         {
-            if (GCPlayer.parachuteInSlot == null)
+            if (GCPlayer.usingParachute)
             {
-                if (GCPlayer.usingParachute)
+                if (GCPlayer.parachuteInSlot == null)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.REMOVE_PARACHUTE);
                 }
-            }
-            else if (GCPlayer.lastParachuteInSlot == null || forceSend)
-            {
-                if (GCPlayer.usingParachute)
+                else if (GCPlayer.lastParachuteInSlot == null || forceSend)
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
                 }
-            }
-            else if (GCPlayer.parachuteInSlot.getItemDamage() != GCPlayer.lastParachuteInSlot.getItemDamage())
-            {
-                GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                else if (GCPlayer.parachuteInSlot.getItemDamage() != GCPlayer.lastParachuteInSlot.getItemDamage())
+                {
+                    GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADD_PARACHUTE, GCPlayer.parachuteInSlot.getItemDamage());
+                }
             }
 
             GCPlayer.lastParachuteInSlot = GCPlayer.parachuteInSlot;
