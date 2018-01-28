@@ -518,7 +518,7 @@ public class ConfigManagerCore
             otherModsSilicon = prop.getString();
             propOrder.add(prop.getName());
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Force the use of Galacticraft's own Meteoric Iron, Desh, Titanium etc in recipes (not their OreDict equivalents)", true);
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Must use GC's own space metals in recipes", true);
             prop.comment = "Should normally be true. If you set this to false, in a modpack with other mods with the same metals, players may be able to craft advanced GC items without travelling to Moon, Mars, Asteroids etc.";
             prop.setLanguageKey("gc.configgui.disableOreDictSpaceMetals").setRequiresMcRestart(true);
             recipesRequireGCAdvancedMetals = prop.getBoolean(true);

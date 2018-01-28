@@ -16,7 +16,7 @@ public class ConfigGuiFactoryCore implements IModGuiFactory
     {
         public CoreConfigGUI(GuiScreen parent)
         {
-            super(parent, ConfigManagerCore.getConfigElements(), Constants.MOD_ID_PLANETS, false, false, GCCoreUtil.translate("gc.configgui.title"));
+            super(parent, ConfigManagerCore.getConfigElements(), Constants.MOD_ID_CORE, false, false, GCCoreUtil.translate("gc.configgui.title"));
         }
     }
 

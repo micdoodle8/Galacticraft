@@ -132,31 +132,14 @@ public class GalacticraftPlanets
     public static List<IConfigElement> getConfigElements()
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules.values())
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
-        }
+        
+        //Get the last planet to be configured only, as all will reference and re-use the same planets.conf config file
+        IPlanetsModule module = GalacticraftPlanets.commonModules.get(GalacticraftPlanets.commonModules.size() - 1);
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
 
         return list;
     }
