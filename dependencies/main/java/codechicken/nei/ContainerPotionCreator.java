@@ -5,8 +5,11 @@ import codechicken.core.inventory.SlotHandleClicks;
 import codechicken.lib.inventory.InventoryNBT;
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.packet.PacketCustom;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryBasic;
 import net.minecraft.inventory.Slot;
@@ -14,6 +17,7 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 
 public class ContainerPotionCreator extends ContainerExtended {
@@ -48,9 +52,9 @@ public class ContainerPotionCreator extends ContainerExtended {
         }
 
         @Override
-        public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, int modifier) {
+        public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, ClickType clickType) {
             ItemStack held = player.inventory.getItemStack();
-            if (button == 0 && modifier == 1) {
+            if (button == 0 && clickType == ClickType.QUICK_MOVE) {
                 NEIClientUtils.cheatItem(getStack(), button, -1);
             } else if (button == 1) {
                 putStack(null);
@@ -132,36 +136,36 @@ public class ContainerPotionCreator extends ContainerExtended {
         }
 
         boolean add = packet.readBoolean();
-        int effectID = packet.readUByte();
+        Potion effect = Potion.getPotionById(packet.readUByte());
 
         NBTTagList effects = potion.getTagCompound().getTagList("CustomPotionEffects", 10);
         NBTTagList newEffects = new NBTTagList();
         for (int i = 0; i < effects.tagCount(); i++) {
             NBTTagCompound tag = effects.getCompoundTagAt(i);
             PotionEffect e = PotionEffect.readCustomPotionEffectFromNBT(tag);
-            if (e.getPotionID() != effectID) {
+            if (e.getPotion() != effect) {
                 newEffects.appendTag(tag);
             }
         }
         if (add) {
-            newEffects.appendTag(new PotionEffect(effectID, packet.readInt(), packet.readUByte()).writeCustomPotionEffectToNBT(new NBTTagCompound()));
+            newEffects.appendTag(new PotionEffect(effect, packet.readInt(), packet.readUByte()).writeCustomPotionEffectToNBT(new NBTTagCompound()));
         }
         potion.getTagCompound().setTag("CustomPotionEffects", newEffects);
     }
 
-    public void setPotionEffect(int effectID, int duration, int amplifier) {
-        PacketCustom packet = NEICPH.createContainerPacket();
+    public void setPotionEffect(Potion potion, int duration, int amplifier) {
+        PacketCustom packet = NEIClientPacketHandler.createContainerPacket();
         packet.writeBoolean(true);
-        packet.writeByte(effectID);
+        packet.writeByte(Potion.getIdFromPotion(potion));
         packet.writeInt(duration);
         packet.writeByte(amplifier);
         packet.sendToServer();
     }
 
-    public void removePotionEffect(int effectID) {
-        PacketCustom packet = NEICPH.createContainerPacket();
+    public void removePotionEffect(Potion potion) {
+        PacketCustom packet = NEIClientPacketHandler.createContainerPacket();
         packet.writeBoolean(false);
-        packet.writeByte(effectID);
+        packet.writeByte(Potion.getIdFromPotion(potion));
         packet.sendToServer();
     }
 }

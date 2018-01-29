@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 /*
  * IInventory providing defaults for the eight methods
@@ -62,7 +62,7 @@ public interface IInventoryDefaults extends IInventory
     }
 
     @Override
-    public default IChatComponent getDisplayName()
+    public default ITextComponent getDisplayName()
     {
         return null;
     }

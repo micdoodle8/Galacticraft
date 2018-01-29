@@ -34,6 +34,6 @@ public class RenderSmallAsteroid extends Render<EntitySmallAsteroid>
     @Override
     protected ResourceLocation getEntityTexture(EntitySmallAsteroid entity)
     {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
 }

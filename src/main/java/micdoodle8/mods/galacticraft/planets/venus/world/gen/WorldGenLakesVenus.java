@@ -3,11 +3,12 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
 import java.util.Random;
@@ -75,14 +76,15 @@ public class WorldGenLakesVenus extends WorldGenerator
 
                         if (flag)
                         {
-                            Material material = worldIn.getBlockState(position.add(k1, k, l2)).getBlock().getMaterial();
+                            IBlockState state = worldIn.getBlockState(position.add(k1, k, l2));
+                            Material material = state.getMaterial();
 
                             if (k >= 4 && material.isLiquid())
                             {
                                 return false;
                             }
 
-                            if (k < 4 && !material.isSolid() && worldIn.getBlockState(position.add(k1, k, l2)).getBlock() != Blocks.lava)
+                            if (k < 4 && !material.isSolid() && worldIn.getBlockState(position.add(k1, k, l2)).getBlock() != Blocks.LAVA)
                             {
                                 return false;
                             }
@@ -99,7 +101,7 @@ public class WorldGenLakesVenus extends WorldGenerator
                     {
                         if (aboolean[(l1 * 16 + i3) * 8 + i4])
                         {
-                            worldIn.setBlockState(position.add(l1, i4, i3), i4 >= 4 ? Blocks.air.getDefaultState() : Blocks.lava.getDefaultState(), 2);
+                            worldIn.setBlockState(position.add(l1, i4, i3), i4 >= 4 ? Blocks.AIR.getDefaultState() : Blocks.LAVA.getDefaultState(), 2);
                         }
                     }
                 }
@@ -115,17 +117,17 @@ public class WorldGenLakesVenus extends WorldGenerator
                         {
                             BlockPos blockpos = position.add(i2, j4 - 1, j3);
 
-                            if (worldIn.getBlockState(blockpos).getBlock() == Blocks.dirt && worldIn.getLightFor(EnumSkyBlock.SKY, position.add(i2, j4, j3)) > 0)
+                            if (worldIn.getBlockState(blockpos).getBlock() == Blocks.DIRT && worldIn.getLightFor(EnumSkyBlock.SKY, position.add(i2, j4, j3)) > 0)
                             {
-                                BiomeGenBase biomegenbase = worldIn.getBiomeGenForCoords(blockpos);
+                                Biome biomegenbase = worldIn.getBiome(blockpos);
 
-                                if (biomegenbase.topBlock.getBlock() == Blocks.mycelium)
+                                if (biomegenbase.topBlock.getBlock() == Blocks.MYCELIUM)
                                 {
-                                    worldIn.setBlockState(blockpos, Blocks.mycelium.getDefaultState(), 2);
+                                    worldIn.setBlockState(blockpos, Blocks.MYCELIUM.getDefaultState(), 2);
                                 }
                                 else
                                 {
-                                    worldIn.setBlockState(blockpos, Blocks.grass.getDefaultState(), 2);
+                                    worldIn.setBlockState(blockpos, Blocks.GRASS.getDefaultState(), 2);
                                 }
                             }
                         }
@@ -141,7 +143,8 @@ public class WorldGenLakesVenus extends WorldGenerator
                     {
                         boolean flag1 = !aboolean[(j2 * 16 + k3) * 8 + k4] && (j2 < 15 && aboolean[((j2 + 1) * 16 + k3) * 8 + k4] || j2 > 0 && aboolean[((j2 - 1) * 16 + k3) * 8 + k4] || k3 < 15 && aboolean[(j2 * 16 + k3 + 1) * 8 + k4] || k3 > 0 && aboolean[(j2 * 16 + (k3 - 1)) * 8 + k4] || k4 < 7 && aboolean[(j2 * 16 + k3) * 8 + k4 + 1] || k4 > 0 && aboolean[(j2 * 16 + k3) * 8 + (k4 - 1)]);
 
-                        if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && worldIn.getBlockState(position.add(j2, k4, k3)).getBlock().getMaterial().isSolid())
+                        IBlockState state = worldIn.getBlockState(position.add(j2, k4, k3));
+                        if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && state.getMaterial().isSolid())
                         {
                             worldIn.setBlockState(position.add(j2, k4, k3), VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA), 2);
                         }

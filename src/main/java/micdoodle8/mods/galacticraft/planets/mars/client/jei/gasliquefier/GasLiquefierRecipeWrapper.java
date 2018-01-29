@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
@@ -33,5 +34,11 @@ public class GasLiquefierRecipeWrapper extends BlankRecipeWrapper implements ICr
     public List<ItemStack> getOutputs()
     {
         return Collections.singletonList(this.output);
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients)
+    {
+
     }
 }

@@ -25,9 +25,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -99,11 +99,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 {
                     if (linkedEntity instanceof EntityPlayerMP)
                     {
-                        name = "$" + ((EntityPlayerMP) linkedEntity).getName();
+                        name = "$" + linkedEntity.getName();
                     }
                     else
                     {
-                        name = (String) EntityList.classToStringMapping.get(linkedEntity.getClass());
+                        name = EntityList.CLASS_TO_NAME.get(linkedEntity.getClass());
                     }
 
                     if (name == null)
@@ -133,7 +133,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                             this.pulseRate += 100;
                         }
                         this.lastHurttime = eLiving.hurtTime;
-                        if (eLiving.ridingEntity != null)
+                        if (eLiving.getRidingEntity() != null)
                         {
                             data[2] /= 4;  //reduced pulse effect if riding a vehicle
                         }
@@ -166,7 +166,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntityHorse)
                         {
-                            data[3] = ((EntityHorse) eLiving).getHorseType();
+                            data[3] = ((EntityHorse) eLiving).getType().ordinal();
                             data[4] = ((EntityHorse) eLiving).getHorseVariant();
                         }
                         else if (eLiving instanceof EntityVillager)
@@ -190,11 +190,11 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         }
                         else if (eLiving instanceof EntitySkeleton)
                         {
-                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType();
+                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType().ordinal();
                         }
                         else if (eLiving instanceof EntityZombie)
                         {
-                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0;
+//                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0; TODO Fix for MC 1.10
                             data[4] = ((EntityZombie) eLiving).isChild() ? 1 : 0;
                         }
                     }
@@ -204,7 +204,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.worldObj.provider.getDimension(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.worldObj.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
     
@@ -222,7 +222,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         }
         else
         {
-            this.clientClass = EntityList.stringToClassMapping.get(name);
+            this.clientClass = EntityList.NAME_TO_CLASS.get(name);
         }
         this.clientData = new int[5];
         for (int i = 2; i < 7; i++)
@@ -240,8 +240,10 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         this.toUpdate = new UUID(msb, lsb);
     }
 
+
+
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         if (this.linkedEntity != null && !this.linkedEntity.isDead)
@@ -249,6 +251,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
             nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
         }
+        return nbt;
     }
 
     public void addTrackedEntity(UUID uuid)

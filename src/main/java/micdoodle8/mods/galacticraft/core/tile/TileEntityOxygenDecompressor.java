@@ -58,11 +58,11 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
 
-        final NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        final NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -78,9 +78,9 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         final NBTTagList list = new NBTTagList();
 
@@ -95,7 +95,8 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
             }
         }
 
-        par1NBTTagCompound.setTag("Items", list);
+        nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

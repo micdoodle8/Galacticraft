@@ -23,6 +23,12 @@ public class CargoRocketRecipeHandler implements IRecipeHandler<CargoRocketRecip
         return RecipeCategories.ROCKET_CARGO_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(CargoRocketRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull CargoRocketRecipeWrapper recipe)

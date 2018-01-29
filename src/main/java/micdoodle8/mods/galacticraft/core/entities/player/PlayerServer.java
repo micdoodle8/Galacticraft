@@ -15,14 +15,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 public class PlayerServer implements IPlayerServer
 {
-    boolean updatingRidden = false;
+    private boolean updatingRidden = false;
 
     @Override
     public void clonePlayer(EntityPlayerMP player, EntityPlayer oldPlayer, boolean keepInv)
@@ -49,37 +49,46 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public boolean mountEntity(EntityPlayerMP player, Entity par1Entity)
+    public boolean dismountEntity(EntityPlayerMP player, Entity par1Entity)
     {
-        if (updatingRidden && player.ridingEntity instanceof IIgnoreShift && ((IIgnoreShift) player.ridingEntity).shouldIgnoreShiftExit())
-        {
-            return true;
-        }
+        return updatingRidden && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit();
 
-        return false;
     }
 
     @Override
     public void moveEntity(EntityPlayerMP player, double par1, double par3, double par5)
     {
         // If the player is on the moon, not airbourne and not riding anything
-        if (player.worldObj.provider instanceof WorldProviderMoon && !player.worldObj.isRemote && player.ridingEntity == null)
+        if (player.worldObj.provider instanceof WorldProviderMoon && !player.worldObj.isRemote && player.getRidingEntity() == null)
         {
             GCPlayerHandler.updateFeet(player, par1, par5);
         }
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3)
+    public boolean wakeUpPlayer(EntityPlayerMP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        return this.wakeUpPlayer(player, par1, par2, par3, false);
+        BlockPos c = player.bedLocation;
+
+        if (c != null)
+        {
+            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, false);
+            MinecraftForge.EVENT_BUS.post(event);
+
+            if (event.result == null || event.result == EntityPlayer.SleepResult.OK)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
     public float attackEntityFrom(EntityPlayerMP player, DamageSource par1DamageSource, float par2)
     {
         //No damage while in Celestial Selection screen
-        if (player.ridingEntity instanceof EntityCelestialFake)
+        if (player.getRidingEntity() instanceof EntityCelestialFake)
         {
             return -1;
         }
@@ -105,9 +114,8 @@ public class PlayerServer implements IPlayerServer
                 int titaniumCount = 0;
                 if (player.inventory != null)
                 {
-                    for (int i = 0; i < 4; i++)
+                    for (ItemStack armorPiece : player.getArmorInventoryList())
                     {
-                        ItemStack armorPiece = player.getCurrentArmor(i);
                         if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
                         {
                             titaniumCount++;
@@ -133,15 +141,17 @@ public class PlayerServer implements IPlayerServer
         {
             for (int i = 0; i < 4; i++)
             {
-                ItemStack armorPiece = player.getCurrentArmor(i);
-                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+                for (ItemStack armorPiece : player.getArmorInventoryList())
                 {
-                    deshCount++;
+                    if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+                    {
+                        deshCount++;
+                    }
                 }
             }
         }
 
-        if (player.getRNG().nextDouble() >= player.getEntityAttribute(SharedMonsterAttributes.knockbackResistance).getAttributeValue())
+        if (player.getRNG().nextDouble() >= player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue())
         {
             player.isAirBorne = deshCount < 2;
             float f1 = MathHelper.sqrt_double(impulseX * impulseX + impulseZ * impulseZ);
@@ -159,23 +169,5 @@ public class PlayerServer implements IPlayerServer
                 player.motionY = 0.4D;
             }
         }
-    }
-
-    public boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3, boolean bypass)
-    {
-        BlockPos c = player.playerLocation;
-
-        if (c != null)
-        {
-            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
-            MinecraftForge.EVENT_BUS.post(event);
-
-            if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 }

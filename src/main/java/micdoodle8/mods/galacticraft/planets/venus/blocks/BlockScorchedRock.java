@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +19,7 @@ public class BlockScorchedRock extends Block implements ISortableBlock
 {
     public BlockScorchedRock(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 0.9F;
         this.blockResistance = 2.5F;
         this.setTickRandomly(true);
@@ -40,7 +40,7 @@ public class BlockScorchedRock extends Block implements ISortableBlock
     }
 
     @Override
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + rand.nextDouble(), pos.getY() + 1.0, pos.getZ() + rand.nextDouble(), 0.0, 0.0, 0.0);
     }

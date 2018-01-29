@@ -16,8 +16,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,7 +51,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
 
         if (!this.worldObj.isRemote)
         {
-            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.fromBounds(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
+            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 0.5D, this.getPos().getY(), this.getPos().getZ() - 0.5D, this.getPos().getX() + 0.5D, this.getPos().getY() + 1.0D, this.getPos().getZ() + 0.5D));
 
             boolean docked = false;
 
@@ -205,7 +205,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     }
     
     private void testConnectedTile(int x, int z, HashSet<ILandingPadAttachable> connectedTiles)
-    {
+                    {
         BlockPos testPos = new BlockPos(x, this.getPos().getY(), z);
         if (!this.worldObj.isBlockLoaded(testPos, false))
             return;
@@ -213,14 +213,14 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
         final TileEntity tile = this.worldObj.getTileEntity(testPos);
 
         if (tile instanceof ILandingPadAttachable && ((ILandingPadAttachable) tile).canAttachToLandingPad(this.worldObj, this.getPos()))
-        {
-            connectedTiles.add((ILandingPadAttachable) tile);
-            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
-            {
-                ((TileEntityLaunchController) tile).setAttachedPad(this);
-            }
-        }
-    }
+                        {
+                            connectedTiles.add((ILandingPadAttachable) tile);
+                            if (GalacticraftCore.isPlanetsLoaded && tile instanceof TileEntityLaunchController)
+                            {
+                                ((TileEntityLaunchController) tile).setAttachedPad(this);
+                            }
+                        }
+                    }
 
     @Override
     public EnumCargoLoadingState addCargo(ItemStack stack, boolean doAdd)
@@ -248,7 +248,7 @@ public class TileEntityLandingPad extends TileEntityMulti implements IMultiBlock
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 0.4D, getPos().getZ() + 2);
+        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 0.4D, getPos().getZ() + 2);
     }
 
     @Override

@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-
 import java.util.Random;
 
 /**
@@ -28,7 +26,7 @@ public abstract class MapGenBaseMeta
      */
     protected World worldObj;
 
-    public void generate(IChunkProvider par1IChunkProvider, World world, int chunkX, int chunkZ, ChunkPrimer primer)
+    public void generate(World world, int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.worldObj = world;
         this.rand.setSeed(world.getSeed());

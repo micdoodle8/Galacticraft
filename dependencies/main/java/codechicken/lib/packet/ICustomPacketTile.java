@@ -1,5 +1,12 @@
 package codechicken.lib.packet;
 
+import codechicken.lib.data.MCDataInput;
+import codechicken.lib.data.MCDataOutput;
+
 public interface ICustomPacketTile {
-    public void handleDescriptionPacket(PacketCustom packet);
+
+    void writeToPacket(MCDataOutput packet);
+
+    void readFromPacket(MCDataInput packet);
+
 }

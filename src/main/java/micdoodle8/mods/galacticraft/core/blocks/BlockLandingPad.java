@@ -9,17 +9,20 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,6 +32,7 @@ import java.util.List;
 public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
     public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
+    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.1875, 1.0);
 
     public enum EnumLandingPadType implements IStringSerializable
     {
@@ -63,12 +67,17 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
 
     public BlockLandingPad(String assetName)
     {
-        super(Material.iron);
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 3 / 16.0F, 1.0F);
+        super(Material.IRON);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return AABB;
     }
 
     @Override
@@ -125,13 +134,13 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -191,9 +200,9 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, PAD_TYPE);
+        return new BlockStateContainer(this, PAD_TYPE);
     }
 
     @Override

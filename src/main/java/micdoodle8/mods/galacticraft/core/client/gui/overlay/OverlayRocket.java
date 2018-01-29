@@ -8,7 +8,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -56,7 +56,7 @@ public class OverlayRocket extends Overlay
         float sizeScale = 0.65F;
 
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(var1 + 0, var2 + 242.0F * sizeScale, 0.0).tex((var3 + 0) * var7, (var4 + var6) * var8).endVertex();
         worldRenderer.pos(var1 + 20.0F * sizeScale, var2 + 242.0F * sizeScale, 0.0).tex((var3 + var5) * var7, (var4 + var6) * var8).endVertex();
@@ -66,7 +66,7 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
 
-        Entity rocket = OverlayRocket.minecraft.thePlayer.ridingEntity;
+        Entity rocket = OverlayRocket.minecraft.thePlayer.getRidingEntity();
         float headOffset = 0;
         if (rocket instanceof EntityTier1Rocket)
         {

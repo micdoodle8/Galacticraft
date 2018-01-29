@@ -2,48 +2,36 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeletonBoss;
+import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerHeldItemEvolvedSkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.boss.BossStatus;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeletonBoss extends RenderLiving<EntitySkeletonBoss>
 {
     private static final ResourceLocation skeletonBossTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeletonboss.png");
-//    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
-
-//    private final ModelEvolvedSkeletonBoss model = new ModelEvolvedSkeletonBoss();
 
     public RenderEvolvedSkeletonBoss(RenderManager manager)
     {
-        super(manager, new ModelEvolvedSkeletonBoss(), 1.0F);
+        super(manager, new ModelEvolvedSkeletonBoss(), 0.9F);
+        this.addLayer(new LayerHeldItemEvolvedSkeletonBoss(this));
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntitySkeletonBoss par1Entity)
+    protected ResourceLocation getEntityTexture(EntitySkeletonBoss entity)
     {
         return RenderEvolvedSkeletonBoss.skeletonBossTexture;
     }
 
     @Override
-    protected void preRenderCallback(EntitySkeletonBoss par1EntityLiving, float par2)
+    protected void preRenderCallback(EntitySkeletonBoss entity, float partialTicks)
     {
-        GL11.glScalef(1.2F, 1.2F, 1.2F);
-        GL11.glRotatef((float) (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F + (Math.pow(par1EntityLiving.deathTicks, 2) / 5.0F - Math.pow(par1EntityLiving.deathTicks - 1, 2) / 5.0F) * par2), 0.0F, 1.0F, 0.0F);
-    }
-
-    @Override
-    public void doRender(EntitySkeletonBoss par1EntityLiving, double par2, double par4, double par6, float par8, float par9)
-    {
-        BossStatus.setBossStatus((IBossDisplayData) par1EntityLiving, false);
-
-        super.doRender(par1EntityLiving, par2, par4, par6, par8, par9);
+        GlStateManager.scale(1.2F, 1.2F, 1.2F);
+        GlStateManager.rotate((float) (Math.pow(entity.deathTicks, 2) / 5.0F + (Math.pow(entity.deathTicks, 2) / 5.0F - Math.pow(entity.deathTicks - 1, 2) / 5.0F) * partialTicks), 0.0F, 1.0F, 0.0F);
     }
 }

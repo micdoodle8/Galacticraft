@@ -20,7 +20,7 @@ public class ItemBucketGC extends ItemBucket implements ISortableItem
     {
         super(block);
 //		this.texture_prefix = texture_prefix;
-        this.setContainerItem(Items.bucket);
+        this.setContainerItem(Items.BUCKET);
     }
 
     @Override

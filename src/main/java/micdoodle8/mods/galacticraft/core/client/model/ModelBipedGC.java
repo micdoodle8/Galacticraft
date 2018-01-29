@@ -16,8 +16,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
@@ -35,12 +36,12 @@ public class ModelBipedGC extends ModelBiped
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
         final float floatPI = 3.1415927F;
 
-        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.ridingEntity == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
+        if (!par7Entity.onGround && par7Entity.worldObj.provider instanceof IGalacticraftWorldProvider && par7Entity.getRidingEntity() == null && !(currentItemStack != null && currentItemStack.getItem() instanceof IHoldableItem))
         {
             float speedModifier = 0.1162F * 2;
 
             float angularSwingArm = MathHelper.cos(par1 * (speedModifier / 2));
-            float rightMod = biped.heldItemRight != 0 ? 1 : 2;
+            float rightMod = biped.rightArmPose == ArmPose.ITEM ? 1 : 2;
             biped.bipedRightArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F + floatPI) * rightMod * par2 * 0.5F;
             biped.bipedLeftArm.rotateAngleX -= MathHelper.cos(par1 * 0.6662F) * 2.0F * par2 * 0.5F;
             biped.bipedRightArm.rotateAngleX += -angularSwingArm * 4.0F * par2 * 0.5F;
@@ -65,9 +66,20 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        if (player.inventory.getCurrentItem() != null && player.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(player.ridingEntity instanceof ICameraZoomEntity))
+        ItemStack heldItemStack = null;
+
+        for (EnumHand hand : EnumHand.values())
         {
-            Item heldItem = player.inventory.getCurrentItem().getItem();
+            ItemStack item = player.getHeldItem(hand);
+            if (item != null && item.getItem() instanceof IHoldableItem)
+            {
+                heldItemStack = item;
+            }
+        }
+
+        if (heldItemStack != null && !(player.getRidingEntity() instanceof ICameraZoomEntity))
+        {
+            Item heldItem = heldItemStack.getItem();
             IHoldableItem holdableItem = (IHoldableItem) heldItem;
             IHoldableItemCustom holdableItemCustom = heldItem instanceof IHoldableItemCustom ? (IHoldableItemCustom) heldItem : null;
 
@@ -121,7 +133,7 @@ public class ModelBipedGC extends ModelBiped
             }
         }
 
-        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, AxisAlignedBB.fromBounds(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
+        final List<?> l = player.worldObj.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
 
         for (int i = 0; i < l.size(); i++)
         {
@@ -131,7 +143,7 @@ public class ModelBipedGC extends ModelBiped
             {
                 final EntityTieredRocket ship = (EntityTieredRocket) e;
 
-                if (ship.riddenByEntity != null && !(ship.riddenByEntity).equals(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
+                if (!ship.getPassengers().isEmpty() && !ship.getPassengers().contains(player) && (ship.getLaunched() || ship.timeUntilLaunch < 390))
                 {
                     biped.bipedRightArm.rotateAngleZ -= floatPI / 8F + MathHelper.sin(par3 * 0.9F) * 0.2F;
                     biped.bipedRightArm.rotateAngleX = floatPI;

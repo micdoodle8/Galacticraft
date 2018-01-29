@@ -1,6 +1,7 @@
 package codechicken.nei;
 
 import codechicken.nei.api.IStackPositioner;
+import codechicken.nei.api.stack.PositionedStack;
 
 import java.util.ArrayList;
 

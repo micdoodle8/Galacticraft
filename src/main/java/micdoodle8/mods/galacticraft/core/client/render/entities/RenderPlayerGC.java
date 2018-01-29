@@ -90,8 +90,8 @@ public class RenderPlayerGC extends RenderPlayer
                 @Override
                 protected void initArmor()
                 {
-                    this.field_177189_c = new ModelBipedGC(0.5F);
-                    this.field_177186_d = new ModelBipedGC(1.0F);
+                    this.modelLeggings = new ModelBipedGC(0.5F);
+                    this.modelArmor = new ModelBipedGC(1.0F);
                 }
             };
             this.layerRenderers.set(armorLayerIndex, playerArmor);
@@ -186,18 +186,18 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 float rotation = 0.0F;
 
-                if (abstractClientPlayer.playerLocation != null)
+                if (abstractClientPlayer.bedLocation != null)
                 {
-                    IBlockState bed = abstractClientPlayer.worldObj.getBlockState(abstractClientPlayer.playerLocation);
+                    IBlockState bed = abstractClientPlayer.worldObj.getBlockState(abstractClientPlayer.bedLocation);
 
-                    if (bed.getBlock().isBed(abstractClientPlayer.worldObj, abstractClientPlayer.playerLocation, abstractClientPlayer))
+                    if (bed.getBlock().isBed(bed, abstractClientPlayer.worldObj, abstractClientPlayer.bedLocation, abstractClientPlayer))
                     {
                         if (bed.getBlock() == GCBlocks.fakeBlock && bed.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
                         {
-                            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(abstractClientPlayer.playerLocation);
+                            TileEntity tile = event.getEntityPlayer().worldObj.getTileEntity(abstractClientPlayer.bedLocation);
                             if (tile instanceof TileEntityMulti)
                             {
-                                bed = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                                bed = event.getEntityPlayer().worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
                             }
                         }
 
@@ -231,9 +231,9 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 final EntityPlayer player = (EntityPlayer) abstractClientPlayer;
 
-                if (player.ridingEntity instanceof ICameraZoomEntity)
+                if (player.getRidingEntity() instanceof ICameraZoomEntity)
                 {
-                    Entity rocket = player.ridingEntity;
+                    Entity rocket = player.getRidingEntity();
                     float rotateOffset = ((ICameraZoomEntity)rocket).getRotateOffset();
                     if (rotateOffset > -10F)
                     {

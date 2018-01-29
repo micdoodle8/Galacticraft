@@ -1,6 +1,6 @@
 package codechicken.nei.recipe;
 
-import codechicken.core.TaskProfiler;
+import codechicken.lib.thread.TaskProfiler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 

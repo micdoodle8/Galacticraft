@@ -14,7 +14,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 
 public class CommandPlanetTeleport extends CommandBase
@@ -38,7 +38,7 @@ public class CommandPlanetTeleport extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
@@ -57,7 +57,6 @@ public class CommandPlanetTeleport extends CommandBase
 
                 if (playerBase != null)
                 {
-                    MinecraftServer server = MinecraftServer.getServer();
                     WorldServer worldserver = server.worldServerForDimension(GCCoreUtil.getDimensionID(server.worldServers[0]));
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
@@ -78,7 +77,7 @@ public class CommandPlanetTeleport extends CommandBase
                         throw e;
                     }
 
-                    CommandBase.notifyOperators(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
+                    CommandBase.notifyCommandListener(sender, this, "commands.dimensionteleport", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {

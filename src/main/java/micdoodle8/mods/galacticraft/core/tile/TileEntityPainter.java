@@ -26,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,9 +62,9 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
 
         Item item = itemStack.getItem();
         int color = -1;
-        if (item == Items.dye)
+        if (item == Items.DYE)
         {
-            color = ItemDye.dyeColors[itemStack.getItemDamage()];
+            color = ItemDye.DYE_COLORS[itemStack.getItemDamage()];
         }
         else if (item instanceof ItemBlock)
         {
@@ -169,7 +169,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("G1", this.glassColor[0]);
@@ -190,6 +190,13 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             }
         }
         nbt.setTag("Items", tagList);
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     private static Set<BlockVec3> getLoadedTiles(World world)
@@ -239,7 +246,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     {
         Set<BlockVec3> loaded = getLoadedTiles(world);
         int dimID = GCCoreUtil.getDimensionID(world);
-        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList;
+        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
         for (final EntityPlayerMP player : allPlayers)
         {
             if (player.dimension != dimID) continue;
@@ -451,17 +458,17 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             ItemStack ic2paintbrush = IC2Items.getItem("painter");
             if (ic2paintbrush != null && item == ic2paintbrush.getItem())
             {
-                return ItemDye.dyeColors[itemStack.getItemDamage()];
+                return ItemDye.DYE_COLORS[itemStack.getItemDamage()];
             }
         }
 
         if (CompatibilityManager.isBOPLoaded())
         {
-            if (item == BOPItems.black_dye) return ItemDye.dyeColors[EnumDyeColor.BLACK.getDyeDamage()];
-            if (item == BOPItems.blue_dye) return ItemDye.dyeColors[EnumDyeColor.BLUE.getDyeDamage()];
-            if (item == BOPItems.brown_dye) return ItemDye.dyeColors[EnumDyeColor.BROWN.getDyeDamage()];
-            if (item == BOPItems.green_dye) return ItemDye.dyeColors[EnumDyeColor.GREEN.getDyeDamage()];
-            if (item == BOPItems.white_dye) return ItemDye.dyeColors[EnumDyeColor.WHITE.getDyeDamage()];
+            if (item == BOPItems.black_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BLACK.getDyeDamage()];
+            if (item == BOPItems.blue_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BLUE.getDyeDamage()];
+            if (item == BOPItems.brown_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BROWN.getDyeDamage()];
+            if (item == BOPItems.green_dye) return ItemDye.DYE_COLORS[EnumDyeColor.GREEN.getDyeDamage()];
+            if (item == BOPItems.white_dye) return ItemDye.DYE_COLORS[EnumDyeColor.WHITE.getDyeDamage()];
         }
 
         return -1;

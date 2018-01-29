@@ -108,6 +108,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale, float mouseX)
     {
+        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F);
@@ -127,12 +128,9 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         mc.thePlayer.rotationYawHead = mc.thePlayer.rotationYaw;
         mc.thePlayer.rotationPitch = (float) Math.sin(mc.getSystemTime() / 500.0F) * 3.0F;
         GlStateManager.translate(0.0F, (float) mc.thePlayer.getYOffset(), 0.0F);
-        mc.getRenderManager().playerViewY = 180.0F;
-        mc.getRenderManager().renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
-        rendermanager.renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        rendermanager.doRenderEntity(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         rendermanager.setRenderShadow(true);
         mc.thePlayer.renderYawOffset = f2;
         mc.thePlayer.rotationYaw = f3;

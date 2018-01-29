@@ -34,12 +34,11 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
         this.addLayer(new LayerHeldItem(this));
         LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this)
         {
-            private static final String __OBFID = "CL_00002429";
-
-            protected void func_177177_a()
+            @Override
+            protected void initArmor()
             {
-                this.field_177189_c = new ModelZombie(0.5F, true);
-                this.field_177186_d = new ModelZombie(1.0F, true);
+                this.modelLeggings = new ModelZombie(0.5F, true);
+                this.modelArmor = new ModelZombie(1.0F, true);
             }
         };
         this.addLayer(layerbipedarmor);
@@ -64,12 +63,12 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
     @Override
     public void doRender(EntityEvolvedZombie entity, double par2, double par4, double par6, float par8, float par9)
     {
-        texSwitch = false;
         super.doRender(entity, par2, par4, par6, par8, par9);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
         }
     }
 

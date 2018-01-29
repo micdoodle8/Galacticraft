@@ -1,6 +1,7 @@
 package codechicken.lib.colour;
 
 public class ColourRGBA extends Colour {
+
     public ColourRGBA(int colour) {
         super((colour >> 24) & 0xFF, (colour >> 16) & 0xFF, (colour >> 8) & 0xFF, colour & 0xFF);
     }
@@ -13,6 +14,10 @@ public class ColourRGBA extends Colour {
         super(r, g, b, a);
     }
 
+    public ColourRGBA(float[] data) {
+        this(data[0], data[1], data[2], data[3]);
+    }
+
     public ColourRGBA(ColourRGBA colour) {
         super(colour);
     }
@@ -21,9 +26,18 @@ public class ColourRGBA extends Colour {
         return pack(this);
     }
 
+    public float[] packArray() {
+        return new float[] { (r & 0xFF) / 255, (g & 0xFF) / 255, (b & 0xFF) / 255, (a & 0xFF) / 255 };
+    }
+
     @Override
     public Colour copy() {
         return new ColourRGBA(this);
+    }
+
+    @Override
+    public Colour set(int colour) {
+        return set(new ColourRGBA(colour));
     }
 
     public static int pack(Colour colour) {

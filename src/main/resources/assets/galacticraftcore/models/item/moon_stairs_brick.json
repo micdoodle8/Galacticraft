@@ -1,13 +1,3 @@
 {
-    "parent":"galacticraftcore:block/moon_brick_stairs",
-    "display": {
-        "thirdperson": {
-            "rotation": [ 10, 135, 170 ],
-            "translation": [ 0, 1.5, -2.75 ],
-            "scale": [ 0.375, 0.375, 0.375 ]
-        },
-        "gui": {
-            "rotation": [ 0, 180, 0 ]
-        }
-    }
+    "parent":"galacticraftcore:block/moon_brick_stairs"
 }

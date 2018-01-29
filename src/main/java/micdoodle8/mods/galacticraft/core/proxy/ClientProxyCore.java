@@ -20,6 +20,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRedstone;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRepeater;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
+import micdoodle8.mods.galacticraft.core.blocks.BlockFallenMeteor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
@@ -35,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.item.TextureDungeonFinder;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -50,6 +52,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
@@ -60,28 +63,35 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.resources.IReloadableResourceManager;
+import net.minecraft.client.resources.IResourceManager;
+import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -96,6 +106,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Quat4f;
+import javax.vecmath.Vector3f;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -105,7 +118,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.*;
 
-public class ClientProxyCore extends CommonProxyCore
+public class ClientProxyCore extends CommonProxyCore implements IResourceManagerReloadListener
 {
     public static List<String> flagRequestsSent = new ArrayList<>();
     public static Set<BlockVec3> valueableBlocks = Sets.newHashSet();
@@ -121,7 +134,7 @@ public class ClientProxyCore extends CommonProxyCore
 
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
-    public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", EnumChatFormatting.BLUE, "Space");
+    public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
     public static Map<String, ResourceLocation> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
@@ -147,7 +160,7 @@ public class ClientProxyCore extends CommonProxyCore
     {
         ClientProxyCore.registerEntityRenderers();
 
-        OBJLoader.instance.addDomain(Constants.ASSET_PREFIX);
+        OBJLoader.INSTANCE.addDomain(Constants.ASSET_PREFIX);
 
         if (CompatibilityManager.PlayerAPILoaded)
         {
@@ -162,11 +175,22 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                         { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
                 };
-        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(Constants.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new Class[] { SoundEvent.class, Integer.TYPE, Integer.TYPE }, GCSounds.music, 12000, 24000);
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.updateCapeList();
         ClientProxyCore.registerInventoryJsons();
+
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {
+            @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {
+                return BlockFallenMeteor.colorMultiplier(worldIn, pos);
+            }
+        }, new Block[] { GCBlocks.fallenMeteor });
+
+        GCSounds.registerSounds();
     }
 
     @Override
@@ -197,8 +221,26 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+        
+        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
     }
 
+    @Override
+    public void onResourceManagerReload(IResourceManager resourceManager)
+    {
+        String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
+        GCLog.debug("Reloading entity names for language " + lang);
+        if (lang == null)
+        {
+            lang = "en_US";
+        }
+        GalacticraftCore.instance.loadLanguageCore(lang);
+        if (GalacticraftCore.isPlanetsLoaded && !GCCoreUtil.langDisable)
+        {
+            GalacticraftPlanets.instance.loadLanguagePlanets(lang);
+        }
+    }
+    
     @Override
     public void postRegisterItem(Item item)
     {
@@ -353,24 +395,26 @@ public class ClientProxyCore extends CommonProxyCore
     @SubscribeEvent
     public void onTextureStitchedPre(TextureStitchEvent.Pre event)
     {
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/rocket_t1"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_main"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_storage"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/buggy_wheels"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:model/frequency_module"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
-        event.map.registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
-        new TextureDungeonFinder("galacticraftcore:items/dungeonfinder").register(event.map);
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/assembly"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/rocket_t1"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggy_main"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggy_storage"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/buggy_wheels"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/flag0"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:model/frequency_module"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/oxygen_gas"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/fluids/hydrogen_gas"));
+        event.getMap().registerSprite(new ResourceLocation("galacticraftcore:blocks/bubble"));
+        new TextureDungeonFinder("galacticraftcore:items/dungeonfinder").register(event.getMap());
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, TRSRTransformation.identity(), "inventory", "normal");
+        //Specified transformations only take effect on the "inventory" variant, not other variants.
+        Quat4f rot = TRSRTransformation.quatFromXYZDegrees(new Vector3f(30, 225, 0));
+        replaceModelDefault(event, "rocket_workbench", "block/workbench.obj", ImmutableList.of("Cube"), ItemModelWorkbench.class, new TRSRTransformation(new javax.vecmath.Vector3f(0.7F, 0.1F, 0.0F), rot, new javax.vecmath.Vector3f(0.2604F, 0.2604F, 0.2604F), new javax.vecmath.Quat4f()), "inventory", "normal");
         replaceModelDefault(event, "rocket_t1", "rocket_t1.obj", ImmutableList.of("Rocket"), ItemModelRocket.class, TRSRTransformation.identity());
 
         for (int i = 0; i < 4; ++i)
@@ -404,7 +448,7 @@ public class ClientProxyCore extends CommonProxyCore
         {
             defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":basic_block_core", "basictype=deco_block_1");
         }
-        event.modelRegistry.putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
+        event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
 //        {
@@ -418,6 +462,11 @@ public class ClientProxyCore extends CommonProxyCore
 //        }
     }
 
+    /**
+     * Specified parentState transformations only take effect on the "inventory" variant, not other variants
+     * Make sure that identity gives the correct model for other variants!
+     * Used for example by the NASA Workbench: transform the model for inventory but not for normal model
+     */
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
         ClientUtil.replaceModel(Constants.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);

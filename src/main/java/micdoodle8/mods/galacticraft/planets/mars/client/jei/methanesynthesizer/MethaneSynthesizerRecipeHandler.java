@@ -23,6 +23,12 @@ public class MethaneSynthesizerRecipeHandler implements IRecipeHandler<MethaneSy
         return RecipeCategories.METHANE_SYNTHESIZER_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(MethaneSynthesizerRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull MethaneSynthesizerRecipeWrapper recipe)

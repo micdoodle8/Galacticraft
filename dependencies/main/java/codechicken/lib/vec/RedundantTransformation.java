@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RedundantTransformation extends Transformation {
+
     @Override
     public void apply(Vector3 vec) {
     }
@@ -22,7 +23,7 @@ public class RedundantTransformation extends Transformation {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
     }
 

@@ -12,6 +12,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Rotation extends Transformation {
+
     /**
      * Clockwise pi/2 about y looking down
      */
@@ -242,7 +243,7 @@ public class Rotation extends Transformation {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
         GlStateManager.rotate((float) (angle * MathHelper.todeg), (float) axis.x, (float) axis.y, (float) axis.z);
     }
@@ -274,7 +275,6 @@ public class Rotation extends Transformation {
     @Override
     public String toString() {
         MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
-        return "Rotation(" + new BigDecimal(angle, cont) + ", " + new BigDecimal(axis.x, cont) + ", " +
-                new BigDecimal(axis.y, cont) + ", " + new BigDecimal(axis.z, cont) + ")";
+        return "Rotation(" + new BigDecimal(angle, cont) + ", " + new BigDecimal(axis.x, cont) + ", " + new BigDecimal(axis.y, cont) + ", " + new BigDecimal(axis.z, cont) + ")";
     }
 }

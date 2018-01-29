@@ -13,8 +13,11 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
@@ -30,7 +33,7 @@ import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProb
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeGenBaseVenus;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialLiquid;
@@ -40,10 +43,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
@@ -52,7 +56,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
@@ -62,7 +65,7 @@ public class VenusModule implements IPlanetsModule
     public static Planet planetVenus;
     public static Fluid sulphuricAcid;
     public static Fluid sulphuricAcidGC;
-    public static Material acidMaterial = new MaterialLiquid(MapColor.emeraldColor);
+    public static Material acidMaterial = new MaterialLiquid(MapColor.EMERALD);
 
     @Override
     public void preInit(FMLPreInitializationEvent event)
@@ -99,7 +102,7 @@ public class VenusModule implements IPlanetsModule
         {
             VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
             VenusItems.registerItem(VenusItems.bucketSulphuricAcid);
-            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.bucket));
+            FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.BUCKET));
         }
 
         EventHandlerGC.bucketList.put(VenusBlocks.sulphuricAcid, VenusItems.bucketSulphuricAcid);
@@ -123,7 +126,7 @@ public class VenusModule implements IPlanetsModule
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/venus.png"));
         VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(3);
         VenusModule.planetVenus.setAtmosphere(new AtmosphereInfo(false, false, true, 5.0F, 0.3F, 54.0F));
-        VenusModule.planetVenus.setBiomeInfo(BiomeGenBaseVenus.venusFlat, BiomeGenBaseVenus.venusMountain, BiomeGenBaseVenus.venusValley);
+        VenusModule.planetVenus.setBiomeInfo(BiomeVenus.venusFlat, BiomeVenus.venusMountain, BiomeVenus.venusValley);
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
@@ -144,12 +147,18 @@ public class VenusModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
 
         GalacticraftCore.proxy.registerFluidTexture(VenusModule.sulphuricAcid, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underacid.png"));
+
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 4, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusFlat.getBiomeName(), BiomeVenus.venusFlat);
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 5, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusMountain.getBiomeName(), BiomeVenus.venusMountain);
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 6, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusValley.getBiomeName(), BiomeVenus.venusValley);
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
         RecipeManagerVenus.loadRecipes();
+
+        GCPlanetDimensions.VENUS = WorldUtil.getDimensionTypeById(ConfigManagerVenus.dimensionIDVenus);
     }
 
     @Override
@@ -227,25 +236,21 @@ public class VenusModule implements IPlanetsModule
         ConfigManagerVenus.syncConfig(false, false);
     }
 
-    public void registerGalacticraftCreature(Class<? extends Entity> var0, String var1, int back, int fore)
+    public void registerGalacticraftCreature(Class<? extends Entity> clazz, String name, int back, int fore)
     {
-        VenusModule.registerGalacticraftNonMobEntity(var0, var1, 80, 3, true);
-        int nextEggID = GCCoreUtil.getNextValidEggID();
+        VenusModule.registerGalacticraftNonMobEntity(clazz, name, 80, 3, true);
+        int nextEggID = GCCoreUtil.getNextValidID();
         if (nextEggID < 65536)
         {
-            EntityList.idToClassMapping.put(nextEggID, var0);
-            EntityList.classToIDMapping.put(var0, nextEggID);
-            EntityList.entityEggs.put(nextEggID, new EntityList.EntityEggInfo(nextEggID, back, fore));
+            name = Constants.MOD_ID_PLANETS + "." + name;
+            EntityList.ID_TO_CLASS.put(nextEggID, clazz);
+            EntityList.CLASS_TO_ID.put(clazz, nextEggID);
+            EntityList.ENTITY_EGGS.put(name, new EntityList.EntityEggInfo(name, back, fore));
         }
     }
 
     public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
     {
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
-        {
-            LanguageRegistry.instance().addStringLocalization("entity.galacticraftplanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-            LanguageRegistry.instance().addStringLocalization("entity.GalacticraftPlanets." + var1 + ".name", GCCoreUtil.translate("entity." + var1 + ".name"));
-        }
         EntityRegistry.registerModEntity(var0, var1, GCCoreUtil.nextInternalID(), GalacticraftPlanets.instance, trackingDistance, updateFreq, sendVel);
     }
 }

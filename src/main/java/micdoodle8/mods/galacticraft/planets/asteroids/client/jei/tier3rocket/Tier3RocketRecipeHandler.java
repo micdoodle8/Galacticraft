@@ -23,6 +23,12 @@ public class Tier3RocketRecipeHandler implements IRecipeHandler<Tier3RocketRecip
         return RecipeCategories.ROCKET_T3_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(Tier3RocketRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull Tier3RocketRecipeWrapper recipe)

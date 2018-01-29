@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.jei.astrominer;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
@@ -34,5 +35,11 @@ public class AstroMinerRecipeWrapper extends BlankRecipeWrapper implements ICraf
     public List<ItemStack> getOutputs()
     {
         return Collections.singletonList(recipe.getRecipeOutput());
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients)
+    {
+
     }
 }

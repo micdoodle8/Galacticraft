@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedEnderman;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
@@ -34,7 +33,7 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
     {
         IBlockState iblockstate = entity.getHeldBlockState();
 
-        if (iblockstate.getBlock().getMaterial() != Material.air)
+        if (iblockstate != null)
         {
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
             GlStateManager.enableRescaleNormal();
@@ -48,9 +47,9 @@ public class LayerEvolvedEndermanHeldBlock implements LayerRenderer<EntityEvolve
             int i = entity.getBrightnessForRender(partialTicks);
             int j = i % 65536;
             int k = i / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.render.bindTexture(TextureMap.locationBlocksTexture);
+            this.render.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             blockrendererdispatcher.renderBlockBrightness(iblockstate, 1.0F);
             GlStateManager.popMatrix();
             GlStateManager.disableRescaleNormal();

@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,13 +26,13 @@ public class PlayerUtil
 
     public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
-        return server.getConfigurationManager().getPlayerByUsername(username);
+        return server.getPlayerList().getPlayerByUsername(username);
 //        return VersionUtil.getPlayerForUsername(server, username);
     }
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
     {
-        MinecraftServer server = MinecraftServer.getServer();
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
         if (server != null)
         {
@@ -41,7 +42,7 @@ public class PlayerUtil
             }
             else
             {
-                Iterator iterator = server.getConfigurationManager().playerEntityList.iterator();
+                Iterator iterator = server.getPlayerList().getPlayerList().iterator();
                 EntityPlayerMP entityplayermp;
 
                 do
@@ -142,11 +143,10 @@ public class PlayerUtil
         }
         return profile;
     }
-
     
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
-        List players = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        List players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
         EntityPlayerMP entityplayermp;
         for (int i = players.size() - 1; i >= 0; --i)
         {
@@ -163,6 +163,6 @@ public class PlayerUtil
 
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
-        return MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
+        return player.worldObj.getMinecraftServer().getPlayerList().getPlayerList().contains(player);
     }
 }

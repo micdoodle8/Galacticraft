@@ -1,9 +1,10 @@
 package codechicken.nei.config;
 
-import net.minecraft.util.RegistryNamespaced;
+import net.minecraft.util.registry.RegistryNamespaced;
 
 import java.util.LinkedList;
 
+@Deprecated// Use ForgeRegistryDumper.
 public abstract class RegistryDumper<T> extends DataDumper {
     public RegistryDumper(String name) {
         super(name);
@@ -15,7 +16,7 @@ public abstract class RegistryDumper<T> extends DataDumper {
         RegistryNamespaced registry = registry();
 
         for (T obj : (Iterable<T>) registry) {
-            list.add(dump(obj, registry.getIDForObject(obj), (String) registry.getNameForObject(obj)));
+            list.add(dump(obj, registry.getIDForObject(obj), registry.getNameForObject(obj).toString()));
         }
 
         return list;

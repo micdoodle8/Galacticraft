@@ -10,8 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 public class GCMarsNEIHighlightHandler implements IHighlightHandler
 {
     @Override
-    public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, MovingObjectPosition mop, List<String> currenttip, ItemInfo.Layout layout)
+    public List<String> handleTextData(ItemStack stack, World world, EntityPlayer player, RayTraceResult mop, List<String> currenttip, ItemInfo.Layout layout)
     {
         String name = null;
         try
@@ -39,7 +39,7 @@ public class GCMarsNEIHighlightHandler implements IHighlightHandler
         {
         }
 
-        if (stack.getItem() == Items.redstone)
+        if (stack.getItem() == Items.REDSTONE)
         {
             IBlockState state = world.getBlockState(mop.getBlockPos());
             int md = state.getBlock().getMetaFromState(state);
@@ -55,7 +55,7 @@ public class GCMarsNEIHighlightHandler implements IHighlightHandler
     }
 
     @Override
-    public ItemStack identifyHighlight(World world, EntityPlayer player, MovingObjectPosition mop)
+    public ItemStack identifyHighlight(World world, EntityPlayer player, RayTraceResult mop)
     {
         BlockPos pos = mop.getBlockPos();
         IBlockState state = world.getBlockState(pos);

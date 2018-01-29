@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -167,18 +167,16 @@ public class MapGenCaveVenus extends MapGenBaseMeta
 
                                     if (xfactorSq + zfactorSq < 1.0D)
                                     {
-                                        final int coords = (localX * 16 + localZ) * 256 + localY;
-
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            IBlockState state = primer.getBlockState(coords);
+                                            IBlockState state = primer.getBlockState(localX, localY, localZ);
                                             Block block = state.getBlock();
                                             int metadata = state.getBlock().getMetaFromState(state);
                                             if (block == VenusBlocks.venusBlock)
                                             {
                                                 if (metadata == 1)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
                                                 }
                                             }
                                         }

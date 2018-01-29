@@ -7,5 +7,6 @@ package codechicken.lib.world;
  * You could easily implement this in your own mod, but providing it here reduces the number of times the chunkTileEntityMap needs to be iterated
  */
 public interface IChunkLoadTile {
-    public void onChunkLoad();
+
+    void onChunkLoad();
 }

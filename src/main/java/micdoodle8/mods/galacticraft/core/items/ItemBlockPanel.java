@@ -6,8 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemBlockPanel extends ItemBlockDesc
@@ -40,14 +42,14 @@ public class ItemBlockPanel extends ItemBlockDesc
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         if (!player.isSneaking())
         {
-            return false;
+            return EnumActionResult.PASS;
         }
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock().isOpaqueCube() && !(state.getBlock() instanceof BlockPanelLighting))
+        if (state.getBlock().isOpaqueCube(state) && !(state.getBlock() instanceof BlockPanelLighting))
         {
             if (world.isRemote)
             {
@@ -63,6 +65,6 @@ public class ItemBlockPanel extends ItemBlockDesc
             }
         }
 
-        return false;
+        return EnumActionResult.PASS;
     }
 }

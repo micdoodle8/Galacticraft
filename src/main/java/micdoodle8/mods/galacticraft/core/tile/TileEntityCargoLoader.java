@@ -16,7 +16,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -119,19 +123,20 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
-        this.locked = par1NBTTagCompound.getBoolean("locked");
+        super.readFromNBT(nbt);
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.locked = nbt.getBoolean("locked");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setBoolean("locked", this.locked);
+        super.writeToNBT(nbt);
+        this.writeStandardItemsToNBT(nbt);
+        nbt.setBoolean("locked", this.locked);
+        return nbt;
     }
 
     @Override
@@ -153,9 +158,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     // ISidedInventory Implementation:

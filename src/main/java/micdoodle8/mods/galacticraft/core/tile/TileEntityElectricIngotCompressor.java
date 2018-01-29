@@ -14,12 +14,14 @@ import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                     if (this.processTicks >= this.processTimeRequired)
                     {
-                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
+                        this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -166,9 +168,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
             for (int i = 0; i < this.compressingCraftMatrix.getSizeInventory(); i++)
             {
-                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.water_bucket)
+                if (this.compressingCraftMatrix.getStackInSlot(i) != null && this.compressingCraftMatrix.getStackInSlot(i).getItem() == Items.WATER_BUCKET)
                 {
-                    this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.bucket));
+                    this.compressingCraftMatrix.setInventorySlotContentsNoUpdate(i, new ItemStack(Items.BUCKET));
                 }
                 else
                 {
@@ -181,11 +183,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
+        super.readFromNBT(nbt);
+        this.processTicks = nbt.getInteger("smeltingTicks");
+        NBTTagList var2 = nbt.getTagList("Items", 10);
         this.containingItems = new ItemStack[this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory()];
 
         for (int var3 = 0; var3 < var2.tagCount(); ++var3)
@@ -202,15 +204,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 this.compressingCraftMatrix.setInventorySlotContents(var5 - this.containingItems.length, ItemStack.loadItemStackFromNBT(var4));
             }
         }
-        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
         this.updateInput();
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
         int var3;
 
@@ -235,9 +237,10 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 var2.appendTag(var4);
             }
         }
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
 
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        return nbt;
     }
 
     @Override

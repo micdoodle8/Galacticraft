@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.jei.refinery;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
@@ -32,5 +33,11 @@ public class RefineryRecipeWrapper extends BlankRecipeWrapper implements ICrafti
     public List<ItemStack> getOutputs()
     {
         return Collections.singletonList(this.output);
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients)
+    {
+
     }
 }

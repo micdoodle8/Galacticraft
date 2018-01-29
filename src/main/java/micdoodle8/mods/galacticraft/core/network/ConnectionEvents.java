@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.EnumConnectionState;
 import net.minecraft.network.EnumPacketDirection;
+import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -35,13 +36,13 @@ public class ConnectionEvents
         registerPacket(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
     }
 
-    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet> packetClass)
+    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet<? extends INetHandler>> packetClass)
     {
-        BiMap<Integer, Class<? extends Packet>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
+        BiMap<Integer, Class<? extends Packet<?>>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
 
         if (bimap == null)
         {
-            bimap = HashBiMap.<Integer, Class<? extends Packet>>create();
+            bimap = HashBiMap.create();
             EnumConnectionState.PLAY.directionMaps.put(direction, bimap);
         }
 
@@ -101,15 +102,15 @@ public class ConnectionEvents
             }
             GCLog.info("Galacticraft server sending dimension IDs to connecting client: " + ids);
         }
-        event.manager.sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
-        event.manager.sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
-        event.manager.sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
+        event.getManager().sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
+        event.getManager().sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));
+        event.getManager().sendPacket(ConnectionPacket.createConfigPacket(ConfigManagerCore.getServerConfigOverride()));
     }
 
     @SubscribeEvent
     public void onConnectionOpened(ClientConnectedToServerEvent event)
     {
-        if (!event.isLocal)
+        if (!event.isLocal())
         {
             ConnectionEvents.clientConnected = true;
         }

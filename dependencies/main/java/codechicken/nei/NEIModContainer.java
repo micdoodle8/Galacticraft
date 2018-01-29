@@ -1,12 +1,12 @@
 package codechicken.nei;
 
-import codechicken.core.CommonUtils;
 import codechicken.core.launch.CodeChickenCorePlugin;
+import codechicken.lib.CodeChickenLib;
 import codechicken.nei.api.IConfigureNEI;
 import codechicken.nei.asm.NEICorePlugin;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.FMLFileResourcePack;
 import net.minecraftforge.fml.client.FMLFolderResourcePack;
 import net.minecraftforge.fml.common.*;
@@ -34,7 +34,11 @@ public class NEIModContainer extends DummyModContainer {
     @Override
     public Set<ArtifactVersion> getRequirements() {
         Set<ArtifactVersion> deps = new HashSet<ArtifactVersion>();
-        deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
+        if (!super.getMetadata().version.contains("$")) {
+            deps.add(VersionParser.parseVersionReference("CodeChickenLib@[" + CodeChickenLib.version + ",)"));
+            deps.add(VersionParser.parseVersionReference("CodeChickenCore@[" + CodeChickenCorePlugin.version + ",)"));
+            deps.add(VersionParser.parseVersionReference("JEI@[3.13.2,)"));
+        }
         return deps;
     }
 
@@ -46,16 +50,16 @@ public class NEIModContainer extends DummyModContainer {
     private String description;
 
     private void loadMetadata() {
-        description = super.getMetadata().description.replace("Supporters:", EnumChatFormatting.AQUA + "Supporters:");
+        description = super.getMetadata().description.replace("Supporters:", TextFormatting.AQUA + "Supporters:");
     }
 
     @Override
     public ModMetadata getMetadata() {
         String s_plugins = "";
         if (plugins.size() == 0) {
-            s_plugins += EnumChatFormatting.RED + "No installed plugins.";
+            s_plugins += TextFormatting.RED + "No installed plugins.";
         } else {
-            s_plugins += EnumChatFormatting.GREEN + "Installed plugins: ";
+            s_plugins += TextFormatting.GREEN + "Installed plugins: ";
             for (int i = 0; i < plugins.size(); i++) {
                 if (i > 0) {
                     s_plugins += ", ";
@@ -79,14 +83,15 @@ public class NEIModContainer extends DummyModContainer {
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
-        if (CommonUtils.isClient()) {
+        FingerprintChecker.runFingerprintChecks();
+        if (event.getSide().isClient()) {
             ClientHandler.preInit();
         }
     }
 
     @Subscribe
     public void init(FMLInitializationEvent event) {
-        if (CommonUtils.isClient()) {
+        if (event.getSide().isClient()) {
             ClientHandler.init();
         }
 
@@ -95,7 +100,7 @@ public class NEIModContainer extends DummyModContainer {
 
     @Override
     public VersionRange acceptableMinecraftVersionRange() {
-        return VersionParser.parseRange(CodeChickenCorePlugin.mcVersion);
+        return VersionParser.parseRange(CodeChickenLib.mcVersion);
     }
 
     @Override
@@ -106,5 +111,10 @@ public class NEIModContainer extends DummyModContainer {
     @Override
     public Class<?> getCustomResourcePackClass() {
         return getSource().isFile() ? FMLFileResourcePack.class : FMLFolderResourcePack.class;
+    }
+
+    @Override
+    public Object getMod() {
+        return this;
     }
 }

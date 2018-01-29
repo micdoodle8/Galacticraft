@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import java.util.Random;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 public abstract class SizedPiece extends Piece
 {
@@ -84,13 +84,13 @@ public abstract class SizedPiece extends Piece
     @Override
     protected int getXWithOffset(int x, int z)
     {
-        if (this.coordBaseMode == null)
+        if (this.getCoordBaseMode() == null)
         {
             return x;
         }
         else
         {
-            switch (this.coordBaseMode)
+            switch (this.getCoordBaseMode())
             {
                 case NORTH:
                     return this.boundingBox.minX + x;
@@ -109,13 +109,13 @@ public abstract class SizedPiece extends Piece
     @Override
     protected int getZWithOffset(int x, int z)
     {
-        if (this.coordBaseMode == null)
+        if (this.getCoordBaseMode() == null)
         {
             return z;
         }
         else
         {
-            switch (this.coordBaseMode)
+            switch (this.getCoordBaseMode())
             {
                 case NORTH:
                     return this.boundingBox.minZ + z;

@@ -11,8 +11,8 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.*;
 
@@ -31,7 +31,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
     {
         return true;
     }
@@ -43,7 +43,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;
@@ -106,18 +106,18 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
 
         if (playerBase != null)
         {
-            playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
+            playerBase.addChatMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
         }
     }
 
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(sender)) : null;
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(server, sender)) : null;
     }
 
-    protected String[] getPlayers(ICommandSender sender)
+    protected String[] getPlayers(MinecraftServer server, ICommandSender sender)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), false);
 
@@ -126,7 +126,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
             GCPlayerStats stats = GCPlayerStats.get(playerBase);
             if (!stats.getSpaceStationDimensionData().isEmpty())
             {
-                String[] allNames = MinecraftServer.getServer().getAllUsernames();
+                String[] allNames = server.getAllUsernames();
                 //data.getAllowedPlayers may include some in lowercase
                 //Convert to correct case at least for those players who are online
                 HashSet<String> allowedNames = Sets.newHashSet();

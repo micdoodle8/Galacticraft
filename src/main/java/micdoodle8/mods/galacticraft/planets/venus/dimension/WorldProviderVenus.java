@@ -10,21 +10,24 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.WorldChunkManagerVenus;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomChestVenus;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
 import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderVenus extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
-    private double solarMultiplier = 0.36D;
+    private double solarMultiplier = -0.36D;
 
     @Override
     public Vector3 getFogColor()
@@ -71,15 +74,15 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderVenus.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
-        return WorldChunkManagerVenus.class;
+        return BiomeProviderVenus.class;
     }
 
     @Override
@@ -174,11 +177,17 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public String getInternalNameSuffix()
+    public boolean shouldDisablePrecipitation()
     {
-        return "_venus";
+        return true;
     }
 
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.VENUS;
+    }
+    
     @Override
     public int getDungeonSpacing()
     {
@@ -192,9 +201,9 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public String getDungeonChestType()
+    public ResourceLocation getDungeonChestType()
     {
-        return RoomChestVenus.VENUSCHEST;
+        return RoomTreasureVenus.VENUSCHEST;
     }
 
     @Override

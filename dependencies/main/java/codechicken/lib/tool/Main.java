@@ -1,6 +1,7 @@
 package codechicken.lib.tool;
 
 public class Main {
+
     public static void main(String[] args) {
         LibDownloader.load();
         try {

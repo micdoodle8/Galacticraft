@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core;
 
 public class Constants
 {
-    public static final String MOD_ID_CORE = "GalacticraftCore";
-    public static final String MOD_ID_PLANETS = "GalacticraftPlanets";
+    public static final String MOD_ID_CORE = "galacticraftcore";
+    public static final String MOD_ID_PLANETS = "galacticraftplanets";
     public static final String MOD_NAME_SIMPLE = "Galacticraft";
 
     public static final int LOCALMAJVERSION = 4;
@@ -12,10 +12,10 @@ public class Constants
     public static final int LOCALBUILDVERSION = -1; // Replaced by jenkins build
     public static final String COMBINEDVERSION = LOCALMAJVERSION + "." + LOCALMINVERSION + "." + LOCALPATCHVERSION + "." + LOCALBUILDVERSION;
     
-    public static final String MCVERSION = "[1.8.9]";
-    public static final String DEPENDENCIES_FORGE = "required-after:Forge@[11.15.1.1764,); required-after:FML@[8.0.99.99,); ";  //Keep the space at the end!
+    public static final String MCVERSION = "[1.10.2]";
+    public static final String DEPENDENCIES_FORGE = "required-after:Forge@[12.18.2.2171,); required-after:FML@[8.0.99.99,); ";  //Keep the space at the end!
     public static final String DEPENDENCIES_MICCORE = "required-after:Micdoodlecore; ";  //Keep the space at the end!
-    public static final String DEPENDENCIES_MODS = "after:IC2; after:TConstruct; after:Mantle; after:MekanismAPI|gas";
+    public static final String DEPENDENCIES_MODS = "after:IC2; after:TConstruct; after:Mantle;";
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
@@ -64,4 +64,6 @@ public class Constants
 
     public static final float twoPI = (float) Math.PI * 2F;
     public static final float halfPI = (float) Math.PI / 2F;
+
+    public static final String PERMISSION_CREATE_STATION = "galacticraft.station.create";
 }

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -43,9 +43,9 @@ public abstract class StructureComponentGC extends StructureComponent
         final int var10 = this.getZWithOffset(var3, var5);
 
         BlockPos pos = new BlockPos(var8, var9, var10);
-        if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.mob_spawner)
+        if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER)
         {
-            var1.setBlockState(pos, Blocks.mob_spawner.getDefaultState(), 2);
+            var1.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
             final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(pos);
 
             if (var11 != null)
@@ -65,20 +65,20 @@ public abstract class StructureComponentGC extends StructureComponent
 
     public int[] getOffsetAsIfRotated(int[] var1, EnumFacing var2)
     {
-        final EnumFacing var3 = coordBaseMode;
+        final EnumFacing var3 = getCoordBaseMode();
         final int[] var4 = new int[3];
-        this.coordBaseMode = var2;
+        this.setCoordBaseMode(var2);
         var4[0] = this.getXWithOffset(var1[0], var1[2]);
         var4[1] = this.getYWithOffset(var1[1]);
         var4[2] = this.getZWithOffset(var1[0], var1[2]);
-        this.coordBaseMode = var3;
+        this.setCoordBaseMode(var3);
         return var4;
     }
 
     @Override
     protected int getXWithOffset(int var1, int var2)
     {
-        switch (coordBaseMode.getHorizontalIndex())
+        switch (getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minX + var1;
@@ -100,7 +100,7 @@ public abstract class StructureComponentGC extends StructureComponent
     @Override
     protected int getZWithOffset(int var1, int var2)
     {
-        switch (coordBaseMode.getHorizontalIndex())
+        switch (getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minZ + var2;

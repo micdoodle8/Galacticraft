@@ -27,9 +27,9 @@ import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -183,7 +183,7 @@ public class SpinManager
      */
     public boolean refresh(BlockPos baseBlock, boolean placingThruster)
     {
-        if (this.oneSSBlock == null || this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().isAir(this.worldProvider.worldObj, this.oneSSBlock))
+        if (this.oneSSBlock == null || this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().isAir(this.worldProvider.worldObj.getBlockState(this.oneSSBlock), this.worldProvider.worldObj, this.oneSSBlock))
         {
             if (baseBlock != null)
             {
@@ -203,23 +203,24 @@ public class SpinManager
         this.checked.clear();
         currentLayer.add(new BlockVec3(this.oneSSBlock));
         this.checked.add(new BlockVec3(this.oneSSBlock));
-        Block bStart = this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock();
+        IBlockState bsStart = this.worldProvider.worldObj.getBlockState(this.oneSSBlock);
+        Block bStart = bsStart.getBlock();
         if (bStart instanceof BlockSpinThruster)
         {
             foundThrusters.add(this.oneSSBlock);
         }
 
-        float thismass = 0.1F; //Mass of a thruster
-        float thismassCentreX = 0.1F * this.oneSSBlock.getX();
-        float thismassCentreY = 0.1F * this.oneSSBlock.getY();
-        float thismassCentreZ = 0.1F * this.oneSSBlock.getZ();
-        float thismoment = 0F;
         int thisssBoundsMaxX = this.oneSSBlock.getX();
-        int thisssBoundsMinX = this.oneSSBlock.getX();
+        int thisssBoundsMinX = thisssBoundsMaxX;
         int thisssBoundsMaxY = this.oneSSBlock.getY();
-        int thisssBoundsMinY = this.oneSSBlock.getY();
+        int thisssBoundsMinY = thisssBoundsMaxY;
         int thisssBoundsMaxZ = this.oneSSBlock.getZ();
-        int thisssBoundsMinZ = this.oneSSBlock.getZ();
+        int thisssBoundsMinZ = thisssBoundsMaxZ;
+        float thismass = 0.1F; //Mass of a thruster
+        float thismassCentreX = 0.1F * thisssBoundsMaxX;
+        float thismassCentreY = 0.1F * thisssBoundsMaxY;
+        float thismassCentreZ = 0.1F * thisssBoundsMaxZ;
+        float thismoment = 0F;
 
         while (currentLayer.size() > 0)
         {
@@ -263,11 +264,16 @@ public class SpinManager
                     if (sideVec != null && !this.checked.contains(sideVec))
                     {
                         this.checked.add(sideVec);
-                        Block b = sideVec.getBlockID(this.worldProvider.worldObj);
-                        if (b != null && !b.isAir(this.worldProvider.worldObj, sideVec.toBlockPos()) && !(b instanceof BlockDynamicLiquid))
+                        IBlockState state = sideVec.getBlockState(this.worldProvider.worldObj);
+                        if (state == null)
+                        {
+                            continue;
+                        }
+                        Block b = state.getBlock();
+                        if (b != null && !b.isAir(state, this.worldProvider.worldObj, sideVec.toBlockPos()) && !(b instanceof BlockDynamicLiquid))
                         {
                             nextLayer.add(sideVec);
-                            if (bStart.isAir(this.worldProvider.worldObj, this.oneSSBlock))
+                            if (bStart.isAir(bsStart, this.worldProvider.worldObj, this.oneSSBlock))
                             {
                                 this.oneSSBlock = sideVec.toBlockPos();
                                 bStart = b;
@@ -277,7 +283,7 @@ public class SpinManager
                             if (!(b instanceof BlockLiquid))
                             {
                                 //For most blocks, hardness gives a good idea of mass
-                                m = b.getBlockHardness(this.worldProvider.worldObj, sideVec.toBlockPos());
+                                m = b.getBlockHardness(state, this.worldProvider.worldObj, sideVec.toBlockPos());
                                 if (m < 0.1F)
                                 {
                                     m = 0.1F;
@@ -287,7 +293,7 @@ public class SpinManager
                                     m = 30F;
                                 }
                                 //Wood items have a high hardness compared with their presumed mass
-                                if (b.getMaterial() == Material.wood)
+                                if (b.getMaterial(state) == Material.WOOD)
                                 {
                                     m /= 4;
                                 }
@@ -331,7 +337,8 @@ public class SpinManager
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock;
-                if (this.worldProvider.worldObj.getBlockState(this.oneSSBlock).getBlock().getMaterial() != Material.air)
+                IBlockState state = this.worldProvider.worldObj.getBlockState(this.oneSSBlock);
+                if (state.getMaterial() != Material.AIR)
                 {
                     return this.refresh(baseBlock, true);
                 }
@@ -678,13 +685,13 @@ public class SpinManager
 
             //Check for block collisions here - if so move the player appropriately
             //First check that there are no existing collisions where the player is now (TODO: bounce the player away)
-            if (p.worldObj.getCollidingBoundingBoxes(p, p.getEntityBoundingBox()).size() == 0)
+            if (p.worldObj.getCollisionBoxes(p, p.getEntityBoundingBox()).size() == 0)
             {
                 //Now check for collisions in the new direction and if there are some, try reducing the movement
                 int collisions = 0;
                 do
                 {
-                    List<AxisAlignedBB> list = p.worldObj.getCollidingBoundingBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
+                    List<AxisAlignedBB> list = p.worldObj.getCollisionBoxes(p, p.getEntityBoundingBox().addCoord(offsetX, 0.0D, offsetZ));
                     collisions = list.size();
                     if (collisions > 0)
                     {
@@ -866,7 +873,7 @@ public class SpinManager
         this.sendPackets(null);
     }
 
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         nbt.setBoolean("doSpinning", this.doSpinning);
         nbt.setFloat("omegaRad", this.angularVelocityRadians);
@@ -881,5 +888,6 @@ public class SpinManager
             oneBlock.setInteger("z", this.oneSSBlock.getZ());
             nbt.setTag("oneBlock", oneBlock);
         }
+        return nbt;
     }
 }

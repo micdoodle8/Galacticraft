@@ -27,14 +27,15 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
 
     public RenderEvolvedSkeleton(RenderManager manager)
     {
-        super(manager, new ModelEvolvedSkeleton(), 1.0F);
+        super(manager, new ModelEvolvedSkeleton(), 0.6F);
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerBipedArmor(this)
         {
-            protected void func_177177_a()
+            @Override
+            protected void initArmor()
             {
-                this.field_177189_c = new ModelSkeleton(0.5F, true);
-                this.field_177186_d = new ModelSkeleton(1.0F, true);
+                this.modelLeggings = new ModelSkeleton(0.5F, true);
+                this.modelArmor = new ModelSkeleton(1.0F, true);
             }
         });
     }
@@ -58,12 +59,12 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     @Override
     public void doRender(EntityEvolvedSkeleton entity, double par2, double par4, double par6, float par8, float par9)
     {
-        texSwitch = false;
         super.doRender(entity, par2, par4, par6, par8, par9);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
         }
     }
     

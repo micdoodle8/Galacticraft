@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -21,8 +22,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
@@ -97,8 +98,8 @@ public class TeleportTypeAsteroids implements ITeleportType
                     {
                         GCLog.info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
                     }
-                    this.loadChunksAround(bv3.x, bv3.z, 2, world.theChunkProviderServer);
-                    this.loadChunksAround(bv3.x, bv3.z, -3, world.theChunkProviderServer);
+                    this.loadChunksAround(bv3.x, bv3.z, 2, world.getChunkProvider());
+                    this.loadChunksAround(bv3.x, bv3.z, -3, world.getChunkProvider());
 
                     if (goodAsteroidEntry(world, bv3.x, bv3.y, bv3.z))
                     {
@@ -325,8 +326,10 @@ public class TeleportTypeAsteroids implements ITeleportType
                 {
                     EntityEntryPod entryPod = new EntityEntryPod(player);
 
+                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                     entryPod.forceSpawn = true;
                     newWorld.spawnEntityInWorld(entryPod);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
                 }
 
                 stats.setTeleportCooldown(10);
@@ -353,16 +356,16 @@ public class TeleportTypeAsteroids implements ITeleportType
         rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
         rocketStacks[i++] = new ItemStack(AsteroidsItems.canisterLOX);
         rocketStacks[i++] = new ItemStack(AsteroidsItems.basicItem, 32, 7);
-        rocketStacks[i++] = new ItemStack(Blocks.glass_pane, 16);
-        rocketStacks[i++] = new ItemStack(Blocks.planks, 32, 2);
+        rocketStacks[i++] = new ItemStack(Blocks.GLASS_PANE, 16);
+        rocketStacks[i++] = new ItemStack(Blocks.PLANKS, 32, 2);
         rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
         rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
         rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
         rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
-        rocketStacks[i++] = new ItemStack(Items.egg, 12);
+        rocketStacks[i++] = new ItemStack(Items.EGG, 12);
 
-        rocketStacks[i++] = new ItemStack(Items.spawn_egg, 2, EntityList.classToIDMapping.get(EntityCow.class));
-        rocketStacks[i++] = new ItemStack(Items.potionitem, 4, 8262); //Night Vision Potion
+        rocketStacks[i++] = new ItemStack(Items.SPAWN_EGG, 2, EntityList.CLASS_TO_ID.get(EntityCow.class));
+        rocketStacks[i++] = new ItemStack(Items.POTIONITEM, 4, 8262); //Night Vision Potion
         rocketStacks[i++] = new ItemStack(MarsBlocks.machine, 1, 4); //Cryogenic Chamber
         rocketStacks[i++] = new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal());
         //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);

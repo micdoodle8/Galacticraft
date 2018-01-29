@@ -28,7 +28,7 @@ public class ContainerTerraformer extends Container
     {
         this.tileEntity = tileEntity;
 
-        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.water_bucket), new ItemStack(Items.bucket)));
+        this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 25, 19, new ItemStack(Items.WATER_BUCKET), new ItemStack(Items.BUCKET)));
 
         this.addSlotToContainer(new SlotSpecific(tileEntity, 1, 25, 39, IItemElectric.class));
 
@@ -41,7 +41,7 @@ public class ContainerTerraformer extends Container
 
             if (var6 == 0)
             {
-                stacks.add(new ItemStack(Items.dye, 1, 15));
+                stacks.add(new ItemStack(Items.DYE, 1, 15));
             }
             else if (var6 == 1)
             {
@@ -54,7 +54,7 @@ public class ContainerTerraformer extends Container
             }
             else if (var6 == 2)
             {
-                stacks.add(new ItemStack(Items.wheat_seeds));
+                stacks.add(new ItemStack(Items.WHEAT_SEEDS));
             }
 
             for (var7 = 0; var7 < 4; ++var7)
@@ -120,14 +120,14 @@ public class ContainerTerraformer extends Container
                         return null;
                     }
                 }
-                else if (var4.getItem() == Items.water_bucket)
+                else if (var4.getItem() == Items.WATER_BUCKET)
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
                         return null;
                     }
                 }
-                else if (var4.getItem() == Items.dye && var4.getItemDamage() == 15)
+                else if (var4.getItem() == Items.DYE && var4.getItemDamage() == 15)
                 {
                     if (!this.mergeItemStack(var4, 2, 6, false))
                     {
@@ -141,7 +141,7 @@ public class ContainerTerraformer extends Container
                         return null;
                     }
                 }
-                else if (var4.getItem() == Items.wheat_seeds)
+                else if (var4.getItem() == Items.WHEAT_SEEDS)
                 {
                     if (!this.mergeItemStack(var4, 10, 14, false))
                     {
@@ -202,7 +202,7 @@ public class ContainerTerraformer extends Container
     private static void initSaplingList()
     {
         ContainerTerraformer.saplingList = new LinkedList();
-        Iterator iterator = Block.blockRegistry.iterator();
+        Iterator iterator = Block.REGISTRY.iterator();
 
         while (iterator.hasNext())
         {

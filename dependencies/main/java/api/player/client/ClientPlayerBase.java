@@ -35,11 +35,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	public void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager)
 	{
 	}
 
-	public void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	public void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager)
 	{
 	}
 
@@ -183,34 +183,34 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeCanHarvestBlock(net.minecraft.block.Block paramBlock)
+	public void beforeCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 	}
 
-	public boolean canHarvestBlock(net.minecraft.block.Block paramBlock)
+	public boolean canHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenCanHarvestBlock(this);
 
 		boolean _result;
 		if(overwritten == null)
-			_result = playerAPI.localCanHarvestBlock(paramBlock);
+			_result = playerAPI.localCanHarvestBlock(paramIBlockState);
 		else if(overwritten != this)
-			_result = overwritten.canHarvestBlock(paramBlock);
+			_result = overwritten.canHarvestBlock(paramIBlockState);
 		else
 			_result = false;
 
 		return _result;
 	}
 
-	public void afterCanHarvestBlock(net.minecraft.block.Block paramBlock)
+	public void afterCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 	}
 
-	public void beforeCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public void beforeCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 	}
 
-	public boolean canPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public boolean canPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenCanPlayerEdit(this);
 
@@ -225,7 +225,7 @@ public abstract class ClientPlayerBase
 		return _result;
 	}
 
-	public void afterCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public void afterCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 	}
 
@@ -508,11 +508,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public void beforeGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
-	public float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenGetBreakSpeed(this);
 
@@ -527,7 +527,7 @@ public abstract class ClientPlayerBase
 		return _result;
 	}
 
-	public void afterGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public void afterGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
@@ -604,11 +604,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public java.lang.String getHurtSound()
+	public net.minecraft.util.SoundEvent getHurtSound()
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenGetHurtSound(this);
 
-		java.lang.String _result;
+		net.minecraft.util.SoundEvent _result;
 		if(overwritten == null)
 			_result = playerAPI.localGetHurtSound();
 		else if(overwritten != this)
@@ -1062,11 +1062,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforePlayStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
+	public void beforePlayStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
 	{
 	}
 
-	public void playStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
+	public void playStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenPlayStepSound(this);
 
@@ -1077,7 +1077,7 @@ public abstract class ClientPlayerBase
 
 	}
 
-	public void afterPlayStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
+	public void afterPlayStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
 	{
 	}
 
@@ -1108,11 +1108,11 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public net.minecraft.util.MovingObjectPosition rayTrace(double paramDouble, float paramFloat)
+	public net.minecraft.util.math.RayTraceResult rayTrace(double paramDouble, float paramFloat)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenRayTrace(this);
 
-		net.minecraft.util.MovingObjectPosition _result;
+		net.minecraft.util.math.RayTraceResult _result;
 		if(overwritten == null)
 			_result = playerAPI.localRayTrace(paramDouble, paramFloat);
 		else if(overwritten != this)
@@ -1260,15 +1260,15 @@ public abstract class ClientPlayerBase
 	{
 	}
 
-	public void beforeTrySleep(net.minecraft.util.BlockPos paramBlockPos)
+	public void beforeTrySleep(net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
-	public net.minecraft.entity.player.EntityPlayer.EnumStatus trySleep(net.minecraft.util.BlockPos paramBlockPos)
+	public net.minecraft.entity.player.EntityPlayer.SleepResult trySleep(net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenTrySleep(this);
 
-		net.minecraft.entity.player.EntityPlayer.EnumStatus _result;
+		net.minecraft.entity.player.EntityPlayer.SleepResult _result;
 		if(overwritten == null)
 			_result = playerAPI.localTrySleep(paramBlockPos);
 		else if(overwritten != this)
@@ -1279,26 +1279,26 @@ public abstract class ClientPlayerBase
 		return _result;
 	}
 
-	public void afterTrySleep(net.minecraft.util.BlockPos paramBlockPos)
+	public void afterTrySleep(net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
-	public void beforeSwingItem()
+	public void beforeSwingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 	}
 
-	public void swingItem()
+	public void swingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 		ClientPlayerBase overwritten = internalClientPlayerAPI.GetOverwrittenSwingItem(this);
 
 		if(overwritten == null)
-			playerAPI.localSwingItem();
+			playerAPI.localSwingItem(paramEnumHand);
 		else if(overwritten != this)
-			overwritten.swingItem();
+			overwritten.swingItem(paramEnumHand);
 
 	}
 
-	public void afterSwingItem()
+	public void afterSwingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 	}
 

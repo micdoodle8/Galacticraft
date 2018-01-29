@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 public class InventoryExtended implements IInventoryGC
 {
@@ -128,7 +128,7 @@ public class InventoryExtended implements IInventoryGC
 
             if (stack != null)
             {
-                player.dropPlayerItemWithRandomChoice(stack, true);
+                player.dropItem(stack, true);
             }
 
             this.inventoryStacks[i] = null;
@@ -226,7 +226,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

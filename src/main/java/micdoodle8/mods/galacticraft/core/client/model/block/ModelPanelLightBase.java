@@ -6,59 +6,46 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.client.model.ISmartBlockModel;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.List;
 
-public class ModelPanelLightBase implements ISmartBlockModel
+public class ModelPanelLightBase implements IBakedModel
 {
     private final ModelResourceLocation callingBlock;
-    
+
     public ModelPanelLightBase (ModelResourceLocation blockLoc)
     {
         this.callingBlock = blockLoc;
     }
 
     @Override
-    public IBakedModel handleBlockState(IBlockState state)
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
     {
-        if (!(state.getBlock() instanceof BlockPanelLighting))
+        if (state.getBlock() instanceof BlockPanelLighting)
         {
-            return this;
-        }
-
-        IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockPanelLighting.BASE_STATE);
-        if (baseState == null)
-        {
-            if (MinecraftForgeClient.getRenderLayer() == EnumWorldBlockLayer.SOLID)
+            IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockPanelLighting.BASE_STATE);
+            if (baseState == null)
             {
-                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock);
+                if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.SOLID)
+                {
+                    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, side, rand);
+                }
+            }
+            else if (baseState.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer()))
+            {
+                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(state, side, rand);
             }
         }
-        else if (baseState.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer()))
-        {
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState);
-        }
-        return this;
-    }
-
-    @Override
-    public List<BakedQuad> getFaceQuads(EnumFacing p_177551_1_)
-    {
-        return ImmutableList.of();
-    }
-
-    @Override
-    public List<BakedQuad> getGeneralQuads()
-    {
+        
         return ImmutableList.of();
     }
 
@@ -90,5 +77,11 @@ public class ModelPanelLightBase implements ISmartBlockModel
     public ItemCameraTransforms getItemCameraTransforms()
     {
         return ItemCameraTransforms.DEFAULT;
+    }
+
+    @Override
+    public ItemOverrideList getOverrides()
+    {
+        return ItemOverrideList.NONE;
     }
 }

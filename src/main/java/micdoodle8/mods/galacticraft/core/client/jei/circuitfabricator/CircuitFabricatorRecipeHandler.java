@@ -23,6 +23,12 @@ public class CircuitFabricatorRecipeHandler implements IRecipeHandler<CircuitFab
         return RecipeCategories.CIRCUIT_FABRICATOR_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(CircuitFabricatorRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull CircuitFabricatorRecipeWrapper recipe)

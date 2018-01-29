@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
@@ -181,7 +182,7 @@ public class SpaceStationWorldData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbttagcompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setString("owner", this.owner);
         nbttagcompound.setString("spaceStationName", this.spaceStationName);
@@ -206,6 +207,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
 
         nbttagcompound.setTag("allowedPlayers", var2);
+        return nbttagcompound;
     }
 
     /**
@@ -221,7 +223,7 @@ public class SpaceStationWorldData extends WorldSavedData
      */
     public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, EntityPlayer owner)
     {
-        int providerType = DimensionManager.getProviderType(stationID);
+        DimensionType providerType = DimensionManager.getProviderType(stationID);
 
         boolean foundMatch = false;
 
@@ -229,7 +231,7 @@ public class SpaceStationWorldData extends WorldSavedData
         // being called on an incorrect
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
-            if (satellite.getDimensionIdStatic() == providerType || satellite.getDimensionID() == providerType)
+            if (satellite.getDimensionIdStatic() == providerType.getId() || satellite.getDimensionID() == providerType.getId())
             {
                 foundMatch = true;
                 break;

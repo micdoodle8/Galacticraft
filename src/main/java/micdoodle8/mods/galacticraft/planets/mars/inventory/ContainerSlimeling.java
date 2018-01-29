@@ -19,7 +19,7 @@ public class ContainerSlimeling extends Container
         this.slimelingInventory.currentContainer = this;
 
         ContainerSlimeling.addSlots(this, playerInventory, slimeling);
-        ContainerSlimeling.addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
+        ContainerSlimeling.addAdditionalSlots(this, slimeling, this.slimelingInventory.getStackInSlot(1));
 
         this.slimelingInventory.openInventory(player);
     }

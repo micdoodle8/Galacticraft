@@ -14,7 +14,9 @@ import java.util.HashSet;
  * This is added as a class transformer if CodeChickenCore is installed. Adding it as a class transformer will speed evaluation up slightly by automatically caching superclasses when they are first loaded.
  */
 public class ClassHeirachyManager implements IClassTransformer {
+
     public static class SuperCache {
+
         String superclass;
         public HashSet<String> parents = new HashSet<String>();
         private boolean flattened;

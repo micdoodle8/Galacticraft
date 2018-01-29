@@ -18,11 +18,13 @@ import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileCableIC2Sealed;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
@@ -36,18 +38,19 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseMoon;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseOrbit;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeMoon;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.*;
@@ -57,6 +60,8 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.server.permission.DefaultPermissionLevel;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -71,6 +76,7 @@ import java.util.HashMap;
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
+    private File GCCoreSource;
 
     @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
     public static CommonProxyCore proxy;
@@ -111,6 +117,7 @@ public class GalacticraftCore
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        GCCoreSource = event.getSourceFile();
         GCCapabilities.register();
 
     	this.initModInfo(event.getModMetadata());
@@ -152,8 +159,8 @@ public class GalacticraftCore
         GCFluids.registerFluids();
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
-        BiomeGenBase biomeOrbitPreInit = BiomeGenBaseOrbit.space;
-        BiomeGenBase biomeMoonPreInit = BiomeGenBaseMoon.moonFlat;
+        Biome biomeOrbitPreInit = BiomeOrbit.space;
+        Biome biomeMoonPreInit = BiomeMoon.moonFlat;
     }
 
     @EventHandler
@@ -188,7 +195,7 @@ public class GalacticraftCore
         GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class).setTierRequired(1);
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
         GalacticraftCore.moonMoon.setAtmosphere(new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 0.0F));
-        GalacticraftCore.moonMoon.setBiomeInfo(BiomeGenBaseMoon.moonFlat);
+        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
@@ -211,6 +218,7 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
         ChunkPowerHandler.initiate();
         EnergyConfigHandler.initGas();
+        LootHandlerGC.registerAll();
 
         CompatibilityManager.registerMicroBlocks();
         this.registerCreatures();
@@ -221,8 +229,16 @@ public class GalacticraftCore
         GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
         GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
         GalaxyRegistry.registerSatellite(GalacticraftCore.satelliteSpaceStation);
-        GalacticraftRegistry.registerProvider(ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOverworldOrbit.class, false, 0);
-        GalacticraftRegistry.registerProvider(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOverworldOrbit.class, true, 0);
+        GCDimensions.ORBIT = GalacticraftRegistry.registerDimension("Space Station", "_orbit", ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOverworldOrbit.class, false);
+        if (GCDimensions.ORBIT == null)
+        {
+            GCLog.severe("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbit);
+        }
+        GCDimensions.ORBIT_KEEPLOADED = GalacticraftRegistry.registerDimension("Space Station", "_orbit", ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOverworldOrbit.class, true);
+        if (GCDimensions.ORBIT_KEEPLOADED == null)
+        {
+            GCLog.severe("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbitStatic);
+        }
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
         GalacticraftRegistry.registerTeleportType(WorldProviderOverworldOrbit.class, new TeleportTypeOrbit());
         GalacticraftRegistry.registerTeleportType(WorldProviderMoon.class, new TeleportTypeMoon());
@@ -272,6 +288,11 @@ public class GalacticraftCore
 
         GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidOil, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png"));
 		GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidFuel, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underfuel.png"));
+
+		Biome.registerBiome(ConfigManagerCore.biomeIDbase, Constants.TEXTURE_PREFIX + BiomeMoon.moonFlat.getBiomeName(), BiomeMoon.moonFlat);
+		Biome.registerBiome(ConfigManagerCore.biomeIDbase + 3, Constants.TEXTURE_PREFIX + BiomeOrbit.space.getBiomeName(), BiomeOrbit.space);
+
+        PermissionAPI.registerNode(Constants.PERMISSION_CREATE_STATION, DefaultPermissionLevel.ALL, "Allows players to create space stations");
 
 //        switch (this.getSlotIndex())
 //        {
@@ -352,13 +373,15 @@ public class GalacticraftCore
             {
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
-                if (GalacticraftRegistry.registerProvider(body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0, 0))
+                DimensionType type = GalacticraftRegistry.registerDimension(body.getLocalizedName(), body.getDimensionSuffix(), body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
+                if (type != null)
                 {
                     body.initialiseMobSpawns();
                 }
                 else
                 {
                     body.setUnreachable();
+                    GCLog.severe("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());
                 }
             }
             
@@ -367,6 +390,8 @@ public class GalacticraftCore
                 TransformerHooks.spawnListAE2_GC.addAll(body.getSurfaceBlocks());
             }
         }
+
+        GCDimensions.MOON = WorldUtil.getDimensionTypeById(ConfigManagerCore.idDimensionMoon);
 
         CompatibilityManager.checkForCompatibleMods();
         RecipeManagerGC.loadRecipes();
@@ -393,6 +418,18 @@ public class GalacticraftCore
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
+
+        RecipeManagerGC.setConfigurableRecipes();
+
+        if (event.getSide() == Side.SERVER)
+        {
+            this.loadLanguageCore("en_US");
+        }
+    }
+
+    public void loadLanguageCore(String lang)
+    {
+        GCCoreUtil.loadLanguage(lang, Constants.ASSET_PREFIX, this.GCCoreSource);
     }
 
     @EventHandler
@@ -443,8 +480,6 @@ public class GalacticraftCore
                 }
             }
         }
-
-        RecipeManagerGC.setConfigurableRecipes();
     }
 
     @EventHandler
@@ -522,6 +557,10 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
         GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
         GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
+        if (CompatibilityManager.isIc2Loaded())
+        {
+            GameRegistry.registerTileEntity(TileCableIC2Sealed.class, "GC Sealed IC2 Cable");
+        }
     }
 
     private void registerCreatures()

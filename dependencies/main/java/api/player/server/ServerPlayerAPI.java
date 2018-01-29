@@ -528,8 +528,8 @@ public final class ServerPlayerAPI
 
 		}
 
-		addMethod(id, baseClass, beforeLocalConstructingHookTypes, "beforeLocalConstructing", net.minecraft.server.MinecraftServer.class, net.minecraft.world.WorldServer.class, com.mojang.authlib.GameProfile.class, net.minecraft.server.management.ItemInWorldManager.class);
-		addMethod(id, baseClass, afterLocalConstructingHookTypes, "afterLocalConstructing", net.minecraft.server.MinecraftServer.class, net.minecraft.world.WorldServer.class, com.mojang.authlib.GameProfile.class, net.minecraft.server.management.ItemInWorldManager.class);
+		addMethod(id, baseClass, beforeLocalConstructingHookTypes, "beforeLocalConstructing", net.minecraft.server.MinecraftServer.class, net.minecraft.world.WorldServer.class, com.mojang.authlib.GameProfile.class, net.minecraft.server.management.PlayerInteractionManager.class);
+		addMethod(id, baseClass, afterLocalConstructingHookTypes, "afterLocalConstructing", net.minecraft.server.MinecraftServer.class, net.minecraft.world.WorldServer.class, com.mojang.authlib.GameProfile.class, net.minecraft.server.management.PlayerInteractionManager.class);
 
 
 		addMethod(id, baseClass, beforeAddExhaustionHookTypes, "beforeAddExhaustion", float.class);
@@ -560,13 +560,13 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideCanBreatheUnderwaterHookTypes, "canBreatheUnderwater");
 		addMethod(id, baseClass, afterCanBreatheUnderwaterHookTypes, "afterCanBreatheUnderwater");
 
-		addMethod(id, baseClass, beforeCanHarvestBlockHookTypes, "beforeCanHarvestBlock", net.minecraft.block.Block.class);
-		addMethod(id, baseClass, overrideCanHarvestBlockHookTypes, "canHarvestBlock", net.minecraft.block.Block.class);
-		addMethod(id, baseClass, afterCanHarvestBlockHookTypes, "afterCanHarvestBlock", net.minecraft.block.Block.class);
+		addMethod(id, baseClass, beforeCanHarvestBlockHookTypes, "beforeCanHarvestBlock", net.minecraft.block.state.IBlockState.class);
+		addMethod(id, baseClass, overrideCanHarvestBlockHookTypes, "canHarvestBlock", net.minecraft.block.state.IBlockState.class);
+		addMethod(id, baseClass, afterCanHarvestBlockHookTypes, "afterCanHarvestBlock", net.minecraft.block.state.IBlockState.class);
 
-		addMethod(id, baseClass, beforeCanPlayerEditHookTypes, "beforeCanPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
-		addMethod(id, baseClass, overrideCanPlayerEditHookTypes, "canPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
-		addMethod(id, baseClass, afterCanPlayerEditHookTypes, "afterCanPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, beforeCanPlayerEditHookTypes, "beforeCanPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, overrideCanPlayerEditHookTypes, "canPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, afterCanPlayerEditHookTypes, "afterCanPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
 
 		addMethod(id, baseClass, beforeCanTriggerWalkingHookTypes, "beforeCanTriggerWalking");
 		addMethod(id, baseClass, overrideCanTriggerWalkingHookTypes, "canTriggerWalking");
@@ -604,9 +604,9 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideGetAIMoveSpeedHookTypes, "getAIMoveSpeed");
 		addMethod(id, baseClass, afterGetAIMoveSpeedHookTypes, "afterGetAIMoveSpeed");
 
-		addMethod(id, baseClass, beforeGetBreakSpeedHookTypes, "beforeGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, overrideGetBreakSpeedHookTypes, "getBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, afterGetBreakSpeedHookTypes, "afterGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
+		addMethod(id, baseClass, beforeGetBreakSpeedHookTypes, "beforeGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, overrideGetBreakSpeedHookTypes, "getBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, afterGetBreakSpeedHookTypes, "afterGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
 
 		addMethod(id, baseClass, beforeGetDistanceSqHookTypes, "beforeGetDistanceSq", double.class, double.class, double.class);
 		addMethod(id, baseClass, overrideGetDistanceSqHookTypes, "getDistanceSq", double.class, double.class, double.class);
@@ -656,9 +656,9 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideKnockBackHookTypes, "knockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 		addMethod(id, baseClass, afterKnockBackHookTypes, "afterKnockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeMountEntityHookTypes, "beforeMountEntity", net.minecraft.entity.Entity.class);
-		addMethod(id, baseClass, overrideMountEntityHookTypes, "mountEntity", net.minecraft.entity.Entity.class);
-		addMethod(id, baseClass, afterMountEntityHookTypes, "afterMountEntity", net.minecraft.entity.Entity.class);
+		addMethod(id, baseClass, beforeMountEntityHookTypes, "beforeMountEntity", net.minecraft.entity.Entity.class, boolean.class);
+		addMethod(id, baseClass, overrideMountEntityHookTypes, "mountEntity", net.minecraft.entity.Entity.class, boolean.class);
+		addMethod(id, baseClass, afterMountEntityHookTypes, "afterMountEntity", net.minecraft.entity.Entity.class, boolean.class);
 
 		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", double.class, double.class, double.class);
 		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", double.class, double.class, double.class);
@@ -720,9 +720,9 @@ public final class ServerPlayerAPI
 		addMethod(id, baseClass, overrideSetSprintingHookTypes, "setSprinting", boolean.class);
 		addMethod(id, baseClass, afterSetSprintingHookTypes, "afterSetSprinting", boolean.class);
 
-		addMethod(id, baseClass, beforeSwingItemHookTypes, "beforeSwingItem");
-		addMethod(id, baseClass, overrideSwingItemHookTypes, "swingItem");
-		addMethod(id, baseClass, afterSwingItemHookTypes, "afterSwingItem");
+		addMethod(id, baseClass, beforeSwingItemHookTypes, "beforeSwingItem", net.minecraft.util.EnumHand.class);
+		addMethod(id, baseClass, overrideSwingItemHookTypes, "swingItem", net.minecraft.util.EnumHand.class);
+		addMethod(id, baseClass, afterSwingItemHookTypes, "afterSwingItem", net.minecraft.util.EnumHand.class);
 
 		addMethod(id, baseClass, beforeUpdateEntityActionStateHookTypes, "beforeUpdateEntityActionState");
 		addMethod(id, baseClass, overrideUpdateEntityActionStateHookTypes, "updateEntityActionState");
@@ -1820,17 +1820,15 @@ public final class ServerPlayerAPI
 		Object entityPlayerList;
 		try
 		{
-			Object minecraftServer = net.minecraft.server.MinecraftServer.class.getMethod("func_71276_C").invoke(null);
-			Object serverConfigurationManager = minecraftServer != null ? net.minecraft.server.MinecraftServer.class.getMethod("func_71203_ab").invoke(minecraftServer) : null;
-			entityPlayerList = serverConfigurationManager != null ? serverConfigurationManager.getClass().getField("field_72404_b").get(serverConfigurationManager) : null;
+			Object minecraftServer = net.minecraftforge.fml.common.FMLCommonHandler.instance().getMinecraftServerInstance();
+			entityPlayerList = minecraftServer != null ? net.minecraft.server.MinecraftServer.class.getMethod("func_184103_al").invoke(minecraftServer) : null;
 		}
 		catch(Exception obfuscatedException)
 		{
 			try
 			{
-				Object minecraftServer = net.minecraft.server.MinecraftServer.class.getMethod("getServer").invoke(null);
-				Object serverConfigurationManager = minecraftServer != null ? net.minecraft.server.MinecraftServer.class.getMethod("getConfigurationManager").invoke(minecraftServer) : null;
-				entityPlayerList = serverConfigurationManager != null ? serverConfigurationManager.getClass().getField("playerEntityList").get(serverConfigurationManager) : null;
+				Object minecraftServer = net.minecraftforge.fml.common.FMLCommonHandler.instance().getMinecraftServerInstance();
+				entityPlayerList = minecraftServer != null ? net.minecraft.server.MinecraftServer.class.getMethod("getPlayerList").invoke(minecraftServer) : null;
 			}
 			catch(Exception deobfuscatedException)
 			{
@@ -1849,21 +1847,21 @@ public final class ServerPlayerAPI
 		return allInstances.toArray(new net.minecraft.entity.player.EntityPlayerMP[allInstances.size()]);
 	}
 
-	public static void beforeLocalConstructing(IServerPlayerAPI serverPlayer, net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	public static void beforeLocalConstructing(IServerPlayerAPI serverPlayer, net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 		ServerPlayerAPI serverPlayerAPI = serverPlayer.getServerPlayerAPI();
 		if(serverPlayerAPI != null)
 			serverPlayerAPI.load();
 
 		if(serverPlayerAPI != null)
-			serverPlayerAPI.beforeLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramItemInWorldManager);
+			serverPlayerAPI.beforeLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramPlayerInteractionManager);
 	}
 
-	public static void afterLocalConstructing(IServerPlayerAPI serverPlayer, net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	public static void afterLocalConstructing(IServerPlayerAPI serverPlayer, net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 		ServerPlayerAPI serverPlayerAPI = serverPlayer.getServerPlayerAPI();
 		if(serverPlayerAPI != null)
-			serverPlayerAPI.afterLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramItemInWorldManager);
+			serverPlayerAPI.afterLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramPlayerInteractionManager);
 	}
 
 	public static ServerPlayerBase getServerPlayerBase(IServerPlayerAPI serverPlayer, String baseId)
@@ -2433,19 +2431,19 @@ public final class ServerPlayerAPI
 		return result;
 	}
 
-	private void beforeLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	private void beforeLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 		if(beforeLocalConstructingHooks != null)
 			for(int i = beforeLocalConstructingHooks.length - 1; i >= 0 ; i--)
-				beforeLocalConstructingHooks[i].beforeLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramItemInWorldManager);
+				beforeLocalConstructingHooks[i].beforeLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramPlayerInteractionManager);
 		beforeLocalConstructingHooks = null;
 	}
 
-	private void afterLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	private void afterLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 		if(afterLocalConstructingHooks != null)
 			for(int i = 0; i < afterLocalConstructingHooks.length; i++)
-				afterLocalConstructingHooks[i].afterLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramItemInWorldManager);
+				afterLocalConstructingHooks[i].afterLocalConstructing(paramMinecraftServer, paramWorldServer, paramGameProfile, paramPlayerInteractionManager);
 		afterLocalConstructingHooks = null;
 	}
 
@@ -2959,32 +2957,32 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterCanBreatheUnderwaterSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterCanBreatheUnderwaterInferiors = new Hashtable<String, String[]>(0);
 
-	public static boolean canHarvestBlock(IServerPlayerAPI target, net.minecraft.block.Block paramBlock)
+	public static boolean canHarvestBlock(IServerPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		boolean _result;
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isCanHarvestBlockModded)
-			_result = serverPlayerAPI.canHarvestBlock(paramBlock);
+			_result = serverPlayerAPI.canHarvestBlock(paramIBlockState);
 		else
-			_result = target.localCanHarvestBlock(paramBlock);
+			_result = target.localCanHarvestBlock(paramIBlockState);
 		return _result;
 	}
 
-	private boolean canHarvestBlock(net.minecraft.block.Block paramBlock)
+	private boolean canHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		if(beforeCanHarvestBlockHooks != null)
 			for(int i = beforeCanHarvestBlockHooks.length - 1; i >= 0 ; i--)
-				beforeCanHarvestBlockHooks[i].beforeCanHarvestBlock(paramBlock);
+				beforeCanHarvestBlockHooks[i].beforeCanHarvestBlock(paramIBlockState);
 
 		boolean _result;
 		if(overrideCanHarvestBlockHooks != null)
-			_result = overrideCanHarvestBlockHooks[overrideCanHarvestBlockHooks.length - 1].canHarvestBlock(paramBlock);
+			_result = overrideCanHarvestBlockHooks[overrideCanHarvestBlockHooks.length - 1].canHarvestBlock(paramIBlockState);
 		else
-			_result = player.localCanHarvestBlock(paramBlock);
+			_result = player.localCanHarvestBlock(paramIBlockState);
 
 		if(afterCanHarvestBlockHooks != null)
 			for(int i = 0; i < afterCanHarvestBlockHooks.length; i++)
-				afterCanHarvestBlockHooks[i].afterCanHarvestBlock(paramBlock);
+				afterCanHarvestBlockHooks[i].afterCanHarvestBlock(paramIBlockState);
 
 		return _result;
 	}
@@ -3021,7 +3019,7 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterCanHarvestBlockSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterCanHarvestBlockInferiors = new Hashtable<String, String[]>(0);
 
-	public static boolean canPlayerEdit(IServerPlayerAPI target, net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public static boolean canPlayerEdit(IServerPlayerAPI target, net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		boolean _result;
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
@@ -3032,7 +3030,7 @@ public final class ServerPlayerAPI
 		return _result;
 	}
 
-	private boolean canPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	private boolean canPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		if(beforeCanPlayerEditHooks != null)
 			for(int i = beforeCanPlayerEditHooks.length - 1; i >= 0 ; i--)
@@ -3621,7 +3619,7 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetAIMoveSpeedSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetAIMoveSpeedInferiors = new Hashtable<String, String[]>(0);
 
-	public static float getBreakSpeed(IServerPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public static float getBreakSpeed(IServerPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		float _result;
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
@@ -3632,7 +3630,7 @@ public final class ServerPlayerAPI
 		return _result;
 	}
 
-	private float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	private float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		if(beforeGetBreakSpeedHooks != null)
 			for(int i = beforeGetBreakSpeedHooks.length - 1; i >= 0 ; i--)
@@ -4415,30 +4413,34 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterKnockBackSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterKnockBackInferiors = new Hashtable<String, String[]>(0);
 
-	public static void mountEntity(IServerPlayerAPI target, net.minecraft.entity.Entity paramEntity)
+	public static boolean mountEntity(IServerPlayerAPI target, net.minecraft.entity.Entity paramEntity, boolean paramBoolean)
 	{
+		boolean _result;
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isMountEntityModded)
-			serverPlayerAPI.mountEntity(paramEntity);
+			_result = serverPlayerAPI.mountEntity(paramEntity, paramBoolean);
 		else
-			target.localMountEntity(paramEntity);
+			_result = target.localMountEntity(paramEntity, paramBoolean);
+		return _result;
 	}
 
-	private void mountEntity(net.minecraft.entity.Entity paramEntity)
+	private boolean mountEntity(net.minecraft.entity.Entity paramEntity, boolean paramBoolean)
 	{
 		if(beforeMountEntityHooks != null)
 			for(int i = beforeMountEntityHooks.length - 1; i >= 0 ; i--)
-				beforeMountEntityHooks[i].beforeMountEntity(paramEntity);
+				beforeMountEntityHooks[i].beforeMountEntity(paramEntity, paramBoolean);
 
+		boolean _result;
 		if(overrideMountEntityHooks != null)
-			overrideMountEntityHooks[overrideMountEntityHooks.length - 1].mountEntity(paramEntity);
+			_result = overrideMountEntityHooks[overrideMountEntityHooks.length - 1].mountEntity(paramEntity, paramBoolean);
 		else
-			player.localMountEntity(paramEntity);
+			_result = player.localMountEntity(paramEntity, paramBoolean);
 
 		if(afterMountEntityHooks != null)
 			for(int i = 0; i < afterMountEntityHooks.length; i++)
-				afterMountEntityHooks[i].afterMountEntity(paramEntity);
+				afterMountEntityHooks[i].afterMountEntity(paramEntity, paramBoolean);
 
+		return _result;
 	}
 
 	protected ServerPlayerBase GetOverwrittenMountEntity(ServerPlayerBase overWriter)
@@ -5343,29 +5345,29 @@ public final class ServerPlayerAPI
 	private static final Map<String, String[]> allBaseAfterSetSprintingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterSetSprintingInferiors = new Hashtable<String, String[]>(0);
 
-	public static void swingItem(IServerPlayerAPI target)
+	public static void swingItem(IServerPlayerAPI target, net.minecraft.util.EnumHand paramEnumHand)
 	{
 		ServerPlayerAPI serverPlayerAPI = target.getServerPlayerAPI();
 		if(serverPlayerAPI != null && serverPlayerAPI.isSwingItemModded)
-			serverPlayerAPI.swingItem();
+			serverPlayerAPI.swingItem(paramEnumHand);
 		else
-			target.localSwingItem();
+			target.localSwingItem(paramEnumHand);
 	}
 
-	private void swingItem()
+	private void swingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 		if(beforeSwingItemHooks != null)
 			for(int i = beforeSwingItemHooks.length - 1; i >= 0 ; i--)
-				beforeSwingItemHooks[i].beforeSwingItem();
+				beforeSwingItemHooks[i].beforeSwingItem(paramEnumHand);
 
 		if(overrideSwingItemHooks != null)
-			overrideSwingItemHooks[overrideSwingItemHooks.length - 1].swingItem();
+			overrideSwingItemHooks[overrideSwingItemHooks.length - 1].swingItem(paramEnumHand);
 		else
-			player.localSwingItem();
+			player.localSwingItem(paramEnumHand);
 
 		if(afterSwingItemHooks != null)
 			for(int i = 0; i < afterSwingItemHooks.length; i++)
-				afterSwingItemHooks[i].afterSwingItem();
+				afterSwingItemHooks[i].afterSwingItem(paramEnumHand);
 
 	}
 

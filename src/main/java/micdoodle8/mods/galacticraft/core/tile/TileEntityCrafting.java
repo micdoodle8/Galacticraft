@@ -13,7 +13,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -111,7 +111,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 ItemStack craftingResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
                 if (craftingResult != null)
                 {
-                    ItemStack[] aitemstack = CraftingManager.getInstance().func_180303_b(this.craftMatrix, this.worldObj);
+                    ItemStack[] aitemstack = CraftingManager.getInstance().getRemainingItems(this.craftMatrix, this.worldObj);
 
                     for (int i = 0; i < aitemstack.length; ++i)
                     {
@@ -204,7 +204,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         NBTTagList var2 = new NBTTagList();
@@ -230,6 +230,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
 
         nbt.setTag("Items", var2);
+        return nbt;
     }
 
     @Override

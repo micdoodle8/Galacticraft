@@ -97,7 +97,7 @@ public class GCBlocks
     public static Block concealedRepeater_Unpowered;
     public static Block concealedDetector;
 
-    public static final Material machine = new Material(MapColor.ironColor);
+    public static final Material machine = new Material(MapColor.IRON);
 
     public static ArrayList<Block> hiddenBlocks = new ArrayList<Block>();
     public static ArrayList<Block> otherModTorchesLit = new ArrayList<Block>();
@@ -159,8 +159,8 @@ public class GCBlocks
         GCBlocks.telemetry = new BlockTelemetry("telemetry");
         GCBlocks.fluidTank = new BlockFluidTank("fluid_tank");
         GCBlocks.bossSpawner = new BlockBossSpawner("boss_spawner");
-        GCBlocks.slabGCHalf = new BlockSlabGC("slab_gc_half", Material.rock);
-        GCBlocks.slabGCDouble = new BlockDoubleSlabGC("slab_gc_double", Material.rock);
+        GCBlocks.slabGCHalf = new BlockSlabGC("slab_gc_half", Material.ROCK);
+        GCBlocks.slabGCDouble = new BlockDoubleSlabGC("slab_gc_double", Material.ROCK);
         GCBlocks.tinStairs1 = new BlockStairsGC("tin_stairs_1", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0)).setHardness(2.0F);
         GCBlocks.tinStairs2 = new BlockStairsGC("tin_stairs_2", basicBlock.getDefaultState().withProperty(BlockBasic.BASIC_TYPE, BlockBasic.EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_1)).setHardness(2.0F);
         GCBlocks.moonStoneStairs = new BlockStairsGC("moon_stairs_stone", blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE)).setHardness(1.5F);
@@ -187,7 +187,7 @@ public class GCBlocks
         GCBlocks.setHarvestLevels();
 
         //Complete registration of various types of torches
-        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.torch);
+        BlockUnlitTorch.register((BlockUnlitTorch) GCBlocks.unlitTorch, (BlockUnlitTorch) GCBlocks.unlitTorchLit, Blocks.TORCH);
 
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.basicBlock, 1, 5));
         OreDictionary.registerOre("oreCopper", new ItemStack(GCBlocks.blockMoon, 1, 0));
@@ -343,8 +343,13 @@ public class GCBlocks
         {
             ISortableBlock sortableBlock = (ISortableBlock) block;
             List<ItemStack> blocks = Lists.newArrayList();
+            Item item = Item.getItemFromBlock(block);
+            if (item == null)
+            {
+                return;
+            }
             registeringSorted = true;
-            block.getSubBlocks(Item.getItemFromBlock(block), null, blocks);
+            block.getSubBlocks(item, null, blocks);
             registeringSorted = false;
             for (ItemStack stack : blocks)
             {

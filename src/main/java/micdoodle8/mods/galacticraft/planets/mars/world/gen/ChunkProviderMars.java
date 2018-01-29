@@ -9,12 +9,11 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.List;
 
@@ -38,9 +37,9 @@ public class ChunkProviderMars extends ChunkProviderSpace
     }
 
     @Override
-    protected BiomeGenBase[] getBiomesForGeneration()
+    protected Biome[] getBiomesForGeneration()
     {
-        return new BiomeGenBase[] { BiomeGenBaseMars.marsFlat };
+        return new Biome[] { BiomeMars.marsFlat };
     }
 
     @Override
@@ -109,18 +108,18 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     public void onChunkProvide(int cX, int cZ, ChunkPrimer primer)
     {
-        this.dungeonGenerator.generate(this, this.worldObj, cX, cZ, primer);
+        this.dungeonGenerator.generate(this.worldObj, cX, cZ, primer);
     }
 
     @Override
-    public void onPopulate(IChunkProvider provider, int cX, int cZ)
+    public void onPopulate(int cX, int cZ)
     {
-        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkCoordIntPair(cX, cZ));
+        this.dungeonGenerator.generateStructure(this.worldObj, this.rand, new ChunkPos(cX, cZ));
     }
 
     @Override
     public void recreateStructures(Chunk chunk, int x, int z)
     {
-        this.dungeonGenerator.generate(this, this.worldObj, x, z, null);
+        this.dungeonGenerator.generate(this.worldObj, x, z, null);
     }
 }

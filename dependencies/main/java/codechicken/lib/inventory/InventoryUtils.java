@@ -6,21 +6,43 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryLargeChest;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTPrimitive;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Plane;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.EmptyHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 public class InventoryUtils {
+
+    public static boolean hasItemHandlerCap(TileEntity tileEntity, EnumFacing face) {
+        return tileEntity != null && (tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face) || tileEntity instanceof ISidedInventory || tileEntity instanceof IInventory);
+    }
+
+    public static IItemHandler getItemHandlerCap(TileEntity tileEntity, EnumFacing face) {
+        if (tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face)) {
+            return tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, face);
+        } else if (tileEntity instanceof ISidedInventory) {
+            return new SidedInvWrapper(((ISidedInventory) tileEntity), face);
+        } else if (tileEntity instanceof IInventory) {
+            return new InvWrapper(((IInventory) tileEntity));
+        }
+        return new EmptyHandler();
+    }
+
     /**
      * Constructor for ItemStack with tag
      */
@@ -34,7 +56,7 @@ public class InventoryUtils {
      * Gets the actual damage of an item without asking the Item
      */
     public static int actualDamage(ItemStack stack) {
-        return Items.diamond.getDamage(stack);
+        return Items.DIAMOND.getDamage(stack);
     }
 
     /**
@@ -65,7 +87,7 @@ public class InventoryUtils {
     /**
      * Static default implementation for IInventory method
      */
-    public static ItemStack getStackInSlotOnClosing(IInventory inv, int slot) {
+    public static ItemStack removeStackFromSlot(IInventory inv, int slot) {
         ItemStack stack = inv.getStackInSlot(slot);
         inv.setInventorySlotContents(slot, null);
         return stack;
@@ -136,7 +158,7 @@ public class InventoryUtils {
             int b = tag.getShort("Slot");
             items[b] = ItemStack.loadItemStackFromNBT(tag);
             if (tag.hasKey("Quantity")) {
-                items[b].stackSize = ((NBTBase.NBTPrimitive) tag.getTag("Quantity")).getInt();
+                items[b].stackSize = ((NBTPrimitive) tag.getTag("Quantity")).getInt();
             }
         }
     }
@@ -265,7 +287,10 @@ public class InventoryUtils {
      * Gets an IInventory from a coordinate with support for double chests
      */
     public static IInventory getInventory(World world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
+        return getInventory(world.getTileEntity(pos));
+    }
+
+    public static IInventory getInventory(TileEntity tile) {
         if (!(tile instanceof IInventory)) {
             return null;
         }
@@ -274,7 +299,6 @@ public class InventoryUtils {
             return getChest((TileEntityChest) tile);
         }
         return (IInventory) tile;
-
     }
 
     public static IInventory getChest(TileEntityChest chest) {
@@ -287,10 +311,7 @@ public class InventoryUtils {
     }
 
     public static boolean canStack(ItemStack stack1, ItemStack stack2) {
-        return stack1 == null || stack2 == null ||
-                (stack1.getItem() == stack2.getItem() &&
-                        (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) &&
-                        ItemStack.areItemStackTagsEqual(stack2, stack1)) && stack1.isStackable();
+        return stack1 == null || stack2 == null || (stack1.getItem() == stack2.getItem() && (!stack2.getHasSubtypes() || stack2.getItemDamage() == stack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(stack2, stack1)) && stack1.isStackable();
     }
 
     /**
@@ -316,13 +337,13 @@ public class InventoryUtils {
     }
 
     /**
-     * Drops all items from inv using getStackInSlotOnClosing
+     * Drops all items from inv using removeStackFromSlot
      */
     public static void dropOnClose(EntityPlayer player, IInventory inv) {
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             ItemStack stack = inv.removeStackFromSlot(i);
             if (stack != null) {
-                player.dropPlayerItemWithRandomChoice(stack, false);
+                player.dropItem(stack, false);
             }
         }
     }
@@ -330,13 +351,13 @@ public class InventoryUtils {
     public static NBTTagCompound savePersistant(ItemStack stack, NBTTagCompound tag) {
         stack.writeToNBT(tag);
         tag.removeTag("id");
-        tag.setString("name", Item.itemRegistry.getNameForObject(stack.getItem()).toString());
+        tag.setString("name", stack.getItem().getRegistryName().toString());
         return tag;
     }
 
     public static ItemStack loadPersistant(NBTTagCompound tag) {
         String name = tag.getString("name");
-        Item item = (Item) Item.itemRegistry.getObject(new ResourceLocation(name));
+        Item item = Item.REGISTRY.getObject(new ResourceLocation(name));
         if (item == null) {
             return null;
         }

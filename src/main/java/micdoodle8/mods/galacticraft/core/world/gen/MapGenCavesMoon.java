@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
 
@@ -168,18 +168,16 @@ public class MapGenCavesMoon extends MapGenBaseMeta
 
                                     if (xfactorSq + zfactorSq < 1.0D)
                                     {
-                                        final int coords = (localX * 16 + localZ) * 256 + localY;
-
                                         if (yfactor > -0.7D && xfactorSq + yfactorSq + zfactorSq < 1.0D)
                                         {
-                                            IBlockState state = primer.getBlockState(coords);
+                                            IBlockState state = primer.getBlockState(localX, localY, localZ);
                                             if (state.getBlock() == testBlock)
                                             {
                                                 int meta = state.getBlock().getMetaFromState(state); 
                                                 if (meta == 3 || meta == 4 || meta == 5)
                                                 {
-                                                    primer.setBlockState(coords, Blocks.air.getDefaultState());
-//                                                    blockIdArray[coords] = Blocks.air;
+                                                    primer.setBlockState(localX, localY, localZ, Blocks.AIR.getDefaultState());
+//                                                    blockIdArray[coords] = Blocks.AIR;
                                                 }
                                             }
                                         }

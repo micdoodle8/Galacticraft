@@ -109,9 +109,11 @@ public abstract class OptionButton extends Option {
 
     @Override
     public void mouseClicked(int x, int y, int button) {
-        if (pointInside(x, y)) {
-            if (onClick(button)) {
-                playClickSound();
+        if (isEnabled()) {
+            if (pointInside(x, y)) {
+                if (onClick(button)) {
+                    playClickSound();
+                }
             }
         }
     }

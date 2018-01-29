@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -704,7 +704,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 OpenGlHelper.glBlendFunc(770, 771, 1, 0);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 Tessellator tessellator = Tessellator.getInstance();
-                WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+                VertexBuffer worldRenderer = tessellator.getBuffer();
 
                 for (int x = 0; x < this.spaceRaceData.getFlagData().getWidth(); x++)
                 {
@@ -804,7 +804,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 }
 
                 tessellator = Tessellator.getInstance();
-                worldRenderer = tessellator.getWorldRenderer();
+                worldRenderer = tessellator.getBuffer();
                 worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
                 worldRenderer.pos((double) x2 - 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();
                 worldRenderer.pos((double) x1 + 1, (double) y1 + 1, this.zLevel).color(this.sliderColorR.getNormalizedValue(), this.sliderColorG.getNormalizedValue(), this.sliderColorB.getNormalizedValue(), 1.0F).endVertex();

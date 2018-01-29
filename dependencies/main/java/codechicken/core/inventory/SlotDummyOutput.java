@@ -1,6 +1,7 @@
 package codechicken.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
@@ -10,7 +11,7 @@ public class SlotDummyOutput extends SlotHandleClicks {
     }
 
     @Override
-    public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, int modifier) {
+    public ItemStack slotClick(ContainerExtended container, EntityPlayer player, int button, ClickType clickType) {
         return null;
     }
 }

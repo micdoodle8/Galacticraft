@@ -1,12 +1,19 @@
 package codechicken.nei;
 
 import codechicken.core.*;
+import codechicken.lib.asm.discovery.ClassDiscoverer;
+import codechicken.lib.asm.discovery.IStringMatcher;
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.ConfigTag;
 import codechicken.lib.config.ConfigTagParent;
+import codechicken.lib.util.ClientUtils;
+import codechicken.lib.util.CommonUtils;
 import codechicken.nei.api.*;
+import codechicken.nei.api.layout.LayoutStyle;
 import codechicken.nei.config.*;
 import codechicken.nei.recipe.RecipeInfo;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIClientUtils;
 import codechicken.obfuscator.ObfuscationRun;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -15,10 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraft.world.storage.SaveFormatComparator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.lwjgl.input.Keyboard;
+import net.minecraft.world.storage.WorldSummary;
 
 import java.io.File;
 import java.util.Collections;
@@ -31,7 +35,7 @@ public class NEIClientConfig {
     private static boolean configLoaded;
     private static boolean enabledOverride;
 
-    public static Logger logger = LogManager.getLogger("NotEnoughItems");
+    //public static Logger logger = LogManager.getLogger("NotEnoughItems");
     public static File configDir = new File(CommonUtils.getMinecraftDir(), "config/NEI/");
     public static ConfigSet global = new ConfigSet(new File("saves/NEI/client.dat"), new ConfigFile(new File(configDir, "client.cfg")));
     public static ConfigSet world;
@@ -127,10 +131,10 @@ public class NEIClientConfig {
         tag.getTag("inventory.searchmode").getIntValue(1);
         API.addOption(new OptionCycled("inventory.searchmode", 3, true));
 
-        tag.getTag("world.highlight_tips").getBooleanValue(false);
-        tag.getTag("world.highlight_tips.x").getIntValue(5000);
-        tag.getTag("world.highlight_tips.y").getIntValue(100);
-        API.addOption(new OptionOpenGui("world.highlight_tips", GuiHighlightTips.class));
+        //tag.getTag("world.highlight_tips").getBooleanValue(false);
+        //tag.getTag("world.highlight_tips.x").getIntValue(5000);
+        //tag.getTag("world.highlight_tips.y").getIntValue(100);
+        //API.addOption(new OptionOpenGui("world.highlight_tips", GuiHighlightTips.class));
 
         tag.getTag("inventory.profileRecipes").getBooleanValue(false);
         API.addOption(new OptionToggleButton("inventory.profileRecipes", true));
@@ -146,7 +150,26 @@ public class NEIClientConfig {
         tag.getTag("command.heal").setDefaultValue("");
         API.addOption(new OptionTextField("command.heal"));
 
-        setDefaultKeyBindings();
+//        JEIIntegrationManager.initConfig(tag);
+//
+//        API.addOption(new ItemBrowserButton("jei.itemPanel") {
+//            @Override
+//            protected void setValue(EnumItemBrowser itemBrowser) {
+//                JEIIntegrationManager.setItemPanelOwner(itemBrowser);
+//            }
+//        });
+//
+//        API.addOption(new ItemBrowserButton("jei.searchBox") {
+//            @Override
+//            public boolean isEnabled() {
+//                return JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI;
+//            }
+//
+//            @Override
+//            protected void setValue(EnumItemBrowser itemBrowser) {
+//                JEIIntegrationManager.setSearchBoxOwner(itemBrowser);
+//            }
+//        });
     }
 
     private static void linkOptionList() {
@@ -173,35 +196,13 @@ public class NEIClientConfig {
         });
     }
 
-    private static void setDefaultKeyBindings() {
-        API.addKeyBind("gui.recipe", Keyboard.KEY_R);
-        API.addKeyBind("gui.usage", Keyboard.KEY_U);
-        API.addKeyBind("gui.back", Keyboard.KEY_BACK);
-        API.addKeyBind("gui.enchant", Keyboard.KEY_X);
-        API.addKeyBind("gui.potion", Keyboard.KEY_P);
-        API.addKeyBind("gui.prev", Keyboard.KEY_PRIOR);
-        API.addKeyBind("gui.next", Keyboard.KEY_NEXT);
-        API.addKeyBind("gui.hide", Keyboard.KEY_O);
-        API.addKeyBind("gui.search", Keyboard.KEY_F);
-        API.addKeyBind("world.chunkoverlay", Keyboard.KEY_F9);
-        API.addKeyBind("world.moboverlay", Keyboard.KEY_F7);
-        API.addKeyBind("world.highlight_tips", Keyboard.KEY_NUMPAD0);
-        API.addKeyBind("world.dawn", 0);
-        API.addKeyBind("world.noon", 0);
-        API.addKeyBind("world.dusk", 0);
-        API.addKeyBind("world.midnight", 0);
-        API.addKeyBind("world.rain", 0);
-        API.addKeyBind("world.heal", 0);
-        API.addKeyBind("world.creative", 0);
-    }
-
     public static OptionList getOptionList() {
         return OptionList.getOptionList("nei.options");
     }
 
     public static void loadWorld(String saveName) {
         setInternalEnabled(true);
-        logger.debug("Loading " + (Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote") + " World");
+        LogHelper.debug("Loading " + (Minecraft.getMinecraft().isSingleplayer() ? "Local" : "Remote") + " World");
         bootNEI(ClientUtils.getWorld());
 
         File saveDir = new File(CommonUtils.getMinecraftDir(), "saves/NEI/" + saveName);
@@ -245,14 +246,6 @@ public class NEIClientConfig {
         world.saveNBT();
     }
 
-    public static int getKeyBinding(String string) {
-        return getSetting("keys." + string).getIntValue();
-    }
-
-    public static void setDefaultKeyBinding(String string, int key) {
-        getSetting("keys." + string).getIntValue(key);
-    }
-
     public static void bootNEI(World world) {
         if (configLoaded) {
             return;
@@ -282,9 +275,9 @@ public class NEIClientConfig {
                 IConfigureNEI config = (IConfigureNEI) clazz.newInstance();
                 config.loadConfig();
                 NEIModContainer.plugins.add(config);
-                logger.debug("Loaded " + clazz.getName());
+                LogHelper.debug("Loaded " + clazz.getName());
             } catch (Exception e) {
-                logger.error("Failed to Load " + clazz.getName(), e);
+                LogHelper.errorError("Failed to Load " + clazz.getName(), e);
             }
         }
 
@@ -383,8 +376,23 @@ public class NEIClientConfig {
     }
 
     public static void setSearchExpression(String expression) {
+//        JEIIntegrationManager.setFilterText(expression);
         world.nbt.setString("search", expression);
         world.saveNBT();
+    }
+
+    /**
+     * A split off of setSearchExpression that avoids a JEI update.
+     *
+     * @param expression Search term.
+     */
+    public static void setSearchExpression(String expression, boolean updateJEI) {
+        if (updateJEI) {
+            setSearchExpression(expression);
+        } else {
+            world.nbt.setString("search", expression);
+            world.saveNBT();
+        }
     }
 
     public static boolean getMagnetMode() {
@@ -513,11 +521,8 @@ public class NEIClientConfig {
         }
 
         String cmd = getStringSetting("command." + base);
-        if (cmd == null || !cmd.startsWith("/")) {
-            return false;
-        }
+        return !(cmd == null || !cmd.startsWith("/"));
 
-        return true;
     }
 
     private static boolean modePermitsAction(String name) {
@@ -552,15 +557,15 @@ public class NEIClientConfig {
             return;
         }
 
-        List<SaveFormatComparator> saves;
+        List<WorldSummary> saves;
         try {
             saves = Minecraft.getMinecraft().getSaveLoader().getSaveList();
         } catch (Exception e) {
-            logger.error("Error loading saves", e);
+            LogHelper.errorError("Error loading saves", e);
             return;
         }
         HashSet<String> saveFileNames = new HashSet<String>();
-        for (SaveFormatComparator save : saves) {
+        for (WorldSummary save : saves) {
             saveFileNames.add(save.getFileName());
         }
 

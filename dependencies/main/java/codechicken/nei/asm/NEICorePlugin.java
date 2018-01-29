@@ -1,9 +1,10 @@
 package codechicken.nei.asm;
 
-import codechicken.core.launch.CodeChickenCorePlugin;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.IFMLCallHook;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
 import java.util.Map;
@@ -11,10 +12,18 @@ import java.util.Map;
 @TransformerExclusions({ "codechicken.nei.asm" })
 public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     public static File location;
+    public static boolean missingCCL = false;
+
+    public NEICorePlugin() {
+        cclCheck();
+    }
 
     @Override
     public String[] getASMTransformerClass() {
-        CodeChickenCorePlugin.versionCheck(CodeChickenCorePlugin.mcVersion, "NotEnoughItems");
+        if (missingCCL) {
+            FMLLog.log("NotEnoughItems", Level.FATAL, "Missing CCL! not registering class transformer.");
+            return new String[0];
+        }
         return new String[] { "codechicken.nei.asm.NEITransformer" };
     }
 
@@ -44,5 +53,14 @@ public class NEICorePlugin implements IFMLLoadingPlugin, IFMLCallHook {
     @Override
     public Void call() {
         return null;
+    }
+    private static void cclCheck() {
+        try {
+            Class.forName("codechicken.lib.asm.ASMHelper", false, NEICorePlugin.class.getClassLoader());
+            missingCCL = false;
+        } catch (ClassNotFoundException cNFE) {
+            cNFE.printStackTrace();
+            missingCCL = true;
+        }
     }
 }

@@ -3,14 +3,12 @@ package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedWitch;
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -28,7 +26,7 @@ public class LayerHeldItemEvolvedWitch implements LayerRenderer<EntityEvolvedWit
     @Override
     public void doRenderLayer(EntityEvolvedWitch entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        ItemStack itemstack = entity.getHeldItem();
+        ItemStack itemstack = entity.getHeldItemMainhand();
 
         if (itemstack != null)
         {
@@ -47,14 +45,14 @@ public class LayerHeldItemEvolvedWitch implements LayerRenderer<EntityEvolvedWit
             Item item = itemstack.getItem();
             Minecraft mc = Minecraft.getMinecraft();
 
-            if (item instanceof ItemBlock && mc.getBlockRendererDispatcher().isRenderTypeChest(Block.getBlockFromItem(item), itemstack.getMetadata()))
-            {
-                GlStateManager.translate(0.0F, 0.0625F, -0.25F);
-                GlStateManager.rotate(30.0F, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(-5.0F, 0.0F, 1.0F, 0.0F);
-                GlStateManager.scale(0.375F, -0.375F, 0.375F);
-            }
-            else if (item == Items.bow)
+//            if (item instanceof ItemBlock && mc.getBlockRendererDispatcher().isRenderTypeChest(Block.getBlockFromItem(item), itemstack.getMetadata()))
+//            {
+//                GlStateManager.translate(0.0F, 0.0625F, -0.25F);
+//                GlStateManager.rotate(30.0F, 1.0F, 0.0F, 0.0F);
+//                GlStateManager.rotate(-5.0F, 0.0F, 1.0F, 0.0F);
+//                GlStateManager.scale(0.375F, -0.375F, 0.375F);
+//            }
+            if (item == Items.BOW)
             {
                 GlStateManager.translate(0.0F, 0.125F, -0.125F);
                 GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
@@ -86,7 +84,7 @@ public class LayerHeldItemEvolvedWitch implements LayerRenderer<EntityEvolvedWit
             }
             GlStateManager.rotate(-15.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(40.0F, 0.0F, 0.0F, 1.0F);
-            mc.getItemRenderer().renderItem(entity, itemstack, TransformType.THIRD_PERSON);
+            mc.getItemRenderer().renderItem(entity, itemstack, TransformType.THIRD_PERSON_RIGHT_HAND);
             GlStateManager.popMatrix();
         }
     }

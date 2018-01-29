@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.jei.buggy;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,10 +31,15 @@ public class BuggyRecipeWrapper extends BlankRecipeWrapper implements ICraftingR
         return list;
     }
 
-    @Nonnull
+	@Nonnull
+	@Override
+	public List<ItemStack> getOutputs() {
+		return Collections.singletonList(recipe.getRecipeOutput());
+	}
+
     @Override
-    public List<ItemStack> getOutputs()
+    public void getIngredients(IIngredients ingredients)
     {
-        return Collections.singletonList(recipe.getRecipeOutput());
+        // TODO Auto-generated method stub
     }
 }

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.client.FootprintRenderer;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
@@ -26,8 +27,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.*;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -44,9 +50,9 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3)
+    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        return this.wakeUpPlayer(player, par1, par2, par3, false);
+        return this.wakeUpPlayer(player, immediately, updateWorldFlag, setSpawn, false);
     }
 
     @Override
@@ -72,7 +78,7 @@ public class PlayerClient implements IPlayerClient
             stats.setInFreefall(false);
             return false;
         }
-        return !(player.ridingEntity instanceof EntityLanderBase) && vanillaInside;
+        return !(player.getRidingEntity() instanceof EntityLanderBase) && vanillaInside;
     }
 
     @Override
@@ -132,7 +138,7 @@ public class PlayerClient implements IPlayerClient
     public void onLivingUpdatePost(EntityPlayerSP player)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
-        boolean ridingThirdPersonEntity = player.ridingEntity instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.ridingEntity).defaultThirdPerson();
+        boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
 
         if (player.worldObj.provider instanceof IZeroGDimension)
         {
@@ -187,12 +193,12 @@ public class PlayerClient implements IPlayerClient
                 FMLClientHandler.instance().getClient().gameSettings.thirdPersonView = 1;
         }
 
-        if (player.ridingEntity instanceof ICameraZoomEntity)
+        if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             if(!ConfigManagerCore.disableVehicleCameraChanges)
             {
                 stats.setLastZoomed(true);
-                TickHandlerClient.zoom(((ICameraZoomEntity) player.ridingEntity).getCameraZoom());
+                TickHandlerClient.zoom(((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom());
             }
         }
         else if (stats.isLastZoomed())
@@ -242,7 +248,7 @@ public class PlayerClient implements IPlayerClient
 
         if (!stats.isLastUsingParachute() && stats.isUsingParachute())
         {
-            FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(new ResourceLocation(Constants.TEXTURE_PREFIX + "player.parachute"), 0.95F + player.getRNG().nextFloat() * 0.1F, 1.0F, (float) player.posX, (float) player.posY, (float) player.posZ));
+            FMLClientHandler.instance().getClient().getSoundHandler().playSound(new PositionedSoundRecord(GCSounds.parachute, SoundCategory.PLAYERS, 0.95F + player.getRNG().nextFloat() * 0.1F, 1.0F, (float) player.posX, (float) player.posY, (float) player.posZ));
         }
 
         stats.setLastUsingParachute(stats.isUsingParachute());
@@ -252,17 +258,12 @@ public class PlayerClient implements IPlayerClient
     @Override
     public float getBedOrientationInDegrees(EntityPlayerSP player, float vanillaDegrees)
     {
-        if (player.playerLocation != null)
+        if (player.bedLocation != null)
         {
-            int x = player.playerLocation.getX();
-            int y = player.playerLocation.getY();
-            int z = player.playerLocation.getZ();
-            BlockPos pos = new BlockPos(x, y, z);
-
-            if (player.worldObj.getTileEntity(pos) instanceof TileEntityAdvanced)
+            if (player.worldObj.getTileEntity(player.bedLocation) instanceof TileEntityAdvanced)
             {
 //                int j = player.worldObj.getBlock(x, y, z).getBedDirection(player.worldObj, x, y, z);
-                IBlockState state = player.worldObj.getBlockState(pos);
+                IBlockState state = player.worldObj.getBlockState(player.bedLocation);
                 switch (state.getBlock().getMetaFromState(state) - 4)
                 {
                 case 0:
@@ -290,7 +291,7 @@ public class PlayerClient implements IPlayerClient
         double motionSqrd = motionX * motionX + motionZ * motionZ;
 
         // If the player is on the moon, not airbourne and not riding anything
-        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.ridingEntity == null && !player.capabilities.isFlying)
+        if (motionSqrd > 0.001 && player.worldObj != null && player.worldObj.provider instanceof WorldProviderMoon && player.getRidingEntity() == null && !player.capabilities.isFlying)
         {
             int iPosX = MathHelper.floor_double(player.posX);
             int iPosY = MathHelper.floor_double(player.posY - 0.05);
@@ -324,8 +325,8 @@ public class PlayerClient implements IPlayerClient
 
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
-                        long chunkKey = ChunkCoordIntPair.chunkXZ2Int(pos.intX() >> 4, pos.intZ() >> 4);
-                        FootprintRenderer.addFootprint(chunkKey, GCCoreUtil.getDimensionID(player.worldObj), pos, player.rotationYaw, player.getName());
+                        long chunkKey = ChunkPos.asLong(pos.intX() >> 4, pos.intZ() >> 4);
+                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimension(), pos, player.rotationYaw, player.getName());
 
                         // Increment and cap step counter at 1
                         stats.setLastStep((stats.getLastStep() + 1) % 2);
@@ -340,16 +341,16 @@ public class PlayerClient implements IPlayerClient
         }
     }
 
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3, boolean bypass)
+    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn, boolean bypass)
     {
-        BlockPos c = player.playerLocation;
+        BlockPos c = player.bedLocation;
 
         if (c != null)
         {
-            EventWakePlayer event = new EventWakePlayer(player, c, par1, par2, par3, bypass);
+            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (bypass || event.result == null || event.result == EntityPlayer.EnumStatus.OK)
+            if (bypass || event.result == null || event.result == EntityPlayer.SleepResult.OK)
             {
                 return false;
             }
@@ -390,19 +391,19 @@ public class PlayerClient implements IPlayerClient
         case 1:
         case 2:
         case 3:
-            player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
-            player.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
+            player.addChatMessage(ITextComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
+            player.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
             break;
         case 4:
         case 5:
         case 6:
-            player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/2" + "\"}}]"));
+            player.addChatMessage(ITextComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help2") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/2" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/2" + "\"}}]"));
             break;
         case 7:
-            player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/oil" + "\"}}]"));
+            player.addChatMessage(ITextComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help3") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/oil" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/oil" + "\"}}]"));
             break;
         case 8:
-            player.addChatMessage(IChatComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/pre" + "\"}}]"));
+            player.addChatMessage(ITextComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.prelaunch") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/pre" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/pre" + "\"}}]"));
             break;
         }
     }

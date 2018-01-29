@@ -12,13 +12,17 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -27,7 +31,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webType", EnumWebType.class);
+    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
+    protected static final AxisAlignedBB AABB_WEB = new AxisAlignedBB(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
+    protected static final AxisAlignedBB AABB_WEB_TORCH = new AxisAlignedBB(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
     public enum EnumWebType implements IStringSerializable
     {
@@ -62,7 +68,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     public BlockTorchWeb(String assetName)
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setLightLevel(1.0F);
         this.setUnlocalizedName(assetName);
     }
@@ -76,27 +82,38 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
-        float f = 0.15F;
-
-        if (type == EnumWebType.WEB_0)
+        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
         {
-            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-        }
-        else if (type == EnumWebType.WEB_1)
-        {
-            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+            return AABB_WEB_TORCH;
         }
 
-        return super.collisionRayTrace(worldIn, pos, start, end);
+        return AABB_WEB;
     }
 
+    //    @Override
+//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
+//    {
+//        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
+//        float f = 0.15F;
+//
+//        if (type == EnumWebType.WEB_0)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+//        }
+//        else if (type == EnumWebType.WEB_1)
+//        {
+//            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
+//        }
+//
+//        return super.collisionRayTrace(worldIn, pos, start, end);
+//    }
+
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (world.getBlockState(pos).getValue(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
         {
             return 15;
         }
@@ -112,19 +129,19 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return null;
     }
@@ -137,7 +154,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
         if (meta == 0)
         {
-            return blockUp.getBlock().getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
+            return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
         }
         else
         {
@@ -156,7 +173,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public void onNeighborBlockChange(World world, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn)
     {
         this.checkAndDropBlock(world, pos, state);
     }
@@ -172,14 +189,14 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         if (!this.canBlockStay(world, pos, state))
         {
             this.dropBlockAsItem(world, pos, state, 0);
-            world.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+            world.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         }
     }
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -216,9 +233,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -234,9 +251,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, WEB_TYPE);
+        return new BlockStateContainer(this, WEB_TYPE);
     }
 
     @Override

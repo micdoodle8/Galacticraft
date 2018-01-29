@@ -3,7 +3,16 @@ package codechicken.nei;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.*;
+import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.guihook.*;
+import codechicken.nei.layout.LayoutStyleMinecraft;
+import codechicken.nei.layout.LayoutStyleTMIOld;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.widget.Button;
+import codechicken.nei.widget.ItemPanel;
+import codechicken.nei.widget.Label;
+import codechicken.nei.widget.Widget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -22,7 +31,7 @@ import java.util.TreeSet;
 
 import static codechicken.lib.gui.GuiDraw.*;
 import static codechicken.nei.NEIClientConfig.*;
-import static codechicken.nei.NEIClientUtils.*;
+import static codechicken.nei.util.NEIClientUtils.*;
 
 public class LayoutManager implements IContainerInputHandler, IContainerTooltipHandler, IContainerDrawHandler, IContainerObjectHandler, IKeyStateTracker {
     private static LayoutManager instance;
@@ -36,6 +45,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
      * Sorted top first
      */
     private static TreeSet<Widget> controlWidgets;
+
+    private static boolean showItemPanel;
 
     public static ItemPanel itemPanel;
     public static SubsetWidget dropDown;
@@ -85,8 +96,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             gui.guiTop = (gui.height - gui.ySize) / 2;
 
             if (gui instanceof GuiContainerCreative && gui.buttonList.size() >= 2) {
-                GuiButton button1 = (GuiButton) gui.buttonList.get(0);
-                GuiButton button2 = (GuiButton) gui.buttonList.get(1);
+                GuiButton button1 = gui.buttonList.get(0);
+                GuiButton button2 = gui.buttonList.get(1);
                 button1.xPosition = gui.guiLeft;
                 button2.xPosition = gui.guiLeft + gui.xSize - 20;
             }
@@ -159,7 +170,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     @Override
     public boolean lastKeyTyped(GuiContainer gui, char keyChar, int keyID) {
-        if (keyID == getKeyBinding("gui.hide")) {
+        if (KeyBindings.get("nei.options.keys.gui.hide").isActiveAndMatches(keyID)) {
             toggleBooleanSetting("inventory.hidden");
             return true;
         }
@@ -217,6 +228,8 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
             GlStateManager.enableLighting();
             GlStateManager.disableDepth();
+        } else {
+         showItemPanel = false;
         }
     }
 
@@ -265,8 +278,9 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     }
 
     public static void layout(GuiContainer gui) {
-        VisiblityData visiblity = new VisiblityData();
+        VisibilityData visiblity = new VisibilityData();
         if (isHidden()) {
+            //showItemPanel = false;
             visiblity.showNEI = false;
         }
         if (gui.height - gui.ySize <= 40) {
@@ -316,11 +330,11 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
                 return false;
             }
 
-            @Override
-            public String getRenderLabel() {
-                return translate("inventory.prev");
-            }
-        };
+              @Override
+             public String getRenderLabel() {
+                 return translate("inventory.prev");
+             }
+         };
         next = new Button("Next") {
             public boolean onButtonPress(boolean rightclick) {
                 if (!rightclick) {
@@ -582,7 +596,7 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             }
         }
         if (hasSMPCounterPart()) {
-            NEICPH.sendSetPropertyDisabled(ident, disable);
+            NEIClientPacketHandler.sendSetPropertyDisabled(ident, disable);
         }
 
         return true;
@@ -614,24 +628,26 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
 
     public boolean checkCreativeInv(GuiContainer gui) {
         if (gui instanceof GuiContainerCreative && invCreativeMode()) {
-            NEICPH.sendCreativeInv(true);
+            NEIClientPacketHandler.sendCreativeInv(true);
             return true;
         } else if (gui instanceof GuiExtendedCreativeInv && !invCreativeMode()) {
-            NEICPH.sendCreativeInv(false);
+            NEIClientPacketHandler.sendCreativeInv(false);
             return true;
         }
         return false;
     }
 
-    public static void updateWidgetVisiblities(GuiContainer gui, VisiblityData visiblity) {
+    public static void updateWidgetVisiblities(GuiContainer gui, VisibilityData visiblity) {
         drawWidgets = new TreeSet<Widget>(new WidgetZOrder(false));
         controlWidgets = new TreeSet<Widget>(new WidgetZOrder(true));
 
         if (!visiblity.showNEI) {
+            //showItemPanel = false;
             return;
         }
 
         addWidget(options);
+        showItemPanel = visiblity.showItemPanel;
         if (visiblity.showItemPanel) {
             addWidget(itemPanel);
             addWidget(prev);
@@ -764,11 +780,11 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
     @Override
     public void renderSlotOverlay(GuiContainer window, Slot slot) {
         ItemStack item = slot.getStack();
-        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.itemMatches(item))) {
+        if (world.nbt.getBoolean("searchinventories") && (item == null ? !getSearchExpression().equals("") : !ItemList.getItemListFilter().matches(item))) {
             GlStateManager.disableLighting();
-            GlStateManager.translate(0, 0, 150);
+            GlStateManager.translate(0, 0, 200);
             drawRect(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, 0x80000000);
-            GlStateManager.translate(0, 0, -150);
+            GlStateManager.translate(0, 0, -200);
             GlStateManager.enableLighting();
         }
     }
@@ -832,26 +848,30 @@ public class LayoutManager implements IContainerInputHandler, IContainerTooltipH
             return;
         }
 
-        if (KeyManager.keyStates.get("world.dawn").down) {
+        if (KeyBindings.get("nei.options.keys.world.dawn").isPressed()) {
             timeButtons[0].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.noon").down) {
+        if (KeyBindings.get("nei.options.keys.world.noon").isPressed()) {
             timeButtons[1].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.dusk").down) {
+        if (KeyBindings.get("nei.options.keys.world.dusk").isPressed()) {
             timeButtons[2].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.midnight").down) {
+        if (KeyBindings.get("nei.options.keys.world.midnight").isPressed()) {
             timeButtons[3].onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.rain").down) {
+        if (KeyBindings.get("nei.options.keys.world.rain").isPressed()) {
             rain.onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.heal").down) {
+        if (KeyBindings.get("nei.options.keys.world.heal").isPressed()) {
             heal.onButtonPress(false);
         }
-        if (KeyManager.keyStates.get("world.creative").down) {
+        if (KeyBindings.get("nei.options.keys.world.creative").isPressed()) {
             gamemode.onButtonPress(false);
         }
+    }
+
+    public static boolean isItemPanelActive() {
+        return showItemPanel;
     }
 }

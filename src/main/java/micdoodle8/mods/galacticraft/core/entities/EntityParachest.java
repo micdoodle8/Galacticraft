@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.EnumDyeColor;
@@ -16,8 +17,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -84,6 +85,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
+    	if (worldObj.isRemote) return;
         nbt.setInteger("CargoLength", this.cargo.length);
 
         final NBTTagList var2 = new NBTTagList();
@@ -118,9 +120,10 @@ public class EntityParachest extends Entity implements IPacketReceiver
                     final int z = MathHelper.floor_double(this.posZ);
 
                     BlockPos pos = new BlockPos(x, y + i, z);
-                    Block block = this.worldObj.getBlockState(pos).getBlock();
+                    IBlockState state = this.worldObj.getBlockState(pos);
+                    Block block = state.getBlock();
 
-                    if (block.getMaterial().isReplaceable())
+                    if (block.getMaterial(state).isReplaceable())
                     {
                         if (this.placeChest(pos))
                         {

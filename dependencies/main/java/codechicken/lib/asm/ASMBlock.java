@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
 public class ASMBlock {
+
     public InsnListSection list;
     private BiMap<String, LabelNode> labels;
 
@@ -49,22 +50,22 @@ public class ASMBlock {
     public void replaceLabels(Map<LabelNode, LabelNode> labelMap, Set<LabelNode> usedLabels) {
         for (AbstractInsnNode insn : list) {
             switch (insn.getType()) {
-            case LABEL:
-                AbstractInsnNode insn2 = insn.clone(labelMap);
-                if (insn2 == insn)//identity mapping
-                {
-                    continue;
-                }
-                if (usedLabels.contains(insn2)) {
-                    throw new IllegalStateException("LabelNode cannot be a part of two InsnLists");
-                }
-                list.replace(insn, insn2);
-                break;
-            case JUMP_INSN:
-            case FRAME:
-            case LOOKUPSWITCH_INSN:
-            case TABLESWITCH_INSN:
-                list.replace(insn, insn.clone(labelMap));
+                case LABEL:
+                    AbstractInsnNode insn2 = insn.clone(labelMap);
+                    if (insn2 == insn)//identity mapping
+                    {
+                        continue;
+                    }
+                    if (usedLabels.contains(insn2)) {
+                        throw new IllegalStateException("LabelNode cannot be a part of two InsnLists");
+                    }
+                    list.replace(insn, insn2);
+                    break;
+                case JUMP_INSN:
+                case FRAME:
+                case LOOKUPSWITCH_INSN:
+                case TABLESWITCH_INSN:
+                    list.replace(insn, insn.clone(labelMap));
             }
         }
 
@@ -166,12 +167,12 @@ public class ASMBlock {
             }
 
             switch (insn1.getType()) {
-            case LABEL:
-                labelMap.put((LabelNode) insn1, (LabelNode) insn2);
-                break;
-            case JUMP_INSN:
-                labelMap.put(((JumpInsnNode) insn1).label, ((JumpInsnNode) insn2).label);
-                break;
+                case LABEL:
+                    labelMap.put((LabelNode) insn1, (LabelNode) insn2);
+                    break;
+                case JUMP_INSN:
+                    labelMap.put(((JumpInsnNode) insn1).label, ((JumpInsnNode) insn2).label);
+                    break;
             }
             i++;
             k++;

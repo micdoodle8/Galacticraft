@@ -4,6 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class VariableTransformation extends Transformation {
+
     public Matrix4 mat;
 
     public VariableTransformation(Matrix4 mat) {
@@ -21,7 +22,7 @@ public abstract class VariableTransformation extends Transformation {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
         mat.glApply();
     }

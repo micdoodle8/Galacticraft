@@ -11,6 +11,8 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
@@ -79,9 +81,8 @@ public class GCItems
     public static Item prelaunchChecklist;
     public static Item dungeonFinder;
 
-    //    public static ArmorMaterial addArmorMaterial(String name, String textureName, int durability, int[] reductionAmounts, int enchantability)
-    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0);
-    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 8, 6, 3 }, 12);
+    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
+    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 6, 8, 3 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
@@ -101,10 +102,10 @@ public class GCItems
         GCItems.steelHoe = new ItemHoeGC("steel_hoe");
         GCItems.steelSpade = new ItemSpadeGC("steel_shovel");
         GCItems.steelSword = new ItemSwordGC("steel_sword");
-        GCItems.steelHelmet = new ItemArmorGC(0, "helmet");
-        GCItems.steelChestplate = new ItemArmorGC(1, "chestplate");
-        GCItems.steelLeggings = new ItemArmorGC(2, "leggings");
-        GCItems.steelBoots = new ItemArmorGC(3, "boots");
+        GCItems.steelHelmet = new ItemArmorGC(EntityEquipmentSlot.HEAD, "helmet");
+        GCItems.steelChestplate = new ItemArmorGC(EntityEquipmentSlot.CHEST, "chestplate");
+        GCItems.steelLeggings = new ItemArmorGC(EntityEquipmentSlot.LEGS, "leggings");
+        GCItems.steelBoots = new ItemArmorGC(EntityEquipmentSlot.FEET, "boots");
         GCItems.canister = new ItemCanister("canister");
         GCItems.oxygenVent = new ItemBase("air_vent");
         GCItems.oxygenFan = new ItemBase("air_fan");

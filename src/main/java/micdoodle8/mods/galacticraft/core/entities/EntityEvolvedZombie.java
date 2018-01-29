@@ -6,25 +6,23 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathable, ITumblable
 {
+    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedZombie.class, DataSerializers.FLOAT);
     private int conversionTime = 0;
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
@@ -32,16 +30,6 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     public EntityEvolvedZombie(World par1World)
     {
         super(par1World);
-        this.tasks.taskEntries.clear();
-        this.targetTasks.taskEntries.clear();
-        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 1.0D));
-        this.tasks.addTask(7, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(8, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(8, new EntityAILookIdle(this));
-        this.applyEntityAI();
         this.setSize(0.6F, 1.95F);
     }
 
@@ -49,7 +37,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(30.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         double difficulty = 0;
         switch (this.worldObj.getDifficulty())
         {
@@ -58,21 +46,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         case NORMAL : difficulty = 1D;
             break;
         }
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.26D + 0.04D * difficulty);
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(3D + difficulty);
-        this.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(16D + difficulty * 2D);
-    }
-
-    @Override
-    protected void applyEntityAI()
-    {
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityVillager.class, 1.0D, true));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityIronGolem.class, 1.0D, true));
-        this.tasks.addTask(6, new EntityAIMoveThroughVillage(this, 1.0D, false));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, true, new Class[] { EntityPigZombie.class }));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityVillager.class, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityIronGolem.class, true));
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D + 0.04D * difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3D + difficulty);
+        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D + difficulty * 2D);
     }
 
     @Override
@@ -83,7 +59,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 
     public IAttribute getReinforcementsAttribute()
     {
-        return EntityZombie.reinforcementChance;
+        return EntityZombie.SPAWN_REINFORCEMENTS_CHANCE;
     }
 
     @Override
@@ -95,9 +71,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
             this.motionY = 0.24D;
         }
 
-        if (this.isPotionActive(Potion.jump))
+        if (this.isPotionActive(MobEffects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
@@ -111,8 +87,6 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         ForgeHooks.onLivingJump(this);
     }
 
-
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(16))
@@ -145,20 +119,20 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
             break;
         case 11:
         case 12:
-            this.dropItem(Items.carrot, 1);
+            this.dropItem(Items.CARROT, 1);
             break;
         case 13:
         case 14:
         case 15:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.melon_seeds, 1);
+            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.MELON_SEEDS, 1);
             break;
         }
     }
 
     @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        super.dropFewItems(p_70628_1_, p_70628_2_);
+        super.dropFewItems(wasRecentlyHit, lootingModifier);
         Item item = this.getDropItem();
 
         //Less rotten flesh than vanilla
@@ -166,9 +140,9 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 
         if (item != null)
         {
-            if (p_70628_2_ > 0)
+            if (lootingModifier > 0)
             {
-                j += this.rand.nextInt(p_70628_2_ + 1);
+                j += this.rand.nextInt(lootingModifier + 1);
             }
 
             for (int k = 0; k < j; ++k)
@@ -178,8 +152,13 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         }
 
         //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
-        if (p_70628_1_ && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) == 0)
+        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) == 0)
             this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
+
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        {
+            this.addRandomDrop();
+        }
     }
 
     @Override
@@ -230,7 +209,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, 0.0F);
+        this.getDataManager().register(SPIN_PITCH, 0.0F);
     }
 
     @Override
@@ -249,12 +228,12 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
 
     public float getSpinPitch()
     {
-        return this.dataWatcher.getWatchableObjectFloat(16);
+        return this.getDataManager().get(SPIN_PITCH);
     }
 
     public void setSpinPitch(float pitch)
     {
-        this.dataWatcher.updateObject(16, pitch);
+        this.getDataManager().set(SPIN_PITCH, pitch);
     }
 
     @Override

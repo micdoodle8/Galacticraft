@@ -1,15 +1,17 @@
 package codechicken.nei;
 
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.*;
 
-import static codechicken.nei.NEIServerUtils.*;
+import static codechicken.nei.util.NEIServerUtils.*;
 
 public class FastTransferManager {
     /**
@@ -88,7 +90,7 @@ public class FastTransferManager {
 
     public static void clearSlots(Container container) {
         for (int slotNo = 0; slotNo < container.inventorySlots.size(); slotNo++) {
-            ((Slot) container.inventorySlots.get(slotNo)).putStack(null);
+            container.inventorySlots.get(slotNo).putStack(null);
         }
     }
 
@@ -141,7 +143,7 @@ public class FastTransferManager {
         slot.putStack(stack.copy());
 
         LinkedList<ItemStack> compareBefore = saveContainer(container);
-        container.slotClick(fromSlot, 0, 1, Minecraft.getMinecraft().thePlayer);
+        container.slotClick(fromSlot, 0, ClickType.QUICK_MOVE, Minecraft.getMinecraft().thePlayer);
         LinkedList<ItemStack> compareAfter = saveContainer(container);
 
         try {
@@ -185,7 +187,7 @@ public class FastTransferManager {
             container.getSlot(i).putStack(items.get(i));
         }
 
-        container.slotClick(-999, 0, 0, Minecraft.getMinecraft().thePlayer);
+        container.slotClick(-999, 0, ClickType.PICKUP, Minecraft.getMinecraft().thePlayer);
     }
 
     public void transferItem(GuiContainer window, int fromSlot) {
@@ -304,11 +306,11 @@ public class FastTransferManager {
     }
 
     public static void clickSlot(GuiContainer window, int slotIndex, int button) {
-        clickSlot(window, slotIndex, button, 0);
+        clickSlot(window, slotIndex, button, ClickType.PICKUP);
     }
 
-    public static void clickSlot(GuiContainer window, int slotIndex, int button, int modifier) {
-        GuiContainerManager.getManager(window).handleSlotClick(slotIndex, button, modifier);
+    public static void clickSlot(GuiContainer window, int slotIndex, int button, ClickType clickType) {
+        GuiContainerManager.getManager(window).handleSlotClick(slotIndex, button, clickType);
     }
 
     private boolean fillZoneWithHeldItem(GuiContainer window, int zoneIndex) {

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
 import micdoodle8.mods.galacticraft.api.entity.IDockable;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 import java.util.HashSet;

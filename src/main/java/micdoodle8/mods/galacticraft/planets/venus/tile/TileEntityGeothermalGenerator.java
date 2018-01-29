@@ -20,7 +20,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -76,7 +76,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                         this.validSpout = true;
                         break;
                     }
-                    else if (!state.getBlock().isAir(this.worldObj, pos1))
+                    else if (!state.getBlock().isAir(this.worldObj.getBlockState(pos1), this.worldObj, pos1))
                     {
                         // Not valid
                         break;
@@ -87,7 +87,8 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
         }
 
@@ -161,7 +162,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -179,6 +180,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override
@@ -240,7 +242,8 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.disabled != disabled && this.worldObj.isRemote)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                IBlockState state = this.worldObj.getBlockState(this.getPos());
+                this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
 
             this.disabled = disabled;

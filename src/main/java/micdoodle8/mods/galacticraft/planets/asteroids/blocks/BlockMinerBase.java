@@ -7,15 +7,16 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBaseSingle;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,11 +27,10 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 {
     public BlockMinerBase(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 3.0F;
         this.setUnlocalizedName(assetName);
-        this.setCreativeTab(CreativeTabs.tabBlock);
-        this.setStepSound(soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
     }
 
     @SideOnly(Side.CLIENT)
@@ -59,7 +59,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -96,9 +96,9 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override

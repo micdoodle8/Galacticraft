@@ -12,6 +12,7 @@ import static codechicken.lib.inventory.InventoryUtils.actualDamage;
  * Comparable ItemStack with a hashCode implementation.
  */
 public class ItemKey implements Comparable<ItemKey> {
+
     public ItemStack stack;
     private int hashcode = 0;
 
@@ -39,9 +40,7 @@ public class ItemKey implements Comparable<ItemKey> {
         }
 
         ItemKey k = (ItemKey) obj;
-        return stack.getItem() == k.stack.getItem() &&
-                actualDamage(stack) == actualDamage(k.stack) &&
-                Objects.equal(stack.getTagCompound(), k.stack.getTagCompound());
+        return stack.getItem() == k.stack.getItem() && actualDamage(stack) == actualDamage(k.stack) && Objects.equal(stack.getTagCompound(), k.stack.getTagCompound());
     }
 
     @Override

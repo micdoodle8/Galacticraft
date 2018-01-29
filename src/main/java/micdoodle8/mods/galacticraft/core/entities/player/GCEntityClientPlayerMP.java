@@ -13,12 +13,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
-import net.minecraft.potion.Potion;
-import net.minecraft.stats.StatFileWriter;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.stats.StatisticsManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,17 +37,17 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     private boolean checkedCape = false;
     private ResourceLocation galacticraftCape = null;
 
-    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFileWriter)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter)
     {
         super(mcIn, worldIn, netHandler, statFileWriter);
     }
 
     @Override
-    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, par1, par2, par3))
+        if (!ClientProxyCore.playerClientHandler.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
         {
-            super.wakeUpPlayer(par1, par2, par3);
+            super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
         }
     }
 
@@ -97,7 +98,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                     if (this.timeInPortal == 0.0F)
                     {
-                        this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("portal.trigger"), this.rand.nextFloat() * 0.4F + 0.8F));
+                        this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.BLOCK_PORTAL_TRIGGER, this.rand.nextFloat() * 0.4F + 0.8F));
                     }
 
                     this.timeInPortal += 0.0125F;
@@ -109,7 +110,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                     this.inPortal = false;
                 }
-                else if (this.isPotionActive(Potion.confusion) && this.getActivePotionEffect(Potion.confusion).getDuration() > 60)
+                else if (this.isPotionActive(MobEffects.NAUSEA) && this.getActivePotionEffect(MobEffects.NAUSEA).getDuration() > 60)
                 {
                     this.timeInPortal += 0.006666667F;
 
@@ -141,7 +142,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 boolean flag2 = this.movementInput.moveForward >= sprintlevel;
                 this.movementInput.updatePlayerMoveState();
 
-                if (this.isUsingItem() && !this.isRiding())
+                if (this.isHandActive() && !this.isRiding())
                 {
                     this.movementInput.moveStrafe *= 0.2F;
                     this.movementInput.moveForward *= 0.2F;
@@ -161,9 +162,9 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ - (double)this.width * 0.35D);
                 this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ - (double)this.width * 0.35D);
                 this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-                boolean flag3 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
+                boolean flag4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-                if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= sprintlevel && !this.isSprinting() && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness))
+                if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(MobEffects.BLINDNESS))
                 {
                     if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
                     {
@@ -175,12 +176,12 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     }
                 }
 
-                if (!this.isSprinting() && this.movementInput.moveForward >= sprintlevel && flag3 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown())
+                if (!this.isSprinting() && this.movementInput.moveForward >= sprintlevel && flag4 && !this.isHandActive() && !this.isPotionActive(MobEffects.BLINDNESS) && this.mc.gameSettings.keyBindSprint.isKeyDown())
                 {
                     this.setSprinting(true);
                 }
 
-                if (this.isSprinting() && (this.movementInput.moveForward < sprintlevel || this.isCollidedHorizontally || !flag3))
+                if (this.isSprinting() && (this.movementInput.moveForward < sprintlevel || this.isCollidedHorizontally || !flag4))
                 {
                     this.setSprinting(false);
                 }
@@ -225,12 +226,12 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 //  from: EntityLivingBase
                 if (this.newPosRotationIncrements > 0)
                 {
-                    double d0 = this.posX + (this.newPosX - this.posX) / (double)this.newPosRotationIncrements;
-                    double d1 = this.posY + (this.newPosY - this.posY) / (double)this.newPosRotationIncrements;
-                    double d2 = this.posZ + (this.newPosZ - this.posZ) / (double)this.newPosRotationIncrements;
-                    double d3 = MathHelper.wrapAngleTo180_double(this.newRotationYaw - (double)this.rotationYaw);
+                    double d0 = this.posX + (this.interpTargetX - this.posX) / (double)this.newPosRotationIncrements;
+                    double d1 = this.posY + (this.interpTargetY - this.posY) / (double)this.newPosRotationIncrements;
+                    double d2 = this.posZ + (this.interpTargetZ - this.posZ) / (double)this.newPosRotationIncrements;
+                    double d3 = MathHelper.wrapDegrees(this.interpTargetYaw - (double)this.rotationYaw);
                     this.rotationYaw = (float)((double)this.rotationYaw + d3 / (double)this.newPosRotationIncrements);
-                    this.rotationPitch = (float)((double)this.rotationPitch + (this.newRotationPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
+                    this.rotationPitch = (float)((double)this.rotationPitch + (this.interpTargetPitch - (double)this.rotationPitch) / (double)this.newPosRotationIncrements);
                     --this.newPosRotationIncrements;
                     this.setPosition(d0, d1, d2);
                     this.setRotation(this.rotationYaw, this.rotationPitch);
@@ -323,9 +324,9 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 {
                     AxisAlignedBB axisalignedbb = null;
 
-                    if (this.ridingEntity != null && !this.ridingEntity.isDead)
+                    if (this.getRidingEntity() != null && !this.getRidingEntity().isDead)
                     {
-                        axisalignedbb = this.getEntityBoundingBox().union(this.ridingEntity.getEntityBoundingBox()).expand(1.0D, 0.0D, 1.0D);
+                        axisalignedbb = this.getEntityBoundingBox().union(this.getRidingEntity().getEntityBoundingBox()).expand(1.0D, 0.0D, 1.0D);
                     }
                     else
                     {
@@ -497,7 +498,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     @Override
     public ResourceLocation getLocationCape()
     {
-        if (this.ridingEntity instanceof EntitySpaceshipBase)
+        if (this.getRidingEntity() instanceof EntitySpaceshipBase)
         {
             // Don't draw any cape if riding a rocket (the cape renders outside the rocket model!)
             return null;

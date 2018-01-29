@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -402,7 +402,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("type", this.imageType);
@@ -411,6 +411,13 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         nbt.setInteger("connectionsLeft", this.connectionsLeft);
         nbt.setInteger("connectionsRight", this.connectionsRight);
         nbt.setBoolean("multiscreen", this.isMultiscreen);
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     public void checkScreenSize()

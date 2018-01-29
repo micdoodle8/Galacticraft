@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,9 +35,9 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
             this.initiate();
 
             if (this.isNetworkedTile())
+        {
+            if (this.fieldCacheClient == null || this.fieldCacheServer == null)
             {
-                if (this.fieldCacheClient == null || this.fieldCacheServer == null)
-                {
                     this.initFieldCache();
                 }
 
@@ -46,8 +46,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
                     //Request any networked information from server on first client update (maybe client just logged on, but server networkdata didn't change recently)
                     GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
                 }
+                }
             }
-        }
 
         this.ticks++;
 
@@ -75,27 +75,27 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     private void initFieldCache()
     {
         try
+    {
+        this.fieldCacheClient = new LinkedHashSet<Field>();
+        this.fieldCacheServer = new LinkedHashSet<Field>();
+
+        for (Field field : this.getClass().getFields())
         {
-            this.fieldCacheClient = new LinkedHashSet<Field>();
-            this.fieldCacheServer = new LinkedHashSet<Field>();
-
-            for (Field field : this.getClass().getFields())
+            if (field.isAnnotationPresent(NetworkedField.class))
             {
-                if (field.isAnnotationPresent(NetworkedField.class))
-                {
-                    NetworkedField f = field.getAnnotation(NetworkedField.class);
+                NetworkedField f = field.getAnnotation(NetworkedField.class);
 
-                    if (f.targetSide() == Side.CLIENT)
-                    {
-                        this.fieldCacheClient.add(field);
-                    }
-                    else
-                    {
-                        this.fieldCacheServer.add(field);
-                    }
+                if (f.targetSide() == Side.CLIENT)
+                {
+                    this.fieldCacheClient.add(field);
+                }
+                else
+                {
+                    this.fieldCacheServer.add(field);
                 }
             }
         }
+    }
         catch (Exception e)
         {
             e.printStackTrace();
@@ -128,8 +128,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            this.initFieldCache();
-        }
+                this.initFieldCache();
+            }
 
         if (this.worldObj.isRemote)
         {
@@ -198,8 +198,8 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
 
         if (this.fieldCacheClient == null || this.fieldCacheServer == null)
         {
-            this.initFieldCache();
-        }
+                this.initFieldCache();
+            }
 
 //        if (this.worldObj.isRemote && this.fieldCacheClient.size() == 0)
 //        {

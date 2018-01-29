@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -17,7 +18,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepa
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -57,7 +58,7 @@ public class AsteroidsTickHandlerServer
             if (AsteroidsTickHandlerServer.spaceRaceData == null)
             {
                 World world = server.worldServerForDimension(0);
-                AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.getMapStorage().loadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
+                AsteroidsTickHandlerServer.spaceRaceData = (ShortRangeTelepadHandler) world.getMapStorage().getOrLoadData(ShortRangeTelepadHandler.class, ShortRangeTelepadHandler.saveDataID);
 
                 if (AsteroidsTickHandlerServer.spaceRaceData == null)
                 {
@@ -135,11 +136,11 @@ public class AsteroidsTickHandlerServer
                     {
                         if (droppedChunks == null)
                         {
-                            Class clazz = ((WorldServer)miner.worldObj).theChunkProviderServer.getClass();
+                            Class clazz = ((WorldServer)miner.worldObj).getChunkProvider().getClass();
                             droppedChunks = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "droppedChunksSet" : "field_73248_b");
                         }
-                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((WorldServer)miner.worldObj).theChunkProviderServer);
-                        undrop.remove(ChunkCoordIntPair.chunkXZ2Int(miner.chunkCoordX, miner.chunkCoordZ));
+                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((WorldServer)miner.worldObj).getChunkProvider());
+                        undrop.remove(ChunkPos.asLong(miner.chunkCoordX, miner.chunkCoordZ));
                     } catch (Exception ignore)
                     {
                     }
@@ -192,7 +193,10 @@ public class AsteroidsTickHandlerServer
                 if (p != null && p.worldObj != null)
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
-                    ((WorldServer)p.worldObj).theChunkProviderServer.loadChunk(data.x, data.z);
+                    WorldServer w = (WorldServer)p.worldObj;
+                    CompatibilityManager.forceLoadChunks(w);
+                    w.getChunkProvider().loadChunk(data.x, data.z);
+                    CompatibilityManager.forceLoadChunksEnd(w);
                 }
             }
             AsteroidsTickHandlerServer.loadingSavedChunks.set(false);

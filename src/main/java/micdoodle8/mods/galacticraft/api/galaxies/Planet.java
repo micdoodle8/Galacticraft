@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 public class Planet extends CelestialBody
 {

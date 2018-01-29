@@ -116,7 +116,7 @@ public class ContainerCircuitFabricator extends Container
                         return null;
                     }
                 }
-                else if (i == Items.diamond)
+                else if (i == Items.DIAMOND)
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {
@@ -130,14 +130,14 @@ public class ContainerCircuitFabricator extends Container
                         return null;
                     }
                 }
-                else if (i == Items.redstone)
+                else if (i == Items.REDSTONE)
                 {
                     if (!this.mergeItemStack(var4, 4, 5, false))
                     {
                         return null;
                     }
                 }
-                else if (i == Items.repeater || i == new ItemStack(Blocks.redstone_torch).getItem() || i == Items.dye && i.getDamage(var4) == 4)
+                else if (i == Items.REPEATER || i == new ItemStack(Blocks.REDSTONE_TORCH).getItem() || i == Items.DYE && i.getDamage(var4) == 4)
                 {
                     if (!this.mergeItemStack(var4, 5, 6, false))
                     {

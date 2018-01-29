@@ -1271,7 +1271,7 @@ public class StatsCapability extends GCPlayerStats
                     if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
                     final NBTTagCompound stateNBT = panels.getCompoundTagAt(i);
                     IBlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
-                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.air) ? null : bs;
+                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
                 }
             }
 

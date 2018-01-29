@@ -38,8 +38,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
@@ -56,6 +65,8 @@ import java.util.UUID;
 
 public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityAstroMiner.class, DataSerializers.FLOAT);
+
     public static final int MINE_LENGTH = 24;
     public static final int MINE_LENGTH_AST = 12;
     private static final int MAXENERGY = 12000;
@@ -154,7 +165,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     public boolean stopForTurn;
 
     private static ArrayList<Block> noMineList = new ArrayList();
-    public static BlockTuple blockingBlock = new BlockTuple(Blocks.air, 0);
+    public static BlockTuple blockingBlock = new BlockTuple(Blocks.AIR, 0);
     private int givenFailMessage = 0;
     private BlockVec3 mineLast = null;
     private int mineCountDown = 0;
@@ -174,17 +185,17 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         // railtrack, levers, redstone dust, GC walkways,
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
-        noMineList.add(Blocks.bedrock);
-        noMineList.add(Blocks.flowing_lava);
-        noMineList.add(Blocks.mossy_cobblestone);
-        noMineList.add(Blocks.end_portal);
-        noMineList.add(Blocks.end_portal_frame);
-        noMineList.add(Blocks.portal);
-        noMineList.add(Blocks.stonebrick);
-        noMineList.add(Blocks.farmland);
-        noMineList.add(Blocks.rail);
-        noMineList.add(Blocks.lever);
-        noMineList.add(Blocks.redstone_wire);
+        noMineList.add(Blocks.BEDROCK);
+        noMineList.add(Blocks.FLOWING_LAVA);
+        noMineList.add(Blocks.MOSSY_COBBLESTONE);
+        noMineList.add(Blocks.END_PORTAL);
+        noMineList.add(Blocks.END_PORTAL_FRAME);
+        noMineList.add(Blocks.PORTAL);
+        noMineList.add(Blocks.STONEBRICK);
+        noMineList.add(Blocks.FARMLAND);
+        noMineList.add(Blocks.RAIL);
+        noMineList.add(Blocks.LEVER);
+        noMineList.add(Blocks.REDSTONE_WIRE);
         noMineList.add(AsteroidBlocks.blockWalkway);
         //TODO:
         //Add configurable blacklist
@@ -205,13 +216,12 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
         this.isImmuneToFire = true;
-        this.renderDistanceWeight = 5.0D;
         this.width = cLENGTH;
         this.height = cWIDTH;
         this.setSize(cLENGTH, cWIDTH);
 //        this.myEntitySize = Entity.EnumEntitySize.SIZE_6;
-//        this.dataWatcher.addObject(this.currentDamage, new Integer(0));
-//        this.dataWatcher.addObject(this.timeSinceHit, new Integer(0));
+//        this.dataManager.addObject(this.currentDamage, new Integer(0));
+//        this.dataManager.addObject(this.timeSinceHit, new Integer(0));
         this.noClip = true;
         
         if (world != null && world.isRemote)
@@ -221,9 +231,23 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     }
 
     @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 5.0;
+        return distance < d0 * d0;
+    }
+
+    @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(19, new Float(0.0F));
+        this.dataManager.register(DAMAGE, 0.0F);
     }
 
     @Override
@@ -366,11 +390,6 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     }
 
     @Override
-    public void onChunkLoad()
-    {
-    }
-
-    @Override
     public void onUpdate()
     {
         if (this.posY < -64.0D)
@@ -486,7 +505,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 {
                     if (this.playerMP != null && (this.givenFailMessage & (1 << FAIL_BASEDESTROYED)) == 0)
                     {
-                        this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
+                        this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + FAIL_BASEDESTROYED + ".fail")));
                         this.givenFailMessage += (1 << FAIL_BASEDESTROYED);
                         //Continue mining even though base was destroyed - maybe it will be replaced
                     }
@@ -615,14 +634,14 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.posZ += this.motionZ;
         setEntityBoundingBox(getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ));
 
-/*        if (this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) > 0)
+/*        if (this.dataManager.get(this.timeSinceHit) > 0)
         {
-            this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.timeSinceHit) - 1));
+            this.dataManager.set(this.timeSinceHit, Integer.valueOf(this.dataManager.get(this.timeSinceHit) - 1));
         }
 
-        if (this.dataWatcher.getWatchableObjectInt(this.currentDamage) > 0)
+        if (this.dataManager.get(this.currentDamage) > 0)
         {
-            this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) - 1));
+            this.dataManager.set(this.currentDamage, Integer.valueOf(this.dataManager.get(this.currentDamage) - 1));
         }       
 */
     }
@@ -653,7 +672,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.motionZ = 0;
         if (this.playerMP != null && (this.givenFailMessage & (1 << i)) == 0)
         {
-            this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
+            this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner" + i + ".fail")));
             this.givenFailMessage += (1 << i);
         }
     }
@@ -778,7 +797,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 if (this.playerMP != null && (this.givenFailMessage & 64) == 0)
                 {
-                    this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
+                    this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner6.fail")));
                     this.givenFailMessage += 64;
                 }
             }
@@ -1200,7 +1219,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             if (this.playerMP != null)
             {
-                this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                this.playerMP.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
             }
             this.motionX = 0;
             this.motionY = 0;
@@ -1444,7 +1463,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Can move through liquids including flowing lava
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial(state) == Material.AIR)
         {
             return false;
         }
@@ -1452,7 +1471,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             blockingBlock.block = b;
             blockingBlock.meta = b.getMetaFromState(state);
-            return !(this.AIstate == AISTATE_RETURNING && b == Blocks.lava);
+            return !(this.AIstate == AISTATE_RETURNING && b == Blocks.LAVA);
         }
         if (b instanceof BlockLiquid)
         {
@@ -1466,14 +1485,14 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         boolean gtFlag = false;
         if (b != GCBlocks.fallenMeteor)
         {
-            if (b instanceof IPlantable && b != Blocks.tallgrass && b != Blocks.deadbush && b != Blocks.double_plant && b != Blocks.waterlily && !(b instanceof BlockFlower))
+            if (b instanceof IPlantable && b != Blocks.TALLGRASS && b != Blocks.DEADBUSH && b != Blocks.DOUBLE_PLANT && b != Blocks.WATERLILY && !(b instanceof BlockFlower))
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = b.getMetaFromState(state);
                 return true;
             }
             int meta = b.getMetaFromState(state);
-            if (b.getBlockHardness(this.worldObj, pos) < 0)
+            if (b.getBlockHardness(state, this.worldObj, pos) < 0)
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = meta;
@@ -1498,7 +1517,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             return false;
         }
-        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, pos);
+        int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.interactionManager.getGameType(), this.playerMP, pos);
         if (result < 0)
         {
             return true;
@@ -1517,7 +1536,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             }
         }
 
-        this.worldObj.setBlockState(pos, Blocks.air.getDefaultState(), 3);
+        this.worldObj.setBlockState(pos, Blocks.AIR.getDefaultState(), 3);
         return false;
     }
 
@@ -1560,7 +1579,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Add minable blocks to the laser fx list
         IBlockState state = this.worldObj.getBlockState(pos);
         Block b = state.getBlock();
-        if (b.getMaterial() == Material.air)
+        if (b.getMaterial(state) == Material.AIR)
         {
             return false;
         }
@@ -1580,8 +1599,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             return true;
         }
-        int meta = b.getMetaFromState(state);
-        if (b.hasTileEntity(state) || b.getBlockHardness(this.worldObj, pos) < 0)
+        if (b.hasTileEntity(state) || b.getBlockHardness(state, this.worldObj, pos) < 0)
         {
             return true;
         }
@@ -2084,7 +2102,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 if (this.playerMP == null && !this.spawnedInCreative)
                 {
-                    ((EntityPlayer) e).addChatMessage(new ChatComponentText("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
+                    ((EntityPlayer) e).addChatMessage(new TextComponentString("WARNING: that Astro Miner belonged to an offline player, cannot reset player's Astro Miner count."));
                 }
                 this.setDead();
                 return true;
@@ -2098,14 +2116,14 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             else
             {
                 this.setBeenAttacked();
-//                this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-//                this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf((int) (this.dataWatcher.getWatchableObjectInt(this.currentDamage) + par2 * 10)));
+//                this.dataManager.set(this.timeSinceHit, Integer.valueOf(10));
+//                this.dataManager.set(this.currentDamage, Integer.valueOf((int) (this.dataManager.get(this.currentDamage) + par2 * 10)));
                 this.shipDamage += par2 * 10;
 
                 if (e instanceof EntityPlayer)
                 {
                     this.shipDamage += par2 * 21;
-//                    this.dataWatcher.updateObject(this.currentDamage, 100);
+//                    this.dataManager.set(this.currentDamage, 100);
                 }
 
                 if (this.shipDamage > 90)
@@ -2145,18 +2163,18 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     public void performHurtAnimation()
     {
-//	    this.dataWatcher.updateObject(this.timeSinceHit, Integer.valueOf(10));
-//	    this.dataWatcher.updateObject(this.currentDamage, Integer.valueOf(this.dataWatcher.getWatchableObjectInt(this.currentDamage) * 5));
+//	    this.dataManager.set(this.timeSinceHit, Integer.valueOf(10));
+//	    this.dataManager.set(this.currentDamage, Integer.valueOf(this.dataManager.get(this.currentDamage) * 5));
     }
 
     public float getDamage()
     {
-        return this.dataWatcher.getWatchableObjectFloat(19);
+        return this.dataManager.get(DAMAGE);
     }
 
     public void setDamage(float p_70492_1_)
     {
-        this.dataWatcher.updateObject(19, Float.valueOf(p_70492_1_));
+        this.dataManager.set(DAMAGE, Float.valueOf(p_70492_1_));
     }
 
     @Override
@@ -2170,7 +2188,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.minecartX = x;
         this.minecartY = y;

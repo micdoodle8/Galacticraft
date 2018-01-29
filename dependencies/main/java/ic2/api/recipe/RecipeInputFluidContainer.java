@@ -1,6 +1,7 @@
 package ic2.api.recipe;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -13,9 +14,13 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import ic2.api.item.IC2Items;
 
+/**
+ * @deprecated Use {@link Recipes#inputFactory} instead.
+ */
+@Deprecated
 public class RecipeInputFluidContainer implements IRecipeInput {
 	public RecipeInputFluidContainer(Fluid fluid) {
-		this(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+		this(fluid, Fluid.BUCKET_VOLUME);
 	}
 
 	public RecipeInputFluidContainer(Fluid fluid, int amount) {
@@ -47,11 +52,14 @@ public class RecipeInputFluidContainer implements IRecipeInput {
 		List<ItemStack> ret = new ArrayList<ItemStack>();
 
 		for (FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
-			if (data.fluid.getFluid() == fluid) ret.add(data.filledContainer);
-		}
-		ret.add(IC2Items.getItem("fluid_cell", fluid.getName()));
+			if (data.fluid.getFluid() != fluid) continue;
 
-		return ret;
+			ret.add(RecipeUtil.setImmutableSize(data.filledContainer, getAmount()));
+		}
+
+		ret.add(RecipeUtil.setImmutableSize(IC2Items.getItem("fluid_cell", fluid.getName()), getAmount()));
+
+		return Collections.unmodifiableList(ret);
 	}
 
 	@Override

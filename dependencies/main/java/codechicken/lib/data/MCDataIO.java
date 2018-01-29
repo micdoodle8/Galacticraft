@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class MCDataIO {
+
     /**
      * PacketBuffer.readVarIntFromBuffer
      */
@@ -58,10 +59,10 @@ public class MCDataIO {
 
     public static FluidStack readFluidStack(MCDataInput in) {
         FluidStack fluid = null;
-        short fluidID = in.readShort();
+        String fluidName = in.readString();
 
-        if (fluidID >= 0) {
-            fluid = new FluidStack(FluidRegistry.getFluid(fluidID), in.readVarInt(), in.readNBTTagCompound());
+        if (fluidName.length() > 0) {
+            fluid = new FluidStack(FluidRegistry.getFluid(fluidName), in.readVarInt(), in.readNBTTagCompound());
         }
 
         return fluid;
@@ -122,10 +123,10 @@ public class MCDataIO {
     }
 
     public static void writeFluidStack(MCDataOutput out, FluidStack fluid) {
-        if (fluid == null) {
-            out.writeShort(-1);
+        if (fluid == null || FluidRegistry.getFluidName(fluid) == null) {
+            out.writeString("");
         } else {
-            out.writeShort(fluid.getFluid().getID());
+            out.writeString(FluidRegistry.getFluidName(fluid));
             out.writeVarInt(fluid.amount);
             out.writeNBTTagCompound(fluid.tag);
         }

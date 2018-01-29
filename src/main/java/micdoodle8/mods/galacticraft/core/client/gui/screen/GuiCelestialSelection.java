@@ -23,7 +23,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
@@ -101,11 +101,13 @@ public class GuiCelestialSelection extends GuiScreen
     protected int lastMovePosX = -1;
     protected int lastMovePosY = -1;
     protected boolean errorLogged = false;
+    protected boolean canCreateStations = false;
 
-    public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
+    public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies, boolean canCreateStations)
     {
         this.mapMode = mapMode;
         this.possibleBodies = possibleBodies;
+        this.canCreateStations = canCreateStations;
     }
 
     @Override
@@ -451,7 +453,7 @@ public class GuiCelestialSelection extends GuiScreen
 
     protected boolean canCreateSpaceStation(CelestialBody atBody)
     {
-        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation)
+        if (this.mapMode || ConfigManagerCore.disableSpaceStationCreation || !this.canCreateStations)
         {
             return false;
         }
@@ -590,7 +592,7 @@ public class GuiCelestialSelection extends GuiScreen
                         WorldProvider spacestation = WorldUtil.getProviderForDimensionClient(dimensionID);
                         if (spacestation != null)
                         {
-                            dimension = WorldUtil.getDimensionName(spacestation);
+                            dimension = "Space Station " + mapping;
                         }
                         else
                         {
@@ -2238,7 +2240,7 @@ public class GuiCelestialSelection extends GuiScreen
         float texModX = 1F / texSizeX;
         float texModY = 1F / texSizeY;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         float height0 = invertY ? 0 : vHeight;
         float height1 = invertY ? vHeight : 0;
@@ -2259,7 +2261,7 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(0.0D, height, -90.0D).endVertex();

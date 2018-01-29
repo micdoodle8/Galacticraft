@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -38,7 +38,7 @@ public class EntityProjectileTNT extends EntityFireball
     }
 
     @Override
-    protected void onImpact(MovingObjectPosition movingObjectPosition)
+    protected void onImpact(RayTraceResult movingObjectPosition)
     {
         if (!this.worldObj.isRemote)
         {

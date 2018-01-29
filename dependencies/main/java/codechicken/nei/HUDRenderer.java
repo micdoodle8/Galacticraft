@@ -1,6 +1,5 @@
 package codechicken.nei;
 
-import codechicken.lib.config.ConfigTag;
 import codechicken.nei.KeyManager.IKeyStateTracker;
 import codechicken.nei.api.ItemInfo;
 import codechicken.nei.guihook.GuiContainerManager;
@@ -8,7 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -17,13 +16,14 @@ import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
+@Deprecated
 public class HUDRenderer implements IKeyStateTracker {
     @Override
     public void tickKeyStates() {
-        if (KeyManager.keyStates.get("world.highlight_tips").down) {
-            ConfigTag tag = NEIClientConfig.getSetting("world.highlight_tips");
-            tag.setBooleanValue(!tag.getBooleanValue());
-        }
+//        if (KeyBindings.get("nei.options.keys.world.highlight_tips").isPressed()) {
+//            ConfigTag tag = NEIClientConfig.getSetting("world.highlight_tips");
+//            tag.setBooleanValue(!tag.getBooleanValue());
+//        }
     }
 
     public static void renderOverlay() {
@@ -33,7 +33,7 @@ public class HUDRenderer implements IKeyStateTracker {
                 !mc.gameSettings.keyBindPlayerList.isKeyDown() &&
                 NEIClientConfig.getBooleanSetting("world.highlight_tips") &&
                 mc.objectMouseOver != null &&
-                mc.objectMouseOver.typeOfHit == MovingObjectType.BLOCK) {
+                mc.objectMouseOver.typeOfHit == RayTraceResult.Type.BLOCK) {
             World world = mc.theWorld;
             ArrayList<ItemStack> items = ItemInfo.getIdentifierItems(world, mc.thePlayer, mc.objectMouseOver);
             if (items.isEmpty()) {
@@ -72,7 +72,7 @@ public class HUDRenderer implements IKeyStateTracker {
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableDepth();
 
-        drawTooltipBox(x, y, w, h);
+        //drawTooltipBox(x, y, w, h);
 
         int ty = (h - 8 * textData.size()) / 2;
         for (int i = 0; i < textData.size(); i++) {
@@ -92,6 +92,6 @@ public class HUDRenderer implements IKeyStateTracker {
     }
 
     public static void load() {
-        KeyManager.trackers.add(new HUDRenderer());
+        //KeyManager.trackers.add(new HUDRenderer());
     }
 }

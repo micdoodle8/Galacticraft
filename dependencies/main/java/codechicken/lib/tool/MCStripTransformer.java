@@ -12,7 +12,9 @@ import org.objectweb.asm.tree.MethodNode;
 import java.util.Iterator;
 
 public class MCStripTransformer {
+
     public static class ReferenceDetector extends Remapper {
+
         boolean found = false;
 
         @Override

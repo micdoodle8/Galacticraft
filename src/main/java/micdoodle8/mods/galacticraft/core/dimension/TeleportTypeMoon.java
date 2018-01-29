@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.world.World;
@@ -37,7 +39,7 @@ public class TeleportTypeMoon implements ITeleportType
                     x = limit;
                 }
                 else if (x < -limit)
-                {   
+                {
                     z *= -limit / x;
                     x = -limit;
                 }
@@ -93,8 +95,14 @@ public class TeleportTypeMoon implements ITeleportType
 
             if (!newWorld.isRemote)
             {
+                CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                 lander.forceSpawn = true;
                 newWorld.spawnEntityInWorld(lander);
+                lander.setWorld(newWorld);
+                newWorld.updateEntityWithOptionalForce(lander, true);
+                player.startRiding(lander);
+                CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
+                GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
             }
 
             stats.setTeleportCooldown(10);

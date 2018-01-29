@@ -3,7 +3,7 @@ package codechicken.obfuscator;
 import java.io.PrintStream;
 
 public interface ILogStreams {
-    public PrintStream err();
+    PrintStream err();
 
-    public PrintStream out();
+    PrintStream out();
 }

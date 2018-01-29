@@ -7,7 +7,7 @@ public class InventoryTabVanilla extends AbstractTab
 {
 	public InventoryTabVanilla()
 	{
-		super(0, 0, 0, new ItemStack(Blocks.crafting_table));
+		super(0, 0, 0, new ItemStack(Blocks.CRAFTING_TABLE));
 	}
 
 	@Override

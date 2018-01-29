@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
@@ -28,15 +28,16 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected ScalableDistance relativeDistanceFromCenter = new ScalableDistance(1.0F, 1.0F);
     protected float relativeOrbitTime = 1.0F;
     protected float phaseShift = 0.0F;
-    protected int dimensionID = 0;
+    protected int dimensionID = -1;
     protected Class<? extends WorldProvider> providerClass;
+    protected String dimensionSuffix;
     protected boolean autoRegisterDimension = false;
     protected boolean isReachable = false;
     protected boolean forceStaticLoad = true;
     protected int tierRequired = 0;
 
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
-    protected LinkedList<BiomeGenBase> biomeInfo;
+    protected LinkedList<Biome> biomeInfo;
     protected LinkedList<SpawnListEntry> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
@@ -70,7 +71,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public String getLocalizedName()
     {
         String s = this.getUnlocalizedName();
-        s = s == null ? "" : StatCollector.translateToLocal(s);
+        s = s == null ? "" : I18n.translateToLocal(s);
         int comment = s.indexOf('#');
         return (comment > 0) ? s.substring(0, comment).trim() : s;
     }
@@ -314,12 +315,22 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 	{
 		this.isReachable = false;
 	}
-	
-    public void setBiomeInfo(BiomeGenBase ...  biome)
+
+    public String getDimensionSuffix()
+    {
+        return dimensionSuffix;
+    }
+
+    public void setDimensionSuffix(String dimensionSuffix)
+    {
+        this.dimensionSuffix = dimensionSuffix;
+    }
+
+    public void setBiomeInfo(Biome ...  biome)
     {
         if (this.biomeInfo == null)
         {
-            this.biomeInfo = new LinkedList<BiomeGenBase>();
+            this.biomeInfo = new LinkedList<Biome>();
         }
         this.biomeInfo.addAll(Arrays.asList(biome));
     }
@@ -337,7 +348,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     {
         if (this.biomeInfo != null && this.mobInfo != null)
         {
-            for (BiomeGenBase biome : this.biomeInfo)
+            for (Biome biome : this.biomeInfo)
             {
                 if (biome instanceof IMobSpawnBiome)
                 {

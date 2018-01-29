@@ -9,7 +9,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 
@@ -18,6 +27,7 @@ import java.util.List;
 
 public class EntityMeteor extends Entity
 {
+    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     public EntityLiving shootingEntity;
     public int size;
 
@@ -55,15 +65,15 @@ public class EntityMeteor extends Entity
             this.spawnParticles();
         }
 
-        Vec3 var15 = new Vec3(this.posX, this.posY, this.posZ);
-        Vec3 var2 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        MovingObjectPosition var3 = this.worldObj.rayTraceBlocks(var15, var2, true, true, false);
-        var15 = new Vec3(this.posX, this.posY, this.posZ);
-        var2 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d var15 = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        RayTraceResult var3 = this.worldObj.rayTraceBlocks(var15, var2, true, true, false);
+        var15 = new Vec3d(this.posX, this.posY, this.posZ);
+        var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
         if (var3 != null)
         {
-            var2 = new Vec3(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
+            var2 = new Vec3d(var3.hitVec.xCoord, var3.hitVec.yCoord, var3.hitVec.zCoord);
         }
 
         Entity var4 = null;
@@ -79,7 +89,7 @@ public class EntityMeteor extends Entity
             {
                 final float var10 = 0.01F;
                 final AxisAlignedBB var11 = var9.getEntityBoundingBox().expand(var10, var10, var10);
-                final MovingObjectPosition var12 = var11.calculateIntercept(var15, var2);
+                final RayTraceResult var12 = var11.calculateIntercept(var15, var2);
 
                 if (var12 != null)
                 {
@@ -96,7 +106,7 @@ public class EntityMeteor extends Entity
 
         if (var4 != null)
         {
-            var3 = new MovingObjectPosition(var4);
+            var3 = new RayTraceResult(var4);
         }
 
         if (var3 != null)
@@ -119,14 +129,14 @@ public class EntityMeteor extends Entity
         GalacticraftCore.proxy.spawnParticle("distanceSmoke", new Vector3(this.posX, this.posY + 1D + Math.random(), this.posZ - Math.random()), new Vector3(0.0D, 0.0D, 0.0D), new Object[] {});
     }
 
-    protected void onImpact(MovingObjectPosition movingObjPos)
+    protected void onImpact(RayTraceResult movingObjPos)
     {
         if (!this.worldObj.isRemote)
         {
             if (movingObjPos != null)
             {
                 BlockPos above = movingObjPos.getBlockPos().up();
-                if (this.worldObj.getBlockState(above).getBlock().isAir(worldObj, above))
+                if (this.worldObj.getBlockState(above).getBlock().isAir(worldObj.getBlockState(above), worldObj, above))
                 {
                     this.worldObj.setBlockState(above, GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
@@ -153,7 +163,7 @@ public class EntityMeteor extends Entity
     {
         if (par1Entity != null && par1Entity instanceof EntityPlayer)
         {
-            StatCollector.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).getGameProfile().getName() + " was hit by a meteor! That's gotta hurt!");
+            I18n.translateToLocalFormatted("death." + "meteor", ((EntityPlayer) par1Entity).getGameProfile().getName() + " was hit by a meteor! That's gotta hurt!");
         }
         return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
     }
@@ -161,13 +171,13 @@ public class EntityMeteor extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(16, this.size);
+        this.dataManager.register(SIZE, this.size);
         this.noClip = true;
     }
 
     public int getSize()
     {
-        return this.dataWatcher.getWatchableObjectInt(16);
+        return this.dataManager.get(SIZE);
     }
 
     /**
@@ -175,7 +185,7 @@ public class EntityMeteor extends Entity
      */
     public void setSize(int par1)
     {
-        this.dataWatcher.updateObject(16, Integer.valueOf(par1));
+        this.dataManager.set(SIZE, Integer.valueOf(par1));
     }
 
     @Override

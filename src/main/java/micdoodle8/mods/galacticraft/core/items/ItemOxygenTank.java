@@ -11,6 +11,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -65,7 +68,7 @@ public class ItemOxygenTank extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player, EnumHand hand)
     {
         if (player instanceof EntityPlayerMP)
         {
@@ -84,6 +87,6 @@ public class ItemOxygenTank extends Item implements ISortableItem
                 itemStack.stackSize = 0;
             }
         }
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.PASS, itemStack);
     }
 }

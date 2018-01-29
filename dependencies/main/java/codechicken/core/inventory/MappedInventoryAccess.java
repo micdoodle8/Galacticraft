@@ -3,15 +3,15 @@ package codechicken.core.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MappedInventoryAccess implements IInventory {
-    public static interface InventoryAccessor {
-        public boolean canAccessSlot(int slot);
+    public interface InventoryAccessor {
+        boolean canAccessSlot(int slot);
     }
 
     public static final InventoryAccessor fullAccess = new InventoryAccessor() {
@@ -135,7 +135,7 @@ public class MappedInventoryAccess implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
+    public ITextComponent getDisplayName() {
         return inv.getDisplayName();
     }
 

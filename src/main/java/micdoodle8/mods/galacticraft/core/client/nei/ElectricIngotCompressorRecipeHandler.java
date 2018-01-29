@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.nei;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.util.NEIServerUtils;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
@@ -33,11 +32,11 @@ public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
         return 1;
     }
 
-    public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
+    public Set<Map.Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
         HashMap<ArrayList<PositionedStack>, PositionedStack> recipes = new HashMap<ArrayList<PositionedStack>, PositionedStack>();
 
-        for (Entry<HashMap<Integer, PositionedStack>, PositionedStack> stack : NEIGalacticraftConfig.getIngotCompressorRecipes())
+        for (Map.Entry<HashMap<Integer, PositionedStack>, PositionedStack> stack : NEIGalacticraftConfig.getIngotCompressorRecipes())
         {
             ArrayList<PositionedStack> inputStacks = new ArrayList<PositionedStack>();
 

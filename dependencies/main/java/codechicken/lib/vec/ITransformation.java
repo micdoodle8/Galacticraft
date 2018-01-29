@@ -7,6 +7,7 @@ package codechicken.lib.vec;
  * @param <Transformation> The transformation type
  */
 public abstract class ITransformation<Vector, Transformation extends ITransformation> {
+
     /**
      * Applies this transformation to vec
      */

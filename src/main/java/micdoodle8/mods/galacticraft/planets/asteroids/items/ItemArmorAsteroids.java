@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -15,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemArmorAsteroids extends ItemArmor implements ISortableItem
 {
-    public ItemArmorAsteroids(int armorIndex, String assetSuffix)
+    public ItemArmorAsteroids(EntityEquipmentSlot armorIndex, String assetSuffix)
     {
         super(AsteroidsItems.ARMOR_TITANIUM, 0, armorIndex);
         this.setUnlocalizedName("titanium_" + assetSuffix);
@@ -36,7 +37,7 @@ public class ItemArmorAsteroids extends ItemArmor implements ISortableItem
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         if (this.getArmorMaterial() == AsteroidsItems.ARMOR_TITANIUM)
         {

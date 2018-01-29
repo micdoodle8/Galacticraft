@@ -66,11 +66,11 @@ public class ConfigManagerAsteroids
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDAsteroids", -30);
-            prop.comment = "Dimension ID for Asteroids";
+            prop.setComment("Dimension ID for Asteroids");
             prop.setLanguageKey("gc.configgui.dimension_i_d_asteroids").setRequiresMcRestart(true);
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
                 propCopy.setRequiresMcRestart(prop.requiresMcRestart());
             }
@@ -79,65 +79,65 @@ public class ConfigManagerAsteroids
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT3", 4);
-            prop.comment = "Schematic ID for Tier 3 Rocket, must be unique.";
+            prop.setComment("Schematic ID for Tier 3 Rocket, must be unique.");
             prop.setLanguageKey("gc.configgui.id_schematic_rocket_t3");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, prop.getName(), prop.getInt(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, prop.getName(), prop.getInt(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             idSchematicRocketT3 = prop.getInt(4);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableGalacticraftHelium", false);
-            prop.comment = "Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).";
+            prop.setComment("Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).");
             prop.setLanguageKey("gc.configgui.disable_galacticraft_helium");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getBoolean(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getBoolean(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             disableGalacticraftHelium = prop.getBoolean(false);
             ConfigManagerMars.propOrder.add(prop.getName());
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 6);
-            prop.comment = "Maximum number of Astro Miners each player is allowed to have active (default 4).";
+            prop.setComment("Maximum number of Astro Miners each player is allowed to have active (default 4).");
             prop.setLanguageKey("gc.configgui.astro_miners_max");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getInt(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getInt(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             astroMinerMax = prop.getInt(6);
             ConfigManagerMars.propOrder.add(prop.getName());
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Asteroids", false);
-            prop.comment = "Disable Iron Ore Gen on Asteroids.";
+            prop.setComment("Disable Iron Ore Gen on Asteroids.");
             prop.setLanguageKey("gc.configgui.disable_iron_gen_asteroids");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             disableIronGen = prop.getBoolean(false);
             ConfigManagerMars.propOrder.add(prop.getName());
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Aluminum Ore Gen on Asteroids", false);
-            prop.comment = "Disable Aluminum Ore Gen on Asteroids.";
+            prop.setComment("Disable Aluminum Ore Gen on Asteroids.");
             prop.setLanguageKey("gc.configgui.disable_aluminum_gen_asteroids");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             disableAluminumGen = prop.getBoolean(false);
             ConfigManagerMars.propOrder.add(prop.getName());
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Ilmenite Ore Gen on Asteroids", false);
-            prop.comment = "Disable Ilmenite Ore Gen on Asteroids.";
+            prop.setComment("Disable Ilmenite Ore Gen on Asteroids.");
             prop.setLanguageKey("gc.configgui.disable_ilmenite_gen_asteroids");
             if (update)
             {
-                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             disableIlmeniteGen = prop.getBoolean(false);

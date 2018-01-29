@@ -23,6 +23,12 @@ public class GasLiquefierRecipeHandler implements IRecipeHandler<GasLiquefierRec
         return RecipeCategories.GAS_LIQUEFIER_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(GasLiquefierRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull GasLiquefierRecipeWrapper recipe)

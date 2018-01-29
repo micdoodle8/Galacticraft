@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedEnderman;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanEyes;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanHeldBlock;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -40,7 +40,8 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
     @Override
     public void doRender(EntityEvolvedEnderman entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.endermanModel.isCarrying = entity.getHeldBlockState().getBlock().getMaterial() != Material.air;
+        IBlockState iblockstate = entity.getHeldBlockState();
+        this.endermanModel.isCarrying = iblockstate != null;
         this.endermanModel.isAttacking = entity.isScreaming();
 
         if (entity.isScreaming())
@@ -49,12 +50,12 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
             x += this.rnd.nextGaussian() * d3;
             z += this.rnd.nextGaussian() * d3;
         }
-        texSwitch = false;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
         }
     }
     

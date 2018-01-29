@@ -13,7 +13,8 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.texture.TextureUtil;
-import net.minecraft.util.MathHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,7 +58,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
 
             if (worldIn != null && player != null && !flag1)
             {
-                if (worldIn.provider instanceof IGalacticraftWorldProvider && player.inventory.hasItem(GCItems.dungeonFinder))
+                if (worldIn.provider instanceof IGalacticraftWorldProvider && player.inventory.hasItemStack(new ItemStack(GCItems.dungeonFinder)))
                 {
                     double direction = GCPlayerStatsClient.get(player).getDungeonDirection();
                     angle = (angle - direction) % 360.0D;

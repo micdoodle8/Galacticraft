@@ -34,19 +34,19 @@ public final class ServerPlayerConstructorVisitor extends MethodVisitor
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf)
 	{
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
-		if(name.equals("<init>") && owner.equals(isObfuscated ? "wn" : "net/minecraft/entity/player/EntityPlayer"))
+		if(name.equals("<init>") && owner.equals(isObfuscated ? "zs" : "net/minecraft/entity/player/EntityPlayer"))
 		{
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "create", "(Lapi/player/server/IServerPlayerAPI;)Lapi/player/server/ServerPlayerAPI;", false);
-			mv.visitFieldInsn(Opcodes.PUTFIELD, isObfuscated ? "lf" : "net/minecraft/entity/player/EntityPlayerMP", "serverPlayerAPI", "Lapi/player/server/ServerPlayerAPI;");
+			mv.visitFieldInsn(Opcodes.PUTFIELD, isObfuscated ? "lu" : "net/minecraft/entity/player/EntityPlayerMP", "serverPlayerAPI", "Lapi/player/server/ServerPlayerAPI;");
 
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitVarInsn(Opcodes.ALOAD, 1);
 			mv.visitVarInsn(Opcodes.ALOAD, 2);
 			mv.visitVarInsn(Opcodes.ALOAD, 3);
 			mv.visitVarInsn(Opcodes.ALOAD, 4);
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "beforeLocalConstructing", "(Lapi/player/server/IServerPlayerAPI;Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/WorldServer;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/server/management/ItemInWorldManager;)V", false);
+			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "beforeLocalConstructing", "(Lapi/player/server/IServerPlayerAPI;Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/WorldServer;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/server/management/PlayerInteractionManager;)V", false);
 		}
 	}
 
@@ -59,7 +59,7 @@ public final class ServerPlayerConstructorVisitor extends MethodVisitor
 			mv.visitVarInsn(Opcodes.ALOAD, 2);
 			mv.visitVarInsn(Opcodes.ALOAD, 3);
 			mv.visitVarInsn(Opcodes.ALOAD, 4);
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "afterLocalConstructing", "(Lapi/player/server/IServerPlayerAPI;Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/WorldServer;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/server/management/ItemInWorldManager;)V", false);
+			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/server/ServerPlayerAPI", "afterLocalConstructing", "(Lapi/player/server/IServerPlayerAPI;Lnet/minecraft/server/MinecraftServer;Lnet/minecraft/world/WorldServer;Lcom/mojang/authlib/GameProfile;Lnet/minecraft/server/management/PlayerInteractionManager;)V", false);
 		}
 		super.visitInsn(opcode);
 	}

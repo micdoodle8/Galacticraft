@@ -1,6 +1,7 @@
 package codechicken.lib.asm;
 
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.*;
 import org.objectweb.asm.util.Textifier;
 import org.objectweb.asm.util.TraceMethodVisitor;
@@ -19,7 +20,9 @@ import static org.objectweb.asm.tree.AbstractInsnNode.*;
  * A section of an InsnList, may become invalid if the insn list is modified
  */
 public class InsnListSection implements Iterable<AbstractInsnNode> {
+
     private class InsnListSectionIterator implements Iterator<AbstractInsnNode> {
+
         int i = 0;
 
         @Override
@@ -185,43 +188,43 @@ public class InsnListSection implements Iterable<AbstractInsnNode> {
         HashMap<LabelNode, LabelNode> labelMap = new HashMap<LabelNode, LabelNode>();
         for (AbstractInsnNode insn : this) {
             switch (insn.getType()) {
-            case LABEL:
-                labelMap.put((LabelNode) insn, (LabelNode) insn);
-                break;
-            case JUMP_INSN:
-                labelMap.put(((JumpInsnNode) insn).label, ((JumpInsnNode) insn).label);
-                break;
-            case LOOKUPSWITCH_INSN:
-                LookupSwitchInsnNode linsn = (LookupSwitchInsnNode) insn;
-                labelMap.put(linsn.dflt, linsn.dflt);
-                for (LabelNode label : linsn.labels) {
-                    labelMap.put(label, label);
-                }
-                break;
-            case TABLESWITCH_INSN:
-                TableSwitchInsnNode tinsn = (TableSwitchInsnNode) insn;
-                labelMap.put(tinsn.dflt, tinsn.dflt);
-                for (LabelNode label : tinsn.labels) {
-                    labelMap.put(label, label);
-                }
-                break;
-            case FRAME:
-                FrameNode fnode = (FrameNode) insn;
-                if (fnode.local != null) {
-                    for (Object o : fnode.local) {
-                        if (o instanceof LabelNode) {
-                            labelMap.put((LabelNode) o, (LabelNode) o);
+                case LABEL:
+                    labelMap.put((LabelNode) insn, (LabelNode) insn);
+                    break;
+                case JUMP_INSN:
+                    labelMap.put(((JumpInsnNode) insn).label, ((JumpInsnNode) insn).label);
+                    break;
+                case LOOKUPSWITCH_INSN:
+                    LookupSwitchInsnNode linsn = (LookupSwitchInsnNode) insn;
+                    labelMap.put(linsn.dflt, linsn.dflt);
+                    for (LabelNode label : linsn.labels) {
+                        labelMap.put(label, label);
+                    }
+                    break;
+                case TABLESWITCH_INSN:
+                    TableSwitchInsnNode tinsn = (TableSwitchInsnNode) insn;
+                    labelMap.put(tinsn.dflt, tinsn.dflt);
+                    for (LabelNode label : tinsn.labels) {
+                        labelMap.put(label, label);
+                    }
+                    break;
+                case FRAME:
+                    FrameNode fnode = (FrameNode) insn;
+                    if (fnode.local != null) {
+                        for (Object o : fnode.local) {
+                            if (o instanceof LabelNode) {
+                                labelMap.put((LabelNode) o, (LabelNode) o);
+                            }
                         }
                     }
-                }
-                if (fnode.stack != null) {
-                    for (Object o : fnode.stack) {
-                        if (o instanceof LabelNode) {
-                            labelMap.put((LabelNode) o, (LabelNode) o);
+                    if (fnode.stack != null) {
+                        for (Object o : fnode.stack) {
+                            if (o instanceof LabelNode) {
+                                labelMap.put((LabelNode) o, (LabelNode) o);
+                            }
                         }
                     }
-                }
-                break;
+                    break;
             }
         }
 

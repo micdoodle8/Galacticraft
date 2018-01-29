@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -31,6 +32,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -81,9 +83,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         addSalvage(new ItemStack(GCItems.basicItem, 1, 3));
         addSalvage(new ItemStack(GCItems.basicItem, 1, 4));
         addSalvage(new ItemStack(GCItems.basicItem, 1, 5));
-        addSalvage(new ItemStack(Items.iron_ingot));
-        addSalvage(new ItemStack(Items.gold_ingot));
-        addSalvage(new ItemStack(Items.gold_nugget));
+        addSalvage(new ItemStack(Items.IRON_INGOT));
+        addSalvage(new ItemStack(Items.GOLD_INGOT));
+        addSalvage(new ItemStack(Items.GOLD_NUGGET));
     }
 
     public static void initialiseRecipeList()
@@ -143,7 +145,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
                     if ((this.processTicks * 5) % this.processTimeRequired == 5)
                     {
-                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_break", 0.25F, 0.4F);
+                        this.worldObj.playSound(null, this.getPos(), GCSounds.deconstructor, SoundCategory.BLOCKS, 0.25F, this.worldObj.rand.nextFloat() * 0.04F + 0.38F);
                     }
 
                     if (this.processTicks >= this.processTimeRequired)
@@ -440,10 +442,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
         NBTTagList var2 = new NBTTagList();
         int var3;
 
@@ -457,9 +459,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
                 var2.appendTag(var4);
             }
         }
-        par1NBTTagCompound.setTag("Items", var2);
+        nbt.setTag("Items", var2);
 
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        return nbt;
     }
 
     @Override

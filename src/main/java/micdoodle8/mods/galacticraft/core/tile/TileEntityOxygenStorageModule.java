@@ -16,13 +16,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
-
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IFluidHandler, IMachineSides
+public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledOxygenLevel;
@@ -134,9 +132,9 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         final NBTTagList list = new NBTTagList();
 
@@ -150,9 +148,10 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
                 list.appendTag(var4);
             }
         }
-        par1NBTTagCompound.setTag("Items", list);
+        nbt.setTag("Items", list);
 
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        return nbt;
     }
 
     @Override

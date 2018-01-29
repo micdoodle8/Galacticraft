@@ -5,15 +5,15 @@ import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityHanging;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -79,7 +79,7 @@ public class RenderSchematic extends Render<EntityHangingSchematic>
                 float f21 = (float)(height - j * 16) / 32.0F;
                 float f22 = (float)(height - (j + 1) * 16) / 32.0F;
                 Tessellator tessellator = Tessellator.getInstance();
-                WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+                VertexBuffer worldrenderer = tessellator.getBuffer();
                 worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_NORMAL);
                 worldrenderer.pos(a, d, (-f2)).tex(f20, f21).normal(0.0F, 0.0F, -1.0F).endVertex();
                 worldrenderer.pos(b, d, (-f2)).tex(f19, f21).normal(0.0F, 0.0F, -1.0F).endVertex();

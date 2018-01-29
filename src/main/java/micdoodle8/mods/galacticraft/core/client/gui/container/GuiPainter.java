@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -80,7 +80,7 @@ public class GuiPainter extends GuiContainerGC
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         ColorUtil.setGLColor(tileEntity.guiColor);
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldrenderer = tessellator.getBuffer();
         int x = guiLeft + this.xSize / 2 - 9;
         int y = guiBottom + this.ySize / 2 - 60;
         int height = 18;

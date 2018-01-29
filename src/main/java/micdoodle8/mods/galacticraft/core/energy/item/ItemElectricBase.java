@@ -222,9 +222,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            if (item instanceof ic2.api.item.IElectricItem)
             {
-                return !((ic2.api.item.ISpecialElectricItem) item).canProvideEnergy(itemstack);
+                return !((ic2.api.item.IElectricItem) item).canProvideEnergy(itemstack);
             }
         }
 
@@ -243,9 +243,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
 
         if (EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
-            if (item instanceof ic2.api.item.ISpecialElectricItem)
+            if (item instanceof ic2.api.item.IElectricItem)
             {
-                return ((ic2.api.item.ISpecialElectricItem) item).canProvideEnergy(itemstack);
+                return ((ic2.api.item.IElectricItem) item).canProvideEnergy(itemstack);
             }
         }
 
@@ -323,25 +323,25 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         return (IElectricItemManager) ItemElectricBase.itemManagerIC2;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.IElectricItem", modID = "IC2")
     public boolean canProvideEnergy(ItemStack itemStack)
     {
         return true;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.IElectricItem", modID = "IC2")
     public int getTier(ItemStack itemStack)
     {
         return 1;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.IElectricItem", modID = "IC2")
     public double getMaxCharge(ItemStack itemStack)
     {
         return this.getMaxElectricityStored(itemStack) / EnergyConfigHandler.IC2_RATIO;
     }
 
-    @RuntimeInterface(clazz = "ic2.api.item.ISpecialElectricItem", modID = "IC2")
+    @RuntimeInterface(clazz = "ic2.api.item.IElectricItem", modID = "IC2")
     public double getTransferLimit(ItemStack itemStack)
     {
         return this.transferMax * EnergyConfigHandler.TO_IC2_RATIO;

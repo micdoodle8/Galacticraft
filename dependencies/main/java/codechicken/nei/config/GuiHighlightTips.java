@@ -5,11 +5,11 @@ import codechicken.core.gui.GuiScreenWidget;
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.HUDRenderer;
-import codechicken.nei.NEIClientUtils;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -19,6 +19,7 @@ import java.util.Arrays;
 import static codechicken.lib.gui.GuiDraw.displaySize;
 import static codechicken.lib.gui.GuiDraw.getMousePosition;
 
+@Deprecated//Waila is a thing now.
 public class GuiHighlightTips extends GuiScreenWidget {
     private String name;
     private GuiCCButton toggleButton;
@@ -70,7 +71,7 @@ public class GuiHighlightTips extends GuiScreenWidget {
     public void drawScreen(int mousex, int mousey, float f) {
         super.drawScreen(mousex, mousey, f);
         if (show()) {
-            HUDRenderer.renderOverlay(new ItemStack(Blocks.redstone_block), Arrays.asList("RedstoneBlock", EnumChatFormatting.RED + "Sample"), renderPos());
+            //HUDRenderer.renderOverlay(new ItemStack(Blocks.REDSTONE_BLOCK), Arrays.asList("RedstoneBlock", TextFormatting.RED + "Sample"), renderPos());
         }
     }
 

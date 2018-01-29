@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Colour implements Copyable<Colour> {
+
     public static IConfigType<Colour> configRGB = new IConfigType<Colour>() {
         @Override
         public String configValue(Colour entry) {
@@ -54,17 +55,19 @@ public abstract class Colour implements Copyable<Colour> {
         a = colour.a;
     }
 
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glColour() {
         GlStateManager.color((r & 0xFF) / 255F, (g & 0xFF) / 255F, (b & 0xFF) / 255F, (a & 0xFF) / 255F);
     }
 
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glColour(int a) {
         GlStateManager.color((r & 0xFF) / 255F, (g & 0xFF) / 255F, (b & 0xFF) / 255F, a / 255F);
     }
 
     public abstract int pack();
+
+    public abstract float[] packArray();
 
     @Override
     public String toString() {
@@ -141,12 +144,62 @@ public abstract class Colour implements Copyable<Colour> {
         return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (a & 0xFF);
     }
 
+    public abstract Colour set(int colour);
+
     public Colour set(Colour colour) {
         r = colour.r;
         g = colour.g;
         b = colour.b;
         a = colour.a;
         return this;
+    }
+
+    public static int packRGBA(byte r, byte g, byte b, byte a) {
+        return (r & 0xFF) << 24 | (g & 0xFF) << 16 | (b & 0xFF) << 8 | (a & 0xFF);
+    }
+
+    public static int packARGB(byte r, byte g, byte b, byte a) {
+        return (a & 0xFF) << 24 | (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF);
+    }
+
+    public static int packRGBA(int r, int g, int b, int a) {
+        return r << 24 | g << 16 | b << 8 | a;
+    }
+
+    public static int packARGB(int r, int g, int b, int a) {
+        return a << 24 | r << 16 | g << 8 | b;
+    }
+
+    public static int packRGBA(double r, double g, double b, double a) {
+        return (int) (r * 255) << 24 | (int) (g * 255) << 16 | (int) (b * 255) << 8 | (int) (a * 255);
+    }
+
+    public static int packARGB(double r, double g, double b, double a) {
+        return (int) (a * 255) << 24 | (int) (r * 255) << 16 | (int) (g * 255) << 8 | (int) (b * 255);
+    }
+
+    public static int packRGBA(float[] data) {
+        return packRGBA(data[0], data[1], data[2], data[3]);
+    }
+
+    public static int packARGB(float[] data) {
+        return packARGB(data[0], data[1], data[2], data[3]);
+    }
+
+    public static void glColourRGBA(int colour) {
+        float r = ((colour >> 24) & 0xFF) / 255F;
+        float g = ((colour >> 16) & 0xFF) / 255F;
+        float b = ((colour >> 8) & 0xFF) / 255F;
+        float a = (colour & 0xFF) / 255F;
+        GlStateManager.color(r, g, b, a);
+    }
+
+    public static void glColourARGB(int colour) {
+        float r = ((colour >> 16) & 0xFF) / 255F;
+        float g = ((colour >> 8) & 0xFF) / 255F;
+        float b = (colour & 0xFF) / 255F;
+        float a = ((colour >> 24 & 0xFF)) / 255F;
+        GlStateManager.color(r, g, b, a);
     }
 
     public boolean equals(Colour colour) {

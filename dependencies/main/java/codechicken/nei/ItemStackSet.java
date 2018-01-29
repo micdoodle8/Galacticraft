@@ -1,11 +1,11 @@
 package codechicken.nei;
 
-import codechicken.nei.api.ItemFilter;
+import codechicken.lib.item.filtering.IItemFilter;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class ItemStackSet extends ItemStackMap<ItemStack> implements ItemFilter {
+public class ItemStackSet extends ItemStackMap<ItemStack> implements IItemFilter {
     public ItemStackSet with(ItemStack... items) {
         for (ItemStack item : items) {
             add(item);

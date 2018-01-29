@@ -18,7 +18,6 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -26,7 +25,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -133,9 +135,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
                                     for (int y = this.getPos().getY() + 3; y < 256; y++)
                                     {
-                                        Block block = this.worldObj.getBlockState(new BlockPos(this.getPos().getX() + x, y, this.getPos().getZ() + z)).getBlock();
+                                        IBlockState state = this.worldObj.getBlockState(new BlockPos(this.getPos().getX() + x, y, this.getPos().getZ() + z));
 
-                                        if (block.isOpaqueCube())
+                                        if (state.getBlock().isOpaqueCube(state))
                                         {
                                             valid = false;
                                             break;
@@ -156,9 +158,14 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                                 for (double d = 0.0D; d < distance; d++)
                                 {
                                     BlockVec3 blockAt = blockVec.clone().translate((int) (d * sinA), (int) (d * cosA), 0);
-                                    Block block = blockAt.getBlock(this.worldObj);
+                                    IBlockState state = blockAt.getBlockState(this.worldObj);
+                                    
+                                    if (state == null)
+                                    {
+                                        break;
+                                    }
 
-                                    if (block.isOpaqueCube())
+                                    if (state.getBlock().isOpaqueCube(state))
                                     {
                                         valid = false;
                                         break;
@@ -284,7 +291,8 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
-        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        return false; // TODO
+//        return this.getBlockType().onBlockActivated(this.worldObj, this.getPos(), this.worldObj.getBlockState(getPos()), entityPlayer, EnumFacing.DOWN, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
 //    @Override
@@ -394,7 +402,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
@@ -417,6 +425,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
 	/*@Override

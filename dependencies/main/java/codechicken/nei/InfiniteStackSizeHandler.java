@@ -2,6 +2,7 @@ package codechicken.nei;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.api.IInfiniteItemHandler;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 

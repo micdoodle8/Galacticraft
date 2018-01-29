@@ -8,8 +8,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
@@ -58,8 +58,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             if (this.range15 == null)
             {
                 final Vector3 thisVec = new Vector3(this);
-                this.range15 = AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15);
-                this.rangeBounds = AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
+                this.range15 = new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15);
+                this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
                 this.rangeBoundsPlus3 = this.rangeBounds.expand(3, 3, 3);
             }
 
@@ -171,7 +171,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            // This exception will be thrown when read is called from TileEntity.handleUpdateTag
+            // but we only care if an exception is thrown on server side read
+            if (!this.worldObj.isRemote)
+            {
+                e.printStackTrace();
+            }
         }
 
         this.roomCoords = new Vector3();
@@ -201,7 +206,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -228,6 +233,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             nbt.setInteger("chestY", this.chestPos.getY());
             nbt.setInteger("chestZ", this.chestPos.getZ());
         }
+        return nbt;
     }
 
     @Override
@@ -261,7 +267,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public AxisAlignedBB getRangeBounds()
     {
         if (this.rangeBounds == null)
-            this.rangeBounds = AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
+            this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
 
         return this.rangeBounds;
     }

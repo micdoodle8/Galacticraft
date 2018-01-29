@@ -1,20 +1,22 @@
 package mezz.jei.api.gui;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.Rectangle;
 import java.util.List;
 
+import mezz.jei.api.IModRegistry;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 import net.minecraft.client.gui.inventory.GuiContainer;
 
 /**
- * Allows mods to change how JEI is displayed next to their gui.
+ * Allows plugins to change how JEI is displayed next to their mod's guis.
+ * Register your implementation with {@link IModRegistry#addAdvancedGuiHandlers(IAdvancedGuiHandler[])}.
+ * @see BlankAdvancedGuiHandler
  */
 public interface IAdvancedGuiHandler<T extends GuiContainer> {
 	/**
 	 * @return the class that this IAdvancedGuiHandler handles.
 	 */
-	@Nonnull
 	Class<T> getGuiContainerClass();
 
 	/**
@@ -25,4 +27,19 @@ public interface IAdvancedGuiHandler<T extends GuiContainer> {
 	 */
 	@Nullable
 	List<Rectangle> getGuiExtraAreas(T guiContainer);
+
+	/**
+	 * Return anything under the mouse that JEI could not normally detect, used for JEI recipe lookups.
+	 * <p>
+	 * This is useful for guis that don't have normal slots (which is how JEI normally detects items under the mouse).
+	 * <p>
+	 * This can also be used to let JEI look up liquids in tanks directly, by returning a FluidStack.
+	 * Works with any ingredient type that has been registered with {@link IModIngredientRegistration}.
+	 *
+	 * @param mouseX the current X position of the mouse in screen coordinates.
+	 * @param mouseY the current Y position of the mouse in screen coordinates.
+	 * @since JEI 3.13.2
+	 */
+	@Nullable
+	Object getIngredientUnderMouse(T guiContainer, int mouseX, int mouseY);
 }

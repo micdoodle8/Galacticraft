@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashSet;
@@ -255,9 +255,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+        super.readFromNBT(nbt);
         if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.setTier2();
@@ -267,24 +267,26 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             this.initialised = false;
         }
-        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
+        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
         
-        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
             this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
         }
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
+        this.writeStandardItemsToNBT(nbt);
         
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+
+        return nbt;
     }
 
     @Override
@@ -360,7 +362,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

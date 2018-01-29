@@ -1,10 +1,10 @@
 package codechicken.nei.recipe;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.InventoryCraftingDummy;
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.container.InventoryCraftingDummy;
 import codechicken.nei.guihook.GuiContainerManager;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -25,7 +25,7 @@ public class FireworkRecipeHandler extends ShapelessRecipeHandler {
         public int recipeType;
 
         public CachedFireworkRecipe(Object[] base, Object extra, int type) {
-            super(new ItemStack(Items.fireworks));
+            super(new ItemStack(Items.FIREWORKS));
             this.baseIngredients = base;
             this.extraIngred = extra;
             this.recipeType = type;
@@ -69,28 +69,28 @@ public class FireworkRecipeHandler extends ShapelessRecipeHandler {
 
     private void loadAllFireworks() {
         //charges
-        Item[] shapes = new Item[] { null, Items.fire_charge, Items.gold_nugget, Items.feather, Items.skull };
-        Item[] effects = new Item[] { null, Items.diamond, Items.glowstone_dust };
+        Item[] shapes = new Item[] { null, Items.FIRE_CHARGE, Items.GOLD_NUGGET, Items.FEATHER, Items.SKULL };
+        Item[] effects = new Item[] { null, Items.DIAMOND, Items.GLOWSTONE_DUST };
         for (Item shape : shapes) {
             for (Item effect : effects) {
-                genRecipe(Items.gunpowder, shape, effect, Items.dye, Items.dye, 0);
+                genRecipe(Items.GUNPOWDER, shape, effect, Items.DYE, Items.DYE, 0);
             }
         }
 
         //fireworks
-        genRecipe(Items.gunpowder, Items.paper, Items.firework_charge, 2);
-        genRecipe(Items.gunpowder, Items.gunpowder, Items.paper, Items.firework_charge, 2);
-        genRecipe(Items.gunpowder, Items.gunpowder, Items.gunpowder, Items.paper, Items.firework_charge, 2);
+        genRecipe(Items.GUNPOWDER, Items.PAPER, Items.FIREWORK_CHARGE, 2);
+        genRecipe(Items.GUNPOWDER, Items.GUNPOWDER, Items.PAPER, Items.FIREWORK_CHARGE, 2);
+        genRecipe(Items.GUNPOWDER, Items.GUNPOWDER, Items.GUNPOWDER, Items.PAPER, Items.FIREWORK_CHARGE, 2);
 
         //setup a valid charge to use for the recolour recipe
         for (int i = 0; i < 9; i++) {
             inventoryCrafting.setInventorySlotContents(i, null);
         }
-        inventoryCrafting.setInventorySlotContents(0, new ItemStack(Items.gunpowder));
-        inventoryCrafting.setInventorySlotContents(1, new ItemStack(Items.dye));
+        inventoryCrafting.setInventorySlotContents(0, new ItemStack(Items.GUNPOWDER));
+        inventoryCrafting.setInventorySlotContents(1, new ItemStack(Items.DYE));
         recipeFireworks.matches(inventoryCrafting, null);
         ItemStack charge = recipeFireworks.getCraftingResult(null);
-        genRecipe(charge, Items.dye, Items.dye, 1);
+        genRecipe(charge, Items.DYE, Items.DYE, 1);
     }
 
     private void genRecipe(Object... params) {

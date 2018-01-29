@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,13 +71,12 @@ public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
     @Override
     public void doRender(EntityEvolvedCreeper entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        this.texSwitch = false;
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
-
         if (OverlaySensorGlasses.overrideMobTexture())
         {
-            this.texSwitch = true;
+            texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
+            texSwitch = false;
         }
     }
 }

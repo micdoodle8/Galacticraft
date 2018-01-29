@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -23,7 +25,7 @@ public class CompatibilityManager
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
-    private static boolean modIc2Loaded = Loader.isModLoaded("IC2");
+    public static boolean modIc2Loaded = Loader.isModLoaded("IC2");
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("BuildCraft|Energy");
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
@@ -34,6 +36,7 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded = Loader.isModLoaded("BiomesOPlenty");
+    private static boolean spongeLoaded;
     private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
     public static boolean isMFRLoaded = Loader.isModLoaded("MineFactoryReloaded");
@@ -45,6 +48,7 @@ public class CompatibilityManager
 	public static Class classBCBlockGenericPipe = null;
     public static Class<?> classGTOre = null;
 	public static Method methodBCBlockPipe_createPipe = null;
+    private static Method spongeOverride = null;
     public static Field fieldBCoilBucket;
 	public static Class classBOPWorldType = null;
 	public static Class classBOPws = null;
@@ -53,6 +57,8 @@ public class CompatibilityManager
     public static Class classIC2wrenchElectric = null;
     public static Class classIC2tileEventLoad;
     public static Class classIC2tileEventUnload;
+    public static Field fieldIC2tickhandler;
+    public static Field fieldIC2networkManager;
     public static Class classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
     private static Method androidPlayerGet;
@@ -113,6 +119,12 @@ public class CompatibilityManager
                 try {
                     classIC2tileEventLoad = Class.forName("ic2.api.energy.event.EnergyTileLoadEvent");
                     classIC2tileEventUnload = Class.forName("ic2.api.energy.event.EnergyTileUnloadEvent");
+                } catch (ClassNotFoundException e) { }
+                
+                try {
+                    Class clazzIC2 = Class.forName("ic2.core.IC2");
+                    fieldIC2tickhandler = clazzIC2.getDeclaredField("tickHandler");
+                    fieldIC2networkManager  = clazzIC2.getDeclaredField("network");
                 } catch (ClassNotFoundException e) { }
                 
                 Class classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");
@@ -210,7 +222,7 @@ public class CompatibilityManager
             try {
                 classBOPWorldType = Class.forName("biomesoplenty.common.world.WorldTypeBOP");
                 classBOPws = Class.forName("biomesoplenty.common.world.BOPWorldSettings");
-                classBOPwcm = Class.forName("biomesoplenty.common.world.WorldChunkManagerBOP");
+                classBOPwcm = Class.forName("biomesoplenty.common.world.BiomeProviderBOP");
                 GCLog.info("Galacticraft: activating Biomes O'Plenty compatibility feature.");
             } catch (Exception e) { e.printStackTrace(); }
         }
@@ -242,6 +254,14 @@ public class CompatibilityManager
         {
             CompatibilityManager.wailaLoaded = true;
             GCLog.info("Galacticraft: activating WAILA compatibility features.");
+        }
+
+        if (Loader.isModLoaded("sponge"))
+        {
+            try {
+                spongeOverride = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer").getMethod("setForceChunkRequests", boolean.class);
+                spongeLoaded = true;
+            } catch (Exception e) { e.printStackTrace(); }
         }
 
 //TODO      
@@ -336,6 +356,38 @@ public class CompatibilityManager
     public static boolean isWailaLoaded()
     {
         return CompatibilityManager.wailaLoaded;
+    }
+        
+    public static void spongeOverrideStart(WorldServer w)
+    {
+    }
+
+    public static void forceLoadChunks(WorldServer w)
+    {
+        if (spongeLoaded)
+        {   
+            ChunkProviderServer cps = w.getChunkProvider();
+            try
+            {
+                spongeOverride.invoke(cps, true);
+            } catch (Exception ignore)
+            {
+            }
+        }
+    }
+
+    public static void forceLoadChunksEnd(WorldServer w)
+    {
+        if (spongeLoaded)
+        {   
+            ChunkProviderServer cps = w.getChunkProvider();
+            try
+            {
+                spongeOverride.invoke(cps, false);
+            } catch (Exception ignore)
+            {
+            }
+        }
     }
 
     public static void registerMicroBlocks()

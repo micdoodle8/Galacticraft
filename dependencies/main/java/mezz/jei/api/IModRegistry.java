@@ -1,33 +1,44 @@
 package mezz.jei.api;
 
+import java.util.List;
+
 import mezz.jei.api.gui.IAdvancedGuiHandler;
+import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeHandler;
+import mezz.jei.api.recipe.IRecipeRegistryPlugin;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
-import javax.annotation.Nonnull;
-import java.util.List;
-
 /**
- * Passed to IModPlugins so they can register themselves.
+ * Entry point for the JEI API, functions for registering recipes are available from here.
+ * The IModRegistry instance is passed to your mod plugin in {@link IModPlugin#register(IModRegistry)}.
  */
 public interface IModRegistry {
 
 	/**
-	 * Get helpers and tools for addon mods.
+	 * Get helpers and tools for implementing JEI plugins.
+	 *
 	 * @since JEI 2.27.0
 	 */
-	@Nonnull
 	IJeiHelpers getJeiHelpers();
 
 	/**
 	 * Get useful functions relating to items.
+	 *
 	 * @since JEI 2.27.0
+	 * @deprecated since JEI 3.11.0. Use {@link #getIngredientRegistry()} instead.
 	 */
-	@Nonnull
+	@Deprecated
 	IItemRegistry getItemRegistry();
+
+	/**
+	 * Get useful functions relating to recipe ingredients.
+	 *
+	 * @since JEI 3.11.0
+	 */
+	IIngredientRegistry getIngredientRegistry();
 
 	/**
 	 * Add the recipe categories provided by this plugin.
@@ -56,13 +67,23 @@ public interface IModRegistry {
 	 * @param height             the height of the clickable area.
 	 * @param recipeCategoryUids the recipe categories that JEI should display.
 	 */
-	void addRecipeClickArea(@Nonnull Class<? extends GuiContainer> guiContainerClass, int xPos, int yPos, int width, int height, @Nonnull String... recipeCategoryUids);
+	void addRecipeClickArea(Class<? extends GuiContainer> guiContainerClass, int xPos, int yPos, int width, int height, String... recipeCategoryUids);
+
+	/**
+	 * Add an association between an item and what it can craft. (i.e. Furnace ItemStack -> Smelting and Fuel Recipes)
+	 * Allows players to see what item they need to craft in order to make recipes in that recipe category.
+	 *
+	 * @param craftingItem       the item that can craft recipes (like a furnace or crafting table item)
+	 * @param recipeCategoryUids the recipe categories handled by the item
+	 * @since JEI 3.3.0
+	 */
+	void addRecipeCategoryCraftingItem(ItemStack craftingItem, String... recipeCategoryUids);
 
 	/**
 	 * Add a handler to give JEI extra information about how to layout the item list next to a specific type of GuiContainer.
 	 * Used for guis with tabs on the side that would normally intersect with JEI's item list.
 	 */
-	void addAdvancedGuiHandlers(@Nonnull IAdvancedGuiHandler<?>... advancedGuiHandlers);
+	void addAdvancedGuiHandlers(IAdvancedGuiHandler<?>... advancedGuiHandlers);
 
 	/**
 	 * Add a description page for an itemStack.
@@ -82,4 +103,12 @@ public interface IModRegistry {
 	 * Get the registry for setting up recipe transfer.
 	 */
 	IRecipeTransferRegistry getRecipeTransferRegistry();
+
+	/**
+	 * Register your own Recipe Registry Plugin here.
+	 *
+	 * @see IRecipeRegistryPlugin
+	 * @since JEI 3.12.0
+	 */
+	void addRecipeRegistryPlugin(IRecipeRegistryPlugin recipeRegistryPlugin);
 }

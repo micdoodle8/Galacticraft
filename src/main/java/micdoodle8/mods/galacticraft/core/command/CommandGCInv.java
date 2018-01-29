@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -43,7 +43,7 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
@@ -51,14 +51,9 @@ public class CommandGCInv extends CommandBase
         }
         if (args.length == 2)
         {
-            return getListOfStringsMatchingLastWord(args, this.getPlayers());
+            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
         }
         return null;
-    }
-
-    protected String[] getPlayers()
-    {
-        return MinecraftServer.getServer().getAllUsernames();
     }
 
     @Override
@@ -68,7 +63,7 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (CommandGCInv.firstuse)
         {

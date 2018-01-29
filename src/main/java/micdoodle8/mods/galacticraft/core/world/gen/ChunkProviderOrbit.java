@@ -4,17 +4,16 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.IProgressUpdate;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
+import net.minecraft.world.gen.ChunkProviderOverworld;
 
 import java.util.Random;
 
-public class ChunkProviderOrbit extends ChunkProviderGenerate
+public class ChunkProviderOrbit extends ChunkProviderOverworld
 {
     private final Random rand;
 
@@ -28,30 +27,6 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
     }
 
     @Override
-    public boolean unloadQueuedChunks()
-    {
-        return false;
-    }
-
-    @Override
-    public int getLoadedChunkCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public boolean saveChunks(boolean var1, IProgressUpdate var2)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    @Override
     public Chunk provideChunk(int par1, int par2)
     {
         ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -62,7 +37,7 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
         final byte[] biomesArray = var4.getBiomeArray();
         for (int i = 0; i < biomesArray.length; ++i)
         {
-            biomesArray[i] = (byte) BiomeGenBaseOrbit.space.biomeID;
+            biomesArray[i] = (byte) Biome.getIdForBiome(BiomeOrbit.space);
         }
 
 
@@ -71,21 +46,15 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
     }
 
     @Override
-    public boolean chunkExists(int par1, int par2)
-    {
-        return true;
-    }
-
-    @Override
-    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
+    public void populate(int x, int z)
     {
         BlockFalling.fallInstantly = true;
-        final int k = par2 * 16;
-        final int l = par3 * 16;
+        final int k = x * 16;
+        final int l = z * 16;
         this.rand.setSeed(this.worldObj.getSeed());
         final long i1 = this.rand.nextLong() / 2L * 2L + 1L;
         final long j1 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(par2 * i1 + par3 * j1 ^ this.worldObj.getSeed());
+        this.rand.setSeed(x * i1 + z * j1 ^ this.worldObj.getSeed());
         if (k == 0 && l == 0)
         {
             BlockPos pos = new BlockPos(k, 64, l);
@@ -101,11 +70,5 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
             new WorldGenSpaceStation().generate(this.worldObj, this.rand, new BlockPos(k - 10, 62, l - 3));
         }
         BlockFalling.fallInstantly = false;
-    }
-
-    @Override
-    public String makeString()
-    {
-        return "OrbitLevelSource";
     }
 }

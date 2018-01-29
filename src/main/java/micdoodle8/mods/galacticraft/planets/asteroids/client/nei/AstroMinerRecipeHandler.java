@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.nei;
 
 import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import codechicken.nei.util.NEIServerUtils;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
@@ -13,7 +13,6 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class AstroMinerRecipeHandler extends TemplateRecipeHandler
@@ -31,7 +30,7 @@ public class AstroMinerRecipeHandler extends TemplateRecipeHandler
         return 1;
     }
 
-    public Set<Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
+    public Set<Map.Entry<ArrayList<PositionedStack>, PositionedStack>> getRecipes()
     {
         return NEIGalacticraftAsteroidsConfig.getAstroMinerRecipes();
     }

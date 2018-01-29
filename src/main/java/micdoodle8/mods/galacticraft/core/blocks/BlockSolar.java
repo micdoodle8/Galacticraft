@@ -8,10 +8,11 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,7 +20,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -67,9 +72,9 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
 
     public BlockSolar(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -99,7 +104,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
                     BlockPos posAt = pos.add(y == 2 ? x : 0, y, y == 2 ? z : 0);
                     Block block = worldIn.getBlockState(posAt).getBlock();
 
-                    if (block.getMaterial() != Material.air && !block.isReplaceable(worldIn, posAt))
+                    if (block.getMaterial(worldIn.getBlockState(pos)) != Material.AIR && !block.isReplaceable(worldIn, posAt))
                     {
                         return false;
                     }
@@ -159,7 +164,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         IBlockState state = world.getBlockState(pos);
         TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
@@ -167,9 +172,9 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+        entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
@@ -187,14 +192,6 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
-    {
-        int metadata = this.getDamageValue(world, pos);
-
-        return new ItemStack(this, 1, metadata);
-    }
-
-    @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
         if (getMetaFromState(state) >= BlockSolar.ADVANCED_METADATA)
@@ -208,7 +205,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -233,7 +230,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -259,9 +256,9 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE);
+        return new BlockStateContainer(this, FACING, TYPE);
     }
 
     @Override

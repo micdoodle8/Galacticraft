@@ -1,18 +1,23 @@
 package codechicken.nei.api;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.*;
-import codechicken.nei.KeyManager.KeyState;
 import codechicken.nei.SearchField.ISearchProvider;
 import codechicken.nei.SubsetWidget.SubsetTag;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
+import codechicken.nei.api.layout.LayoutStyle;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.config.Option;
-import codechicken.nei.config.OptionKeyBind;
 import codechicken.nei.recipe.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.settings.IKeyConflictContext;
+import net.minecraftforge.client.settings.KeyModifier;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Collections;
@@ -141,11 +146,11 @@ public class API {
      *
      * @param ident      An identifier for your key, eg "shoot"
      * @param defaultKey The default value, commonly obtained from {@link Keyboard}
+     * @deprecated use {@link ClientRegistry#registerKeyBinding(KeyBinding)}
      */
+    @Deprecated
     public static void addKeyBind(String ident, int defaultKey) {
-        NEIClientConfig.setDefaultKeyBinding(ident, defaultKey);
-        KeyManager.keyStates.put(ident, new KeyState());
-        addOption(new OptionKeyBind(ident));
+        KeyBindings.setDefaultKeyBinding(ident, defaultKey);
     }
 
     public static void addOption(Option option) {
@@ -177,6 +182,7 @@ public class API {
      * @param block   The block to handle, null for all.
      * @param handler The handler to be registered.
      */
+    @Deprecated
     public static void registerHighlightIdentifier(Block block, IHighlightHandler handler) {
         ItemInfo.highlightIdentifiers.put(block, handler);
     }
@@ -191,11 +197,21 @@ public class API {
     }
 
     /**
+     * Tells NEI not to perform any Fast Transfer operations on a GuiContainer of a specific class.
+     *
+     * @param guiClass The class of the container to be exempted
+     */
+    public static void addFastTransferExemptContainer(Class<? extends GuiContainer> guiClass) {
+        ItemInfo.fastTransferContainerExemptions.add(guiClass);
+    }
+
+    /**
      * Register a new text handler for the block highlight tooltip with a layout specification (HEADER, BODY or FOOTER).
      *
      * @param handler The handler to be registered.
      * @param layout  A HUDAugmenterRegistry.Layout entry. HEADER is displayed before BODY which is displayed before FOOTER.
      */
+    @Deprecated
     public static void registerHighlightHandler(IHighlightHandler handler, ItemInfo.Layout... layout) {
         ItemInfo.registerHighlightHandler(handler, layout);
     }
@@ -214,7 +230,7 @@ public class API {
      *
      * @param filterProvider The filter provider to be registered.
      */
-    public static void addItemFilter(ItemFilterProvider filterProvider) {
+    public static void addItemFilter(IItemFilterProvider filterProvider) {
         synchronized (ItemList.itemFilterers) {
             ItemList.itemFilterers.add(filterProvider);
         }
@@ -226,7 +242,7 @@ public class API {
      * @param name   The fully qualified name, Eg Blocks.MobSpawners. NOT case sensitive
      * @param filter A filter for matching items that fit in this subset
      */
-    public static void addSubset(String name, ItemFilter filter) {
+    public static void addSubset(String name, IItemFilter filter) {
         addSubset(new SubsetTag(name, filter));
     }
 

@@ -6,19 +6,29 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
+import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class EntityFlag extends Entity
 {
+    private static final DataParameter<String> OWNER = EntityDataManager.createKey(EntityFlag.class, DataSerializers.STRING);
+    private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.FLOAT);
+    private static final DataParameter<Integer> TYPE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> FACING_ANGLE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.VARINT);
     public double xPosition;
     public double yPosition;
     public double zPosition;
@@ -57,7 +67,7 @@ public class EntityFlag extends Entity
             {
                 this.setBeenAttacked();
                 this.setDamage(this.getDamage() + par2 * 10);
-                this.worldObj.playSoundEffect(this.posX, this.posY, this.posZ, Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 1.0F);
+                this.worldObj.playSound(null, this.posX, this.posY, this.posZ, SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 1.0F);
 
                 if (par1DamageSource.getEntity() instanceof EntityPlayer && ((EntityPlayer) par1DamageSource.getEntity()).capabilities.isCreativeMode)
                 {
@@ -66,9 +76,9 @@ public class EntityFlag extends Entity
 
                 if (flag || this.getDamage() > 40)
                 {
-                    if (this.riddenByEntity != null)
+                    if (!this.getPassengers().isEmpty())
                     {
-                        this.riddenByEntity.mountEntity(this);
+                        this.removePassengers();
                     }
 
                     if (flag)
@@ -92,7 +102,7 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    public ItemStack getPickedResult(MovingObjectPosition target)
+    public ItemStack getPickedResult(RayTraceResult target)
     {
         return new ItemStack(GCItems.flag, 1, this.getType());
     }
@@ -134,10 +144,10 @@ public class EntityFlag extends Entity
     @Override
     protected void entityInit()
     {
-        this.dataWatcher.addObject(17, "");
-        this.dataWatcher.addObject(18, 0.0F);
-        this.dataWatcher.addObject(19, -1);
-        this.dataWatcher.addObject(20, -1);
+        this.dataManager.register(OWNER, "");
+        this.dataManager.register(DAMAGE, 0.0F);
+        this.dataManager.register(TYPE, -1);
+        this.dataManager.register(FACING_ANGLE, -1);
     }
 
     @Override
@@ -186,11 +196,12 @@ public class EntityFlag extends Entity
 
         if (blockAt != null)
         {
+            BlockPos pos = new BlockPos(vec.intX(), vec.intY(), vec.intZ());
             if (blockAt instanceof BlockFence)
             {
 
             }
-            else if (blockAt.isAir(this.worldObj, new BlockPos(vec.intX(), vec.intY(), vec.intZ())))
+            else if (blockAt.isAir(this.worldObj.getBlockState(pos), this.worldObj, pos))
             {
                 this.motionY -= 0.02F;
             }
@@ -200,7 +211,7 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer par1EntityPlayer)
+    public boolean processInitialInteract(EntityPlayer player, ItemStack stack, EnumHand hand)
     {
         if (!this.worldObj.isRemote)
         {
@@ -212,41 +223,41 @@ public class EntityFlag extends Entity
 
     public void setOwner(String par1)
     {
-        this.dataWatcher.updateObject(17, String.valueOf(par1));
+        this.dataManager.set(OWNER, String.valueOf(par1));
     }
 
     public String getOwner()
     {
-        return this.dataWatcher.getWatchableObjectString(17);
+        return this.dataManager.get(OWNER);
     }
 
     public void setDamage(float par1)
     {
-        this.dataWatcher.updateObject(18, Float.valueOf(par1));
+        this.dataManager.set(DAMAGE, Float.valueOf(par1));
     }
 
     public float getDamage()
     {
-        return this.dataWatcher.getWatchableObjectFloat(18);
+        return this.dataManager.get(DAMAGE);
     }
 
     public void setType(int par1)
     {
-        this.dataWatcher.updateObject(19, Integer.valueOf(par1));
+        this.dataManager.set(TYPE, Integer.valueOf(par1));
     }
 
     public int getType()
     {
-        return this.dataWatcher.getWatchableObjectInt(19);
+        return this.dataManager.get(TYPE);
     }
 
     public void setFacingAngle(int par1)
     {
-        this.dataWatcher.updateObject(20, Integer.valueOf(par1));
+        this.dataManager.set(FACING_ANGLE, Integer.valueOf(par1));
     }
 
     public int getFacingAngle()
     {
-        return this.dataWatcher.getWatchableObjectInt(20);
+        return this.dataManager.get(FACING_ANGLE);
     }
 }

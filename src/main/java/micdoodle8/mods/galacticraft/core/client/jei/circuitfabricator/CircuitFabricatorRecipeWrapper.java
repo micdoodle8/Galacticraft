@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -25,7 +27,7 @@ public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implement
 
     @Nonnull
     @Override
-    public List getInputs()
+    public List<ItemStack> getInputs()
     {
         List<ItemStack> list = new ArrayList<>();
         list.addAll(Arrays.asList(this.input));
@@ -37,5 +39,12 @@ public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implement
     public List<ItemStack> getOutputs()
     {
         return Collections.singletonList(this.output);
+    }
+
+    @Override
+    public void getIngredients(IIngredients ingredients)
+    {
+        ingredients.setInputs(ItemStack.class, this.getInputs());
+        ingredients.setOutput(ItemStack.class, this.output);
     }
 }

@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.planets.mars.entities;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.entities.EntityAIArrowAttack;
 import micdoodle8.mods.galacticraft.core.entities.EntityBossBase;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
@@ -25,8 +25,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 
@@ -67,7 +69,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             {
                 Entity entity = damageSource.getEntity();
 
-                if (this.riddenByEntity != entity && this.ridingEntity != entity)
+                if (this.getPassengers().contains(entity) && this.getRidingEntity() != entity)
                 {
                     if (entity != this && entity instanceof EntityLivingBase)
                     {
@@ -94,8 +96,8 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.05F);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(200.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.05F);
     }
 
     @Override
@@ -110,23 +112,36 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
         return null;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound()
     {
-        this.playSound(Constants.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
+        this.playSound(GCSounds.bossOuch, this.getSoundVolume(), this.getSoundPitch() - 0.15F);
         return null;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return null;
     }
+
+    //    @Override
+//    protected String getHurtSound()
+//    {
+//        this.playSound(Constants.TEXTURE_PREFIX + "entity.ouch", this.getSoundVolume(), this.getSoundPitch() - 0.15F);
+//        return null;
+//    }
+//
+//    @Override
+//    protected String getDeathSound()
+//    {
+//        return null;
+//    }
 
     @Override
     protected void onDeathUpdate()
@@ -160,7 +175,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
             this.headsRemaining = 2;
         }
 
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
@@ -181,7 +196,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     protected Item getDropItem()
     {
-        return Items.arrow;
+        return Items.ARROW;
     }
 
     @Override
@@ -211,13 +226,13 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
 
         if (i > 0)
         {
-            final ItemStack var2 = new ItemStack(Items.bow);
-            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5);
+            final ItemStack var2 = new ItemStack(Items.BOW);
+            EnchantmentHelper.addRandomEnchantment(this.rand, var2, 5, false);
             this.entityDropItem(var2, 0.0F);
         }
         else
         {
-            this.dropItem(Items.bow, 1);
+            this.dropItem(Items.BOW, 1);
         }
     }
 
@@ -236,7 +251,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         boolean hasAstroMiner = false;
         // Check if player seems to have Tier 3 rocket or Astro Miner already - in that case we don't want more
         // (we don't really want him giving powerful schematics to his friends who are still on Overworld) 
-        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0);
+        final EntityPlayer player = this.worldObj.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
         if (player != null)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
@@ -289,7 +304,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase entitylivingbase, float f)
     {
-        this.worldObj.playAuxSFXAtEntity(null, 1014, new BlockPos((int) this.posX, (int) this.posY, (int) this.posZ), 0);
+        this.worldObj.playEvent(null, 1024, new BlockPos(this), 0);
         double d3 = this.posX;
         double d4 = this.posY + 5.5D;
         double d5 = this.posZ;
@@ -314,5 +329,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     public void dropKey()
     {
         this.entityDropItem(new ItemStack(MarsItems.key, 1, 0), 0.5F);
+    }
+
+    @Override
+    public BossInfo.Color getHealthBarColor()
+    {
+        return BossInfo.Color.YELLOW;
     }
 }

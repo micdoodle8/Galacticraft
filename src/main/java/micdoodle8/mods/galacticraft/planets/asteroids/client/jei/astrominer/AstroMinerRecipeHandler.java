@@ -23,6 +23,12 @@ public class AstroMinerRecipeHandler implements IRecipeHandler<AstroMinerRecipeW
         return RecipeCategories.ASTRO_MINER_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(AstroMinerRecipeWrapper recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull AstroMinerRecipeWrapper recipe)

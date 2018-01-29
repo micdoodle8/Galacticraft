@@ -1,6 +1,6 @@
 package codechicken.nei.api;
 
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.guihook.GuiContainerManager;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.inventory.Slot;

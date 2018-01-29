@@ -8,6 +8,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import java.util.Set;
 
 public class LocalVariablesSorterVisitor extends ClassVisitor {
+
     public Set<ObfMapping> methods;
     public String owner;
 
@@ -33,4 +34,3 @@ public class LocalVariablesSorterVisitor extends ClassVisitor {
     }
 }
 
-    

@@ -11,7 +11,7 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematicTier3Rocket extends Container
@@ -153,7 +153,7 @@ public class ContainerSchematicTier3Rocket extends Container
                 }
                 else
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.chest))
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))
                         {

@@ -4,14 +4,14 @@ import codechicken.lib.config.ConfigTag;
 import codechicken.nei.config.GuiOptionList.OptionScrollSlot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
 public abstract class Option {
     public static void playClickSound() {
-        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+        Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
     }
 
     public OptionScrollSlot slot;
@@ -37,7 +37,7 @@ public abstract class Option {
     }
 
     public String translateN(String s, Object... args) {
-        return StatCollector.translateToLocalFormatted(namespaced(s), args);
+        return I18n.translateToLocalFormatted(namespaced(s), args);
     }
 
     public int getHeight() {

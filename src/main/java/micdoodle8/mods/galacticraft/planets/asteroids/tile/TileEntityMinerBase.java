@@ -27,12 +27,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.EnumFacing.Axis;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -386,7 +386,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         this.writeStandardItemsToNBT(nbt);
@@ -411,6 +411,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
         }
         nbt.setTag("TargetPoints", mpList);
+        return nbt;
     }
 
     @Override
@@ -591,7 +592,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         if (this.isMaster)
         {
-            ItemStack holding = entityPlayer.getCurrentEquippedItem();
+            ItemStack holding = entityPlayer.getActiveItemStack();
             if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
             {
                 return false;
@@ -725,7 +726,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
                 IBlockState state = this.worldObj.getBlockState(offset);
-                state.getBlock().onNeighborBlockChange(worldObj, offset, state, state.getBlock());
+                state.getBlock().neighborChanged(state, this.worldObj, offset, this.worldObj.getBlockState(this.getPos()).getBlock());
                 worldObj.markBlockRangeForRenderUpdate(offset, offset);
             }
         }
@@ -1052,7 +1053,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

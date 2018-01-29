@@ -13,7 +13,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,7 +26,7 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
 {
     public BlockSpout(String assetName)
     {
-        super(Material.rock);
+        super(Material.ROCK);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
         this.setUnlocalizedName(assetName);

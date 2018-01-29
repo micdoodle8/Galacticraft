@@ -20,9 +20,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,7 +59,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     
     public IBlockState getBaseBlock()
     {
-        if (this.superState != null && this.superState.getBlock() == Blocks.air)
+        if (this.superState != null && this.superState.getBlock() == Blocks.AIR)
         {
             this.superState = null;
         }
@@ -81,7 +81,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 
     @Override
     @SideOnly(Side.CLIENT)
-    public net.minecraft.util.AxisAlignedBB getRenderBoundingBox()
+    public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
         {
@@ -115,7 +115,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("meta", this.meta);
@@ -126,6 +126,13 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
             writeBlockState(tag, this.superState);
             nbt.setTag("sust", tag);
         }
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     /**
@@ -135,11 +142,11 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
         if (!tag.hasKey("Name", 8))
         {
-            return Blocks.air.getDefaultState();
+            return Blocks.AIR.getDefaultState();
         }
         else
         {
-            Block block = (Block)Block.blockRegistry.getObject(new ResourceLocation(tag.getString("Name")));
+            Block block = (Block)Block.REGISTRY.getObject(new ResourceLocation(tag.getString("Name")));
 
             if (tag.hasKey("Meta"))
             {
@@ -159,17 +166,17 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
      */
     public static NBTTagCompound writeBlockState(NBTTagCompound tag, IBlockState state)
     {
-        tag.setString("Name", ((ResourceLocation)Block.blockRegistry.getNameForObject(state.getBlock())).toString());
+        tag.setString("Name", ((ResourceLocation)Block.REGISTRY.getNameForObject(state.getBlock())).toString());
         tag.setInteger("Meta", state.getBlock().getMetaFromState(state));
         return tag;
     }
 
     public static IBlockState readBlockState(String name, Integer meta)
     {
-        Block block = (Block)Block.blockRegistry.getObject(new ResourceLocation(name));
+        Block block = (Block)Block.REGISTRY.getObject(new ResourceLocation(name));
         if (block == null)
         {
-            return Blocks.air.getDefaultState();
+            return Blocks.AIR.getDefaultState();
         }
         return block.getStateFromMeta(meta);
     }
@@ -197,13 +204,13 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         if (this.superState != null)
         {
             Block block = this.superState.getBlock(); 
-            if (block == Blocks.air)
+            if (block == Blocks.AIR)
             {
                 this.superState = null;
                 return;
             }
            
-            sendData.add(((ResourceLocation)Block.blockRegistry.getNameForObject(block)).toString());
+            sendData.add(((ResourceLocation)Block.REGISTRY.getNameForObject(block)).toString());
             sendData.add((byte) block.getMetaFromState(this.superState));
         }
     }
@@ -222,7 +229,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
                     String name = ByteBufUtils.readUTF8String(buffer);
                     int otherMeta = buffer.readByte();
                     this.superState = readBlockState(name, otherMeta);
-                    this.worldObj.markBlockForUpdate(this.getPos());
+                    this.worldObj.markBlockRangeForRenderUpdate(this.pos, this.pos);
                 }
             }
             catch (Exception e)

@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static codechicken.lib.gui.GuiDraw.*;
-import static net.minecraft.util.StatCollector.translateToLocal;
+import static net.minecraft.util.text.translation.I18n.translateToLocal;
 
 public class GuiOptionList extends GuiScreenWidget {
     public class OptionScrollSlot extends GuiScrollSlot {

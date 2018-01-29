@@ -1,22 +1,18 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
+import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.vecmath.Matrix4f;
 import java.util.List;
 
-@SuppressWarnings({ "deprecation", "unchecked" })
-public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISmartItemModel, ISmartBlockModel, IPerspectiveAwareModel
+public abstract class ModelTransformWrapper implements IPerspectiveAwareModel
 {
     private final IBakedModel iBakedModel;
 
@@ -28,7 +24,7 @@ public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISma
     protected abstract Matrix4f getTransformForPerspective(TransformType cameraTransformType);
 
     @Override
-    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
     {
         Matrix4f matrix4f = getTransformForPerspective(cameraTransformType);
 
@@ -41,28 +37,15 @@ public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISma
     }
 
     @Override
-    public List getFaceQuads(EnumFacing enumFacing)
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
     {
-        return iBakedModel.getFaceQuads(enumFacing);
+        return iBakedModel.getQuads(state, side, rand);
     }
 
     @Override
-    public List getGeneralQuads()
+    public ItemOverrideList getOverrides()
     {
-        return iBakedModel.getGeneralQuads();
-    }
-
-    @Override
-    public VertexFormat getFormat()
-    {
-        if (iBakedModel instanceof IFlexibleBakedModel)
-        {
-            return ((IFlexibleBakedModel) iBakedModel).getFormat();
-        }
-        else
-        {
-            return Attributes.DEFAULT_BAKED_FORMAT;
-        }
+        return iBakedModel.getOverrides();
     }
 
     @Override
@@ -93,17 +76,5 @@ public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISma
     public ItemCameraTransforms getItemCameraTransforms()
     {
         return ItemCameraTransforms.DEFAULT;
-    }
-
-    @Override
-    public IBakedModel handleItemState(ItemStack stack)
-    {
-        return this;
-    }
-
-    @Override
-    public IBakedModel handleBlockState(IBlockState state)
-    {
-        return this;
     }
 }

@@ -10,14 +10,17 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
-public abstract class TileBaseUniversalConductor extends TileBaseConductor
+public abstract class TileBaseUniversalConductor extends TileBaseConductor implements net.minecraftforge.energy.IEnergyStorage
 {
     protected boolean isAddedToEnergyNet;
     private float IC2surplusJoules = 0F;
@@ -210,6 +213,63 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
 
         return true;
     }
+    
+    //ForgeEnergy
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate)
+    {
+        if (!canReceive())
+            return 0;
+
+        if (this.getNetwork() == null)
+        {
+            return 0;
+        }
+
+        float receiveGC = maxReceive * EnergyConfigHandler.RF_RATIO;
+        float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
+        return MathHelper.floor_float(sentGC / EnergyConfigHandler.RF_RATIO);
+    }
+    
+    //ForgeEnergy
+    @Override
+    public boolean canReceive()
+    {
+        return !EnergyConfigHandler.disableFEInput;
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getEnergyStored()
+    {
+        return 0;
+    }
+
+    //ForgeEnergy
+    @Override
+    public int getMaxEnergyStored()
+    {
+        if (this.getNetwork() == null)
+        {
+            return 0;
+        }
+
+        return MathHelper.floor_float(this.getNetwork().getRequest(this) / EnergyConfigHandler.RF_RATIO);
+    }
+
+    //ForgeEnergy
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate)
+    {
+         return 0;
+    }
+
+    //ForgeEnergy
+    @Override
+    public boolean canExtract()
+    {
+        return false;
+    }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
     public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
@@ -271,12 +331,34 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
     public double transferEnergyToAcceptor(EnumFacing side, double amount)
     {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
         if (!this.canReceiveEnergy(side))
         {
-            return 0;
+            return 0.0;
         }
 
         return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, true, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+
+    //----------- NEWER MEKANISM API FOR COMPATIBILITY WITH FINAL 1.10.2 MEKANISM ----------
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
+    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableMekanismInput)
+        {
+            return 0.0;
+        }
+
+        if (!this.canReceiveEnergy(side))
+        {
+            return 0.0;
+        }
+
+        return amount - this.getNetwork().produce((float) amount * EnergyConfigHandler.MEKANISM_RATIO, !simulate, 1, this) / EnergyConfigHandler.MEKANISM_RATIO;
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
@@ -322,5 +404,25 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor
             return 0;
         }
         return this.getNetwork().getRequest(this) / EnergyConfigHandler.MEKANISM_RATIO;
+    }
+    
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return true;
+        }
+        return super.hasCapability(capability, facing);
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityEnergy.ENERGY)
+        {
+            return (T) this;
+        }
+        return super.getCapability(capability, facing);
     }
 }

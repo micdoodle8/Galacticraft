@@ -10,7 +10,9 @@ import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.util.BlockPos;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -116,7 +118,7 @@ public class TickHandlerClientVenus
                     double posX = player.posX + dX;
                     double posY = 70;
                     double posZ = player.posZ + dZ;
-                    minecraft.theWorld.playSound(posX, posY, posZ, "ambient.weather.thunder", 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F, false);
+                    minecraft.theWorld.playSound(player, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F);
                     lightning.put(new BlockPos(posX, posY, posZ), 20);
                 }
             }

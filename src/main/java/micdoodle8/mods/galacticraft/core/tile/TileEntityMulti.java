@@ -9,9 +9,11 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -38,7 +40,7 @@ public class TileEntityMulti extends TileEntity
 //
 //        if (!this.worldObj.isRemote)
 //        {
-//            this.worldObj.markBlockForUpdate(this.getPos());
+//            this.worldObj.notifyBlockUpdate(this.getPos());
 //        }
 //    }
 
@@ -71,7 +73,7 @@ public class TileEntityMulti extends TileEntity
         return false;
     }
 
-    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (this.mainBlockPosition != null)
         {
@@ -79,7 +81,7 @@ public class TileEntityMulti extends TileEntity
 
             if (state.getBlock() instanceof BlockAdvanced)
             {
-                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, side, hitX, hitY, hitZ);
+                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
             }
         }
 
@@ -111,7 +113,7 @@ public class TileEntityMulti extends TileEntity
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -123,6 +125,8 @@ public class TileEntityMulti extends TileEntity
             tag.setInteger("z", this.mainBlockPosition.getZ());
             nbt.setTag("mainBlockPosition", tag);
         }
+
+        return nbt;
     }
 
     protected boolean initialiseMultiTiles(BlockPos pos, World world)

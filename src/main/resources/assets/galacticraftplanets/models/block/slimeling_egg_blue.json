@@ -1,4 +1,5 @@
 {
+"parent": "block/block",
 "textures": {
     "particle": "galacticraftplanets:blocks/blue_egg_0",
     "texture": "galacticraftplanets:blocks/blue_egg_0"

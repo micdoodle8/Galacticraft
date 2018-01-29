@@ -17,7 +17,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -141,8 +141,9 @@ public class GuiOxygenSealer extends GuiContainerGC
     {
         BlockPos blockPosAbove = this.sealer.getPos().up();
         Block blockAbove = this.sealer.getWorld().getBlockState(blockPosAbove).getBlock();
+        IBlockState state = this.sealer.getWorld().getBlockState(blockPosAbove);
 
-        if (!(blockAbove.isAir(this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
+        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

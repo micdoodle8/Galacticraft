@@ -66,7 +66,7 @@ public class GuiSlimelingFeed extends GuiScreen
     protected void keyTyped(char keyChar, int keyID) throws IOException
     {
         if (!this.buttonGrowSlimeling.enabled && !this.buttonBreedSlimeling.enabled && !this.buttonStrengthenSlimeling.enabled && !this.buttonHealSlimeling.enabled)
-        {
+    {
             super.keyTyped(keyChar, keyID);
         }
         return;

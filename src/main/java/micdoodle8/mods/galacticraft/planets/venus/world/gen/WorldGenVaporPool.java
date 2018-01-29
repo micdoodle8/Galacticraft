@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -39,7 +39,7 @@ public class WorldGenVaporPool extends WorldGenerator
                     if (distance <= radiusSq)
                     {
                         BlockPos pos = new BlockPos(poolX + position.getX(), poolY + position.getY(), poolZ + position.getZ());
-                        worldIn.setBlockState(pos, distance >= radiusSq - 16 ? venusSoft : (poolY <= 0 ? VenusBlocks.sulphuricAcid.getDefaultState() : Blocks.air.getDefaultState()), distance == radiusSq ? 3 : 2);
+                        worldIn.setBlockState(pos, distance >= radiusSq - 16 ? venusSoft : (poolY <= 0 ? VenusBlocks.sulphuricAcid.getDefaultState() : Blocks.AIR.getDefaultState()), distance == radiusSq ? 3 : 2);
                     }
                 }
             }
@@ -49,7 +49,7 @@ public class WorldGenVaporPool extends WorldGenerator
         for (int i = 255; i >= position.getY() + 1; --i)
         {
             BlockPos pos = new BlockPos(position.getX(), i, position.getZ());
-            if (worldIn.getBlockState(pos).getBlock() != Blocks.air)
+            if (worldIn.getBlockState(pos).getBlock() != Blocks.AIR)
             {
                 if (!firstSet)
                 {
@@ -58,7 +58,7 @@ public class WorldGenVaporPool extends WorldGenerator
                 }
                 else
                 {
-                    worldIn.setBlockState(pos, Blocks.air.getDefaultState(), 2);
+                    worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 2);
                 }
             }
         }

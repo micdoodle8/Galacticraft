@@ -20,8 +20,10 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -79,11 +81,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                     //Doing y as the inner loop allows BlockVec3 to cache the chunks more efficiently
                     for (int y = yMin; y < yMax; y++)
                     {
-                        Block block = new BlockVec3(x, y, z).getBlockID(this.worldObj);
+                        IBlockState state = new BlockVec3(x, y, z).getBlockState(this.worldObj);
 
-                        if (block instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
+                        if (state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
-                            this.worldObj.scheduleUpdate(new BlockPos(x, y, z), block, 0);
+                            this.worldObj.scheduleUpdate(new BlockPos(x, y, z), state.getBlock(), 0);
                         }
                     }
                 }
@@ -111,7 +113,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 //            {
 //                networkedList.add(this.oxygenBubble.getEntityId());
 //            }
-            if (MinecraftServer.getServer().isDedicatedServer())
+            if (this.worldObj.getMinecraftServer().isDedicatedServer())
             {
                 networkedList.add(loadedTiles.size());
                 //TODO: Limit this to ones in the same dimension as this tile?
@@ -146,7 +148,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(this.getPos().getX() - this.bubbleSize, this.getPos().getY() - this.bubbleSize, this.getPos().getZ() - this.bubbleSize, this.getPos().getX() + this.bubbleSize, this.getPos().getY() + this.bubbleSize, this.getPos().getZ() + this.bubbleSize);
+        return new AxisAlignedBB(this.getPos().getX() - this.bubbleSize, this.getPos().getY() - this.bubbleSize, this.getPos().getZ() - this.bubbleSize, this.getPos().getX() + this.bubbleSize, this.getPos().getY() + this.bubbleSize, this.getPos().getZ() + this.bubbleSize);
     }
 
     @Override
@@ -311,7 +313,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -333,6 +335,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         }
 
         nbt.setTag("Items", list);
+        return nbt;
     }
 
     @Override

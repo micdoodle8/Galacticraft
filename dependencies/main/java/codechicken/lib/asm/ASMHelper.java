@@ -2,6 +2,7 @@ package codechicken.lib.asm;
 
 import codechicken.lib.config.ConfigFile;
 import codechicken.lib.config.DefaultingConfigFile;
+import net.minecraft.launchwrapper.Launch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ASMHelper {
+
     public static ConfigFile config = loadConfig();
     public static Logger logger = LogManager.getLogger("CCL ASM");
 
@@ -28,7 +30,12 @@ public class ASMHelper {
         try {//weak reference for environments without FML
             File mcDir = (File) ((Object[]) Class.forName("net.minecraftforge.fml.relauncher.FMLInjectionData").getMethod("data").invoke(null))[6];
             File file = new File(mcDir, "config/CodeChickenLib.cfg");
-            if (ObfMapping.obfuscated) {
+            boolean obf = true;
+            try {//TODO Move the config initializer to a better spot..
+                obf = Launch.classLoader.getClassBytes("net.minecraft.world.World") == null;
+            } catch (Exception ignored) {
+            }
+            if (obf) {
                 return new DefaultingConfigFile(file);
             } else {
                 return new ConfigFile(file).setComment("CodeChickenLib development configuration file.");
@@ -38,8 +45,9 @@ public class ASMHelper {
         }
     }
 
-    public static interface Acceptor {
-        public void accept(ClassVisitor cv) throws IOException;
+    public interface Acceptor {
+
+        void accept(ClassVisitor cv) throws IOException;
     }
 
     public static MethodNode findMethod(ObfMapping methodmap, ClassNode cnode) {

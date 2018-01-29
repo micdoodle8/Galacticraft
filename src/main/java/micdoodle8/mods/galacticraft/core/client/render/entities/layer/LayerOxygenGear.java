@@ -119,6 +119,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayer>
                         {
                             ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.tubes[k][i]);
 
+                            GlStateManager.enableRescaleNormal();
                             GlStateManager.pushMatrix();
                             GlStateManager.translate(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
                             GlStateManager.translate(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);

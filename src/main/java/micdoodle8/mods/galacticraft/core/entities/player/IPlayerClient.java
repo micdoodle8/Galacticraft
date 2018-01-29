@@ -16,7 +16,7 @@ public interface IPlayerClient
 
     boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside);
 
-    boolean wakeUpPlayer(EntityPlayerSP player, boolean par1, boolean par2, boolean par3);
+    boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn);
 
     void onBuild(int i, EntityPlayerSP player);
 }

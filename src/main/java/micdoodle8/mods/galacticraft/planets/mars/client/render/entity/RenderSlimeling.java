@@ -50,12 +50,12 @@ public class RenderSlimeling extends RenderLiving<EntitySlimeling>
     @Override
     public void doRender(EntitySlimeling entity, double par2, double par4, double par6, float par8, float par9)
     {
-        texSwitch = false;
         super.doRender(entity, par2, par4, par6, par8, par9);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
             super.doRender(entity, par2, par4, par6, par8, par9);
+            texSwitch = false;
         }
     }
 

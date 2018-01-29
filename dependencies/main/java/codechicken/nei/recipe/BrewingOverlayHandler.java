@@ -1,6 +1,6 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 
@@ -12,7 +12,7 @@ public class BrewingOverlayHandler extends DefaultOverlayHandler {
         Slot[][] map = super.mapIngredSlots(gui, ingredients);
         Slot[] potSlots = new Slot[3];
         for (int i = 0; i < 3; i++) {
-            potSlots[i] = (Slot) gui.inventorySlots.inventorySlots.get(i);
+            potSlots[i] = gui.inventorySlots.inventorySlots.get(i);
         }
         map[1] = potSlots;
         return map;

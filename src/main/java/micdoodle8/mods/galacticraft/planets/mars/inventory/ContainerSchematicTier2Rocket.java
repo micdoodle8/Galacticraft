@@ -11,7 +11,7 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematicTier2Rocket extends Container
@@ -153,21 +153,21 @@ public class ContainerSchematicTier2Rocket extends Container
 
                 if (!done)
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(19)).getHasStack())
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(19)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 19, 20, false))
                         {
                             return null;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(20)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(20)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 20, 21, false))
                         {
                             return null;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.chest) && !((Slot) this.inventorySlots.get(21)).getHasStack())
+                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(21)).getHasStack())
                     {
                         if (!this.mergeOneItem(var4, 21, 22, false))
                         {

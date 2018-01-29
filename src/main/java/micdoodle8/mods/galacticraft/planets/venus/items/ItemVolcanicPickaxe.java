@@ -13,16 +13,17 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -72,26 +73,30 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, Block blockIn, BlockPos pos, EntityLivingBase playerIn)
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
     {
-        boolean ret = super.onBlockDestroyed(stack, worldIn, blockIn, pos, playerIn);
+        boolean ret = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
 
-        if (!(playerIn instanceof EntityPlayer))
+        if (!(entityLiving instanceof EntityPlayer))
         {
             return ret;
         }
 
-        EnumFacing facing = playerIn.getHorizontalFacing();
+        EntityPlayer player = (EntityPlayer) entityLiving;
+        EnumFacing facing = entityLiving.getHorizontalFacing();
 
-        if (playerIn.rotationPitch < -45.0F)
+        if (entityLiving.rotationPitch < -45.0F)
         {
             facing = EnumFacing.UP;
         }
-        else if (playerIn.rotationPitch > 45.0F)
+        else if (entityLiving.rotationPitch > 45.0F)
         {
             facing = EnumFacing.DOWN;
         }
 
+        boolean yAxis = facing.getAxis() == EnumFacing.Axis.Y;
+        boolean xAxis = facing.getAxis() == EnumFacing.Axis.X;
+        
         for (int i = -1; i <= 1; ++i)
         {
             for (int j = -1; j <= 1 && stack.stackSize > 0; ++j)
@@ -102,11 +107,11 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                 }
 
                 BlockPos pos1;
-                if (facing.getAxis() == EnumFacing.Axis.Y)
+                if (yAxis)
                 {
                     pos1 = pos.add(i, 0, j);
                 }
-                else if (facing.getAxis() == EnumFacing.Axis.X)
+                else if (xAxis)
                 {
                     pos1 = pos.add(0, i, j);
                 }
@@ -114,12 +119,21 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                 {
                     pos1 = pos.add(i, j, 0);
                 }
-                IBlockState state = worldIn.getBlockState(pos1);
-                if (worldIn.getBlockState(pos).equals(state))
+
+                //:Replicate logic of PlayerInteractionManager.tryHarvestBlock(pos1)
+                IBlockState state1 = worldIn.getBlockState(pos1);
+                TileEntity tileentity = worldIn.getTileEntity(pos1);
+                Block harvestedBlock = state1.getBlock(); 
+                boolean canHarvest = harvestedBlock.canHarvestBlock(worldIn, pos1, player);
+                boolean destroyed = harvestedBlock.removedByPlayer(state1, worldIn, pos1, player, canHarvest);
+                if (destroyed)
                 {
-                    worldIn.setBlockState(pos1, Blocks.air.getDefaultState());
-                    state.getBlock().harvestBlock(worldIn, (EntityPlayer) playerIn, pos1, state, worldIn.getTileEntity(pos1));
-                    stack.damageItem(1, playerIn);
+                    harvestedBlock.onBlockDestroyedByPlayer(worldIn, pos1, state1);
+                }
+                if (canHarvest && destroyed)
+                {
+                    harvestedBlock.harvestBlock(worldIn, player, pos1, state1, tileentity, stack);
+                    stack.damageItem(1, player);
                 }
             }
         }

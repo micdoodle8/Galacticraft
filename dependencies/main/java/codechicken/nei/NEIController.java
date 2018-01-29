@@ -4,10 +4,14 @@ import codechicken.nei.api.*;
 import codechicken.nei.guihook.GuiContainerManager;
 import codechicken.nei.guihook.IContainerInputHandler;
 import codechicken.nei.guihook.IContainerSlotClickHandler;
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.util.NEIServerUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -92,10 +96,10 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
             if (selectedItem != inventory.currentItem) {
                 if (inventory.currentItem == selectedItem + 1 || (inventory.currentItem == 0 && selectedItem == 8))//foward
                 {
-                    NEICPH.sendCreativeScroll(1);
+                    NEIClientPacketHandler.sendCreativeScroll(1);
                     inventory.currentItem = selectedItem;
                 } else if (inventory.currentItem == selectedItem - 1 || (inventory.currentItem == 8 && selectedItem == 0)) {
-                    NEICPH.sendCreativeScroll(-1);
+                    NEIClientPacketHandler.sendCreativeScroll(-1);
                     inventory.currentItem = selectedItem;
                 }
             }
@@ -105,7 +109,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
     }
 
     @Override
-    public void beforeSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier) {
+    public void beforeSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType) {
         if (!NEIClientConfig.isEnabled()) {
             return;
         }
@@ -114,11 +118,11 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
     }
 
     @Override
-    public boolean handleSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier, boolean eventconsumed) {
-        if (eventconsumed ||
+    public boolean handleSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType, boolean eventConsumed) {
+        if (eventConsumed ||
                 !NEIClientConfig.isEnabled() ||
                 isSpreading(gui)) {
-            return eventconsumed;
+            return eventConsumed;
         }
 
         if (deleteMode && slotIndex >= 0 && slot != null) {
@@ -140,7 +144,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
         {
             for (int i1 = 0; i1 < 64; i1++)//click this slot 64 times
             {
-                manager.handleSlotClick(slot.slotNumber, button, 0);
+                manager.handleSlotClick(slot.slotNumber, button, ClickType.PICKUP);
             }
             return true;
         }
@@ -156,15 +160,15 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
 
         if (slotIndex >= 0 && NEIClientUtils.shiftKey() && NEIClientUtils.getHeldItem() != null && !slot.getHasStack()) {
             ItemStack held = NEIClientUtils.getHeldItem();
-            manager.handleSlotClick(slot.slotNumber, button, 0);
-            if (slot.isItemValid(held) && !ItemInfo.fastTransferExemptions.contains(slot.getClass())) {
+            manager.handleSlotClick(slot.slotNumber, button, ClickType.PICKUP);
+            if (slot.isItemValid(held) && !ItemInfo.fastTransferExemptions.contains(slot.getClass()) && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
                 fastTransferManager.performMassTransfer(gui, pickedUpFromSlot, slotIndex, held);
             }
 
             return true;
         }
 
-        if (slotIndex == -999 && NEIClientUtils.shiftKey() && button == 0) {
+        if (slotIndex == -999 && NEIClientUtils.shiftKey() && button == 0 && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             fastTransferManager.throwAll(gui, pickedUpFromSlot);
             return true;
         }
@@ -173,7 +177,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
     }
 
     @Override
-    public void afterSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, int modifier) {
+    public void afterSlotClick(GuiContainer gui, int slotIndex, int button, Slot slot, ClickType clickType) {
         if (!NEIClientConfig.isEnabled()) {
             return;
         }
@@ -225,7 +229,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
 
         int slotIndex = slot.slotNumber;
 
-        if (keyCode == Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode() && NEIClientUtils.shiftKey()) {
+        if (keyCode == Minecraft.getMinecraft().gameSettings.keyBindDrop.getKeyCode() && NEIClientUtils.shiftKey() && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             FastTransferManager.clickSlot(gui, slotIndex);
             fastTransferManager.throwAll(gui, slotIndex);
             FastTransferManager.clickSlot(gui, slotIndex);
@@ -244,7 +248,7 @@ public class NEIController implements IContainerSlotClickHandler, IContainerInpu
 
         Point mousePos = getMousePosition();
         Slot mouseover = manager.window.getSlotAtPosition(mousePos.x, mousePos.y);
-        if (mouseover != null && mouseover.getHasStack()) {
+        if (mouseover != null && mouseover.getHasStack() && !ItemInfo.fastTransferContainerExemptions.contains(gui.getClass())) {
             if (scrolled > 0) {
                 fastTransferManager.transferItem(manager.window, mouseover.slotNumber);
             } else {

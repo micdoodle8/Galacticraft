@@ -9,13 +9,11 @@ import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class BiomeGenVenusMountain extends BiomeGenBaseVenus
+public class BiomeGenVenusMountain extends BiomeVenus
 {
-    public BiomeGenVenusMountain(int par1)
+    public BiomeGenVenusMountain(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(255 << 16 | 255 << 8 | 255);
-        this.setHeight(new Height(2.0F, 1.0F));
+        super(properties);
         if (!ConfigManagerCore.disableBiomeTypeRegistrations)
         {
             BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);

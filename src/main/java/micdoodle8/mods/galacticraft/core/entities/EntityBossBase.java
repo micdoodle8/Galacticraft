@@ -1,36 +1,36 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.BossInfo;
+import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 import java.util.Random;
 
-public abstract class EntityBossBase extends EntityMob implements IBossDisplayData, IBoss
+public abstract class EntityBossBase extends EntityMob implements IBoss
 {
     protected TileEntityDungeonSpawner spawner;
     public int deathTicks = 0;
 
     public int entitiesWithin;
     public int entitiesWithinLast;
+
+    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS));
 
     public EntityBossBase(World world)
     {
@@ -42,6 +42,15 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
     public abstract ItemStack getGuaranteedLoot(Random rand);
 
     public abstract void dropKey();
+
+    public abstract BossInfo.Color getHealthBarColor();
+
+    @Override
+    protected void updateAITasks()
+    {
+        this.bossInfo.setPercent(this.getHealth() / this.getMaxHealth());
+        super.updateAITasks();
+    }
 
     @Override
     protected void onDeathUpdate()
@@ -123,16 +132,13 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
                         chest.setInventorySlotContents(k, null);
                     }
 
-                    String chesttype = RoomChest.MOONCHEST;
-                    if (this.worldObj.provider instanceof IGalacticraftWorldProvider)
-                    {
-                        chesttype = ((IGalacticraftWorldProvider)this.worldObj.provider).getDungeonChestType();
-                    }
-                    ChestGenHooks info = ChestGenHooks.getInfo(chesttype);
+                    chest.fillWithLoot(null);
 
-                    // Generate twice, since it's an extra special chest
-                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
-                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+//                    ChestGenHooks info = ChestGenHooks.getInfo(ChestGenHooks.DUNGEON_CHEST);
+//
+//                    // Generate twice, since it's an extra special chest
+//                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
+//                    WeightedRandomChestContent.generateChestContents(this.rand, info.getItems(this.rand), chest, info.getCount(this.rand));
 
                     ItemStack schematic = this.getGuaranteedLoot(this.rand);
                     int slot = this.rand.nextInt(chest.getSizeInventory());
@@ -174,7 +180,7 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
 
                 for (EntityPlayer p : entitiesWithin2)
                 {
-                    p.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.skeleton_boss.message")));
+                    p.addChatMessage(new TextComponentString(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();
@@ -206,5 +212,19 @@ public abstract class EntityBossBase extends EntityMob implements IBossDisplayDa
     public void onBossSpawned(TileEntityDungeonSpawner spawner)
     {
         this.spawner = spawner;
+    }
+
+    @Override
+    public void addTrackingPlayer(EntityPlayerMP player)
+    {
+        super.addTrackingPlayer(player);
+        this.bossInfo.addPlayer(player);
+    }
+
+    @Override
+    public void removeTrackingPlayer(EntityPlayerMP player)
+    {
+        super.removeTrackingPlayer(player);
+        this.bossInfo.removePlayer(player);
     }
 }

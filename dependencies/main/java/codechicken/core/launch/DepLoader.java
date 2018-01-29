@@ -4,6 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.asm.transformers.ModAccessTransformer;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import net.minecraftforge.fml.relauncher.*;
@@ -32,6 +33,7 @@ import java.net.URLConnection;
 import java.nio.ByteBuffer;
 import java.util.*;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.regex.Matcher;
@@ -44,11 +46,74 @@ import java.util.zip.ZipFile;
  * For autodownloading stuff.
  * This is really unoriginal, mostly ripped off FML, credits to cpw.
  */
+@Deprecated
 public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
     private static ByteBuffer downloadBuffer = ByteBuffer.allocateDirect(1 << 23);
     private static final String owner = "DepLoader";
     private static DepLoadInst inst;
     private static final Logger logger = LogManager.getLogger(owner);
+
+    public interface IYellAtPeople {
+        void addYellingData(String data);
+
+        void displayYellingData();
+    }
+
+    public static class YellGui extends JOptionPane implements IYellAtPeople {
+        private ArrayList<String> yellingData = new ArrayList<String>();
+
+        @Override
+        public void addYellingData(String data) {
+            yellingData.add(data);
+        }
+
+        @Override
+        public void displayYellingData() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("<html>");
+            for (String data : yellingData) {
+                builder.append("<br>");
+                builder.append(data);
+            }
+            builder.append("</html>");
+            JEditorPane ep = new JEditorPane("text/html", builder.toString());
+            ep.setAutoscrolls(true);
+            ep.setEditable(false);
+            ep.setOpaque(false);
+            ep.addHyperlinkListener(new HyperlinkListener() {
+                @Override
+                public void hyperlinkUpdate(HyperlinkEvent event) {
+                    try {
+                        if (event.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
+                            Desktop.getDesktop().browse(event.getURL().toURI());
+                        }
+                    } catch (Exception ignored) {
+                    }
+                }
+            });
+            JOptionPane.showMessageDialog(null, ep, "DepLoader is Deprecated!", -1);
+        }
+    }
+
+    public static class YellServer implements IYellAtPeople {
+        private ArrayList<String> yellingData = new ArrayList<String>();
+
+        @Override
+        public void addYellingData(String data) {
+            yellingData.add(data);
+        }
+
+        @Override
+        public void displayYellingData() {
+            for (String string : yellingData) {
+                FMLLog.severe(string);
+            }
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException ignored) {
+            }
+        }
+    }
 
     public interface IDownloadDisplay {
         void resetProgress(int sizeGuess);
@@ -175,11 +240,7 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
 
         @Override
         public void showErrorDialog(String name, String url) {
-            JEditorPane ep = new JEditorPane("text/html", "<html>" +
-                    owner + " was unable to download required library " + name +
-                    "<br>Check your internet connection and try restarting or download it manually from" +
-                    "<br><a href=\"" + url + "\">" + url + "</a> and put it in your mods folder" +
-                    "</html>");
+            JEditorPane ep = new JEditorPane("text/html", "<html>" + owner + " was unable to download required library " + name + "<br>Check your internet connection and try restarting or download it manually from" + "<br><a href=\"" + url + "\">" + url + "</a> and put it in your mods folder" + "</html>");
 
             ep.setEditable(false);
             ep.setOpaque(false);
@@ -510,6 +571,11 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
             if (depMap.isEmpty()) {
                 return;
             }
+            boolean dontYell = Boolean.parseBoolean(System.getProperty("deploader.dontYellAtPeople", "false"));
+            if (!dontYell) {
+                yellAtPeople();
+            }
+            forceRemoveCCL();
 
             loadDeps();
             activateDeps();
@@ -558,19 +624,14 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
             addClasspath(coreMod);
 
             try {
-                Class<CoreModManager> c = CoreModManager.class;
                 if (!mfAttributes.containsKey(new Attributes.Name("FMLCorePluginContainsFMLMod"))) {
                     FMLRelaunchLog.finer("Adding %s to the list of known coremods, it will not be examined again", coreMod.getName());
-                    Field f_loadedCoremods = c.getDeclaredField("ignoredModFiles");
-                    f_loadedCoremods.setAccessible(true);
-                    ((List) f_loadedCoremods.get(null)).add(coreMod.getName());
+                    CoreModManager.getIgnoredMods().add(coreMod.getName());
                 } else {
                     FMLRelaunchLog.finer("Found FMLCorePluginContainsFMLMod marker in %s, it will be examined later for regular @Mod instances", coreMod.getName());
-                    Field f_reparsedCoremods = c.getDeclaredField("candidateModFiles");
-                    f_reparsedCoremods.setAccessible(true);
-                    ((List) f_reparsedCoremods.get(null)).add(coreMod.getName());
+                    CoreModManager.getReparseableCoremods().add(coreMod.getName());
                 }
-                Method m_loadCoreMod = c.getDeclaredMethod("loadCoreMod", LaunchClassLoader.class, String.class, File.class);
+                Method m_loadCoreMod = CoreModManager.class.getDeclaredMethod("loadCoreMod", LaunchClassLoader.class, String.class, File.class);
                 m_loadCoreMod.setAccessible(true);
                 m_loadCoreMod.invoke(null, loader, fmlCorePlugin, coreMod);
             } catch (Exception e) {
@@ -708,6 +769,46 @@ public class DepLoader implements IFMLLoadingPlugin, IFMLCallHook {
                     oldDep.source = newDep.source;
                     oldDep.packed = newDep.packed;
                 }
+            }
+        }
+
+        public void yellAtPeople() {
+            IYellAtPeople yellAtPeople = FMLLaunchHandler.side().isClient() ? new YellGui() : new YellServer();
+            yellAtPeople.addYellingData("The CodeChicken Dependency Downloader is being phased out and has detected mods using it.");
+            yellAtPeople.addYellingData("The downloader will function as normal but this message serves as a log of what mods are using it.");
+            yellAtPeople.addYellingData("If you are a mod dev, Please phase out all use of the dependency downloader.");
+            yellAtPeople.addYellingData("If you are a normal user, you can follow the instructions at the bottom of the window if you would like.");
+            yellAtPeople.addYellingData("The following mods are being requested to download...");
+            yellAtPeople.addYellingData("");
+            for (Entry<String, Dependency> entry : depMap.entrySet()) {
+                yellAtPeople.addYellingData("\"" + entry.getValue().source.getName() + "\"" + " Wants: " + entry.getKey() + "-" + entry.getValue().file.version);
+            }
+            yellAtPeople.addYellingData("");
+            yellAtPeople.addYellingData("");
+            yellAtPeople.addYellingData("Don't be alarmed by this window, it is simply so i can log what mods are using the Dependency Downloader.");
+            yellAtPeople.addYellingData("If you would like to report this please follow instructions listed <a href=\"https://github.com/TheCBProject/CodeChickenLib/issues/12\">here</a>.");
+            yellAtPeople.addYellingData("Click the OK button to continue.");
+
+            yellAtPeople.displayYellingData();
+        }
+
+        private void forceRemoveCCL() {
+            if (depSet.contains("CodeChickenLib")) {
+                depSet.remove("CodeChickenLib");
+                depMap.remove("CodeChickenLib");
+            }
+            try {
+                File[] files = v_modsDir.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.getName().contains("CodeChickenLib") && file.getName().endsWith(".jar")) {
+                            FMLLog.info("Found old CCL [%s] attempting delete..", file.getName());
+                            deleteMod(file);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }

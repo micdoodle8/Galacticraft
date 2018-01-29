@@ -7,9 +7,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +47,7 @@ public class SkyProviderVenus extends IRenderHandler
         GL11.glPopMatrix();
 
         final Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
         GL11.glNewList(this.glSkyList, GL11.GL_COMPILE);
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
@@ -91,7 +91,7 @@ public class SkyProviderVenus extends IRenderHandler
     {
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        Vec3 vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
+        Vec3d vec3 = world.getSkyColor(mc.getRenderViewEntity(), partialTicks);
         float f1 = (float) vec3.xCoord;
         float f2 = (float) vec3.yCoord;
         float f3 = (float) vec3.zCoord;
@@ -109,7 +109,7 @@ public class SkyProviderVenus extends IRenderHandler
 
         GL11.glColor3f(f1, f2, f3);
         Tessellator tessellator1 = Tessellator.getInstance();
-        WorldRenderer worldRenderer1 = tessellator1.getWorldRenderer();
+        VertexBuffer worldRenderer1 = tessellator1.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(f1, f2, f3);
@@ -332,7 +332,7 @@ public class SkyProviderVenus extends IRenderHandler
     {
         final Random rand = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        VertexBuffer worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int starIndex = 0; starIndex < (ConfigManagerCore.moreStars ? 35000 : 6000); ++starIndex)
@@ -381,9 +381,9 @@ public class SkyProviderVenus extends IRenderHandler
         var2.draw();
     }
 
-    private Vec3 getCustomSkyColor()
+    private Vec3d getCustomSkyColor()
     {
-        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3d(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)

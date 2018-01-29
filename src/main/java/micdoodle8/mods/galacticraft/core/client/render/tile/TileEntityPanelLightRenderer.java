@@ -96,7 +96,7 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        VertexBuffer worldRenderer = tess.getBuffer();
         float frameY = 1.01F;
         float frameA, frameB, frameC;
         switch (type) {

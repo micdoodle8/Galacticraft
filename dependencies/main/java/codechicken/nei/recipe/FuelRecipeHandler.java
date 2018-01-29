@@ -1,7 +1,7 @@
 package codechicken.nei.recipe;
 
-import codechicken.nei.NEIClientUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.util.NEIClientUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import static codechicken.nei.NEIClientUtils.translate;
+import static codechicken.nei.util.NEIClientUtils.translate;
 
 public class FuelRecipeHandler extends FurnaceRecipeHandler {
     public class CachedFuelRecipe extends CachedRecipe {
@@ -48,7 +48,7 @@ public class FuelRecipeHandler extends FurnaceRecipeHandler {
     }
 
     private void loadAllSmelting() {
-        Map<ItemStack, ItemStack> recipes = (Map<ItemStack, ItemStack>) FurnaceRecipes.instance().getSmeltingList();
+        Map<ItemStack, ItemStack> recipes = FurnaceRecipes.instance().getSmeltingList();
 
         for (Entry<ItemStack, ItemStack> recipe : recipes.entrySet()) {
             mfurnace.add(new SmeltingPair(recipe.getKey(), recipe.getValue()));

@@ -1,21 +1,25 @@
 package codechicken.lib.vec;
 
 import codechicken.lib.util.Copyable;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
+import javax.vecmath.Matrix4d;
+import javax.vecmath.Matrix4f;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
 
+//TODO Decompose to individual transforms.
 public class Matrix4 extends Transformation implements Copyable<Matrix4> {
-    private static DoubleBuffer glBuf = ByteBuffer.allocateDirect(16 * 8).order(ByteOrder.nativeOrder()).asDoubleBuffer();
 
-    //m<row><column>    
+    private static FloatBuffer glBuf = ByteBuffer.allocateDirect(16 * 8).order(ByteOrder.nativeOrder()).asFloatBuffer();
+
+    //m<row><column>
     public double m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33;
 
     public Matrix4() {
@@ -269,6 +273,48 @@ public class Matrix4 extends Transformation implements Copyable<Matrix4> {
         return this;
     }
 
+    public Matrix4d toMatrix4d() {
+        double[] matrix = new double[16];
+        matrix[0] = m00;
+        matrix[1] = m01;
+        matrix[2] = m02;
+        matrix[3] = m03;
+        matrix[4] = m10;
+        matrix[5] = m11;
+        matrix[6] = m12;
+        matrix[7] = m13;
+        matrix[8] = m20;
+        matrix[9] = m21;
+        matrix[10] = m22;
+        matrix[11] = m23;
+        matrix[12] = m30;
+        matrix[13] = m31;
+        matrix[14] = m32;
+        matrix[15] = m33;
+        return new Matrix4d(matrix);
+    }
+
+    public Matrix4f toMatrix4f() {
+        float[] matrix = new float[16];
+        matrix[0] = (float) m00;
+        matrix[1] = (float) m01;
+        matrix[2] = (float) m02;
+        matrix[3] = (float) m03;
+        matrix[4] = (float) m10;
+        matrix[5] = (float) m11;
+        matrix[6] = (float) m12;
+        matrix[7] = (float) m13;
+        matrix[8] = (float) m20;
+        matrix[9] = (float) m21;
+        matrix[10] = (float) m22;
+        matrix[11] = (float) m23;
+        matrix[12] = (float) m30;
+        matrix[13] = (float) m31;
+        matrix[14] = (float) m32;
+        matrix[15] = (float) m33;
+        return new Matrix4f(matrix);
+    }
+
     @Override
     public void apply(Matrix4 mat) {
         mat.multiply(this);
@@ -299,10 +345,7 @@ public class Matrix4 extends Transformation implements Copyable<Matrix4> {
     @Override
     public String toString() {
         MathContext cont = new MathContext(4, RoundingMode.HALF_UP);
-        return "[" + new BigDecimal(m00, cont) + "," + new BigDecimal(m01, cont) + "," + new BigDecimal(m02, cont) + "," + new BigDecimal(m03, cont) + "]\n" +
-                "[" + new BigDecimal(m10, cont) + "," + new BigDecimal(m11, cont) + "," + new BigDecimal(m12, cont) + "," + new BigDecimal(m13, cont) + "]\n" +
-                "[" + new BigDecimal(m20, cont) + "," + new BigDecimal(m21, cont) + "," + new BigDecimal(m22, cont) + "," + new BigDecimal(m23, cont) + "]\n" +
-                "[" + new BigDecimal(m30, cont) + "," + new BigDecimal(m31, cont) + "," + new BigDecimal(m32, cont) + "," + new BigDecimal(m33, cont) + "]";
+        return "[" + new BigDecimal(m00, cont) + "," + new BigDecimal(m01, cont) + "," + new BigDecimal(m02, cont) + "," + new BigDecimal(m03, cont) + "]\n" + "[" + new BigDecimal(m10, cont) + "," + new BigDecimal(m11, cont) + "," + new BigDecimal(m12, cont) + "," + new BigDecimal(m13, cont) + "]\n" + "[" + new BigDecimal(m20, cont) + "," + new BigDecimal(m21, cont) + "," + new BigDecimal(m22, cont) + "," + new BigDecimal(m23, cont) + "]\n" + "[" + new BigDecimal(m30, cont) + "," + new BigDecimal(m31, cont) + "," + new BigDecimal(m32, cont) + "," + new BigDecimal(m33, cont) + "]";
     }
 
     public Matrix4 apply(Transformation t) {
@@ -311,11 +354,11 @@ public class Matrix4 extends Transformation implements Copyable<Matrix4> {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
-        glBuf.put(m00).put(m10).put(m20).put(m30).put(m01).put(m11).put(m21).put(m31).put(m02).put(m12).put(m22).put(m32).put(m03).put(m13).put(m23).put(m33);
+        glBuf.put((float) m00).put((float) m10).put((float) m20).put((float) m30).put((float) m01).put((float) m11).put((float) m21).put((float) m31).put((float) m02).put((float) m12).put((float) m22).put((float) m32).put((float) m03).put((float) m13).put((float) m23).put((float) m33);
         glBuf.flip();
-        GL11.glMultMatrix(glBuf);
+        GlStateManager.multMatrix(glBuf);
     }
 
     @Override

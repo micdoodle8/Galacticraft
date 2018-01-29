@@ -30,7 +30,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -112,7 +117,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         {
             if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
-                List containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                List containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                         this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                 if (containedEntities.size() > 0 && this.getEnergyStoredGC() >= ENERGY_USE_ON_TELEPORT)
@@ -143,7 +148,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                     if (finalPos != null)
                     {
                         TileEntity tileAt = finalPos.getTileEntity(this.worldObj);
-                        List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                        List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                                 this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                         if (tileAt != null && tileAt instanceof TileEntityShortRangeTelepad)
@@ -158,7 +163,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     this.worldObj.updateEntityWithOptionalForce(e, true);
                                     if (e instanceof EntityPlayerMP)
                                     {
-                                        ((EntityPlayerMP) e).playerNetServerHandler.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
+                                        ((EntityPlayerMP) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
                                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.worldObj), new Object[] { finalPos, e.getEntityId() }), GCCoreUtil.getDimensionID(this.worldObj));
                                 }
@@ -178,7 +183,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText("Cannot Send client-side")); // No need for translation, since this should never happen
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Cannot Send client-side")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -187,7 +192,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText("Target address invalid")); // No need for translation, since this should never happen
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString("Target address invalid")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
@@ -196,7 +201,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                     {
                                         if (e instanceof EntityPlayer)
                                         {
-                                            ((EntityPlayer) e).addChatComponentMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            ((EntityPlayer) e).addChatComponentMessage(new TextComponentString(GCCoreUtil.translate("gui.message.target_no_energy.name")));
                                         }
                                     }
                                     break;
@@ -242,7 +247,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         NBTTagList var2 = new NBTTagList();
@@ -263,6 +268,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         nbt.setInteger("TargetAddress", this.targetAddress);
         nbt.setInteger("Address", this.address);
         nbt.setString("Owner", this.owner);
+        return nbt;
     }
 
     @Override
@@ -385,9 +391,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

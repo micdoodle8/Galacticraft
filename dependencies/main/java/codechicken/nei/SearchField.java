@@ -1,12 +1,13 @@
 package codechicken.nei;
 
+import codechicken.lib.item.filtering.IItemFilter;
+import codechicken.lib.item.filtering.IItemFilterProvider;
 import codechicken.nei.ItemList.AnyMultiItemFilter;
 import codechicken.nei.ItemList.EverythingItemFilter;
 import codechicken.nei.ItemList.PatternItemFilter;
 import codechicken.nei.api.API;
-import codechicken.nei.api.ItemFilter;
-import codechicken.nei.api.ItemFilter.ItemFilterProvider;
-import net.minecraft.util.EnumChatFormatting;
+import codechicken.nei.config.KeyBindings;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -17,20 +18,20 @@ import static codechicken.lib.gui.GuiDraw.drawGradientRect;
 import static codechicken.lib.gui.GuiDraw.drawRect;
 import static codechicken.nei.NEIClientConfig.world;
 
-public class SearchField extends TextField implements ItemFilterProvider {
+public class SearchField extends TextField implements IItemFilterProvider {
     /**
      * Interface for returning a custom filter based on search field text
      */
-    public static interface ISearchProvider {
+    public interface ISearchProvider {
         /**
          * @return false if this filter should only be used if no other non-default filters match the search string
          */
-        public boolean isPrimary();
+        boolean isPrimary();
 
         /**
          * @return An item filter for items matching SearchTex null to ignore this provider
          */
-        public ItemFilter getFilter(String searchText);
+        IItemFilter getFilter(String searchText);
     }
 
     private static class DefaultSearchProvider implements ISearchProvider {
@@ -40,7 +41,7 @@ public class SearchField extends TextField implements ItemFilterProvider {
         }
 
         @Override
-        public ItemFilter getFilter(String searchText) {
+        public IItemFilter getFilter(String searchText) {
             Pattern pattern = getPattern(searchText);
             return pattern == null ? null : new PatternItemFilter(pattern);
         }
@@ -61,6 +62,14 @@ public class SearchField extends TextField implements ItemFilterProvider {
     }
 
     @Override
+    public int getTextColour() {
+//        if (JEIIntegrationManager.itemPannelOwner == EnumItemBrowser.JEI ? JEIIntegrationManager.getFilteredItems().size() == 0 : ItemPanel.items.size() == 0) {
+//            return Color.red.getRGB();
+//        }
+        return super.getTextColour();
+    }
+
+    @Override
     public void drawBox() {
         if (searchInventories()) {
             drawGradientRect(x, y, w, h, 0xFFFFFF00, 0xFFC0B000);
@@ -76,8 +85,9 @@ public class SearchField extends TextField implements ItemFilterProvider {
             if (focused() && (System.currentTimeMillis() - lastclicktime < 500)) {//double click
                 NEIClientConfig.world.nbt.setBoolean("searchinventories", !searchInventories());
                 NEIClientConfig.world.saveNBT();
+            } else {
+                lastclicktime = System.currentTimeMillis();
             }
-            lastclicktime = System.currentTimeMillis();
         }
         return super.handleClick(mousex, mousey, button);
     }
@@ -90,14 +100,14 @@ public class SearchField extends TextField implements ItemFilterProvider {
 
     @Override
     public void lastKeyTyped(int keyID, char keyChar) {
-        if (keyID == NEIClientConfig.getKeyBinding("gui.search")) {
+        if (KeyBindings.get("nei.options.keys.gui.search").isActiveAndMatches(keyID)) {
             setFocus(true);
         }
     }
 
     @Override
     public String filterText(String s) {
-        return EnumChatFormatting.getTextWithoutFormattingCodes(s);
+        return TextFormatting.getTextWithoutFormattingCodes(s);
     }
 
     public static Pattern getPattern(String search) {
@@ -119,13 +129,13 @@ public class SearchField extends TextField implements ItemFilterProvider {
     }
 
     @Override
-    public ItemFilter getFilter() {
+    public IItemFilter getFilter() {
         String s_filter = text().toLowerCase();
 
-        List<ItemFilter> primary = new LinkedList<ItemFilter>();
-        List<ItemFilter> secondary = new LinkedList<ItemFilter>();
+        List<IItemFilter> primary = new LinkedList<IItemFilter>();
+        List<IItemFilter> secondary = new LinkedList<IItemFilter>();
         for (ISearchProvider p : searchProviders) {
-            ItemFilter filter = p.getFilter(s_filter);
+            IItemFilter filter = p.getFilter(s_filter);
             if (filter != null) {
                 (p.isPrimary() ? primary : secondary).add(filter);
             }

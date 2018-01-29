@@ -2,6 +2,7 @@ package codechicken.lib.asm;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import org.objectweb.asm.tree.AbstractInsnNode;
 import org.objectweb.asm.tree.*;
 
 import java.util.*;
@@ -9,6 +10,7 @@ import java.util.*;
 import static org.objectweb.asm.tree.AbstractInsnNode.*;
 
 public class InsnComparator {
+
     public static boolean varInsnEqual(VarInsnNode insn1, VarInsnNode insn2) {
         return insn1.var == -1 || insn2.var == -1 || insn1.var == insn2.var;
     }
@@ -43,34 +45,34 @@ public class InsnComparator {
         }
 
         switch (node2.getType()) {
-        case VAR_INSN:
-            return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
-        case TYPE_INSN:
-            return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
-        case FIELD_INSN:
-            return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
-        case METHOD_INSN:
-            return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
-        case LDC_INSN:
-            return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
-        case IINC_INSN:
-            return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
-        case INT_INSN:
-            return intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
-        default:
-            return true;
+            case VAR_INSN:
+                return varInsnEqual((VarInsnNode) node1, (VarInsnNode) node2);
+            case TYPE_INSN:
+                return typeInsnEqual((TypeInsnNode) node1, (TypeInsnNode) node2);
+            case FIELD_INSN:
+                return fieldInsnEqual((FieldInsnNode) node1, (FieldInsnNode) node2);
+            case METHOD_INSN:
+                return methodInsnEqual((MethodInsnNode) node1, (MethodInsnNode) node2);
+            case LDC_INSN:
+                return ldcInsnEqual((LdcInsnNode) node1, (LdcInsnNode) node2);
+            case IINC_INSN:
+                return iincInsnEqual((IincInsnNode) node1, (IincInsnNode) node2);
+            case INT_INSN:
+                return intInsnEqual((IntInsnNode) node1, (IntInsnNode) node2);
+            default:
+                return true;
         }
     }
 
     public static boolean insnImportant(AbstractInsnNode insn, Set<LabelNode> controlFlowLabels) {
         switch (insn.getType()) {
-        case LINE:
-        case FRAME:
-            return false;
-        case LABEL:
-            return controlFlowLabels.contains(insn);
-        default:
-            return true;
+            case LINE:
+            case FRAME:
+                return false;
+            case LABEL:
+                return controlFlowLabels.contains(insn);
+            default:
+                return true;
         }
     }
 
@@ -82,24 +84,24 @@ public class InsnComparator {
         HashSet<LabelNode> controlFlowLabels = new HashSet<LabelNode>();
         for (AbstractInsnNode insn = list.getFirst(); insn != null; insn = insn.getNext()) {
             switch (insn.getType()) {
-            case JUMP_INSN:
-                JumpInsnNode jinsn = (JumpInsnNode) insn;
-                controlFlowLabels.add(jinsn.label);
-                break;
-            case TABLESWITCH_INSN:
-                TableSwitchInsnNode tsinsn = (TableSwitchInsnNode) insn;
-                controlFlowLabels.add(tsinsn.dflt);
-                for (LabelNode label : tsinsn.labels) {
-                    controlFlowLabels.add(label);
-                }
-                break;
-            case LOOKUPSWITCH_INSN:
-                LookupSwitchInsnNode lsinsn = (LookupSwitchInsnNode) insn;
-                controlFlowLabels.add(lsinsn.dflt);
-                for (LabelNode label : lsinsn.labels) {
-                    controlFlowLabels.add(label);
-                }
-                break;
+                case JUMP_INSN:
+                    JumpInsnNode jinsn = (JumpInsnNode) insn;
+                    controlFlowLabels.add(jinsn.label);
+                    break;
+                case TABLESWITCH_INSN:
+                    TableSwitchInsnNode tsinsn = (TableSwitchInsnNode) insn;
+                    controlFlowLabels.add(tsinsn.dflt);
+                    for (LabelNode label : tsinsn.labels) {
+                        controlFlowLabels.add(label);
+                    }
+                    break;
+                case LOOKUPSWITCH_INSN:
+                    LookupSwitchInsnNode lsinsn = (LookupSwitchInsnNode) insn;
+                    controlFlowLabels.add(lsinsn.dflt);
+                    for (LabelNode label : lsinsn.labels) {
+                        controlFlowLabels.add(label);
+                    }
+                    break;
             }
         }
         return controlFlowLabels;

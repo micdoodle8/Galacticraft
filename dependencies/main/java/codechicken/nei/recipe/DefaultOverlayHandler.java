@@ -2,10 +2,11 @@ package codechicken.nei.recipe;
 
 import codechicken.lib.inventory.InventoryUtils;
 import codechicken.nei.FastTransferManager;
-import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.stack.PositionedStack;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -74,13 +75,13 @@ public class DefaultOverlayHandler implements IOverlayHandler {
     @SuppressWarnings("unchecked")
     private boolean clearIngredients(GuiContainer gui, List<PositionedStack> ingreds) {
         for (PositionedStack pstack : ingreds) {
-            for (Slot slot : (List<Slot>) gui.inventorySlots.inventorySlots) {
+            for (Slot slot : gui.inventorySlots.inventorySlots) {
                 if (slot.xDisplayPosition == pstack.relx + offsetx && slot.yDisplayPosition == pstack.rely + offsety) {
                     if (!slot.getHasStack()) {
                         continue;
                     }
 
-                    FastTransferManager.clickSlot(gui, slot.slotNumber, 0, 1);
+                    FastTransferManager.clickSlot(gui, slot.slotNumber, 0, ClickType.QUICK_MOVE);
                     if (slot.getHasStack()) {
                         return false;
                     }
@@ -103,7 +104,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
             int slotTransferred = 0;
             int slotTransferCap = pstack.getMaxStackSize();
 
-            for (Slot slot : (List<Slot>) gui.inventorySlots.inventorySlots) {
+            for (Slot slot : gui.inventorySlots.inventorySlots) {
                 if (!slot.getHasStack() || !canMoveFrom(slot, gui)) {
                     continue;
                 }
@@ -246,7 +247,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
 
     @SuppressWarnings("unchecked")
     private void findInventoryQuantities(GuiContainer gui, List<DistributedIngred> ingredStacks) {
-        for (Slot slot : (List<Slot>) gui.inventorySlots.inventorySlots)//work out how much we have to go round
+        for (Slot slot : gui.inventorySlots.inventorySlots)//work out how much we have to go round
         {
             if (slot.getHasStack() && canMoveFrom(slot, gui)) {
                 ItemStack pstack = slot.getStack();
@@ -284,7 +285,7 @@ public class DefaultOverlayHandler implements IOverlayHandler {
         {
             LinkedList<Slot> recipeSlots = new LinkedList<Slot>();
             PositionedStack pstack = ingredients.get(i);
-            for (Slot slot : (List<Slot>) gui.inventorySlots.inventorySlots) {
+            for (Slot slot : gui.inventorySlots.inventorySlots) {
                 if (slot.xDisplayPosition == pstack.relx + offsetx && slot.yDisplayPosition == pstack.rely + offsety) {
                     recipeSlots.add(slot);
                     break;

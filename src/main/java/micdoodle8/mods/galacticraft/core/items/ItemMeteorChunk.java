@@ -8,10 +8,15 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,7 +35,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.maxStackSize = 16;
-        this.setCreativeTab(CreativeTabs.tabMaterials);
+        this.setCreativeTab(CreativeTabs.MATERIALS);
         this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
@@ -131,14 +136,14 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand)
     {
         if (!player.capabilities.isCreativeMode)
         {
             --itemStack.stackSize;
         }
 
-        world.playSoundAtEntity(player, "random.bow", 1.0F, 0.0001F / (Item.itemRand.nextFloat() * 0.1F));
+        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.itemRand.nextFloat() * 0.1F));
 
         if (!world.isRemote)
         {
@@ -153,9 +158,9 @@ public class ItemMeteorChunk extends Item implements ISortableItem
             world.spawnEntityInWorld(meteor);
         }
 
-        player.swingItem();
+        player.swingArm(hand);
 
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
     }
 
     @Override

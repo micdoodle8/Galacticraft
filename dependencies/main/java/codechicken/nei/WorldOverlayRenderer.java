@@ -2,20 +2,21 @@ package codechicken.nei;
 
 import codechicken.lib.math.MathHelper;
 import codechicken.lib.render.RenderUtils;
+import codechicken.lib.render.state.GlStateManagerHelper;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.nei.KeyManager.IKeyStateTracker;
+import codechicken.nei.config.KeyBindings;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.SpawnerAnimals;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.WorldEntitySpawner;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -35,24 +36,27 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
             return;
         }
 
-        if (KeyManager.keyStates.get("world.moboverlay").down) {
+        if (KeyBindings.get("nei.options.keys.world.moboverlay").isPressed()) {
             mobOverlay = (mobOverlay + 1) % 2;
         }
-        if (KeyManager.keyStates.get("world.chunkoverlay").down) {
+        if (KeyBindings.get("nei.options.keys.world.chunkoverlay").isPressed()) {
             chunkOverlay = (chunkOverlay + 1) % 3;
         }
     }
 
     public static void render(float frame) {
         GlStateManager.pushMatrix();
+        GlStateManagerHelper.pushState();
         Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
         RenderUtils.translateToWorldCoords(entity, frame);
 
         renderChunkBounds(entity);
         renderMobSpawnOverlay(entity);
+        GlStateManagerHelper.popState();
         GlStateManager.popMatrix();
     }
 
+    //TODO Improve the performance of this.
     private static void renderMobSpawnOverlay(Entity entity) {
         if (mobOverlay == 0) {
             return;
@@ -74,7 +78,7 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
             for (int z = z1 - 16; z <= z1 + 16; z++) {
                 BlockPos pos = new BlockPos(x, y1, z);
                 Chunk chunk = world.getChunkFromBlockCoords(pos);
-                BiomeGenBase biome = world.getBiomeGenForCoords(pos);
+                Biome biome = world.getBiome(pos);
                 if (biome.getSpawnableList(EnumCreatureType.MONSTER).isEmpty() || biome.getSpawningChance() <= 0) {
                     continue;
                 }
@@ -104,21 +108,19 @@ public class WorldOverlayRenderer implements IKeyStateTracker {
         GlStateManager.enableTexture2D();
     }
 
-    private static Entity dummyEntity = new EntityPig(null);
+    //private static Entity dummyEntity = new EntityPig(null);
     private static Cuboid6 c = new Cuboid6();
 
     private static int getSpawnMode(Chunk chunk, int x, int y, int z) {
         World world = chunk.getWorld();
         BlockPos pos = new BlockPos(x, y, z);
-        if (!SpawnerAnimals.canCreatureTypeSpawnAtLocation(SpawnPlacementType.ON_GROUND, world, pos) || chunk.getLightFor(EnumSkyBlock.BLOCK, pos) >= 8) {
+        if (!WorldEntitySpawner.canCreatureTypeSpawnAtLocation(SpawnPlacementType.ON_GROUND, world, pos) || chunk.getLightFor(EnumSkyBlock.BLOCK, pos) >= 8) {
             return 0;
         }
 
         c.set(x + 0.2, y + 0.01, z + 0.2, x + 0.8, y + 1.8, z + 0.8);
         AxisAlignedBB aabb = c.aabb();
-        if (!world.checkNoEntityCollision(aabb) ||
-                !world.getCollidingBoundingBoxes(dummyEntity, aabb).isEmpty() ||
-                world.isAnyLiquid(aabb)) {
+        if (!world.checkNoEntityCollision(aabb) || !world.getEntitiesWithinAABBExcludingEntity(null, aabb).isEmpty() || world.containsAnyLiquid(aabb)) {
             return 0;
         }
 

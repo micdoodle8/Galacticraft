@@ -6,9 +6,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import java.util.UUID;
 
 public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 {
@@ -51,7 +53,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
                 EntitySlimeling slimeling = new EntitySlimeling(this.worldObj, colorRed, colorGreen, colorBlue);
 
                 slimeling.setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
-                slimeling.setOwnerId(this.lastTouchedPlayerUUID);
+                slimeling.setOwnerId(UUID.fromString(this.lastTouchedPlayerUUID));
                 slimeling.setOwnerUsername(this.lastTouchedPlayerName);
 
                 if (!this.worldObj.isRemote)
@@ -82,7 +84,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
         }
         else
         {
-            uuid = PreYggdrasilConverter.getStringUUIDFromName(nbt.getString("Owner"));
+            uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(this.worldObj.getMinecraftServer(), nbt.getString("Owner"));
         }
 
         if (uuid.length() > 0)
@@ -94,12 +96,13 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("TimeToHatch", this.timeToHatch);
         nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
         nbt.setString("OwnerUsername", this.lastTouchedPlayerName);
+        return nbt;
     }
 
     @Override

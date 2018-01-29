@@ -8,13 +8,13 @@ import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
@@ -88,13 +88,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
-    public void updateRiderPosition()
+    public void updatePassenger(Entity passenger)
     {
-        if (this.riddenByEntity != null)
+        if (this.isPassenger(passenger))
         {
-            final double var1 = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            final double var3 = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
-            this.riddenByEntity.setPosition(this.posX + var1, this.posY + this.getMountedYOffset() + this.riddenByEntity.getYOffset(), this.posZ + var3);
+            final double offsetx = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            final double offsetz = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D + 114.8) * -0.5D;
+            passenger.setPosition(this.posX + offsetx, this.posY + this.getMountedYOffset() + passenger.getYOffset(), this.posZ + offsetz);
         }
     }
 
@@ -168,9 +168,9 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
                 if (this.currentDamage > 70)
                 {
-                    if (this.riddenByEntity != null)
+                    if (!this.getPassengers().isEmpty())
                     {
-                        this.riddenByEntity.mountEntity(this);
+                        this.removePassengers();
 
                         return false;
                     }
@@ -202,7 +202,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     public abstract Map<Vector3, Vector3> getParticleMap();
 
     @SideOnly(Side.CLIENT)
-    public abstract EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
+    public abstract Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
 
     public abstract void tickInAir();
 
@@ -251,18 +251,19 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    @SideOnly(Side.CLIENT)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
-        if (this.riddenByEntity != null)
+        if (!this.getPassengers().isEmpty())
         {
-            if (this.riddenByEntity instanceof EntityPlayer && FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity))
+            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().thePlayer))
             {
             }
             else
             {
                 this.posRotIncrements = posRotationIncrements + 5;
                 this.advancedPositionX = x;
-                this.advancedPositionY = y + (this.riddenByEntity == null ? 1 : 0);
+                this.advancedPositionY = y;
                 this.advancedPositionZ = z;
                 this.advancedYaw = yaw;
                 this.advancedPitch = pitch;
@@ -290,7 +291,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
         super.onUpdate();
 
-        if (this.canSetPositionClient() && this.worldObj.isRemote && (this.riddenByEntity == null || !(this.riddenByEntity instanceof EntityPlayer) || !FMLClientHandler.instance().getClient().thePlayer.equals(this.riddenByEntity)))
+        if (this.canSetPositionClient() && this.worldObj.isRemote && (this.getPassengers().isEmpty() || !this.getPassengers().contains(FMLClientHandler.instance().getClient().thePlayer)))
         {
             double x;
             double y;
@@ -301,7 +302,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
                 x = this.posX + (this.advancedPositionX - this.posX) / this.posRotIncrements;
                 y = this.posY + (this.advancedPositionY - this.posY) / this.posRotIncrements;
                 z = this.posZ + (this.advancedPositionZ - this.posZ) / this.posRotIncrements;
-                var12 = MathHelper.wrapAngleTo180_double(this.advancedYaw - this.rotationYaw);
+                var12 = MathHelper.wrapDegrees(this.advancedYaw - this.rotationYaw);
                 this.rotationYaw = (float) (this.rotationYaw + var12 / this.posRotIncrements);
                 this.rotationPitch = (float) (this.rotationPitch + (this.advancedPitch - this.rotationPitch) / this.posRotIncrements);
                 --this.posRotIncrements;
@@ -400,7 +401,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @SideOnly(Side.CLIENT)
-    public void spawnParticle(EntityFX fx)
+    public void spawnParticle(Particle fx)
     {
         final Minecraft mc = FMLClientHandler.instance().getClient();
 

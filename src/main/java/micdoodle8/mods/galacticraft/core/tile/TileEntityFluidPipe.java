@@ -1,27 +1,35 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import mekanism.api.gas.Gas;
+import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.tile.IColorable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -136,7 +144,8 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     @Override
     public void onAdjacentColorChanged(EnumFacing direction)
     {
-        this.worldObj.markBlockForUpdate(this.getPos());
+        IBlockState state = this.worldObj.getBlockState(this.getPos());
+        this.worldObj.notifyBlockUpdate(this.getPos(), state, state, 3);
 
         if (!this.worldObj.isRemote)
         {
@@ -145,15 +154,22 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
         super.writeToNBT(tagCompound);
         if (this.buffer.getFluid() != null)
         {
             tagCompound.setTag("buff", this.buffer.writeToNBT(new NBTTagCompound()));
         }
+        return tagCompound;
     }
-        
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+       
     @Override
     public void readFromNBT(NBTTagCompound tagCompound)
     {
@@ -295,5 +311,97 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     public double getMaxRenderDistanceSquared()
     {
         return 16384;  //128 squared
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    {
+        String mekGas = stack.getGas().getName(); 
+        if (mekGas == null)
+        {
+            return 0;
+        }
+        FluidStack mekEquivalent = null;
+        if (mekGas.equals("oxygen"))
+        {
+            mekEquivalent = new FluidStack(GCFluids.fluidOxygenGas, stack.amount);
+        }
+        else if (mekGas.equals("hydrogen"))
+        {
+            mekEquivalent = new FluidStack(GCFluids.fluidHydrogenGas, stack.amount);
+        }
+        else
+        {
+            return 0;
+        }
+        return this.fill(side, mekEquivalent, doTransfer);
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public int receiveGas(EnumFacing side, GasStack stack)
+    {
+        return this.receiveGas(side, stack, true);
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    {
+        return null;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public GasStack drawGas(EnumFacing side, int amount)
+    {
+        return null;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canReceiveGas(EnumFacing side, Gas type)
+    {
+        return type.getName().equals("oxygen") || type.getName().equals("hydrogen");
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    public boolean canDrawGas(EnumFacing side, Gas type)
+    {
+        return false;
+    }
+
+    @Override
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    public boolean canTubeConnect(EnumFacing side)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return true;
+
+        return EnergyUtil.checkMekGasHandler(capability);  
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+
+        if (EnergyUtil.checkMekGasHandler(capability))
+        {
+            return (T) this;
+        }
+
+        return null;
     }
 }

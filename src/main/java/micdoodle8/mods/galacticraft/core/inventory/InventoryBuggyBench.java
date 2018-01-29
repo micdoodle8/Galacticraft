@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IChatComponent;
 
 public class InventoryBuggyBench implements IInventoryDefaults
 {
@@ -142,11 +141,5 @@ public class InventoryBuggyBench implements IInventoryDefaults
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 }

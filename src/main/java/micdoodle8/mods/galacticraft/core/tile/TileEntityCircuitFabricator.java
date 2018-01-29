@@ -10,11 +10,13 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
                     if (this.processTicks >= this.getProcessTimeRequired())
                     {
-                        this.worldObj.playSoundEffect(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), "random.anvil_land", 0.2F, 0.5F);
+                        this.worldObj.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -154,21 +156,22 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-        this.containingItems = this.readStandardItemsFromNBT(par1NBTTagCompound);
-        this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        super.readFromNBT(nbt);
+        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.containingItems = this.readStandardItemsFromNBT(nbt);
+        this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(par1NBTTagCompound);
-        this.addMachineSidesToNBT(par1NBTTagCompound);  //Needed by IMachineSides
+        super.writeToNBT(nbt);
+        nbt.setInteger("smeltingTicks", this.processTicks);
+        this.writeStandardItemsToNBT(nbt);
+        this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
+        return nbt;
     }
 
     @Override
@@ -190,7 +193,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

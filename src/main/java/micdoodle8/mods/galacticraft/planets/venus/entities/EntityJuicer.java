@@ -13,14 +13,25 @@ import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class EntityJuicer extends EntityMob implements IEntityBreathable
 {
+    private static final DataParameter<Boolean> IS_FALLING = EntityDataManager.createKey(EntityJuicer.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> IS_HANGING = EntityDataManager.createKey(EntityJuicer.class, DataSerializers.BOOLEAN);
     private BlockPos jumpTarget;
     private int timeSinceLastJump = 0;
 
@@ -29,7 +40,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         super(world);
         this.moveHelper = new EntityMoveHelperCeiling(this);
         this.setSize(0.95F, 0.6F);
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0, true));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -42,28 +53,28 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, (byte)0);
-        this.dataWatcher.addObject(17, (byte)0);
+        this.dataManager.register(IS_FALLING, false);
+        this.dataManager.register(IS_HANGING, false);
     }
 
     public boolean isHanging()
     {
-        return this.dataWatcher.getWatchableObjectByte(16) != 0;
+        return this.dataManager.get(IS_FALLING);
     }
 
     public void setHanging(boolean hanging)
     {
-        this.dataWatcher.updateObject(16, (byte)(hanging ? 1 : 0));
+        this.dataManager.set(IS_FALLING, hanging);
     }
 
     public boolean isFalling()
     {
-        return this.dataWatcher.getWatchableObjectByte(17) != 0;
+        return this.dataManager.get(IS_FALLING);
     }
 
     public void setFalling(boolean falling)
     {
-        this.dataWatcher.updateObject(17, (byte)(falling ? 1 : 0));
+        this.dataManager.set(IS_FALLING, falling);
     }
 
     @Override
@@ -76,37 +87,37 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.30000001192092896D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound()
+    {
+        return SoundEvents.ENTITY_SPIDER_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound()
+    {
+        return SoundEvents.ENTITY_SPIDER_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound()
+    {
+        return SoundEvents.ENTITY_SPIDER_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, Block blockIn)
+    {
+        this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.15F, 1.0F);
     }
 
     @Override
     protected boolean canTriggerWalking()
     {
         return false;
-    }
-
-    @Override
-    protected String getLivingSound()
-    {
-        return "mob.spider.say";
-    }
-
-    @Override
-    protected String getHurtSound()
-    {
-        return "mob.spider.say";
-    }
-
-    @Override
-    protected String getDeathSound()
-    {
-        return "mob.spider.death";
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, Block blockIn)
-    {
-        this.playSound("mob.spider.step", 0.15F, 1.2F);
     }
 
     @Override
@@ -118,7 +129,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     @Override
     protected Item getDropItem()
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -143,9 +154,9 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                     if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                             blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                     {
-                        MovingObjectPosition hit = this.worldObj.rayTraceBlocks(new Vec3(this.posX, this.posY, this.posZ), new Vec3(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
+                        RayTraceResult hit = this.worldObj.rayTraceBlocks(new Vec3d(this.posX, this.posY, this.posZ), new Vec3d(this.posX, this.posY + (this.isHanging() ? -10 : 10), this.posZ), false, true, false);
 
-                        if (hit != null && hit.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)
+                        if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK)
                         {
                             IBlockState blockBelow = this.worldObj.getBlockState(hit.getBlockPos());
                             if (blockBelow.getBlock() == VenusBlocks.venusBlock && (blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||

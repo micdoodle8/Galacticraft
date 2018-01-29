@@ -35,8 +35,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -94,7 +94,7 @@ public class TickHandlerServer
     {
         for (GalacticraftPacketHandler packetHandler : packetHandlers)
         {
-            packetHandler.unload(event.world);
+            packetHandler.unload(event.getWorld());
         }
     }
 
@@ -297,7 +297,7 @@ public class TickHandlerServer
             if (TickHandlerServer.spaceRaceData == null)
             {
                 World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
                 {
@@ -327,7 +327,7 @@ public class TickHandlerServer
                 for (int i = 0; i < worlds.length; i++)
                 {
                     WorldServer world = worlds[i];
-                    ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
+                    ChunkProviderServer chunkProviderServer = world.getChunkProvider();
 
                     Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionID(world));
 
@@ -337,12 +337,12 @@ public class TickHandlerServer
 
                         if (chunkProviderServer != null)
                         {
-                            Iterator iterator = chunkProviderServer.loadedChunks.iterator();
+                            Iterator iterator = chunkProviderServer.getLoadedChunks().iterator();
 
                             while (iterator.hasNext())
                             {
                                 Chunk chunk = (Chunk) iterator.next();
-                                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
+                                long chunkKey = ChunkPos.asLong(chunk.xPosition, chunk.zPosition);
 
                                 List<Footprint> footprints = footprintMap.get(chunkKey);
 
@@ -368,7 +368,7 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, GCCoreUtil.getDimensionID(worlds[i]), new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), GCCoreUtil.getDimensionID(worlds[i]));
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, worlds[i].provider.getDimension(), new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimension());
                                 }
                             }
                         }
@@ -393,7 +393,7 @@ public class TickHandlerServer
 
                         if (GCCoreUtil.getDimensionID(world) == targetPoint.dim)
                         {
-                            long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
+                            long chunkKey = ChunkPos.asLong((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
                             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 
 
@@ -416,7 +416,7 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                    File baseFolder = new File(server.worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 
@@ -548,9 +548,9 @@ public class TickHandlerServer
                             BlockPos changePosition = change.getChangePosition();
                             Block block = world.getBlockState(changePosition).getBlock();
                             //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
-                            if (changePosition != null && (block instanceof BlockAir || block == Blocks.fire))
+                            if (changePosition != null && (block instanceof BlockAir || block == Blocks.FIRE))
                             {
-                                world.setBlockState(changePosition, change.getChangeID().getStateFromMeta(change.getChangeMeta()), change.getChangeUpdateFlag());
+                                world.setBlockState(changePosition, change.getChangeState(), change.getChangeUpdateFlag());
                             }
                         }
                     }

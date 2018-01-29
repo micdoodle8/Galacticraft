@@ -25,11 +25,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -80,7 +80,20 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.launchPhase = EnumLaunchPhase.UNIGNITED.ordinal();
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
-        this.renderDistanceWeight = 5.0D;
+    }
+
+    @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 5.0;
+        return distance < d0 * d0;
     }
 
     public abstract int getFuelTankCapacity();
@@ -144,10 +157,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
                 if (flag || this.shipDamage > 90 && !this.worldObj.isRemote)
                 {
-                    if (this.riddenByEntity != null)
-                    {
-                        this.riddenByEntity.mountEntity(null);
-                    }
+                    this.removePassengers();
 
 					if (flag)
 					{
@@ -229,10 +239,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 				}		
 			}
         }
-        
-        if (this.riddenByEntity != null)
+
+        for (Entity e : this.getPassengers())
         {
-            this.riddenByEntity.fallDistance = 0.0F;
+            e.fallDistance = 0.0F;
         }
 
         if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
@@ -258,25 +268,27 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        {
 	            this.setDead();
 	        }
-	        else
-	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
+	        else if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
 	        {
-	        	if (this.riddenByEntity instanceof EntityPlayerMP)
-	        	{
-                    GCPlayerStats stats = GCPlayerStats.get(this.riddenByEntity);
-	        		if (stats.isUsingPlanetSelectionGui())
-	        		{
-	        			this.setDead();
-	        		}
-	        	}
-	        	else
-	        		this.setDead();
-	        }
+                for (Entity e : this.getPassengers())
+                {
+                    if (e instanceof EntityPlayerMP)
+                    {
+                        GCPlayerStats stats = GCPlayerStats.get(e);
+                        if (stats.isUsingPlanetSelectionGui())
+                        {
+                            this.setDead();
+                        }
+                    }
+                    else
+                        this.setDead();
+                }
+            }
 
-	        if (this.timeSinceLaunch > 50 && this.onGround)
-	        {
-	            this.failRocket();
-	        }
+            if (this.timeSinceLaunch > 50 && this.onGround)
+            {
+                this.failRocket();
+            }
         }
         
         if (this.launchPhase == EnumLaunchPhase.UNIGNITED.ordinal())
@@ -298,9 +310,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.timeUntilLaunch--;
         }
 
-        AxisAlignedBB box = null;
-
-        box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
 
         final List<?> var15 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -310,7 +320,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             {
                 final Entity var17 = (Entity) var15.get(var52);
 
-                if (var17 != this.riddenByEntity)
+                if (this.getPassengers().contains(var17))
                 {
                     var17.applyEntityCollision(this);
                 }
@@ -368,10 +378,10 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         if (!this.worldObj.isRemote && this.ticks % 3 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimensionId());
+            GalacticraftCore.packetPipeline.sendToDimension(new PacketDynamic(this), this.worldObj.provider.getDimension());
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
-            // this.worldObj.provider.getDimensionId());
+            // this.worldObj.provider.getDimension());
         }
     }
 
@@ -432,9 +442,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     protected void failRocket()
     {
-        if (this.riddenByEntity != null)
+        for (Entity passenger : this.getPassengers())
         {
-            this.riddenByEntity.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
+            passenger.attackEntityFrom(DamageSourceGC.spaceshipCrash, (int) (4.0D * 20 + 1.0D));
         }
 
         if (!ConfigManagerCore.disableSpaceshipGrief)
@@ -447,7 +457,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         this.setRotation(yaw, pitch);
         if (this.syncAdjustFlag && this.worldObj.isBlockLoaded(new BlockPos(x, 255D, z)) && this.hasValidFuel())

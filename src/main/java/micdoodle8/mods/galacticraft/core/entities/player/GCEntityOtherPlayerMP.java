@@ -7,8 +7,8 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,7 +26,7 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
     @Override
     public ResourceLocation getLocationCape()
     {
-        if (this.ridingEntity instanceof EntitySpaceshipBase)
+        if (this.getRidingEntity() instanceof EntitySpaceshipBase)
         {
             // Don't draw any cape if riding a rocket (the cape renders outside the rocket model!)
             return null;

@@ -25,6 +25,12 @@ public class IngotCompressorShapedRecipeHandler implements IRecipeHandler<Shaped
         return RecipeCategories.INGOT_COMPRESSOR_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(ShapedRecipesGC recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull ShapedRecipesGC recipe)

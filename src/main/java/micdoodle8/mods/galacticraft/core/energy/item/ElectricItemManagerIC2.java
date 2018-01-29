@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.item;
 
+import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
-import ic2.api.item.ISpecialElectricItem;
 import micdoodle8.mods.galacticraft.api.item.IItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,9 +21,9 @@ public class ElectricItemManagerIC2 implements IElectricItemManager
         if (itemStack.getItem() instanceof IItemElectricBase)
         {
             IItemElectricBase item = (IItemElectricBase) itemStack.getItem();
-            if (amount > ((ISpecialElectricItem)item).getMaxCharge(itemStack))
+            if (amount > ((IElectricItem)item).getMaxCharge(itemStack))
             {
-                amount = ((ISpecialElectricItem)item).getMaxCharge(itemStack);
+                amount = ((IElectricItem)item).getMaxCharge(itemStack);
             }
             float energy = (float) amount * EnergyConfigHandler.IC2_RATIO;
             float rejectedElectricity = Math.max(item.getElectricityStored(itemStack) + energy - item.getMaxElectricityStored(itemStack), 0);
@@ -113,7 +113,7 @@ public class ElectricItemManagerIC2 implements IElectricItemManager
     {
         if (stack.getItem() instanceof IItemElectricBase)
         {
-            return ((ISpecialElectricItem) stack.getItem()).getMaxCharge(stack);
+            return ((IElectricItem) stack.getItem()).getMaxCharge(stack);
         }
         return 1;
     }
@@ -123,7 +123,7 @@ public class ElectricItemManagerIC2 implements IElectricItemManager
     {
         if (stack.getItem() instanceof IItemElectricBase)
         {
-            return ((ISpecialElectricItem) stack.getItem()).getTier(stack);
+            return ((IElectricItem) stack.getItem()).getTier(stack);
         }
 
         return 1;

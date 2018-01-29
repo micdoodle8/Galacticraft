@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
@@ -50,9 +50,9 @@ public abstract class StructureComponentMoon extends StructureComponent
         final int var10 = this.getYWithOffset(var4);
         final int var11 = this.getZWithOffset(var3, var5);
 
-        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.mob_spawner)
+        if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.MOB_SPAWNER)
         {
-            var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.mob_spawner.getDefaultState(), 2);
+            var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.MOB_SPAWNER.getDefaultState(), 2);
             var8 = (TileEntityMobSpawner) var1.getTileEntity(new BlockPos(var9, var10, var11));
 
             if (var8 != null)
@@ -87,7 +87,7 @@ public abstract class StructureComponentMoon extends StructureComponent
     @Override
     protected int getXWithOffset(int var1, int var2)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minX + var1;
@@ -115,7 +115,7 @@ public abstract class StructureComponentMoon extends StructureComponent
     @Override
     protected int getZWithOffset(int var1, int var2)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return this.boundingBox.minZ + var2;
@@ -136,13 +136,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getXWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode.getHorizontalIndex() < 0)
+        if (this.getCoordBaseMode().getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
+            switch ((this.getCoordBaseMode().getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minX + var1;
@@ -164,13 +164,13 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getZWithOffsetAsIfRotated(int var1, int var2, int var3)
     {
-        if (this.coordBaseMode.getHorizontalIndex() < 0)
+        if (this.getCoordBaseMode().getHorizontalIndex() < 0)
         {
             return var1;
         }
         else
         {
-            switch ((this.coordBaseMode.getHorizontalIndex() + var3) % 4)
+            switch ((this.getCoordBaseMode().getHorizontalIndex() + var3) % 4)
             {
             case 0:
                 return this.boundingBox.minZ + var2;
@@ -224,12 +224,12 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected void fillAirRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
     {
-        this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.air, 0, var9);
+        this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.AIR, 0, var9);
     }
 
     protected int getStairMeta(int var1)
     {
-        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
+        switch ((this.getCoordBaseMode().getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 0;
@@ -250,7 +250,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 
     protected int getLadderMeta(int var1)
     {
-        switch ((this.coordBaseMode.getHorizontalIndex() + var1) % 4)
+        switch ((this.getCoordBaseMode().getHorizontalIndex() + var1) % 4)
         {
         case 0:
             return 4;

@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -54,13 +55,13 @@ public class ContainerCargoLoader extends Container
     }
 
     @Override
-    public ItemStack slotClick(int slotId, int clickedButton, int mode, EntityPlayer playerIn)
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player)
     {
         if (this.locked && slotId > 0 && slotId < 15)
         {
             return null;
         }
-        return super.slotClick(slotId, clickedButton, mode, playerIn);
+        return super.slotClick(slotId, dragType, clickTypeIn, player);
     }
     
     @Override

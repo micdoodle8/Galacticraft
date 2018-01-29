@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -17,6 +18,8 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
@@ -30,11 +33,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IOxygenStorage, IOxygenReceiver
+public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory implements ISidedInventory, IDisableableMachine, IFluidHandler, IFluidHandlerWrapper, IOxygenStorage, IOxygenReceiver
 {
     private final int tankCapacity = 4000;
 
@@ -54,6 +59,31 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 120);
         this.setTierGC(2);
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            return true;
+
+        return EnergyUtil.checkMekGasHandler(capability);  
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+        {
+            return (T) new FluidHandlerWrapper(this, facing);
+        }
+
+        if (EnergyUtil.checkMekGasHandler(capability))
+        {
+            return (T) this;
+        }
+
+        return null;
     }
 
     @Override
@@ -197,7 +227,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("processTicks", this.processTicks);
@@ -216,6 +246,8 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         {
             nbt.setTag("gasTank2", this.liquidTank2.writeToNBT(new NBTTagCompound()));
         }
+
+        return nbt;
     }
 
     @Override
@@ -254,7 +286,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             case 0:
                 return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
-                return itemstack.getItem() == Items.water_bucket;
+                return itemstack.getItem() == Items.WATER_BUCKET;
             default:
                 return false;
             }
@@ -272,7 +304,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             case 0:
                 return ItemElectricBase.isElectricItemEmpty(itemstack);
             case 1:
-                return itemstack.getItem() == Items.bucket;
+                return itemstack.getItem() == Items.BUCKET;
             default:
                 return false;
             }
@@ -289,7 +321,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         case 0:
             return ItemElectricBase.isElectricItem(item);
         case 1:
-            return item == Items.bucket || item == Items.water_bucket;
+            return item == Items.BUCKET || item == Items.WATER_BUCKET;
         }
 
         return false;
@@ -728,7 +760,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
         return null;
     }

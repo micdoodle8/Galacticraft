@@ -24,6 +24,12 @@ public class IngotCompressorShapelessRecipeHandler implements IRecipeHandler<Sha
         return RecipeCategories.INGOT_COMPRESSOR_ID;
     }
 
+    @Override
+    public String getRecipeCategoryUid(ShapelessOreRecipeGC recipe)
+    {
+        return this.getRecipeCategoryUid();
+    }
+
     @Nonnull
     @Override
     public IRecipeWrapper getRecipeWrapper(@Nonnull ShapelessOreRecipeGC recipe)

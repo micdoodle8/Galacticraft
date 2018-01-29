@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -87,5 +88,11 @@ public class CircuitFabricatorRecipeCategory extends BlankRecipeCategory
             }
             itemstacks.setFromRecipe(5, circuitFabricatorRecipeWrapper.getOutputs());
         }
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
+    {
+        this.setRecipe(recipeLayout, recipeWrapper);
     }
 }

@@ -13,7 +13,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
@@ -33,6 +36,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicAstroMi
 import micdoodle8.mods.galacticraft.planets.asteroids.schematic.SchematicTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.*;
+import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
@@ -40,10 +44,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
@@ -53,24 +57,16 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.LanguageRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import java.io.File;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 public class AsteroidsModule implements IPlanetsModule
 {
     public static Planet planetAsteroids;
-    private File GCPlanetsSource;
 
     public static AsteroidsPlayerHandler playerHandler;
     public static Fluid fluidMethaneGas;
@@ -98,7 +94,6 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        GCPlanetsSource = event.getSourceFile();
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
@@ -194,45 +189,45 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), input));
 
         HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, null);
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.chest));
+        input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
         input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
-        input2.put(20, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
+        input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, null);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.chest));
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(20, new ItemStack(Blocks.CHEST));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.chest));
-        input2.put(20, new ItemStack(Blocks.chest));
-        input2.put(21, new ItemStack(Blocks.chest));
+        input2.put(19, new ItemStack(Blocks.CHEST));
+        input2.put(20, new ItemStack(Blocks.CHEST));
+        input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
 
         input = new HashMap<Integer, ItemStack>();
@@ -246,8 +241,8 @@ public class AsteroidsModule implements IPlanetsModule
         input.put(10, new ItemStack(AsteroidsItems.orionDrive));
         input.put(12, new ItemStack(AsteroidsItems.orionDrive));
         input.put(6, new ItemStack(GCItems.basicItem, 1, 14));
-        input.put(7, new ItemStack(Blocks.chest));
-        input.put(8, new ItemStack(Blocks.chest));
+        input.put(7, new ItemStack(Blocks.CHEST));
+        input.put(8, new ItemStack(Blocks.CHEST));
         input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
         input.put(14, new ItemStack(GCItems.flagPole));
         GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));
@@ -256,30 +251,14 @@ public class AsteroidsModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(AsteroidsItems.thermalPadding, 1, 1));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS, EnumExtendedInventorySlot.THERMAL_LEGGINGS, new ItemStack(AsteroidsItems.thermalPadding, 1, 2));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(AsteroidsItems.thermalPadding, 1, 3));
+
+        Biome.registerBiome(ConfigManagerCore.biomeIDbase + 2, GalacticraftPlanets.TEXTURE_PREFIX + BiomeAsteroids.asteroid.getBiomeName(), BiomeAsteroids.asteroid);
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        try {
-            ZipFile zf = new ZipFile(GCPlanetsSource);
-            final Pattern assetENUSLang = Pattern.compile("assets/(.*)/lang/(?:.+/|)([\\w_-]+).lang");
-            for (ZipEntry ze : Collections.list(zf.entries()))
-            {
-                if (!ze.getName().contains("galacticraftasteroids/lang")) continue;
-                Matcher matcher = assetENUSLang.matcher(ze.getName());
-                if (matcher.matches())
-                {
-                    String lang = matcher.group(2);
-                    LanguageRegistry.instance().injectLanguage(lang, StringTranslate.parseLangFile(zf.getInputStream(ze)));
-                    if ("en_US".equals(lang) && event.getSide() == Side.SERVER)
-                    {
-                        StringTranslate.inject(zf.getInputStream(ze));
-                    }
-                }
-            }
-            zf.close();
-        } catch (Exception e) {}
+        GCPlanetDimensions.ASTEROIDS = WorldUtil.getDimensionTypeById(ConfigManagerAsteroids.dimensionIDAsteroids);
     }
 
     @Override

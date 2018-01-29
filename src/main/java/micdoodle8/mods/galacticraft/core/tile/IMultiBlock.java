@@ -5,7 +5,7 @@ import java.util.List;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 

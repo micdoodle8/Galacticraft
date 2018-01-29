@@ -1,12 +1,14 @@
 package codechicken.nei;
 
+import codechicken.nei.util.NEIClientUtils;
+import codechicken.nei.widget.Button;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 
 import static codechicken.lib.gui.GuiDraw.drawString;
 import static codechicken.lib.gui.GuiDraw.getStringWidth;
-import static codechicken.nei.NEIClientUtils.translate;
+import static codechicken.nei.util.NEIClientUtils.translate;
 
 public abstract class SaveLoadButton extends Button {
     public SaveLoadButton(String s) {

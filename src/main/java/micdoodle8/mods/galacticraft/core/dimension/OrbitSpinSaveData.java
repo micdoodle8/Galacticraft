@@ -26,12 +26,14 @@ public class OrbitSpinSaveData extends WorldSavedData
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.dim != 0)
         {
             nbt.setTag("" + this.dim, this.datacompound);
         }
+
+        return nbt;
     }
 
     public static OrbitSpinSaveData initWorldData(World world)

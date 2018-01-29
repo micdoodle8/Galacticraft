@@ -1,6 +1,8 @@
 package codechicken.nei;
 
-import codechicken.core.featurehack.GameDataManipulator;
+
+import codechicken.nei.network.NEIClientPacketHandler;
+import codechicken.nei.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,8 +17,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -32,15 +35,15 @@ public class ItemMobSpawner extends ItemBlock {
     private static ItemMobSpawner instance;
 
     public static void register() {
-        GameDataManipulator.replaceItem(Block.getIdFromBlock(Blocks.mob_spawner), instance = new ItemMobSpawner());
+        //GameDataManipulator.replaceItemBlock(Blocks.MOB_SPAWNER, instance = new ItemMobSpawner());
     }
 
     public static void initRender() {
-        SpawnerRenderer.load(instance);
+        //SpawnerRenderer.load(instance);
     }
 
     public ItemMobSpawner() {
-        super(Blocks.mob_spawner);
+        super(Blocks.MOB_SPAWNER);
         setHasSubtypes(true);
     }
 
@@ -57,7 +60,7 @@ public class ItemMobSpawner extends ItemBlock {
             setDefaultTag(stack);
             String mobtype = IDtoNameMap.get(stack.getItemDamage());
             if (mobtype != null) {
-                NEICPH.sendMobSpawnerID(pos.getX(), pos.getY(), pos.getZ(), mobtype);
+                NEIClientPacketHandler.sendMobSpawnerID(pos.getX(), pos.getY(), pos.getZ(), mobtype);
                 tileentitymobspawner.getSpawnerBaseLogic().setEntityName(mobtype);
             }
         }
@@ -78,14 +81,14 @@ public class ItemMobSpawner extends ItemBlock {
         EntityLiving e = entityHashMap.get(ID);
         if (e == null) {
             World world = Minecraft.getMinecraft().theWorld;
-            Class<? extends Entity> clazz = EntityList.idToClassMapping.get(ID);
+            Class<? extends Entity> clazz = EntityList.ID_TO_CLASS.get(ID);
             try {
                 e = (EntityLiving) clazz.getConstructor(World.class).newInstance(world);
             } catch (Throwable t) {
                 if (clazz == null) {
-                    NEIClientConfig.logger.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
+                    LogHelper.error("Null class for entity (" + ID + ", " + IDtoNameMap.get(ID));
                 } else {
-                    NEIClientConfig.logger.error("Error creating instance of entity: " + clazz.getName(), t);
+                    LogHelper.errorError("Error creating instance of entity: " + clazz.getName(), t);
                 }
                 e = getEntity(idPig);
             }
@@ -105,8 +108,8 @@ public class ItemMobSpawner extends ItemBlock {
             return;
         }
         loaded = true;
-        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.classToStringMapping;
-        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.classToIDMapping;
+        HashMap<Class<? extends Entity>, String> classToStringMapping = (HashMap<Class<? extends Entity>, String>) EntityList.CLASS_TO_NAME;
+        HashMap<Class<? extends Entity>, Integer> classToIDMapping = (HashMap<Class<? extends Entity>, Integer>) EntityList.CLASS_TO_ID;
         for (Class<? extends Entity> entityClass : classToStringMapping.keySet()) {
             if (!EntityLiving.class.isAssignableFrom(entityClass)) {
                 continue;

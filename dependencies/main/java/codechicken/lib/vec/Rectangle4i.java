@@ -1,6 +1,7 @@
 package codechicken.lib.vec;
 
 public class Rectangle4i {
+
     public int x;
     public int y;
     public int w;
@@ -87,10 +88,7 @@ public class Rectangle4i {
     }
 
     public boolean intersects(Rectangle4i r) {
-        return r.x + r.w > x &&
-                r.x < x + w &&
-                r.y + r.h > y &&
-                r.y < y + h;
+        return r.x + r.w > x && r.x < x + w && r.y + r.h > y && r.y < y + h;
     }
 
     public int area() {

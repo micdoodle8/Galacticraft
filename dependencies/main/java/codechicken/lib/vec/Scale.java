@@ -9,6 +9,7 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 
 public class Scale extends Transformation {
+
     public Vector3 factor;
 
     public Scale(Vector3 factor) {
@@ -38,7 +39,7 @@ public class Scale extends Transformation {
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @SideOnly (Side.CLIENT)
     public void glApply() {
         GlStateManager.scale(factor.x, factor.y, factor.z);
     }

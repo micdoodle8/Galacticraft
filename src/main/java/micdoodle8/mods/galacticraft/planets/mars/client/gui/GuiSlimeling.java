@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
@@ -16,9 +15,11 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -127,7 +128,7 @@ public class GuiSlimeling extends GuiScreen
         }
         if (mouseX >= this.invX && mouseX < this.invX + this.invWidth && mouseY >= this.invY && mouseY < this.invY + this.invHeight)
         {
-            this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+            this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_SLIMELING_DATA, GCCoreUtil.getDimensionID(this.slimeling.worldObj), new Object[] { this.slimeling.getEntityId(), 6, "" }));
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -226,11 +227,8 @@ public class GuiSlimeling extends GuiScreen
         slimeling.rotationPitch = -((float) Math.atan(mouseY / 40.0F)) * 20.0F;
         slimeling.rotationYawHead = slimeling.rotationYaw;
         GlStateManager.translate(0.0F, (float) slimeling.getYOffset(), 0.0F);
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
-        rendermanager.setPlayerViewY(180.0F);
-        rendermanager.setRenderShadow(false);
-        rendermanager.renderEntityWithPosYaw(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        rendermanager.setRenderShadow(true);
+        FMLClientHandler.instance().getClient().getRenderManager().playerViewY = 180.0F;
+        FMLClientHandler.instance().getClient().getRenderManager().doRenderEntity(slimeling, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         slimeling.renderYawOffset = f2;
         slimeling.rotationYaw = f3;
         slimeling.rotationPitch = f4;

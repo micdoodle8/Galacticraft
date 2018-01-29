@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -57,7 +58,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 59, 20);
+        this.progressBar.draw(minecraft, 59, 19);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
             itemstacks.init(j, true, j % 3 * 18, j / 3 * 18);
         }
 
-        itemstacks.init(9, false, 119, 20);
+        itemstacks.init(9, false, 140 - 21, 46 - 26);
 
         if (recipeWrapper instanceof IngotCompressorShapedRecipeWrapper)
         {
@@ -102,5 +103,11 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
             }
             itemstacks.setFromRecipe(9, ingotCompressorRecipeWrapper.getOutputs());
         }
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
+    {
+        this.setRecipe(recipeLayout, recipeWrapper);
     }
 }

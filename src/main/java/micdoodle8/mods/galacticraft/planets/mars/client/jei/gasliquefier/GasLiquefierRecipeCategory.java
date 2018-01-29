@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.GCItems;
@@ -157,5 +158,11 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
 
             itemstacks.setFromRecipe(this.outputGas == 0 || this.outputGas == 3 ? 2 : 1, gasLiquefierRecipeWrapper.getOutputs());
         }
+    }
+
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
+    {
+        this.setRecipe(recipeLayout, recipeWrapper);
     }
 }

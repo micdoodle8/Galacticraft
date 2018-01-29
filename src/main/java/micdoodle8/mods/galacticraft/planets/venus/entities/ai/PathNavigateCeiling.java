@@ -3,13 +3,14 @@ package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class PathNavigateCeiling extends PathNavigate
@@ -31,13 +32,13 @@ public class PathNavigateCeiling extends PathNavigate
     @Override
     protected boolean canNavigate()
     {
-        return this.theEntity.onGround || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.ridingEntity instanceof EntityChicken;
+        return this.theEntity.onGround || this.theEntity.isRiding() && this.theEntity instanceof EntityZombie && this.theEntity.getRidingEntity() instanceof EntityChicken;
     }
 
     @Override
-    protected Vec3 getEntityPosition()
+    protected Vec3d getEntityPosition()
     {
-        return new Vec3(this.theEntity.posX, (double)this.getPathablePosY(), this.theEntity.posZ);
+        return new Vec3d(this.theEntity.posX, (double)this.getPathablePosY(), this.theEntity.posZ);
     }
 
     private int getPathablePosY()
@@ -46,7 +47,7 @@ public class PathNavigateCeiling extends PathNavigate
     }
 
     @Override
-    protected boolean isDirectPathBetweenPoints(Vec3 current, Vec3 target, int sizeX, int sizeY, int sizeZ)
+    protected boolean isDirectPathBetweenPoints(Vec3d current, Vec3d target, int sizeX, int sizeY, int sizeZ)
     {
         int i = MathHelper.floor_double(current.xCoord);
         int j = MathHelper.floor_double(current.zCoord);
@@ -124,7 +125,7 @@ public class PathNavigateCeiling extends PathNavigate
         }
     }
 
-    private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 currentPos, double distanceX, double distanceZ)
+    private boolean isSafeToStandAt(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3d currentPos, double distanceX, double distanceZ)
     {
         int i = x - sizeX / 2;
         int j = z - sizeZ / 2;
@@ -144,20 +145,20 @@ public class PathNavigateCeiling extends PathNavigate
 
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
-                        Block block = this.worldObj.getBlockState(new BlockPos(k, y + 1, l)).getBlock();
-                        Material material = block.getMaterial();
+                        IBlockState state = this.worldObj.getBlockState(new BlockPos(k, y + 1, l));
+                        Material material = state.getMaterial();
 
-                        if (material == Material.air)
+                        if (material == Material.AIR)
                         {
                             return false;
                         }
 
-                        if (material == Material.water && !this.theEntity.isInWater())
+                        if (material == Material.WATER && !this.theEntity.isInWater())
                         {
                             return false;
                         }
 
-                        if (material == Material.lava)
+                        if (material == Material.LAVA)
                         {
                             return false;
                         }
@@ -169,7 +170,7 @@ public class PathNavigateCeiling extends PathNavigate
         }
     }
 
-    private boolean isPositionClear(int minX, int minY, int minZ, int sizeX, int sizeY, int sizeZ, Vec3 currentPos, double distanceX, double distanceZ)
+    private boolean isPositionClear(int minX, int minY, int minZ, int sizeX, int sizeY, int sizeZ, Vec3d currentPos, double distanceX, double distanceZ)
     {
         for (BlockPos blockpos : BlockPos.getAllInBox(new BlockPos(minX, minY, minZ), new BlockPos(minX + sizeX - 1, minY + sizeY - 1, minZ + sizeZ - 1)))
         {

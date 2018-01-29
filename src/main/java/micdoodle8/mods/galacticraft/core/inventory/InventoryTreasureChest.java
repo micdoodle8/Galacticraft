@@ -3,42 +3,32 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class InventoryTreasureChest implements IInventory
 {
-    /**
-     * Name of the chest.
-     */
     private String name;
-    /**
-     * Inventory object corresponding to double chest upper part
-     */
     private IInventory upperChest;
-    /**
-     * Inventory object corresponding to double chest lower part
-     */
     private IInventory lowerChest;
-    private static final String __OBFID = "CL_00001507";
 
-    public InventoryTreasureChest(String p_i1559_1_, IInventory p_i1559_2_, IInventory p_i1559_3_)
+    public InventoryTreasureChest(String name, IInventory upper, IInventory lower)
     {
-        this.name = p_i1559_1_;
+        this.name = name;
 
-        if (p_i1559_2_ == null)
+        if (upper == null)
         {
-            p_i1559_2_ = p_i1559_3_;
+            upper = lower;
         }
 
-        if (p_i1559_3_ == null)
+        if (lower == null)
         {
-            p_i1559_3_ = p_i1559_2_;
+            lower = upper;
         }
 
-        this.upperChest = p_i1559_2_;
-        this.lowerChest = p_i1559_3_;
+        this.upperChest = upper;
+        this.lowerChest = lower;
     }
 
     @Override
@@ -155,8 +145,8 @@ public class InventoryTreasureChest implements IInventory
     }
 
     @Override
-    public IChatComponent getDisplayName()
+    public ITextComponent getDisplayName()
     {
-        return (IChatComponent) (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
     }
 }

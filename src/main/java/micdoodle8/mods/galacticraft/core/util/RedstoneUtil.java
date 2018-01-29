@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class RedstoneUtil
@@ -48,7 +48,7 @@ public class RedstoneUtil
     public static int getStrongPower(World w, BlockPos pos, EnumFacing side)
     {
         IBlockState bs = w.getBlockState(pos); 
-        return bs.getBlock().getStrongPower(w, pos, bs, side);
+        return bs.getBlock().getStrongPower(bs, w, pos, side);
     }
 
     public static int getStrongPower_NoChunkLoad(World w, BlockPos pos, EnumFacing side)
@@ -58,7 +58,7 @@ public class RedstoneUtil
             return 0;
         }
         IBlockState bs = w.getBlockState(pos); 
-        return bs.getBlock().getStrongPower(w, pos, bs, side);
+        return bs.getBlock().getStrongPower(bs, w, pos, side);
     }
 
     /**
@@ -113,7 +113,7 @@ public class RedstoneUtil
         {
             return 0;
         }
-        return block.shouldCheckWeakPower(w, pos, facing) ? getNeighbourPower_NoChunkLoad(w, pos, facing.getOpposite()) : block.getWeakPower(w, pos, bs, facing);
+        return block.shouldCheckWeakPower(bs, w, pos, facing) ? getNeighbourPower_NoChunkLoad(w, pos, facing.getOpposite()) : bs.getWeakPower(w, pos, facing);
     }
     
     /**
@@ -131,7 +131,7 @@ public class RedstoneUtil
         {
             sidePos = pos.add(0, -1, 0);
             bs = w.getBlockState(sidePos); 
-            i = bs.getBlock().getStrongPower(w, sidePos, bs, EnumFacing.DOWN);
+            i = bs.getBlock().getStrongPower(bs, w, sidePos, EnumFacing.DOWN);
             if (i >= 15)
             {
                 return i;
@@ -142,7 +142,7 @@ public class RedstoneUtil
         {
             sidePos = pos.add(0, 1, 0);
             bs = w.getBlockState(sidePos); 
-            p = bs.getBlock().getStrongPower(w, sidePos, bs, EnumFacing.UP);
+            p = bs.getBlock().getStrongPower(bs, w, sidePos, EnumFacing.UP);
             if (p >= 15)
             {
                 return p;
@@ -164,7 +164,7 @@ public class RedstoneUtil
             }
             
             bs = w.getBlockState(sidePos); 
-            p = bs.getBlock().getStrongPower(w, sidePos, bs, side);
+            p = bs.getBlock().getStrongPower(bs, w, sidePos, side);
             if (p >= 15)
             {
                 return p;

@@ -12,12 +12,12 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -54,7 +54,7 @@ public class SkyProviderOverworld extends IRenderHandler
     {
         GL11.glPushMatrix();
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldrenderer = tessellator.getBuffer();
         final Random rand = new Random(10842L);
         GL11.glNewList(this.starGLCallList, GL11.GL_COMPILE);
         this.renderStars(worldrenderer, rand);
@@ -82,7 +82,7 @@ public class SkyProviderOverworld extends IRenderHandler
         final byte byte2 = 5;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        VertexBuffer worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -169,7 +169,7 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
+        final Vec3d var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float i = (float) var2.xCoord * var21;
         float x = (float) var2.yCoord * var21;
         float var5 = (float) var2.zCoord * var21;
@@ -187,7 +187,7 @@ public class SkyProviderOverworld extends IRenderHandler
 
         GL11.glColor3f(i, x, var5);
         final Tessellator var23 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var23.getWorldRenderer();
+        VertexBuffer worldRenderer = var23.getBuffer();
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
         GL11.glColor3f(i, x, var5);
@@ -268,7 +268,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         float threshold;
-        Vec3 vec = TransformerHooks.getFogColorHook(this.minecraft.theWorld);
+        Vec3d vec = TransformerHooks.getFogColorHook(this.minecraft.theWorld);
         threshold = Math.max(0.1F, (float) vec.lengthVector() - 0.1F);
         float var20 = ((float) playerHeight - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
         var20 = MathHelper.sqrt_float(var20);
@@ -419,7 +419,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    private void renderStars(WorldRenderer worldRenderer, Random rand)
+    private void renderStars(VertexBuffer worldRenderer, Random rand)
     {
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 

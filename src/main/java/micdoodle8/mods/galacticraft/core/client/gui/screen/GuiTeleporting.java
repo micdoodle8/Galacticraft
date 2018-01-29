@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.network.play.client.C00PacketKeepAlive;
+import net.minecraft.client.network.NetHandlerPlayClient;
+import net.minecraft.network.play.client.CPacketKeepAlive;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GuiTeleporting extends GuiScreen
 {
@@ -41,10 +43,13 @@ public class GuiTeleporting extends GuiScreen
         if (mc.thePlayer != null && mc.thePlayer.worldObj != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
-            if (mc.thePlayer.worldObj.provider.getDimensionId() == this.targetDimensionID && (mc.thePlayer.worldObj.provider instanceof IZeroGDimension || (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) < 0.0))
+            if (mc.thePlayer.worldObj.provider.getDimension() == this.targetDimensionID)
             {
-                mc.displayGuiScreen(null);
-                TickHandlerClient.teleportingGui = null;
+                if ((mc.thePlayer.worldObj.provider instanceof IZeroGDimension || (mc.thePlayer.posY - mc.thePlayer.lastTickPosY) < 0.0))
+                {
+                    mc.displayGuiScreen(null);
+                    TickHandlerClient.teleportingGui = null;
+                }
             }
         }
 
@@ -53,7 +58,7 @@ public class GuiTeleporting extends GuiScreen
 
         if (this.progress % 20 == 0)
         {
-            this.mc.thePlayer.sendQueue.addToSendQueue(new C00PacketKeepAlive());
+            ((NetHandlerPlayClient)FMLCommonHandler.instance().getClientPlayHandler()).sendPacket(new CPacketKeepAlive());
         }
     }
 

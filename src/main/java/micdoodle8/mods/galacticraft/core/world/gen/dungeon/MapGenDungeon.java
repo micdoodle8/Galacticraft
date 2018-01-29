@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -81,7 +81,7 @@ public class MapGenDungeon extends MapGenStructure
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimensionId());
+        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimension());
         Random random = new Random();
         random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
