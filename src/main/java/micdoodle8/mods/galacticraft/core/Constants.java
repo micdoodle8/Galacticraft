@@ -15,7 +15,7 @@ public class Constants
     public static final String MCVERSION = "[1.8.9]";
     public static final String DEPENDENCIES_FORGE = "required-after:Forge@[11.15.1.1764,); required-after:FML@[8.0.99.99,); ";  //Keep the space at the end!
     public static final String DEPENDENCIES_MICCORE = "required-after:Micdoodlecore; ";  //Keep the space at the end!
-    public static final String DEPENDENCIES_MODS = "after:IC2; after:MekanismAPI|gas";
+    public static final String DEPENDENCIES_MODS = "after:IC2; after:TConstruct; after:Mantle; after:MekanismAPI|gas";
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
