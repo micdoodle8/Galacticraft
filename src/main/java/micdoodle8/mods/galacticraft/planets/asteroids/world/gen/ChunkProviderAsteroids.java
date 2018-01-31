@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
@@ -550,9 +551,10 @@ public class ChunkProviderAsteroids extends ChunkGeneratorOverworld
         final Chunk var4 = new Chunk(this.world, primer, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
 
+        final byte b = (byte) Biome.getIdForBiome( BiomeAdaptive.biomeDefault );
         for (int var6 = 0; var6 < var5.length; ++var6)
         {
-            var5[var6] = (byte) Biome.getIdForBiome(BiomeAsteroids.asteroid);
+            var5[var6] = b;
         }
 
 //        long time3 = System.nanoTime();

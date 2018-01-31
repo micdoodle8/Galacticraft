@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.world.biome.Biome;
@@ -13,7 +14,7 @@ public class BiomeOrbit extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     private BiomeOrbit(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, GalacticraftCore.satelliteSpaceStation);
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();

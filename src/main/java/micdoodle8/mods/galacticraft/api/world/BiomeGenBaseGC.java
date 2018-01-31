@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAmbientCreature;
@@ -19,6 +21,13 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
         super(var1);
         this.setRegistryName(var1.biomeName);
         GalacticraftCore.biomesList.add(this);
+    }
+
+    protected BiomeGenBaseGC(BiomeProperties properties, CelestialBody body)
+    {
+        super(properties);
+        this.setRegistryName(properties.biomeName);
+        BiomeAdaptive.register(body, this);
     }
 
     public void registerTypes()

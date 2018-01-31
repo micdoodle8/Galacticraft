@@ -12,14 +12,12 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -60,12 +58,6 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderMoon.class;
-    }
-
-    @Override
-    public Class<? extends BiomeProvider> getBiomeProviderClass()
-    {
-        return BiomeProviderMoon.class;
     }
 
     @Override

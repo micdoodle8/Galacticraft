@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.ChunkProviderSpace;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
@@ -39,7 +41,7 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     protected Biome[] getBiomesForGeneration()
     {
-        return new Biome[] { BiomeMars.marsFlat };
+        return new Biome[] { BiomeAdaptive.biomeDefault };
     }
 
     @Override

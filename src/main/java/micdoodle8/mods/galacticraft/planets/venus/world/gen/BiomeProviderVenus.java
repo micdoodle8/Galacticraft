@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
+import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.layer.GenLayerVenus;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -13,6 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -23,9 +27,11 @@ public class BiomeProviderVenus extends BiomeProvider
     private GenLayer zoomedBiomes;
     private BiomeCache biomeCache;
     private List<Biome> biomesToSpawnIn;
-
+    private CelestialBody body; 
+    
     protected BiomeProviderVenus()
     {
+        body = VenusModule.planetVenus;
         biomeCache = new BiomeCache(this);
         biomesToSpawnIn = new ArrayList<>();
 //        biomesToSpawnIn.add()
@@ -53,7 +59,8 @@ public class BiomeProviderVenus extends BiomeProvider
     @Override
     public Biome getBiome(BlockPos pos, Biome defaultBiome)
     {
-        return this.biomeCache.getBiome(pos.getX(), pos.getZ(), BiomeVenus.venusFlat);
+        BiomeAdaptive.setBodyMultiBiome(body);
+        return this.biomeCache.getBiome(pos.getX(), pos.getZ(), BiomeAdaptive.biomeDefault);
     }
 
     @Override
@@ -67,6 +74,7 @@ public class BiomeProviderVenus extends BiomeProvider
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int length, int width)
     {
         IntCache.resetIntCache();
+        BiomeAdaptive.setBodyMultiBiome(body);
 
         if (biomes == null || biomes.length < length * width)
         {
@@ -83,7 +91,7 @@ public class BiomeProviderVenus extends BiomeProvider
             }
             else
             {
-                biomes[i] = BiomeVenus.venusFlat;
+                biomes[i] = BiomeAdaptive.biomeDefault;
             }
         }
 
@@ -100,6 +108,7 @@ public class BiomeProviderVenus extends BiomeProvider
     public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag)
     {
         IntCache.resetIntCache();
+        BiomeAdaptive.setBodyMultiBiome(body);
 
         if (listToReuse == null || listToReuse.length < length * width)
         {
@@ -123,7 +132,7 @@ public class BiomeProviderVenus extends BiomeProvider
             }
             else
             {
-                listToReuse[i] = BiomeVenus.venusFlat;
+                listToReuse[i] = BiomeAdaptive.biomeDefault;
             }
         }
 

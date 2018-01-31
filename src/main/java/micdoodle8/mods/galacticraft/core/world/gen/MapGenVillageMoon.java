@@ -3,17 +3,19 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
 import net.minecraft.world.gen.structure.StructureStart;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class MapGenVillageMoon extends MapGenStructure
 {
-    public static List<Biome> villageSpawnBiomes = Arrays.asList(new Biome[] { BiomeMoon.moonFlat });
+    public static List<Biome> villageSpawnBiomes = Arrays.asList(new Biome[] { BiomeAdaptive.biomeDefault });
     private final int terrainType;
     private static boolean initialized;
 

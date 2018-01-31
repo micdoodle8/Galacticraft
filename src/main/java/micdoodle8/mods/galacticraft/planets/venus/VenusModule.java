@@ -66,6 +66,7 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
+        VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         MinecraftForge.EVENT_BUS.register(new EventHandlerVenus());
 
         if (!FluidRegistry.isFluidRegistered("sulphuricacid"))
@@ -118,7 +119,6 @@ public class VenusModule implements IPlanetsModule
         this.registerCreatures();
         this.registerOtherEntities();
 
-        VenusModule.planetVenus = (Planet) new Planet("venus").setParentSolarSystem(GalacticraftCore.solarSystemSol).setRingColorRGB(0.1F, 0.9F, 0.6F).setPhaseShift(2.0F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(0.75F, 0.75F)).setRelativeOrbitTime(0.61527929901423877327491785323111F);
         VenusModule.planetVenus.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/venus.png"));
         VenusModule.planetVenus.setDimensionInfo(ConfigManagerVenus.dimensionIDVenus, WorldProviderVenus.class).setTierRequired(3);
         VenusModule.planetVenus.setAtmosphere(new AtmosphereInfo(false, false, true, 5.0F, 0.3F, 54.0F));

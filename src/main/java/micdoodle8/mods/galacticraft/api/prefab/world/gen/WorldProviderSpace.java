@@ -75,7 +75,17 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     public abstract Class<? extends IChunkGenerator> getChunkProviderClass();
 
-    public abstract Class<? extends BiomeProvider> getBiomeProviderClass();
+    @Deprecated
+    /**
+     * If possible you should not override this so that BiomeProviderDefault is used (see Moon, Mars and Asteroids for examples)
+     * 
+     * But this can be used for planets where you have multiple biomes
+     * In that case if using BiomeAdaptive (see Venus for example) this will need a BiomeAdaptive.setBodyMultiBiome() call;
+     */
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
+    {
+        return null;
+    }
 
     @Override
     public void setDimension(int var1)
@@ -374,17 +384,18 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         return null;
     }
 
+    @Override
     protected void init()
     {
-        super.init();
+        this.hasSkyLight = true;
 
         if (this.getBiomeProviderClass() != null)
         {
             try
             {
-                Class<? extends BiomeProvider> chunkManagerClass = this.getBiomeProviderClass();
+                Class<? extends BiomeProvider> biomeProviderClass = this.getBiomeProviderClass();
 
-                Constructor<?>[] constructors = chunkManagerClass.getConstructors();
+                Constructor<?>[] constructors = biomeProviderClass.getConstructors();
                 for (Constructor<?> constr : constructors)
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
@@ -402,6 +413,20 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 e.printStackTrace();
             }
         }
+        else
+        {
+            this.biomeProvider = new BiomeProviderDefault(this.getCelestialBody());
+        }
+    }
+
+    @Override
+    public BiomeProvider getBiomeProvider()
+    {
+        if (this.getBiomeProviderClass() == null)
+        {
+            BiomeAdaptive.setBody(this.getCelestialBody());
+        }
+        return biomeProvider;
     }
 
     @Override

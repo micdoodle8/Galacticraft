@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
@@ -13,7 +14,7 @@ public class BiomeAsteroids extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     private BiomeAsteroids(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, AsteroidsModule.planetAsteroids);
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();

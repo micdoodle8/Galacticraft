@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockFalling;
@@ -34,10 +35,11 @@ public class ChunkProviderOrbit extends ChunkGeneratorOverworld
 
         final Chunk var4 = new Chunk(this.world, chunkprimer, par1, par2);
 
+        final byte b = (byte) Biome.getIdForBiome( BiomeAdaptive.biomeDefault );
         final byte[] biomesArray = var4.getBiomeArray();
         for (int i = 0; i < biomesArray.length; ++i)
         {
-            biomesArray[i] = (byte) Biome.getIdForBiome(BiomeOrbit.space);
+            biomesArray[i] = b;
         }
 
 

@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
@@ -43,7 +44,7 @@ public class ChunkProviderMoon extends ChunkGeneratorOverworld
 
     private final MapGenDungeon dungeonGeneratorMoon = new MapGenDungeon(new DungeonConfiguration(GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class));
 
-    private Biome[] biomesForGeneration = { BiomeMoon.moonFlat };
+    private Biome[] biomesForGeneration = { BiomeAdaptive.biomeDefault };
 
     private final MapGenBaseMeta caveGenerator = new MapGenCavesMoon();
 

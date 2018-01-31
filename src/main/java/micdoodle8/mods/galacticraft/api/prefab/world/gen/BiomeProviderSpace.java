@@ -63,8 +63,6 @@ public abstract class BiomeProviderSpace extends BiomeProvider
         return par1ArrayOfBiome;
     }
 
-
-
     @Override
     public Biome[] getBiomes(Biome[] par1ArrayOfBiome, int par2, int par3, int par4, int par5)
     {

@@ -13,14 +13,12 @@ import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.RoomTreasureMars;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,12 +57,6 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderMars.class;
-    }
-
-    @Override
-    public Class<? extends BiomeProvider> getBiomeProviderClass()
-    {
-        return BiomeProviderMars.class;
     }
 
     @Override
