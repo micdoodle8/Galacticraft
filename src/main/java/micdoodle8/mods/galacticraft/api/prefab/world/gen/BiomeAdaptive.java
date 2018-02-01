@@ -1,9 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import net.minecraft.block.BlockFlower;
@@ -27,8 +25,8 @@ public class BiomeAdaptive extends BiomeGenBaseGC
 {
     public static final BiomeAdaptive biomeDefault = new BiomeAdaptive();
     public static List<BiomeAdaptive> biomeList = new LinkedList<>(); 
-    private Map<CelestialBody, BiomeGenBaseGC> map = new HashMap<>();
     private Biome biomeTrue;
+    private final int index;
     
     static
     {
@@ -38,11 +36,13 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     public BiomeAdaptive()
     {
         super(new BiomeProperties("Outer Space").setRainfall(0.0F));
+        this.index = 0;
     }
 
     public BiomeAdaptive(int i)
     {
         super(new BiomeProperties("Outer Space " + i).setRainfall(0.0F));
+        this.index = i;
     }
 
     @Override
@@ -51,37 +51,15 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.SPOOKY);
     }
 
-    public static void register(CelestialBody body, BiomeGenBaseGC biome)
+    public static void register(int newIndex, BiomeGenBaseGC biome)
     {
-        assert(body != null);
-
-        for (BiomeAdaptive b : biomeList)
-        {
-            if (b.registerAndTest(body, biome))
-                return;
-        }
-        
-        BiomeAdaptive biomeNew = new BiomeAdaptive(biomeList.size()); 
-        biomeList.add(biomeNew);
-        biomeNew.registerAndTest(body, biome);
-    }
-    
-    /**
-     * @param body
-     * @param biome
-     * @return false if this biome is already registered, true if success
-     */
-    public boolean registerAndTest(CelestialBody body, BiomeGenBaseGC biome)
-    {
-        if (map.containsKey(body))
-            return false;
-        map.put(body, biome);
-        return true;
+        if (newIndex >= biomeList.size())
+            biomeList.add(new BiomeAdaptive(newIndex));
     }
     
     public static BiomeGenBaseGC getDefaultBiomeFor(CelestialBody body)
     {
-        return biomeDefault.map.get(body);
+        return body.biomesToAdapt[0];
     }
 
     public static void setBody(CelestialBody body)
@@ -111,12 +89,12 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     
     /**
      * @param body
-     * @return true if none found
+     * @return true if end of list
      */
     protected boolean setBodyInstance(CelestialBody body)
     {
-        biomeTrue = map.get(body);
-        return biomeTrue == null;
+        this.biomeTrue = body.biomesToAdapt[this.index];
+        return this.index == body.biomesToAdapt.length - 1;
     }
 
     public static List<Biome> getBiomesListFor(CelestialBody body)
@@ -124,14 +102,12 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         List<Biome> result = new LinkedList<>();
         for (BiomeAdaptive b : biomeList)
         {
-            if (b.map.get(body) != null)
-            {
-                result.add(b);
-            }
-            else
+            if (result.size() >= body.biomesToAdapt.length)
             {
                 break;
             }
+            
+            result.add(b);
         }
         return result;
     }
@@ -219,7 +195,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (worldIn.provider instanceof IGalacticraftWorldProvider)
         {
-            biomeTrue = map.get(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
         }
         else
         {
@@ -233,7 +209,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (worldIn.provider instanceof IGalacticraftWorldProvider)
         {
-            biomeTrue = map.get(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
         }
         else
         {
@@ -254,7 +230,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (worldIn.provider instanceof IGalacticraftWorldProvider)
         {
-            biomeTrue = map.get(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
         }
         else
         {
@@ -374,7 +350,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            biomeTrue = map.get(((IGalacticraftWorldProvider)world.provider).getCelestialBody());
+            this.setBodyInstance(((IGalacticraftWorldProvider)world.provider).getCelestialBody());
         }
         else
         {

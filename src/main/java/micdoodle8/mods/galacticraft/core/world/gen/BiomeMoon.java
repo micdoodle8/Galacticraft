@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.world.biome.Biome;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.world.biome.BiomeDecorator;
 
 public class BiomeMoon extends BiomeGenBaseGC
@@ -11,7 +10,7 @@ public class BiomeMoon extends BiomeGenBaseGC
 
     BiomeMoon(BiomeProperties properties)
     {
-        super(properties, GalacticraftCore.moonMoon);
+        super(properties, true);
     }
     
     @Override

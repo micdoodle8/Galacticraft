@@ -181,8 +181,8 @@ public class GalacticraftCore
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
         Biome biomeAdaptivePreInit = BiomeAdaptive.biomeDefault;
-        Biome biomeOrbitPreInit = BiomeOrbit.space;
-        Biome biomeMoonPreInit = BiomeMoon.moonFlat;
+        GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
+        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
     }
 
     @EventHandler
@@ -213,7 +213,6 @@ public class GalacticraftCore
         GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class).setTierRequired(1);
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
         GalacticraftCore.moonMoon.setAtmosphere(new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 0.0F));
-        GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));

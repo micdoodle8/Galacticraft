@@ -113,8 +113,9 @@ public class MarsModule implements IPlanetsModule
         }
 
         MarsBlocks.initBlocks();
-
         MarsItems.initItems();
+
+        MarsModule.planetMars.setBiomeInfo(BiomeMars.marsFlat);
     }
 
     @Override
@@ -135,7 +136,6 @@ public class MarsModule implements IPlanetsModule
         MarsModule.planetMars.setDimensionInfo(ConfigManagerMars.dimensionIDMars, WorldProviderMars.class).setTierRequired(2);
         MarsModule.planetMars.setAtmosphere(new AtmosphereInfo(false, false, false, -1.0F, 0.3F, 0.1F));
         MarsModule.planetMars.atmosphereComponent(EnumAtmosphericGas.CO2).atmosphereComponent(EnumAtmosphericGas.ARGON).atmosphereComponent(EnumAtmosphericGas.NITROGEN);
-        MarsModule.planetMars.setBiomeInfo(BiomeMars.marsFlat);
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedZombie.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedSpider.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));

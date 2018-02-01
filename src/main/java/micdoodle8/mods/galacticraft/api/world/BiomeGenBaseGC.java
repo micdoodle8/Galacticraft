@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
 
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAmbientCreature;
@@ -16,20 +14,27 @@ import net.minecraft.world.biome.Biome;
  */
 public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
 {
+    public final boolean isAdaptiveBiome;
+    
     protected BiomeGenBaseGC(BiomeProperties var1)
     {
         super(var1);
         this.setRegistryName(var1.biomeName);
         GalacticraftCore.biomesList.add(this);
+        this.isAdaptiveBiome = false;
     }
 
-    protected BiomeGenBaseGC(BiomeProperties properties, CelestialBody body)
+    protected BiomeGenBaseGC(BiomeProperties properties, boolean adaptive)
     {
         super(properties);
         this.setRegistryName(properties.biomeName);
-        BiomeAdaptive.register(body, this);
+        this.isAdaptiveBiome = adaptive;
     }
 
+    /**
+     * Currently unused if this is an adaptive biome - sorry, Forge needs biomes to be registered
+     * with Forge before they can be entered in the BiomeDictionary.
+     */
     public void registerTypes()
     {
     }

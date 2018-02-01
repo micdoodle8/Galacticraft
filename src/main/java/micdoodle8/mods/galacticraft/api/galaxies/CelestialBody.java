@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
@@ -38,6 +40,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
     protected LinkedList<Biome> biomeInfo;
+    public BiomeGenBaseGC[] biomesToAdapt;
     protected LinkedList<SpawnListEntry> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
@@ -326,13 +329,29 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         this.dimensionSuffix = dimensionSuffix;
     }
 
-    public void setBiomeInfo(Biome ...  biome)
+    public void setBiomeInfo(Biome ...  biomes)
     {
         if (this.biomeInfo == null)
         {
             this.biomeInfo = new LinkedList<Biome>();
         }
-        this.biomeInfo.addAll(Arrays.asList(biome));
+        this.biomeInfo.addAll(Arrays.asList(biomes));
+        LinkedList<BiomeGenBaseGC> adaptiveBiomes = new LinkedList<>();
+        int index = 0;
+        for (Biome b : biomes)
+        {
+            if (b instanceof BiomeGenBaseGC && ((BiomeGenBaseGC)b).isAdaptiveBiome)
+            {
+                BiomeAdaptive.register(index++, (BiomeGenBaseGC) b);
+                adaptiveBiomes.add((BiomeGenBaseGC) b);
+            }
+        }
+        this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGenBaseGC[adaptiveBiomes.size()]);
+    }
+
+    public List<Biome> getBiomes()
+    {
+        return this.biomeInfo;
     }
 
     public void addMobInfo(SpawnListEntry entry)

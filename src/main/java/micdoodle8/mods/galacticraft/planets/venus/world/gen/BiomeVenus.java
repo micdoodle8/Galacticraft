@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
-import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,7 +22,7 @@ public class BiomeVenus extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     BiomeVenus(BiomeProperties properties)
     {
-        super(properties, VenusModule.planetVenus);
+        super(properties, true);
     }
 
     @Override
