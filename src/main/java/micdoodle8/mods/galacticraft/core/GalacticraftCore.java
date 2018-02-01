@@ -5,7 +5,6 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -180,7 +179,6 @@ public class GalacticraftCore
         GCFluids.registerFluids();
 
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
-        Biome biomeAdaptivePreInit = BiomeAdaptive.biomeDefault;
         GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
         GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
     }

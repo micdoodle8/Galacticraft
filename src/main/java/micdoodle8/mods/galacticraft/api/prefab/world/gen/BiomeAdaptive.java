@@ -23,38 +23,39 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 
 public class BiomeAdaptive extends BiomeGenBaseGC
 {
-    public static final BiomeAdaptive biomeDefault = new BiomeAdaptive();
+    public static BiomeAdaptive biomeDefault;
     public static List<BiomeAdaptive> biomeList = new LinkedList<>(); 
     private Biome biomeTrue;
     private final int index;
     
-    static
+    public BiomeAdaptive(int i, Biome biomeInitial)
     {
-        biomeList.add(biomeDefault);
-    }
-    
-    public BiomeAdaptive()
-    {
-        super(new BiomeProperties("Outer Space").setRainfall(0.0F));
-        this.index = 0;
-    }
-
-    public BiomeAdaptive(int i)
-    {
-        super(new BiomeProperties("Outer Space " + i).setRainfall(0.0F));
+        super(new BiomeProperties("Outer Space" + (i == 0 ? "" : " "+ i)).setRainfall(0.0F));
         this.index = i;
+        this.biomeTrue = biomeInitial;
+        if (index == 0)
+        {
+            biomeDefault = this;
+        }
     }
 
     @Override
     public void registerTypes()
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.SPOOKY);
+        if (this.biomeTrue instanceof BiomeGenBaseGC)
+        {   
+            ((BiomeGenBaseGC) this.biomeTrue).registerTypes();
+        }
+        else
+        {
+            BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.SPOOKY);
+        }
     }
 
     public static void register(int newIndex, BiomeGenBaseGC biome)
     {
         if (newIndex >= biomeList.size())
-            biomeList.add(new BiomeAdaptive(newIndex));
+            biomeList.add(new BiomeAdaptive(newIndex, biome));
     }
     
     public static BiomeGenBaseGC getDefaultBiomeFor(CelestialBody body)

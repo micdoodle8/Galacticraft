@@ -25,7 +25,7 @@ public class BiomeOrbit extends BiomeGenBaseGC
     @Override
     public void registerTypes()
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.SPOOKY);
     }
 
     @Override
