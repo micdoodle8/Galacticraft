@@ -24,9 +24,10 @@ public class BiomeAsteroids extends BiomeGenBaseGC
     }
 
     @Override
-    public void registerTypes()
+    public void registerTypes(Biome b)
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
+        //Currently unused for Asteroids due to adaptive biomes system
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPOOKY);
     }
 
     public void resetMonsterListByMode(boolean challengeMode)

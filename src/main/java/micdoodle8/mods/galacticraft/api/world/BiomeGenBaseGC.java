@@ -32,10 +32,12 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
     }
 
     /**
-     * Currently unused if this is an adaptive biome - sorry, Forge needs biomes to be registered
-     * with Forge before they can be entered in the BiomeDictionary.
+     * Override this in your biomes
+     * <br>
+     * (Note: if adaptive biomes, only the FIRST to register the adaptive biome will have its
+     * types registered in the BiomeDictionary - sorry, that's a Forge limitation.)
      */
-    public void registerTypes()
+    public void registerTypes(Biome registering)
     {
     }
     

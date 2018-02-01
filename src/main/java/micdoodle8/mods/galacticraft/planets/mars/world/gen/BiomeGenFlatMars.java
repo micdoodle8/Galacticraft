@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeGenFlatMars extends BiomeMars
@@ -9,8 +10,9 @@ public class BiomeGenFlatMars extends BiomeMars
         super(properties);
     }
     
-    public void registerTypes()
+    @Override
+    public void registerTypes(Biome b)
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
     }
 }

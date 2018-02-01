@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
 public class BiomeFlatMoon extends BiomeMoon
@@ -9,8 +10,8 @@ public class BiomeFlatMoon extends BiomeMoon
         super(properties);
     }
 
-    public void registerTypes()
+    public void registerTypes(Biome b)
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
     }
 }

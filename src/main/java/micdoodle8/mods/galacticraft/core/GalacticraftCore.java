@@ -697,7 +697,7 @@ public class GalacticraftCore
                 event.getRegistry().register(biome);
                 if (!ConfigManagerCore.disableBiomeTypeRegistrations)
                 {
-                    biome.registerTypes();
+                    biome.registerTypes(biome);
                 }
             }
         }

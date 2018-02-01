@@ -40,11 +40,11 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     }
 
     @Override
-    public void registerTypes()
+    public void registerTypes(Biome b)
     {
         if (this.biomeTrue instanceof BiomeGenBaseGC)
         {   
-            ((BiomeGenBaseGC) this.biomeTrue).registerTypes();
+            ((BiomeGenBaseGC) this.biomeTrue).registerTypes(this);
         }
         else
         {
