@@ -33,6 +33,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         super(new BiomeProperties("Outer Space" + (i == 0 ? "" : " "+ i)).setRainfall(0.0F));
         this.index = i;
         this.biomeTrue = biomeInitial;
+        this.decorator = this.createBiomeDecorator();
         if (index == 0)
         {
             biomeDefault = this;
