@@ -40,6 +40,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
     protected LinkedList<Biome> biomeInfo;
+    public LinkedList<Biome> biomesToGenerate;
     public BiomeGenBaseGC[] biomesToAdapt;
     protected LinkedList<SpawnListEntry> mobInfo;
 
@@ -331,19 +332,21 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public void setBiomeInfo(Biome ...  biomes)
     {
-        if (this.biomeInfo == null)
-        {
-            this.biomeInfo = new LinkedList<Biome>();
-        }
-        this.biomeInfo.addAll(Arrays.asList(biomes));
+        this.biomeInfo = new LinkedList<Biome>();
+        this.biomesToGenerate = new LinkedList<Biome>();
         LinkedList<BiomeGenBaseGC> adaptiveBiomes = new LinkedList<>();
         int index = 0;
         for (Biome b : biomes)
         {
+            this.biomeInfo.add(b);
             if (b instanceof BiomeGenBaseGC && ((BiomeGenBaseGC)b).isAdaptiveBiome)
             {
-                BiomeAdaptive.register(index++, (BiomeGenBaseGC) b);
+                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGenBaseGC) b));
                 adaptiveBiomes.add((BiomeGenBaseGC) b);
+            }
+            else
+            {
+                this.biomesToGenerate.add(b);
             }
         }
         this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGenBaseGC[adaptiveBiomes.size()]);

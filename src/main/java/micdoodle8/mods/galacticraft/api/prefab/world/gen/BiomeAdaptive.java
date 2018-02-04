@@ -53,10 +53,15 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
     }
 
-    public static void register(int newIndex, BiomeGenBaseGC biome)
+    public static BiomeGenBaseGC register(int index, BiomeGenBaseGC biome)
     {
-        if (newIndex >= biomeList.size())
-            biomeList.add(new BiomeAdaptive(newIndex, biome));
+        if (index >= biomeList.size())
+        {
+            BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome); 
+            biomeList.add(newAdaptive);
+            return newAdaptive;
+        }
+        return biomeList.get(index);
     }
     
     public static BiomeGenBaseGC getDefaultBiomeFor(CelestialBody body)
