@@ -489,7 +489,9 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 2), new Object[] { "X X", "XYX", "XZX", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 3), new Object[] { "   ", "XYX", " Z ", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.panelLighting, 1, 4), new Object[] { " X ", "XY ", " Z ", 'X', Blocks.glass_pane, 'Y', GCBlocks.glowstoneTorch, 'Z', "compressedSteel" });
-        
+
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.platform, 4, 0), new Object[] { "PAP", "BXB", "PAP", 'X', "waferBasic", 'A', "dustGlowstone", 'B', "compressedSteel", 'P', Blocks.piston });
+
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.machineBase3, 1, BlockMachine3.PAINTER_METADATA), new Object[] { "ABC", "DEF", "GHI", 'A', "dyeRed", 'B', "dyeMagenta", 'C', "dyeBlue", 'D', "dyeOrange", 'E', "compressedSteel", 'F', "dyeCyan", 'G', "dyeYellow", 'H', "dyeLime", 'I', "dyeGreen" });
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCBlocks.crafting, 1), new Object[] { Blocks.crafting_table, "compressedIron" });
 

@@ -123,6 +123,7 @@ public class PacketSimple extends PacketBase implements Packet
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
+        S_NOCLIP_PLAYER(Side.SERVER, Boolean.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
         S_REQUEST_MACHINE_DATA(Side.SERVER, BlockPos.class),
@@ -1233,6 +1234,17 @@ public class PacketSimple extends PacketBase implements Packet
             if (player.ridingEntity != null && player.ridingEntity instanceof IControllableEntity)
             {
                 ((IControllableEntity) player.ridingEntity).pressKey((Integer) this.data.get(0));
+            }
+            break;
+        case S_NOCLIP_PLAYER:
+            boolean noClip = (Boolean) this.data.get(0);
+            if (player instanceof GCEntityPlayerMP)
+            {
+                ((GCEntityPlayerMP)player).setNoClip(noClip);
+                if (noClip == false)
+                {
+                    player.fallDistance = 0.0F;
+                }
             }
             break;
         case S_REQUEST_DATA:
