@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
@@ -16,6 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 public class BlockSulphuricAcid extends BlockFluidClassic
 {
     public BlockSulphuricAcid(String assetName)
@@ -25,6 +29,13 @@ public class BlockSulphuricAcid extends BlockFluidClassic
         this.setLightLevel(0.1F);
         this.needsRandomTick = true;
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    @Nullable
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, IBlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
+    {
+        return true;
     }
 
     @Override
