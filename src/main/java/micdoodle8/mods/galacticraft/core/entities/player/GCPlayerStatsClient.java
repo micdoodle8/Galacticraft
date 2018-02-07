@@ -149,7 +149,7 @@ public abstract class GCPlayerStatsClient
     
     public abstract float getDungeonDirection();
 
-    public abstract void startPlatformAscent(TileEntityPlatform noCollide, int target);
+    public abstract void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, int target);
 
     public abstract void finishPlatformAscent();
 

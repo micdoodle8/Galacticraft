@@ -36,6 +36,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
 
     public boolean platformControlled;
     private TileEntityPlatform platformTarget;
+    private TileEntityPlatform platformMoving;
     private int platformTargetY;
     private double platformVelocityTarget;
     private double platformVelocityCurrent;
@@ -632,10 +633,11 @@ public class StatsClientCapability extends GCPlayerStatsClient
     }
     
     @Override
-    public void startPlatformAscent(TileEntityPlatform noCollide, int target)
+    public void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, int target)
     {
         this.platformControlled = true;
         this.platformTarget = noCollide;
+        this.platformMoving = moving;
         noCollide.markNoCollide(0, true);
         this.platformTargetY = target;
         this.platformVelocityCurrent = 0D;
@@ -652,13 +654,15 @@ public class StatsClientCapability extends GCPlayerStatsClient
     @Override
     public double getPlatformVelocity(double posY)
     {
-        double delta = this.platformTargetY + BlockPlatform.HEIGHT - posY + 0.05D;
-        if (Math.abs(delta) < 0.05D)
+        double delta = this.platformTargetY + BlockPlatform.HEIGHT - posY + 0.03D;
+        if (Math.abs(delta) < 0.04D)
         {
             this.platformVelocityCurrent = 0D;
             this.platformVelocityTarget = 0D;
             this.platformTarget.markNoCollide(0, false);
             this.platformControlled = false;
+            this.platformTarget.stopMoving();
+            this.platformMoving.stopMoving();
             if (!this.platformPacketSent)
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
         }
@@ -666,7 +670,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
         {
             if (delta > 0D)
             {
-                this.platformVelocityTarget = (delta < 1.2D + 2 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? 0.045D : 0.4D;
+                this.platformVelocityTarget = (delta < 1.0D + 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? 0.08D : 0.45D;
                 if (delta < 0.6D && !this.platformPacketSent)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
@@ -675,7 +679,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
             }
             else if (delta < 0D)
             {
-                this.platformVelocityTarget = (delta > -1.2D - 2 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? -0.045D : -0.4D;
+                this.platformVelocityTarget = (delta > -1.0D - 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? -0.08D : -0.45D;
                 if (delta > -1.0D && !this.platformPacketSent)
                 {
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
@@ -684,7 +688,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
             }
             if (this.platformVelocityCurrent < this.platformVelocityTarget)
             {
-                this.platformVelocityCurrent += 0.03D;
+                this.platformVelocityCurrent += 0.036D;
                 if (this.platformVelocityCurrent > this.platformVelocityTarget)
                 {
                     this.platformVelocityCurrent = this.platformVelocityTarget;
@@ -692,7 +696,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
             }
             else if (this.platformVelocityCurrent > this.platformVelocityTarget)
             {
-                this.platformVelocityCurrent -= 0.03D;
+                this.platformVelocityCurrent -= 0.036D;
                 if (this.platformVelocityCurrent < this.platformVelocityTarget)
                 {
                     this.platformVelocityCurrent = this.platformVelocityTarget;

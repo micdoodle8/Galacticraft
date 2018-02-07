@@ -428,7 +428,7 @@ public class GCBlocks
         registerBlock(GCBlocks.concealedRepeater_Powered, ItemBlockGC.class);
         registerBlock(GCBlocks.concealedRepeater_Unpowered, ItemBlockGC.class);
         registerBlock(GCBlocks.concealedDetector, ItemBlockCreativeGC.class);
-        registerBlock(GCBlocks.platform, ItemBlockGC.class);
+        registerBlock(GCBlocks.platform, ItemBlockDesc.class);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));

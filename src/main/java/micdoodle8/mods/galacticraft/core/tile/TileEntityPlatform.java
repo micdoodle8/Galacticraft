@@ -32,9 +32,11 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private int corner = 0;
     private AxisAlignedBB detection = null;
     private boolean noCollide;
+    private boolean moving;
     private boolean lightOn = false;
     private int colorState = 0;   //0 = green  1 = red
     private int colorTicks = 0;
+    private AxisAlignedBB renderAABB;
     
     @Override
     public void update()
@@ -86,19 +88,19 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 //Scan area for player entities and light up
                 if (this.detection == null)
                 {
-                    this.detection = AxisAlignedBB.fromBounds(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.55D, this.getPos().getZ() + 1.1D);
+                    this.detection = AxisAlignedBB.fromBounds(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
                 }
                 final List<Entity> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, detection);
 
                 if (list.size() > 0)
                 {
-                    //Some particle effects for now (in future will light up the platform)
+                    // Light up the platform
                     this.lightOn = true;
 
-                    //If one is this player
+                    // If this player is within the box
                     EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
                     GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-                    if (list.contains(p) && p instanceof GCEntityClientPlayerMP && !stats.getPlatformControlled())
+                    if (list.contains(p) && p instanceof GCEntityClientPlayerMP && !stats.getPlatformControlled() && p.ridingEntity == null)
                     {
                         //TODO: PlayerAPI version of this
                         if (p.movementInput.sneak)
@@ -111,7 +113,13 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                             }
                             else if (canDescend > 0)
                             {
-                                stats.startPlatformAscent(this, this.pos.getY() - canDescend);
+                                TileEntity te = this.worldObj.getTileEntity(this.pos.down(canDescend));
+                                if (te instanceof TileEntityPlatform)
+                                {
+                                    stats.startPlatformAscent(this, (TileEntityPlatform) te, this.pos.getY() - canDescend);
+                                    this.moving = true;
+                                    ((TileEntityPlatform) te).moving = true;
+                                }
                             }
                         }
                         else if (p.movementInput.jump)
@@ -127,7 +135,10 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                                 TileEntity te = this.worldObj.getTileEntity(this.pos.up(canAscend));
                                 if (te instanceof TileEntityPlatform)
                                 {
-                                    stats.startPlatformAscent((TileEntityPlatform) te, this.pos.getY() + canAscend);
+                                    p.motionY = 0D;
+                                    stats.startPlatformAscent((TileEntityPlatform) te, this, this.pos.getY() + canAscend);
+                                    this.moving = true;
+                                    ((TileEntityPlatform) te).moving = true;
                                 }
                             }
                         }
@@ -312,5 +323,38 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     public int lightColor()
     {
         return this.colorState;
+    }
+    
+    public boolean isMoving()
+    {
+        return this.moving;
+    }
+
+    public void stopMoving()
+    {
+        this.moving = false;
+    }
+
+    public float getYOffset(float partialTicks)
+    {
+        if (this.moving)
+        {
+            EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+            float playerY = (float)(p.lastTickPosY + (p.posY - p.lastTickPosY) * (double)partialTicks);
+            return (playerY - this.pos.getY() - BlockPlatform.HEIGHT);
+        }
+        else
+            return 0.0F;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getRenderBoundingBox()
+    {
+        if (this.renderAABB == null)
+        {
+            this.renderAABB = new AxisAlignedBB(pos.add(-1, -18, -1), pos.add(1, 18, 1));
+        }
+        return this.renderAABB;
     }
 }
