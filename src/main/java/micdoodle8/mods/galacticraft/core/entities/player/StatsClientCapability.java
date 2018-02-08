@@ -1,6 +1,11 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.AxisAlignedBB;
 
 import java.util.ArrayList;
@@ -28,6 +33,14 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public int landingTicks;
     public static final int MAX_LANDINGTICKS = 15;
     public float[] landingYOffset = new float[MAX_LANDINGTICKS + 1];
+
+    public boolean platformControlled;
+    private TileEntityPlatform platformTarget;
+    private TileEntityPlatform platformMoving;
+    private int platformTargetY;
+    private double platformVelocityTarget;
+    private double platformVelocityCurrent;
+    private boolean platformPacketSent;
 
     public EnumGravity gdir = EnumGravity.down;
     public float gravityTurnRate;
@@ -611,5 +624,85 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public float getDungeonDirection()
     {
         return this.dungeonDirection;
+    }
+
+    @Override
+    public boolean getPlatformControlled()
+    {
+        return this.platformControlled;
+    }
+    
+    @Override
+    public void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, int target)
+    {
+        this.platformControlled = true;
+        this.platformTarget = noCollide;
+        this.platformMoving = moving;
+        noCollide.markNoCollide(0, true);
+        this.platformTargetY = target;
+        this.platformVelocityCurrent = 0D;
+        this.platformVelocityTarget = 0D;
+        this.platformPacketSent = false;
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(noCollide), new Object[] { true }));
+    }
+
+    @Override
+    public void finishPlatformAscent()
+    {
+    }
+
+    @Override
+    public double getPlatformVelocity(double posY)
+    {
+        double delta = this.platformTargetY + BlockPlatform.HEIGHT - posY + 0.03D;
+        if (Math.abs(delta) < 0.04D)
+        {
+            this.platformVelocityCurrent = 0D;
+            this.platformVelocityTarget = 0D;
+            this.platformTarget.markNoCollide(0, false);
+            this.platformControlled = false;
+            this.platformTarget.stopMoving();
+            this.platformMoving.stopMoving();
+            if (!this.platformPacketSent)
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
+        }
+        else
+        {
+            if (delta > 0D)
+            {
+                this.platformVelocityTarget = (delta < 1.0D + 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? 0.08D : 0.45D;
+                if (delta < 0.6D && !this.platformPacketSent)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
+                    this.platformPacketSent = true;
+                }
+            }
+            else if (delta < 0D)
+            {
+                this.platformVelocityTarget = (delta > -1.0D - 8 * this.platformVelocityCurrent * this.platformVelocityCurrent) ? -0.08D : -0.45D;
+                if (delta > -1.0D && !this.platformPacketSent)
+                {
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
+                    this.platformPacketSent = true;
+                }
+            }
+            if (this.platformVelocityCurrent < this.platformVelocityTarget)
+            {
+                this.platformVelocityCurrent += 0.036D;
+                if (this.platformVelocityCurrent > this.platformVelocityTarget)
+                {
+                    this.platformVelocityCurrent = this.platformVelocityTarget;
+                }
+            }
+            else if (this.platformVelocityCurrent > this.platformVelocityTarget)
+            {
+                this.platformVelocityCurrent -= 0.036D;
+                if (this.platformVelocityCurrent < this.platformVelocityTarget)
+                {
+                    this.platformVelocityCurrent = this.platformVelocityTarget;
+                }
+            }
+        }
+        return this.platformVelocityCurrent;
     }
 }
