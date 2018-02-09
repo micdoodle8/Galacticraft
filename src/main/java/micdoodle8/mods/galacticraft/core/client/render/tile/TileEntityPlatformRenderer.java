@@ -56,11 +56,14 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
     public static final ResourceLocation platformTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/platform_moving.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
     private ModelPlatform platform = new ModelPlatform();
+    private static float lastY;
+    private static float lastPartialTicks;
 
     @Override
     public void renderTileEntityAt(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9)
     {
         IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        float yOffset = tileEntity.getYOffset(f);
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
         {
             GlStateManager.pushMatrix();
@@ -70,13 +73,21 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
             RenderHelper.disableStandardItemLighting();
             GlStateManager.disableRescaleNormal();
 
-            // Render a moving platform 
-            GlStateManager.pushMatrix();
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.translate(0F, 0.79F + tileEntity.getYOffset(f), 0F);
-            this.bindTexture(TileEntityPlatformRenderer.platformTexture);
-            this.platform.render();
-            GlStateManager.popMatrix();
+            // Render a moving platform
+            boolean renderPlatformForThisTE = false;
+            float newY = (float) d1 + yOffset;
+            if (Math.abs(newY - lastY) > 0.001F || Math.abs(f - lastPartialTicks) > 0.001F)
+            {
+                renderPlatformForThisTE = true;
+                lastY = newY;
+                lastPartialTicks = f;
+                GlStateManager.pushMatrix();
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.translate(0F, 0.79F + yOffset, 0F);
+                this.bindTexture(TileEntityPlatformRenderer.platformTexture);
+                this.platform.render();
+                GlStateManager.popMatrix();
+            }
 
             if (tileEntity.lightEnabled() || tileEntity.isMoving())
             {
@@ -94,10 +105,10 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
                 float frameA, frameB, frameC, frameD;
 
                 // Draw the moving platform side-lights 
-                if (tileEntity.isMoving())
+                if (tileEntity.isMoving() && renderPlatformForThisTE)
                 {
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(0F, 0.26F + tileEntity.getYOffset(f), 0F);
+                    GlStateManager.translate(0F, 0.26F + yOffset, 0F);
                     GlStateManager.color(1.0F, 0.84F, 65F / 255F, 1.0F);
 
                     float frameRadius = 1.126F / 2F;
@@ -185,7 +196,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
                     default: GlStateManager.color(greyLevel, 1.0F, greyLevel, 1.0F);
                     }
 
-                    float frameY = 1.001F;
+                    float frameY = 0.9376F;
                     frameC = 0.7F;
                     frameD = 0.58F;
                     frameB = frameC + 0.02F;
