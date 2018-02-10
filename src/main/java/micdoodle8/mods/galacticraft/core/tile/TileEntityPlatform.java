@@ -37,6 +37,9 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private int colorState = 0;   //0 = green  1 = red
     private int colorTicks = 0;
     private AxisAlignedBB renderAABB;
+    private int lightA;
+    private int lightB;
+    private int deltaY;
     
     @Override
     public void update()
@@ -55,9 +58,14 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                     BlockPos pos = new BlockPos(x + thisX, thisY, z + thisZ);
                     final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
 
-                    if (tile instanceof TileEntityPlatform)
+                    if (tile instanceof TileEntityPlatform && !tile.isInvalid() && ((TileEntityPlatform)tile).corner == 0)
                     {
-                        adjacentPlatforms.add((TileEntityPlatform) tile);
+                        final TileEntity tileUp = this.worldObj.getTileEntity(pos.up());
+                        final TileEntity tileDown = this.worldObj.getTileEntity(pos.down());
+                        if (!(tileUp instanceof TileEntityPlatform) && !(tileDown instanceof TileEntityPlatform))
+                        {
+                           adjacentPlatforms.add((TileEntityPlatform) tile);
+                        }
                     }
                 }
             }
@@ -116,9 +124,10 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                                 TileEntity te = this.worldObj.getTileEntity(this.pos.down(canDescend));
                                 if (te instanceof TileEntityPlatform)
                                 {
-                                    stats.startPlatformAscent(this, (TileEntityPlatform) te, this.pos.getY() - canDescend);
-                                    this.moving = true;
-                                    ((TileEntityPlatform) te).moving = true;
+                                    TileEntityPlatform tep = (TileEntityPlatform) te;
+                                    stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend);
+                                    this.startMove(tep);
+                                    tep.startMove(this);
                                 }
                             }
                         }
@@ -136,9 +145,10 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                                 if (te instanceof TileEntityPlatform)
                                 {
                                     p.motionY = 0D;
-                                    stats.startPlatformAscent((TileEntityPlatform) te, this, this.pos.getY() + canAscend);
-                                    this.moving = true;
-                                    ((TileEntityPlatform) te).moving = true;
+                                    TileEntityPlatform tep = (TileEntityPlatform) te;
+                                    stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend);
+                                    this.startMove(tep);
+                                    tep.startMove(this);
                                 }
                             }
                         }
@@ -148,6 +158,14 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
     }
     
+    private void startMove(TileEntityPlatform te)
+    {
+        this.moving = true;
+        this.lightA = this.worldObj.getCombinedLight(this.getPos(), 0);
+        this.lightB = this.worldObj.getCombinedLight(te.getPos(), 0);
+        this.deltaY = te.getPos().getY() - this.getPos().getY();
+    }
+
     /**
      * @return  0 for no platform, range for good platform, 255 for blocked platform
      */
@@ -356,5 +374,22 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             this.renderAABB = new AxisAlignedBB(pos.add(-1, -18, -1), pos.add(1, 18, 1));
         }
         return this.renderAABB;
+    }
+
+    public float getMeanLightX(float yOffset)
+    {
+        this.lightA = this.worldObj.getCombinedLight(this.getPos(), 0);
+        float a = (float)(this.lightA % 65536);
+        float b = (float)(this.lightB % 65536);
+        float f = yOffset / deltaY; 
+        return (1 - f) * a + f * b;  
+    }
+
+    public float getMeanLightZ(float yOffset)
+    {
+        float a = (float)(this.lightA / 65536);
+        float b = (float)(this.lightB / 65536);
+        float f = yOffset / deltaY;
+        return (1 - f) * a + f * b;  
     }
 }

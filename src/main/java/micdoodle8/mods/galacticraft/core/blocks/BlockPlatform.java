@@ -84,7 +84,8 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         int sameCount = 0;
         for (int i = 1; i <= 2; i++)
         {
-            if (worldIn.getBlockState(pos.offset(facing, i)).getBlock() == block)
+            IBlockState bs = worldIn.getBlockState(pos.offset(facing, i)); 
+            if (bs.getBlock() == block && bs.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NONE)
             {
                 sameCount++;
             }

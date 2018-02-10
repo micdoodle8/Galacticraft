@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
@@ -56,12 +59,17 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
     public static final ResourceLocation platformTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/platform_moving.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
     private ModelPlatform platform = new ModelPlatform();
-    private static float lastY;
-    private static float lastPartialTicks;
+    private static Map<Integer, Float> lastYMap = new HashMap<>();
+    private static float lastPartialTicks = -1F;
 
     @Override
     public void renderTileEntityAt(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9)
     {
+        if (f != lastPartialTicks)
+        {
+            lastPartialTicks = f;
+            lastYMap.clear();
+        }
         IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         float yOffset = tileEntity.getYOffset(f);
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
@@ -76,13 +84,19 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
             // Render a moving platform
             boolean renderPlatformForThisTE = false;
             float newY = (float) d1 + yOffset;
+            int xz = tenLSB(tileEntity.getPos().getX()) << 10;
+            xz += tenLSB(tileEntity.getPos().getZ());
+            Float lastYF = lastYMap.get(xz);
+            float lastY = lastYF == null ? -1 : lastYF;
             if (Math.abs(newY - lastY) > 0.001F || Math.abs(f - lastPartialTicks) > 0.001F)
             {
                 renderPlatformForThisTE = true;
-                lastY = newY;
-                lastPartialTicks = f;
+                lastYMap.put(xz, newY);
                 GlStateManager.pushMatrix();
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                if (tileEntity.isMoving())
+                {
+                    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, tileEntity.getMeanLightX(yOffset), tileEntity.getMeanLightZ(yOffset));
+                }
                 GlStateManager.translate(0F, 0.79F + yOffset, 0F);
                 this.bindTexture(TileEntityPlatformRenderer.platformTexture);
                 this.platform.render();
@@ -91,9 +105,6 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
 
             if (tileEntity.lightEnabled() || tileEntity.isMoving())
             {
-                // Save the lighting state
-                float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-                float lightMapSaveY = OpenGlHelper.lastBrightnessY;
                 OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
                 GlStateManager.disableLighting();
                 GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -235,12 +246,20 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
                 //? need to undo GlStateManager.glBlendFunc()?
                 GlStateManager.enableLighting();
                 GlStateManager.enableTexture2D();
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+//                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
             }
 
             GlStateManager.enableRescaleNormal();
             RenderHelper.enableStandardItemLighting();
             GlStateManager.popMatrix();
         }
+    }
+
+    private int tenLSB(int x)
+    {
+        if (x < 0)
+            return x % 1024 + 1024;
+        
+        return x % 1024;
     }
 }
