@@ -14,7 +14,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -187,12 +186,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public boolean hasCustomName()
     {
         return false;
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

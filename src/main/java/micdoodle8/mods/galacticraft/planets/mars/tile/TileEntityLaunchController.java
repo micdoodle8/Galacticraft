@@ -29,7 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
@@ -475,12 +474,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 ((EntityAutoRocket) rocket).updateControllerSettings(pad);
             }
         }
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 
     public void setAttachedPad(IFuelDock pad)
