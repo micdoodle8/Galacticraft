@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -37,7 +36,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public boolean platformControlled;
     private TileEntityPlatform platformTarget;
     private TileEntityPlatform platformMoving;
-    private int platformTargetY;
+    private double platformTargetY;
     private double platformVelocityTarget;
     private double platformVelocityCurrent;
     private boolean platformPacketSent;
@@ -633,7 +632,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
     }
     
     @Override
-    public void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, int target)
+    public void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, double target)
     {
         this.platformControlled = true;
         this.platformTarget = noCollide;
@@ -654,7 +653,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
     @Override
     public double getPlatformVelocity(double posY)
     {
-        double delta = this.platformTargetY + BlockPlatform.HEIGHT - posY + 0.03D;
+        double delta = this.platformTargetY - posY + 0.03D;
         if (Math.abs(delta) < 0.04D)
         {
             this.platformVelocityCurrent = 0D;

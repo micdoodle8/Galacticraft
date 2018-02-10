@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
@@ -121,7 +122,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                                 if (te instanceof TileEntityPlatform)
                                 {
                                     TileEntityPlatform tep = (TileEntityPlatform) te;
-                                    stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend);
+                                    stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.worldObj.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
                                     this.startMove(tep);
                                     tep.startMove(this);
                                 }
@@ -142,7 +143,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                                 {
                                     p.motionY = 0D;
                                     TileEntityPlatform tep = (TileEntityPlatform) te;
-                                    stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend);
+                                    stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend + BlockPlatform.HEIGHT);
                                     this.startMove(tep);
                                     tep.startMove(this);
                                 }

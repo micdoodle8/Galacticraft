@@ -88,7 +88,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
             xz += tenLSB(tileEntity.getPos().getZ());
             Float lastYF = lastYMap.get(xz);
             float lastY = lastYF == null ? -1 : lastYF;
-            if (Math.abs(newY - lastY) > 0.001F || Math.abs(f - lastPartialTicks) > 0.001F)
+            if (!tileEntity.isMoving() || Math.abs(newY - lastY) > 0.001F || Math.abs(f - lastPartialTicks) > 0.001F)
             {
                 renderPlatformForThisTE = true;
                 lastYMap.put(xz, newY);
