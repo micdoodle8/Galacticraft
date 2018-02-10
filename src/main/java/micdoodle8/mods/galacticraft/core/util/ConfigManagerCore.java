@@ -235,7 +235,7 @@ public class ConfigManagerCore
             finishProp(prop);
 
             prop = getConfig(Constants.CONFIG_CATEGORY_GENERAL, "Force Overworld Spawn", false);
-            prop.setComment("By default, you will respawn on galacticraft dimensions if you die. If you set this to true, you will respawn back on earth.");
+            prop.setComment("By default, you will respawn on Galacticraft dimensions if you die. If you are dying over and over on a planet, set this to true, and you will respawn back on the Overworld.");
             prop.setLanguageKey("gc.configgui.force_overworld_respawn");
             forceOverworldRespawn = prop.getBoolean(false);
             finishProp(prop);
@@ -282,7 +282,6 @@ public class ConfigManagerCore
             disableSpaceshipParticles = prop.getBoolean(false);
             finishProp(prop);
 
-            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "Disable Vehicle Third-Person and Zoom", false);
             prop = getConfig(Constants.CONFIG_CATEGORY_CLIENT, "Disable Vehicle Third-Person and Zoom", false);
             prop.setComment("If you're using this mod in virtual reality, or if you don't want the camera changes when entering a Galacticraft vehicle, set this to true.");
             prop.setLanguageKey("gc.configgui.disable_vehicle_camera_changes");
@@ -462,7 +461,7 @@ public class ConfigManagerCore
                 FMLLog.severe("[Galacticraft] It appears you have installed the 'Dev' version of Galacticraft instead of the regular version (or vice versa).  Please re-install.");
             }
 
-            prop = getConfig(Constants.CONFIG_CATEGORY_GENERAL, "External Detectable IDs", new String[] {
+            prop = getConfig(Constants.CONFIG_CATEGORY_COMPATIBILITY, "External Detectable IDs", new String[] {
                     ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.COAL_ORE)).getResourcePath(),
                     ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.DIAMOND_ORE)).getResourcePath(),
                     ((ResourceLocation) GameData.getBlockRegistry().getNameForObject(Blocks.GOLD_ORE)).getResourcePath(),
@@ -615,7 +614,7 @@ public class ConfigManagerCore
             finishProp(prop);
 
             prop = getConfig(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Biome Type Registrations", false);
-            prop.setComment("Biome Types will not be registered in the BiomeDictionary if this is set to true. Ignored (always true) for MC 1.7.2.");
+            prop.setComment("Biome Types will not be registered in the BiomeDictionary if this is set to true.");
             prop.setLanguageKey("gc.configgui.disable_biome_type_registrations");
             disableBiomeTypeRegistrations = prop.getBoolean(false);
             finishProp(prop);
