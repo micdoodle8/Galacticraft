@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -190,12 +189,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public boolean hasCustomName()
     {
         return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

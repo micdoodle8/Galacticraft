@@ -33,7 +33,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -757,12 +756,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         }
 
         return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

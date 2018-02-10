@@ -29,7 +29,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
@@ -533,12 +532,6 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public int getBlockMetadata()
     {
         return this.getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")

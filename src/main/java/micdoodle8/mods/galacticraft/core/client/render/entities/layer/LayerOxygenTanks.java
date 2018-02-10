@@ -67,7 +67,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayer>
             {
                 boolean wearingLeftTankGreen = gearData.getLeftTank() == Constants.GEAR_ID_OXYGEN_TANK_LIGHT;
                 boolean wearingLeftTankOrange = gearData.getLeftTank() == Constants.GEAR_ID_OXYGEN_TANK_MEDIUM;
-                boolean wearingLeftTankRed = gearData.getLeftTank() == Constants.GEAR_ID_OXYGEN_TANK_HEAVY || gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_INFINITE;
+                boolean wearingLeftTankRed = gearData.getLeftTank() == Constants.GEAR_ID_OXYGEN_TANK_HEAVY || gearData.getLeftTank() == Constants.GEAR_ID_OXYGEN_TANK_INFINITE;
                 boolean wearingRightTankGreen = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_LIGHT;
                 boolean wearingRightTankOrange = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_MEDIUM;
                 boolean wearingRightTankRed = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_HEAVY || gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_INFINITE;

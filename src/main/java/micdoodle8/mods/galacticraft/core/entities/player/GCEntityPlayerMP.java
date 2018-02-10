@@ -17,6 +17,8 @@ import net.minecraft.world.WorldServer;
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
+    private boolean noClipOverride;
+
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager interactionManager)
     {
         super(server, world, profile, interactionManager);
@@ -86,7 +88,19 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     {
         GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
+
+    public void setNoClip(boolean b)
+    {
+        this.noClipOverride = b;
+    }
     
+    @Override
+    public boolean isSpectator()
+    {
+        if (this.noClipOverride)
+            return true;
+        return super.isSpectator();
+    }
     /*@Override
     public void setInPortal()
     {

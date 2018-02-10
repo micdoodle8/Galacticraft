@@ -303,7 +303,7 @@ public class EventHandlerGC
                     {
                         event.setCanceled(((IKeyable) tileClicked).onValidKeyActivated(event.getEntityPlayer(), heldStack, event.getFace()));
                     }
-                    else
+                    else if (!event.getEntityPlayer().isSneaking())
                     {
                         event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.getEntityPlayer(), event.getFace()));
                     }

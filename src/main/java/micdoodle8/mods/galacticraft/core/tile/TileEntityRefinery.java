@@ -17,7 +17,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -392,12 +391,6 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
 
         return tankInfo;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
     
     @Override

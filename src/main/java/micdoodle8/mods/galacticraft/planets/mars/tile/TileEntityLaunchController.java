@@ -30,7 +30,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -476,12 +475,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 ((EntityAutoRocket) rocket).updateControllerSettings(pad);
             }
         }
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     public void setAttachedPad(IFuelDock pad)
