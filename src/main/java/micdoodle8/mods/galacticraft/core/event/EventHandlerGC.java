@@ -260,7 +260,7 @@ public class EventHandlerGC
                     event.setCanceled(!((IKeyable) tileClicked).canBreak() && !event.entityPlayer.capabilities.isCreativeMode);
                     return;
                 }
-                else if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK))
+                else if (event.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) && !event.entityPlayer.isSneaking())
                 {
                     if (heldStack.getItem() instanceof IKeyItem)
                     {
