@@ -3,14 +3,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
-import micdoodle8.mods.galacticraft.core.client.fx.EntityFXSparks;
-import micdoodle8.mods.galacticraft.core.entities.player.GCEntityClientPlayerMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -108,7 +104,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                     // If this player is within the box
                     EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
                     GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-                    if (list.contains(p) && p instanceof GCEntityClientPlayerMP && !stats.getPlatformControlled() && p.ridingEntity == null)
+                    if (list.contains(p) && !stats.getPlatformControlled() && p.ridingEntity == null)
                     {
                         //TODO: PlayerAPI version of this
                         if (p.movementInput.sneak)
@@ -218,21 +214,6 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return 3;
     }
 
-    @SideOnly(Side.CLIENT)
-    private void makeParticles()
-    {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null && mc.theWorld != null)
-        {
-            final EntityFX fx = new EntityFXSparks(mc.theWorld, pos.getX() - 0.15 + 1.0, pos.getY() + 1.2, pos.getZ() + 0.15 + 1.0, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20, mc.theWorld.rand.nextDouble() / 20 - mc.theWorld.rand.nextDouble() / 20);
-
-            if (fx != null)
-            {
-                mc.effectRenderer.addEffect(fx);
-            }
-        }
-    }
-    
     private void setWhole(int index)
     {
         this.corner = index;

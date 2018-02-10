@@ -82,10 +82,12 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.WorldSettings;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -195,6 +197,7 @@ public class PacketSimple extends PacketBase implements Packet
     private EnumSimplePacket type;
     private List<Object> data;
     static private String spamCheckString;
+    static private Map<EntityPlayerMP, WorldSettings.GameType> savedSettings = new HashMap<>(); 
 
     public PacketSimple()
     {
@@ -1244,6 +1247,27 @@ public class PacketSimple extends PacketBase implements Packet
                 if (noClip == false)
                 {
                     player.fallDistance = 0.0F;
+                    ((EntityPlayerMP)player).playerNetServerHandler.floatingTickCount = 0;
+                }
+            }
+            else if (CompatibilityManager.PlayerAPILoaded && player instanceof EntityPlayerMP)
+            {
+                EntityPlayerMP emp = ((EntityPlayerMP)player); 
+                if (noClip == false)
+                {
+                    emp.fallDistance = 0.0F;
+                    emp.playerNetServerHandler.floatingTickCount = 0;
+                    WorldSettings.GameType gt = savedSettings.put(emp, emp.theItemInWorldManager.getGameType());
+                    if (gt != null)
+                    {
+                        savedSettings.remove(emp);
+                        emp.theItemInWorldManager.setGameType(gt);
+                    }
+                }
+                else
+                {
+                    savedSettings.put(emp, emp.theItemInWorldManager.getGameType());
+                    emp.theItemInWorldManager.setGameType(WorldSettings.GameType.SPECTATOR);
                 }
             }
             break;
