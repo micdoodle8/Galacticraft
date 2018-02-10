@@ -8,6 +8,7 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,8 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class BlockFluidGC extends BlockFluidClassic
 {
@@ -40,6 +43,13 @@ public class BlockFluidGC extends BlockFluidClassic
         }
 
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    @Nullable
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, IBlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
+    {
+        return true;
     }
 
     @Override
