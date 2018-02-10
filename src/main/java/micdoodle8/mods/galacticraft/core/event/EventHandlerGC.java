@@ -273,7 +273,7 @@ public class EventHandlerGC
                             event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
                         }
                     }
-                    else
+                    else if (!event.entityPlayer.isSneaking())
                     {
                         event.setCanceled(((IKeyable) tileClicked).onActivatedWithoutKey(event.entityPlayer, event.face));
                     }
