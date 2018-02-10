@@ -4,15 +4,11 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.network.play.client.CPacketKeepAlive;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GuiTeleporting extends GuiScreen
 {
     private final int targetDimensionID;
     private final String message;
-    private int progress;
 
     public GuiTeleporting(int targetDimensionID)
     {
@@ -51,14 +47,6 @@ public class GuiTeleporting extends GuiScreen
                     TickHandlerClient.teleportingGui = null;
                 }
             }
-        }
-
-        // The following code is copied from GuiDownloadTerrain:
-        ++this.progress;
-
-        if (this.progress % 20 == 0)
-        {
-            ((NetHandlerPlayClient)FMLCommonHandler.instance().getClientPlayHandler()).sendPacket(new CPacketKeepAlive());
         }
     }
 
