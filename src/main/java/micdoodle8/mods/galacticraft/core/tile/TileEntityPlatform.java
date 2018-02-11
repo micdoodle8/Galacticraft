@@ -10,6 +10,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -37,10 +38,43 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private int lightA;
     private int lightB;
     private int deltaY;
+    private boolean firstTickCheck;
     
+    public TileEntityPlatform()
+    {
+    }
+
+    public TileEntityPlatform(int meta)
+    {
+        this.corner = (meta > 4 || meta < 0) ? 0 : meta;
+    }
+    
+    @Override
+    public void readFromNBT(NBTTagCompound nbt)
+    {
+        super.readFromNBT(nbt);
+        this.corner = nbt.getInteger("co");
+        if (this.corner != 0)
+        {
+            this.firstTickCheck = true;
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt)
+    {
+        super.writeToNBT(nbt);
+        nbt.setInteger("co", this.corner);
+    }
+
     @Override
     public void update()
     {
+        if (this.firstTickCheck && !this.worldObj.isRemote)
+        {
+            this.firstTickCheck = !this.checkIntact();
+        }
+            
         if (this.corner == 0 && !this.worldObj.isRemote)
         {
             final List<TileEntityPlatform> adjacentPlatforms = new LinkedList<>();
@@ -229,32 +263,36 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
     public void onDestroy(TileEntity callingBlock)
     {
-        final BlockPos thisBlock = getPos();
         if (this.corner > 0)
         {
-            List<BlockPos> positions = new ArrayList();
-            this.getPositions(thisBlock, positions);
+            resetBlocks();
+        }
+        this.worldObj.destroyBlock(this.pos, true);
+    }
     
-            for (BlockPos pos : positions)
+    private void resetBlocks()
+    {
+        List<BlockPos> positions = new ArrayList();
+        this.getPositions(this.pos, positions);
+
+        for (BlockPos pos : positions)
+        {
+            if (this.worldObj.isBlockLoaded(pos, false) && this.worldObj.getBlockState(pos).getBlock() == GCBlocks.platform)
             {
-                if (this.worldObj.getBlockState(pos).getBlock() == GCBlocks.platform)
+                final TileEntity tile = this.worldObj.getTileEntity(pos);
+                if (tile instanceof TileEntityPlatform)
                 {
-                    final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
-                    if (tile instanceof TileEntityPlatform)
-                    {
-                        ((TileEntityPlatform) tile).setWhole(0);
-                    }
+                    ((TileEntityPlatform) tile).setWhole(0);
                 }
             }
         }
-        this.worldObj.destroyBlock(thisBlock, true);
     }
 
-    public void getPositions(BlockPos pos, List<BlockPos> positions)
+    public void getPositions(BlockPos blockPos, List<BlockPos> positions)
     {
-        int x = pos.getX();
-        int y = pos.getY();
-        int z = pos.getZ();
+        int x = blockPos.getX();
+        int y = blockPos.getY();
+        int z = blockPos.getZ();
         switch (this.corner)
         {
         case 0:
@@ -280,6 +318,74 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             positions.add(new BlockPos(x - 1, y, z - 1));
             break;
         }
+    }
+
+    private boolean checkIntact()
+    {
+        IBlockState bs = this.worldObj.getBlockState(this.pos); 
+        if (bs.getBlock() != GCBlocks.platform || ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() != this.corner)
+        {
+            this.resetBlocks();
+            return false;
+        }
+        int x = this.pos.getX();
+        int y = this.pos.getY();
+        int z = this.pos.getZ();
+        int count = 0;
+        switch (this.corner)
+        {
+        case 0:
+            count = 3;
+            break;
+        case 1:
+            count += checkState(new BlockPos(x + 1, y, z), 3);
+            count += checkState(new BlockPos(x, y, z + 1), 2);
+            count += checkState(new BlockPos(x + 1, y, z + 1), 4);
+            break;
+        case 2:
+            count += checkState(new BlockPos(x + 1, y, z), 4);
+            count += checkState(new BlockPos(x, y, z - 1), 1);
+            count += checkState(new BlockPos(x + 1, y, z - 1), 3);
+            break;
+        case 3:
+            count += checkState(new BlockPos(x - 1, y, z), 1);
+            count += checkState(new BlockPos(x, y, z + 1), 4);
+            count += checkState(new BlockPos(x - 1, y, z + 1), 2);
+            break;
+        case 4:
+            count += checkState(new BlockPos(x - 1, y, z), 2);
+            count += checkState(new BlockPos(x, y, z - 1), 3);
+            count += checkState(new BlockPos(x - 1, y, z - 1), 1);
+            break;
+        }
+        
+        if (count >= 3)
+        {
+            return count == 3;
+        }
+        
+        this.resetBlocks();
+        return true;
+    }
+
+    private int checkState(BlockPos blockPos, int meta)
+    {
+        if (!this.worldObj.isBlockLoaded(blockPos, false))
+            return 4;
+
+        IBlockState bs = this.worldObj.getBlockState(blockPos); 
+        if (bs.getBlock() == GCBlocks.platform && ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() == meta)
+        {
+            final TileEntity tile = this.worldObj.getTileEntity(blockPos);
+            if (tile instanceof TileEntityPlatform)
+            {
+                ((TileEntityPlatform) tile).corner = meta;
+                ((TileEntityPlatform) tile).firstTickCheck = false;
+                return 1;
+            }
+        }
+
+        return 0;
     }
 
     @Override
@@ -359,7 +465,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     {
         if (this.renderAABB == null)
         {
-            this.renderAABB = new AxisAlignedBB(pos.add(-1, -18, -1), pos.add(1, 18, 1));
+            this.renderAABB = new AxisAlignedBB(this.pos.add(-1, -18, -1), this.pos.add(1, 18, 1));
         }
         return this.renderAABB;
     }

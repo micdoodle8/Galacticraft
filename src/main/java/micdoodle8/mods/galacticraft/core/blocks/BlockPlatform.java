@@ -38,6 +38,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         NW(2, "nw"),
         SE(3, "se"),
         NE(4, "ne");
+        // Yes these are the wrong way round, N should be S!  But everything else is hard-coded to work with this as it is.
 
         private final int meta;
         private final String name;
@@ -135,7 +136,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     @Override
     public TileEntity createNewTileEntity(World world, int meta)
     {
-        return new TileEntityPlatform();
+        return new TileEntityPlatform(meta);
     }
 
     @Override
