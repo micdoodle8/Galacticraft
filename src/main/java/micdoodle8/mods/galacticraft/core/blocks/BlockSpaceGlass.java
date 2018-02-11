@@ -17,6 +17,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -26,6 +27,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,6 +37,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
 {
@@ -196,191 +200,246 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
     }
     
-//    @Override
-//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
-//    {
-//        IBlockState above = worldIn.getBlockState(pos.up());
-//        IBlockState below = worldIn.getBlockState(pos.down());
-//        IBlockState north = worldIn.getBlockState(pos.north());
-//        IBlockState south = worldIn.getBlockState(pos.south());
-//        IBlockState west = worldIn.getBlockState(pos.west());
-//        IBlockState east = worldIn.getBlockState(pos.east());
-//
-//        boolean connectN = this.canPaneConnectToBlock(north, state);
-//        boolean connectS = this.canPaneConnectToBlock(south, state);
-//        boolean connectW = this.canPaneConnectToBlock(west, state);
-//        boolean connectE = this.canPaneConnectToBlock(east, state);
-//
-//        boolean plateD = this.buildSolidSide(below, state);
-//        boolean plateU = this.buildSolidSide(above, state);
-//        boolean plateN = this.buildSolidSide(north, state);
-//        boolean plateS = this.buildSolidSide(south, state);
-//        boolean plateW = this.buildSolidSide(west, state);
-//        boolean plateE = this.buildSolidSide(east, state);
-//
-//        //No plate on the sides which glass is facing
-//        if (connectN || connectS)
-//        {
-//            plateW = plateE = false;
-//        }
-//        if (connectW || connectE)
-//        {
-//            plateN = plateS = false;
-//        }
-//
-//        //Singleton
-//        if (!connectE && !connectW && !connectN && !connectS)
-//        {
-//            boolean prefEW = false;
-//            if (below.getBlock() == this)
-//            {
-//                prefEW = (isConnectedEW(below, worldIn, pos.down()) || isPreferenceEW(below, worldIn, pos.down()));
-//            }
-//            else if (above.getBlock() == this)
-//            {
-//                prefEW = (isConnectedEW(above, worldIn, pos.up()) || isPreferenceEW(above, worldIn, pos.up()));
-//            }
-//
-//            if (this.isPreferenceEW(state, worldIn, pos))
-//                prefEW = true;
-//
-//            if (prefEW)
-//            {
-//                plateN = plateS = false;
-//            }
-//            else
-//            {
-//                plateW = plateE = false;
-//            }
-//        }
-//
-//        float posGlass = 0.375F;
-//        float posBase = 0.225F;
-//        float xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
-//        float xMax = plateU || plateD || plateN || plateS ? 1F - posBase : 1F - posGlass;
-//        float yMin = 0F; //plateE || plateW || plateN || plateS ? posBase : 0.375F;
-//        float yMax = 1F; //plateE || plateW || plateN || plateS ? 0.775F : 0.625F;
-//        float zMin = plateU || plateD || plateE || plateW ? posBase : posGlass;
-//        float zMax = plateU || plateD || plateE || plateW ? 1F - posBase : 1F - posGlass;
-//
-//        if (plateW || connectW) xMin = 0F;
-//        if (plateE || connectE) xMax = 1F;
-//        if (plateN || connectN) zMin = 0F;
-//        if (plateS || connectS) zMax = 1F;
-//
-//        //Special for corner diagonals
-//        if ((connectW ^ connectE) && (connectN ^ connectS) && !(plateU && plateD))
-//        {
-//            float diag = 0.25F;
-//            if (connectW)
-//            {
-//                xMin = diag - 0.01F;
-//                xMax = diag;
-//            }
-//            else
-//            {
-//                xMin = 1F - diag;
-//                xMax = 1.01F - diag;
-//            }
-//            if (connectN)
-//            {
-//                zMin = diag - 0.01F;
-//                zMax = diag;
-//            }
-//            else
-//            {
-//                zMin = 1F - diag;
-//                zMax = 1.01F - diag;
-//            }
-//        }
-//
-//        this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
-//        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-//    }
-//
-//    @Override
-//    public void setBlockBoundsForItemRender()
-//    {
-//        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
-//    }
-//
-//TODO:  Set up predefined AABBs
-//    @Override
-//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-//    {
-//        IBlockState state = worldIn.getBlockState(pos);
-//        IBlockState above = worldIn.getBlockState(pos.up());
-//        IBlockState below = worldIn.getBlockState(pos.down());
-//        IBlockState north = worldIn.getBlockState(pos.north());
-//        IBlockState south = worldIn.getBlockState(pos.south());
-//        IBlockState west = worldIn.getBlockState(pos.west());
-//        IBlockState east = worldIn.getBlockState(pos.east());
-//
-//        boolean connectedN = this.canPaneConnectToBlock(north, state);
-//        boolean connectedS = this.canPaneConnectToBlock(south, state);
-//        boolean connectedW = this.canPaneConnectToBlock(west, state);
-//        boolean connectedE = this.canPaneConnectToBlock(east, state);
-//
-//        boolean plateD = this.buildSolidSide(below, state);
-//        boolean plateU = this.buildSolidSide(above, state);
-//        boolean plateN = this.buildSolidSide(north, state);
-//        boolean plateS = this.buildSolidSide(south, state);
-//        boolean plateW = this.buildSolidSide(west, state);
-//        boolean plateE = this.buildSolidSide(east, state);
-//
-//        //No plate on the sides which glass is facing
-//        if (connectedN || connectedS)
-//        {
-//            plateW = plateE = false;
-//        }
-//        if (connectedW || connectedE)
-//        {
-//            plateN = plateS = false;
-//        }
-//
-//        //Singleton
-//        if (!connectedE && !connectedW && !connectedN && !connectedS)
-//        {
-//            boolean prefEW = false;
-//            if (below.getBlock() == this)
-//            {
-//                prefEW = (isConnectedEW(below, worldIn, pos.down()) || isPreferenceEW(below, worldIn, pos.down()));
-//            }
-//            else if (above.getBlock() == this)
-//            {
-//                prefEW = (isConnectedEW(above, worldIn, pos.up()) || isPreferenceEW(above, worldIn, pos.up()));
-//            }
-//
-//            if (this.isPreferenceEW(state, worldIn, pos))
-//                prefEW = true;
-//
-//            if (prefEW)
-//            {
-//                plateN = plateS = false;
-//            }
-//            else
-//            {
-//                plateW = plateE = false;
-//            }
-//        }
-//
-//        float f, f1, f2, f3;
-//        int solids = (plateD ? 1 : 0) + (plateU ? 1 : 0) + (plateN ? 1 : 0) + (plateS ? 1 : 0) + (plateW ? 1 : 0) + (plateE ? 1 : 0);
-//        if (solids > 2 || (plateU && plateD) || (plateW && plateE) || (plateN && plateS))
-//        {
-//            //Widen to the frame width, if frames on opposite sides
-//            f = 0.25F;
-//            f1 = 0.75F;
-//            f2 = 0.25F;
-//            f3 = 0.75F;
-//        }
-//        else {
-//            //The glass width
-//            f = 0.375F;
-//            f1 = 0.625F;
-//            f2 = 0.375F;
-//            f3 = 0.625F;
-//        }
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
+    {
+        IBlockState above = worldIn.getBlockState(pos.up());
+        IBlockState below = worldIn.getBlockState(pos.down());
+        IBlockState north = worldIn.getBlockState(pos.north());
+        IBlockState south = worldIn.getBlockState(pos.south());
+        IBlockState west = worldIn.getBlockState(pos.west());
+        IBlockState east = worldIn.getBlockState(pos.east());
+
+        boolean connectN = this.canPaneConnectToBlock(north, state);
+        boolean connectS = this.canPaneConnectToBlock(south, state);
+        boolean connectW = this.canPaneConnectToBlock(west, state);
+        boolean connectE = this.canPaneConnectToBlock(east, state);
+
+        boolean plateD = this.buildSolidSide(below, state);
+        boolean plateU = this.buildSolidSide(above, state);
+        boolean plateN = this.buildSolidSide(north, state);
+        boolean plateS = this.buildSolidSide(south, state);
+        boolean plateW = this.buildSolidSide(west, state);
+        boolean plateE = this.buildSolidSide(east, state);
+
+        //No plate on the sides which glass is facing
+        if (connectN || connectS)
+        {
+            plateW = plateE = false;
+        }
+        if (connectW || connectE)
+        {
+            plateN = plateS = false;
+        }
+
+        //Singleton
+        if (!connectE && !connectW && !connectN && !connectS)
+        {
+            boolean prefEW = false;
+            if (below.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(below, worldIn, pos.down()) || isPreferenceEW(below, worldIn, pos.down()));
+            }
+            else if (above.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(above, worldIn, pos.up()) || isPreferenceEW(above, worldIn, pos.up()));
+            }
+
+            if (this.isPreferenceEW(state, worldIn, pos))
+                prefEW = true;
+
+            if (prefEW)
+            {
+                plateN = plateS = false;
+            }
+            else
+            {
+                plateW = plateE = false;
+            }
+        }
+
+        final double posGlass = 0.375D;
+        final double posBase = 0.225D;
+        double xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
+        double xMax = plateU || plateD || plateN || plateS ? 1D - posBase : 1D - posGlass;
+        double yMin = 0D; //plateE || plateW || plateN || plateS ? posBase : 0.375D;
+        double yMax = 1D; //plateE || plateW || plateN || plateS ? 0.775D : 0.625D;
+        double zMin = plateU || plateD || plateE || plateW ? posBase : posGlass;
+        double zMax = plateU || plateD || plateE || plateW ? 1D - posBase : 1D - posGlass;
+
+        if (plateW || connectW) xMin = 0D;
+        if (plateE || connectE) xMax = 1D;
+        if (plateN || connectN) zMin = 0D;
+        if (plateS || connectS) zMax = 1D;
+
+        //Special for corner diagonals
+        if ((connectW ^ connectE) && (connectN ^ connectS) && !(plateU && plateD))
+        {
+            double diag = 0.25D;
+            if (connectW)
+            {
+                xMin = diag - 0.01D;
+                xMax = diag;
+            }
+            else
+            {
+                xMin = 1D - diag;
+                xMax = 1.01D - diag;
+            }
+            if (connectN)
+            {
+                zMin = diag - 0.01D;
+                zMax = diag;
+            }
+            else
+            {
+                zMin = 1D - diag;
+                zMax = 1.01D - diag;
+            }
+        }
+
+        xMin += pos.getX();
+        xMax += pos.getX();
+        yMin += pos.getY();
+        yMax += pos.getY();
+        zMin += pos.getZ();
+        zMax += pos.getZ();
+        AxisAlignedBB axisalignedbb = new AxisAlignedBB(xMin, yMin, zMin, xMax, yMax, zMax);
+        if (axisalignedbb != null && mask.intersects(axisalignedbb))
+        {
+            list.add(axisalignedbb);
+        }
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos)
+    {
+        return this.getBoundingBox(bs, worldIn, pos).offset(pos);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState bs, IBlockAccess worldIn, BlockPos pos)
+    {
+        IBlockState state = worldIn.getBlockState(pos);
+        IBlockState above = worldIn.getBlockState(pos.up());
+        IBlockState below = worldIn.getBlockState(pos.down());
+        IBlockState north = worldIn.getBlockState(pos.north());
+        IBlockState south = worldIn.getBlockState(pos.south());
+        IBlockState west = worldIn.getBlockState(pos.west());
+        IBlockState east = worldIn.getBlockState(pos.east());
+
+        boolean connectedN = this.canPaneConnectToBlock(north, state);
+        boolean connectedS = this.canPaneConnectToBlock(south, state);
+        boolean connectedW = this.canPaneConnectToBlock(west, state);
+        boolean connectedE = this.canPaneConnectToBlock(east, state);
+
+        boolean plateD = this.buildSolidSide(below, state);
+        boolean plateU = this.buildSolidSide(above, state);
+        boolean plateN = this.buildSolidSide(north, state);
+        boolean plateS = this.buildSolidSide(south, state);
+        boolean plateW = this.buildSolidSide(west, state);
+        boolean plateE = this.buildSolidSide(east, state);
+
+        //No plate on the sides which glass is facing
+        if (connectedN || connectedS)
+        {
+            plateW = plateE = false;
+        }
+        if (connectedW || connectedE)
+        {
+            plateN = plateS = false;
+        }
+
+        //Singleton
+        if (!connectedE && !connectedW && !connectedN && !connectedS)
+        {
+            boolean prefEW = false;
+            if (below.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(below, worldIn, pos.down()) || isPreferenceEW(below, worldIn, pos.down()));
+            }
+            else if (above.getBlock() == this)
+            {
+                prefEW = (isConnectedEW(above, worldIn, pos.up()) || isPreferenceEW(above, worldIn, pos.up()));
+            }
+
+            if (this.isPreferenceEW(state, worldIn, pos))
+                prefEW = true;
+
+            if (prefEW)
+            {
+                plateN = plateS = false;
+            }
+            else
+            {
+                plateW = plateE = false;
+            }
+        }
+
+        int offset = 0;
+        int base = 1;
+        int solids = (plateD ? 1 : 0) + (plateU ? 1 : 0) + (plateN ? 1 : 0) + (plateS ? 1 : 0) + (plateW ? 1 : 0) + (plateE ? 1 : 0);
+        if (solids > 2 || (plateU && plateD) || (plateW && plateE) || (plateN && plateS))
+        {
+            base = 0;
+        }
+
+        if (connectedW || plateW)
+        {
+            offset = 2;
+        }
+        if (connectedN || plateN)
+        {
+            offset += 4;
+        }
+        if (connectedE || plateE)
+        {
+            offset += 8;
+        }
+        if (connectedS || plateS)
+        {
+            offset += 16;
+        }
+        
+        // See 1.10 version for the logic
+        return BOUNDING_BOXES[offset + base];
+    }
+
+    protected static final AxisAlignedBB[] BOUNDING_BOXES = {
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D), //Widen to the frame width, if frames on opposite sides
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D), //The glass width
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),     //0001
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),   //0001
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0010
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0010
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0011
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0011
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),   //0100
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D), //0100
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),     //0101
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),   //0101
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0110
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0110
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0111
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0111
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1000
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D), //1000
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1001
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),   //1001
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1010
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1010
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1011
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1011
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),   //1100
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D), //1100
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),     //1101
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),   //1101
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1110
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),   //1110
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1111
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)   //1111
+    };
 
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing dir)
