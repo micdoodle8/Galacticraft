@@ -95,6 +95,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class PacketSimple extends PacketBase implements Packet<INetHandler>
@@ -1256,21 +1257,29 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             else if (CompatibilityManager.PlayerAPILoaded && player instanceof EntityPlayerMP)
             {
                 EntityPlayerMP emp = ((EntityPlayerMP)player); 
-                if (noClip == false)
+                try
                 {
-                    emp.fallDistance = 0.0F;
-                    emp.connection.floatingTickCount = 0;
-                    GameType gt = savedSettings.put(emp, emp.interactionManager.getGameType());
-                    if (gt != null)
+                    Field f = emp.interactionManager.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "gameType" : "field_73091_c");
+                    f.setAccessible(true);
+                    if (noClip == false)
                     {
-                        savedSettings.remove(emp);
-                        emp.interactionManager.setGameType(gt);
+                        emp.fallDistance = 0.0F;
+                        emp.connection.floatingTickCount = 0;
+                        GameType gt = savedSettings.get(emp);
+                        if (gt != null)
+                        {
+                            savedSettings.remove(emp);
+                            f.set(emp.interactionManager, gt);
+                        }
                     }
-                }
-                else
+                    else
+                    {
+                        savedSettings.put(emp, emp.interactionManager.getGameType());
+                        f.set(emp.interactionManager, GameType.SPECTATOR);
+                    }
+                } catch (Exception ee)
                 {
-                    savedSettings.put(emp, emp.interactionManager.getGameType());
-                    emp.interactionManager.setGameType(GameType.SPECTATOR);
+                    ee.printStackTrace();
                 }
             }
             break;
