@@ -153,6 +153,7 @@ public class ConfigManagerCore
     {
         try
         {
+            propOrder.clear();
             Property prop;
 
             if (!config.isChild)
