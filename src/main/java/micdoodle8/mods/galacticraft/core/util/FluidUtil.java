@@ -671,9 +671,15 @@ public class FluidUtil
      */
     public static ItemStack getUsedContainer(ItemStack container)
     {
-        if (FluidUtil.isBucket(container) && net.minecraftforge.fluids.FluidUtil.getFluidHandler(container) != null)
+        IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        if (FluidUtil.isBucket(container) && handler != null)
         {
             return new ItemStack(Items.BUCKET, container.getCount());
+        }
+        else if (handler != null) 
+        {
+            handler.drain(Integer.MAX_VALUE, true);
+            return handler.getContainer();
         }
         else
         {
