@@ -78,75 +78,80 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
         else if (this.world.isRemote)
         {
-            this.lightOn  = false;
-            if (this.colorTicks > 0)
+            this.updateClient();
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void updateClient()
+    {
+        this.lightOn  = false;
+        if (this.colorTicks > 0)
+        {
+            if (--this.colorTicks == 0)
             {
-                if (--this.colorTicks == 0)
-                {
-                    this.colorState = 0;
-                }
+                this.colorState = 0;
             }
+        }
 
-            IBlockState b = this.world.getBlockState(this.getPos());
-            if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
+        IBlockState b = this.world.getBlockState(this.getPos());
+        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
+        {
+            //Scan area for player entities and light up
+            if (this.detection == null)
             {
-                //Scan area for player entities and light up
-                if (this.detection == null)
-                {
-                    this.detection = new AxisAlignedBB(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
-                }
-                final List<Entity> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, detection);
+                this.detection = new AxisAlignedBB(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
+            }
+            final List<Entity> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, detection);
 
-                if (list.size() > 0)
-                {
-                    // Light up the platform
-                    this.lightOn = true;
+            if (list.size() > 0)
+            {
+                // Light up the platform
+                this.lightOn = true;
 
-                    // If this player is within the box
-                    EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
-                    GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-                    if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
+                // If this player is within the box
+                EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+                GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
+                if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
+                {
+                    if (p.movementInput.sneak)
                     {
-                        //TODO: PlayerAPI version of this
-                        if (p.movementInput.sneak)
+                        int canDescend = this.checkNextPlatform(-1);
+                        if (canDescend == -1)
                         {
-                            int canDescend = this.checkNextPlatform(-1);
-                            if (canDescend == -1)
+                            this.colorState = 1;
+                            this.colorTicks = 16;
+                        }
+                        else if (canDescend > 0)
+                        {
+                            TileEntity te = this.world.getTileEntity(this.pos.down(canDescend));
+                            if (te instanceof TileEntityPlatform)
                             {
-                                this.colorState = 1;
-                                this.colorTicks = 16;
-                            }
-                            else if (canDescend > 0)
-                            {
-                                TileEntity te = this.world.getTileEntity(this.pos.down(canDescend));
-                                if (te instanceof TileEntityPlatform)
-                                {
-                                    TileEntityPlatform tep = (TileEntityPlatform) te;
-                                    stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.world.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
-                                    this.startMove(tep);
-                                    tep.startMove(this);
-                                }
+                                TileEntityPlatform tep = (TileEntityPlatform) te;
+                                stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.world.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
+                                this.startMove(tep);
+                                tep.startMove(this);
                             }
                         }
-                        else if (p.movementInput.jump)
+                    }
+                    else if (p.movementInput.jump)
+                    {
+                        int canAscend = this.checkNextPlatform(1);
+                        if (canAscend == -1)
                         {
-                            int canAscend = this.checkNextPlatform(1);
-                            if (canAscend == -1)
+                            this.colorState = 1;
+                            this.colorTicks = 16;
+                        }
+                        else if (canAscend > 0)
+                        {
+                            TileEntity te = this.world.getTileEntity(this.pos.up(canAscend));
+                            if (te instanceof TileEntityPlatform)
                             {
-                                this.colorState = 1;
-                                this.colorTicks = 16;
-                            }
-                            else if (canAscend > 0)
-                            {
-                                TileEntity te = this.world.getTileEntity(this.pos.up(canAscend));
-                                if (te instanceof TileEntityPlatform)
-                                {
-                                    p.motionY = 0D;
-                                    TileEntityPlatform tep = (TileEntityPlatform) te;
-                                    stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend + BlockPlatform.HEIGHT + 0.01D);
-                                    this.startMove(tep);
-                                    tep.startMove(this);
-                                }
+                                p.motionY = 0D;
+                                TileEntityPlatform tep = (TileEntityPlatform) te;
+                                stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend + BlockPlatform.HEIGHT + 0.01D);
+                                this.startMove(tep);
+                                tep.startMove(this);
                             }
                         }
                     }
