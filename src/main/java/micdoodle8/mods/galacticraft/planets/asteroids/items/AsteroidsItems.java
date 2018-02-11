@@ -40,7 +40,7 @@ public class AsteroidsItems
     public static Item titaniumSword;
     public static Item strangeSeed;
 
-    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 10.0F, 4.0F, 12);
+    public static Item.ToolMaterial TOOL_TITANIUM = EnumHelper.addToolMaterial("titanium", 4, 760, 14.0F, 4.0F, 12);
     public static ItemArmor.ArmorMaterial ARMOR_TITANIUM = EnumHelper.addArmorMaterial("titanium", "", 26, new int[] { 5, 7, 10, 5 }, 12, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
 
     public static void initItems()
