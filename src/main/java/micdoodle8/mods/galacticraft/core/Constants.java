@@ -23,6 +23,11 @@ public class Constants
     public static final String CONFIG_CATEGORY_GENERAL = "general";
     public static final String CONFIG_CATEGORY_WORLDGEN = "worldgen";
     public static final String CONFIG_CATEGORY_ACHIEVEMENTS = "achievements";
+    public static final String CONFIG_CATEGORY_CLIENT = "client";
+    public static final String CONFIG_CATEGORY_SERVER = "server";
+    public static final String CONFIG_CATEGORY_CONTROLS = "controls";
+    public static final String CONFIG_CATEGORY_DIFFICULTY = "difficulty";
+    public static final String CONFIG_CATEGORY_COMPATIBILITY = "compatibility";
 
     public static final int OVERWORLD_SKYPROVIDER_STARTHEIGHT = 200;
     public static final int OVERWORLD_CLOUD_HEIGHT = 130;

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySludgeling;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +21,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class BlockSludge extends BlockFluidClassic
 {
@@ -50,6 +53,13 @@ public class BlockSludge extends BlockFluidClassic
         }
 
         super.onEntityCollidedWithBlock(worldIn, pos, state, entityIn);
+    }
+
+    @Override
+    @Nullable
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, IBlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
+    {
+        return true;
     }
 
     public BlockSludge(String assetName)

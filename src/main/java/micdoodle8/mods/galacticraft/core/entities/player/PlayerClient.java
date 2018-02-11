@@ -87,21 +87,27 @@ public class PlayerClient implements IPlayerClient
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        if (player.world.provider instanceof IGalacticraftWorldProvider)
+        if (stats.getPlatformControlled() || player.world.provider instanceof IGalacticraftWorldProvider)
         {
             if (!startup)
             {
                 stats.setInFreefallLast(stats.isInFreefall());
-                stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
+                stats.setInFreefall(stats.getPlatformControlled() || stats.getFreefallHandler().testFreefall(player));
                 startup = true;
             }
-            if (player.world.provider instanceof IZeroGDimension)
+            if (stats.getPlatformControlled() || player.world.provider instanceof IZeroGDimension)
             {
                 stats.setInFreefallLast(stats.isInFreefall());
-                stats.setInFreefall(stats.getFreefallHandler().testFreefall(player));
+                stats.setInFreefall(stats.getPlatformControlled() || stats.getFreefallHandler().testFreefall(player));
                 this.downMot2 = stats.getDownMotionLast();
                 stats.setDownMotionLast(player.motionY);
                 stats.getFreefallHandler().preVanillaMotion(player);
+                if (stats.getPlatformControlled())
+                {
+                    player.motionY = stats.getPlatformVelocity(player.posY);
+                    player.motionX = 0D;
+                    player.motionZ = 0D;
+                }
             }
         }
 
@@ -141,7 +147,7 @@ public class PlayerClient implements IPlayerClient
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
 
-        if (player.world.provider instanceof IZeroGDimension)
+        if (stats.getPlatformControlled() || player.world.provider instanceof IZeroGDimension)
         {
             stats.getFreefallHandler().postVanillaMotion(player);
 

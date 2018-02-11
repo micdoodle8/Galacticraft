@@ -1,0 +1,80 @@
+{
+    "textures": {
+        "particle": "galacticraftcore:blocks/platform_base",
+        "0": "galacticraftcore:blocks/platform_side",
+        "1": "galacticraftcore:blocks/platform_light",
+        "2": "galacticraftcore:blocks/platform_haz",
+        "3": "galacticraftcore:blocks/platform_base"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 6.0, 0.0 ], 
+            "to": [ 16.0, 14.0, 7.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 2.5, 16.0, 10.5 ] },
+                "east": { "texture": "#0", "uv": [ 0.0, 2.5, 7.0, 10.5 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 2.5, 16.0, 10.5 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 2.5, 7.0, 10.5 ] },
+                "down": { "texture": "#3", "uv": [ 0.0, 9.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.0, 14.0, 0.0 ], 
+            "to": [ 16.0, 15.0, 7.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 1.0, 16.0, 2.0 ] },
+                "east": { "texture": "#0", "uv": [ 9.0, 1.0, 16.0, 2.0 ] },
+                "south": { "texture": "#1", "uv": [ -2.0, 5.0, 14.0, 6.0 ] },
+                "west": { "texture": "#0", "uv": [ 1.0, 2.0, 8.0, 1.0 ] },
+                "up": { "texture": "#1", "uv": [ -2.0, -2.0, 14.0, 5.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.0, 14.0, 7.0 ], 
+            "to": [ 7.0, 15.0, 16.0 ], 
+            "faces": {
+                "east": { "texture": "#1", "uv": [ 5.0, 16.0, 6.0, 7.0 ], "rotation": 270 },
+                "south": { "texture": "#0", "uv": [ 0.0, 1.0, 7.0, 2.0 ] },
+                "west": { "texture": "#0", "uv": [ 2.5, 2.0, 11.5, 1.0 ] },
+                "up": { "texture": "#1", "uv": [ -2.0, 7.0, 5.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.0, 15.0, 2.0 ], 
+            "to": [ 2.0, 16.0, 16.0 ], 
+            "faces": {
+                "east": { "texture": "#2", "uv": [ 3.0, 15.5, 2.0, 1.5 ], "rotation": 270 },
+                "south": { "texture": "#0", "uv": [ 0.0, 0.0, 2.0, 1.0 ] },
+                "west": { "texture": "#0", "uv": [ 2.0, 2.0, 16.0, 1.0 ] },
+                "up": { "texture": "#2", "uv": [ 0.0, 1.5, 2.0, 15.5 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.0, 15.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 2.0 ], 
+            "faces": {
+                "north": { "texture": "#0", "uv": [ 0.0, 0.0, 16.0, 1.0 ] },
+                "east": { "texture": "#0", "uv": [ 14.0, 0.0, 16.0, 1.0 ] },
+                "south": { "texture": "#2", "uv": [ 0.0, 2.0, 16.0, 3.0 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 2.0, 2.0, 1.0 ] },
+                "up": { "texture": "#2", "uv": [ 0.0, 0.0, 16.0, 2.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.0, 6.0, 7.0 ], 
+            "to": [ 7.0, 14.0, 16.0 ], 
+            "faces": {
+                "east": { "texture": "#0", "uv": [ 0.0, 2.5, 9.0, 10.5 ] },
+                "south": { "texture": "#0", "uv": [ 0.0, 2.5, 7.0, 10.5 ] },
+                "west": { "texture": "#0", "uv": [ 0.0, 2.5, 9.0, 10.5 ] },
+                "down": { "texture": "#3", "uv": [ 0.0, 0.0, 7.0, 9.0 ] }
+            }
+        }
+    ]
+}
