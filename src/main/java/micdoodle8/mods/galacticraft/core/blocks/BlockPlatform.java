@@ -126,7 +126,20 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public boolean isFullyOpaque(IBlockState state)
+    public boolean isOpaqueCube(IBlockState state)
+    {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return false;
     }
