@@ -1,25 +1,25 @@
 {
   "result": {
     "item": "galacticraftcore:canister",
-    "data": 1,
+    "data": 0,
     "count": 2
   },
   "pattern": [
-    "X X",
-    "X X",
+    "XXX",
+    "X  ",
     "XXX"
   ],
   "type": "forge:ore_shaped",
   "conditions": [
     {
       "type": "galacticraftcore:condition",
-      "data": "can_default"
+      "data": "can_alt"
     }
   ],
   "key": {
     "X": {
       "type": "forge:ore_dict",
-      "ore": "ingotCopper"
+      "ore": "ingotTin"
     }
   }
 }

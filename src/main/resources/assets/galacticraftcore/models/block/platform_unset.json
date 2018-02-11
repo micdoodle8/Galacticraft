@@ -1,0 +1,23 @@
+{
+    "textures": {
+        "particle": "galacticraftcore:blocks/platform_base",
+        "bottom": "galacticraftcore:blocks/platform_base",
+        "top": "galacticraftcore:blocks/platform_top",
+        "side": "galacticraftcore:blocks/platform_side"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 6.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "east": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "south": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "west": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "up": { "texture": "top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "bottom", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        }
+    ]
+}

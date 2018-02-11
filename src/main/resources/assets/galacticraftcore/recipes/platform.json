@@ -1,0 +1,30 @@
+{
+  "result": {
+    "item": "galacticraftcore:platform",
+    "data": 0,
+    "count": 4
+  },
+  "pattern": [
+    "PAP",
+    "BXB",
+    "PAP"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "dustGlowstone"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    }
+  }
+}

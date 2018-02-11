@@ -2,7 +2,7 @@
   "result": {
     "item": "galacticraftcore:aluminum_wire",
     "data": 0,
-    "count": 6
+    "count": 9
   },
   "pattern": [
     "WWW",
@@ -13,7 +13,7 @@
   "conditions": [
     {
       "type": "galacticraftcore:condition",
-      "data": "normal_mode"
+      "data": "quick_mode"
     }
   ],
   "key": {

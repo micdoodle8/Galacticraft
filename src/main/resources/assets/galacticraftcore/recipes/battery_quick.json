@@ -2,7 +2,7 @@
   "result": {
     "item": "galacticraftcore:battery",
     "data": 100,
-    "count": 2
+    "count": 3
   },
   "pattern": [
     " T ",
@@ -13,7 +13,7 @@
   "conditions": [
     {
       "type": "galacticraftcore:condition",
-      "data": "normal_mode"
+      "data": "quick_mode"
     }
   ],
   "key": {

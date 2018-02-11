@@ -19,6 +19,14 @@ public class ConditionEnabled implements IConditionFactory
         if(JsonUtils.hasField(json, "data"))
         {
             String data = JsonUtils.getString(json, "data");
+            if (data.equals("normal_mode"))
+            {
+                return () -> !ConfigManagerCore.quickMode;
+            }
+            if (data.equals("quick_mode"))
+            {
+                return () -> ConfigManagerCore.quickMode;
+            }
             if (data.equals("can_default"))
             {
                 return () -> !ConfigManagerCore.alternateCanisterRecipe;

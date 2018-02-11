@@ -5,15 +5,15 @@
     "count": 2
   },
   "pattern": [
-    "X X",
-    "X X",
+    "XXX",
+    "X  ",
     "XXX"
   ],
   "type": "forge:ore_shaped",
   "conditions": [
     {
       "type": "galacticraftcore:condition",
-      "data": "can_default"
+      "data": "can_alt"
     }
   ],
   "key": {

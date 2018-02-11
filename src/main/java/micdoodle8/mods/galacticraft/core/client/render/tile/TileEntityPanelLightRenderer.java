@@ -4,34 +4,23 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
 @SideOnly(Side.CLIENT)
 public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<TileEntityPanelLight>
 {
-    public static final ResourceLocation lampTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
-    private static OBJModel.OBJBakedModel lampMetal;
 
     @Override
     public void render(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
-        this.updateModels();
         int side = tileEntity.meta;
         int rot = side >> 3;
         side = (side & 7) ^ 1;
@@ -187,24 +176,5 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.popMatrix();
-    }
-
-    private void updateModels()
-    {
-        if (lampMetal == null)
-        {
-            try
-            {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "arclamp_metal.obj"));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                lampMetal = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("main"), false), DefaultVertexFormats.ITEM, spriteFunction);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
     }
 }

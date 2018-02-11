@@ -164,6 +164,6 @@ public class GalacticraftPlanets
         info.description = "Planets addon for Galacticraft.";
         info.url = "https://micdoodle8.com/";
         info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
-        info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
+        info.logoFile = "assets/galacticraftplanets/galacticraft_logo.png";
     }
 }
