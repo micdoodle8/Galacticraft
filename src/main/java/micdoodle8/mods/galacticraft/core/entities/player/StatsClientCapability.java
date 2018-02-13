@@ -664,6 +664,7 @@ public class StatsClientCapability extends GCPlayerStatsClient
             this.platformMoving.stopMoving();
             if (!this.platformPacketSent)
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_NOCLIP_PLAYER, GCCoreUtil.getDimensionID(this.platformTarget), new Object[] { false }));
+            return 0D;
         }
         else
         {

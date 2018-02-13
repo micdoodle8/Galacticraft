@@ -36,15 +36,16 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     public static final float HEIGHT = 0.875F;
     protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
     protected static final AxisAlignedBB BOUNDING_BOX_ZEROG = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);;
-    
+    public static boolean ignoreCollisionTests;
+
     public enum EnumCorner implements IStringSerializable
     {
         NONE(0, "none"),
-        SW(1, "sw"),
-        NW(2, "nw"),
-        SE(3, "se"),
-        NE(4, "ne");
-        // Yes these are the wrong way round, N should be S!  But everything else is hard-coded to work with this as it is.
+        NW(1, "sw"),
+        SW(2, "nw"),
+        NE(3, "se"),
+        SE(4, "ne");
+        // Yes these labels are the wrong way round, n should be s!  But the BlockState model is hard-coded to work with this as it is.
 
         private final int meta;
         private final String name;
@@ -221,6 +222,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     @Override
     public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
     {
+        if (ignoreCollisionTests) return;
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityPlatform)
         {
@@ -251,7 +253,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         {
             if (((TileEntityPlatform) te).noCollide())
             {
-                if (bs.getBlock() == this && bs.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NE)
+                if (bs.getBlock() == this && bs.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SE)
                     return new AxisAlignedBB((double)pos.getX() + 9/16D, (double)pos.getY(), (double)pos.getZ() + 9/16D, (double)pos.getX() + 1.0D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 1.0D);
                 else
                     return new AxisAlignedBB((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)pos.getX() + 7/16D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 7/16D);
