@@ -129,7 +129,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
 
         IBlockState b = this.worldObj.getBlockState(this.getPos());
-        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
+        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             //Scan area for player entities and light up
             if (this.detection == null)
@@ -204,7 +204,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     /**
-     * @return  0 for no platform, range for good platform, 255 for blocked platform
+     * @return  0 for no platform, range for good platform, -1 for blocked platform
      */
     private int checkNextPlatform(int dir)
     {
@@ -217,22 +217,20 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
         for (int y = thisY + dir; y != maxY; y+= dir)
         {
-            int c1 = this.checkCorner(new BlockPos(thisX, y, thisZ), BlockPlatform.EnumCorner.SW);
+            int c1 = this.checkCorner(new BlockPos(thisX, y, thisZ), BlockPlatform.EnumCorner.NW);
+            if (c1 >= 2) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ), BlockPlatform.EnumCorner.NE) * 4;
+            if (c1 >= 8) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX, y, thisZ + 1), BlockPlatform.EnumCorner.SW) * 16;
+            if (c1 >= 32) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ + 1), BlockPlatform.EnumCorner.SE) * 64;
+            if (c1 >= 128) return c1 - 3;
+            // Good platform on all four corners
             if (c1 == 0) continue;
-            if (c1 == 2) return -1;
-            if (c1 == 3) return 0;
-            int c2 = this.checkCorner(new BlockPos(thisX + 1, y, thisZ), BlockPlatform.EnumCorner.SE);
-            if (c2 == 0) continue;
-            if (c2 == 2) return -1;
-            if (c2 == 3) return 0;
-            int c3 = this.checkCorner(new BlockPos(thisX, y, thisZ + 1), BlockPlatform.EnumCorner.NW);
-            if (c3 == 0) continue;
-            if (c3 == 2) return -1;
-            if (c3 == 3) return 0;
-            int c4 = this.checkCorner(new BlockPos(thisX + 1, y, thisZ + 1), BlockPlatform.EnumCorner.NE);
-            if (c4 == 0) continue;
-            if (c4 == 2) return -1;
-            if (c4 == 3) return 0;
+            if (this.motionObstructed(thisY + 1, y - thisY))
+            {
+                return -1;
+            }
             return (y - thisY) * dir;
         }
         return 0;
@@ -252,7 +250,11 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         {
             return (this.worldObj.getBlockState(blockPos.up(1)).getBlock().isVisuallyOpaque() || this.worldObj.getBlockState(blockPos.up(2)).getBlock().isVisuallyOpaque()) ? 2 : 1;
         }
-        return 3;
+        if (b.getBlock().isVisuallyOpaque() || b.getBlock().isFullBlock())
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void setWhole(int index)
@@ -485,5 +487,20 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         float b = (float)(this.lightB / 65536);
         float f = yOffset / deltaY;
         return (1 - f) * a + f * b;  
+    }
+
+    public boolean motionObstructed(double y, double velocityY)
+    {
+        EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+        int x = this.pos.getX() + 1;
+        int z = this.pos.getZ() + 1;
+        double size = 9/16D;
+        double height = p.height + velocityY;
+        double depth = velocityY < 0D ? 0.179D : 0D;
+        AxisAlignedBB bb = AxisAlignedBB.fromBounds(x - size, y - depth, z - size, x + size, y + height, z + size);
+        BlockPlatform.ignoreCollisionTests = true;
+        boolean obstructed = !this.worldObj.getCollidingBoundingBoxes(p, bb).isEmpty(); 
+        BlockPlatform.ignoreCollisionTests = false;
+        return obstructed;
     }
 }
