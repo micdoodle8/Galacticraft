@@ -213,6 +213,8 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
             GlStateManager.color(sinOfTheTime, sinOfTheTime, sinOfTheTime, 0.6F);
             ClientUtil.drawBakedModel(this.hoverPadGlow);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
             if (ais < EntityAstroMiner.AISTATE_DOCKING)
             {
@@ -301,8 +303,6 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
                 }
                 GlStateManager.popMatrix();
             }
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.disableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
