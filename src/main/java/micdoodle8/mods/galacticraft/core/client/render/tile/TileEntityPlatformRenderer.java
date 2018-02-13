@@ -99,7 +99,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
                 }
                 else
                 {
-                    int light = tileEntity.getWorld().getCombinedLight(tileEntity.getPos().up(), 0);
+                    int light = tileEntity.getBlendedLight();
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(light % 65536), (float)(light / 65536));
                 }
                 GlStateManager.translate(0F, 0.79F + yOffset, 0F);

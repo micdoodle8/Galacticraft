@@ -198,8 +198,8 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private void startMove(TileEntityPlatform te)
     {
         this.moving = true;
-        this.lightA = this.worldObj.getCombinedLight(this.getPos().up(), 0);
-        this.lightB = this.worldObj.getCombinedLight(te.getPos().up(), 0);
+        this.lightA = this.getBlendedLight();
+        this.lightB = te.getBlendedLight();
         this.deltaY = te.getPos().getY() - this.getPos().getY();
     }
 
@@ -472,9 +472,26 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return this.renderAABB;
     }
 
+    public int getBlendedLight()
+    {
+        int j = 0, k = 0;
+        int light = this.worldObj.getCombinedLight(this.getPos().up(), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.worldObj.getCombinedLight(this.getPos().add(1, 1, 0), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.worldObj.getCombinedLight(this.getPos().add(0, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.worldObj.getCombinedLight(this.getPos().add(1, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        return j / 4 + k * 16384; 
+    }
+
     public float getMeanLightX(float yOffset)
     {
-        this.lightA = this.worldObj.getCombinedLight(this.getPos().up(), 0);
         float a = (float)(this.lightA % 65536);
         float b = (float)(this.lightB % 65536);
         float f = yOffset / deltaY; 
