@@ -72,7 +72,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
         }
         IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         float yOffset = tileEntity.getYOffset(f);
-        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
+        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);

@@ -96,13 +96,13 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     public boolean isOpaqueCube(IBlockState state)
     {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isFullCube(IBlockState state)
     {
-        return false;
+        return true;
     }
 
     @Override

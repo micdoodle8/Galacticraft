@@ -1,10 +1,11 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -26,7 +27,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -38,6 +39,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
@@ -123,34 +125,36 @@ public class ClientUtil
 
     public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
-        if (variants.length == 0)
-        {
-            variants = new String[] { "inventory" };
-        }
-
         OBJModel model;
-
         try
         {
-            model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
-            model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
+            model = (OBJModel) OBJLoaderGC.instance.loadModel(new ResourceLocation(modid, objLoc));
         }
         catch (Exception e)
         {
             throw new RuntimeException(e);
         }
 
+
         Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+        IBakedModel newModelBase = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+        IBakedModel newModelAlt = null;
+        if (variants.length == 0)
+        {
+            variants = new String[] { "inventory" };
+        }
+        else if (variants.length > 1 || !variants[0].equals("inventory"))
+        {
+            newModelAlt = model.bake(new OBJModel.OBJState(visibleGroups, false, TRSRTransformation.identity()), DefaultVertexFormats.ITEM, spriteFunction);
+        }
+
         for (String variant : variants)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, variant);
             IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
             if (object != null)
             {
-                if (!variant.equals("inventory"))
-                    parentState = TRSRTransformation.identity();
-                
-                IBakedModel newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+                IBakedModel newModel = variant.equals("inventory") ? newModelBase : newModelAlt;
                 if (clazz != null)
                 {
                     try
@@ -165,6 +169,23 @@ public class ClientUtil
                 event.getModelRegistry().putObject(modelResourceLocation, newModel);
             }
         }
+    }
+
+    public static IBakedModel modelFromOBJ(ResourceLocation loc) throws IOException
+    {
+        return modelFromOBJ(loc, ImmutableList.of("main"));
+    }
+    
+    public static IBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups) throws IOException
+    {
+        return modelFromOBJ(loc, visibleGroups, TRSRTransformation.identity());
+    }
+    
+    public static IBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups, IModelState parentState) throws IOException
+    {
+        IModel model = OBJLoaderGC.instance.loadModel(loc);
+        Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+        return model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
     }
 
     public static void drawBakedModel(IBakedModel model)
