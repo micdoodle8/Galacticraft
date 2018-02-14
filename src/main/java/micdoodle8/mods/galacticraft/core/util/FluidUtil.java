@@ -687,7 +687,7 @@ public class FluidUtil
         //
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
-            if (FluidUtil.tryEmptyCanister(container, fluidHandler) != null || FluidUtil.tryFillCanister(container, fluidHandler) != null)
+            if (FluidUtil.tryEmptyCanister(container, fluidHandler, player.capabilities.isCreativeMode) != null || FluidUtil.tryFillCanister(container, fluidHandler, player.capabilities.isCreativeMode) != null)
             {
                 // send inventory updates to client
                 if (player.inventoryContainer != null)
@@ -723,8 +723,9 @@ public class FluidUtil
 
     /**
      * This is how to do it properly.  Nice and simple, and high performance.
+     * @param isCreativeMode 
      */
-    private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank)
+    private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
         int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
@@ -732,7 +733,7 @@ public class FluidUtil
             return null;
         }
         FluidStack liquid = tank.drain(currCapacity, false);
-        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
+        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, !isCreativeMode);
         if (transferred > 0)
         {
             liquid = tank.drain(transferred, true);
@@ -741,7 +742,7 @@ public class FluidUtil
         return null;
     }
 
-    private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank)
+    private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
         int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
         if (currContents <= 0)
@@ -752,7 +753,7 @@ public class FluidUtil
         int transferred = tank.fill(liquid, true);
         if (transferred > 0)
         {
-            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, true);
+            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, !isCreativeMode);
             return canister;
         }
         return null;
