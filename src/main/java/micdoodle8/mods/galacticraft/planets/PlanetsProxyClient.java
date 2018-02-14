@@ -1,12 +1,13 @@
 package micdoodle8.mods.galacticraft.planets;
 
 import com.google.common.collect.Lists;
+
+import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModuleClient;
 import net.minecraft.item.Item;
-import net.minecraftforge.client.model.obj.OBJLoader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -21,7 +22,7 @@ public class PlanetsProxyClient extends PlanetsProxy
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        OBJLoader.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX);
+        OBJLoaderGC.instance.addDomain(GalacticraftPlanets.ASSET_PREFIX);
         GalacticraftPlanets.clientModules.add(new MarsModuleClient());
         GalacticraftPlanets.clientModules.add(new AsteroidsModuleClient());
         GalacticraftPlanets.clientModules.add(new VenusModuleClient());
