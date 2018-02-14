@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
@@ -519,5 +520,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         boolean obstructed = !this.world.getCollisionBoxes(p, bb).isEmpty(); 
         BlockPlatform.ignoreCollisionTests = false;
         return obstructed;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_MEDIUM;
     }
 }
