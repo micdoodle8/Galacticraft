@@ -28,6 +28,7 @@ import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
+import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelPanelLightBase;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
@@ -88,7 +89,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.obj.OBJLoader;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -159,8 +160,8 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public void preInit(FMLPreInitializationEvent event)
     {
         ClientProxyCore.registerEntityRenderers();
-
-        OBJLoader.INSTANCE.addDomain(Constants.ASSET_PREFIX);
+        ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
+        OBJLoaderGC.instance.addDomain(Constants.ASSET_PREFIX);
 
         if (CompatibilityManager.PlayerAPILoaded)
         {

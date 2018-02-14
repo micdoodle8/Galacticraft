@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
@@ -130,7 +131,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
 
         IBlockState b = this.world.getBlockState(this.getPos());
-        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SW)
+        if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             //Scan area for player entities and light up
             if (this.detection == null)
@@ -198,13 +199,13 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private void startMove(TileEntityPlatform te)
     {
         this.moving = true;
-        this.lightA = this.world.getCombinedLight(this.getPos().up(), 0);
-        this.lightB = this.world.getCombinedLight(te.getPos().up(), 0);
+        this.lightA = this.getBlendedLight();
+        this.lightB = te.getBlendedLight();
         this.deltaY = te.getPos().getY() - this.getPos().getY();
     }
 
     /**
-     * @return  0 for no platform, range for good platform, 255 for blocked platform
+     * @return  0 for no platform, range for good platform, -1 for blocked platform
      */
     private int checkNextPlatform(int dir)
     {
@@ -217,22 +218,20 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
         for (int y = thisY + dir; y != maxY; y+= dir)
         {
-            int c1 = this.checkCorner(new BlockPos(thisX, y, thisZ), BlockPlatform.EnumCorner.SW);
+            int c1 = this.checkCorner(new BlockPos(thisX, y, thisZ), BlockPlatform.EnumCorner.NW);
+            if (c1 >= 2) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ), BlockPlatform.EnumCorner.NE) * 4;
+            if (c1 >= 8) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX, y, thisZ + 1), BlockPlatform.EnumCorner.SW) * 16;
+            if (c1 >= 32) return c1 - 3;
+            c1 += this.checkCorner(new BlockPos(thisX + 1, y, thisZ + 1), BlockPlatform.EnumCorner.SE) * 64;
+            if (c1 >= 128) return c1 - 3;
+            // Good platform on all four corners
             if (c1 == 0) continue;
-            if (c1 == 2) return -1;
-            if (c1 == 3) return 0;
-            int c2 = this.checkCorner(new BlockPos(thisX + 1, y, thisZ), BlockPlatform.EnumCorner.SE);
-            if (c2 == 0) continue;
-            if (c2 == 2) return -1;
-            if (c2 == 3) return 0;
-            int c3 = this.checkCorner(new BlockPos(thisX, y, thisZ + 1), BlockPlatform.EnumCorner.NW);
-            if (c3 == 0) continue;
-            if (c3 == 2) return -1;
-            if (c3 == 3) return 0;
-            int c4 = this.checkCorner(new BlockPos(thisX + 1, y, thisZ + 1), BlockPlatform.EnumCorner.NE);
-            if (c4 == 0) continue;
-            if (c4 == 2) return -1;
-            if (c4 == 3) return 0;
+            if (this.motionObstructed(thisY + 1, y - thisY))
+            {
+                return -1;
+            }
             return (y - thisY) * dir;
         }
         return 0;
@@ -252,7 +251,11 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         {
             return (this.world.getBlockState(blockPos.up(1)).causesSuffocation() || this.world.getBlockState(blockPos.up(2)).causesSuffocation()) ? 2 : 1;
         }
-        return 3;
+        if (b.causesSuffocation() || b.getBlock().isFullBlock(b))
+        {
+            return 3;
+        }
+        return 0;
     }
 
     private void setWhole(int index)
@@ -470,9 +473,26 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return this.renderAABB;
     }
 
+    public int getBlendedLight()
+    {
+        int j = 0, k = 0;
+        int light = this.world.getCombinedLight(this.getPos().up(), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(1, 1, 0), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(0, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(1, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        return j / 4 + k * 16384; 
+    }
+
     public float getMeanLightX(float yOffset)
     {
-        this.lightA = this.world.getCombinedLight(this.getPos().up(), 0);
         float a = (float)(this.lightA % 65536);
         float b = (float)(this.lightB % 65536);
         float f = yOffset / deltaY; 
@@ -485,5 +505,27 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         float b = (float)(this.lightB / 65536);
         float f = yOffset / deltaY;
         return (1 - f) * a + f * b;  
+    }
+
+    public boolean motionObstructed(double y, double velocityY)
+    {
+        EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+        int x = this.pos.getX() + 1;
+        int z = this.pos.getZ() + 1;
+        double size = 9/16D;
+        double height = p.height + velocityY;
+        double depth = velocityY < 0D ? 0.179D : 0D;
+        AxisAlignedBB bb = new AxisAlignedBB(x - size, y - depth, z - size, x + size, y + height, z + size);
+        BlockPlatform.ignoreCollisionTests = true;
+        boolean obstructed = !this.world.getCollisionBoxes(p, bb).isEmpty(); 
+        BlockPlatform.ignoreCollisionTests = false;
+        return obstructed;
+    }
+    
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared()
+    {
+        return Constants.RENDERDISTANCE_MEDIUM;
     }
 }

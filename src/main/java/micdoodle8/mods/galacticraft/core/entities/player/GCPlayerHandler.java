@@ -1347,11 +1347,29 @@ public class GCPlayerHandler
         {
             if (tick % 10 == 0)
             {
-                this.sendDungeonDirectionPacket(player, stats);
+                boolean doneDungeon = false;
+                ItemStack current = player.inventory.getCurrentItem();
+                if (current != null && current.getItem() == GCItems.dungeonFinder)
+                {
+                    this.sendDungeonDirectionPacket(player, stats);
+                    doneDungeon = true;
+                }
                 if (tick % 30 == 0)
                 {
                     GCPlayerHandler.sendAirRemainingPacket(player, stats);
                     this.sendThermalLevelPacket(player, stats);
+
+                    if (!doneDungeon)
+                    {
+                        for (ItemStack stack : player.inventory.mainInventory)
+                        {
+                            if (stack != null && stack.getItem() == GCItems.dungeonFinder)
+                            {
+                                this.sendDungeonDirectionPacket(player, stats);
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 

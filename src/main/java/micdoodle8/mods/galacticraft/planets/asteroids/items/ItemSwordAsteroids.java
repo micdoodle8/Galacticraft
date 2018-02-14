@@ -35,7 +35,7 @@ public class ItemSwordAsteroids extends ItemSword implements ISortableItem
     @Override
     public float getAttackDamage()
     {
-        return 4.0F;
+        return 6.0F;
     }
 
     @Override

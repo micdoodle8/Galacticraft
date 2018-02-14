@@ -1,21 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -23,7 +17,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
 {
     public static final ResourceLocation lampTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png");
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
-    private static OBJModel.OBJBakedModel lampMetal;
+    private static IBakedModel lampMetal;
 
     @Override
     public void render(TileEntityArclamp tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
@@ -136,11 +130,7 @@ public class TileEntityArclampRenderer extends TileEntitySpecialRenderer<TileEnt
         {
             try
             {
-                OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "arclamp_metal.obj"));
-                model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                lampMetal = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("main"), false), DefaultVertexFormats.ITEM, spriteFunction);
+                lampMetal = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.ASSET_PREFIX, "arclamp_metal.obj"));
             }
             catch (Exception e)
             {
