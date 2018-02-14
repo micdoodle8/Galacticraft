@@ -63,7 +63,8 @@ public class OBJLoaderGC implements ICustomModelLoader {
         {
             try
             {
-                ResourceLocation file = new ResourceLocation(modelLocation.getResourceDomain(), "models/" + modelLocation.getResourcePath());
+                String prefix = modelLocation.getResourcePath().contains("models/") ? "" : "models/";
+                ResourceLocation file = new ResourceLocation(modelLocation.getResourceDomain(), prefix + modelLocation.getResourcePath());
                 IResource resource = manager.getResource(file);
                 if (resource != null)
                 {
