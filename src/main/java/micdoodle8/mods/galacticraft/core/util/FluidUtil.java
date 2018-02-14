@@ -578,7 +578,7 @@ public class FluidUtil
         ItemStack result;
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
-            if ((result = FluidUtil.tryEmptyCanister(container, tank, side)) != null || (result = FluidUtil.tryFillCanister(container, tank, side)) != null)
+            if ((result = FluidUtil.tryEmptyCanister(container, tank, side, playerIn.capabilities.isCreativeMode)) != null || (result = FluidUtil.tryFillCanister(container, tank, side, playerIn.capabilities.isCreativeMode)) != null)
             {
                 // send inventory updates to client
                 if (playerIn.inventoryContainer != null)
@@ -681,8 +681,9 @@ public class FluidUtil
 
     /**
      * This is how to do it properly.  Nice and simple, and high performance.
+     * @param isCreativeMode 
      */
-    private static ItemStack tryFillCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    private static ItemStack tryFillCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side, boolean isCreativeMode)
     {
         int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
@@ -690,7 +691,7 @@ public class FluidUtil
             return null;
         }
         FluidStack liquid = tank.drain(side, currCapacity, false);
-        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
+        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, !isCreativeMode);
         if (transferred > 0)
         {
             liquid = tank.drain(side, transferred, true);
@@ -699,7 +700,7 @@ public class FluidUtil
         return null;
     }
 
-    private static ItemStack tryEmptyCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side)
+    private static ItemStack tryEmptyCanister(ItemStack canister, TileEntityFluidTank tank, EnumFacing side, boolean isCreativeMode)
     {
         int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
         if (currContents <= 0)
@@ -710,7 +711,7 @@ public class FluidUtil
         int transferred = tank.fill(side, liquid, true);
         if (transferred > 0)
         {
-            ((ItemFluidContainer)canister.getItem()).drain(canister, transferred, true);
+            ((ItemFluidContainer)canister.getItem()).drain(canister, transferred, !isCreativeMode);
             return canister;
         }
         return null;
