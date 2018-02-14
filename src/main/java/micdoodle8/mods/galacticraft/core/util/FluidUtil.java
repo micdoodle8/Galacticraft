@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -709,7 +709,7 @@ public class FluidUtil
                 return true;
         }
 
-        IItemHandler playerInventory = new InvWrapper(player.inventory);
+        IItemHandler playerInventory = new PlayerMainInvWrapper(player.inventory);
         boolean fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
         if (fillResult)
         {
