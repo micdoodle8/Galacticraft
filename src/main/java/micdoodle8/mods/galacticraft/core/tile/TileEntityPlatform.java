@@ -195,7 +195,8 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             }
         }
     }
-    
+
+    @SideOnly(Side.CLIENT)
     private void startMove(TileEntityPlatform te)
     {
         this.moving = true;
@@ -450,6 +451,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         this.moving = false;
     }
 
+    @SideOnly(Side.CLIENT)
     public float getYOffset(float partialTicks)
     {
         if (this.moving)
@@ -473,6 +475,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return this.renderAABB;
     }
 
+    @SideOnly(Side.CLIENT)
     public int getBlendedLight()
     {
         int j = 0, k = 0;
@@ -491,6 +494,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return j / 4 + k * 16384; 
     }
 
+    @SideOnly(Side.CLIENT)
     public float getMeanLightX(float yOffset)
     {
         float a = (float)(this.lightA % 65536);
@@ -499,6 +503,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return (1 - f) * a + f * b;  
     }
 
+    @SideOnly(Side.CLIENT)
     public float getMeanLightZ(float yOffset)
     {
         float a = (float)(this.lightA / 65536);
@@ -507,6 +512,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return (1 - f) * a + f * b;  
     }
 
+    @SideOnly(Side.CLIENT)
     public boolean motionObstructed(double y, double velocityY)
     {
         EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
@@ -521,7 +527,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         BlockPlatform.ignoreCollisionTests = false;
         return obstructed;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared()
