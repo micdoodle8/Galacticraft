@@ -1016,12 +1016,10 @@ public class WorldUtil
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
-            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.worldObj;
             if (worldNew != null)
             {
-                Thread.dumpStack();
                 return worldNew;
             }
         }
