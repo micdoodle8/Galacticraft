@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -7,7 +8,7 @@ import net.minecraft.world.WorldSavedData;
 
 public class OrbitSpinSaveData extends WorldSavedData
 {
-    public static final String saveDataID = "GCSpinData";
+    public static final String saveDataID = Constants.GCDATAFOLDER + "GCSpinData";
     public NBTTagCompound datacompound;
     private NBTTagCompound alldata;
     private int dim = 0;

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -42,6 +43,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -416,7 +418,7 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    File baseFolder = new File(MinecraftServer.getServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                    File baseFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft/overworldMap");
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 

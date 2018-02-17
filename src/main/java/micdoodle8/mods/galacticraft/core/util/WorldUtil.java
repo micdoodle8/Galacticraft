@@ -447,7 +447,7 @@ public class WorldUtil
         {
             for (File var5 : var2)
             {
-                if (var5.getName().contains("spacestation_"))
+                if (var5.getName().startsWith("spacestation_") && var5.getName().endsWith(".dat"))
                 {
                     try
                     {
