@@ -485,17 +485,19 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         super.readFromNBT(nbt);
 
         this.facing = nbt.getInteger("Facing");
-
-        this.airToRestore.clear();
-        NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
-        if (airBlocks.tagCount() > 0)
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
-            for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
+            this.airToRestore.clear();
+            NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
+            if (airBlocks.tagCount() > 0)
             {
-                NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
-                if (tag1 != null)
+                for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
                 {
-                    this.airToRestore.add(BlockVec3.readFromNBT(tag1));
+                    NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
+                    if (tag1 != null)
+                    {
+                        this.airToRestore.add(BlockVec3.readFromNBT(tag1));
+                    }
                 }
             }
         }

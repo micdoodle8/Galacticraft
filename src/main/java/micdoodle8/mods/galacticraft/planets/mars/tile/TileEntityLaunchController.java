@@ -232,7 +232,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
         this.hideTargetDestination = nbt.getBoolean("HideTargetDestination");
-        this.requiresClientUpdate = true;
+        this.requiresClientUpdate = GCCoreUtil.getEffectiveSide() == Side.SERVER;
     }
 
     @Override

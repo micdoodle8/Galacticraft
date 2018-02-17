@@ -16,6 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory
 {
@@ -180,24 +181,27 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.craftMatrix.clear();
-        for (int i = 0; i < SIZEINVENTORY; ++i)
-            this.memory[i] = null;
-        NBTTagList contents = nbt.getTagList("Items", 10);
-        if (contents != null && contents.tagCount() > 0)
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
-            for (int i = 0; i < contents.tagCount(); ++i)
+            this.craftMatrix.clear();
+            for (int i = 0; i < SIZEINVENTORY; ++i)
+                this.memory[i] = null;
+            NBTTagList contents = nbt.getTagList("Items", 10);
+            if (contents != null && contents.tagCount() > 0)
             {
-                NBTTagCompound var4 = contents.getCompoundTagAt(i);
-                int slot = var4.getByte("Slot") & 255;
-
-                if (slot < SIZEINVENTORY)
+                for (int i = 0; i < contents.tagCount(); ++i)
                 {
-                    this.craftMatrix.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(var4));
-                }
-                else if (slot < 18)
-                {
-                    this.memory[slot - SIZEINVENTORY] = ItemStack.loadItemStackFromNBT(var4);
+                    NBTTagCompound var4 = contents.getCompoundTagAt(i);
+                    int slot = var4.getByte("Slot") & 255;
+    
+                    if (slot < SIZEINVENTORY)
+                    {
+                        this.craftMatrix.setInventorySlotContents(slot, ItemStack.loadItemStackFromNBT(var4));
+                    }
+                    else if (slot < 18)
+                    {
+                        this.memory[slot - SIZEINVENTORY] = ItemStack.loadItemStackFromNBT(var4);
+                    }
                 }
             }
         }
