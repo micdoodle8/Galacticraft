@@ -28,6 +28,7 @@ public class RecipeManagerAsteroids
 
     private static void addUniversalRecipes()
     {
+        ItemStack titaniumIngot = new ItemStack(AsteroidsItems.basicItem, 1, 0);
     	ItemStack titaniumPlate = new ItemStack(AsteroidsItems.basicItem, 1, 6);
     	ItemStack platingTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
     	
@@ -111,7 +112,8 @@ public class RecipeManagerAsteroids
     	//Slimeball
     	RecipeUtil.addRecipe(new ItemStack(Items.slime_ball), new Object [] { "XFX", "FEF", "XFX", 'X', new ItemStack(Items.dye, 1, 2), 'E', new ItemStack(GCItems.cheeseCurd), 'F', new ItemStack(Items.sugar) } );
     	
-        CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), titaniumIngot, titaniumIngot);
+    	CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         //All this is for NEI's benefit
         List<ItemStack> list1 = new ArrayList();

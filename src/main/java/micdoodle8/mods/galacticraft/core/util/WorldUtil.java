@@ -436,7 +436,7 @@ public class WorldUtil
 //        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
         WorldUtil.registeredSpaceStations = Maps.newHashMap();
         MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (theServer == null)
+        if (theServer == null || !spaceStationList.exists() && !spaceStationList.isDirectory())
         {
             return;
         }

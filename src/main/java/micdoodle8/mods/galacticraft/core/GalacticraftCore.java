@@ -454,13 +454,13 @@ public class GalacticraftCore
 
     private void moveLegacyGCFileLocations(File worldFolder)
     {
-        File dataFolder = new File(worldFolder, "data");
         File destFolder = new File(worldFolder, "galacticraft");
-        if (!dataFolder.exists()) return;
         if (!destFolder.exists())
         {
             if (!destFolder.mkdirs()) return;
         }
+        File dataFolder = new File(worldFolder, "data");
+        if (!dataFolder.exists()) return;
         
         moveGCFile(new File(dataFolder, "GCAsteroidData.dat"), destFolder);
         moveGCFile(new File(dataFolder, "GCSpaceRaceData.dat"), destFolder);

@@ -69,7 +69,6 @@ public class MapGen extends WorldChunkManager implements Runnable
     private BiomeGenBase[] biomesGridHeights = null;
     private int[] biomeCount;
     private final int dimID;
-    private final ArrayList<Integer> cols = new ArrayList<>();
 
     static
     {
@@ -435,6 +434,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         this.getHeightMap(x0, z0);
         int factor = this.biomeMapFactor;
         int halfFactor = limit * limit / 2;
+        ArrayList<Integer> cols = new ArrayList<>();
         for (int j = 0; j < biomeCount.length; j++)
         {
             biomeCount[j] = 0;
