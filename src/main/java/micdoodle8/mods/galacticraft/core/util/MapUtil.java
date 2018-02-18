@@ -310,7 +310,7 @@ public class MapUtil
     
     private static void sendMapPacketCompressed(int cx, int cz, EntityPlayerMP client, byte[] map) throws IOException
     {
-        if (cx == LARGEMAP_MARKER && map.length < 2040000)
+        if (cx == LARGEMAP_MARKER && map.length < 2080000)
         {
             int halfSize = map.length / 2;
             byte[] largeMapPartA = Arrays.copyOf(map, halfSize);
@@ -318,7 +318,7 @@ public class MapUtil
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, map.length, largeMapPartA }), client);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx + 1, map.length, largeMapPartB }), client);
         }
-        else if (map.length < 1020000)  //That's about the limit on a Forge packet length
+        else if (map.length < 1040000)  //That's about the limit on a Forge packet length
     	{
     		GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(client.worldObj), new Object[] { cx, cz, map }), client);
     	}
@@ -326,7 +326,7 @@ public class MapUtil
 
     private static void sendMapPacketAllCompressed(int cx, int cz, byte[] map)
     {
-        if (cx == LARGEMAP_MARKER && map.length < 2040000)
+        if (cx == LARGEMAP_MARKER && map.length < 2080000)
         {
             int halfSize = map.length / 2;
             byte[] largeMapPartA = Arrays.copyOf(map, halfSize);
@@ -334,7 +334,7 @@ public class MapUtil
             GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx, map.length, largeMapPartA });
             GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx + 1, map.length, largeMapPartB });
         }
-        else if (map.length < 1020000)  //That's about the limit on a Forge packet length
+        else if (map.length < 1040000)  //That's about the limit on a Forge packet length
         {
             GCCoreUtil.sendToAllDimensions(EnumSimplePacket.C_SEND_OVERWORLD_IMAGE, new Object[] { cx, cz, map });
         }
