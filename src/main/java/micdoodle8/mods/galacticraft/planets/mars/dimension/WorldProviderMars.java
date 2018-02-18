@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -186,4 +187,9 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
         list.add(MarsBlocks.marsBlock);
         return list;
     }
+
+	@Override
+	public BlockMetaPair getStoneBlock() {
+		return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 9);
+	}
 }

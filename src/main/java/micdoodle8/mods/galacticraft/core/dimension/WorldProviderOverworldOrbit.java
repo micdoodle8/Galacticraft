@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
@@ -257,4 +258,9 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     {
         return null;
     }
+
+	@Override
+	public BlockMetaPair getStoneBlock() {
+		return null;
+	}
 }
