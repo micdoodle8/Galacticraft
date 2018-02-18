@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.api;
 
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
@@ -147,6 +149,17 @@ public class GalacticraftRegistry
         }
 
         GalacticraftRegistry.spaceStations.add(type);
+    }
+
+    public static void replaceSpaceStationRecipe(int spaceStationID, HashMap<Object, Integer> obj)
+    {
+        for (SpaceStationType type1 : GalacticraftRegistry.spaceStations)
+        {
+            if (type1.getSpaceStationID() == spaceStationID)
+            {
+                type1.setRecipeForSpaceStation(new SpaceStationRecipe(obj));
+            }
+        }
     }
 
     public SpaceStationType getTypeFromPlanetID(int planetID)
