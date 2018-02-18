@@ -51,6 +51,7 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -69,6 +70,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -455,6 +457,9 @@ public class GalacticraftCore
     @EventHandler
     public void onServerStarting(FMLServerStartingEvent event)
     {
+        File worldFolder = DimensionManager.getCurrentSaveRootDirectory();
+        moveLegacyGCFileLocations(worldFolder);
+        
         event.registerServerCommand(new CommandSpaceStationAddOwner());
         event.registerServerCommand(new CommandSpaceStationChangeOwner());
         event.registerServerCommand(new CommandSpaceStationRemoveOwner());
@@ -466,7 +471,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandJoinSpaceRace());
 
         WorldUtil.initialiseDimensionNames();
-        WorldUtil.registerSpaceStations(event.getServer().worldServerForDimension(0).getSaveHandler().getMapFileFromName("dummy").getParentFile());
+        WorldUtil.registerSpaceStations(new File(worldFolder, "galacticraft"));
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
@@ -482,6 +487,51 @@ public class GalacticraftCore
                 }
             }
         }
+    }
+
+    private void moveLegacyGCFileLocations(File worldFolder)
+    {
+        File destFolder = new File(worldFolder, "galacticraft");
+        if (!destFolder.exists())
+        {
+            if (!destFolder.mkdirs()) return;
+        }
+        File dataFolder = new File(worldFolder, "data");
+        if (!dataFolder.exists()) return;
+        
+        moveGCFile(new File(dataFolder, "GCAsteroidData.dat"), destFolder);
+        moveGCFile(new File(dataFolder, "GCSpaceRaceData.dat"), destFolder);
+        moveGCFile(new File(dataFolder, "GCSpinData.dat"), destFolder);
+        moveGCFile(new File(dataFolder, "GCInv_savefile.dat"), destFolder);
+        String[] names = dataFolder.list();
+        for (String name : names)
+        {
+            if (name.startsWith("spacestation_") && name.endsWith(".dat"))
+            {
+                moveGCFile(new File(dataFolder, name), destFolder);
+            }
+        }
+    }
+    
+    private void moveGCFile(File file, File destFolder)
+    {
+        if (file.exists())
+        {
+            File destPath = new File(destFolder, file.getName());
+            if (destPath.exists())
+            {
+                GCLog.info("Deleting duplicate Galacticraft data file: " + file.getName());
+                file.delete();
+                return;
+            }
+            try
+            {
+                java.nio.file.Files.move(file.toPath(), destPath.toPath());
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+        }        
     }
 
     @EventHandler

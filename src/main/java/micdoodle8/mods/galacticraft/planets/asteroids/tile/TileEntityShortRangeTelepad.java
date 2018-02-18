@@ -230,7 +230,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
         ItemStackHelper.loadAllItems(nbt, this.stacks);
 
-        this.setAddress(nbt.getInteger("Address"));
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
+        {
+            this.setAddress(nbt.getInteger("Address"));
+        }
         this.targetAddress = nbt.getInteger("TargetAddress");
         this.owner = nbt.getString("Owner");
     }

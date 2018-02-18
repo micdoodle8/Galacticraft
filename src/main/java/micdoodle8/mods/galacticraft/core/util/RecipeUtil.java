@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryBuggyBench;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryRocketBench;
 import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
+import micdoodle8.mods.galacticraft.core.recipe.OreRecipeUpdatable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -93,5 +94,10 @@ public class RecipeUtil
     public static ItemStack getIndustrialCraftItem(String indentifier, String variant)
     {
         return IC2Items.getItem(indentifier, variant);
+    }
+
+    public static void addRecipeUpdatable(ItemStack result, Object[] obj)
+    {
+        CraftingManager.getInstance().getRecipeList().add(new OreRecipeUpdatable(result, obj));
     }
 }

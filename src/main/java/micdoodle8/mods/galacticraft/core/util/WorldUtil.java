@@ -441,7 +441,7 @@ public class WorldUtil
 //        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
         WorldUtil.registeredSpaceStations = Maps.newHashMap();
         MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (theServer == null)
+        if (theServer == null || !spaceStationList.exists() && !spaceStationList.isDirectory())
         {
             return;
         }
@@ -452,7 +452,7 @@ public class WorldUtil
         {
             for (File var5 : var2)
             {
-                if (var5.getName().contains("spacestation_"))
+                if (var5.getName().startsWith("spacestation_") && var5.getName().endsWith(".dat"))
                 {
                     try
                     {
@@ -1047,12 +1047,10 @@ public class WorldUtil
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
-            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.world;
             if (worldNew != null)
             {
-                Thread.dumpStack();
                 return worldNew;
             }
         }

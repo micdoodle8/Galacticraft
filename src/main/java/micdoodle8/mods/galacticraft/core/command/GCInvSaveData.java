@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -7,7 +8,7 @@ import net.minecraft.world.WorldSavedData;
 
 public class GCInvSaveData extends WorldSavedData
 {
-    public static final String SAVE_ID = "GCInv_savefile";
+    public static final String SAVE_ID = Constants.GCDATAFOLDER + "GCInv_savefile";
 
     public GCInvSaveData()
     {

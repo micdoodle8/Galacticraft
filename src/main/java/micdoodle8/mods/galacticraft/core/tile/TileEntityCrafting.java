@@ -17,6 +17,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory
 {
@@ -199,24 +200,27 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.craftMatrix.clear();
-        for (int i = 0; i < SIZEINVENTORY; ++i)
-            this.memory.set(i, ItemStack.EMPTY);
-        NBTTagList contents = nbt.getTagList("Items", 10);
-        if (contents.tagCount() > 0)
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
-            for (int i = 0; i < contents.tagCount(); ++i)
+            this.craftMatrix.clear();
+            for (int i = 0; i < SIZEINVENTORY; ++i)
+                this.memory.set(i, ItemStack.EMPTY);
+            NBTTagList contents = nbt.getTagList("Items", 10);
+            if (contents != null && contents.tagCount() > 0)
             {
-                NBTTagCompound var4 = contents.getCompoundTagAt(i);
-                int slot = var4.getByte("Slot") & 255;
+                for (int i = 0; i < contents.tagCount(); ++i)
+                {
+                    NBTTagCompound var4 = contents.getCompoundTagAt(i);
+                    int slot = var4.getByte("Slot") & 255;
 
-                if (slot < SIZEINVENTORY)
-                {
-                    this.craftMatrix.setInventorySlotContents(slot, new ItemStack(var4));
-                }
-                else if (slot < 18)
-                {
-                    this.memory.set(slot - SIZEINVENTORY, new ItemStack(var4));
+                    if (slot < SIZEINVENTORY)
+                    {
+                        this.craftMatrix.setInventorySlotContents(slot, new ItemStack(var4));
+                    }
+                    else if (slot < 18)
+                    {
+                        this.memory.set(slot - SIZEINVENTORY, new ItemStack(var4));
+                    }
                 }
             }
         }
