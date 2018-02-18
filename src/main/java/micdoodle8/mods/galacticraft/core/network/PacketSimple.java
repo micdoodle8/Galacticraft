@@ -262,7 +262,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             {
                 this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
             }
-            if (buffer.readableBytes() > 0)
+            if (buffer.readableBytes() > 0 && buffer.writerIndex() < 0xfff00)
             {
                 GCLog.severe("Galacticraft packet length problem for packet type " + this.type.toString());
             }

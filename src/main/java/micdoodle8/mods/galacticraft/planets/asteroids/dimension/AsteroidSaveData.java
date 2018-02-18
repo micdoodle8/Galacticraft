@@ -1,11 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
+import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldSavedData;
 
 public class AsteroidSaveData extends WorldSavedData
 {
-    public static final String saveDataID = "GCAsteroidData";
+    public static final String saveDataID = Constants.GCDATAFOLDER + "GCAsteroidData";
     public NBTTagCompound datacompound;
 
     public AsteroidSaveData(String s)

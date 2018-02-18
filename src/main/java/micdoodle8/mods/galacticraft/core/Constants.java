@@ -38,9 +38,10 @@ public class Constants
     public static final String POWER_CONFIG_FILE = "Galacticraft/power-GC3.conf";
     public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
-    public static String ASSET_PREFIX = "galacticraftcore";
-    public static String TEXTURE_PREFIX = ASSET_PREFIX + ":";
-    public static String PREFIX = "micdoodle8.";
+    public static final String ASSET_PREFIX = "galacticraftcore";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
+    public static final String PREFIX = "micdoodle8.";
+    public static final String GCDATAFOLDER = "../galacticraft/"; 
 
     public static final int GEAR_ID_OXYGEN_MASK = 0;
     public static final int GEAR_ID_OXYGEN_GEAR = 1;
