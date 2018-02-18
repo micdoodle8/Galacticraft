@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.recipe;
 
+import static net.minecraftforge.oredict.RecipeSorter.Category.SHAPED;
 import buildcraft.api.recipes.BuildcraftRecipeRegistry;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
@@ -31,7 +32,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-
+import net.minecraftforge.oredict.RecipeSorter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -71,6 +72,8 @@ public class RecipeManagerGC
     @SuppressWarnings("unchecked")
     private static void addUniversalRecipes()
     {
+        RecipeSorter.register("galacticraftcore:shapedore", OreRecipeUpdatable.class, SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        
         Object meteoricIronIngot = new ItemStack(GCItems.itemBasicMoon, 1, 0);
         Object meteoricIronPlate = new ItemStack(GCItems.itemBasicMoon, 1, 1);
     	Object deshIngot = GalacticraftCore.isPlanetsLoaded ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : GCItems.heavyPlatingTier1;
