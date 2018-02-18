@@ -114,9 +114,10 @@ public class NetworkUtil
             }
             else if (dataValue instanceof byte[])
             {
-                int pos = buffer.writerIndex();
                 int size = ((byte[]) dataValue).length;
                 buffer.writeInt(size);
+                int pos = buffer.writerIndex();
+                buffer.capacity(pos + size);
                 buffer.setBytes(pos, (byte[]) dataValue);
                 buffer.writerIndex(pos + size);
             }
