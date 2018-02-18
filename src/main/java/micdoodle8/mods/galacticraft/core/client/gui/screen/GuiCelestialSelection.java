@@ -998,7 +998,7 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
-    private boolean testClicked(CelestialBody body, int xOffset, int yPos, int x, int y, boolean grandchild)
+    protected boolean testClicked(CelestialBody body, int xOffset, int yPos, int x, int y, boolean grandchild)
     {
         int xPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset;
         if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
@@ -2131,7 +2131,7 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
-    private int drawChildren(List<CelestialBody> children, int xOffsetBase, int yOffsetPrior)
+    protected int drawChildren(List<CelestialBody> children, int xOffsetBase, int yOffsetPrior)
     {
         xOffsetBase += GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE;
         final int yOffsetBase = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50 + yOffsetPrior;
@@ -2485,7 +2485,7 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glLineWidth(1);
     }
 
-    private boolean drawCircle(CelestialBody body, int count, float sin, float cos)
+    protected boolean drawCircle(CelestialBody body, int count, float sin, float cos)
     {
         float x = this.getScale(body);
         float y = 0;
@@ -2589,12 +2589,12 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
-    private boolean isZoomed()
+    protected boolean isZoomed()
     {
         return this.selectionState == EnumSelection.ZOOMED;
     }
 
-    private boolean isSelected()
+    protected boolean isSelected()
     {
         return this.selectionState != EnumSelection.UNSELECTED;
     }
