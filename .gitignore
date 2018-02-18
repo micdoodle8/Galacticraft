@@ -12,14 +12,17 @@
 /logs/*
 /modsrc/*
 /reobf/*
+/run/*
 /runtime/*
 /temp/*
+/temporary/*
 LICENSE.txt
 CHANGELOG
 
 /src/minecraft/*
 /src/main/java/buildcraft/*
 /src/main/java/cofh/*
+/src/main/java/micdoodle8/mods/miccore/*
 /src/main/resources/assets/minecraft/shaders/program/buildcraft/*
 /src/main/resources/buildcraft/*
 /src/main/resources/assets/buildcraftsilicon/*
