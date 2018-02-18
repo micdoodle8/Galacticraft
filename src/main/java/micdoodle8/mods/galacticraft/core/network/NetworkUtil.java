@@ -249,7 +249,6 @@ public class NetworkUtil
             else if (clazz.equals(byte[].class))
             {
                 int size = buffer.readInt();
-                System.out.println("received " + size);
                 byte[] bytes = new byte[size];
                 buffer.readBytes(bytes, 0, size);
                 objList.add(bytes);
