@@ -7,7 +7,7 @@
     "YX ",
     " X "
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "X": {
       "item": "minecraft:iron_ingot"

@@ -8,7 +8,7 @@
     "W W",
     "XBX"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "B": {
       "item": "galacticraftcore:machine_tiered",

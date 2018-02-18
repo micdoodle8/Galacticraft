@@ -7,7 +7,7 @@
     "Z Z",
     "XYX"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "W": {
       "type": "forge:ore_dict",

@@ -9,13 +9,7 @@
     "CCC",
     "WWW"
   ],
-  "type": "forge:ore_shaped",
-  "conditions": [
-    {
-      "type": "galacticraftcore:condition",
-      "data": "normal_mode"
-    }
-  ],
+  "type": "galacticraftcore:replacable",
   "key": {
     "C": {
       "type": "forge:ore_dict",

@@ -7,7 +7,7 @@
     "XYX",
     "ZXZ"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "X": {
       "item": "minecraft:glass_pane"

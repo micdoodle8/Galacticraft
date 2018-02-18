@@ -5,6 +5,7 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
+
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -32,6 +33,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -74,6 +76,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected int ticksSinceUnselection = -1;
     protected int ticksSinceMenuOpen = 0;
     protected int ticksTotal = 0;
+    protected int animateGrandchildren = 0;
     protected Vector2f position = new Vector2f(0, 0);
     protected Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
     protected Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
@@ -878,60 +881,33 @@ public class GuiCelestialSelection extends GuiScreen
 
         List<CelestialBody> children = this.getChildren(this.isZoomed() ? this.selectedBody : this.selectedParent);
 
-        for (int i = 0; i < children.size(); i++)
+        yPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50;
+        for (CelestialBody child : children)
         {
-            CelestialBody child = children.get(i);
-            int xOffset = 0;
+            clickHandled = this.testClicked(child, child.equals(this.selectedBody) ? 5 : 0, yPos, x, y, false);
+            yPos += 14;
 
-            if (child.equals(this.selectedBody))
+            if (!clickHandled && !this.isZoomed() && child.equals(this.selectedBody))
             {
-                xOffset += 4;
-            }
-
-            xPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset;
-            yPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50 + i * 14;
-
-            if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
-            {
-                if (this.selectedBody != child || !this.isZoomed())
+                List<CelestialBody> grandchildren = this.getChildren(child);
+                int gOffset = 0;
+                for (CelestialBody grandchild : grandchildren)
                 {
-                    if (this.selectedBody == null)
+                    if (gOffset + 14 > this.animateGrandchildren)
                     {
-                        this.preSelectZoom = this.zoom;
-                        this.preSelectPosition = this.position;
+                        break;
                     }
-
-                    EnumSelection selectionCountOld = this.selectionState;
-
-                    if (this.isSelected() && this.selectedBody != child)
-                    {
-                        this.unselectCelestialBody();
-                    }
-
-                    if (selectionCountOld == EnumSelection.ZOOMED)
-                    {
-                        this.selectionState = EnumSelection.SELECTED;
-                    }
-
-                    this.doneZooming = false;
-                    this.planetZoom = 0.0F;
-
-                    if (child != this.selectedBody)
-                    {
-                        this.lastSelectedBody = this.selectedBody;
-                    }
-
-                    this.selectedBody = child;
-                    this.ticksSinceSelection = 0;
-                    this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
-                    if (this.isZoomed())
-                    {
-                        this.ticksSinceMenuOpen = 0;
-                    }
-                    clickHandled = true;
-                    break;
+                    clickHandled = this.testClicked(grandchild, 10, yPos, x, y, true);
+                    yPos += 14;
+                    gOffset += 14;
+                    if (clickHandled)
+                        break;
                 }
+                yPos += this.animateGrandchildren - gOffset; 
             }
+
+            if (clickHandled)
+                break;
         }
 
         if (!clickHandled)
@@ -1022,6 +998,54 @@ public class GuiCelestialSelection extends GuiScreen
         {
             this.selectedParent = selectedParent;
         }
+    }
+
+    protected boolean testClicked(CelestialBody body, int xOffset, int yPos, int x, int y, boolean grandchild)
+    {
+        int xPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset;
+        if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
+        {
+            if (this.selectedBody != body || !this.isZoomed())
+            {
+                if (this.selectedBody == null)
+                {
+                    this.preSelectZoom = this.zoom;
+                    this.preSelectPosition = this.position;
+                }
+
+                EnumSelection selectionCountOld = this.selectionState;
+
+                if (this.isSelected() && this.selectedBody != body)
+                {
+                    this.unselectCelestialBody();
+                }
+
+                if (selectionCountOld == EnumSelection.ZOOMED)
+                {
+                    this.selectionState = EnumSelection.SELECTED;
+                }
+
+                this.doneZooming = false;
+                this.planetZoom = 0.0F;
+
+                if (body != this.selectedBody)
+                {
+                    this.lastSelectedBody = this.selectedBody;
+                }
+
+                this.selectedBody = body;
+                this.ticksSinceSelection = 0;
+                this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
+                if (grandchild) this.selectionState = EnumSelection.ZOOMED;
+                if (this.isZoomed())
+                {
+                    this.ticksSinceMenuOpen = 0;
+                }
+                this.animateGrandchildren = 0;
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -1628,40 +1652,7 @@ public class GuiCelestialSelection extends GuiScreen
             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
 
             List<CelestialBody> children = this.getChildren(this.isZoomed() ? this.selectedBody : this.selectedParent);
-
-            for (int i = 0; i < children.size(); i++)
-            {
-                CelestialBody child = children.get(i);
-                int xOffset = 0;
-
-                if (child.equals(this.selectedBody))
-                {
-                    xOffset += 4;
-                }
-
-                scale = (int) Math.min(95.0F, Math.max(0.0F, (this.ticksSinceMenuOpen * 25.0F) - 95 * i));
-
-                this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
-                if (child.getReachable())
-                {
-                    GL11.glColor4f(0.0F, 0.6F, 0.0F, scale / 95.0F);
-                }
-                else
-                {
-                    GL11.glColor4f(0.6F, 0.0F, 0.0F, scale / 95.0F);
-                }
-                this.drawTexturedModalRect(GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 3 + xOffset, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 51 + i * 14, 86, 10, 0, 489, 86, 10, false, false);
-                GL11.glColor4f(0.0F, 0.6F, 1.0F, scale / 95.0F);
-                this.drawTexturedModalRect(GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50 + i * 14, 93, 12, 95, 464, 93, 12, false, false);
-
-                if (scale > 0)
-                {
-                    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                    str = child.getLocalizedName();
-                    int color = 14737632;
-                    this.fontRenderer.drawString(str, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 7 + xOffset, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 52 + i * 14, color);
-                }
-            }
+            drawChildren(children, 0, 0);
 
             if (this.mapMode)
             {
@@ -2142,6 +2133,66 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
+    protected int drawChildren(List<CelestialBody> children, int xOffsetBase, int yOffsetPrior)
+    {
+        xOffsetBase += GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE;
+        final int yOffsetBase = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50 + yOffsetPrior;
+        int yOffset = 0;
+        for (int i = 0; i < children.size(); i++)
+        {
+            CelestialBody child = children.get(i);
+            int xOffset = xOffsetBase + (child.equals(this.selectedBody) ? 5 : 0);  
+            final int scale = (int) Math.min(95.0F, Math.max(0.0F, (this.ticksSinceMenuOpen * 25.0F) - 95 * i));
+
+            this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
+            float brightness = child.equals(this.selectedBody) ? 0.2F : 0.0F;
+            if (child.getReachable())
+            {
+                GL11.glColor4f(0.0F, 0.6F + brightness, 0.0F, scale / 95.0F);
+            }
+            else
+            {
+                GL11.glColor4f(0.6F + brightness, 0.0F, 0.0F, scale / 95.0F);
+            }
+            this.drawTexturedModalRect(3 + xOffset, yOffsetBase + yOffset + 1, 86, 10, 0, 489, 86, 10, false, false);
+//            GL11.glColor4f(5 * brightness, 0.6F + 2 * brightness, 1.0F - 4 * brightness, scale / 95.0F);
+            GL11.glColor4f(3 * brightness, 0.6F + 2 * brightness, 1.0F, scale / 95.0F);
+            this.drawTexturedModalRect(2 + xOffset, yOffsetBase + yOffset, 93, 12, 95, 464, 93, 12, false, false);
+
+            if (scale > 0)
+            {
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                int color = 14737632;
+                this.fontRenderer.drawString(child.getLocalizedName(), 7 + xOffset, yOffsetBase + yOffset + 2, color);
+            }
+            
+            yOffset += 14;
+            if (child.equals(this.selectedBody))
+            {
+                List<CelestialBody> grandchildren = this.getChildren(child);
+                if (this.animateGrandchildren == 14 * grandchildren.size())
+                {
+                    yOffset += drawChildren(grandchildren, 10, yOffset);
+                }
+                else
+                {
+                    if (this.animateGrandchildren >= 14)
+                    {
+                        List<CelestialBody> partial = new LinkedList<>();
+                        for (int j = 0; j < this.animateGrandchildren / 14; j++)
+                        {
+                            partial.add(grandchildren.get(j));
+                        }
+                        drawChildren(partial, 10, yOffset);
+                    }
+                    yOffset += this.animateGrandchildren;
+                    this.animateGrandchildren += 2;
+                }
+            }
+        }
+        return yOffset;
+    }
+
     protected int getAmountInInventory(ItemStack stack)
     {
         int amountInInv = 0;
@@ -2354,7 +2405,7 @@ public class GuiCelestialSelection extends GuiScreen
                         GL11.glColor4f(0.0F / 1.4F, 0.6F / 1.4F, 1.0F / 1.4F, alpha / 1.4F);
                         break;
                     case 1:
-                        GL11.glColor4f(0.4F / 1.4F, 0.9F / 1.4F, 1.0F / 1.4F, alpha / 1.4F);
+                        GL11.glColor4f(0.3F / 1.4F, 0.8F / 1.4F, 1.0F / 1.4F, alpha / 1.4F);
                         break;
                     }
 
@@ -2436,7 +2487,7 @@ public class GuiCelestialSelection extends GuiScreen
         GL11.glLineWidth(1);
     }
 
-    private boolean drawCircle(CelestialBody body, int count, float sin, float cos)
+    protected boolean drawCircle(CelestialBody body, int count, float sin, float cos)
     {
         float x = this.getScale(body);
         float y = 0;
@@ -2540,12 +2591,12 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
-    private boolean isZoomed()
+    protected boolean isZoomed()
     {
         return this.selectionState == EnumSelection.ZOOMED;
     }
 
-    private boolean isSelected()
+    protected boolean isSelected()
     {
         return this.selectionState != EnumSelection.UNSELECTED;
     }

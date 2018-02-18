@@ -8,7 +8,7 @@
     "ZWZ",
     "XVX"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "V": {
       "item": "galacticraftcore:air_vent"

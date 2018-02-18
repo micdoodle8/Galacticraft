@@ -539,7 +539,7 @@ public class ConfigManagerCore
 
             prop = getConfig(Constants.CONFIG_CATEGORY_COMPATIBILITY, "Must use GC's own space metals in recipes", true);
             prop.setComment("Should normally be true. If you set this to false, in a modpack with other mods with the same metals, players may be able to craft advanced GC items without travelling to Moon, Mars, Asteroids etc.");
-            prop.setLanguageKey("gc.configgui.disable_ore_dict_space_metals").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.disable_ore_dict_space_metals");
             recipesRequireGCAdvancedMetals = prop.getBoolean(true);
             finishProp(prop);
             

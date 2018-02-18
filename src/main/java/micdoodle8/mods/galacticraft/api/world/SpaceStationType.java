@@ -9,7 +9,7 @@ public class SpaceStationType
 {
     private final int spaceStationID;
     private final int planetID;
-    private final SpaceStationRecipe recipe;
+    private SpaceStationRecipe recipe;
 
     /**
      * The planet ID is the home planet.  Only one SpaceStationType is allowed per home planet.
@@ -47,5 +47,10 @@ public class SpaceStationType
     public SpaceStationRecipe getRecipeForSpaceStation()
     {
         return this.recipe;
+    }
+
+    public void setRecipeForSpaceStation(SpaceStationRecipe newRecipe)
+    {
+        this.recipe = newRecipe;
     }
 }

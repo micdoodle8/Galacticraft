@@ -7,7 +7,7 @@
     "YWZ",
     "PXP"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "P": {
       "type": "forge:ore_dict",

@@ -114,11 +114,12 @@ public class NetworkUtil
             }
             else if (dataValue instanceof byte[])
             {
-                buffer.writeInt(((byte[]) dataValue).length);
-                for (int i = 0; i < ((byte[]) dataValue).length; i++)
-                {
-                    buffer.writeByte(((byte[]) dataValue)[i]);
-                }
+                int size = ((byte[]) dataValue).length;
+                buffer.writeInt(size);
+                int pos = buffer.writerIndex();
+                buffer.capacity(pos + size);
+                buffer.setBytes(pos, (byte[]) dataValue);
+                buffer.writerIndex(pos + size);
             }
             else if (dataValue instanceof UUID)
             {
@@ -247,11 +248,10 @@ public class NetworkUtil
             }
             else if (clazz.equals(byte[].class))
             {
-                byte[] bytes = new byte[buffer.readInt()];
-                for (int i = 0; i < bytes.length; i++)
-                {
-                    bytes[i] = buffer.readByte();
-                }
+                int size = buffer.readInt();
+                System.out.println("received " + size);
+                byte[] bytes = new byte[size];
+                buffer.readBytes(bytes, 0, size);
                 objList.add(bytes);
             }
             else if (clazz.equals(EnergyStorage.class))

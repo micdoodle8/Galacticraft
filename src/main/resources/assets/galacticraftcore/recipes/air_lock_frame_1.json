@@ -8,7 +8,7 @@
     "WZW",
     "YYY"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "W": {
       "type": "galacticraftcore:advanced_metal",
