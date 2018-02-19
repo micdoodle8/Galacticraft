@@ -591,9 +591,10 @@ public class RecipeManagerGC
         boolean doSilicon = !ConfigManagerCore.otherModsSilicon.equals(configSaved_Silicon);
         configSaved_Silicon = ConfigManagerCore.otherModsSilicon;
 
+        boolean successJEI = false;
         if ((doMetalsToOreDict || doMetalsToGC || doSilicon) && GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
         {
-            GalacticraftJEI.refreshJEIpre();
+            successJEI = GalacticraftJEI.refreshJEIpre();
         }
 
         if (doQuickMode || doMetalsToOreDict || doMetalsToGC)
@@ -776,12 +777,9 @@ public class RecipeManagerGC
             }
         }
         
-        if ((doMetalsToOreDict || doMetalsToGC || doSilicon) && GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
+        if (successJEI)
         {
-            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
-            {
-                GalacticraftJEI.refreshJEIpost();
-            }
+            GalacticraftJEI.refreshJEIpost();
         }
     }
 

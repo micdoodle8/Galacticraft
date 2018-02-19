@@ -130,65 +130,71 @@ public class GalacticraftJEI extends BlankModPlugin
         recipesCached = rt.getRecipeRegistry();
     }
 
-    public static void refreshJEIpre()
+    public static boolean refreshJEIpre()
     {
         if (recipesCached != null)
         {
-            IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-            for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-            {
-                if (JEIversion450plus)
-                    removeRecipe(recipesCached, recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                else
-                    recipesCached.removeRecipe(recipe);
-            }
-            for (IRecipe recipe : CompressorRecipes.getRecipeList())
-            {
-                if (JEIversion450plus)
+            try {
+                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
+                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
                 {
-                    if (recipe instanceof ShapelessOreRecipeGC)
-                    {
-                        removeRecipe(recipesCached, new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                    else if (recipe instanceof ShapedRecipesGC)
-                    {
-                        removeRecipe(recipesCached, new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
+                    if (JEIversion450plus)
+                        removeRecipe(recipesCached, recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
+                    else
+                        recipesCached.removeRecipe(recipe);
                 }
-                else
-                    recipesCached.removeRecipe(recipe);
-            }
+                for (IRecipe recipe : CompressorRecipes.getRecipeList())
+                {
+                    if (JEIversion450plus)
+                    {
+                        if (recipe instanceof ShapelessOreRecipeGC)
+                        {
+                            removeRecipe(recipesCached, new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
+                        }
+                        else if (recipe instanceof ShapedRecipesGC)
+                        {
+                            removeRecipe(recipesCached, new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
+                        }
+                    }
+                    else
+                        recipesCached.removeRecipe(recipe);
+                }
+                return true;
+            } catch (Exception ignore) {}
         }
+        return false;
     }
 
     public static void refreshJEIpost()
     {
         if (recipesCached != null)
         {
-            IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-            for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-            {
-                if (JEIversion450plus)
-                    recipesCached.addRecipe(recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                else
-                    recipesCached.addRecipe(recipe);
-            }
-            for (IRecipe recipe : CompressorRecipes.getRecipeList())
-            {
-                if (JEIversion450plus)
+            try {
+                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
+                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
                 {
-                    if (recipe instanceof ShapelessOreRecipeGC)
-                    {
-                        recipesCached.addRecipe(new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                    else if (recipe instanceof ShapedRecipesGC)
-                    {
-                        recipesCached.addRecipe(new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
+                    if (JEIversion450plus)
+                        recipesCached.addRecipe(recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
+                    else
+                        recipesCached.addRecipe(recipe);
                 }
-                else
-                    recipesCached.addRecipe(recipe);
-            }
+                for (IRecipe recipe : CompressorRecipes.getRecipeList())
+                {
+                    if (JEIversion450plus)
+                    {
+                        if (recipe instanceof ShapelessOreRecipeGC)
+                        {
+                            recipesCached.addRecipe(new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
+                        }
+                        else if (recipe instanceof ShapedRecipesGC)
+                        {
+                            recipesCached.addRecipe(new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
+                        }
+                    }
+                    else
+                        recipesCached.addRecipe(recipe);
+                }
+            } catch (Exception ignore) {}
         }
     }
     
@@ -216,8 +222,6 @@ public class GalacticraftJEI extends BlankModPlugin
                 }
             }
             removeIt.invoke(registry, recipe, recipeCategory);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignore) {}
     }
 }
