@@ -51,4 +51,23 @@ public class IngotCompressorShapedRecipeWrapper implements IRecipeWrapper
             fontRendererObj.drawString(experienceString, recipeWidth + 6 - stringWidth, 8, Color.gray.getRGB());
         }
     }
+    
+    public boolean equals(Object o)
+    {
+        if (o instanceof IngotCompressorShapedRecipeWrapper)
+        {
+            ShapedRecipesGC match = ((IngotCompressorShapedRecipeWrapper)o).recipe;
+            if (!ItemStack.areItemStacksEqual(match.getRecipeOutput(), this.recipe.getRecipeOutput()))
+                return false;
+            for (int i = 0; i < this.recipe.recipeItems.length; i++)
+            {
+                ItemStack a = this.recipe.recipeItems[i];
+                ItemStack b = match.recipeItems[i];
+                if (!a.isEmpty() && !b.isEmpty() && !ItemStack.areItemStacksEqual(a, b))
+                    return false;
+            }
+            return true;
+        }
+        return false;
+    }
 }

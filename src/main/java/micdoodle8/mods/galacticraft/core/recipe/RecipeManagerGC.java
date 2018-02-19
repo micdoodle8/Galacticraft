@@ -10,9 +10,11 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlockType;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -27,6 +29,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.NonNullList;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
@@ -34,6 +37,7 @@ import net.minecraftforge.oredict.RecipeSorter.Category;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import appeng.api.AEApi;
@@ -44,6 +48,7 @@ public class RecipeManagerGC
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
     private static boolean configSaved_RequireGCmetals = true;
     private static boolean configSaved_QuickMode = false;
+    private static String configSaved_Silicon = "-";
 
     public static void loadCompatibilityRecipes()
     {
@@ -296,6 +301,14 @@ public class RecipeManagerGC
         boolean doMetalsToGC = !configSaved_RequireGCmetals && ConfigManagerCore.recipesRequireGCAdvancedMetals;
         configSaved_RequireGCmetals = ConfigManagerCore.recipesRequireGCAdvancedMetals; 
 
+        boolean doSilicon = !ConfigManagerCore.otherModsSilicon.equals(configSaved_Silicon);
+        configSaved_Silicon = ConfigManagerCore.otherModsSilicon;
+
+        if ((doMetalsToOreDict || doMetalsToGC || doSilicon) && GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
+        {
+            GalacticraftJEI.refreshJEIpre();
+        }
+
         if (doQuickMode || doMetalsToOreDict || doMetalsToGC)
         {
             for (IRecipe recipe : CraftingManager.REGISTRY)
@@ -344,44 +357,61 @@ public class RecipeManagerGC
             }
         }
 
-        // Update Circuit Fabricator recipes for the configured silicon item
-        ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
-        ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
-        ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
-
-        CircuitFabricatorRecipes.removeRecipe(solarPanels);
-        CircuitFabricatorRecipes.removeRecipe(basicWafers);
-        CircuitFabricatorRecipes.removeRecipe(advancedWafers);
-        List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
-        int siliconCount = silicons.size();
-        for (int j = 0; j <= siliconCount; j++)
+        if (doSilicon)
         {
-            ItemStack silicon;
-            if (j == 0)
+            // Update Circuit Fabricator recipes for the configured silicon item
+            ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
+            ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
+            ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
+    
+            CircuitFabricatorRecipes.removeRecipe(solarPanels);
+            CircuitFabricatorRecipes.removeRecipe(basicWafers);
+            CircuitFabricatorRecipes.removeRecipe(advancedWafers);
+            CircuitFabricatorRecipes.slotValidItems.clear();
+            Object silicon =  new ItemStack(GCItems.basicItem, 1, 2);
+            List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
+            if (silicons.size() > 0)
             {
-                silicon = new ItemStack(GCItems.basicItem, 1, 2);
-            }
-            else
-            {
-                silicon = silicons.get(j - 1);
-                if (silicon.getItem() == GCItems.basicItem && silicon.getItemDamage() == 2) continue;
+                boolean needGCsilicon = true;
+                for (ItemStack s : silicons)
+                {
+                    if (ItemStack.areItemsEqual(s, (ItemStack) silicon))
+                    {
+                        needGCsilicon = false;
+                        break;
+                    }
+                }
+                if (needGCsilicon)
+                {
+                    List<ItemStack> newList = new LinkedList<>();
+                    newList.add((ItemStack) silicon);
+                    newList.addAll(silicons);
+                    silicon = newList;
+                }
+                else
+                {
+                    if (silicons.size() > 1)
+                    {
+                        silicon = silicons;
+                    }
+                }
             }
 
-            NonNullList<ItemStack> input1 = NonNullList.create();
+            NonNullList<Object> input1 = NonNullList.create();
             input1.add(new ItemStack(Items.DIAMOND));
             input1.add(silicon);
             input1.add(silicon);
             input1.add(new ItemStack(Items.REDSTONE));
             input1.add(new ItemStack(Items.DYE, 1, 4));
             CircuitFabricatorRecipes.addRecipe(solarPanels, input1);
-            NonNullList<ItemStack> input2 = NonNullList.create();
+            NonNullList<Object> input2 = NonNullList.create();
             input2.add(new ItemStack(Items.DIAMOND));
             input2.add(silicon);
             input2.add(silicon);
             input2.add(new ItemStack(Items.REDSTONE));
             input2.add(new ItemStack(Blocks.REDSTONE_TORCH));
             CircuitFabricatorRecipes.addRecipe(basicWafers, input2);
-            NonNullList<ItemStack> input3 = NonNullList.create();
+            NonNullList<Object> input3 = NonNullList.create();
             input3.add(new ItemStack(Items.DIAMOND));
             input3.add(silicon);
             input3.add(silicon);
@@ -389,7 +419,7 @@ public class RecipeManagerGC
             input3.add(new ItemStack(Items.REPEATER));
             CircuitFabricatorRecipes.addRecipe(advancedWafers, input3);
         }
-
+            
         // Update Ingot Compressor recipes for steel plate
         CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));
         boolean steelDone = false;
@@ -455,6 +485,14 @@ public class RecipeManagerGC
                         ssrecipe.put(sswafer, 1);
                     }
                 }
+            }
+        }
+        
+        if ((doMetalsToOreDict || doMetalsToGC || doSilicon) && GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
+        {
+            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded)
+            {
+                GalacticraftJEI.refreshJEIpost();
             }
         }
     }

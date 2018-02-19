@@ -533,7 +533,7 @@ public class ConfigManagerCore
 
             prop = getConfig(Constants.CONFIG_CATEGORY_COMPATIBILITY, "OreDict name of other mod's silicon", "itemSilicon");
             prop.setComment("This needs to match the OreDictionary name used in the other mod. Set a nonsense name to disable.");
-            prop.setLanguageKey("gc.configgui.ore_dict_silicon").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.ore_dict_silicon");
             otherModsSilicon = prop.getString();
             finishProp(prop);
 
