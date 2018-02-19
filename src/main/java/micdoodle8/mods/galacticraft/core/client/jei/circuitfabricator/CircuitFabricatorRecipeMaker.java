@@ -1,13 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator;
 
-import com.google.common.collect.ImmutableMap;
-
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
-import net.minecraft.item.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class CircuitFabricatorRecipeMaker
 {
@@ -15,11 +10,12 @@ public class CircuitFabricatorRecipeMaker
     {
         List<CircuitFabricatorRecipeWrapper> recipes = new ArrayList<>();
 
-        ImmutableMap<Object[], ItemStack> recipesMap = CircuitFabricatorRecipes.getRecipes();
-        for (Entry<Object[], ItemStack> entry : recipesMap.entrySet())
+        int count = 0;
+        for (Object[] entry : CircuitFabricatorRecipes.getRecipes())
         {
-            CircuitFabricatorRecipeWrapper wrapper = new CircuitFabricatorRecipeWrapper(entry.getKey(), entry.getValue());
+            CircuitFabricatorRecipeWrapper wrapper = new CircuitFabricatorRecipeWrapper(entry, CircuitFabricatorRecipes.getOutput(count));
             recipes.add(wrapper);
+            count++;
         }
 
         return recipes;
