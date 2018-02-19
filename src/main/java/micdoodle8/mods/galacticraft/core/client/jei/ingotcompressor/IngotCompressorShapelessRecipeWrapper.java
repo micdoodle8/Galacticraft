@@ -56,4 +56,47 @@ public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper
             fontRendererObj.drawString(experienceString, recipeWidth + 6 - stringWidth, 8, Color.gray.getRGB());
         }
     }
+
+    public boolean equals(Object o)
+    {
+        if (o instanceof IngotCompressorShapelessRecipeWrapper)
+        {
+            ShapelessOreRecipeGC match = ((IngotCompressorShapelessRecipeWrapper)o).recipe;
+            if (!ItemStack.areItemStacksEqual(match.getRecipeOutput(), this.recipe.getRecipeOutput()))
+                return false;
+            for (int i = 0; i < this.recipe.getInput().size(); i++)
+            {
+                Object a = this.recipe.getInput().get(i);
+                Object b = match.getInput().get(i);
+                if (a == null && b == null)
+                    continue;
+                
+                if (a instanceof ItemStack)
+                {
+                    if (!(b instanceof ItemStack))
+                        return false;
+                    if (!ItemStack.areItemStacksEqual((ItemStack) a, (ItemStack) b))
+                        return false;
+                }
+                else if (a instanceof List<?>)
+                {
+                    if (!(b instanceof List<?>))
+                        return false;
+                    List aa = ((List)a);
+                    List bb = ((List)b);
+                    if (aa.size() != bb.size())
+                        return false;
+                    for (int j = 0; j < aa.size(); j++)
+                    {
+                        ItemStack c = (ItemStack) aa.get(j);
+                        ItemStack d = (ItemStack) bb.get(j);
+                        if (!ItemStack.areItemStacksEqual((ItemStack) c, (ItemStack) d))
+                            return false;
+                    }                    
+                }
+            }
+            return true;
+        }
+        return false;
+    }
 }
