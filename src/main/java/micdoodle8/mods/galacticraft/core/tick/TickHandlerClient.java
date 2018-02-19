@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -22,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -74,6 +76,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TickHandlerClient
 {
@@ -87,6 +90,7 @@ public class TickHandlerClient
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
     private static boolean menuReset = true;
+    public static AtomicBoolean updateJEIhiding = new AtomicBoolean();
     
     public static void resetClient()
     {
@@ -345,6 +349,17 @@ public class TickHandlerClient
         final WorldClient world = minecraft.theWorld;
         final EntityPlayerSP player = minecraft.thePlayer;
 
+        if (updateJEIhiding.getAndSet(false))
+        {
+            if (CompressorRecipes.steelIngotsPresent)
+            {
+                // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
+                GalacticraftJEI.updateHiddenSteel(ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes);
+            }
+            // Update JEI to hide adventure mode recipes when not in adventure mode
+            GalacticraftJEI.updateHiddenAdventure(!ConfigManagerCore.challengeRecipes);
+        }
+        
         if (teleportingGui != null)
         {
             if (minecraft.currentScreen != teleportingGui)

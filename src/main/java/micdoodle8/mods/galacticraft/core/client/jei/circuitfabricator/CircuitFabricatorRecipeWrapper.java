@@ -5,6 +5,7 @@ import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,13 +14,13 @@ import java.util.List;
 public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
-    private final ItemStack[] input;
+    private final Object[] input;
     @Nonnull
     private final ItemStack output;
 
-    public CircuitFabricatorRecipeWrapper(@Nonnull ItemStack[] input, @Nonnull ItemStack output)
+    public CircuitFabricatorRecipeWrapper(@Nonnull Object[] objects, @Nonnull ItemStack output)
     {
-        this.input = input;
+        this.input = objects;
         this.output = output;
     }
 
@@ -27,7 +28,7 @@ public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implement
     @Override
     public List getInputs()
     {
-        List<ItemStack> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
         list.addAll(Arrays.asList(this.input));
         return list;
     }

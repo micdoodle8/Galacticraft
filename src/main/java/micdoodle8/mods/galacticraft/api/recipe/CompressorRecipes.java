@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
 import micdoodle8.mods.galacticraft.api.GalacticraftConfigAccess;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -20,6 +21,8 @@ public class CompressorRecipes
     private static boolean adventureOnly = false;
     private static Field adventureFlag;
     private static boolean flagNotCached = true;
+    public static boolean steelIngotsPresent = false;
+    public static List<ItemStack> steelRecipeGC;
 
     public static ShapedRecipesGC addRecipe(ItemStack output, Object... inputList)
     {
@@ -208,13 +211,67 @@ public class CompressorRecipes
         }
     }
 
+    public static List<IRecipe> getRecipeListAll()
+    {
+        return CompressorRecipes.recipesAdventure;
+    }
+
     public static List<IRecipe> getRecipeList()
     {
-    	return (GalacticraftConfigAccess.getChallengeRecipes()) ? CompressorRecipes.recipesAdventure : CompressorRecipes.recipes;
+    	if (GalacticraftConfigAccess.getChallengeRecipes())
+    	    return CompressorRecipes.recipesAdventure;
+    	
+    	// Filter out the GC steel recipe in Hard Mode
+        if (steelIngotsPresent && GalacticraftConfigAccess.getHardMode())
+        {
+            List<IRecipe> result = new ArrayList(CompressorRecipes.recipes.size());
+            for (IRecipe recipe : CompressorRecipes.recipes)
+            {
+                ItemStack output = recipe.getRecipeOutput();
+                if (output == null) continue;
+                if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
+                {
+                    if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))
+                    {
+                        continue;
+                    }
+                }
+                result.add(recipe);
+            }
+            return result;
+        }
+
+    	return CompressorRecipes.recipes;
     }
     
-    public static void removeRecipe(ItemStack match)
+    public static void getRecipes(ItemStack match)
     {
-        CompressorRecipes.getRecipeList().removeIf(irecipe -> ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+        CompressorRecipes.getRecipeList().removeIf(irecipe -> !ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+    }
+    
+    public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)
+    {
+        if (ingredient == null) return;
+
+        for (IRecipe recipe : CompressorRecipes.recipesAdventure)
+        {
+            if (recipe instanceof IRecipeUpdatable)
+            {  
+                ((IRecipeUpdatable)recipe).replaceInput(ingredient, replacement);
+            }
+        }
+    }
+
+    public static void replaceRecipeIngredient(ItemStack ingredient)
+    {
+        if (ingredient == null) return;
+
+        for (IRecipe recipe : CompressorRecipes.recipesAdventure)
+        {
+            if (recipe instanceof IRecipeUpdatable)
+            {  
+                ((IRecipeUpdatable)recipe).replaceInput(ingredient);
+            }
+        }
     }
 }
