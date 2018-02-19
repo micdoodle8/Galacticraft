@@ -4,6 +4,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -37,7 +38,15 @@ public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper im
     @Override
     public List<ItemStack> getOutputs()
     {
-        return Collections.singletonList(recipe.getRecipeOutput());
+        ItemStack stack = recipe.getRecipeOutput().copy();
+        if (ConfigManagerCore.quickMode)
+        {
+            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
+            {
+                stack.stackSize *= 2;
+            }
+        }
+        return Collections.singletonList(stack);
     }
 
     @Override

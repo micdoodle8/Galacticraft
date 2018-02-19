@@ -11,7 +11,6 @@ import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeMaker;
 import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeMaker;
-import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapedRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapelessRecipeHandler;
@@ -22,8 +21,6 @@ import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecip
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeMaker;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-
 import javax.annotation.Nonnull;
 
 @JEIPlugin
@@ -31,7 +28,7 @@ public class GalacticraftJEI extends BlankModPlugin
 {
     private static IModRegistry registryCached = null;
     private static IRecipeRegistry recipesCached = null;
-    
+
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
@@ -51,7 +48,7 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(Tier1RocketRecipeMaker.getRecipesList());
         registry.addRecipes(BuggyRecipeMaker.getRecipesList());
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList());
-        registry.addRecipes(CompressorRecipes.getRecipeList());
+        registry.addRecipes(CompressorRecipes.getRecipeListAll());
         registry.addRecipes(RefineryRecipeMaker.getRecipesList());
 
         ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
@@ -65,32 +62,20 @@ public class GalacticraftJEI extends BlankModPlugin
 
         GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
     }
-    
+
     @Override
     public void onRuntimeAvailable(IJeiRuntime rt)
     {
         recipesCached = rt.getRecipeRegistry();
     }
 
-    public static void refreshJEIpre()
+    public static void updateHiddenSteel(boolean hide)
     {
-        if (recipesCached != null)
-        {
-            for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                recipesCached.removeRecipe(recipe);
-            for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                recipesCached.removeRecipe(recipe);
-        }
+        // TODO
     }
 
-    public static void refreshJEIpost()
+    public static void updateHiddenAdventure(boolean hide)
     {
-        if (recipesCached != null)
-        {
-            for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                recipesCached.addRecipe(recipe);
-            for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                recipesCached.addRecipe(recipe);
-        }
+        // TODO
     }
 }

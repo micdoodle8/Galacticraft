@@ -4,6 +4,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,10 +13,10 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 import javax.annotation.Nonnull;
 
-import java.awt.Color;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.awt.Color;
 
 public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
@@ -49,7 +50,15 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
     @Override
     public List<ItemStack> getOutputs()
     {
-        return Collections.singletonList(recipe.getRecipeOutput());
+        ItemStack stack = recipe.getRecipeOutput().copy();
+        if (ConfigManagerCore.quickMode)
+        {
+            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
+            {
+                stack.stackSize *= 2;
+            }
+        }
+        return Collections.singletonList(stack);
     }
 
     @Override
