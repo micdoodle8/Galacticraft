@@ -78,7 +78,7 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
         itemstacks.init(16, true, 89, 7);
         itemstacks.init(17, true, 115, 7);
         itemstacks.init(18, true, 141, 7);
-        itemstacks.init(19, false, 138, 100);
+        itemstacks.init(19, false, 138, 102);
 
         if (recipeWrapper instanceof BuggyRecipeWrapper)
         {

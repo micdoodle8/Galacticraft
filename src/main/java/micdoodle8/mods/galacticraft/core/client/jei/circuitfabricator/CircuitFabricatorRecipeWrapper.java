@@ -15,21 +15,21 @@ import java.util.List;
 public class CircuitFabricatorRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
 {
     @Nonnull
-    private final ItemStack[] input;
+    private final Object[] input;
     @Nonnull
     private final ItemStack output;
 
-    public CircuitFabricatorRecipeWrapper(@Nonnull ItemStack[] input, @Nonnull ItemStack output)
+    public CircuitFabricatorRecipeWrapper(@Nonnull Object[] objects, @Nonnull ItemStack output)
     {
-        this.input = input;
+        this.input = objects;
         this.output = output;
     }
 
     @Nonnull
     @Override
-    public List<ItemStack> getInputs()
+    public List getInputs()
     {
-        List<ItemStack> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
         list.addAll(Arrays.asList(this.input));
         return list;
     }

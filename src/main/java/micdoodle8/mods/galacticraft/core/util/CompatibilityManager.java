@@ -10,10 +10,10 @@ import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
 
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,6 +25,7 @@ public class CompatibilityManager
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
+    public static boolean modJEILoaded = Loader.isModLoaded("JEI");
     public static boolean modIc2Loaded = Loader.isModLoaded("IC2");
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("BuildCraft|Energy");
     private static boolean modBCraftTransportLoaded;
