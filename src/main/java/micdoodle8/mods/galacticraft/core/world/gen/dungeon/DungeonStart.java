@@ -54,7 +54,7 @@ public class DungeonStart extends RoomEntrance
             attempts++;
         }
 
-        GCLog.debug("Dungeon generation took " + attempts + " attempt(s)");
+        GCLog.getLogger().debug("Dungeon generation took " + attempts + " attempt(s)");
 
         if (!validAttempt)
         {
