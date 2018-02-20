@@ -77,7 +77,7 @@ public class VenusModule implements IPlanetsModule
         }
         else
         {
-            GCLog.info("Galacticraft sulphuric acid is not default, issues may occur.");
+            GCLog.getLogger().info("Galacticraft sulphuric acid is not default, issues may occur.");
         }
 
         sulphuricAcid = FluidRegistry.getFluid("sulphuricacid");

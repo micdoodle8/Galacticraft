@@ -207,7 +207,7 @@ public class RoomBossVenus extends SizedPieceVenus
             {
                 if (box.getXSize() > 10000 || box.getYSize() > 10000 || box.getZSize() > 10000)
                 {
-                    GCLog.severe("Failed to set correct boss room size. This is a bug!");
+                    GCLog.getLogger().error("Failed to set correct boss room size. This is a bug!");
                 }
                 else
                 {

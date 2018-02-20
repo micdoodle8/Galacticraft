@@ -108,8 +108,8 @@ public class GalacticraftPlanets
         	}
         } catch (Exception e)
         {
-        	GCLog.severe("Error when attempting to register Slimeling auto-spawnhandler in MFR");
-        	GCLog.exception(e);
+        	GCLog.getLogger().error("Error when attempting to register Slimeling auto-spawnhandler in MFR");
+        	GCLog.getLogger().catching(e);
         }
 
         if (event.getSide() == Side.SERVER) this.loadLanguagePlanets("en_US");
