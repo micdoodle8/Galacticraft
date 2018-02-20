@@ -1,8 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.jei;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import mezz.jei.api.*;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.buggy.BuggyRecipeCategory;
@@ -13,7 +20,9 @@ import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFab
 import micdoodle8.mods.galacticraft.core.client.jei.circuitfabricator.CircuitFabricatorRecipeMaker;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapedRecipeHandler;
+import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapedRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapelessRecipeHandler;
+import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapelessRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker;
@@ -21,6 +30,8 @@ import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecip
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeMaker;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+
 import javax.annotation.Nonnull;
 
 @JEIPlugin
@@ -30,16 +41,19 @@ public class GalacticraftJEI extends BlankModPlugin
     private static IRecipeRegistry recipesCached = null;
     private static boolean hiddenSteel = false;
     private static boolean hiddenAdventure = false;
+    public static List<IRecipeWrapper> hidden = new LinkedList<>();
+    private static IRecipeCategory ingotCompressorCategory;
 
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
         registryCached = registry;
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        ingotCompressorCategory = new IngotCompressorRecipeCategory(guiHelper);
         registry.addRecipeCategories(new Tier1RocketRecipeCategory(guiHelper),
                 new BuggyRecipeCategory(guiHelper),
                 new CircuitFabricatorRecipeCategory(guiHelper),
-                new IngotCompressorRecipeCategory(guiHelper),
+                ingotCompressorCategory,
                 new RefineryRecipeCategory(guiHelper));
         registry.addRecipeHandlers(new Tier1RocketRecipeHandler(),
                 new BuggyRecipeHandler(),
@@ -71,21 +85,57 @@ public class GalacticraftJEI extends BlankModPlugin
         recipesCached = rt.getRecipeRegistry();
     }
 
-    public static void updateHiddenSteel(boolean hide)
+    public static void updateHidden(boolean hideSteel, boolean hideAdventure)
     {
-        if (hide != hiddenSteel)
+        boolean changeHidden = false;
+        if (hideSteel != hiddenSteel)
         {
-            hiddenSteel = hide;
-            // TODO
+            hiddenSteel = hideSteel;
+            changeHidden = true;
+        }
+        if (hideAdventure != hiddenAdventure)
+        {
+            hiddenAdventure = hideAdventure;
+            changeHidden = true;
+        }
+        if (changeHidden && recipesCached != null)
+        {
+            List<IRecipe> toHide = CompressorRecipes.getRecipeListHidden(hideSteel, hideAdventure);
+            hidden.clear();
+            List<IRecipeWrapper> allRW = recipesCached.getRecipeWrappers(ingotCompressorCategory);
+            for (IRecipe recipe : toHide)
+            {
+                for (IRecipeWrapper wrapper : allRW)
+                {
+                    if (matches(wrapper, recipe))
+                    {
+                        hidden.add(wrapper);
+                        break;
+                    }
+                }
+            }
         }
     }
 
-    public static void updateHiddenAdventure(boolean hide)
+    private static boolean matches(IRecipeWrapper wrapper, IRecipe test)
     {
-        if (hide != hiddenAdventure)
+        if (wrapper instanceof IngotCompressorShapelessRecipeWrapper)
         {
-            hiddenAdventure = hide;
-            // TODO
+            if (test instanceof ShapelessOreRecipeGC)
+            {
+                return ((IngotCompressorShapelessRecipeWrapper)wrapper).matches((ShapelessOreRecipeGC) test);
+            }
+            return false;
         }
+        if (wrapper instanceof IngotCompressorShapedRecipeWrapper)
+        {
+            if (test instanceof ShapedRecipesGC)
+            {
+                return ((IngotCompressorShapedRecipeWrapper)wrapper).matches((ShapedRecipesGC) test);
+            }
+            return false;
+        }
+        
+        return false;
     }
 }

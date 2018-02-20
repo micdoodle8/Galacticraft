@@ -6,28 +6,36 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
+
 import java.util.List;
 
 public class IngotCompressorRecipeCategory extends BlankRecipeCategory
 {
     private static final ResourceLocation compressorTex = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
+    private static final ResourceLocation compressorTexBlank = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor_blank.png");
 
     @Nonnull
     private final IDrawable background;
     @Nonnull
+    private final IDrawable backgroundBlank;
+    @Nonnull
     private final String localizedName;
     @Nonnull
     private final IDrawableAnimated progressBar;
+    
+    private boolean drawNothing = false; 
 
     public IngotCompressorRecipeCategory(IGuiHelper guiHelper)
     {
         this.background = guiHelper.createDrawable(compressorTex, 18, 17, 137, 78);
+        this.backgroundBlank = guiHelper.createDrawable(compressorTexBlank, 18, 17, 137, 78);
         this.localizedName = GCCoreUtil.translate("tile.machine.3.name");
 
         IDrawableStatic progressBarDrawable = guiHelper.createDrawable(compressorTex, 176, 13, 52, 17);
@@ -52,18 +60,28 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public IDrawable getBackground()
     {
+        if (this.drawNothing)
+        {
+            return this.backgroundBlank;
+        }
         return this.background;
     }
 
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 59, 19);
+        if (!this.drawNothing) this.progressBar.draw(minecraft, 59, 19);
     }
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
     {
+        if (GalacticraftJEI.hidden.contains(recipeWrapper))
+        {
+            this.drawNothing = true;
+            return;
+        }
+        this.drawNothing = false;
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
         for (int j = 0; j < 9; j++)

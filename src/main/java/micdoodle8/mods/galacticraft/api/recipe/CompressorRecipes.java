@@ -216,6 +216,31 @@ public class CompressorRecipes
         return CompressorRecipes.recipesAdventure;
     }
 
+    public static List<IRecipe> getRecipeListHidden(boolean hideSteel, boolean hideAdventure)
+    {
+        List<IRecipe> result = new ArrayList(CompressorRecipes.recipesAdventure);
+        if (hideAdventure) result.removeIf(irecipe -> CompressorRecipes.recipes.contains(irecipe));
+        if (steelIngotsPresent && hideSteel)
+        {
+            List<IRecipe> resultSteelless = new ArrayList(result.size());
+            for (IRecipe recipe : result)
+            {
+                ItemStack output = recipe.getRecipeOutput();
+                if (output == null) continue;
+                if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
+                {
+                    if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))
+                    {
+                        continue;
+                    }
+                }
+                resultSteelless.add(recipe);
+            }
+            return resultSteelless;
+        }
+        return result;
+    }
+
     public static List<IRecipe> getRecipeList()
     {
     	if (GalacticraftConfigAccess.getChallengeRecipes())
@@ -224,7 +249,7 @@ public class CompressorRecipes
     	// Filter out the GC steel recipe in Hard Mode
         if (steelIngotsPresent && GalacticraftConfigAccess.getHardMode())
         {
-            List<IRecipe> result = new ArrayList(CompressorRecipes.recipes.size());
+            List<IRecipe> resultSteelless = new ArrayList(CompressorRecipes.recipes.size());
             for (IRecipe recipe : CompressorRecipes.recipes)
             {
                 ItemStack output = recipe.getRecipeOutput();
@@ -236,17 +261,19 @@ public class CompressorRecipes
                         continue;
                     }
                 }
-                result.add(recipe);
+                resultSteelless.add(recipe);
             }
-            return result;
+            return resultSteelless;
         }
 
     	return CompressorRecipes.recipes;
     }
     
-    public static void getRecipes(ItemStack match)
+    public static List<IRecipe> getRecipes(ItemStack match)
     {
-        CompressorRecipes.getRecipeList().removeIf(irecipe -> !ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+        List<IRecipe> result = new ArrayList(CompressorRecipes.getRecipeList());
+        result.removeIf(irecipe -> !ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+        return result;
     }
     
     public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)

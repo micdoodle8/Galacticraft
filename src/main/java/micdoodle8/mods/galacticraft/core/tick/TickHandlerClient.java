@@ -395,13 +395,9 @@ public class TickHandlerClient
                 if (updateJEIhiding)
                 {
                     updateJEIhiding = false;
-                    if (CompressorRecipes.steelIngotsPresent)
-                    {
-                        // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
-                        GalacticraftJEI.updateHiddenSteel(ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes);
-                    }
+                    // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
                     // Update JEI to hide adventure mode recipes when not in adventure mode
-                    GalacticraftJEI.updateHiddenAdventure(!ConfigManagerCore.challengeRecipes);
+                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes, !ConfigManagerCore.challengeRecipes);
                 }
                 
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
