@@ -150,7 +150,7 @@ public class SchematicRegistry
         if (index < textures.size())
             return textures.get(index);
         
-        GCLog.debug("couldn't find render texture for " + index);
+        GCLog.getLogger().debug("couldn't find render texture for " + index);
         return textures.get(0);
     }
     
@@ -166,7 +166,7 @@ public class SchematicRegistry
         if (index < schematicItems.size())
             return schematicItems.get(index).copy();
         
-        GCLog.debug("couldn't find schematic item for " + index);
+        GCLog.getLogger().debug("couldn't find schematic item for " + index);
         return schematicItems.get(0).copy();
     }
 }
