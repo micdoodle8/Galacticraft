@@ -234,7 +234,7 @@ public class GalacticraftRegistry
         GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
         if (type == null)
         {
-            GCLog.severe("Problem registering dimension type " + id + ".  May be fixable by changing config.");
+            GCLog.getLogger().error("Problem registering dimension type " + id + ".  May be fixable by changing config.");
         }
         
         return type;
