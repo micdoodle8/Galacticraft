@@ -380,7 +380,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         for (BlockVec3 target : targets.values())
         {
             BlockVec3 coords = target.clone();
-            GCLog.debug("Found nearby asteroid at " + target.toString());
+            GCLog.getLogger().debug("Found nearby asteroid at" + target.toString());
             switch (facing)
             {
             case 2:

@@ -98,7 +98,7 @@ public class TeleportTypeAsteroids implements ITeleportType
 
                     if (ConfigManagerCore.enableDebug)
                     {
-                        GCLog.info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
+                        GCLog.getLogger().info("Testing asteroid at x" + (bv3.x) + " y" + (bv3.y) + " z" + bv3.z);
                     }
                     this.loadChunksAround(bv3.x, bv3.z, 2, world.getChunkProvider());
                     this.loadChunksAround(bv3.x, bv3.z, -3, world.getChunkProvider());
@@ -127,7 +127,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     //Failed to find an asteroid even though there should be one there
                     if (ConfigManagerCore.enableDebug)
                     {
-                        GCLog.info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
+                        GCLog.getLogger().info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
                     }
                     ((WorldProviderAsteroids) world.provider).removeAsteroid(bv3.x, bv3.y, bv3.z);
                 }
@@ -177,7 +177,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 }
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Found asteroid at x" + (x) + " z" + (z));
+                    GCLog.getLogger().info("Found asteroid at x" + (x) + " z" + (z));
                 }
                 return true;
             }

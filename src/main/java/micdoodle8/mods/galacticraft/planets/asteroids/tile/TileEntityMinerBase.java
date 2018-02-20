@@ -89,7 +89,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(entry.getKey());
             if (w == null)
             {
-                GCLog.severe("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());
+                GCLog.getLogger().error("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());
                 entries.remove();
                 continue;
             }

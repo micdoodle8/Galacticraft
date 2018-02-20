@@ -72,7 +72,7 @@ public class PacketSimpleAsteroids extends PacketBase
 
         if (packetType.getDecodeClasses().length != data.size())
         {
-            GCLog.info("Asteroids Simple Packet found data length different than packet type: " + packetType.name());
+            GCLog.getLogger().info("Asteroids Simple Packet found data length different than packet type: " + packetType.name());
         }
 
         this.type = packetType;
