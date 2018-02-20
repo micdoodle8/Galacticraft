@@ -43,6 +43,12 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
     }
 
+    @Override
+    public boolean isItemTool(ItemStack stack)
+    {
+        return false;
+    }
+
     protected void setMaxTransfer()
     {
         this.transferMax = 200;

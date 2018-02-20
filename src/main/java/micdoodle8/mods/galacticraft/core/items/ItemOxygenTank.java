@@ -29,6 +29,12 @@ public class ItemOxygenTank extends Item implements ISortableItem
         this.setNoRepair();
     }
 
+    @Override
+    public boolean isItemTool(ItemStack stack)
+    {
+        return false;
+    }
+
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
