@@ -8,7 +8,7 @@
     "SWS",
     "MXM"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "S": {
       "item": "minecraft:slime_ball"

@@ -10,7 +10,7 @@ public class BiomeMars extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     BiomeMars(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, true);
     }
 
     @Override

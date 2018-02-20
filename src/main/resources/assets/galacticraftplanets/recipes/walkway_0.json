@@ -8,7 +8,7 @@
     "XXX",
     " X "
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "X": {
       "type": "galacticraftcore:advanced_metal",

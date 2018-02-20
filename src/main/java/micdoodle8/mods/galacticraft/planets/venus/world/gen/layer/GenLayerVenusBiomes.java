@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
+import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.miccore.IntCache;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 
 public class GenLayerVenusBiomes extends GenLayer
 {
-    private static final Biome[] biomes = new Biome[] { BiomeVenus.venusFlat, BiomeVenus.venusMountain, BiomeVenus.venusValley};
+    private static final Biome[] biomes = VenusModule.planetVenus.biomesToGenerate.toArray(new Biome[0]);
 
     public GenLayerVenusBiomes(long l, GenLayer parent)
     {

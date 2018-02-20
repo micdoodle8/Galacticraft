@@ -8,7 +8,7 @@
     "XZX",
     "WVW"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "V": {
       "item": "galacticraftcore:oxygen_concentrator"

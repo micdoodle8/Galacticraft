@@ -3,27 +3,39 @@ package micdoodle8.mods.galacticraft.core.recipe;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
+import micdoodle8.mods.galacticraft.api.recipe.IRecipeUpdatable;
 import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlockType;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,6 +45,9 @@ import appeng.api.util.AEColor;
 public class RecipeManagerGC
 {
     public static ArrayList<ItemStack> aluminumIngots = new ArrayList<ItemStack>();
+    private static boolean configSaved_RequireGCmetals = true;
+    private static boolean configSaved_QuickMode = false;
+    private static String configSaved_Silicon = "-";
 
     public static void loadCompatibilityRecipes()
     {
@@ -58,7 +73,11 @@ public class RecipeManagerGC
     public
     static void addUniversalRecipes()
     {
-    	Object meteoricIronIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(GCItems.itemBasicMoon, 1, 0) : "ingotMeteoricIron";
+        RecipeSorter.register("galacticraftcore:shapedore", OreRecipeUpdatable.class, Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        
+        Object meteoricIronIngot = new ItemStack(GCItems.itemBasicMoon, 1, 0);
+        Object meteoricIronPlate = new ItemStack(GCItems.itemBasicMoon, 1, 1);
+    	Object deshIngot = GalacticraftCore.isPlanetsLoaded ? new ItemStack(MarsItems.marsItemBasic, 1, 2) : GCItems.heavyPlatingTier1;
     	
     	FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 5), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.basicBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
@@ -242,16 +261,9 @@ public class RecipeManagerGC
         final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>();
         spaceStationRequirements.put("ingotTin", 32);
         spaceStationRequirements.put(aluminumIngots, 16);
-        if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
-        {
-            spaceStationRequirements.put(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED), 1);
-        }
-        else
-        {
-            spaceStationRequirements.put("waferAdvanced", 1);
-        }
+        spaceStationRequirements.put(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED), 1);
         spaceStationRequirements.put(Items.IRON_INGOT, 24);
-        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, 0, new SpaceStationRecipe(spaceStationRequirements)));
+        GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworld, new SpaceStationRecipe(spaceStationRequirements)));
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
@@ -267,74 +279,189 @@ public class RecipeManagerGC
         {
             CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), "ingotBronze", "ingotBronze");
         }
-
+        if (OreDictionary.getOres("ingotSteel").size() > 0)
+        {
+            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
+            CompressorRecipes.steelIngotsPresent = true; 
+        }
+        CompressorRecipes.steelRecipeGC = Arrays.asList(new ItemStack(Items.COAL), new ItemStack(GCItems.basicItem, 1, 11), new ItemStack(Items.COAL));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.COAL, new ItemStack(GCItems.basicItem, 1, 11), Items.COAL);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 10), new ItemStack(GCItems.basicItem, 1, 6), new ItemStack(GCItems.basicItem, 1, 7));
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 11), Items.IRON_INGOT, Items.IRON_INGOT);
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.itemBasicMoon, 1, 1), meteoricIronIngot);
         CompressorRecipes.addRecipe(new ItemStack(GCItems.heavyPlatingTier1, 2, 0), "XYZ", "XYZ", 'X', new ItemStack(GCItems.basicItem, 1, 9), 'Y', new ItemStack(GCItems.basicItem, 1, 8), 'Z', new ItemStack(GCItems.basicItem, 1, 10));
+
+        ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
+        ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
+        ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
+        ItemStack silicon =  new ItemStack(GCItems.basicItem, 1, 2);
+        CircuitFabricatorRecipes.addRecipe(solarPanels, Arrays.asList( new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Items.DYE, 1, 4) ));
+        CircuitFabricatorRecipes.addRecipe(basicWafers, Arrays.asList( new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Blocks.REDSTONE_TORCH) ));
+        CircuitFabricatorRecipes.addRecipe(advancedWafers, Arrays.asList( new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(Items.REPEATER) ));
     }
 
     public static void setConfigurableRecipes()
     {
-        ItemStack solarPanels = new ItemStack(GCItems.basicItem, 9, 12);
-        ItemStack basicWafers = new ItemStack(GCItems.basicItem, 3, 13);
-        ItemStack advancedWafers = new ItemStack(GCItems.basicItem, 1, 14);
+        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT && CompatibilityManager.modJEILoaded) TickHandlerClient.updateJEIhiding = true;
 
-        CircuitFabricatorRecipes.removeRecipe(solarPanels);
-        CircuitFabricatorRecipes.removeRecipe(basicWafers);
-        CircuitFabricatorRecipes.removeRecipe(advancedWafers);
-        List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
-        int siliconCount = silicons.size();
-        for (int j = 0; j <= siliconCount; j++)
+        // Update Aluminium Wire and Battery crafting recipes and GC Advanced Metals recipes
+        ItemStack aluWire = new ItemStack(GCBlocks.aluminumWire, ConfigManagerCore.quickMode ? 9 : 6, 0);
+        ItemStack battery = new ItemStack(GCItems.battery, ConfigManagerCore.quickMode ? 3 : 2, 100);
+        boolean doQuickMode = ConfigManagerCore.quickMode != configSaved_QuickMode;
+        configSaved_QuickMode = ConfigManagerCore.quickMode;
+
+        ItemStack meteoricIronIngot = new ItemStack(GCItems.itemBasicMoon, 1, 0);
+        ItemStack meteoricIronPlate = new ItemStack(GCItems.itemBasicMoon, 1, 1);
+        boolean doMetalsToOreDict = configSaved_RequireGCmetals && !ConfigManagerCore.recipesRequireGCAdvancedMetals;
+        boolean doMetalsToGC = !configSaved_RequireGCmetals && ConfigManagerCore.recipesRequireGCAdvancedMetals;
+        configSaved_RequireGCmetals = ConfigManagerCore.recipesRequireGCAdvancedMetals; 
+
+        boolean doSilicon = !ConfigManagerCore.otherModsSilicon.equals(configSaved_Silicon);
+        configSaved_Silicon = ConfigManagerCore.otherModsSilicon;
+
+        if (doQuickMode || doMetalsToOreDict || doMetalsToGC)
         {
-            ItemStack silicon;
-            if (j == 0)
+            for (IRecipe recipe : CraftingManager.REGISTRY)
             {
-                silicon = new ItemStack(GCItems.basicItem, 1, 2);
+                if (recipe instanceof IRecipeUpdatable)
+                {
+                    if (doQuickMode)
+                    {
+                        ItemStack test = recipe.getRecipeOutput();
+                        if (ItemStack.areItemsEqual(test, aluWire))
+                        {
+                            test.setCount(aluWire.getCount());
+                        }
+                        else if (ItemStack.areItemsEqual(test, battery))
+                        {
+                            test.setCount(battery.getCount());
+                        }
+                    }
+                    if (doMetalsToOreDict)
+                    {
+                        ((IRecipeUpdatable)recipe).replaceInput(meteoricIronIngot, OreDictionary.getOres("ingotMeteoricIron"));
+                        ((IRecipeUpdatable)recipe).replaceInput(meteoricIronPlate, OreDictionary.getOres("compressedMeteoricIron"));
+                        if (GalacticraftCore.isPlanetsLoaded)
+                        {
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(MarsItems.marsItemBasic, 1, 2), OreDictionary.getOres("ingotDesh"));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(MarsItems.marsItemBasic, 1, 5), OreDictionary.getOres("compressedDesh"));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(AsteroidsItems.basicItem, 1, 0), OreDictionary.getOres("ingotTitanium"));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(AsteroidsItems.basicItem, 1, 6), OreDictionary.getOres("compressedTitanium"));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(VenusItems.basicItem, 1, 1), OreDictionary.getOres("ingotLead"));
+                        }
+                    }
+                    else if (doMetalsToGC)
+                    {
+                        ((IRecipeUpdatable)recipe).replaceInput(meteoricIronIngot);
+                        ((IRecipeUpdatable)recipe).replaceInput(meteoricIronPlate);
+                        if (GalacticraftCore.isPlanetsLoaded)
+                        {
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(MarsItems.marsItemBasic, 1, 2));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(MarsItems.marsItemBasic, 1, 5));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(AsteroidsItems.basicItem, 1, 0));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(AsteroidsItems.basicItem, 1, 6));
+                            ((IRecipeUpdatable)recipe).replaceInput(new ItemStack(VenusItems.basicItem, 1, 1));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (doSilicon)
+        {
+            ItemStack siliconGC =  new ItemStack(GCItems.basicItem, 1, 2);
+            boolean needNewList = true;
+            List<ItemStack> silicons = OreDictionary.getOres(ConfigManagerCore.otherModsSilicon);
+            if (silicons.size() > 0)
+            {
+                for (ItemStack s : silicons)
+                {
+                    if (ItemStack.areItemsEqual(s, siliconGC))
+                    {
+                        needNewList = false;
+                        break;
+                    }
+                }
+            }
+            if (needNewList)
+            {
+                List<ItemStack> newList = new ArrayList<>(1 + silicons.size());
+                newList.add((ItemStack) siliconGC);
+                if (silicons.size() > 0) newList.addAll(silicons);
+                silicons = newList;
+            }
+            CircuitFabricatorRecipes.replaceRecipeIngredient(siliconGC, silicons);
+        }
+
+        if (doMetalsToOreDict || doMetalsToGC)
+        {
+            if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
+            {
+                CompressorRecipes.replaceRecipeIngredient(meteoricIronIngot);
             }
             else
             {
-                silicon = silicons.get(j - 1);
-                if (silicon.getItem() == GCItems.basicItem && silicon.getItemDamage() == 2) continue;
+                CompressorRecipes.replaceRecipeIngredient(meteoricIronIngot, OreDictionary.getOres("ingotMeteoricIron"));
             }
-
-            NonNullList<ItemStack> input1 = NonNullList.create();
-            input1.add(new ItemStack(Items.DIAMOND));
-            input1.add(silicon);
-            input1.add(silicon);
-            input1.add(new ItemStack(Items.REDSTONE));
-            input1.add(new ItemStack(Items.DYE, 1, 4));
-            CircuitFabricatorRecipes.addRecipe(solarPanels, input1);
-            NonNullList<ItemStack> input2 = NonNullList.create();
-            input2.add(new ItemStack(Items.DIAMOND));
-            input2.add(silicon);
-            input2.add(silicon);
-            input2.add(new ItemStack(Items.REDSTONE));
-            input2.add(new ItemStack(Blocks.REDSTONE_TORCH));
-            CircuitFabricatorRecipes.addRecipe(basicWafers, input2);
-            NonNullList<ItemStack> input3 = NonNullList.create();
-            input3.add(new ItemStack(Items.DIAMOND));
-            input3.add(silicon);
-            input3.add(silicon);
-            input3.add(new ItemStack(Items.REDSTONE));
-            input3.add(new ItemStack(Items.REPEATER));
-            CircuitFabricatorRecipes.addRecipe(advancedWafers, input3);
+            if (GalacticraftCore.isPlanetsLoaded)
+            {
+                setConfigurableRecipesPlanets();
+            }
+            
+            // Update Advanced Wafer in space station recipe
+            ItemStack sswafer = new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED);
+            for (SpaceStationType station : GalacticraftRegistry.getSpaceStationData())
+            {
+                HashMap<Object,Integer> ssrecipe = station.getRecipeForSpaceStation().getInput();
+                if (doMetalsToOreDict)
+                {
+                    ItemStack found = null;
+                    for (Object test : ssrecipe.keySet())
+                    {
+                        if (test instanceof ItemStack && ItemStack.areItemsEqual((ItemStack) test, sswafer))
+                        {
+                            found = (ItemStack) test;
+                            break;
+                        }
+                    }
+                    if (found != null)
+                    {
+                        ssrecipe.remove(found);
+                        ssrecipe.put(OreDictionary.getOres("waferAdvanced"), 1);
+                    }
+                }
+                else if (doMetalsToGC)
+                {
+                    Object found = null;
+                    for (Object test : ssrecipe.keySet())
+                    {
+                        if (test instanceof List<?> && OreRecipeUpdatable.itemListContains((List<?>) test, sswafer))
+                        {
+                            found = test;
+                            break;
+                        }
+                    }
+                    if (found != null)
+                    {
+                        ssrecipe.remove(found);
+                        ssrecipe.put(sswafer, 1);
+                    }
+                }
+            }
         }
+    }
 
-        CompressorRecipes.removeRecipe(new ItemStack(GCItems.basicItem, 1, 9));
-        boolean steelDone = false;
-        if (OreDictionary.getOres("ingotSteel").size() > 0)
+    private static void setConfigurableRecipesPlanets()
+    {
+        if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
         {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), "ingotSteel", "ingotSteel");
-            steelDone = true;
-        }
-        if (!ConfigManagerCore.hardMode || !steelDone)
-        {
-            CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 9), Items.COAL, new ItemStack(GCItems.basicItem, 1, 11), Items.COAL);
+            CompressorRecipes.replaceRecipeIngredient(new ItemStack(MarsItems.marsItemBasic, 1, 2));
+            CompressorRecipes.replaceRecipeIngredient(new ItemStack(AsteroidsItems.basicItem, 1, 0));
         }
         else
         {
-            CompressorRecipes.addShapelessAdventure(new ItemStack(GCItems.basicItem, 1, 9), Items.COAL, new ItemStack(GCItems.basicItem, 1, 11), Items.COAL);
+            CompressorRecipes.replaceRecipeIngredient(new ItemStack(MarsItems.marsItemBasic, 1, 2), OreDictionary.getOres("ingotDesh"));
+            CompressorRecipes.replaceRecipeIngredient(new ItemStack(AsteroidsItems.basicItem, 1, 0), OreDictionary.getOres("ingotTitanium"));
         }
     }
 

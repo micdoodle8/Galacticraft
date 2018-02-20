@@ -8,7 +8,7 @@
     "XYX",
     "X X"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "X": {
       "item": "galacticraftplanets:item_basic_asteroids",

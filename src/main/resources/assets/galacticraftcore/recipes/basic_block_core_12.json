@@ -8,7 +8,7 @@
     "YYY",
     "YYY"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "Y": {
       "type": "galacticraftcore:advanced_metal",

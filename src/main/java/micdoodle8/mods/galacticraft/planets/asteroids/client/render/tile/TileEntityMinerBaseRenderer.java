@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.tile;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
+
+import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.Minecraft;
@@ -15,28 +17,26 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.EnumSkyBlock;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileEntityMinerBase>
 {
-    public static OBJModel minerBaseModel;
     public static OBJModel.OBJBakedModel minerBaseModelBaked;
 
     public IBakedModel getBakedModel()
     {
         if (minerBaseModelBaked == null)
         {
+            OBJModel minerBaseModel;
             try
             {
-                minerBaseModel = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "minerbase0.obj"));
-                minerBaseModel = (OBJModel) minerBaseModel.process(ImmutableMap.of("flip-v", "true"));
+                minerBaseModel = (OBJModel) OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "minerbase0.obj"));
                 minerBaseModel = (OBJModel) minerBaseModel.process(ImmutableMap.of("ambient", "false"));
             }
             catch (Exception e)
@@ -57,12 +57,20 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
             return;
         }
 
-        int i = tile.getWorld().getLightFor(EnumSkyBlock.SKY, tile.getPos().up());
-        int j = i % 65536;
-        int k = i / 65536;
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
+        int j = 0, k = 0;
+        int light = tile.getWorld().getCombinedLight(tile.getPos().up(), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 0), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(0, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 4.0F, k / 4.0F);
 
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -95,7 +103,6 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
         tessellator.draw();
 
         RenderHelper.enableStandardItemLighting();
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         GL11.glPopMatrix();
     }
 }

@@ -672,6 +672,8 @@ tile.panel_lighting_3.name=Lighting Panel (Dark)
 tile.panel_lighting_4.name=Lighting Panel (Dark)
 tile.parachest.description=Parachests will fall from the sky after landing on certain planets/moons, such as Earth. Contains rocket, fuel, and cargo from previous launch.
 tile.parachest.name=Parachest
+tile.platform.description=Place 4 to form a platform. The platform lifts players to the next platform above or below. SNEAK = down : JUMP = up.
+tile.platform.name=Hydraulic Platform
 tile.refinery.description=Refinery will take an input of oil and energy, and output fuel used for rockets and vehicles.
 tile.refinery.name=Refinery
 tile.rocket_workbench.name=NASA Workbench

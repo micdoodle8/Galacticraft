@@ -11,7 +11,7 @@ Full documentation is at our wiki: [wiki.micdoodle8.com](https://wiki.micdoodle8
 
 ## Download Galacticraft
 
-Download recent and latest Galacticraft for Minecraft version 1.11.2, Minecraft version 1.10.2, Minecraft 1.8.9 and Minecraft 1.7.10 at the [Galacticraft download site](https://micdoodle8.com/mods/galacticraft/downloads)
+Download recent and latest Galacticraft for Minecraft 1.12.2, Minecraft 1.11.2, Minecraft 1.10.2, Minecraft 1.8.9 and Minecraft 1.7.10 at the [Galacticraft download site](https://micdoodle8.com/mods/galacticraft/downloads)
 
 ------
 
@@ -25,7 +25,7 @@ Before reporting an issue, please read [Notes for Contributors](https://github.c
 
 API and deobfuscated version for developers is available through our [downloads](https://micdoodle8.com/mods/galacticraft/downloads) page.  Detailed information on how to set up a development environment for the source code - if you want to use either the Galacticraft API or the full sources - is [here](https://wiki.micdoodle8.com/wiki/GC3_API)
 
-To build, run the command `gradlew build packCoreJar packPlanetsJar PackMicCoreJar`
+To build, run the command `gradlew build packCoreJar packPlanetsJar packMicCoreJar`
  
 ------
  

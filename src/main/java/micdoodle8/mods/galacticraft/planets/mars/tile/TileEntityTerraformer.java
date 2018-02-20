@@ -28,7 +28,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -508,7 +507,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         }
         if (slotID == 1)
         {
-            return ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+            return ItemElectricBase.isElectricItemEmpty(itemstack);
         }
 
         return false;
@@ -654,12 +653,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

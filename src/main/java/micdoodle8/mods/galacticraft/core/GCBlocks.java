@@ -6,6 +6,7 @@ import com.google.common.collect.ObjectArrays;
 import com.google.common.collect.Ordering;
 
 import micdoodle8.mods.galacticraft.core.blocks.*;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon.EnumBlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
@@ -98,6 +99,7 @@ public class GCBlocks
     public static Block concealedRepeater_Powered;
     public static Block concealedRepeater_Unpowered;
     public static Block concealedDetector;
+    public static Block platform;
 
     public static final Material machine = new Material(MapColor.IRON);
 
@@ -172,6 +174,7 @@ public class GCBlocks
         GCBlocks.concealedRepeater_Powered = new BlockConcealedRepeater("concealed_repeater_pow", true);
         GCBlocks.concealedRepeater_Unpowered = new BlockConcealedRepeater("concealed_repeater", false);
         GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
+        GCBlocks.platform = new BlockPlatform("platform");
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -205,6 +208,8 @@ public class GCBlocks
         OreDictionary.registerOre("blockTin", new ItemStack(GCBlocks.basicBlock, 1, 10));
         OreDictionary.registerOre("blockAluminum", new ItemStack(GCBlocks.basicBlock, 1, 11));
         OreDictionary.registerOre("blockAluminium", new ItemStack(GCBlocks.basicBlock, 1, 11));
+        
+        OreDictionary.registerOre("turfMoon", new ItemStack(GCBlocks.blockMoon, 1, EnumBlockBasicMoon.MOON_TURF.getMeta()));
     }
 
     public static void finalizeSort()
@@ -484,6 +489,7 @@ public class GCBlocks
         registerBlock(GCBlocks.concealedRepeater_Powered, ItemBlockGC.class);
         registerBlock(GCBlocks.concealedRepeater_Unpowered, ItemBlockGC.class);
         registerBlock(GCBlocks.concealedDetector, ItemBlockCreativeGC.class);
+        registerBlock(GCBlocks.platform, ItemBlockDesc.class);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));

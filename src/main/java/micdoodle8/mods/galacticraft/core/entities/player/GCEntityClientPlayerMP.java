@@ -416,7 +416,6 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
             {
                 if (this.movementInput.sneak != this.sneakLast)
                 { 
-                    this.sneakLast = this.movementInput.sneak;
                     return false;
                 }
                 //                if (stats.freefallHandler.testFreefall(this)) return false;
@@ -426,8 +425,12 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     return false;
                 }
             }
+            this.sneakLast = this.movementInput.sneak;
         }
-        this.sneakLast = false;
+        else
+        {
+            this.sneakLast = false;
+        }
         return super.isSneaking();
     }
     

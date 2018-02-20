@@ -3,33 +3,25 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import com.google.common.base.Function;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
-
-import net.minecraftforge.client.model.ModelLoaderRegistry;
-import net.minecraftforge.client.model.obj.OBJModel;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntityDish>
 {
     private static final ResourceLocation textureSupport = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telesupport.png");
     private static final ResourceLocation textureFork = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telefork.png");
     private static final ResourceLocation textureDish = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/teledish.png");
-    private static OBJModel.OBJBakedModel modelSupport;
-    private static OBJModel.OBJBakedModel modelFork;
-    private static OBJModel.OBJBakedModel modelDish;
+    private static IBakedModel modelSupport;
+    private static IBakedModel modelFork;
+    private static IBakedModel modelDish;
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
     private void updateModels()
@@ -38,16 +30,9 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
         {
             try
             {
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                OBJModel teleDish = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "teledish.obj"));
-                OBJModel teleFork = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "telefork.obj"));
-                OBJModel teleSupp = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "telesupport.obj"));
-                teleDish = (OBJModel) teleDish.process(ImmutableMap.of("flip-v", "true"));
-                teleFork = (OBJModel) teleFork.process(ImmutableMap.of("flip-v", "true"));
-                teleSupp = (OBJModel) teleSupp.process(ImmutableMap.of("flip-v", "true"));
-                modelDish = (OBJModel.OBJBakedModel) teleDish.bake(new OBJModel.OBJState(ImmutableList.of("main"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                modelFork = (OBJModel.OBJBakedModel) teleFork.bake(new OBJModel.OBJState(ImmutableList.of("main"), false), DefaultVertexFormats.ITEM, spriteFunction);
-                modelSupport = (OBJModel.OBJBakedModel) teleSupp.bake(new OBJModel.OBJState(ImmutableList.of("main"), false), DefaultVertexFormats.ITEM, spriteFunction);
+                modelDish = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.ASSET_PREFIX, "teledish.obj"));
+                modelFork = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.ASSET_PREFIX, "telefork.obj"));
+                modelSupport = ClientUtil.modelFromOBJ(new ResourceLocation(Constants.ASSET_PREFIX, "telesupport.obj"));
             }
             catch (Exception e)
             {

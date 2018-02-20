@@ -7,6 +7,7 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -40,6 +41,15 @@ public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper, IC
     @Override
     public void drawInfo(Minecraft mc, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
+        if (GalacticraftJEI.hidden.contains(this))
+        {
+            FontRenderer fontRendererObj = mc.fontRenderer;
+            String experienceString = "Asteroids Challenge";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 8, Color.gray.getRGB(), fontRendererObj);
+            experienceString = "game mode only!";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 20, Color.gray.getRGB(), fontRendererObj);
+            return;
+        }
         FurnaceRecipes furnaceRecipes = FurnaceRecipes.instance();
         float experience = 0;
 
@@ -56,5 +66,10 @@ public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper, IC
             int stringWidth = fontRendererObj.getStringWidth(experienceString);
             fontRendererObj.drawString(experienceString, recipeWidth + 6 - stringWidth, 8, Color.gray.getRGB());
         }
+    }
+
+    public boolean matches(@Nonnull ShapelessOreRecipeGC test)
+    {
+        return this.recipe == test;
     }
 }

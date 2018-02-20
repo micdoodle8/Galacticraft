@@ -1,0 +1,59 @@
+{
+    "textures": {
+        "bottom": "galacticraftcore:blocks/platform_base",
+        "top": "galacticraftcore:blocks/platform_top",
+        "side": "galacticraftcore:blocks/platform_side"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 6.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "faces": {
+                "north": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "east": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "south": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "west": { "texture": "side", "uv": [ 0.0, 0.0, 16.0, 10.0 ] },
+                "up": { "texture": "top", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "bottom", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        }
+    ],
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ 0, 2.5, 0],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 75, -225, 0 ],
+            "translation": [ 0, 2.5, 2.25 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0],
+            "scale":[ 0.25, 0.25, 0.25 ]
+        },
+        "gui": {
+            "rotation": [ 30, 225, 0 ],
+            "translation": [ 0, -0.3, 0 ],
+            "scale":[ 0.625, 0.625, 0.625 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0],
+            "scale":[ 0.5, 0.5, 0.5 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 45, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 225, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.40, 0.40, 0.40 ]
+        }
+    }
+}

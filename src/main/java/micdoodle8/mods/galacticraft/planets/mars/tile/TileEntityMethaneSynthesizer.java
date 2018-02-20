@@ -31,7 +31,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
@@ -386,7 +385,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             switch (slotID)
             {
             case 0:
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 3:
                 return itemstack.getItem() == MarsItems.carbonFragments;
             case 4:
@@ -406,7 +405,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+                return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
             case 4:
                 return FluidUtil.isFullContainer(itemstack);
             default:
@@ -538,12 +537,6 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public int getBlockMetadata()
     {
         return this.getBlockType().getMetaFromState(this.world.getBlockState(getPos()));
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)

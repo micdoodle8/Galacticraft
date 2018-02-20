@@ -8,15 +8,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeling;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeMars;
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
@@ -79,13 +75,6 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.commonModules.add(new VenusModule());
         GalacticraftPlanets.proxy.preInit(event);
-        
-        //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker
-        Biome biomeMarsPreInit = BiomeMars.marsFlat;
-        Biome biomeAsteroidsPreInit = BiomeAsteroids.asteroid;
-        Biome biomeVenusPreInit1 = BiomeVenus.venusFlat;
-        Biome biomeVenusPreInit2 = BiomeVenus.venusMountain;
-        Biome biomeVenusPreInit3 = BiomeVenus.venusValley;
     }
 
     @EventHandler
@@ -142,31 +131,14 @@ public class GalacticraftPlanets
     public static List<IConfigElement> getConfigElements()
     {
         List<IConfigElement> list = new ArrayList<IConfigElement>();
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
-        }
-
-        for (IPlanetsModule module : GalacticraftPlanets.commonModules)
-        {
-            list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
-        }
+        
+        //Get the last planet to be configured only, as all will reference and re-use the same planets.conf config file
+        IPlanetsModule module = GalacticraftPlanets.commonModules.get(GalacticraftPlanets.commonModules.size() - 1);
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_DIMENSIONS)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ACHIEVEMENTS)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_ENTITIES)).getChildElements());
+        list.addAll(new ConfigElement(module.getConfiguration().getCategory(Constants.CONFIG_CATEGORY_GENERAL)).getChildElements());
 
         return list;
     }
@@ -192,6 +164,6 @@ public class GalacticraftPlanets
         info.description = "Planets addon for Galacticraft.";
         info.url = "https://micdoodle8.com/";
         info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
-        info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
+        info.logoFile = "assets/galacticraftplanets/galacticraft_logo.png";
     }
 }

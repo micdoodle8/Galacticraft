@@ -9,7 +9,7 @@
     "TRT",
     "TCT"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "R": {
       "type": "forge:ore_dict",

@@ -22,7 +22,7 @@ public class BiomeVenus extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     BiomeVenus(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, true);
     }
 
     @Override

@@ -31,7 +31,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -234,7 +233,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
         this.hideTargetDestination = nbt.getBoolean("HideTargetDestination");
-        this.requiresClientUpdate = true;
+        this.requiresClientUpdate = GCCoreUtil.getEffectiveSide() == Side.SERVER;
     }
 
     @Override
@@ -477,12 +476,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 ((EntityAutoRocket) rocket).updateControllerSettings(pad);
             }
         }
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     public void setAttachedPad(IFuelDock pad)

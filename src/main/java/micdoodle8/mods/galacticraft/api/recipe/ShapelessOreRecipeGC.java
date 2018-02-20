@@ -12,9 +12,10 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
+public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipeUpdatable
 {
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
@@ -73,13 +74,61 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
     @Override
     public boolean matches(InventoryCrafting var1, World world)
     {
-        ArrayList<Object> required = new ArrayList<Object>(input);
+        List<Object> required = new LinkedList<>(input);
 
         for (int x = 0; x < var1.getSizeInventory(); x++)
         {
             ItemStack slot = var1.getStackInSlot(x);
 
             if (!slot.isEmpty())
+            {
+                boolean inRecipe = false;
+                Iterator<Object> req = required.iterator();
+
+                while (req.hasNext())
+                {
+                    boolean match = false;
+
+                    Object next = req.next();
+
+                    if (next instanceof ItemStack)
+                    {
+                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
+                    }
+                    else if (next instanceof List)
+                    {
+                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
+                        while (itr.hasNext() && !match)
+                        {
+                            match = OreDictionary.itemMatches(itr.next(), slot, false);
+                        }
+                    }
+
+                    if (match)
+                    {
+                        inRecipe = true;
+                        required.remove(next);
+                        break;
+                    }
+                }
+
+                if (!inRecipe)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return required.isEmpty();
+    }
+
+    public boolean matches(List<ItemStack> var1)
+    {
+        List<Object> required = new LinkedList<>(input);
+
+        for (ItemStack slot : var1)
+        {
+            if (slot != null)
             {
                 boolean inRecipe = false;
                 Iterator<Object> req = required.iterator();
@@ -130,5 +179,45 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
     public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
     {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+    }
+
+    @Override
+    public void replaceInput(ItemStack inputA, List<ItemStack> inputB)
+    {
+        for (int i = 0; i < this.input.size(); i++)
+        {
+            Object test = this.input.get(i);
+            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
+            {
+                this.input.set(i, inputB);
+            }
+            else if (test instanceof List<?> && itemListContains((List<?>) test, inputA))
+            {
+                this.input.set(i, inputB);
+            }
+        }
+    }
+
+    @Override
+    public void replaceInput(ItemStack inputB)
+    {
+        for (int i = 0; i < this.input.size(); i++)
+        {
+            Object test = this.input.get(i);
+            if (test instanceof List<?> && itemListContains((List<?>) test, inputB))
+            {
+                this.input.set(i, inputB);
+            }
+        }
+    }
+
+    private static boolean itemListContains(List<?> test, ItemStack stack)
+    {
+        for (Object b : test)
+        {
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
+                return true;
+        }
+        return false;
     }
 }

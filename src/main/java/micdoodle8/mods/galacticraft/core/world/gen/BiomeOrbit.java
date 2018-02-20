@@ -13,7 +13,7 @@ public class BiomeOrbit extends BiomeGenBaseGC
     @SuppressWarnings("unchecked")
     private BiomeOrbit(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, true);
         this.spawnableMonsterList.clear();
         this.spawnableWaterCreatureList.clear();
         this.spawnableCreatureList.clear();
@@ -23,9 +23,9 @@ public class BiomeOrbit extends BiomeGenBaseGC
     }
 
     @Override
-    public void registerTypes()
+    public void registerTypes(Biome b)
     {
-        BiomeDictionary.addTypes(this, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD);
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SPARSE, BiomeDictionary.Type.SPOOKY);
     }
 
     @Override

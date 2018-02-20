@@ -180,11 +180,8 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     {
         list.add(this.getEnergyStorageModule());
         list.add(this.getElectricFurnace());
-        if (GalacticraftCore.isPlanetsLoaded)
-        {
-            list.add(this.getEnergyStorageCluster());
-            list.add(this.getElectricArcFurnace());
-        }
+        list.add(this.getEnergyStorageCluster());
+        list.add(this.getElectricArcFurnace());
     }
 
     @Override

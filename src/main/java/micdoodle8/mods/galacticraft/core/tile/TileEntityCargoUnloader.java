@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -152,12 +151,6 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
-    }
-
-    @Override
     public String getName()
     {
         return GCCoreUtil.translate("container.cargounloader.name");
@@ -184,7 +177,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         {
             if (slotID == 0)
             {
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
             }
             else
             {

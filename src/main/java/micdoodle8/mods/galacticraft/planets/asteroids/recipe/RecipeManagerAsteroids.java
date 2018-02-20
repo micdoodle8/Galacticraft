@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -13,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeManagerAsteroids
 {
@@ -26,7 +24,7 @@ public class RecipeManagerAsteroids
 
     private static void addUniversalRecipes()
     {
-    	Object titaniumIngot = ConfigManagerCore.recipesRequireGCAdvancedMetals ? new ItemStack(AsteroidsItems.basicItem, 1, 0) : "ingotTitanium";
+        ItemStack titaniumIngot = new ItemStack(AsteroidsItems.basicItem, 1, 0);
     	ItemStack platingTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
     	
     	FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.basicItem, 1, 5), 0.0F);
@@ -48,20 +46,8 @@ public class RecipeManagerAsteroids
     	//Splintered ice into Ice
     	CompressorRecipes.addShapelessRecipe(new ItemStack(Blocks.ICE), new ItemStack(AsteroidBlocks.blockDenseIce), new ItemStack(AsteroidBlocks.blockDenseIce));
     	
-    	if (ConfigManagerCore.recipesRequireGCAdvancedMetals)
-    		CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), titaniumIngot, titaniumIngot);
-    	else
-    	{
-	        if (OreDictionary.getOres("ingotTitanium").size() > 0)
-	        {
-	            for (ItemStack stack : OreDictionary.getOres("ingotTitanium"))
-	            {
-	                CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), stack, stack);
-	            }
-	        }
-    	}
-
-        CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
+    	CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), titaniumIngot, titaniumIngot);
+    	CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         //All this is for NEI's benefit
         NonNullList<Ingredient> list1 = NonNullList.create();

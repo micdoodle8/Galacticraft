@@ -9,7 +9,7 @@
     "CCC",
     "WWW"
   ],
-  "type": "forge:ore_shaped",
+  "type": "galacticraftcore:replacable",
   "key": {
     "C": {
       "type": "forge:ore_dict",

@@ -89,6 +89,8 @@ public class AsteroidsModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
+        AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
+
         playerHandler = new AsteroidsPlayerHandler();
         MinecraftForge.EVENT_BUS.register(playerHandler);
         AsteroidsEventHandler eventHandler = new AsteroidsEventHandler();
@@ -123,6 +125,7 @@ public class AsteroidsModule implements IPlanetsModule
 
         AsteroidsItems.initItems();
 
+        AsteroidsModule.planetAsteroids.setBiomeInfo(BiomeAsteroids.asteroid);
         //This enables Endermen on Asteroids in Asteroids Challenge mode
         ((BiomeAsteroids)BiomeAsteroids.asteroid).resetMonsterListByMode(ConfigManagerCore.challengeMobDropsAndSpawning);
         //TODO: could also increase mob spawn frequency in Hard Mode on various dimensions e.g. Mars and Venus?
@@ -153,7 +156,6 @@ public class AsteroidsModule implements IPlanetsModule
 
         RecipeManagerAsteroids.loadRecipes();
 
-        AsteroidsModule.planetAsteroids = new Planet("asteroids").setParentSolarSystem(GalacticraftCore.solarSystemSol);
         AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class).setTierRequired(3);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.375F, 1.375F)).setRelativeOrbitTime(45.0F).setPhaseShift((float) (Math.random() * (2 * Math.PI)));
         AsteroidsModule.planetAsteroids.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/asteroid.png"));

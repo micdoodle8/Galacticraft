@@ -10,6 +10,12 @@
     "XXX"
   ],
   "type": "forge:ore_shaped",
+  "conditions": [
+    {
+      "type": "galacticraftcore:condition",
+      "data": "can_default"
+    }
+  ],
   "key": {
     "X": {
       "type": "forge:ore_dict",

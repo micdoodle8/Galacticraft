@@ -7,7 +7,7 @@
     "ZYZ",
     "XXX"
   ],
-  "type": "minecraft:crafting_shaped",
+  "type": "galacticraftplanets:replacable",
   "key": {
     "W": {
       "item": "galacticraftplanets:item_basic_asteroids",

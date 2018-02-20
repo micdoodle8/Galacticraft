@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -215,7 +214,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) > 0;
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
                 return FluidUtil.isOilContainerAny(itemstack);
             case 2:
@@ -235,7 +234,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0 || !this.shouldPullEnergy();
+                return ItemElectricBase.isElectricItemEmpty(itemstack) || !this.shouldPullEnergy();
             case 1:
                 return FluidUtil.isEmptyContainer(itemstack);
             case 2:
@@ -379,12 +378,6 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
 
         return tankInfo;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

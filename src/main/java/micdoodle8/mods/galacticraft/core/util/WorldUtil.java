@@ -42,6 +42,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketEntityEffect;
+import net.minecraft.network.play.server.SPacketPlayerAbilities;
 import net.minecraft.network.play.server.SPacketRespawn;
 import net.minecraft.network.play.server.SPacketSetExperience;
 import net.minecraft.potion.PotionEffect;
@@ -56,8 +57,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import net.minecraftforge.server.permission.PermissionAPI;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -441,7 +442,7 @@ public class WorldUtil
 //        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
         WorldUtil.registeredSpaceStations = Maps.newHashMap();
         MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (theServer == null)
+        if (theServer == null || !spaceStationList.exists() && !spaceStationList.isDirectory())
         {
             return;
         }
@@ -452,7 +453,7 @@ public class WorldUtil
         {
             for (File var5 : var2)
             {
-                if (var5.getName().contains("spacestation_"))
+                if (var5.getName().startsWith("spacestation_") && var5.getName().endsWith(".dat"))
                 {
                     try
                     {
@@ -806,8 +807,8 @@ public class WorldUtil
                 {
                     GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
                 }
-                player.connection.sendPacket(new SPacketRespawn(dimID, player.world.getDifficulty(), player.world.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
-
+                player.connection.sendPacket(new SPacketRespawn(dimID, worldNew.getDifficulty(), worldNew.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
+                player.mcServer.getPlayerList().updatePermissionLevel(player);
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     if (WorldUtil.registeredSpaceStations.containsKey(dimID))
@@ -840,6 +841,7 @@ public class WorldUtil
 
                 player.mcServer.getPlayerList().preparePlayer(player, (WorldServer) worldOld);
                 player.interactionManager.setWorld((WorldServer) worldNew);
+                player.connection.sendPacket(new SPacketPlayerAbilities(player.capabilities));
                 player.mcServer.getPlayerList().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
                 player.mcServer.getPlayerList().syncPlayerInventory(player);
 
@@ -1047,12 +1049,10 @@ public class WorldUtil
     {
         if (ConfigManagerCore.challengeSpawnHandling)
         {
-            ConfigManagerCore.challengeSpawnHandling = false;
             WorldProvider wp = WorldUtil.getProviderForNameServer("planet.asteroids");
             WorldServer worldNew = (wp == null) ? null : (WorldServer) wp.world;
             if (worldNew != null)
             {
-                Thread.dumpStack();
                 return worldNew;
             }
         }

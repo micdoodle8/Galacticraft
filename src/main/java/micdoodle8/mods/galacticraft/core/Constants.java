@@ -9,13 +9,13 @@ public class Constants
     public static final int LOCALMAJVERSION = 4;
     public static final int LOCALMINVERSION = 0;
     public static final int LOCALPATCHVERSION = 1;
-    public static final int LOCALBUILDVERSION = 121;
+    public static final int LOCALBUILDVERSION = -1; // Replaced by jenkins build
     public static final String COMBINEDVERSION = LOCALMAJVERSION + "." + LOCALMINVERSION + "." + LOCALPATCHVERSION + "." + LOCALBUILDVERSION;
     
     public static final String MCVERSION = "[1.12.2]";
     public static final String DEPENDENCIES_FORGE = "required-after:forge@[14.23.1.2555,); ";  //Keep the space at the end!
     public static final String DEPENDENCIES_MICCORE = "required-after:micdoodlecore; ";  //Keep the space at the end!
-    public static final String DEPENDENCIES_MODS = "after:ic2;";
+    public static final String DEPENDENCIES_MODS = "after:ic2; after:tconstruct; after:mantle;";
 
     public static final String CONFIG_CATEGORY_DIMENSIONS = "dimensions";
     public static final String CONFIG_CATEGORY_ENTITIES = "entities";
@@ -23,6 +23,11 @@ public class Constants
     public static final String CONFIG_CATEGORY_GENERAL = "general";
     public static final String CONFIG_CATEGORY_WORLDGEN = "worldgen";
     public static final String CONFIG_CATEGORY_ACHIEVEMENTS = "achievements";
+    public static final String CONFIG_CATEGORY_CLIENT = "client";
+    public static final String CONFIG_CATEGORY_SERVER = "server";
+    public static final String CONFIG_CATEGORY_CONTROLS = "controls";
+    public static final String CONFIG_CATEGORY_DIFFICULTY = "difficulty";
+    public static final String CONFIG_CATEGORY_COMPATIBILITY = "compatibility";
 
     public static final int OVERWORLD_SKYPROVIDER_STARTHEIGHT = 200;
     public static final int OVERWORLD_CLOUD_HEIGHT = 130;
@@ -33,9 +38,10 @@ public class Constants
     public static final String POWER_CONFIG_FILE = "Galacticraft/power-GC3.conf";
     public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
-    public static String ASSET_PREFIX = "galacticraftcore";
-    public static String TEXTURE_PREFIX = ASSET_PREFIX + ":";
-    public static String PREFIX = "micdoodle8.";
+    public static final String ASSET_PREFIX = "galacticraftcore";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
+    public static final String PREFIX = "micdoodle8.";
+    public static final String GCDATAFOLDER = "../galacticraft/"; 
 
     public static final int GEAR_ID_OXYGEN_MASK = 0;
     public static final int GEAR_ID_OXYGEN_GEAR = 1;

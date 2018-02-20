@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
@@ -17,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -114,7 +114,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         if (this.canCompress())
         {
             ItemStack resultItemStack = this.producingStack.copy();
-            if (ConfigManagerCore.quickMode)
+            if (this.world.provider instanceof IZeroGDimension)
             {
                 if (resultItemStack.getItem() == GCItems.basicItem)
                 {
@@ -122,9 +122,13 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
                     {
                         resultItemStack.setCount(5);
                     }
-                    else if (resultItemStack.getItemDamage() == ItemBasic.WAFER_ADVANCED)
+                    else if (resultItemStack.getItemDamage() == 12)  //Solar panels
                     {
-                        resultItemStack.setCount(2);
+                        resultItemStack.setCount(15);
+                    }
+                    else
+                    {
+                        resultItemStack.setCount(resultItemStack.getCount() * 2);
                     }
                 }
             }
@@ -189,12 +193,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public boolean hasCustomName()
     {
         return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

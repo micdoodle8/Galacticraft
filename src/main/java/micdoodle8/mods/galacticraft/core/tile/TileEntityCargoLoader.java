@@ -19,9 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -156,12 +153,6 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     // ISidedInventory Implementation:

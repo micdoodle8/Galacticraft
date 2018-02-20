@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
@@ -187,7 +188,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
         if (!(this.world.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
-        if (this.world.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        if (GalacticraftCore.isPlanetsLoaded && this.world.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
         celestialAngle %= 360;
         boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.provider instanceof WorldProviderSpaceStation;
 

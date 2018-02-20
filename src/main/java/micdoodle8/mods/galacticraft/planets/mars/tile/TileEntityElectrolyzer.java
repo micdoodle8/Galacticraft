@@ -35,7 +35,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -289,7 +288,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             switch (slotID)
             {
             case 0:
-                return ItemElectricBase.isElectricItem(itemstack.getItem());
+                return ItemElectricBase.isElectricItemCharged(itemstack);
             case 1:
                 return itemstack.getItem() == Items.WATER_BUCKET;
             default:
@@ -307,7 +306,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
             switch (slotID)
             {
             case 0:
-                return itemstack.getItem() instanceof ItemElectricBase && ((ItemElectricBase) itemstack.getItem()).getElectricityStored(itemstack) <= 0;
+                return ItemElectricBase.isElectricItemEmpty(itemstack);
             case 1:
                 return itemstack.getItem() == Items.BUCKET;
             default:
@@ -762,12 +761,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
         }
 
         return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

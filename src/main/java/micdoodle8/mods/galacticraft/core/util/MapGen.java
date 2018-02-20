@@ -44,7 +44,8 @@ public class MapGen extends BiomeProvider implements Runnable
     private int biomeMap0;
     private int biomeMapCx;
     private int biomeMapCz;
-    private int biomeMapFactor;
+    private final int biomeMapFactor;
+    private final int tickLimit;
     private int imagefactor;
 
     private BiomeCache biomeCache;
@@ -56,8 +57,8 @@ public class MapGen extends BiomeProvider implements Runnable
     private int biomeMapSizeZ;
 
     private Random rand;
-    private int[] heights = null;
-    private double[] heighttemp = null;
+    private int[] heights;
+    private double[] heighttemp;
     private World world;
     private WorldType worldType;
     private WorldInfo worldInfo;
@@ -83,6 +84,8 @@ public class MapGen extends BiomeProvider implements Runnable
     public MapGen(World worldIn, int sx, int sz, int cx, int cz, int scale, File file)
     {
         this.dimID = GCCoreUtil.getDimensionID(worldIn);
+        this.biomeMapFactor = scale;
+        this.tickLimit = Math.min(scale, 16);
         if (MapGen.disabled)
         {
             this.mapNeedsCalculating = false;
@@ -90,7 +93,6 @@ public class MapGen extends BiomeProvider implements Runnable
         }
         this.biomeMapSizeX = sx;
         this.biomeMapSizeZ = sz;
-        this.biomeMapFactor = scale;
         int progress = this.checkProgress(file); 
         if (progress < 0)
         {
@@ -350,10 +352,22 @@ public class MapGen extends BiomeProvider implements Runnable
 
     private void initialiseSmallerArrays()
     {
-        int limit = Math.min(biomeMapFactor, 16);
         this.heights = new int[256];
         this.heighttemp = new double[825];
-        this.biomeCount = new int[limit * limit];
+        this.biomeCount = new int[this.tickLimit * this.tickLimit];
+    }
+
+    public static void arrayClear(int[] array, int len)
+    {
+        int lenB = len < 16 ? len : 16; 
+        for (int i = 0; i < lenB; i++)
+        {
+            array[i] = 0;
+        }
+        for (int i = 16; i < len; i += i)
+        {
+          System.arraycopy(array, 0, array, i, i + i > len ? i : len - i);
+        }
     }
 
 	/*
@@ -362,7 +376,6 @@ public class MapGen extends BiomeProvider implements Runnable
 	 */
     public boolean BiomeMapOneTick()
     {
-    	int limit = Math.min(biomeMapFactor, 16);
         if (this.biomeAndHeightArray == null)
         {
             this.biomeAndHeightArray = new byte[biomeMapSizeX * biomeMapSizeZ * 2];
@@ -376,7 +389,7 @@ public class MapGen extends BiomeProvider implements Runnable
         int progX = this.progressX.get();
         try
         {
-            biomeMapOneChunk(biomeMapCx + biomeMapX, biomeMapCz + biomeMapZ, progX, progressZ, limit);
+            biomeMapOneChunk(biomeMapCx + biomeMapX, biomeMapCz + biomeMapZ, progX, progressZ, tickLimit);
         }
         catch (Exception e)
         {
@@ -418,7 +431,7 @@ public class MapGen extends BiomeProvider implements Runnable
         this.getHeightMap(x0, z0);
         int factor = this.biomeMapFactor;
         int halfFactor = limit * limit / 2;
-        ArrayList<Integer> cols = new ArrayList<Integer>();
+        ArrayList<Integer> cols = new ArrayList<>();
         for (int j = 0; j < biomeCount.length; j++)
         {
             biomeCount[j] = 0;
@@ -470,10 +483,7 @@ public class MapGen extends BiomeProvider implements Runnable
                     }
                 }
                 //Clear the array for next time
-                for (int j = cols.size() - 1; j >= 0; j--)
-                {
-                    biomeCount[j] = 0;
-                }
+                arrayClear(biomeCount, cols.size());
 
                 int arrayIndex = (ix * biomeMapSizeZ + iz) * 2;
                 this.biomeAndHeightArray[arrayIndex] = (byte) (cols.get(maxindex).intValue());

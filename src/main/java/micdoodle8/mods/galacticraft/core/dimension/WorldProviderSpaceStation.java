@@ -3,9 +3,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
-import micdoodle8.mods.galacticraft.core.world.gen.BiomeProviderOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
-import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
 /***
@@ -49,12 +47,6 @@ public abstract class WorldProviderSpaceStation extends WorldProviderSpace
         return ChunkProviderOrbit.class;
     }
 
-    @Override
-    public Class<? extends BiomeProvider> getBiomeProviderClass()
-    {
-        return BiomeProviderOrbit.class;
-    }
-    
     @Override
     public void updateWeather()
     {

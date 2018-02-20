@@ -84,6 +84,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -91,7 +92,9 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 public class PacketSimple extends PacketBase implements Packet<INetHandler>
@@ -128,6 +131,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
         S_BUILDFLAGS_UPDATE(Side.SERVER, Integer.class),
         S_CONTROL_ENTITY(Side.SERVER, Integer.class),
+        S_NOCLIP_PLAYER(Side.SERVER, Boolean.class),
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
         S_REQUEST_MACHINE_DATA(Side.SERVER, BlockPos.class),
@@ -199,6 +203,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
     private EnumSimplePacket type;
     private List<Object> data;
     static private String spamCheckString;
+    static private Map<EntityPlayerMP, GameType> savedSettings = new HashMap<>(); 
 
     public PacketSimple()
     {
@@ -256,7 +261,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             {
                 this.data = NetworkUtil.decodeData(this.type.getDecodeClasses(), buffer);
             }
-            if (buffer.readableBytes() > 0)
+            if (buffer.readableBytes() > 0 && buffer.writerIndex() < 0xfff00)
             {
                 GCLog.severe("Galacticraft packet length problem for packet type " + this.type.toString());
             }
@@ -1232,6 +1237,46 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             if (player.getRidingEntity() != null && player.getRidingEntity() instanceof IControllableEntity)
             {
                 ((IControllableEntity) player.getRidingEntity()).pressKey((Integer) this.data.get(0));
+            }
+            break;
+        case S_NOCLIP_PLAYER:
+            boolean noClip = (Boolean) this.data.get(0);
+            if (player instanceof GCEntityPlayerMP)
+            {
+                ((GCEntityPlayerMP)player).setNoClip(noClip);
+                if (noClip == false)
+                {
+                    player.fallDistance = 0.0F;
+                    ((EntityPlayerMP)player).connection.floatingTickCount = 0;
+                }
+            }
+            else if (CompatibilityManager.PlayerAPILoaded && player instanceof EntityPlayerMP)
+            {
+                EntityPlayerMP emp = ((EntityPlayerMP)player); 
+                try
+                {
+                    Field f = emp.interactionManager.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "gameType" : "field_73091_c");
+                    f.setAccessible(true);
+                    if (noClip == false)
+                    {
+                        emp.fallDistance = 0.0F;
+                        emp.connection.floatingTickCount = 0;
+                        GameType gt = savedSettings.get(emp);
+                        if (gt != null)
+                        {
+                            savedSettings.remove(emp);
+                            f.set(emp.interactionManager, gt);
+                        }
+                    }
+                    else
+                    {
+                        savedSettings.put(emp, emp.interactionManager.getGameType());
+                        f.set(emp.interactionManager, GameType.SPECTATOR);
+                    }
+                } catch (Exception ee)
+                {
+                    ee.printStackTrace();
+                }
             }
             break;
         case S_REQUEST_DATA:

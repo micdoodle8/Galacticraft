@@ -20,7 +20,8 @@ import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -671,9 +672,15 @@ public class FluidUtil
      */
     public static ItemStack getUsedContainer(ItemStack container)
     {
-        if (FluidUtil.isBucket(container) && net.minecraftforge.fluids.FluidUtil.getFluidHandler(container) != null)
+        IFluidHandlerItem handler = net.minecraftforge.fluids.FluidUtil.getFluidHandler(container);
+        if (FluidUtil.isBucket(container) && handler != null)
         {
             return new ItemStack(Items.BUCKET, container.getCount());
+        }
+        else if (handler != null) 
+        {
+            handler.drain(Integer.MAX_VALUE, true);
+            return handler.getContainer();
         }
         else
         {
@@ -760,16 +767,17 @@ public class FluidUtil
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
             ItemStack result;
-        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler)) != ItemStack.EMPTY)
+        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler, player.capabilities.isCreativeMode)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler, player.capabilities.isCreativeMode)) != ItemStack.EMPTY)
         	{
         		// send inventory updates to client
         		if (player.inventoryContainer != null)
         		{
         			player.inventoryContainer.detectAndSendChanges();
         		}
+                return new FluidActionResult(result);
         	}
 
-        	return new FluidActionResult(result);
+        	return FluidActionResult.FAILURE;
         }
 
         //Forge's UniversalBucket appears to be non-functional, currently, for FILLING modded buckets
@@ -779,13 +787,25 @@ public class FluidUtil
         	ItemStack result = ItemBucketGC.fillBucketFrom(fluidHandler); 
         	if (result != null)
         	{
+        	    //Handle stacks of buckets: insert the filled bucket into another inventory slot or drop it
+        	    if (container.getCount() > 1)
+        	    {
+                    ItemStack remainder = ItemHandlerHelper.insertItemStacked(new PlayerMainInvWrapper(player.inventory), result, false);
+                    if (!remainder.isEmpty() && player != null)
+                    {
+                        ItemHandlerHelper.giveItemToPlayer(player, remainder);
+                    }
+                    result = container.copy();
+                    result.shrink(1);
+        	    }
         		return new FluidActionResult(result);
         	}
         	//If failure, fall through to other Forge methods
         }
         
         //---------the rest of this is standard Forge code from interactWithFluidHandler()---------
-        IItemHandler playerInventory = new InvWrapper(player.inventory);
+        //-----------(but without the InvWrapper bug which could put fluids in armor slots!)-------
+        IItemHandler playerInventory = new PlayerMainInvWrapper(player.inventory);
 
         FluidActionResult fillResult = net.minecraftforge.fluids.FluidUtil.tryFillContainerAndStow(container, fluidHandler, playerInventory, Integer.MAX_VALUE, player);
         if (fillResult.isSuccess())
@@ -798,15 +818,15 @@ public class FluidUtil
         }
      }
 
-    private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank)
+    private static ItemStack tryFillCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
     	int currCapacity = canister.getItemDamage() - 1; 
         if (currCapacity <= 0)
         {
-        	return ItemStack.EMPTY;
+            return ItemStack.EMPTY;
         }
         FluidStack liquid = tank.drain(currCapacity, false);
-        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, true);
+        int transferred = ((ItemCanisterGeneric)canister.getItem()).fill(canister, liquid, !isCreativeMode);
         if (transferred > 0)
         {
             liquid = tank.drain(transferred, true);
@@ -815,7 +835,7 @@ public class FluidUtil
         return ItemStack.EMPTY;
     }
 
-    private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank)
+    private static ItemStack tryEmptyCanister(ItemStack canister, IFluidHandler tank, boolean isCreativeMode)
     {
     	int currContents = ItemCanisterGeneric.EMPTY - canister.getItemDamage(); 
         if (currContents <= 0)
@@ -826,7 +846,7 @@ public class FluidUtil
         int transferred = tank.fill(liquid, true);
         if (transferred > 0)
         {
-            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, true);
+            ((ItemCanisterGeneric)canister.getItem()).drain(canister, transferred, !isCreativeMode);
             return canister;
         }
         return ItemStack.EMPTY;

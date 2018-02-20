@@ -1,8 +1,12 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.WorldProvider;
@@ -36,6 +40,8 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
 
     public AtmosphereInfo atmosphere = new AtmosphereInfo(false, false, false, 0.0F, 0.0F, 1.0F);
     protected LinkedList<Biome> biomeInfo;
+    public LinkedList<Biome> biomesToGenerate;
+    public BiomeGenBaseGC[] biomesToAdapt;
     protected LinkedList<SpawnListEntry> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
@@ -324,13 +330,31 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         this.dimensionSuffix = dimensionSuffix;
     }
 
-    public void setBiomeInfo(Biome ...  biome)
+    public void setBiomeInfo(Biome ...  biomes)
     {
-        if (this.biomeInfo == null)
+        this.biomeInfo = new LinkedList<Biome>();
+        this.biomesToGenerate = new LinkedList<Biome>();
+        LinkedList<BiomeGenBaseGC> adaptiveBiomes = new LinkedList<>();
+        int index = 0;
+        for (Biome b : biomes)
         {
-            this.biomeInfo = new LinkedList<Biome>();
+            this.biomeInfo.add(b);
+            if (b instanceof BiomeGenBaseGC && ((BiomeGenBaseGC)b).isAdaptiveBiome)
+            {
+                this.biomesToGenerate.add(BiomeAdaptive.register(index++, (BiomeGenBaseGC) b));
+                adaptiveBiomes.add((BiomeGenBaseGC) b);
+            }
+            else
+            {
+                this.biomesToGenerate.add(b);
+            }
         }
-        this.biomeInfo.addAll(Arrays.asList(biome));
+        this.biomesToAdapt = adaptiveBiomes.toArray(new BiomeGenBaseGC[adaptiveBiomes.size()]);
+    }
+
+    public List<Biome> getBiomes()
+    {
+        return this.biomeInfo;
     }
 
     public void addMobInfo(SpawnListEntry entry)
@@ -354,5 +378,20 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
                 }
             }
         }
+    }
+
+    public List<Block> getSurfaceBlocks()
+    {
+        if (this.providerClass != null && IGalacticraftWorldProvider.class.isAssignableFrom(this.providerClass))
+        {
+            try
+            {
+                return ((IGalacticraftWorldProvider)this.providerClass.newInstance()).getSurfaceBlocks();
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return null;
     }
 }

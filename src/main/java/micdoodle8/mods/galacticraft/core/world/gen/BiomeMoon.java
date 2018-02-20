@@ -10,7 +10,7 @@ public class BiomeMoon extends BiomeGenBaseGC
 
     BiomeMoon(BiomeProperties properties)
     {
-        super(properties);
+        super(properties, true);
     }
     
     @Override
