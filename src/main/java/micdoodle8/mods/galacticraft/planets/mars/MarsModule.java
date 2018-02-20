@@ -84,7 +84,7 @@ public class MarsModule implements IPlanetsModule
         }
         else
         {
-            GCLog.info("Galacticraft sludge is not default, issues may occur.");
+            GCLog.getLogger().info("Galacticraft sludge is not default, issues may occur.");
         }
 
         sludge = FluidRegistry.getFluid("bacterialsludge");
