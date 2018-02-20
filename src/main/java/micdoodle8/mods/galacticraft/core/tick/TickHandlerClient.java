@@ -74,7 +74,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TickHandlerClient
 {
@@ -88,7 +87,7 @@ public class TickHandlerClient
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
     private static boolean menuReset = true;
-    public static AtomicBoolean updateJEIhiding = new AtomicBoolean();
+    public static volatile boolean updateJEIhiding = false;
     
     public static void resetClient()
     {
@@ -342,17 +341,6 @@ public class TickHandlerClient
         final WorldClient world = minecraft.theWorld;
         final EntityPlayerSP player = minecraft.thePlayer;
 
-        if (updateJEIhiding.getAndSet(false))
-        {
-            if (CompressorRecipes.steelIngotsPresent)
-            {
-                // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
-                GalacticraftJEI.updateHiddenSteel(ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes);
-            }
-            // Update JEI to hide adventure mode recipes when not in adventure mode
-            GalacticraftJEI.updateHiddenAdventure(!ConfigManagerCore.challengeRecipes);
-        }
-        
         if (teleportingGui != null)
         {
             if (minecraft.currentScreen != teleportingGui)
@@ -404,6 +392,18 @@ public class TickHandlerClient
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
+                if (updateJEIhiding)
+                {
+                    updateJEIhiding = false;
+                    if (CompressorRecipes.steelIngotsPresent)
+                    {
+                        // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
+                        GalacticraftJEI.updateHiddenSteel(ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes);
+                    }
+                    // Update JEI to hide adventure mode recipes when not in adventure mode
+                    GalacticraftJEI.updateHiddenAdventure(!ConfigManagerCore.challengeRecipes);
+                }
+                
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
                 {
                     Iterator<Footprint> fpIt = fpList.iterator();

@@ -28,6 +28,8 @@ public class GalacticraftJEI extends BlankModPlugin
 {
     private static IModRegistry registryCached = null;
     private static IRecipeRegistry recipesCached = null;
+    private static boolean hiddenSteel = false;
+    private static boolean hiddenAdventure = false;
 
     @Override
     public void register(@Nonnull IModRegistry registry)
@@ -56,8 +58,8 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.BUGGY_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 0), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
-        
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
 
         GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
@@ -71,11 +73,19 @@ public class GalacticraftJEI extends BlankModPlugin
 
     public static void updateHiddenSteel(boolean hide)
     {
-        // TODO
+        if (hide != hiddenSteel)
+        {
+            hiddenSteel = hide;
+            // TODO
+        }
     }
 
     public static void updateHiddenAdventure(boolean hide)
     {
-        // TODO
+        if (hide != hiddenAdventure)
+        {
+            hiddenAdventure = hide;
+            // TODO
+        }
     }
 }

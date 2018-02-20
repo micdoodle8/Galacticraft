@@ -1,17 +1,14 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import com.google.common.collect.ImmutableMap;
-
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 
 public class CircuitFabricatorRecipes
 {
-    private static HashMap<Object[], ItemStack> recipes = new HashMap<>();
+    private static List<Object[]> recipeInputs = new ArrayList<>();
+    private static List<ItemStack> recipeOutputs = new ArrayList<>();
 
     public static ArrayList<ArrayList<ItemStack>> slotValidItems = new ArrayList<>(5);
 
@@ -42,10 +39,23 @@ public class CircuitFabricatorRecipes
             {
                 continue;
             }
-            throw new RuntimeException("Invalid circuit fabricator recipe! " + o.toString());
+            throw new RuntimeException("Invalid circuit fabricator recipe!  Input must be ItemStack or List<ItemStack>: " + o.toString());
         }
 
-        CircuitFabricatorRecipes.recipes.put(inputList, output);
+        if (inputList.getClass() != Object[].class)
+        {
+            Object[] inputs = new Object[inputList.length];
+            for (int i = 0; i < inputList.length; i++)
+            {
+                inputs[i] = inputList[i];
+            }
+            CircuitFabricatorRecipes.recipeInputs.add(inputs);
+        }
+        else
+        {
+            CircuitFabricatorRecipes.recipeInputs.add(inputList);
+        }
+        CircuitFabricatorRecipes.recipeOutputs.add(output);
         validateItems(inputList);
     }
 
@@ -119,12 +129,13 @@ public class CircuitFabricatorRecipes
             return null;
         }
 
-        for (Entry<Object[], ItemStack> recipe : CircuitFabricatorRecipes.recipes.entrySet())
+        int count = 0;
+        for (Object[] recipe : CircuitFabricatorRecipes.recipeInputs)
         {
             boolean found = true;
             for (int i = 0; i < 5; i++)
             {
-                Object recipeStack = recipe.getKey()[i];
+                Object recipeStack = recipe[i];
                 ItemStack inputStack = inputList[i];
 
                 if (recipeStack == null || inputStack == null)
@@ -165,28 +176,36 @@ public class CircuitFabricatorRecipes
 
             if (found)
             {
-                return recipe.getValue();
+                return recipeOutputs.get(count);
             }
+            
+            count++;
         }
 
-        return CircuitFabricatorRecipes.recipes.get(inputList);
+        return null;
     }
     
-    public static ImmutableMap<Object[], ItemStack> getRecipes()
+    public static List<Object[]> getRecipes()
     {
-        return ImmutableMap.copyOf(recipes);
+        return recipeInputs;
+    }
+    
+    public static ItemStack getOutput(int count)
+    {
+        return recipeOutputs.get(count);
     }
     
     public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)
     {
         if (ingredient == null) return;
         CircuitFabricatorRecipes.slotValidItems.clear();
+        Object newIngredient = replacement;
 
-        for (Entry<Object[], ItemStack> recipe : CircuitFabricatorRecipes.recipes.entrySet())
+        for (Object[] recipe : CircuitFabricatorRecipes.recipeInputs)
         {
             for (int i = 0; i < 5; i++)
             {
-                Object recipeStack = recipe.getKey()[i];
+                Object recipeStack = recipe[i];
                 if (recipeStack == null)
                 {
                     continue;
@@ -197,7 +216,7 @@ public class CircuitFabricatorRecipes
                     ItemStack stack = ((ItemStack) recipeStack); 
                     if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                     {
-                        recipe.getKey()[i] = replacement;
+                        recipe[i] = newIngredient;
                     }
                 }
                 else if (recipeStack instanceof List<?>)
@@ -207,14 +226,14 @@ public class CircuitFabricatorRecipes
                     {
                         if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                         {
-                            recipe.getKey()[i] = replacement;
+                            recipe[i] = newIngredient;
                             break;
                         }
                     }
                 }
             }
 
-            CircuitFabricatorRecipes.validateItems(recipe.getKey());
+            CircuitFabricatorRecipes.validateItems(recipe);
         }
     }
 }
