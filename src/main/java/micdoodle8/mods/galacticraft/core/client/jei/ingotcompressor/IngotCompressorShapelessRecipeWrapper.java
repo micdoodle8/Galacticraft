@@ -30,21 +30,6 @@ public class IngotCompressorShapelessRecipeWrapper extends BlankRecipeWrapper im
         this.stackHelper = stackhelper;
     }
 
-//    @Nonnull
-//    @Override
-//    public List<ItemStack> getOutputs()
-//    {
-//        ItemStack stack = recipe.getRecipeOutput().copy();
-//        if (ConfigManagerCore.quickMode)
-//        {
-//            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
-//            {
-//                stack.setCount(stack.getCount() * 2);
-//            }
-//        }
-//        return Collections.singletonList(stack);
-//    }
-
     @Override
     public void getIngredients(IIngredients ingredients)
     {

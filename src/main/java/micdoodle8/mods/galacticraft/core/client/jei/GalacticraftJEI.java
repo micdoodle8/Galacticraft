@@ -36,11 +36,14 @@ import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecip
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+
+import com.google.common.collect.ImmutableMap;
 
 @JEIPlugin
 public class GalacticraftJEI extends BlankModPlugin
@@ -152,6 +155,7 @@ public class GalacticraftJEI extends BlankModPlugin
         }
         if (changeHidden && recipesCached != null)
         {
+            unhide();
             List<IRecipe> toHide = CompressorRecipes.getRecipeListHidden(hideSteel, hideAdventure);
             hidden.clear();
             List<IRecipeWrapper> allRW = recipesCached.getRecipeWrappers(ingotCompressorCategory);
@@ -167,6 +171,50 @@ public class GalacticraftJEI extends BlankModPlugin
                     }
                 }
             }
+            hide();
+        }
+    }
+    
+    // This is a hacky solution because there is no .hideRecipe() function in 1.11.2
+    // It replicates the .removeRecipe() functionality which was supposed to be present in 1.11.2
+    // See for validity of this code: https://github.com/mezz/JustEnoughItems/commit/48fea48ed107f055f2f8196d0ba3a2de33187a4f
+    private static void hide()
+    {
+        try {
+            Field recipeMap = recipesCached.getClass().getDeclaredField("recipeCategoriesMap");
+            recipeMap.setAccessible(true);
+            ImmutableMap<String, IRecipeCategory> map = (ImmutableMap<String, IRecipeCategory>) recipeMap.get(recipesCached);
+            IRecipeCategory recipeCategory = map.get(RecipeCategories.INGOT_COMPRESSOR_ID);
+            if (recipeCategory == null)
+            {
+                return;
+            }
+            
+            Method removeIt = null;
+            for (Method m : recipesCached.getClass().getDeclaredMethods())
+            {
+                if (m.getName().equals("removeRecipeUnchecked"))
+                {
+                    removeIt = m;
+                    removeIt.setAccessible(true);
+                    break;
+                }
+            }
+ 
+            for (IRecipeWrapper wrapper : hidden)
+            {
+                removeIt.invoke(recipesCached, wrapper, recipeCategory);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void unhide()
+    {
+        for (IRecipeWrapper wrapper : hidden)
+        {
+            recipesCached.addRecipe(wrapper, RecipeCategories.INGOT_COMPRESSOR_ID);
         }
     }
 

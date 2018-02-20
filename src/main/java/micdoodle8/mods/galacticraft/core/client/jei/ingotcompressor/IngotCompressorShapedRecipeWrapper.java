@@ -26,22 +26,6 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
         this.recipe = recipe;
     }
 
-// TODO
-//    @Nonnull
-//    @Override
-//    public List<ItemStack> getOutputs()
-//    {
-//        ItemStack stack = recipe.getRecipeOutput().copy();
-//        if (ConfigManagerCore.quickMode)
-//        {
-//            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
-//            {
-//                stack.setCount(stack.getCount() * 2);
-//            }
-//        }
-//        return Collections.singletonList(stack);
-//    }
-
     @Override
     public void getIngredients(IIngredients ingredients)
     {

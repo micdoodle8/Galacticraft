@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
+import java.util.List;
+
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
@@ -9,8 +11,10 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
@@ -75,12 +79,9 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
-        if (GalacticraftJEI.hidden.contains(recipeWrapper))
-        {
-            this.drawNothing = true;
-            return;
-        }
-        this.drawNothing = false;
+        this.drawNothing = GalacticraftJEI.hidden.contains(recipeWrapper);
+        if (this.drawNothing) return;
+
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
         for (int j = 0; j < 9; j++)
@@ -89,6 +90,19 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
         }
 
         itemstacks.init(9, false, 119, 20);
+
+        if (ConfigManagerCore.quickMode)
+        {
+            List<ItemStack> output = ingredients.getOutputs(ItemStack.class).get(0);
+            ItemStack stackOutput = output.get(0);
+            if (stackOutput.getItem().getUnlocalizedName(stackOutput).contains("compressed"))
+            {
+                ItemStack stackDoubled = stackOutput.copy();
+                stackDoubled.setCount(stackOutput.getCount() * 2);
+                output.set(0, stackDoubled);
+            }
+        }
+
         itemstacks.set(ingredients);
     }
 
