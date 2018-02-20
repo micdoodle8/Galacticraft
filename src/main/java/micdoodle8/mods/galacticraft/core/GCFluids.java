@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.core;
+    package micdoodle8.mods.galacticraft.core;
 
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -43,7 +43,7 @@ public class GCFluids
         }
         else
         {
-            GCLog.info("Galacticraft oil is not default, issues may occur.");
+            GCLog.getLogger().info("Galacticraft oil is not default, issues may occur.");
         }
 
         fluidOil = FluidRegistry.getFluid(oilID);
@@ -77,7 +77,7 @@ public class GCFluids
         }
         else
         {
-            GCLog.info("Galacticraft fuel is not default, issues may occur.");
+            GCLog.getLogger().info("Galacticraft fuel is not default, issues may occur.");
         }
 
         fluidFuel = FluidRegistry.getFluid(fuelID);

@@ -189,7 +189,7 @@ public class MapUtil
         File baseFolder = new File(overworld.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
-            GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+            GCLog.getLogger().error("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
             doneOverworldTexture = true;
             return;
         }
@@ -213,7 +213,7 @@ public class MapUtil
                 File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
                 if (!baseFolder.exists())
                 {
-                    GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
+                    GCLog.getLogger().error("Base folder missing: " + baseFolder.getAbsolutePath());
                     return;
                 }
                 File file = new File(baseFolder, "Overworld" + OVERWORLD_TEXTURE_WIDTH + ".bin");
@@ -249,7 +249,7 @@ public class MapUtil
             File baseFolder = new File(client.world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
             if (!baseFolder.exists())
             {
-                GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
+                GCLog.getLogger().error("Base folder missing: " + baseFolder.getAbsolutePath());
                 return;
             }
             File file = makeFileName(baseFolder, cx, cz);
@@ -350,7 +350,7 @@ public class MapUtil
         File baseFolder = new File(world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
-            GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+            GCLog.getLogger().error("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
             return false;
         }
         int cx = convertMap(x);
@@ -777,8 +777,8 @@ public class MapUtil
             getOverworldImageFromRaw(cx, cz, zipDeCompress(raw));
         } catch (DataFormatException e)
         {  
-            GCLog.debug(e.toString());
-            GCLog.debug("Client received a corrupted map image data packet from server " + cx + "_" + cz);
+            GCLog.getLogger().debug(e.toString());
+            GCLog.getLogger().debug("Client received a corrupted map image data packet from server " + cx + "_" + cz);
         }
     }
     
@@ -942,7 +942,7 @@ public class MapUtil
         File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
-            GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+            GCLog.getLogger().error("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
             return false;
         }
 
@@ -995,12 +995,12 @@ public class MapUtil
         {
             if (clientRequests.contains(filename.getName()))
             {
-                //GCLog.debug("Info: Server not yet ready to send map file " + baseFolder.getName() + "/" + filename.getName());
+                //GCLog.getLogger().debug("Info: Server not yet ready to send map file " + baseFolder.getName() + "/" + filename.getName());
             }
             else
             {
                 clientRequests.add(filename.getName());
-                //GCLog.debug("Info: Client requested map file" + filename.getName());
+                //GCLog.getLogger().debug("Info: Client requested map file" + filename.getName());
                 GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { dim, cx, cz }));
             }
             return true;
@@ -1021,12 +1021,12 @@ public class MapUtil
         }
         catch (IOException e)
         {
-            GCLog.severe("Problem reading map file: " + baseFolder.getAbsolutePath() + filename.getName());
+            GCLog.getLogger().error("Problem reading map file: " + baseFolder.getAbsolutePath() + filename.getName());
             return true;
         }
         if (raw == null || raw.length != SIZE_STD * SIZE_STD * 2)
         {
-            GCLog.debug("Warning: unexpected map size is " + raw.length + " for file " + filename.toString());
+            GCLog.getLogger().debug("Warning: unexpected map size is " + raw.length + " for file " + filename.toString());
             return true;
         }
 
@@ -1063,7 +1063,7 @@ public class MapUtil
 
                 if (imagex < 0 || imageZ < 0)
                 {
-                    GCLog.debug("Outside image " + imagex + "," + imageZ + " - " + "x=" + x + " z=" + z + " offsetX=" + offsetX + " offsetZ = " + offsetZ + " ox=" + ox + " oz=" + oz);
+                    GCLog.getLogger().debug("Outside image " + imagex + "," + imageZ + " - " + "x=" + x + " z=" + z + " offsetX=" + offsetX + " offsetZ = " + offsetZ + " ox=" + ox + " oz=" + oz);
                 }
                 else
                 {

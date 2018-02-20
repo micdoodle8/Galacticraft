@@ -261,7 +261,7 @@ public class GCBlocks
                 registerBlock(torch, ItemBlockGC.class);
                 registerBlock(torchLit, ItemBlockGC.class);
                 BlockUnlitTorch.register(torch, torchLit, modTorch);
-                GCLog.info("Galacticraft: activating Tinker's Construct compatibility.");
+                GCLog.getLogger().info("Galacticraft: activating Tinker's Construct compatibility.");
             }
         }
     }

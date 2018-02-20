@@ -654,7 +654,7 @@ public class ConfigManagerCore
         }
         catch (final Exception e)
         {
-            GCLog.severe("Problem loading core config (\"core.conf\")");
+            GCLog.getLogger().error("Problem loading core config (\"core.conf\")");
             e.printStackTrace();
         }
     }
@@ -887,7 +887,7 @@ public class ConfigManagerCore
             {
                 if (logging)
                 {
-                    GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
+                    GCLog.getLogger().error("[config] " + caller + ": unrecognised block name '" + s + "'.");
                 }
                 return null;
             }
@@ -898,7 +898,7 @@ public class ConfigManagerCore
             String bName = (String) GameData.getBlockRegistry().getNameForObject(block).toString();
             if (logging)
             {
-                GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
+                GCLog.getLogger().info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
             }
         }
         catch (NumberFormatException ex)
@@ -908,7 +908,7 @@ public class ConfigManagerCore
         {
             if (logging)
             {
-                GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
+                GCLog.getLogger().info("[config] " + caller + ": not a good idea to specify air, skipping that!");
             }
             return null;
         }
@@ -1144,7 +1144,7 @@ public class ConfigManagerCore
             return Keyboard.KEY_0;
         }
 
-        GCLog.severe("Failed to parse keyboard key: " + key + "... Use values A-Z or 0-9");
+        GCLog.getLogger().error("Failed to parse keyboard key: " + key + "... Use values A-Z or 0-9");
 
         return 0;
     }
