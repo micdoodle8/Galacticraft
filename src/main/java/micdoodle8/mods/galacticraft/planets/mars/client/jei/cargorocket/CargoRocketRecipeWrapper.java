@@ -3,12 +3,13 @@ package micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket;
 import com.google.common.collect.Lists;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
-public class CargoRocketRecipeWrapper implements IRecipeWrapper
+public class CargoRocketRecipeWrapper implements IRecipeWrapper, ICraftingRecipeWrapper
 {
     @Nonnull
     private final INasaWorkbenchRecipe recipe;
