@@ -2,11 +2,13 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.client.Minecraft;
@@ -22,6 +24,7 @@ import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fluids.Fluid;
+
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
@@ -88,6 +91,22 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                 if (sideTile != null && !(sideTile instanceof IBufferTransmitter))
                 {
                     GL11.glPushMatrix();
+                    if (sideTile instanceof TileEntityFluidTank)
+                        switch (facing)
+                        {
+                        case SOUTH:
+                            GL11.glTranslatef(0F, 0F, 1/16F);
+                            break;
+                        case NORTH:
+                            GL11.glTranslatef(0F, 0F, -1/16F);
+                            break;
+                        case EAST:
+                            GL11.glTranslatef(1/16F, 0F, 0F);
+                            break;
+                        case WEST:
+                            GL11.glTranslatef(-1/16F, 0F, 0F);
+                            break;
+                        }
                     ClientUtil.drawBakedModel(pullConnectorModel[facing.ordinal()]);
                     GL11.glPopMatrix();
                 }
