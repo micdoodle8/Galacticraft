@@ -6,6 +6,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -39,6 +40,15 @@ public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper
     @Override
     public void drawInfo(Minecraft mc, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
+        if (GalacticraftJEI.hidden.contains(this))
+        {
+            FontRenderer fontRendererObj = mc.fontRenderer;
+            String experienceString = "Asteroids Challenge";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 8, Color.gray.getRGB(), fontRendererObj);
+            experienceString = "game mode only!";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 20, Color.gray.getRGB(), fontRendererObj);
+            return;
+        }
         FurnaceRecipes furnaceRecipes = FurnaceRecipes.instance();
         float experience = 0;
 
@@ -57,46 +67,8 @@ public class IngotCompressorShapelessRecipeWrapper implements IRecipeWrapper
         }
     }
 
-    public boolean equals(Object o)
+    public boolean matches(@Nonnull ShapelessOreRecipeGC test)
     {
-        if (o instanceof IngotCompressorShapelessRecipeWrapper)
-        {
-            ShapelessOreRecipeGC match = ((IngotCompressorShapelessRecipeWrapper)o).recipe;
-            if (!ItemStack.areItemStacksEqual(match.getRecipeOutput(), this.recipe.getRecipeOutput()))
-                return false;
-            for (int i = 0; i < this.recipe.getInput().size(); i++)
-            {
-                Object a = this.recipe.getInput().get(i);
-                Object b = match.getInput().get(i);
-                if (a == null && b == null)
-                    continue;
-                
-                if (a instanceof ItemStack)
-                {
-                    if (!(b instanceof ItemStack))
-                        return false;
-                    if (!ItemStack.areItemStacksEqual((ItemStack) a, (ItemStack) b))
-                        return false;
-                }
-                else if (a instanceof List<?>)
-                {
-                    if (!(b instanceof List<?>))
-                        return false;
-                    List aa = ((List)a);
-                    List bb = ((List)b);
-                    if (aa.size() != bb.size())
-                        return false;
-                    for (int j = 0; j < aa.size(); j++)
-                    {
-                        ItemStack c = (ItemStack) aa.get(j);
-                        ItemStack d = (ItemStack) bb.get(j);
-                        if (!ItemStack.areItemStacksEqual((ItemStack) c, (ItemStack) d))
-                            return false;
-                    }                    
-                }
-            }
-            return true;
-        }
-        return false;
+        return this.recipe == test;
     }
 }

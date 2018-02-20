@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.jei;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiRuntime;
@@ -39,9 +36,10 @@ import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecip
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
-import javax.annotation.Nonnull;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.google.common.collect.ImmutableMap;
+import javax.annotation.Nonnull;
 
 @JEIPlugin
 public class GalacticraftJEI extends BlankModPlugin
@@ -49,6 +47,11 @@ public class GalacticraftJEI extends BlankModPlugin
     private static IModRegistry registryCached = null;
     private static IRecipeRegistry recipesCached = null;
     
+    private static boolean hiddenSteel = false;
+    private static boolean hiddenAdventure = false;
+    public static List<IRecipeWrapper> hidden = new LinkedList<>();
+    private static IRecipeCategory ingotCompressorCategory;
+
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
@@ -67,12 +70,13 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(Tier1RocketRecipeMaker.getRecipesList(), RecipeCategories.ROCKET_T1_ID);
         registry.addRecipes(BuggyRecipeMaker.getRecipesList(), RecipeCategories.BUGGY_ID);
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList(), RecipeCategories.CIRCUIT_FABRICATOR_ID);
-        registry.addRecipes(CompressorRecipes.getRecipeList(), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipes(CompressorRecipes.getRecipeListAll(), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipes(RefineryRecipeMaker.getRecipesList(), RecipeCategories.REFINERY_ID);
 
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T1_ID, RecipeCategories.BUGGY_ID);
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase2, 1, 0), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
 
@@ -83,95 +87,60 @@ public class GalacticraftJEI extends BlankModPlugin
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        ingotCompressorCategory = new IngotCompressorRecipeCategory(guiHelper);
         registry.addRecipeCategories(new Tier1RocketRecipeCategory(guiHelper),
                 new BuggyRecipeCategory(guiHelper),
                 new CircuitFabricatorRecipeCategory(guiHelper),
-                new IngotCompressorRecipeCategory(guiHelper),
+                ingotCompressorCategory,
                 new RefineryRecipeCategory(guiHelper));
     }
-    
+
     @Override
     public void onRuntimeAvailable(IJeiRuntime rt)
     {
         recipesCached = rt.getRecipeRegistry();
     }
 
-    public static boolean refreshJEIpre()
+    public static void updateHidden(boolean hideSteel, boolean hideAdventure)
     {
-        if (recipesCached != null)
+        boolean changeHidden = false;
+        if (hideSteel != hiddenSteel)
         {
-            try {
-                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                {
-                    removeRecipe(recipesCached, recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                }
-                for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                {
-                    if (recipe instanceof ShapelessOreRecipeGC)
-                    {
-                        removeRecipe(recipesCached, new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                    else if (recipe instanceof ShapedRecipesGC)
-                    {
-                        removeRecipe(recipesCached, new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                }
-                return true;
-            } catch (Exception ignore) {}
+            hiddenSteel = hideSteel;
+            changeHidden = true;
         }
-        return false;
-    }
-
-    public static void refreshJEIpost()
-    {
-        if (recipesCached != null)
+        if (hideAdventure != hiddenAdventure)
         {
-            try {
-                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                {
-                    recipesCached.addRecipe(recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                }
-                for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                {
-                    if (recipe instanceof ShapelessOreRecipeGC)
-                    {
-                        recipesCached.addRecipe(new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                    else if (recipe instanceof ShapedRecipesGC)
-                    {
-                        recipesCached.addRecipe(new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                    }
-                }
-            } catch (Exception ignore) {}
+            hiddenAdventure = hideAdventure;
+            changeHidden = true;
+        }
+        if (changeHidden && recipesCached != null)
+        {
+            unhide();
+            List<IRecipe> toHide = CompressorRecipes.getRecipeListHidden(hideSteel, hideAdventure);
+            hidden.clear();
+            List<IRecipeWrapper> allRW = recipesCached.getRecipeWrappers(ingotCompressorCategory);
+            for (IRecipe recipe : toHide)
+            {
+                hidden.add(recipesCached.getRecipeWrapper(recipe, RecipeCategories.INGOT_COMPRESSOR_ID));
+            }
+            hide();
         }
     }
     
-    // This is a hacky solution because JEI API enforces a thread check - this is threadsafe on client in Galacticraft because only called during connection
-    private static <T> void removeRecipe(IRecipeRegistry registry, T recipe, String recipeCategoryUid)
+    private static void hide()
     {
-        try {
-            Field recipeMap = registry.getClass().getDeclaredField("recipeCategoriesMap");
-            recipeMap.setAccessible(true);
-            ImmutableMap<String, IRecipeCategory> map = (ImmutableMap<String, IRecipeCategory>) recipeMap.get(registry);
-            IRecipeCategory recipeCategory = map.get(recipeCategoryUid);
-            if (recipeCategory == null)
-            {
-                System.out.println("No recipe category registered for recipeCategoryUid: " + recipeCategoryUid);
-                return;
-            }
-            Method removeIt = null;
-            for (Method m : registry.getClass().getDeclaredMethods())
-            {
-                if (m.getName().equals("removeRecipeUnchecked"))
-                {
-                    removeIt = m;
-                    removeIt.setAccessible(true);
-                    break;
-                }
-            }
-            removeIt.invoke(registry, recipe, recipeCategory);
-        } catch (Exception ignore) {}
+        for (IRecipeWrapper wrapper : hidden)
+        {
+            recipesCached.hideRecipe(wrapper);
+        }
+    }
+
+    private static void unhide()
+    {
+        for (IRecipeWrapper wrapper : hidden)
+        {
+            recipesCached.unhideRecipe(wrapper);
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import micdoodle8.mods.galacticraft.api.recipe.IRecipeUpdatable;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,26 +30,35 @@ import net.minecraftforge.common.crafting.CraftingHelper.ShapedPrimer;
 import net.minecraftforge.oredict.OreIngredient;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class OreRecipeUpdatable extends ShapedOreRecipe
+public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdatable
 {
     public OreRecipeUpdatable(ResourceLocation group, Block     result, Object... recipe){ super(group, new ItemStack(result), recipe); }
     public OreRecipeUpdatable(ResourceLocation group, Item      result, Object... recipe){ super(group, new ItemStack(result), recipe); }
     public OreRecipeUpdatable(ResourceLocation group, @Nonnull ItemStack result, Object... recipe) { super(group, result, CraftingHelper.parseShaped(recipe)); }
     public OreRecipeUpdatable(ResourceLocation group, @Nonnull ItemStack result, ShapedPrimer primer){ super (group, result, primer); }
     
-    public void replaceInput(ItemStack inputA, String inputB)
+    @Override
+    public void replaceInput(ItemStack inputA, List<ItemStack> inputB)
     {
         for (int i = 0; i < this.input.size(); i++)
         {
             Ingredient test = this.input.get(i);
             if (test.apply(inputA))
             {
-                this.input.set(i, new OreIngredient(inputB));
+                this.input.set(i, Ingredient.fromStacks((ItemStack[]) inputB.toArray()));
+//            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
+//            {
+//                this.input[i] = inputB;
+//            }
+//            else if (test instanceof List<?> && itemListContains((List<?>) test, inputA))
+//            {
+//                this.input[i] = inputB;
             }
         }
     }
 
-    public void replaceInput(String inputA, ItemStack inputB)
+    @Override
+    public void replaceInput(ItemStack inputB)
     {
         for (int i = 0; i < this.input.size(); i++)
         {
@@ -64,7 +74,7 @@ public class OreRecipeUpdatable extends ShapedOreRecipe
     {
         for (Object b : test)
         {
-            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b))
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
                 return true;
         }
         return false;
