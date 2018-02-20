@@ -137,7 +137,7 @@ public class SpinManager
         {
             if (ConfigManagerCore.enableDebug)
             {
-                GCLog.info("Clientside update to spin centre: " + x + "," + z);
+                GCLog.getLogger().info("Clientside update to spin centre: " + x + "," + z);
             }
         }
     }
@@ -326,7 +326,7 @@ public class SpinManager
                 //The thruster was not placed on the existing contiguous space station: it must be.
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock + " - baseBlock was " + baseBlock + " - found " + foundThrusters.size());
+                    GCLog.getLogger().info("Thruster placed on wrong part of space station: base at " + this.oneSSBlock + " - baseBlock was " + baseBlock + " - found " + foundThrusters.size());
                 }
                 return false;
             }
@@ -393,7 +393,7 @@ public class SpinManager
         // TODO break blocks which are outside SS (not in checked)
         // TODO prevent spin if there is a huge number of blocks outside SS
 
-        GCLog.debug("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
+        GCLog.getLogger().debug("MoI = " + this.momentOfInertia + " CoMx = " + this.massCentreX + " CoMz = " + this.massCentreZ);
 
         //Send packets to clients in this dimension
         List<Object> objList = new ArrayList<Object>();
@@ -479,7 +479,7 @@ public class SpinManager
 
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
+                    GCLog.getLogger().info("MaxR = " + maxR + " Angular vel = " + this.angularVelocityTarget + " Angular accel = " + this.angularVelocityAccel);
                 }
             }
         }
@@ -501,7 +501,7 @@ public class SpinManager
                 this.readFromNBT(this.savefile.datacompound);
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
+                    GCLog.getLogger().info("Loading data from save: " + this.savefile.datacompound.getFloat("omegaSky"));
                 }
                 this.dataNotLoaded = false;
             }

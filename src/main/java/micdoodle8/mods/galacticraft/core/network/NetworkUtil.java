@@ -201,9 +201,9 @@ public class NetworkUtil
             {
                 if (dataValue == null)
                 {
-                    GCLog.severe("Cannot construct PacketSimple with null data, this is a bug.");
+                    GCLog.getLogger().error("Cannot construct PacketSimple with null data, this is a bug.");
                 }
-                GCLog.info("Could not find data type to encode!: " + dataValue);
+                GCLog.getLogger().info("Could not find data type to encode!: " + dataValue);
             }
         }
     }

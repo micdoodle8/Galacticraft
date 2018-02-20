@@ -45,7 +45,7 @@ public class OxygenPressureProtocol
                     }
                     else
                     {
-                        GCLog.info("[config] External Sealable IDs: skipping duplicate entry '" + s + "'.");
+                        GCLog.getLogger().info("[config] External Sealable IDs: skipping duplicate entry '" + s + "'.");
                     }
                 }
                 else
@@ -57,7 +57,7 @@ public class OxygenPressureProtocol
             }
             catch (final Exception e)
             {
-                GCLog.severe("[config] External Sealable IDs: error parsing '" + s + "'. Must be in the form Blockname or BlockName:metadata");
+                GCLog.getLogger().error("[config] External Sealable IDs: error parsing '" + s + "'. Must be in the form Blockname or BlockName:metadata");
             }
         }
     }

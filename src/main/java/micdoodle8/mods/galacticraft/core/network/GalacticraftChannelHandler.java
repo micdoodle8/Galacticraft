@@ -98,7 +98,7 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
         }
         catch (Exception e)
         {
-            GCLog.severe("Forge error when sending network packet to nearby players - this is not a Galacticraft bug, does another mod make fake players?");
+            GCLog.getLogger().error("Forge error when sending network packet to nearby players - this is not a Galacticraft bug, does another mod make fake players?");
             e.printStackTrace();
         }
     }
@@ -122,7 +122,7 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
         }
         catch (Exception e)
         {
-            GCLog.severe("Forge error when sending network packet to all players in dimension - this is not a Galacticraft bug, does another mod make fake players?");
+            GCLog.getLogger().error("Forge error when sending network packet to all players in dimension - this is not a Galacticraft bug, does another mod make fake players?");
             e.printStackTrace();
         }
     }

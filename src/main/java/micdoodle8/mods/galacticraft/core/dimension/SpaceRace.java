@@ -48,7 +48,7 @@ public class SpaceRace
         this.teamName = nbt.getString("TeamName");
         if (ConfigManagerCore.enableDebug)
         {
-            GCLog.info("Loading spacerace data for team " + this.teamName);
+            GCLog.getLogger().info("Loading spacerace data for team " + this.teamName);
         }
         this.spaceRaceID = nbt.getInteger("SpaceRaceID");
         this.ticksSpent = (int) nbt.getLong("TicksSpent");  //Deal with legacy error
@@ -76,7 +76,7 @@ public class SpaceRace
         }
         if (ConfigManagerCore.enableDebug)
         {
-            GCLog.info("Loaded spacerace team data OK.");
+            GCLog.getLogger().info("Loaded spacerace team data OK.");
         }
     }
 
@@ -84,7 +84,7 @@ public class SpaceRace
     {
         if (ConfigManagerCore.enableDebug)
         {
-            GCLog.info("Saving spacerace data for team " + this.teamName);
+            GCLog.getLogger().info("Saving spacerace data for team " + this.teamName);
         }
         nbt.setString("TeamName", this.teamName);
         nbt.setInteger("SpaceRaceID", this.spaceRaceID);
@@ -116,7 +116,7 @@ public class SpaceRace
         nbt.setTag("CelestialBodyList", tagList);
         if (ConfigManagerCore.enableDebug)
         {
-            GCLog.info("Saved spacerace team data OK.");
+            GCLog.getLogger().info("Saved spacerace team data OK.");
         }
     }
 

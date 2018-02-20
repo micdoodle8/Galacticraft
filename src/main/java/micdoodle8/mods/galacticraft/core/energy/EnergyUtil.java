@@ -651,7 +651,7 @@ public class EnergyUtil
 
         if (isIC2Loaded)
         {
-            GCLog.debug("Initialising IC2 methods OK");
+            GCLog.getLogger().debug("Initialising IC2 methods OK");
 
             try
             {
@@ -661,7 +661,7 @@ public class EnergyUtil
                clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
-                GCLog.debug("Found IC2 IEnergySink class OK");
+                GCLog.getLogger().debug("Found IC2 IEnergySink class OK");
 
                 try
                 {
@@ -681,13 +681,13 @@ public class EnergyUtil
                     }
                 }
 
-                GCLog.debug("Set IC2 demandedEnergy method OK");
+                GCLog.getLogger().debug("Set IC2 demandedEnergy method OK");
 
                 try
                 {
                     //1.7.2 version
                     EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
-                    GCLog.debug("IC2 inject 1.7.2 succeeded");
+                    GCLog.getLogger().debug("IC2 inject 1.7.2 succeeded");
                 }
                 catch (Exception e)
                 {
@@ -696,7 +696,7 @@ public class EnergyUtil
                     {
                         EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
                         EnergyUtil.voltageParameterIC2 = true;
-                        GCLog.debug("Set IC2 injectEnergy method OK");
+                        GCLog.getLogger().debug("Set IC2 injectEnergy method OK");
                     }
                     catch (Exception ee)
                     {

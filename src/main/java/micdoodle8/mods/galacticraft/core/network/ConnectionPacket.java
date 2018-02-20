@@ -59,7 +59,7 @@ public class ConnectionPacket
                 ConfigManagerCore.setConfigOverride(data);
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("Server-set configs received OK on client.");
+                    GCLog.getLogger().info("Server-set configs received OK on client.");
                 }
             }
             catch (Exception e)
@@ -72,7 +72,7 @@ public class ConnectionPacket
         }
         if (payload.readInt() != 3519)
         {
-            GCLog.severe("Packet completion problem for connection packet " + packetId + " - maybe the player's Galacticraft version does not match the server version?");
+            GCLog.getLogger().error("Packet completion problem for connection packet " + packetId + " - maybe the player's Galacticraft version does not match the server version?");
         }
     }
 
@@ -153,8 +153,8 @@ public class ConnectionPacket
         }
         catch (Exception e)
         {
-            GCLog.severe("GC login packet handler: Failed to read packet");
-            GCLog.severe(e.toString());
+            GCLog.getLogger().error("GC login packet handler: Failed to read packet");
+            GCLog.getLogger().error(e.toString());
             e.printStackTrace();
         }
     }
