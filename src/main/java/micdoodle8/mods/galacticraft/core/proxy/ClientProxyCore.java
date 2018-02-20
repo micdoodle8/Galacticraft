@@ -230,7 +230,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
         String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
-        GCLog.debug("Reloading entity names for language " + lang);
+        GCLog.getLogger().debug("Reloading entity names for language " + lang);
         if (lang == null)
         {
             lang = "en_US";

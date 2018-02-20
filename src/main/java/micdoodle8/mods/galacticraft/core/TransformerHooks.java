@@ -220,7 +220,7 @@ public class TransformerHooks
                     {
                         generateTCAuraNodes = genThaumCraft.getDeclaredMethod("generateWildNodes", World.class, Random.class, int.class, int.class, boolean.class, boolean.class);
                         generateTCAuraNodes.setAccessible(true);
-                        GCLog.info("Whitelisting ThaumCraft aura node generation on planets.");
+                        GCLog.getLogger().info("Whitelisting ThaumCraft aura node generation on planets.");
                     }
                 }
             }
@@ -251,7 +251,7 @@ public class TransformerHooks
             }
             catch (Exception e)
             {
-                GCLog.severe("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
+                GCLog.getLogger().error("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
                 e.printStackTrace();
             }
         }
@@ -273,7 +273,7 @@ public class TransformerHooks
                     if (target.isInstance(gen))
                     {
                         otherModGeneratorsWhitelist.add(gen);
-                        GCLog.info("Whitelisting " + logString + " on planets.");
+                        GCLog.getLogger().info("Whitelisting " + logString + " on planets.");
                         return;
                     }
                 }

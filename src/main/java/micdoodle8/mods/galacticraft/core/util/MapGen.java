@@ -147,8 +147,8 @@ public class MapGen extends BiomeProvider implements Runnable
         }
         catch (Exception e)
         {
-            GCLog.severe("Galacticraft background map image generator not able to run (probably a mod conflict?)");
-            GCLog.severe("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
+            GCLog.getLogger().error("Galacticraft background map image generator not able to run (probably a mod conflict?)");
+            GCLog.getLogger().error("Please report this at https://github.com/micdoodle8/Galacticraft/issues/2481");
             e.printStackTrace();
             this.mapNeedsCalculating = false;
             MapGen.disabled = true;
@@ -157,7 +157,7 @@ public class MapGen extends BiomeProvider implements Runnable
         this.genBiomes = agenlayer[0];
         this.biomeIndexLayer = agenlayer[1];
         
-        GCLog.debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
+        GCLog.getLogger().debug("Starting map generation " + file.getName() + " top left " + ((biomeMapCx - limitX) * 16) + "," + ((biomeMapCz - limitZ) * 16));
         if (progress > 0)
         {
             this.resumeProgress(progress);
@@ -283,7 +283,7 @@ public class MapGen extends BiomeProvider implements Runnable
         if (progX > biomeMapSizeX - imagefactor)
             return;
         
-        GCLog.debug("Saving partial map image progress " + progX);
+        GCLog.getLogger().debug("Saving partial map image progress " + progX);
         int offset = this.biomeAndHeightArray.length;
         this.biomeAndHeightArray[offset - 1] = (byte) 0xFE;
         this.biomeAndHeightArray[offset - 2] = (byte) 0x06;
@@ -393,8 +393,8 @@ public class MapGen extends BiomeProvider implements Runnable
         }
         catch (Exception e)
         {
-            GCLog.severe("Galacticraft background map image generator hit an error (probably a mod conflict?)");
-            GCLog.severe("--> Please report this at https://github.com/micdoodle8/Galacticraft/issues/2544 <--");
+            GCLog.getLogger().error("Galacticraft background map image generator hit an error (probably a mod conflict?)");
+            GCLog.getLogger().error("--> Please report this at https://github.com/micdoodle8/Galacticraft/issues/2544 <--");
             e.printStackTrace();
             MapGen.disabled = true;
             this.aborted.set(true);

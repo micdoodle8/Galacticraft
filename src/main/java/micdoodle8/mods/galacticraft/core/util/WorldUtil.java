@@ -134,7 +134,7 @@ public class WorldUtil
             }
         }
 
-        GCLog.info("Failed to find matching world for '" + par1String + "'");
+        GCLog.getLogger().info("Failed to find matching world for '" + par1String + "'");
         return null;
     }
 
@@ -160,7 +160,7 @@ public class WorldUtil
             }
         }
 
-        GCLog.info("Failed to find matching world for '" + par1String + "'");
+        GCLog.getLogger().info("Failed to find matching world for '" + par1String + "'");
         return null;
     }
 
@@ -317,7 +317,7 @@ public class WorldUtil
         MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (theServer == null)
         {
-            GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
+            GCLog.getLogger().debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
             return null;
         }
         World ws = theServer.worldServerForDimension(id);
@@ -492,7 +492,7 @@ public class WorldUtil
                                     if (result != null)
                                     {
                                         result.put(id, WorldUtil.getDimensionTypeById(providerID));
-                                        GCLog.info("Re-registered dimension type " + providerID);
+                                        GCLog.getLogger().info("Re-registered dimension type " + providerID);
                                     }
                                     registrationOK = true;
                                 } catch (ClassNotFoundException ignore) { }
@@ -510,7 +510,7 @@ public class WorldUtil
                         }
                         else
                         {
-                            GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
+                            GCLog.getLogger().error("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
                         }
                     }
                     catch (Exception e)
@@ -539,7 +539,7 @@ public class WorldUtil
 //            }
 //            else
 //            {
-//                GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
+//                GCLog.getLogger().error("Dimension already registered to another mod: unable to register space station dimension " + registeredID);
 //            }
 //        }
     }
@@ -569,19 +569,19 @@ public class WorldUtil
             if (!DimensionManager.isDimensionRegistered(id))
             {
                 DimensionManager.registerDimension(id, WorldUtil.getDimensionTypeById(id));
-                GCLog.info("Registered Dimension: " + id);
+                GCLog.getLogger().info("Registered Dimension: " + id);
                 WorldUtil.registeredPlanets.add(id);
             }
             else
             {
                 if (DimensionManager.getProviderType(id).getId() == id && GalacticraftRegistry.isDimensionTypeIDRegistered(id))
                 {
-                    GCLog.info("Re-registered dimension: " + id);
+                    GCLog.getLogger().info("Re-registered dimension: " + id);
                     WorldUtil.registeredPlanets.add(id);
                 }
                 else
                 {
-                    GCLog.severe("Dimension already registered: unable to register planet dimension " + id);
+                    GCLog.getLogger().error("Dimension already registered: unable to register planet dimension " + id);
                     //Add 0 to the list to preserve the correct order of the other planets (e.g. if server/client initialise with different dimension IDs in configs, the order becomes important for figuring out what is going on)
                     WorldUtil.registeredPlanets.add(defaultID);
                     return false;
@@ -604,7 +604,7 @@ public class WorldUtil
             for (Integer var1 : WorldUtil.registeredPlanets)
             {
                 DimensionManager.unregisterDimension(var1);
-                GCLog.info("Unregistered Dimension: " + var1);
+                GCLog.getLogger().info("Unregistered Dimension: " + var1);
             }
 
             WorldUtil.registeredPlanets = null;
@@ -618,11 +618,11 @@ public class WorldUtil
 
         if (typeID == 0)
         {
-            GCLog.severe("Server dimension " + dimID + " has no match on client due to earlier registration problem.");
+            GCLog.getLogger().error("Server dimension " + dimID + " has no match on client due to earlier registration problem.");
         }
         else if (dimID == 0)
         {
-            GCLog.severe("Client dimension " + providerIndex + " has no match on server - probably a server dimension ID conflict problem.");
+            GCLog.getLogger().error("Client dimension " + providerIndex + " has no match on server - probably a server dimension ID conflict problem.");
         }
         else
 
@@ -634,7 +634,7 @@ public class WorldUtil
             }
             else
             {
-                GCLog.severe("Dimension already registered to another mod: unable to register planet dimension " + dimID);
+                GCLog.getLogger().error("Dimension already registered to another mod: unable to register planet dimension " + dimID);
             }
         }
     }
@@ -688,7 +688,7 @@ public class WorldUtil
         }
         else
         {
-            GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + dimID);
+            GCLog.getLogger().error("Dimension already registered to another mod: unable to register space station dimension " + dimID);
         }
 
         for (WorldServer server : world.getMinecraftServer().worlds)
@@ -804,7 +804,7 @@ public class WorldUtil
                 player.dimension = dimID;
                 if (ConfigManagerCore.enableDebug)
                 {
-                    GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
+                    GCLog.getLogger().info("DEBUG: Sending respawn packet to player for dim " + dimID);
                 }
                 player.connection.sendPacket(new SPacketRespawn(dimID, player.world.getDifficulty(), player.world.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
 
@@ -831,7 +831,7 @@ public class WorldUtil
                 }
                 forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, true);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
+                GCLog.getLogger().info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(worldNew), new Object[] {}), player);
@@ -912,7 +912,7 @@ public class WorldUtil
                 }
                 forceMoveEntityToPos(entity, (WorldServer) worldNew, spawnPos, false);
 
-                GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
+                GCLog.getLogger().info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
                 {
                     GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(worldNew), new Object[] {}), player);
@@ -982,7 +982,7 @@ public class WorldUtil
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
             CompatibilityManager.forceLoadChunksEnd((WorldServer) worldNew);
             entity.startRiding(ridingRocket);
-            GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
+            GCLog.getLogger().debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
         }
         else if (otherRiddenEntity != null)
         {
@@ -1024,7 +1024,7 @@ public class WorldUtil
     {
         CompatibilityManager.forceLoadChunks(worldNew);
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
-        GCLog.debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
+        GCLog.getLogger().debug("Loading first chunk in new dimension at " + pair.chunkXPos + "," + pair.chunkZPos);
         worldNew.getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
         entity.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         WorldServer fromWorld = ((WorldServer) entity.world); 
@@ -1153,7 +1153,7 @@ public class WorldUtil
         {
             if (ConfigManagerCore.enableDebug)
             {
-                GCLog.info("GC connecting to server: received planets dimension ID list.");
+                GCLog.getLogger().info("GC connecting to server: received planets dimension ID list.");
             }
             if (WorldUtil.registeredPlanets != null)
             {
@@ -1194,21 +1194,21 @@ public class WorldUtil
             }
             if (ConfigManagerCore.enableDebug)
             {
-                GCLog.debug("GC clientside planet dimensions registered: " + ids);
+                GCLog.getLogger().debug("GC clientside planet dimensions registered: " + ids);
                 WorldProvider dimMoon = WorldUtil.getProviderForNameClient("moon.moon");
                 if (dimMoon != null)
                 {
-                    GCLog.debug("Crosscheck: Moon is " + GCCoreUtil.getDimensionID(dimMoon));
+                    GCLog.getLogger().debug("Crosscheck: Moon is " + GCCoreUtil.getDimensionID(dimMoon));
                 }
                 WorldProvider dimMars = WorldUtil.getProviderForNameClient("planet.mars");
                 if (dimMars != null)
                 {
-                    GCLog.debug("Crosscheck: Mars is " + GCCoreUtil.getDimensionID(dimMars));
+                    GCLog.getLogger().debug("Crosscheck: Mars is " + GCCoreUtil.getDimensionID(dimMars));
                 }
                 WorldProvider dimAst = WorldUtil.getProviderForNameClient("planet.asteroids");
                 if (dimAst != null)
                 {
-                    GCLog.debug("Crosscheck: Asteroids is " + GCCoreUtil.getDimensionID(dimAst));
+                    GCLog.getLogger().debug("Crosscheck: Asteroids is " + GCCoreUtil.getDimensionID(dimAst));
                 }
             }
         }
@@ -1302,7 +1302,7 @@ public class WorldUtil
             }
             else
             {
-                GCLog.severe("Dimension already registered on client: unable to register space station dimension " + dimID);
+                GCLog.getLogger().error("Dimension already registered on client: unable to register space station dimension " + dimID);
             }
         }
     }
@@ -1500,8 +1500,8 @@ public class WorldUtil
             }
         }
 
-        GCLog.severe("There was a problem getting WorldProvider type " + id);
-        GCLog.severe("(possibly this is a conflict, check Galacticraft config.)");
+        GCLog.getLogger().error("There was a problem getting WorldProvider type " + id);
+        GCLog.getLogger().error("(possibly this is a conflict, check Galacticraft config.)");
         return null;
     }
 

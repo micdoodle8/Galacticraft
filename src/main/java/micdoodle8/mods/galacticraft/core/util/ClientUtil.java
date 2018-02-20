@@ -162,7 +162,7 @@ public class ClientUtil
                         newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
                     } catch (Exception e)
                     {
-                        GCLog.severe("ItemModel constructor problem for " + modelResourceLocation);
+                        GCLog.getLogger().error("ItemModel constructor problem for " + modelResourceLocation);
                         e.printStackTrace();
                     }
                 }

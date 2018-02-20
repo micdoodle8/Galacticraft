@@ -173,7 +173,8 @@ public class GalacticraftCore
     @EventHandler
     public void init(FMLInitializationEvent event)
     {
-        GCBlocks.doOtherModsTorches();
+    	
+    	GCBlocks.doOtherModsTorches();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.machineBase2)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTier1));
 
@@ -239,12 +240,12 @@ public class GalacticraftCore
         GCDimensions.ORBIT = GalacticraftRegistry.registerDimension("Space Station", "_orbit", ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOverworldOrbit.class, false);
         if (GCDimensions.ORBIT == null)
         {
-            GCLog.severe("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbit);
+            GCLog.getLogger().error("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbit);
         }
         GCDimensions.ORBIT_KEEPLOADED = GalacticraftRegistry.registerDimension("Space Station", "_orbit", ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOverworldOrbit.class, true);
         if (GCDimensions.ORBIT_KEEPLOADED == null)
         {
-            GCLog.severe("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbitStatic);
+            GCLog.getLogger().error("Failed to register space station dimension type with ID " + ConfigManagerCore.idDimensionOverworldOrbitStatic);
         }
         GalacticraftRegistry.registerTeleportType(WorldProviderSurface.class, new TeleportTypeOverworld());
         GalacticraftRegistry.registerTeleportType(WorldProviderOverworldOrbit.class, new TeleportTypeOrbit());
@@ -385,7 +386,7 @@ public class GalacticraftCore
                 else
                 {
                     body.setUnreachable();
-                    GCLog.severe("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());
+                    GCLog.getLogger().error("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());
                 }
             }
             
@@ -419,7 +420,7 @@ public class GalacticraftCore
         }
         catch (UnsatisfiedLinkError e)
         {
-        	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
+        	GCLog.getLogger().error("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
 
@@ -520,7 +521,7 @@ public class GalacticraftCore
             File destPath = new File(destFolder, file.getName());
             if (destPath.exists())
             {
-                GCLog.info("Deleting duplicate Galacticraft data file: " + file.getName());
+                GCLog.getLogger().info("Deleting duplicate Galacticraft data file: " + file.getName());
                 file.delete();
                 return;
             }

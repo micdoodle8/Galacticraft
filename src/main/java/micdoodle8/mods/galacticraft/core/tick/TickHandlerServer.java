@@ -261,7 +261,7 @@ public class TickHandlerServer
                     if (provider != null)
                     {
                         final Integer dim = GCCoreUtil.getDimensionID(provider);
-                        GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
+                        GCLog.getLogger().info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
 
                         if (change.getPlayer().world instanceof WorldServer)
                         {
@@ -272,7 +272,7 @@ public class TickHandlerServer
                     }
                     else
                     {
-                        GCLog.severe("World not found when attempting to transfer entity to dimension: " + change.getDimensionName());
+                        GCLog.getLogger().error("World not found when attempting to transfer entity to dimension: " + change.getDimensionName());
                     }
 
                     stats.setTeleportCooldown(10);
@@ -280,7 +280,7 @@ public class TickHandlerServer
                 }
                 catch (Exception e)
                 {
-                    GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + change.getDimensionName());
+                    GCLog.getLogger().error("Error occurred when attempting to transfer entity to dimension: " + change.getDimensionName());
                     e.printStackTrace();
                 }
             }
@@ -422,7 +422,7 @@ public class TickHandlerServer
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 
-                        GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
+                        GCLog.getLogger().error("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
                     }
                     else
                     {
