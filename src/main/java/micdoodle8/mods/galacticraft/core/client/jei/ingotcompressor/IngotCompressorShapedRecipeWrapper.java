@@ -4,6 +4,7 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -12,8 +13,8 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 import javax.annotation.Nonnull;
 
-import java.awt.Color;
 import java.util.Arrays;
+import java.awt.Color;
 
 public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper implements IRecipeWrapper
 {
@@ -25,6 +26,22 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
         this.recipe = recipe;
     }
 
+// TODO
+//    @Nonnull
+//    @Override
+//    public List<ItemStack> getOutputs()
+//    {
+//        ItemStack stack = recipe.getRecipeOutput().copy();
+//        if (ConfigManagerCore.quickMode)
+//        {
+//            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
+//            {
+//                stack.setCount(stack.getCount() * 2);
+//            }
+//        }
+//        return Collections.singletonList(stack);
+//    }
+
     @Override
     public void getIngredients(IIngredients ingredients)
     {
@@ -35,6 +52,15 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
     @Override
     public void drawInfo(Minecraft mc, int recipeWidth, int recipeHeight, int mouseX, int mouseY)
     {
+        if (GalacticraftJEI.hidden.contains(this))
+        {
+            FontRenderer fontRendererObj = mc.fontRendererObj;
+            String experienceString = "Asteroids Challenge";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 8, Color.gray.getRGB(), fontRendererObj);
+            experienceString = "game mode only!";
+            GCCoreUtil.drawStringCentered(experienceString, 69, 20, Color.gray.getRGB(), fontRendererObj);
+            return;
+        }
         FurnaceRecipes furnaceRecipes = FurnaceRecipes.instance();
         float experience = 0;
 
@@ -52,23 +78,9 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
             fontRendererObj.drawString(experienceString, recipeWidth + 6 - stringWidth, 8, Color.gray.getRGB());
         }
     }
-    
-    public boolean equals(Object o)
+
+    public boolean matches(ShapedRecipesGC test)
     {
-        if (o instanceof IngotCompressorShapedRecipeWrapper)
-        {
-            ShapedRecipesGC match = ((IngotCompressorShapedRecipeWrapper)o).recipe;
-            if (!ItemStack.areItemStacksEqual(match.getRecipeOutput(), this.recipe.getRecipeOutput()))
-                return false;
-            for (int i = 0; i < this.recipe.recipeItems.length; i++)
-            {
-                ItemStack a = this.recipe.recipeItems[i];
-                ItemStack b = match.recipeItems[i];
-                if (!a.isEmpty() && !b.isEmpty() && !ItemStack.areItemStacksEqual(a, b))
-                    return false;
-            }
-            return true;
-        }
-        return false;
+        return this.recipe == test;
     }
 }

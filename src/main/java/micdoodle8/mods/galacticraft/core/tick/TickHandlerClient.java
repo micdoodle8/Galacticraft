@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -21,6 +22,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -85,6 +87,7 @@ public class TickHandlerClient
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
     private static boolean menuReset = true;
+    public static volatile boolean updateJEIhiding = false;
     
     public static void resetClient()
     {
@@ -389,6 +392,14 @@ public class TickHandlerClient
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
+                if (updateJEIhiding)
+                {
+                    updateJEIhiding = false;
+                    // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
+                    // Update JEI to hide adventure mode recipes when not in adventure mode
+                    GalacticraftJEI.updateHidden(CompressorRecipes.steelIngotsPresent && ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes, !ConfigManagerCore.challengeRecipes);
+                }
+                
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
                 {
                     Iterator<Footprint> fpIt = fpList.iterator();

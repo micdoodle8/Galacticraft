@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.jei;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiRuntime;
@@ -39,9 +36,11 @@ import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecip
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 
-import javax.annotation.Nonnull;
+import java.lang.reflect.Method;
+import java.util.LinkedList;
+import java.util.List;
 
-import com.google.common.collect.ImmutableMap;
+import javax.annotation.Nonnull;
 
 @JEIPlugin
 public class GalacticraftJEI extends BlankModPlugin
@@ -50,6 +49,11 @@ public class GalacticraftJEI extends BlankModPlugin
     private static IRecipeRegistry recipesCached = null;
     private static boolean JEIversion450plus = false;
     
+    private static boolean hiddenSteel = false;
+    private static boolean hiddenAdventure = false;
+    public static List<IRecipeWrapper> hidden = new LinkedList<>();
+    private static IRecipeCategory ingotCompressorCategory;
+
     @Override
     public void register(@Nonnull IModRegistry registry)
     {
@@ -88,7 +92,7 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipes(Tier1RocketRecipeMaker.getRecipesList(), RecipeCategories.ROCKET_T1_ID);
         registry.addRecipes(BuggyRecipeMaker.getRecipesList(), RecipeCategories.BUGGY_ID);
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList(), RecipeCategories.CIRCUIT_FABRICATOR_ID);
-        registry.addRecipes(CompressorRecipes.getRecipeList(), RecipeCategories.INGOT_COMPRESSOR_ID);
+        registry.addRecipes(CompressorRecipes.getRecipeListAll(), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipes(RefineryRecipeMaker.getRecipesList(), RecipeCategories.REFINERY_ID);
 
         if (JEIversion450plus)
@@ -96,6 +100,7 @@ public class GalacticraftJEI extends BlankModPlugin
             registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T1_ID, RecipeCategories.BUGGY_ID);
             registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
             registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
+            registry.addRecipeCatalyst(new ItemStack(GCBlocks.machineBase2, 1, 0), RecipeCategories.INGOT_COMPRESSOR_ID);
             registry.addRecipeCatalyst(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
             registry.addRecipeCatalyst(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
         }
@@ -106,7 +111,8 @@ public class GalacticraftJEI extends BlankModPlugin
             registry.addRecipeCategoryCraftingItem(nasaWorkbench, RecipeCategories.BUGGY_ID);
             registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 4), RecipeCategories.CIRCUIT_FABRICATOR_ID);
             registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
-            registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);        registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T1_ID, RecipeCategories.BUGGY_ID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 0), RecipeCategories.INGOT_COMPRESSOR_ID);
+            registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
             registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
         }
 
@@ -117,111 +123,72 @@ public class GalacticraftJEI extends BlankModPlugin
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        ingotCompressorCategory = new IngotCompressorRecipeCategory(guiHelper);
         registry.addRecipeCategories(new Tier1RocketRecipeCategory(guiHelper),
                 new BuggyRecipeCategory(guiHelper),
                 new CircuitFabricatorRecipeCategory(guiHelper),
-                new IngotCompressorRecipeCategory(guiHelper),
+                ingotCompressorCategory,
                 new RefineryRecipeCategory(guiHelper));
     }
-    
+
     @Override
     public void onRuntimeAvailable(IJeiRuntime rt)
     {
         recipesCached = rt.getRecipeRegistry();
     }
 
-    public static boolean refreshJEIpre()
+    public static void updateHidden(boolean hideSteel, boolean hideAdventure)
     {
-        if (recipesCached != null)
+        boolean changeHidden = false;
+        if (hideSteel != hiddenSteel)
         {
-            try {
-                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                {
-                    if (JEIversion450plus)
-                        removeRecipe(recipesCached, recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                    else
-                        recipesCached.removeRecipe(recipe);
-                }
-                for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                {
-                    if (JEIversion450plus)
-                    {
-                        if (recipe instanceof ShapelessOreRecipeGC)
-                        {
-                            removeRecipe(recipesCached, new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                        }
-                        else if (recipe instanceof ShapedRecipesGC)
-                        {
-                            removeRecipe(recipesCached, new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                        }
-                    }
-                    else
-                        recipesCached.removeRecipe(recipe);
-                }
-                return true;
-            } catch (Exception ignore) {}
+            hiddenSteel = hideSteel;
+            changeHidden = true;
         }
-        return false;
+        if (hideAdventure != hiddenAdventure)
+        {
+            hiddenAdventure = hideAdventure;
+            changeHidden = true;
+        }
+        if (changeHidden && recipesCached != null)
+        {
+            List<IRecipe> toHide = CompressorRecipes.getRecipeListHidden(hideSteel, hideAdventure);
+            hidden.clear();
+            List<IRecipeWrapper> allRW = recipesCached.getRecipeWrappers(ingotCompressorCategory);
+            for (IRecipe recipe : toHide)
+            {
+                //recipesCached.getRecipeWrapper(recipe, RecipeCategories.INGOT_COMPRESSOR_ID);  // not sure if this is available in all 1.11.2 versions of JEI?
+                for (IRecipeWrapper wrapper : allRW)
+                {
+                    if (matches(wrapper, recipe))
+                    {
+                        hidden.add(wrapper);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
-    public static void refreshJEIpost()
+    private static boolean matches(IRecipeWrapper wrapper, IRecipe test)
     {
-        if (recipesCached != null)
+        if (wrapper instanceof IngotCompressorShapelessRecipeWrapper)
         {
-            try {
-                IStackHelper stackHelper = registryCached.getJeiHelpers().getStackHelper();
-                for (CircuitFabricatorRecipeWrapper recipe : CircuitFabricatorRecipeMaker.getRecipesList())
-                {
-                    if (JEIversion450plus)
-                        recipesCached.addRecipe(recipe, RecipeCategories.CIRCUIT_FABRICATOR_ID);
-                    else
-                        recipesCached.addRecipe(recipe);
-                }
-                for (IRecipe recipe : CompressorRecipes.getRecipeList())
-                {
-                    if (JEIversion450plus)
-                    {
-                        if (recipe instanceof ShapelessOreRecipeGC)
-                        {
-                            recipesCached.addRecipe(new IngotCompressorShapelessRecipeWrapper(stackHelper, (ShapelessOreRecipeGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                        }
-                        else if (recipe instanceof ShapedRecipesGC)
-                        {
-                            recipesCached.addRecipe(new IngotCompressorShapedRecipeWrapper((ShapedRecipesGC) recipe), RecipeCategories.INGOT_COMPRESSOR_ID);
-                        }
-                    }
-                    else
-                        recipesCached.addRecipe(recipe);
-                }
-            } catch (Exception ignore) {}
+            if (test instanceof ShapelessOreRecipeGC)
+            {
+                return ((IngotCompressorShapelessRecipeWrapper)wrapper).matches((ShapelessOreRecipeGC) test);
+            }
+            return false;
         }
-    }
-    
-    // This is a hacky solution because Mezz didn't backport https://github.com/mezz/JustEnoughItems/commit/48fea48ed107f055f2f8196d0ba3a2de33187a4f
-    private static <T> void removeRecipe(IRecipeRegistry registry, T recipe, String recipeCategoryUid)
-    {
-        try {
-            Field recipeMap = registry.getClass().getDeclaredField("recipeCategoriesMap");
-            recipeMap.setAccessible(true);
-            ImmutableMap<String, IRecipeCategory> map = (ImmutableMap<String, IRecipeCategory>) recipeMap.get(registry);
-            IRecipeCategory recipeCategory = map.get(recipeCategoryUid);
-            if (recipeCategory == null)
+        if (wrapper instanceof IngotCompressorShapedRecipeWrapper)
+        {
+            if (test instanceof ShapedRecipesGC)
             {
-                System.out.println("No recipe category registered for recipeCategoryUid: " + recipeCategoryUid);
-                return;
+                return ((IngotCompressorShapedRecipeWrapper)wrapper).matches((ShapedRecipesGC) test);
             }
-            Method removeIt = null;
-            for (Method m : registry.getClass().getDeclaredMethods())
-            {
-                if (m.getName().equals("removeRecipeUnchecked"))
-                {
-                    removeIt = m;
-                    removeIt.setAccessible(true);
-                    break;
-                }
-            }
-            removeIt.invoke(registry, recipe, recipeCategory);
-        } catch (Exception ignore) {}
+            return false;
+        }
+        
+        return false;
     }
 }
