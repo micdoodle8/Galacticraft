@@ -219,7 +219,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             }
             else
             {
-                GCLog.debug("Trying to " + this.recursiveCount + " break down " + stack.toString());
+                GCLog.getLogger().debug("Trying to " + this.recursiveCount + " break down " + stack.toString());
                 List<ItemStack> ingredients2 = this.getIngredients(stack);
                 List<ItemStack> recursive = this.getSalvageable(ingredients2);
                 if (recursive != null && !recursive.isEmpty())

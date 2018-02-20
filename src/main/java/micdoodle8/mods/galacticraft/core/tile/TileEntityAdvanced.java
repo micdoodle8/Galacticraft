@@ -192,7 +192,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     {
         if (this.world == null)
         {
-            GCLog.severe("World is NULL! Connot decode packet data!");
+            GCLog.getLogger().error("World is NULL! Connot decode packet data!");
             return;
         }
 
