@@ -1284,17 +1284,17 @@ public class StatsCapability extends GCPlayerStats
             }
 
             
-            GCLog.debug("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+            GCLog.getLogger().debug("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
 
             this.sentFlags = false;
         }
         catch (Exception e)
         {
-            GCLog.severe("Found error in saved Galacticraft player data for " + player.get().getGameProfile().getName() + " - this should fix itself next relog.");
+            GCLog.getLogger().error("Found error in saved Galacticraft player data for " + player.get().getGameProfile().getName() + " - this should fix itself next relog.");
             e.printStackTrace();
         }
 
-        GCLog.debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+        GCLog.getLogger().debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
     }
 
     @Override

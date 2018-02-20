@@ -1231,7 +1231,7 @@ public class GCPlayerHandler
                 WorldServer worldNew = WorldUtil.getStartWorld(worldOld);
                 int dimID = GCCoreUtil.getDimensionID(worldNew);
                 player.dimension = dimID;
-                GCLog.debug("DEBUG: Sending respawn packet to player for dim " + dimID);
+                GCLog.getLogger().debug("DEBUG: Sending respawn packet to player for dim " + dimID);
                 player.connection.sendPacket(new SPacketRespawn(dimID, player.world.getDifficulty(), player.world.getWorldInfo().getTerrainType(), player.interactionManager.getGameType()));
 
                 if (worldNew.provider instanceof WorldProviderSpaceStation)
@@ -1248,7 +1248,7 @@ public class GCPlayerHandler
             final ITeleportType type = GalacticraftRegistry.getTeleportTypeForDimension(player.world.provider.getClass());
             Vector3 spawnPos = type.getPlayerSpawnLocation((WorldServer) player.world, player);
             ChunkPos pair = player.world.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
-            GCLog.debug("Loading first chunk in new dimension.");
+            GCLog.getLogger().debug("Loading first chunk in new dimension.");
             ((WorldServer) player.world).getChunkProvider().loadChunk(pair.chunkXPos, pair.chunkZPos);
             player.setLocationAndAngles(spawnPos.x, spawnPos.y, spawnPos.z, player.rotationYaw, player.rotationPitch);
             type.setupAdventureSpawn(player);
