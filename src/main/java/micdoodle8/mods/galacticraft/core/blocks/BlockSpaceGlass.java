@@ -38,7 +38,7 @@ import java.util.Random;
 public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
 {
     public static final PropertyEnum MODEL = PropertyEnum.create("modeltype", GlassModel.class);
-    public static final PropertyEnum ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
+    public static final PropertyEnum<GlassRotation> ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
     //public static final PropertyInteger PLACING  = PropertyInteger.create("placing", 0, 2);
     //This will define whether originally placed by the player facing NS - EW - or UD
 

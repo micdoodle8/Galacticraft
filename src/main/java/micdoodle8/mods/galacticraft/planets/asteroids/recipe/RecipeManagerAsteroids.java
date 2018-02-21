@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -13,6 +14,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+import ic2.api.recipe.RecipeInputItemStack;
+import ic2.api.recipe.Recipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,7 @@ public class RecipeManagerAsteroids
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 5), new ItemStack(Items.IRON_INGOT), 0.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.IRON_INGOT), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 9), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
 
         RecipeUtil.addBlockRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 7), "ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
         RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 9, 0), new Object[] {"X", 'X', new ItemStack(AsteroidBlocks.blockBasic, 1, 7)});
@@ -116,9 +120,9 @@ public class RecipeManagerAsteroids
         CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
 
         //All this is for NEI's benefit
-        List<ItemStack> list1 = new ArrayList();
-        List<ItemStack> list2 = new ArrayList();
-        List<ItemStack> list3 = new ArrayList();
+        List<ItemStack> list1 = new ArrayList<>();
+        List<ItemStack> list2 = new ArrayList<>();
+        List<ItemStack> list3 = new ArrayList<>();
         list1.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 751));
         list2.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 834));
         list3.add(new ItemStack(AsteroidsItems.canisterLOX, 1, 918));
@@ -128,5 +132,14 @@ public class RecipeManagerAsteroids
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));
+        
+        if (CompatibilityManager.isIc2Loaded())
+        {
+            // Titanium dust from small dust
+            RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(GCItems.ic2compat, 1, 7) });
+            Recipes.macerator.addRecipe(new RecipeInputItemStack(titaniumIngot, 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
+            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidsItems.basicItem, 1, 4), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
+            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidsItems.basicItem, 1, 6), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
+        }
     }
 }

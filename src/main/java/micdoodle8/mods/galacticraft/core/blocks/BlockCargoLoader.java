@@ -59,7 +59,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         }
     }
 
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumLoaderType.class);
+    public static final PropertyEnum<EnumLoaderType> TYPE = PropertyEnum.create("type", EnumLoaderType.class);
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
 
     public static final int METADATA_CARGO_LOADER = 0;

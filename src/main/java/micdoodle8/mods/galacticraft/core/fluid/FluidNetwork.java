@@ -447,7 +447,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             this.refreshAcceptors();
         }
 
-        List<BlockPos> acceptorsCopy = new ArrayList();
+        List<BlockPos> acceptorsCopy = new ArrayList<>();
         acceptorsCopy.addAll(acceptors.keySet());
 
         for (BlockPos coords : acceptorsCopy)

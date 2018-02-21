@@ -63,7 +63,7 @@ public class SpinManager
     private LinkedList<BlockPos> thrustersPlus = Lists.newLinkedList();
     private LinkedList<BlockPos> thrustersMinus = Lists.newLinkedList();
     private BlockPos oneSSBlock;
-    //private HashSet<BlockPos> stationBlocks = new HashSet();
+    //private HashSet<BlockPos> stationBlocks = new HashSet<>();
 
     private HashSet<BlockVec3> checked = new HashSet<BlockVec3>();
 

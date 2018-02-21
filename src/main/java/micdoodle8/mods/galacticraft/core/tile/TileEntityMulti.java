@@ -139,7 +139,7 @@ public class TileEntityMulti extends TileEntity
             thisTile.onCreate(world, pos);
         }
         
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         thisTile.getPositions(pos, positions);
         boolean result = true;
         for (BlockPos vecToAdd : positions)

@@ -40,7 +40,7 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
+    public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
 
     public enum EnumMachineBuildingType implements IStringSerializable
     {

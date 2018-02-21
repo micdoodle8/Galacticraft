@@ -108,8 +108,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     private BlockVec3 posTarget;
     private BlockVec3 posBase;
     private BlockVec3 waypointBase;
-    private LinkedList<BlockVec3> wayPoints = new LinkedList();
-    private LinkedList<BlockVec3> minePoints = new LinkedList();
+    private LinkedList<BlockVec3> wayPoints = new LinkedList<>();
+    private LinkedList<BlockVec3> minePoints = new LinkedList<>();
     private BlockVec3 minePointCurrent = null;
     private EnumFacing baseFacing;
     public EnumFacing facing;
@@ -164,14 +164,14 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     private int inventoryDrops;
     public boolean stopForTurn;
 
-    private static ArrayList<Block> noMineList = new ArrayList();
+    private static ArrayList<Block> noMineList = new ArrayList<>();
     public static BlockTuple blockingBlock = new BlockTuple(Blocks.AIR, 0);
     private int givenFailMessage = 0;
     private BlockVec3 mineLast = null;
     private int mineCountDown = 0;
     private int pathBlockedCount = 0;
-    public LinkedList<BlockVec3> laserBlocks = new LinkedList();
-    public LinkedList<Integer> laserTimes = new LinkedList();
+    public LinkedList<BlockVec3> laserBlocks = new LinkedList<>();
+    public LinkedList<Integer> laserTimes = new LinkedList<>();
     public float retraction = 1F;
     protected ITickable soundUpdater;
     private boolean soundToStop = false;

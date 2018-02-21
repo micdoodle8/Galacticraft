@@ -46,7 +46,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     private int ticks = 0;
     private int sideRear = 0;
     public int facing = 0;
-    private HashSet<BlockVec3> airToRestore = new HashSet();
+    private HashSet<BlockVec3> airToRestore = new HashSet<>();
     private intBucket[] buckets;
     private static intBucket[] bucketsServer;
     private static intBucket[] bucketsClient;
@@ -274,11 +274,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         IBlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
         checkedClear();
-        HashSet airToRevert = new HashSet();
+        HashSet airToRevert = new HashSet<>();
         airToRevert.addAll(airToRestore);
-        LinkedList airNew = new LinkedList();
-        LinkedList<BlockVec3> currentLayer = new LinkedList();
-        LinkedList<BlockVec3> nextLayer = new LinkedList();
+        LinkedList airNew = new LinkedList<>();
+        LinkedList<BlockVec3> currentLayer = new LinkedList<>();
+        LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         BlockVec3 thisvec = new BlockVec3(this);
         currentLayer.add(thisvec);
         World world = this.worldObj;

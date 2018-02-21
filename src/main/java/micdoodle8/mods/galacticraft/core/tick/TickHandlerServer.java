@@ -459,7 +459,7 @@ public class TickHandlerServer
             int maxPasses = 10;
             while (!TickHandlerServer.networkTicks.isEmpty())
             {
-                LinkedList<EnergyNetwork> pass = new LinkedList();
+                LinkedList<EnergyNetwork> pass = new LinkedList<>();
                 pass.addAll(TickHandlerServer.networkTicks);
                 TickHandlerServer.networkTicks.clear();
                 for (EnergyNetwork grid : pass)
@@ -476,7 +476,7 @@ public class TickHandlerServer
             maxPasses = 10;
             while (!TickHandlerServer.oxygenTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileEntityFluidTransmitter> pass = new LinkedList();
+                LinkedList<TileEntityFluidTransmitter> pass = new LinkedList<>();
                 pass.addAll(TickHandlerServer.oxygenTransmitterUpdates);
                 TickHandlerServer.oxygenTransmitterUpdates.clear();
                 for (TileEntityFluidTransmitter newTile : pass)
@@ -496,7 +496,7 @@ public class TickHandlerServer
             maxPasses = 10;
             while (!TickHandlerServer.energyTransmitterUpdates.isEmpty())
             {
-                LinkedList<TileBaseConductor> pass = new LinkedList();
+                LinkedList<TileBaseConductor> pass = new LinkedList<>();
                 pass.addAll(TickHandlerServer.energyTransmitterUpdates);
                 TickHandlerServer.energyTransmitterUpdates.clear();
                 for (TileBaseConductor newTile : pass)
@@ -644,11 +644,11 @@ public class TickHandlerServer
 
             int dimID = GCCoreUtil.getDimensionID(world);
             Set<BlockPos> edgesList = TickHandlerServer.edgeChecks.get(dimID);
-            final HashSet<BlockPos> checkedThisTick = new HashSet();
+            final HashSet<BlockPos> checkedThisTick = new HashSet<>();
 
             if (edgesList != null && !edgesList.isEmpty())
             {
-                List<BlockPos> edgesListCopy = new ArrayList();
+                List<BlockPos> edgesListCopy = new ArrayList<>();
                 edgesListCopy.addAll(edgesList);
                 for (BlockPos edgeBlock : edgesListCopy)
                 {

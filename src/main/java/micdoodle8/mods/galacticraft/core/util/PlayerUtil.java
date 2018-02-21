@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class PlayerUtil
 {
-    public static HashMap<String, GameProfile> knownSkins = new HashMap();
+    public static HashMap<String, GameProfile> knownSkins = new HashMap<>();
 
     public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
