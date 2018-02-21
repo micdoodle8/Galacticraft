@@ -39,6 +39,12 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public boolean hasEffect(ItemStack stack)
     {
         return true;

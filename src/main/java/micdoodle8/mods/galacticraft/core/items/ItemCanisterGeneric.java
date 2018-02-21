@@ -44,6 +44,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
         return new ItemCanisterGenericHandler(stack);

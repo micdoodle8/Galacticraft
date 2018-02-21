@@ -943,17 +943,26 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
         	GCPlayerStats stats = null;
         	
-			if (!(this.world.provider instanceof IOrbitDimension))
-			{
-				for (Entity player : this.getPassengers())
-				{
-					if (player instanceof EntityPlayerMP)
-					{
-						stats = GCPlayerStats.get(player);
-        				stats.setCoordsTeleportedFromX(player.posX);
-        				stats.setCoordsTeleportedFromZ(player.posZ);
-        			}
-        		}
+        	if (!this.getPassengers().isEmpty())
+        	{
+        	    for (Entity player : this.getPassengers())
+        	    {
+        	        if (player instanceof EntityPlayerMP)
+        	        {
+        	            stats = GCPlayerStats.get(player);
+                        stats.setLaunchpadStack(null);
+
+        	            if (!(this.world.provider instanceof IOrbitDimension))
+        	            {
+        	                stats.setCoordsTeleportedFromX(player.posX);
+        	                stats.setCoordsTeleportedFromZ(player.posZ);
+        	            }
+        	        }
+        	    }
+
+        	    Entity playerMain = this.getPassengers().get(0);
+        	    if (playerMain instanceof EntityPlayerMP)
+        	        stats = GCPlayerStats.get(playerMain);
         	}
 
             int amountRemoved = 0;
@@ -988,9 +997,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             }
 
             //Set the player's launchpad item for return on landing - or null if launchpads not removed
-            if (stats != null)
+            if (stats != null && amountRemoved == 9)
             {
-                stats.setLaunchpadStack(amountRemoved == 9 ? new ItemStack(GCBlocks.landingPad, 9, 0) : null);
+                stats.setLaunchpadStack(new ItemStack(GCBlocks.landingPad, 9, 0));
             }
 
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);

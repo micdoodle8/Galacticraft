@@ -33,6 +33,12 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
         //this.setTextureName("arrow");
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack)
+    {
+        return false;
+    }
+
     @SideOnly(Side.CLIENT)
     @Override
     public CreativeTabs getCreativeTab()

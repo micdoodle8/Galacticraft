@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
-import micdoodle8.mods.galacticraft.core.GCItems;
+import java.util.List;
+
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -39,52 +41,15 @@ public class SlotSchematicTier2Rocket extends Slot
     @Override
     public boolean isItemValid(ItemStack par1ItemStack)
     {
-        switch (this.index)
-        {
-        case 1:
-            return par1ItemStack.getItem() == GCItems.partNoseCone;
-        case 2:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 3:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 4:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 5:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 6:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 7:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 8:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 9:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 10:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 11:
-            return par1ItemStack.getItem() == MarsItems.marsItemBasic && par1ItemStack.getItemDamage() == 3;
-        case 12:
-            return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1;
-        case 13:
-            return par1ItemStack.getItem() == GCItems.partFins;
-        case 14:
-            return par1ItemStack.getItem() == GCItems.partFins;
-        case 15:
-            return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 0;
-        case 16:
-            return par1ItemStack.getItem() == GCItems.rocketEngine && par1ItemStack.getItemDamage() == 1;
-        case 17:
-            return par1ItemStack.getItem() == GCItems.partFins;
-        case 18:
-            return par1ItemStack.getItem() == GCItems.partFins;
-        case 19:
-            return true;
-        case 20:
-            return true;
-        case 21:
-            return true;
-        }
+        if (par1ItemStack == null)
+            return false;
 
+        List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getRocketT2Recipes();
+        for (INasaWorkbenchRecipe recipe : recipes)
+        {
+            if (ItemStack.areItemsEqual(par1ItemStack, recipe.getRecipeInput().get(this.index)))
+                return true;
+        }
         return false;
     }
 
