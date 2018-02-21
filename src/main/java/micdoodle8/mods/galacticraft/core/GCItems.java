@@ -161,6 +161,12 @@ public class GCItems
 
         OreDictionary.registerOre("compressedMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 1));
         OreDictionary.registerOre("ingotMeteoricIron", new ItemStack(GCItems.itemBasicMoon, 1, 0));
+        if (CompatibilityManager.isIc2Loaded())
+        {
+            OreDictionary.registerOre("crushedAluminum", new ItemStack(GCItems.ic2compat, 1, 0));
+            OreDictionary.registerOre("crushedPurifiedAluminum", new ItemStack(GCItems.ic2compat, 1, 1));
+            OreDictionary.registerOre("dustAluminum", new ItemStack(GCItems.ic2compat, 1, 2));
+        }
 
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));

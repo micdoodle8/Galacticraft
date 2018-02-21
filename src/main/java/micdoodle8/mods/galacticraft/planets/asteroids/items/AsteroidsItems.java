@@ -74,6 +74,7 @@ public class AsteroidsItems
         OreDictionary.registerOre("ingotTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 0));
         OreDictionary.registerOre("shardTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 4));
         OreDictionary.registerOre("shardIron", new ItemStack(AsteroidsItems.basicItem, 1, 3));
+        OreDictionary.registerOre("dustTitanium", new ItemStack(AsteroidsItems.basicItem, 1, 9));
 
         AsteroidsItems.registerHarvestLevels();
 
