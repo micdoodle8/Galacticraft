@@ -196,6 +196,24 @@ public class CircuitFabricatorRecipes
         return recipeOutputs.get(count);
     }
     
+    /**
+     * Caution: call this BEFORE the JEI plugin registers recipes - or else the removed recipe will still be shown in JEI.
+     */
+    public static void removeRecipe(ItemStack match)
+    {
+        int count = 0;
+        for (ItemStack output : new ArrayList<ItemStack>(recipeOutputs))
+        {
+            if (ItemStack.areItemStacksEqual(match, output))
+            {
+                recipeInputs.remove(count);
+                recipeOutputs.remove(count);
+                // Do not increment count if we just removed the element!
+            }
+            else count++;
+        }
+    }
+    
     public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)
     {
         if (ingredient == null) return;
