@@ -143,8 +143,8 @@ public class RecipeManagerAsteroids
             Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidsItems.basicItem, 1, 4), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
             Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidsItems.basicItem, 1, 6), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
             // Asteroids and Venus versions of aluminium ore (because IC2 oredicting or .ini will not pick up aluminium ores)
-            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 0));
-            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(VenusBlocks.venusBlock, 1, 6), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 0));
+            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
+            Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(VenusBlocks.venusBlock, 1, 6), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
         }
     }
 }
