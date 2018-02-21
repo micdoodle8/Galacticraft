@@ -38,3 +38,11 @@ We welcome inclusion of Galacticraft in modpacks.  [Modpack permission and setup
 ## License
 
 Galacticraft is open source and free for everyone for non-commercial use.  (But distribution of Galacticraft in modified form is not permitted.)  Full license can be found [here](https://github.com/micdoodle8/Galacticraft/blob/master/LICENSE.txt)
+
+------
+
+##Pull Requests
+
+Pull Requests to help with Galacticraft development are extremely welcome. [Guide to making a PR](https://gist.github.com/radfast/7ea7577fe2c0fdae1ac90d4b26d6198c)
+
+For Pull Requests to help with translation, see [Notes for Contributors](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md)
