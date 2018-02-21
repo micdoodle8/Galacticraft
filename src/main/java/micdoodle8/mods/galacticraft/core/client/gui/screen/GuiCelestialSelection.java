@@ -1650,7 +1650,7 @@ public class GuiCelestialSelection extends GuiScreen
             GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
 
             List<CelestialBody> children = this.getChildren(this.isZoomed() ? this.selectedBody : this.selectedParent);
-            drawChildren(children, 0, 0);
+            drawChildren(children, 0, 0, true);
 
             if (this.mapMode)
             {
@@ -2131,7 +2131,7 @@ public class GuiCelestialSelection extends GuiScreen
         }
     }
 
-    protected int drawChildren(List<CelestialBody> children, int xOffsetBase, int yOffsetPrior)
+    protected int drawChildren(List<CelestialBody> children, int xOffsetBase, int yOffsetPrior, boolean recursive)
     {
         xOffsetBase += GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE;
         final int yOffsetBase = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 50 + yOffsetPrior;
@@ -2165,26 +2165,29 @@ public class GuiCelestialSelection extends GuiScreen
             }
             
             yOffset += 14;
-            if (child.equals(this.selectedBody))
+            if (recursive && child.equals(this.selectedBody))
             {
                 List<CelestialBody> grandchildren = this.getChildren(child);
-                if (this.animateGrandchildren == 14 * grandchildren.size())
+                if (grandchildren.size() > 0)
                 {
-                    yOffset += drawChildren(grandchildren, 10, yOffset);
-                }
-                else
-                {
-                    if (this.animateGrandchildren >= 14)
+                    if (this.animateGrandchildren == 14 * grandchildren.size())
                     {
-                        List<CelestialBody> partial = new LinkedList<>();
-                        for (int j = 0; j < this.animateGrandchildren / 14; j++)
-                        {
-                            partial.add(grandchildren.get(j));
-                        }
-                        drawChildren(partial, 10, yOffset);
+                        yOffset += drawChildren(grandchildren, 10, yOffset, false);
                     }
-                    yOffset += this.animateGrandchildren;
-                    this.animateGrandchildren += 2;
+                    else
+                    {
+                        if (this.animateGrandchildren >= 14)
+                        {
+                            List<CelestialBody> partial = new LinkedList<>();
+                            for (int j = 0; j < this.animateGrandchildren / 14; j++)
+                            {
+                                partial.add(grandchildren.get(j));
+                            }
+                            drawChildren(partial, 10, yOffset, false);
+                        }
+                        yOffset += this.animateGrandchildren;
+                        this.animateGrandchildren += 2;
+                    }
                 }
             }
         }
