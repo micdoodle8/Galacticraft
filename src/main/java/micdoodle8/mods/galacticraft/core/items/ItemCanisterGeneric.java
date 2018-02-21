@@ -43,6 +43,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer implements 
     }
 
     @Override
+    public boolean isItemTool(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt)
     {
         return new ItemCanisterGenericHandler(stack);
