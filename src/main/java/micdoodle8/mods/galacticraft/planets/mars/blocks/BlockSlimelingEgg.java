@@ -36,7 +36,7 @@ import java.util.List;
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
     //    private IIcon[] icons;
-    public static final PropertyEnum EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
+    public static final PropertyEnum<EnumEggColor> EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
     public static final PropertyBool BROKEN = PropertyBool.create("broken");
 
     public enum EnumEggColor implements IStringSerializable

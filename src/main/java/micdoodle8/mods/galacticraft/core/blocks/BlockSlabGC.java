@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class BlockSlabGC extends BlockSlab implements ISortableBlock
 {
-    public static PropertyEnum VARIANT = PropertyEnum.create("variant", BlockType.class);
+    public final static PropertyEnum<BlockType> VARIANT = PropertyEnum.create("variant", BlockType.class);
 
     public BlockSlabGC(String name, Material material)
     {

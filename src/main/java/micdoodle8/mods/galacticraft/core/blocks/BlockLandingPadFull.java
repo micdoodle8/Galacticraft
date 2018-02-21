@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
-    public static final PropertyEnum PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
+    public static final PropertyEnum<EnumLandingPadFullType> PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
 
     public enum EnumLandingPadFullType implements IStringSerializable
     {

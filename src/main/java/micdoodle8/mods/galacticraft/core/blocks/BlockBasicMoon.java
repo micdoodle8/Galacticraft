@@ -40,7 +40,7 @@ import java.util.Random;
 
 public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
+    public static final PropertyEnum<EnumBlockBasicMoon> BASIC_TYPE_MOON = PropertyEnum.create("basicTypeMoon", EnumBlockBasicMoon.class);
 
     public enum EnumBlockBasicMoon implements IStringSerializable
     {

@@ -60,7 +60,7 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
         }
     }
 
-    public static final PropertyEnum AIR_LOCK_TYPE = PropertyEnum.create("airLockType", EnumAirLockType.class);
+    public static final PropertyEnum<EnumAirLockType> AIR_LOCK_TYPE = PropertyEnum.create("airLockType", EnumAirLockType.class);
 
     public BlockAirLockFrame(String assetName)
     {

@@ -28,7 +28,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum CORNER = PropertyEnum.create("type", EnumCorner.class);
+    public static final PropertyEnum<EnumCorner> CORNER = PropertyEnum.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
     public static boolean ignoreCollisionTests;
 

@@ -35,7 +35,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
+    public static final PropertyEnum<EnumTieredMachineType> TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 

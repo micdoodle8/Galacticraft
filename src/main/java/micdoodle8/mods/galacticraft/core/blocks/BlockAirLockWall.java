@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock, ISortableBlock
 {
-    public static final PropertyEnum CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
+    public static final PropertyEnum<EnumAirLockSealConnection> CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
 
     public enum EnumAirLockSealConnection implements IStringSerializable
     {
