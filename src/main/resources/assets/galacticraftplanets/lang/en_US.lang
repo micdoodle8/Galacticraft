@@ -208,6 +208,7 @@ item.desh_pick_slime.name=Sticky Desh Pickaxe
 item.desh_spade.name=Desh Shovel
 item.desh_stick.name=Desh Stick
 item.desh_sword.name=Desh Sword
+item.dust_titanium.name=Titanium Dust
 item.empty_gas_canister.name=Empty Gas Canister
 item.engine_t2.name=Heavy Rocket Engine
 item.fluid_manip.name=Fluid Manipulator

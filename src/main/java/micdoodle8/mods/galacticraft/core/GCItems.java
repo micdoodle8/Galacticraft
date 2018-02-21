@@ -6,6 +6,7 @@ import com.google.common.collect.Ordering;
 
 import mezz.jei.api.IItemBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -78,6 +79,7 @@ public class GCItems
 //	public static Item cheeseBlock;
     public static Item prelaunchChecklist;
     public static Item dungeonFinder;
+    public static Item ic2compat;
 
     //    public static ArmorMaterial addArmorMaterial(String name, String textureName, int durability, int[] reductionAmounts, int enchantability)
     public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0);
@@ -137,6 +139,7 @@ public class GCItems
         GCItems.itemBasicMoon = new ItemMoon("item_basic_moon");
         GCItems.prelaunchChecklist = new ItemPreLaunchChecklist("prelaunch_checklist");
         GCItems.dungeonFinder = new ItemBase("dungeonfinder");
+        GCItems.ic2compat = new ItemIC2Compat("ic2compat");
 
         GCItems.registerHarvestLevels();
 
@@ -286,6 +289,8 @@ public class GCItems
         
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);
+        
+        if (CompatibilityManager.isIc2Loaded()) GCItems.registerItem(GCItems.ic2compat);
     }
 
     public static void registerItem(Item item)
