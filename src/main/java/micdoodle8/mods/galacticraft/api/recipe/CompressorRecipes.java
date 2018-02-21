@@ -297,6 +297,15 @@ public class CompressorRecipes
         result.removeIf(irecipe -> !ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
         return result;
     }
+
+    /**
+     * Caution: call this BEFORE the JEI plugin registers recipes - or else the removed recipe will still be shown in JEI.
+     */
+    public static void removeRecipe(ItemStack match)
+    {
+        CompressorRecipes.recipes.removeIf(irecipe -> ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+        CompressorRecipes.recipesAdventure.removeIf(irecipe -> ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+    }
     
     public static void replaceRecipeIngredient(ItemStack ingredient, List<ItemStack> replacement)
     {
