@@ -41,7 +41,7 @@ Galacticraft is open source and free for everyone for non-commercial use.  (But 
 
 ------
 
-##Pull Requests
+## Pull Requests
 
 Pull Requests to help with Galacticraft development are extremely welcome. [Guide to making a PR](https://gist.github.com/radfast/7ea7577fe2c0fdae1ac90d4b26d6198c)
 
