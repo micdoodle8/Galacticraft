@@ -48,8 +48,6 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreenServerList;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -86,7 +84,7 @@ public class TickHandlerClient
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
-    private static boolean menuReset = true;
+    public static volatile boolean menuReset = true;
     public static volatile boolean updateJEIhiding = false;
     
     public static void resetClient()
@@ -349,17 +347,10 @@ public class TickHandlerClient
             }
         }
 
-        if (minecraft.currentScreen instanceof GuiMainMenu || minecraft.currentScreen instanceof GuiScreenServerList)
+        if (menuReset)
         {
-            if (menuReset)
-            {
-                TickHandlerClient.resetClient();
-                menuReset = false;
-            }
-        }
-        else
-        {
-            menuReset = true;
+            TickHandlerClient.resetClient();
+            menuReset = false;
         }
 
         if (event.phase == Phase.START && player != null)

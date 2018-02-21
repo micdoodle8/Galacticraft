@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.dimension.SpaceStationWorldData;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -114,12 +115,12 @@ public class ConnectionEvents
         {
             ConnectionEvents.clientConnected = true;
         }
-        MapUtil.resetClient();
     }
 
     @SubscribeEvent
     public void onConnectionClosed(ClientDisconnectionFromServerEvent event)
     {
+        TickHandlerClient.menuReset = true;
         if (ConnectionEvents.clientConnected)
         {
             ConnectionEvents.clientConnected = false;

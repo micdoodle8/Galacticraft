@@ -255,10 +255,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                         else                        //Oxygen -> Oxygen tank
                             if ((this.gasTankType == TankGases.OXYGEN.index || this.gasTankType == -1) && inputName.contains("oxygen"))
                             {
-                                int liquidAmount = liquid.amount * (inputName.contains("liquid") ? 2 : 1);
-                                if (currentgas == null || currentgas.amount + liquidAmount <= this.gasTank.getCapacity())
+                                int tankedAmount = liquid.amount * (inputName.contains("liquid") ? 2 : 1);
+                                if (currentgas == null || currentgas.amount + tankedAmount <= this.gasTank.getCapacity())
                                 {
-                                    FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.OXYGEN.gas, liquidAmount);
+                                    FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.OXYGEN.gas, tankedAmount);
                                     this.gasTank.fill(gcgas, true);
                                     this.gasTankType = TankGases.OXYGEN.index;
                                     ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
@@ -268,10 +268,10 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                             else                        //Nitrogen -> Nitrogen tank
                                 if ((this.gasTankType == TankGases.NITROGEN.index || this.gasTankType == -1) && inputName.contains("nitrogen"))
                                 {
-                                    int liquidAmount = liquid.amount * (inputName.contains("liquid") ? 2 : 1);
-                                    if (currentgas == null || currentgas.amount + liquidAmount <= this.gasTank.getCapacity())
+                                    int tankedAmount = liquid.amount * (inputName.contains("liquid") ? 2 : 1);
+                                    if (currentgas == null || currentgas.amount + tankedAmount <= this.gasTank.getCapacity())
                                     {
-                                        FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, liquidAmount);
+                                        FluidStack gcgas = FluidRegistry.getFluidStack(TankGases.NITROGEN.gas, tankedAmount);
                                         this.gasTank.fill(gcgas, true);
                                         this.gasTankType = TankGases.NITROGEN.index;
                                         ItemStack stack = FluidUtil.getUsedContainer(inputCanister);
@@ -771,16 +771,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
             if (this.gasTankType == -1 || (this.gasTankType == type && this.gasTank.getFluidAmount() < this.gasTank.getCapacity()))
             {
-                if (type > 0)
-                {
-                    float conversion = 2F * Constants.LOX_GAS_RATIO;
-                    FluidStack fluidToFill = new FluidStack(resource.getFluid(), (int) (resource.amount * conversion));
-                    used = MathHelper.ceil(this.gasTank.fill(fluidToFill, doFill) / conversion);
-                }
-                else
-                {
-                    used = this.gasTank.fill(resource, doFill);
-                }
+                used = this.gasTank.fill(resource, doFill);
             }
         }
 
@@ -825,7 +816,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     {
         if (from == this.getGasInputDirection() && this.shouldPullOxygen())
         {
-            float conversion = 2F * Constants.LOX_GAS_RATIO;
+            float conversion = 2F * Constants.LOX_GAS_RATIO;  //Special conversion ratio for breathable air
             FluidStack fluidToFill = new FluidStack(AsteroidsModule.fluidOxygenGas, (int) (receive * conversion));
             int used = MathHelper.ceil(this.gasTank.fill(fluidToFill, doReceive) / conversion);
             return used;

@@ -45,6 +45,12 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
     }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack)
+    {
+        return false;
+    }
+
     protected void setMaxTransfer()
     {
         this.transferMax = 200;

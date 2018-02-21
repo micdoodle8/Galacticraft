@@ -18,6 +18,12 @@ public class ItemBlockCheese extends ItemBlockDesc
     }
 
     @Override
+    public boolean isEnchantable(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     public CreativeTabs getCreativeTab()
     {
         return GalacticraftCore.galacticraftBlocksTab;
