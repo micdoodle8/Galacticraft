@@ -516,7 +516,7 @@ public class BaseRoom extends SizedPiece
 
             if (tile instanceof IMultiBlock)
             {
-                List<BlockPos> positions = new LinkedList();
+                List<BlockPos> positions = new LinkedList<>();
                 ((IMultiBlock)tile).getPositions(blockpos, positions);
                 for (BlockPos pos : positions)
                 {

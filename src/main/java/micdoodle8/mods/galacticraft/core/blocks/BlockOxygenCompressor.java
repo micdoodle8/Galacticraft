@@ -32,7 +32,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     public static final int OXYGEN_DECOMPRESSOR_METADATA = 4;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumCompressorType.class);
+    public static final PropertyEnum<EnumCompressorType> TYPE = PropertyEnum.create("type", EnumCompressorType.class);
 
     public enum EnumCompressorType implements IStringSerializable
     {

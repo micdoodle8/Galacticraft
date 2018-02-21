@@ -115,7 +115,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         //Client can create its own fake blocks and tiles - no need for networking in 1.8+
         if (world.isRemote) this.onCreate(world, pos);
         
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(pos, positions);
         boolean result = true;
         for (BlockPos vecToAdd : positions)
@@ -143,7 +143,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     @Override
     public void onCreate(World world, BlockPos placedPosition)
     {
-        List<BlockPos> positions = new LinkedList();
+        List<BlockPos> positions = new LinkedList<>();
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
@@ -247,7 +247,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new LinkedList();
+        List<BlockPos> positions = new LinkedList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

@@ -44,7 +44,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
     public static final int ELECTROLYZER_META = 8;
 
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumMachineType.class);
+    public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements IStringSerializable
     {

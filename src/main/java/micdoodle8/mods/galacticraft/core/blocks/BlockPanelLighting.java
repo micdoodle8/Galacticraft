@@ -44,7 +44,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription, IPaintable
 {
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", PanelType.class);
+    public static final PropertyEnum<PanelType> TYPE = PropertyEnum.create("type", PanelType.class);
     public static final PropertyObject<IBlockState> BASE_STATE = new PropertyObject<>("held_state", IBlockState.class);
     
     public static int color = 0xf0f0e0;

@@ -71,8 +71,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
     private boolean frequencyCheckNeeded = false;
-//    private static Map<Integer, Long> tickCounts = new HashMap();
-//    private static Map<Integer, Integer> instanceCounts = new HashMap();
+//    private static Map<Integer, Long> tickCounts = new HashMap<>();
+//    private static Map<Integer, Integer> instanceCounts = new HashMap<>();
 
     public TileEntityLaunchController()
     {

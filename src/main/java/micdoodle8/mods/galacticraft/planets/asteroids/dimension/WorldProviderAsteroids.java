@@ -30,7 +30,7 @@ import java.util.TreeMap;
 public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
-    private HashSet<AsteroidData> asteroids = new HashSet();
+    private HashSet<AsteroidData> asteroids = new HashSet<>();
     private boolean dataNotLoaded = true;
     private AsteroidSaveData datafile;
     private double solarMultiplier = -1D;
@@ -319,7 +319,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return null;
         }
 
-        TreeMap<Integer, BlockVec3> targets = new TreeMap();
+        TreeMap<Integer, BlockVec3> targets = new TreeMap<>();
 
         for (AsteroidData roid : this.asteroids)
         {
@@ -366,7 +366,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return null;
         }
 
-        ArrayList<BlockVec3> returnValues = new ArrayList();
+        ArrayList<BlockVec3> returnValues = new ArrayList<>();
         int i = 0;
         int offset = EntityAstroMiner.MINE_LENGTH_AST / 2;
         for (BlockVec3 target : targets.values())

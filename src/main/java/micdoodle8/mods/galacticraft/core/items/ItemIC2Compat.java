@@ -1,0 +1,67 @@
+package micdoodle8.mods.galacticraft.core.items;
+
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+public class ItemIC2Compat extends Item implements ISortableItem
+{
+    public static final String[] types = { "ore_crushed", "ore_purified", "dust", "dust_small" };
+    public static final String[] names = { "alu", "titanium" };
+
+    public ItemIC2Compat(String assetName)
+    {
+        super();
+        this.setMaxDamage(0);
+        this.setHasSubtypes(true);
+        this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return GalacticraftCore.galacticraftItemsTab;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public EnumRarity getRarity(ItemStack par1ItemStack)
+    {
+        return ClientProxyCore.galacticraftItem;
+    }
+
+    @Override
+    public String getUnlocalizedName(ItemStack itemStack)
+    {
+        int meta = itemStack.getItemDamage();
+        return this.getUnlocalizedName() + "." + ItemIC2Compat.types[meta % 4] + "_" + ItemIC2Compat.names[meta / 4];
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> par3List)
+    {
+        par3List.add(new ItemStack(this, 1, 0));
+        par3List.add(new ItemStack(this, 1, 1));
+        par3List.add(new ItemStack(this, 1, 2));
+        par3List.add(new ItemStack(this, 1, 7));
+    }
+
+    @Override
+    public int getMetadata(int par1)
+    {
+        return par1;
+    }
+
+    @Override
+    public EnumSortCategoryItem getCategory(int meta)
+    {
+        return EnumSortCategoryItem.GENERAL;
+    }
+}

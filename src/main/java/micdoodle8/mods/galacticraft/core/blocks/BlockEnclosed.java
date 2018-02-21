@@ -47,7 +47,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     public static Method onBlockNeighbourChangeIC2a = null;
     public static Method onBlockNeighbourChangeIC2b = null;
 
-    public static final PropertyEnum TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
+    public static final PropertyEnum<EnumEnclosedBlockType> TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
 
     public enum EnumEnclosedBlockType implements IStringSerializable
     {
