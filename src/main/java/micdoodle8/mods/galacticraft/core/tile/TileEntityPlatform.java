@@ -276,7 +276,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     
     private void resetBlocks()
     {
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(this.pos, positions);
 
         for (BlockPos pos : positions)

@@ -48,7 +48,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     {
         this.mainBlockPosition = placedPosition;
         this.markDirty();
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
@@ -93,7 +93,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

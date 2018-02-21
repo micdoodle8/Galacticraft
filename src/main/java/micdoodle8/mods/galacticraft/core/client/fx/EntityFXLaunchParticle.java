@@ -29,40 +29,31 @@ public abstract class EntityFXLaunchParticle extends Particle
         double origZ = z;
 
         List<AxisAlignedBB> list = this.getCollidingBoundingBoxes(this.getBoundingBox().addCoord(x, y, z));
+        AxisAlignedBB axisalignedbb = this.getBoundingBox();
 
-        for (AxisAlignedBB axisalignedbb : list)
+        for (AxisAlignedBB blocker : list)
         {
-            y = axisalignedbb.calculateYOffset(this.getBoundingBox(), y);
+            y = blocker.calculateYOffset(axisalignedbb, y);
         }
+        axisalignedbb = axisalignedbb.offset(0.0D, y, 0.0D);
 
-        this.setBoundingBox(this.getBoundingBox().offset(0.0D, y, 0.0D));
-
-        for (AxisAlignedBB axisalignedbb1 : list)
+        for (AxisAlignedBB blocker : list)
         {
-            x = axisalignedbb1.calculateXOffset(this.getBoundingBox(), x);
+            x = blocker.calculateXOffset(axisalignedbb, x);
         }
+        axisalignedbb = axisalignedbb.offset(x, 0.0D, 0.0D);
 
-        this.setBoundingBox(this.getBoundingBox().offset(x, 0.0D, 0.0D));
-
-        for (AxisAlignedBB axisalignedbb2 : list)
+        for (AxisAlignedBB blocker : list)
         {
-            z = axisalignedbb2.calculateZOffset(this.getBoundingBox(), z);
+            z = blocker.calculateZOffset(axisalignedbb, z);
         }
+        axisalignedbb = axisalignedbb.offset(0.0D, 0.0D, z);
 
-        this.setBoundingBox(this.getBoundingBox().offset(0.0D, 0.0D, z));
-
-        this.resetPositionToBB();
-        this.onGround = d0 != y && d0 < 0.0D;
-
-        if (origX != x)
-        {
-            this.motionX = 0.0D;
-        }
-
-        if (origZ != z)
-        {
-            this.motionZ = 0.0D;
-        }
+        this.setBoundingBox(axisalignedbb);
+        this.posX = (axisalignedbb.minX + axisalignedbb.maxX) / 2.0D;
+        this.posY = axisalignedbb.minY;
+        this.posZ = (axisalignedbb.minZ + axisalignedbb.maxZ) / 2.0D;
+        this.onGround = false;
     }
 
     /**

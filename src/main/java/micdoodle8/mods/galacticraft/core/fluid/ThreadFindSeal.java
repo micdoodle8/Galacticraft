@@ -230,7 +230,7 @@ public class ThreadFindSeal
                 // unbreathable actually still has an unchecked sealer in it
                 List<TileEntityOxygenSealer> sealersSave = this.sealers;
                 List<BlockVec3> torchesSave = this.torchesToUpdate;
-                List<TileEntityOxygenSealer> sealersDone = new ArrayList();
+                List<TileEntityOxygenSealer> sealersDone = new ArrayList<>();
                 sealersDone.addAll(this.sealers);
                 for (TileEntityOxygenSealer otherSealer : this.otherSealers)
                 {
@@ -1026,7 +1026,7 @@ public class ThreadFindSeal
 
     private void traceLeak(BlockVec3 tracer)
     {
-        ArrayList<BlockVec3> route = new ArrayList();
+        ArrayList<BlockVec3> route = new ArrayList<>();
         BlockVec3 start = this.head.clone().translate(0, 1, 0);
         int count = 0;
         int x = tracer.x;
@@ -1058,7 +1058,7 @@ public class ThreadFindSeal
             count ++;
         }
         
-        this.leakTrace = new ArrayList();
+        this.leakTrace = new ArrayList<>();
         this.leakTrace.add(start);
         for (int j = route.size() - 1; j >= 0; j--)
         {

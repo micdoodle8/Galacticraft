@@ -586,7 +586,7 @@ public class EnergyNetwork implements IElectricityNetwork
 
         try
         {
-            LinkedList<IConductor> conductorsCopy = new LinkedList();
+            LinkedList<IConductor> conductorsCopy = new LinkedList<>();
             conductorsCopy.addAll(this.conductors);
             //This prevents concurrent modifications if something in the loop causes chunk loading
             //(Chunk loading can change the network if new conductors are found)

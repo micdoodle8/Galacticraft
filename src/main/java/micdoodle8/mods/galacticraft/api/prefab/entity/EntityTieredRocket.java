@@ -42,7 +42,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     public EnumRocketType rocketType;
     public float rumble;
     public int launchCooldown;
-    private ArrayList<BlockVec3> preGenList = new ArrayList();
+    private ArrayList<BlockVec3> preGenList = new ArrayList<>();
     private Iterator<BlockVec3> preGenIterator = null;
     static boolean preGenInProgress = false;
     static Field marsConfigAllDimsAllowed;
@@ -93,7 +93,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         //If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
         if (this.destinationFrequency == -1 && !EntityTieredRocket.preGenInProgress)
         {
-            ArrayList<Integer> toPreGen = new ArrayList();
+            ArrayList<Integer> toPreGen = new ArrayList<>();
             for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
             {
                 if (planet.getDimensionID() == this.dimension)

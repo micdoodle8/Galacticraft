@@ -182,8 +182,8 @@ public class ContainerCrafting extends Container
 
     private boolean mergeToCrafting(ItemStack stack, boolean b)
     {
-    	List<Slot> acceptSlots = new LinkedList();
-        List<Integer> acceptQuantity = new LinkedList();
+        List<Slot> acceptSlots = new LinkedList<>();
+        List<Integer> acceptQuantity = new LinkedList<>();
         int minQuantity = 64;
         int acceptTotal = 0;
         for (int i = 1; i < 10; i++)

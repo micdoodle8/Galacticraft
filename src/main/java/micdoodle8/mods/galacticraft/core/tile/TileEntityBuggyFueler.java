@@ -94,7 +94,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
@@ -123,7 +123,7 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

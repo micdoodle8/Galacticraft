@@ -59,7 +59,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public boolean isMaster = false;
     public EnumFacing facing = EnumFacing.NORTH;
     private BlockPos mainBlockPosition;
-    private LinkedList<BlockVec3> targetPoints = new LinkedList();
+    private LinkedList<BlockVec3> targetPoints = new LinkedList<>();
     private WeakReference<TileEntityMinerBase> masterTile = null;
     public boolean updateClientFlag;
     public boolean findTargetPointsFlag;
@@ -266,7 +266,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     //TODO - currently unused, the master position replaces this?
     protected void initialiseMultiTiles(BlockPos pos, World world)
     {
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(pos, positions);
         for (BlockPos vecToAdd : positions)
         {
@@ -643,7 +643,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new ArrayList();
+        List<BlockPos> positions = new ArrayList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

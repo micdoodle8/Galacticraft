@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WIRE_TYPE = PropertyEnum.create("wiretype", EnumWireType.class);
+    public static final PropertyEnum<EnumWireType> WIRE_TYPE = PropertyEnum.create("wiretype", EnumWireType.class);
     private static final float MIN = 0.38F;
     private static final float MINH = 0.3F;
     private static final float MAX = 0.62F;

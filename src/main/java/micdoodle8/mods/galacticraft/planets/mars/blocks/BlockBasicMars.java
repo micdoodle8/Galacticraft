@@ -41,7 +41,7 @@ import java.util.Random;
 
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum BASIC_TYPE = PropertyEnum.create("basictypemars", EnumBlockBasic.class);
+    public static final PropertyEnum<EnumBlockBasic> BASIC_TYPE = PropertyEnum.create("basictypemars", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {

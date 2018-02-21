@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ItemBasicAsteroids extends Item implements ISortableItem
 {
-    public static String[] names = { "ingot_titanium", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "reinforced_plate_t3", "compressed_titanium", "thermal_cloth", "beam_core" };
+    public static String[] names = { "ingot_titanium", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "reinforced_plate_t3", "compressed_titanium", "thermal_cloth", "beam_core", "dust_titanium" };
 //    protected IIcon[] icons = new IIcon[ItemBasicAsteroids.names.length];
 
     public ItemBasicAsteroids(String name)

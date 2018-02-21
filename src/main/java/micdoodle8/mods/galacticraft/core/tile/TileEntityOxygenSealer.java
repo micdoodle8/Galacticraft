@@ -55,7 +55,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
     public static int countEntities = 0;
     private static int countTemp = 0;
     private static boolean sealerCheckedThisTick = false;
-    public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList();
+    public static ArrayList<TileEntityOxygenSealer> loadedTiles = new ArrayList<>();
     private static final int UNSEALED_OXYGENPERTICK = 12;
     public List<BlockVec3> leaksClient;
 

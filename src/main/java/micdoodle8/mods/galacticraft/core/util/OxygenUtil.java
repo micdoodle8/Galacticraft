@@ -163,7 +163,7 @@ public class OxygenUtil
         int i1 = MathHelper.floor(bb.minZ + 0.001D);
         int j1 = MathHelper.floor(bb.maxZ - 0.001D);
 
-        OxygenUtil.checked = new HashSet();
+        OxygenUtil.checked = new HashSet<>();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
         {
             for (int x = i; x <= j; ++x)
@@ -197,7 +197,7 @@ public class OxygenUtil
         {
             return true;
         }
-        OxygenUtil.checked = new HashSet();
+        OxygenUtil.checked = new HashSet<>();
         BlockVec3 vec = new BlockVec3(pos);
         for (int side = 0; side < 6; side++)
         {

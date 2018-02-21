@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum CORNER = PropertyEnum.create("type", EnumCorner.class);
+    public static final PropertyEnum<EnumCorner> CORNER = PropertyEnum.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
     protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
     protected static final AxisAlignedBB BOUNDING_BOX_ZEROG = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);;

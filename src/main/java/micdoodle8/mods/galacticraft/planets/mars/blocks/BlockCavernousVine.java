@@ -37,7 +37,7 @@ import java.util.Random;
 
 public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum VINE_TYPE = PropertyEnum.create("vinetype", EnumVineType.class);
+    public static final PropertyEnum<EnumVineType> VINE_TYPE = PropertyEnum.create("vinetype", EnumVineType.class);
 
     public enum EnumVineType implements IStringSerializable
     {

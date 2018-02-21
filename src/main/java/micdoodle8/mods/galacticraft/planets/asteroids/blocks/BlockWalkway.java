@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WALKWAY_TYPE = PropertyEnum.create("type", EnumWalkwayType.class);
+    public static final PropertyEnum<EnumWalkwayType> WALKWAY_TYPE = PropertyEnum.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
     protected static final AxisAlignedBB AABB_UNCONNECTED = new AxisAlignedBB(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);

@@ -31,7 +31,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
+    public static final PropertyEnum<EnumWebType> WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
     protected static final AxisAlignedBB AABB_WEB = new AxisAlignedBB(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
     protected static final AxisAlignedBB AABB_WEB_TORCH = new AxisAlignedBB(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
