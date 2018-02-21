@@ -78,7 +78,7 @@ public class ConnectionPacket
 
     public static FMLProxyPacket createDimPacket(Integer[] dims)
     {
-        ArrayList<Integer> data = new ArrayList();
+        ArrayList<Integer> data = new ArrayList<>();
         for (Integer dim : dims)
         {
             data.add(dim);
@@ -88,7 +88,7 @@ public class ConnectionPacket
 
     public static FMLProxyPacket createSSPacket(Integer[] dims)
     {
-        ArrayList<Integer> data = new ArrayList();
+        ArrayList<Integer> data = new ArrayList<>();
         Collections.addAll(data, dims);
         return createPacket((byte) 102, data);
     }

@@ -42,7 +42,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
         this.mainBlockPosition = placedPosition;
         this.markDirty();
 
-        List<BlockPos> positions = new LinkedList();
+        List<BlockPos> positions = new LinkedList<>();
         this.getPositions(placedPosition, positions);
         ((BlockMulti) GCBlocks.fakeBlock).makeFakeBlock(world, positions, placedPosition, this.getMultiType());
     }
@@ -72,7 +72,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     public void onDestroy(TileEntity callingBlock)
     {
         final BlockPos thisBlock = getPos();
-        List<BlockPos> positions = new LinkedList();
+        List<BlockPos> positions = new LinkedList<>();
         this.getPositions(thisBlock, positions);
 
         for (BlockPos pos : positions)

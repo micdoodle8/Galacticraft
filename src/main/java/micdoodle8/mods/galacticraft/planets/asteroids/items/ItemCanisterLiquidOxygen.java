@@ -17,7 +17,7 @@ import java.util.List;
 public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IItemOxygenSupply, ISortableItem
 {
     //    protected IIcon[] icons = new IIcon[7];
-    private static HashMap<ItemStack, Integer> craftingvalues = new HashMap();
+    private static HashMap<ItemStack, Integer> craftingvalues = new HashMap<>();
 
     public ItemCanisterLiquidOxygen(String assetName)
     {

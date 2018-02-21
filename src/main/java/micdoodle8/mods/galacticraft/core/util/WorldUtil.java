@@ -68,7 +68,7 @@ import java.util.Map.Entry;
 public class WorldUtil
 {
     public static HashMap<Integer, Integer> registeredSpaceStations;  //Dimension IDs and providers (providers are -26 or -27 by default)
-    public static Map<Integer, String> dimNames = new TreeMap();  //Dimension IDs and provider names
+    public static Map<Integer, String> dimNames = new TreeMap<>();  //Dimension IDs and provider names
     public static Map<EntityPlayerMP, HashMap<String, Integer>> celestialMapCache = new MapMaker().weakKeys().makeMap();
     public static List<Integer> registeredPlanets;
 
