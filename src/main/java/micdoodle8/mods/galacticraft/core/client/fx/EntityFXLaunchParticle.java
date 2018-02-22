@@ -26,40 +26,31 @@ public abstract class EntityFXLaunchParticle extends EntityFX
         double d0 = y;
 
         List<AxisAlignedBB> list = this.getCollidingBoundingBoxes(this.getEntityBoundingBox().addCoord(x, y, z));
+        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
 
-        for (AxisAlignedBB axisalignedbb : list)
+        for (AxisAlignedBB blocker : list)
         {
-            y = axisalignedbb.calculateYOffset(this.getEntityBoundingBox(), y);
+            y = blocker.calculateYOffset(axisalignedbb, y);
         }
+        axisalignedbb = axisalignedbb.offset(0.0D, y, 0.0D);
 
-        this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, y, 0.0D));
-
-        for (AxisAlignedBB axisalignedbb1 : list)
+        for (AxisAlignedBB blocker : list)
         {
-            x = axisalignedbb1.calculateXOffset(this.getEntityBoundingBox(), x);
+            x = blocker.calculateXOffset(axisalignedbb, x);
         }
+        axisalignedbb = axisalignedbb.offset(x, 0.0D, 0.0D);
 
-        this.setEntityBoundingBox(this.getEntityBoundingBox().offset(x, 0.0D, 0.0D));
-
-        for (AxisAlignedBB axisalignedbb2 : list)
+        for (AxisAlignedBB blocker : list)
         {
-            z = axisalignedbb2.calculateZOffset(this.getEntityBoundingBox(), z);
+            z = blocker.calculateZOffset(axisalignedbb, z);
         }
+        axisalignedbb = axisalignedbb.offset(0.0D, 0.0D, z);
 
-        this.setEntityBoundingBox(this.getEntityBoundingBox().offset(0.0D, 0.0D, z));
-
-        this.resetPositionToBB();
-        this.isCollided = y != y && d0 < 0.0D;
-
-        if (x != x)
-        {
-            this.motionX = 0.0D;
-        }
-
-        if (z != z)
-        {
-            this.motionZ = 0.0D;
-        }
+        this.setEntityBoundingBox(axisalignedbb);
+        this.posX = (axisalignedbb.minX + axisalignedbb.maxX) / 2.0D;
+        this.posY = axisalignedbb.minY;
+        this.posZ = (axisalignedbb.minZ + axisalignedbb.maxZ) / 2.0D;
+        this.isCollided = false;
     }
 
     protected void resetPositionToBB()

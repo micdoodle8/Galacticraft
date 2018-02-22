@@ -25,7 +25,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -661,12 +660,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public FluidTankInfo[] getTankInfo(EnumFacing from)
     {
         return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

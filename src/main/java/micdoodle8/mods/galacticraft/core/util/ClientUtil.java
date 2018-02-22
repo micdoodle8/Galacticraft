@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.base.Function;
-import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -26,16 +28,19 @@ import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.model.IFlexibleBakedModel;
+import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.IModelState;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
@@ -127,14 +132,9 @@ public class ClientUtil
         }
 
         IBakedModel newModel;
-
         try
         {
-            OBJModel model = (OBJModel) ModelLoaderRegistry.getModel(new ResourceLocation(modid, objLoc));
-            model = (OBJModel) model.process(ImmutableMap.of("flip-v", "true"));
-
-            Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-            newModel = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+            newModel = modelFromOBJ(new ResourceLocation(modid, objLoc), visibleGroups, parentState);
             if (clazz != null)
             {
                 newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
@@ -151,10 +151,26 @@ public class ClientUtil
             IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
             if (object != null)
             {
-
                 event.modelRegistry.putObject(modelResourceLocation, newModel);
             }
         }
+    }
+
+    public static IFlexibleBakedModel modelFromOBJ(ResourceLocation loc) throws IOException
+    {
+        return (IFlexibleBakedModel) modelFromOBJ(loc, ImmutableList.of("main"));
+    }
+    
+    public static IFlexibleBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups) throws IOException
+    {
+        return (IFlexibleBakedModel) modelFromOBJ(loc, visibleGroups, TRSRTransformation.identity());
+    }
+    
+    public static IBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups, IModelState parentState) throws IOException
+    {
+        IModel model = OBJLoaderGC.instance.loadModel(loc);
+        Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+        return model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
     }
 
     public static void drawBakedModel(IFlexibleBakedModel model)

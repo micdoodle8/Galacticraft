@@ -309,7 +309,7 @@ public class NEIGalacticraftConfig implements IConfigureNEI
                 }
             }
 
-            ItemStack resultItemStack = rec.getRecipeOutput();
+            ItemStack resultItemStack = rec.getRecipeOutput().copy();
             if (ConfigManagerCore.quickMode)
             {
                 if (resultItemStack.getItem().getUnlocalizedName(resultItemStack).contains("compressed"))

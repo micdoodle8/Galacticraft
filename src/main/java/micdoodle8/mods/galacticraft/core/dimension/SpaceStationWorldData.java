@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Satellite;
+import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -243,12 +244,12 @@ public class SpaceStationWorldData extends WorldSavedData
         else
         {
             final String stationIdentifier = SpaceStationWorldData.getSpaceStationID(stationID);
-            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadItemData(SpaceStationWorldData.class, stationIdentifier);
+            SpaceStationWorldData stationData = (SpaceStationWorldData) world.loadItemData(SpaceStationWorldData.class, Constants.GCDATAFOLDER + stationIdentifier);
 
             if (stationData == null)
             {
                 stationData = new SpaceStationWorldData(stationIdentifier);
-                world.setItemData(stationIdentifier, stationData);
+                world.setItemData(Constants.GCDATAFOLDER + stationIdentifier, stationData);
                 stationData.dataCompound = new NBTTagCompound();
 
                 if (owner != null)
@@ -306,7 +307,7 @@ public class SpaceStationWorldData extends WorldSavedData
         
         if (var0 != null)
         {
-            var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, var2);
+            var3 = (SpaceStationWorldData) var0.loadItemData(SpaceStationWorldData.class, Constants.GCDATAFOLDER + var2);
         }
         else
         {
@@ -316,7 +317,7 @@ public class SpaceStationWorldData extends WorldSavedData
         if (var3 == null)
         {
             var3 = new SpaceStationWorldData(var2);
-            var0.setItemData(var2, var3);
+            var0.setItemData(Constants.GCDATAFOLDER + var2, var3);
             var3.dataCompound = new NBTTagCompound();
 
             if (player != null)

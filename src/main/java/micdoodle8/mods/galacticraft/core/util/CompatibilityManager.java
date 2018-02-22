@@ -23,6 +23,7 @@ public class CompatibilityManager
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
+    public static boolean modJEILoaded = Loader.isModLoaded("JEI");
     private static boolean modIc2Loaded = Loader.isModLoaded("IC2");
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("BuildCraft|Energy");
     private static boolean modBCraftTransportLoaded;
@@ -393,5 +394,10 @@ public class CompatibilityManager
             }
         }
         return false;
+    }
+    
+    public static boolean useAluDust()
+    {
+        return modIc2Loaded || modAppEngLoaded || modTELoaded;
     }
 }

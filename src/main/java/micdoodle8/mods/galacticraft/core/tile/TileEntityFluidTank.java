@@ -249,7 +249,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
             this.fluidTank.readFromNBT(compound.getCompoundTag("fuelTank"));
         }
 
-        this.updateClient = true;
+        this.updateClient = GCCoreUtil.getEffectiveSide() == Side.SERVER;
     }
 
     @Override

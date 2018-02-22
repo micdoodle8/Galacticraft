@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -22,6 +23,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.*;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiNewSpaceRace;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiTeleporting;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
@@ -47,8 +49,6 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.gui.GuiMainMenu;
-import net.minecraft.client.gui.GuiScreenServerList;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -86,7 +86,8 @@ public class TickHandlerClient
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static Set<FluidNetwork> fluidNetworks = Sets.newHashSet();
     public static GuiTeleporting teleportingGui;
-    private static boolean menuReset = true;
+    public static volatile boolean menuReset = true;
+    public static volatile boolean updateJEIhiding = false;
     
     public static void resetClient()
     {
@@ -353,17 +354,10 @@ public class TickHandlerClient
             }
         }
 
-        if (minecraft.currentScreen instanceof GuiMainMenu || minecraft.currentScreen instanceof GuiScreenServerList)
+        if (menuReset)
         {
-            if (menuReset)
-            {
-                TickHandlerClient.resetClient();
-                menuReset = false;
-            }
-        }
-        else
-        {
-            menuReset = true;
+            TickHandlerClient.resetClient();
+            menuReset = false;
         }
 
         if (event.phase == Phase.START && player != null)
@@ -396,6 +390,18 @@ public class TickHandlerClient
 
             if (TickHandlerClient.tickCount % 20 == 0)
             {
+                if (updateJEIhiding)
+                {
+                    updateJEIhiding = false;
+                    if (CompressorRecipes.steelIngotsPresent)
+                    {
+                        // Update JEI to hide the ingot compressor recipe for GC steel in hard mode
+                        GalacticraftJEI.updateHiddenSteel(ConfigManagerCore.hardMode && !ConfigManagerCore.challengeRecipes);
+                    }
+                    // Update JEI to hide adventure mode recipes when not in adventure mode
+                    GalacticraftJEI.updateHiddenAdventure(!ConfigManagerCore.challengeRecipes);
+                }
+                
                 for (List<Footprint> fpList : FootprintRenderer.footprints.values())
                 {
                     Iterator<Footprint> fpIt = fpList.iterator();

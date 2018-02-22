@@ -32,7 +32,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.EnumFacing.Axis;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -345,43 +344,46 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     {
         super.readFromNBT(nbt);
         this.containingItems = this.readStandardItemsFromNBT(nbt);
-        this.isMaster = nbt.getBoolean("isMaster");
-        if (this.isMaster)
+        this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
-            this.updateClientFlag = true;
-        }
-        else {
-            NBTTagCompound tagCompound = nbt.getCompoundTag("masterpos");
-            if (tagCompound.getKeySet().isEmpty())
-                this.setMainBlockPosition(null);
-            else
+            this.isMaster = nbt.getBoolean("isMaster");
+            if (this.isMaster)
             {
-                this.setMainBlockPosition(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
                 this.updateClientFlag = true;
             }
-        }
-        this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
-        if (nbt.hasKey("LinkedUUIDMost", 4) && nbt.hasKey("LinkedUUIDLeast", 4))
-        {
-            this.linkedMinerID = new UUID(nbt.getLong("LinkedUUIDMost"), nbt.getLong("LinkedUUIDLeast"));
-        }
-        else
-        {
-            this.linkedMinerID = null;
-        }
-        if (nbt.hasKey("TargetPoints"))
-        {
-            this.targetPoints.clear();
-            final NBTTagList mpList = nbt.getTagList("TargetPoints", 10);
-            for (int j = 0; j < mpList.tagCount(); j++)
-            {
-                NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
-                this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
+            else {
+                NBTTagCompound tagCompound = nbt.getCompoundTag("masterpos");
+                if (tagCompound.getKeySet().isEmpty())
+                    this.setMainBlockPosition(null);
+                else
+                {
+                    this.setMainBlockPosition(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
+                    this.updateClientFlag = true;
+                }
             }
-        }
-        else
-        {
-            this.findTargetPointsFlag = this.isMaster;
+            if (nbt.hasKey("LinkedUUIDMost", 4) && nbt.hasKey("LinkedUUIDLeast", 4))
+            {
+                this.linkedMinerID = new UUID(nbt.getLong("LinkedUUIDMost"), nbt.getLong("LinkedUUIDLeast"));
+            }
+            else
+            {
+                this.linkedMinerID = null;
+            }
+            if (nbt.hasKey("TargetPoints"))
+            {
+                this.targetPoints.clear();
+                final NBTTagList mpList = nbt.getTagList("TargetPoints", 10);
+                for (int j = 0; j < mpList.tagCount(); j++)
+                {
+                    NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
+                    this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
+                }
+            }
+            else
+            {
+                this.findTargetPointsFlag = this.isMaster;
+            }
         }
     }
 
@@ -1051,12 +1053,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
             master.linkedMiner.recall();
         }
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 
     @Override

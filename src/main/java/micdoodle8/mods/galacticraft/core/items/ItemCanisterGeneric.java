@@ -37,6 +37,12 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     }
 
     @Override
+    public boolean isItemTool(ItemStack stack)
+    {
+        return false;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {

@@ -23,6 +23,11 @@ public class Constants
     public static final String CONFIG_CATEGORY_GENERAL = "general";
     public static final String CONFIG_CATEGORY_WORLDGEN = "worldgen";
     public static final String CONFIG_CATEGORY_ACHIEVEMENTS = "achievements";
+    public static final String CONFIG_CATEGORY_CLIENT = "client";
+    public static final String CONFIG_CATEGORY_SERVER = "server";
+    public static final String CONFIG_CATEGORY_CONTROLS = "controls";
+    public static final String CONFIG_CATEGORY_DIFFICULTY = "difficulty";
+    public static final String CONFIG_CATEGORY_COMPATIBILITY = "compatibility";
 
     public static final int OVERWORLD_SKYPROVIDER_STARTHEIGHT = 200;
     public static final int OVERWORLD_CLOUD_HEIGHT = 130;
@@ -33,9 +38,10 @@ public class Constants
     public static final String POWER_CONFIG_FILE = "Galacticraft/power-GC3.conf";
     public static final String CHUNKLOADER_CONFIG_FILE = "Galacticraft/chunkloading.conf";
 
-    public static String ASSET_PREFIX = "galacticraftcore";
-    public static String TEXTURE_PREFIX = ASSET_PREFIX + ":";
-    public static String PREFIX = "micdoodle8.";
+    public static final String ASSET_PREFIX = "galacticraftcore";
+    public static final String TEXTURE_PREFIX = ASSET_PREFIX + ":";
+    public static final String PREFIX = "micdoodle8.";
+    public static final String GCDATAFOLDER = "../galacticraft/"; 
 
     public static final int GEAR_ID_OXYGEN_MASK = 0;
     public static final int GEAR_ID_OXYGEN_GEAR = 1;

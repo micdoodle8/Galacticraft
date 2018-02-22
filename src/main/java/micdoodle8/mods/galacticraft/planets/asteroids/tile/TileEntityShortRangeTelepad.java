@@ -236,7 +236,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             }
         }
 
-        this.setAddress(nbt.getInteger("Address"));
+        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
+        {
+            this.setAddress(nbt.getInteger("Address"));
+        }
         this.targetAddress = nbt.getInteger("TargetAddress");
         this.owner = nbt.getString("Owner");
     }
@@ -382,12 +385,6 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

@@ -233,6 +233,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
             return;
         }
 
+        if (this.ticksExisted % 2 == 0) return;
+
+        y2 += 1.2D;
         double x1 = motionVec.x;
         double y1 = motionVec.y;
         double z1 = motionVec.z;

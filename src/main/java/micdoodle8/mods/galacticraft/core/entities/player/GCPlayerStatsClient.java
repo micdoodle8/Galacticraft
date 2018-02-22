@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
-
 import java.util.ArrayList;
 
 public abstract class GCPlayerStatsClient
@@ -148,4 +148,12 @@ public abstract class GCPlayerStatsClient
     public abstract void setDungeonDirection(float dir);
     
     public abstract float getDungeonDirection();
+
+    public abstract void startPlatformAscent(TileEntityPlatform noCollide, TileEntityPlatform moving, double target);
+
+    public abstract void finishPlatformAscent();
+
+    public abstract boolean getPlatformControlled();
+
+    public abstract double getPlatformVelocity(double posY);
 }

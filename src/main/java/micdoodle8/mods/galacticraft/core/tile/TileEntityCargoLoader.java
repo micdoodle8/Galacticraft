@@ -152,12 +152,6 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
         return true;
     }
 
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return (this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName(), new Object[0]));
-    }
-
     // ISidedInventory Implementation:
 
     @Override

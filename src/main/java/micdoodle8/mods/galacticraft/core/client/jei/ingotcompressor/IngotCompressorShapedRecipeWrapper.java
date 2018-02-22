@@ -1,14 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
 import javax.annotation.Nonnull;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.item.ItemStack;
-
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 
 public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper
@@ -43,6 +44,14 @@ public class IngotCompressorShapedRecipeWrapper extends BlankRecipeWrapper imple
     @Override
     public List<ItemStack> getOutputs()
     {
-        return Collections.singletonList(recipe.getRecipeOutput());
+        ItemStack stack = recipe.getRecipeOutput().copy();
+        if (ConfigManagerCore.quickMode)
+        {
+            if (stack.getItem().getUnlocalizedName(stack).contains("compressed"))
+            {
+                stack.stackSize *= 2;
+            }
+        }
+        return Collections.singletonList(stack);
     }
 }

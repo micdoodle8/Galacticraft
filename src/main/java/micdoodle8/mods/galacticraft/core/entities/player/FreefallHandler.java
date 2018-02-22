@@ -67,7 +67,11 @@ public class FreefallHandler
         Block b = state.getBlock();
         if (b.getMaterial() != Material.air && !(b instanceof BlockLiquid))
         {
-            double blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
+            double blockYmax;
+            if (b == GCBlocks.platform)
+                blockYmax = playerFeetOnY + 1.0D;
+            else
+                blockYmax = playerFeetOnY + b.getBlockBoundsMaxY();
             if (player.getEntityBoundingBox().minY - blockYmax < 0.01D && player.getEntityBoundingBox().minY - blockYmax > -0.5D)
             {
                 player.onGround = true;
@@ -441,7 +445,7 @@ public class FreefallHandler
         stats.setInFreefallFirstCheck(true);
 
         SpinManager spinManager = null;
-        if (worldProvider instanceof WorldProviderSpaceStation)
+        if (worldProvider instanceof WorldProviderSpaceStation && !stats.getPlatformControlled())
         {
             spinManager = ((WorldProviderSpaceStation) worldProvider).getSpinManager();
         }

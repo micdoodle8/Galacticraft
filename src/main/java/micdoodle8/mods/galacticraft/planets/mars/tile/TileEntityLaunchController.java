@@ -29,7 +29,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
@@ -71,8 +70,8 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public boolean requiresClientUpdate;
     public Object attachedDock = null;
     private boolean frequencyCheckNeeded = false;
-//    private static Map<Integer, Long> tickCounts = new HashMap();
-//    private static Map<Integer, Integer> instanceCounts = new HashMap();
+//    private static Map<Integer, Long> tickCounts = new HashMap<>();
+//    private static Map<Integer, Integer> instanceCounts = new HashMap<>();
 
     public TileEntityLaunchController()
     {
@@ -233,7 +232,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
         this.hideTargetDestination = nbt.getBoolean("HideTargetDestination");
-        this.requiresClientUpdate = true;
+        this.requiresClientUpdate = GCCoreUtil.getEffectiveSide() == Side.SERVER;
     }
 
     @Override
@@ -475,12 +474,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 ((EntityAutoRocket) rocket).updateControllerSettings(pad);
             }
         }
-    }
-
-    @Override
-    public IChatComponent getDisplayName()
-    {
-        return null;
     }
 
     public void setAttachedPad(IFuelDock pad)
