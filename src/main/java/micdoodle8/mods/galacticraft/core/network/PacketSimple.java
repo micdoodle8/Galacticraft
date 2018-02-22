@@ -225,7 +225,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         super(dimID);
         if (packetType.getDecodeClasses().length != data.size())
         {
-            GCLog.info("Simple Packet Core found data length different than packet type");
+            GCLog.getLogger().info("Simple Packet Core found data length different than packet type");
             new RuntimeException().printStackTrace();
         }
 
@@ -263,7 +263,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             }
             if (buffer.readableBytes() > 0 && buffer.writerIndex() < 0xfff00)
             {
-                GCLog.severe("Galacticraft packet length problem for packet type " + this.type.toString());
+                GCLog.getLogger().error("Galacticraft packet length problem for packet type " + this.type.toString());
             }
         }
         catch (Exception e)
@@ -310,7 +310,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 {
                     if (!dimensionList.equals(PacketSimple.spamCheckString))
                     {
-                        GCLog.info("DEBUG info: " + dimensionList);
+                        GCLog.getLogger().info("DEBUG info: " + dimensionList);
                         PacketSimple.spamCheckString = dimensionList;
                     }
                 }
@@ -711,7 +711,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             final int dimID = GCCoreUtil.getDimensionID(provider);
             if (ConfigManagerCore.enableDebug)
             {
-                GCLog.info("DEBUG: Client receiving respawn packet for dim " + dimID);
+                GCLog.getLogger().info("DEBUG: Client receiving respawn packet for dim " + dimID);
             }
             int par2 = (Integer) this.data.get(1);
             String par3 = (String) this.data.get(2);

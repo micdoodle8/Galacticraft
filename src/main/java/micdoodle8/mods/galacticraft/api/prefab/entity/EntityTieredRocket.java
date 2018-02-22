@@ -113,7 +113,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     this.preGenList.add(new BlockVec3(cx, dimID, cz));
                     if (ConfigManagerCore.enableDebug)
                     {
-                        GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
+                        GCLog.getLogger().info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
                     }
                 }
                 for (int r = 1; r < 12; r++)  //concentric squares with radius r
@@ -157,7 +157,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     {
                         this.removePassengers();
                         passenger.startRiding(this, true);
-                        GCLog.debug("Remounting player in rocket.");
+                        GCLog.getLogger().debug("Remounting player in rocket.");
                     }
 
                     this.setWaitForPlayer(false);
@@ -346,7 +346,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		    }
                     		    else
                     		    {
-                    		        GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
+                    		        GCLog.getLogger().info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
                     		        e.setDead();
                     		        this.setDead();
                     		    }
@@ -370,7 +370,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                         {
                             WorldUtil.forceMoveEntityToPos(passenger, (WorldServer) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
                             this.setWaitForPlayer(true);
-                            GCLog.debug("Rocket repositioned, waiting for player");
+                            GCLog.getLogger().debug("Rocket repositioned, waiting for player");
                         }
                     }
                     this.setLaunchPhase(EnumLaunchPhase.LANDING);
@@ -381,7 +381,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             else
             {
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
-            	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
+            	GCLog.getLogger().info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
             	this.fuelTank.drain(Integer.MAX_VALUE, true);
             	this.posY = Math.max(255, (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200) - 200);
                 return;

@@ -320,7 +320,7 @@ public class ContainerCrafting extends Container
                 target.grow(transfer);
                 if (target.getCount() > target.getMaxStackSize())
                 {
-                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.getCount());
+                    GCLog.getLogger().info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.getCount());
                     stack.grow(target.getCount() - target.getMaxStackSize());
                     target.setCount(target.getMaxStackSize());
                 }

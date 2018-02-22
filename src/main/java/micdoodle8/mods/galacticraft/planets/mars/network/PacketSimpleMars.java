@@ -85,7 +85,7 @@ public class PacketSimpleMars extends PacketBase
 
         if (packetType.getDecodeClasses().length != data.size())
         {
-            GCLog.info("Mars Simple Packet found data length different than packet type: " + packetType.name());
+            GCLog.getLogger().info("Mars Simple Packet found data length different than packet type: " + packetType.name());
         }
 
         this.type = packetType;

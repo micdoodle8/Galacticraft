@@ -72,7 +72,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
         catch (final Exception e)
         {
-            GCLog.severe("Problem loading chunkloading config (\"core.conf\")");
+            GCLog.getLogger().error("Problem loading chunkloading config (\"core.conf\")");
         }
         finally
         {
@@ -153,12 +153,12 @@ public class ChunkLoadingCallback implements LoadingCallback
                 {
                     if (!saveFile.createNewFile())
                     {
-                        GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+                        GCLog.getLogger().error("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
                     }
                 }
                 catch (IOException e)
                 {
-                    GCLog.severe("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
+                    GCLog.getLogger().error("Could not create chunk loader data file: " + saveFile.getAbsolutePath());
                     e.printStackTrace();
                 }
             }
@@ -226,7 +226,7 @@ public class ChunkLoadingCallback implements LoadingCallback
             {
                 if (!saveDir.mkdirs())
                 {
-                    GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                    GCLog.getLogger().error("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
                 }
             }
 
@@ -255,7 +255,7 @@ public class ChunkLoadingCallback implements LoadingCallback
                 {
                     if (!saveDir.mkdirs())
                     {
-                        GCLog.severe("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
+                        GCLog.getLogger().error("Could not create chunk loader save data folder: " + saveDir.getAbsolutePath());
                     }
                 }
 

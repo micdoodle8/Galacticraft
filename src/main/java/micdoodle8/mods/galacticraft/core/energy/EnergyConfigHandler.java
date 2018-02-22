@@ -337,7 +337,7 @@ public class EnergyConfigHandler
         }
         else if (count > 0 || count2 > 0)
         {
-            GCLog.severe("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
+            GCLog.getLogger().error("Incomplete Redstone Flux API detected: Galacticraft will not support RF energy connections until this is fixed.");
         }
     }
 

@@ -86,7 +86,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             controllerClass = Class.forName("micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController");
         } catch (ClassNotFoundException e) 
         {
-            GCLog.info("Galacticraft-Planets' LaunchController not present, rockets will not be launch controlled.");
+            GCLog.getLogger().info("Galacticraft-Planets' LaunchController not present, rockets will not be launch controlled.");
         }
     }
 
@@ -173,7 +173,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                     if (foundPad)
                                     {
                                         this.destinationFrequency = controllerFrequency;
-                                        GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
+                                        GCLog.getLogger().debug("Rocket under launch control: going to target frequency " + controllerFrequency);
                                         return true;
                                     }
                                 }

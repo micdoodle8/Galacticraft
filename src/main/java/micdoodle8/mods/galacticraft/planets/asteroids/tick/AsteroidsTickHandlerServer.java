@@ -192,7 +192,7 @@ public class AsteroidsTickHandlerServer
                 WorldProvider p = WorldUtil.getProviderForDimensionServer(data.y);
                 if (p != null && p.world != null)
                 {
-                    GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
+                    GCLog.getLogger().debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
                     WorldServer w = (WorldServer)p.world;
                     CompatibilityManager.forceLoadChunks(w);
                     w.getChunkProvider().loadChunk(data.x, data.z);
@@ -207,7 +207,7 @@ public class AsteroidsTickHandlerServer
     {
         int result = activeMiners.size();
         activeMiners.add(entityAstroMiner);
-        GCLog.debug("Monitoring miner " + result);
+        GCLog.getLogger().debug("Monitoring miner " + result);
         return result;
     }
 

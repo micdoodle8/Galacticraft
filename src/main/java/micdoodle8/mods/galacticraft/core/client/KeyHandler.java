@@ -82,7 +82,7 @@ public abstract class KeyHandler
             }
             catch (IndexOutOfBoundsException e)
             {
-                GCLog.severe("Invalid keybinding! " + keyBinding.getKeyDescription());
+                GCLog.getLogger().error("Invalid keybinding! " + keyBinding.getKeyDescription());
                 continue;
             }
 

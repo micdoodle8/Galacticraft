@@ -141,7 +141,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
         else
         {
-            GCLog.info("Home planet data not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
+            GCLog.getLogger().info("Home planet data not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
             this.homePlanet = 0; // Overworld dimension ID
         }
 
@@ -151,7 +151,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
         else
         {
-            GCLog.info("Static dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
+            GCLog.getLogger().info("Static dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
             this.dimensionIdStatic = ConfigManagerCore.idDimensionOverworldOrbitStatic;
         }
 
@@ -161,7 +161,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
         else
         {
-            GCLog.info("Dynamic dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
+            GCLog.getLogger().info("Dynamic dimension ID not found in space station save file for \"" + this.spaceStationName + "\". Using default overworld.");
             this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
         }
 
@@ -313,7 +313,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
         else
         {
-            GCLog.severe("No world for dimension 0?  That should be unpossible!  Please report at https://github.com/micdoodle8/Galacticraft/issues/2617");
+            GCLog.getLogger().error("No world for dimension 0?  That should be unpossible!  Please report at https://github.com/micdoodle8/Galacticraft/issues/2617");
         }
 
         if (var3 == null)
@@ -363,7 +363,7 @@ public class SpaceStationWorldData extends WorldSavedData
             //This player is the owner of the station - ensure stats data matches
             if (!(stats.getSpaceStationDimensionData().values().contains(stationID)))
             {
-                GCLog.debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+                GCLog.getLogger().debug("Player owns station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
                 stats.getSpaceStationDimensionData().put(stationData.getHomePlanet(), stationID);
             }
         }
@@ -373,7 +373,7 @@ public class SpaceStationWorldData extends WorldSavedData
             Integer savedOwned = stats.getSpaceStationDimensionData().get(stationData.getHomePlanet());
             if (savedOwned != null && savedOwned == stationID)
             {
-                GCLog.debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
+                GCLog.getLogger().debug("Player does not own station: " + stationData.getSpaceStationName() + " with home planet " + stationData.getHomePlanet());
                 stats.getSpaceStationDimensionData().remove(savedOwned);
             }
         }

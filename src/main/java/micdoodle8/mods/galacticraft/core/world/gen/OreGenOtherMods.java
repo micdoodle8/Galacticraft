@@ -112,7 +112,7 @@ public class OreGenOtherMods
             }
             catch (final Exception e)
             {
-                GCLog.severe("[config] External Sealable IDs: error parsing '" + str + "'. Must be in the form Blockname or BlockName:metadata followed by / parameters ");
+                GCLog.getLogger().error("[config] External Sealable IDs: error parsing '" + str + "'. Must be in the form Blockname or BlockName:metadata followed by / parameters ");
             }
         }
     }

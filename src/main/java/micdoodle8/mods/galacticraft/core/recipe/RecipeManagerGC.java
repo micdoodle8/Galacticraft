@@ -775,7 +775,7 @@ public class RecipeManagerGC
 
         if (refineryDone)
         {
-            GCLog.info("Successfully added GC oil to Buildcraft Refinery recipes.");
+            GCLog.getLogger().info("Successfully added GC oil to Buildcraft Refinery recipes.");
         }
 
         try
@@ -851,7 +851,7 @@ public class RecipeManagerGC
             {
                 m.invoke(null, torch, 0.1F);
             }
-            GCLog.info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
+            GCLog.getLogger().info("Successfully added space torches as heat sources for Ex Nihilo crucibles etc");
         }
         catch (Throwable e)
         {

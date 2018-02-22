@@ -711,6 +711,6 @@ public class FreefallHandler
         }
         
         if (warnLog)
-            GCLog.debug(e.getName() + " moving too fast");
+            GCLog.getLogger().debug(e.getName() + " moving too fast");
     }
 }

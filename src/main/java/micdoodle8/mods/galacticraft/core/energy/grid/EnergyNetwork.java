@@ -453,10 +453,10 @@ public class EnergyNetwork implements IElectricityNetwork
             }
             catch (Exception e)
             {
-                GCLog.severe("DEBUG Energy network loop issue, please report this");
+                GCLog.getLogger().error("DEBUG Energy network loop issue, please report this");
                 if (debugTE instanceof TileEntity)
                 {
-                    GCLog.severe("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(((TileEntity)debugTE).getWorld()) + " at " + ((TileEntity)debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
+                    GCLog.getLogger().error("Problem was likely caused by tile in dim " + GCCoreUtil.getDimensionID(((TileEntity)debugTE).getWorld()) + " at " + ((TileEntity)debugTE).getPos() + " Type:" + debugTE.getClass().getSimpleName());
                 }
             }
         }

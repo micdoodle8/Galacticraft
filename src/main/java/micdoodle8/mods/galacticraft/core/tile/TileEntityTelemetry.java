@@ -115,7 +115,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 
                     if (name == null)
                     {
-                        GCLog.info("Telemetry Unit: Error finding name for " + linkedEntity.getClass().getSimpleName());
+                        GCLog.getLogger().info("Telemetry Unit: Error finding name for " + linkedEntity.getClass().getSimpleName());
                         name = "";
                     }
 
@@ -361,7 +361,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             //TODO
             if (wp == null || wp.world == null)
             {
-                GCLog.debug("Frequency module worn: world provider is null.  This is a bug. " + dim);
+                GCLog.getLogger().debug("Frequency module worn: world provider is null.  This is a bug. " + dim);
             }
             else
             {

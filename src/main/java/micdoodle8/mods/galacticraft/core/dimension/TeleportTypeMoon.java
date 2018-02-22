@@ -102,7 +102,7 @@ public class TeleportTypeMoon implements ITeleportType
                 newWorld.updateEntityWithOptionalForce(lander, true);
                 player.startRiding(lander);
                 CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
-                GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
+                GCLog.getLogger().debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
             }
 
             stats.setTeleportCooldown(10);

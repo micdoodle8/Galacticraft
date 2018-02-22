@@ -593,7 +593,7 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         if (this.spaceStationMap == null)
                         {
-                            GCLog.severe("Please report as a BUG: spaceStationIDs was null.");
+                            GCLog.getLogger().error("Please report as a BUG: spaceStationIDs was null.");
                             return;
                         }
                         Satellite selectedSatellite = (Satellite) this.selectedBody;
@@ -601,7 +601,7 @@ public class GuiCelestialSelection extends GuiScreen
                         //No need to check lowercase as selectedStationOwner is taken from keys.
                         if (mapping == null)
                         {
-                            GCLog.severe("Problem matching player name in space station check: " + this.selectedStationOwner);
+                            GCLog.getLogger().error("Problem matching player name in space station check: " + this.selectedStationOwner);
                             return;
                         }
                         dimensionID = mapping;
@@ -612,7 +612,7 @@ public class GuiCelestialSelection extends GuiScreen
                         }
                         else
                         {
-                            GCLog.severe("Failed to find a spacestation with dimension " + dimensionID);
+                            GCLog.getLogger().error("Failed to find a spacestation with dimension " + dimensionID);
                             return;
                         }
                     }
@@ -1193,8 +1193,8 @@ public class GuiCelestialSelection extends GuiScreen
             if (!this.errorLogged)
             {
                 this.errorLogged = true;
-                GCLog.severe("Problem identifying planet or dimension in an add on for Galacticraft!");
-                GCLog.severe("(The problem is likely caused by a dimension ID conflict.  Check configs for dimension clashes.  You can also try disabling Mars space station in configs.)");
+                GCLog.getLogger().error("Problem identifying planet or dimension in an add on for Galacticraft!");
+                GCLog.getLogger().error("(The problem is likely caused by a dimension ID conflict.  Check configs for dimension clashes.  You can also try disabling Mars space station in configs.)");
                 e.printStackTrace();
             }
         }

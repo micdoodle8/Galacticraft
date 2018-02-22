@@ -101,7 +101,7 @@ public class ConnectionEvents
             {
                 ids += idList[j].toString() + " ";
             }
-            GCLog.info("Galacticraft server sending dimension IDs to connecting client: " + ids);
+            GCLog.getLogger().info("Galacticraft server sending dimension IDs to connecting client: " + ids);
         }
         event.getManager().sendPacket(ConnectionPacket.createDimPacket(WorldUtil.getPlanetListInts()));
         event.getManager().sendPacket(ConnectionPacket.createSSPacket(WorldUtil.getSpaceStationListInts()));

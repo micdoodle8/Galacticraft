@@ -609,7 +609,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             }
             else
             {
-                GCLog.severe("AstroMiner missing base position: this is a bug.");
+                GCLog.getLogger().error("AstroMiner missing base position: this is a bug.");
                 this.AIstate = AISTATE_STUCK;
             }
             break;
@@ -810,7 +810,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         if (!this.minePoints.isEmpty() && this.pathBlockedCount < 2)
         {
             this.posTarget = this.minePoints.getFirst().clone();
-            GCLog.debug("Still mining at: " + posTarget.toString() + " Remaining shafts: " + this.minePoints.size());
+            GCLog.getLogger().debug("Still mining at: " + posTarget.toString() + " Remaining shafts: " + this.minePoints.size());
             return true;
         }
 
@@ -824,7 +824,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             return false;
         }
 
-        GCLog.debug("Miner target: " + posTarget.toString());
+        GCLog.getLogger().debug("Miner target: " + posTarget.toString());
 
         return true;
     }
@@ -843,7 +843,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
 
         if (this.posTarget == null)
         {
-            GCLog.severe("AstroMiner missing target: this is a bug.");
+            GCLog.getLogger().error("AstroMiner missing target: this is a bug.");
             AIstate = AISTATE_STUCK;
             return true;
         }
@@ -946,14 +946,14 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             }
             AIstate = AISTATE_RETURNING;
             this.pathBlockedCount = 0;
-            GCLog.debug("Miner going home: " + this.posBase.toString() + " " + this.minePoints.size() + " shafts still to be mined");
+            GCLog.getLogger().debug("Miner going home: " + this.posBase.toString() + " " + this.minePoints.size() + " shafts still to be mined");
             return true;
         }
 
         if (this.moveToPos(this.minePoints.getFirst(), false))
         {
             this.minePointCurrent = this.minePoints.removeFirst();
-            GCLog.debug("Miner mid mining: " + this.minePointCurrent.toString() + " " + this.minePoints.size() + " shafts still to be mined");
+            GCLog.getLogger().debug("Miner mid mining: " + this.minePointCurrent.toString() + " " + this.minePoints.size() + " shafts still to be mined");
             return true;
         }
         return false;
@@ -1709,7 +1709,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosZ(pos.z, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
@@ -1717,7 +1717,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosY(pos.y - 1, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else if (this.posX > pos.x + 0.0001D || this.posX < pos.x - 0.0001D)
@@ -1725,7 +1725,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosX(pos.x, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else
@@ -1741,7 +1741,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosX(pos.x, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving X to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else if (this.posY > pos.y - 0.9999D || this.posY < pos.y - 1.0001D)
@@ -1749,7 +1749,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosY(pos.y - 1, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving Y to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else if (this.posZ > pos.z + 0.0001D || this.posZ < pos.z - 0.0001D)
@@ -1757,7 +1757,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 this.moveToPosZ(pos.z, stopForTurn);
                 if (TEMPDEBUG)
                 {
-                    GCLog.debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
+                    GCLog.getLogger().debug("At " + posX + "," + posY + "," + posZ + "Moving Z to " + pos.toString() + (stopForTurn ? " : Stop for turn " + this.rotationPitch + "," + this.rotationYaw + " | " + this.targetPitch + "," + this.targetYaw : ""));
                 }
             }
             else

@@ -485,11 +485,11 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
         if (chest != null)
         {
-            GCLog.debug("Found chest to generate boss loot in: " + chest.pos);
+            GCLog.getLogger().debug("Found chest to generate boss loot in: " + chest.pos);
         }
         else
         {
-            GCLog.debug("Could not find chest to generate boss loot in!");
+            GCLog.getLogger().debug("Could not find chest to generate boss loot in!");
         }
 
         return chest;

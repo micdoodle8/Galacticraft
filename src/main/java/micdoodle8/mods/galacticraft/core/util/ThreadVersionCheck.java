@@ -81,7 +81,7 @@ public class ThreadVersionCheck extends Thread
                             }
                             else if (sideToCheck.equals(Side.SERVER))
                             {
-                                GCLog.severe("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + " http://micdoodle8.com/");
+                                GCLog.getLogger().error("New Galacticraft version available! v" + String.valueOf(remoteMajVer) + "." + String.valueOf(remoteMinVer) + "." + String.valueOf(remotePatchVer) + ".xxx" + " http://micdoodle8.com/");
                             }
                         }
                         break;
@@ -110,7 +110,7 @@ public class ThreadVersionCheck extends Thread
             {
                 try
                 {
-                    GCLog.severe(GCCoreUtil.translate("newversion.failed.name"));
+                    GCLog.getLogger().error(GCCoreUtil.translate("newversion.failed.name"));
                     Thread.sleep(15000);
                 }
                 catch (final InterruptedException e)
@@ -119,7 +119,7 @@ public class ThreadVersionCheck extends Thread
             }
             else
             {
-                GCLog.info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer);
+                GCLog.getLogger().info(GCCoreUtil.translate("newversion.success.name") + " " + remoteMajVer + "." + remoteMinVer + "." + remotePatchVer);
             }
 
             this.count++;

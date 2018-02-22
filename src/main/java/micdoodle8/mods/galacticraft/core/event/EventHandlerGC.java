@@ -1030,7 +1030,7 @@ public class EventHandlerGC
                         }
                         else
                         {
-                            GCLog.severe("Sound event null! " + event.getName() + " " + event.getResultSound().getSoundLocation());
+                            GCLog.getLogger().error("Sound event null! " + event.getName() + " " + event.getResultSound().getSoundLocation());
                         }
                     }
                 }
