@@ -20,8 +20,10 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
+import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -31,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -43,8 +46,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import appeng.api.AEApi;
+import appeng.api.features.IGrinderRegistry;
 import appeng.api.util.AEColor;
 
 //import appeng.api.AEApi;
@@ -797,16 +802,22 @@ public class RecipeManagerGC
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 1), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 2), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
-        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCBlocks.basicBlock, 1, 7), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 0));
-        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.basicItem, 1, 5), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 2));
-        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.basicItem, 1, 8), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 2));
-        ItemStack dustSmallIron = IC2Items.getItem("dust.small_iron").copy();
-        dustSmallIron.setCount(2);
-        ItemStack dustStone = IC2Items.getItem("dust.stone").copy();;
-        Recipes.oreWashing.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 0), 1), null, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 1), dustSmallIron, dustStone });
+        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCBlocks.basicBlock, 1, 7), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
+        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.basicItem, 1, 5), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 0));
+        Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.basicItem, 1, 8), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 0));
+        ItemStack dustSmallIron = IC2Items.getItem("dust", "small_iron").copy();
+        ItemStack dustStone = IC2Items.getItem("dust", "stone").copy();
+        NBTTagCompound amountTag = new NBTTagCompound();
+        amountTag.setInteger("amount", 1000);
+        Recipes.oreWashing.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), amountTag, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 1), dustSmallIron, dustStone });
         ItemStack dustSmallTitanium = new ItemStack(GCItems.ic2compat, 1, 7);
-        Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 1), 1), null, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 2), dustSmallTitanium });
-
+        NBTTagCompound heatTag1 = new NBTTagCompound();
+        heatTag1.setInteger("minHeat", 2000);
+        Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 1), 1), heatTag1, false, new ItemStack [] { dustSmallTitanium, new ItemStack(GCItems.ic2compat, 1, 0) });
+        NBTTagCompound heatTag2 = new NBTTagCompound();
+        heatTag2.setInteger("minHeat", 750);
+        Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), heatTag1, false, new ItemStack [] { dustSmallIron, new ItemStack(GCItems.ic2compat, 1, 0), dustStone });
+        
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:copper,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:gold,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:iron,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
@@ -817,6 +828,16 @@ public class RecipeManagerGC
     private static void addAppEngRecipes()
     {
          RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+         IGrinderRegistry a = AEApi.instance().registries().grinder();
+         a.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 7), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.8F, 8);
+         if (GalacticraftCore.isPlanetsLoaded)
+         {
+             a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.9F, 8);
+             a.addRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 1.0F, 8);
+             // Grind Ilmenite Ore for 1 Titanium Dust, 1 Iron Dust
+             Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
+             a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 9), ironDust.get(), 1.0F, 8);
+         }
     }
 
     private static void addExNihiloRecipes()

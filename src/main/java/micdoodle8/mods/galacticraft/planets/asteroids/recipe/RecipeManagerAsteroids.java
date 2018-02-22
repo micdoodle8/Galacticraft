@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -34,9 +35,9 @@ public class RecipeManagerAsteroids
     	ItemStack titaniumPlate = new ItemStack(AsteroidsItems.basicItem, 1, 6);
     	ItemStack platingTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
     	
-    	FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.basicItem, 1, 5), 0.0F);
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.0F);
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 5), new ItemStack(Items.IRON_INGOT), 0.0F);
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 5), new ItemStack(Items.IRON_INGOT), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 3), new ItemStack(Items.IRON_INGOT), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 9), new ItemStack(AsteroidsItems.basicItem, 1, 0), 0.5F);
@@ -136,9 +137,13 @@ public class RecipeManagerAsteroids
         {
             // Titanium dust from small dust
             RecipeUtil.addRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 9), new Object[] { "XXX", "XXX", "XXX", 'X', new ItemStack(GCItems.ic2compat, 1, 7) });
+            Recipes.compressor.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 7), 9), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
             Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(titaniumIngot, 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
             Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(AsteroidsItems.basicItem, 1, 4), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
             Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(AsteroidsItems.basicItem, 1, 6), 1), null, false, new ItemStack(AsteroidsItems.basicItem, 1, 9));
+            // Asteroids and Venus versions of aluminium ore (because IC2 oredicting or .ini will not pick up aluminium ores)
+            Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
+            Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(VenusBlocks.venusBlock, 1, 6), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
         }
     }
 }
