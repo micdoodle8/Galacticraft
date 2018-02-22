@@ -1,7 +1,7 @@
 {
     "parent": "builtin/generated",
     "textures": {
-        "layer0": "galacticraftcore:items/ic2/dust_alu"
+        "layer0": "galacticraftcore:items/ic2/ore_crushed_alu"
     },
     "display": {
         "thirdperson": {

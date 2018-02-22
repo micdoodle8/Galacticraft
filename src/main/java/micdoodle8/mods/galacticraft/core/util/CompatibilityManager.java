@@ -447,4 +447,9 @@ public class CompatibilityManager
         }
         return false;
     }
+    
+    public static boolean useAluDust()
+    {
+        return modIc2Loaded || modAppEngLoaded || modTELoaded;
+    }
 }
