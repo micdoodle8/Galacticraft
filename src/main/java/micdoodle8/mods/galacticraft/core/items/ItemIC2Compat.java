@@ -49,12 +49,15 @@ public class ItemIC2Compat extends Item implements ISortableItem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(this, 1, 0));
-        if (CompatibilityManager.isIc2Loaded())
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(this, 1, 1));
-            par3List.add(new ItemStack(this, 1, 2));
-            par3List.add(new ItemStack(this, 1, 7));
+            par3List.add(new ItemStack(this, 1, 0));
+            if (CompatibilityManager.isIc2Loaded())
+            {
+                par3List.add(new ItemStack(this, 1, 1));
+                par3List.add(new ItemStack(this, 1, 2));
+                par3List.add(new ItemStack(this, 1, 7));
+            }
         }
     }
 
