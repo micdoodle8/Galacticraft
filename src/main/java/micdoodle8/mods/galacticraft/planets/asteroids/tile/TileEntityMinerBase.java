@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
@@ -34,7 +35,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.EnumFacing.Axis;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -85,7 +85,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             Entry<Integer, List<BlockPos>> entry = entries.next();
             if (entry.getValue().isEmpty()) continue;
             
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(entry.getKey());
+            World w = WorldUtil.getWorldForDimensionServer(entry.getKey());
             if (w == null)
             {
                 GCLog.severe("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());

@@ -432,7 +432,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandJoinSpaceRace());
 
         WorldUtil.initialiseDimensionNames();
-        WorldUtil.registerSpaceStations(new File(worldFolder, "galacticraft"));
+        WorldUtil.registerSpaceStations(event.getServer(), new File(worldFolder, "galacticraft"));
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());

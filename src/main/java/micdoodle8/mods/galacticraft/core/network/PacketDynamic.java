@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -95,11 +94,6 @@ public class PacketDynamic extends PacketBase
         this.type = buffer.readInt();
 
         World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
-
-        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
-        {
-            world = MinecraftServer.getServer().worldServerForDimension(this.getDimensionID());
-        }
 
         if (world == null)
         {

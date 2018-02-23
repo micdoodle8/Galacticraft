@@ -231,9 +231,28 @@ public class GCCoreUtil
         return tileEntity.getWorld().provider.getDimensionId();
     }
 
+    /*
+     * This may be called from a different thread e.g. MapUtil
+     * If on a different thread, FMLCommonHandler.instance().getMinecraftServerInstance()
+     * can return null on LAN servers.
+     */
+    public static WorldServer[] getWorldServerList()
+    {
+        return MinecraftServer.getServer().worldServers;
+    }
+    
+    public static WorldServer[] getWorldServerList(World world)
+    {
+        if (world instanceof WorldServer)
+        {
+            return ((WorldServer)world).getMinecraftServer().worldServers;
+        }
+        return GCCoreUtil.getWorldServerList();
+    }
+    
     public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
     {
-        for (WorldServer world : MinecraftServer.getServer().worldServers)
+        for (WorldServer world : GCCoreUtil.getWorldServerList())
         {
             int id = getDimensionID(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
