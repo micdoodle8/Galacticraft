@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.state.IBlockState;
@@ -28,7 +29,6 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import ic2.api.item.IC2Items;
 import io.netty.buffer.ByteBuf;
@@ -246,7 +246,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     {
         Set<BlockVec3> loaded = getLoadedTiles(world);
         int dimID = GCCoreUtil.getDimensionID(world);
-        List<EntityPlayerMP> allPlayers = (List<EntityPlayerMP>)FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+        List<EntityPlayerMP> allPlayers = PlayerUtil.getPlayersOnline();
         for (final EntityPlayerMP player : allPlayers)
         {
             if (player.dimension != dimID) continue;

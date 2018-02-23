@@ -23,8 +23,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.io.FileUtils;
@@ -186,7 +186,7 @@ public class MapUtil
             return;
         }
 
-        File baseFolder = new File(overworld.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        File baseFolder = MapUtil.getBaseFolder();;
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
@@ -210,7 +210,7 @@ public class MapUtil
         {
             try
             {
-                File baseFolder = new File(client.worldObj.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+                File baseFolder = MapUtil.getBaseFolder();;
                 if (!baseFolder.exists())
                 {
                     GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -246,7 +246,7 @@ public class MapUtil
         
         try
         {
-            File baseFolder = new File(client.worldObj.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+            File baseFolder = MapUtil.getBaseFolder();;
             if (!baseFolder.exists())
             {
                 GCLog.severe("Base folder missing: " + baseFolder.getAbsolutePath());
@@ -347,7 +347,7 @@ public class MapUtil
             return false;
         }
 
-        File baseFolder = new File(world.getMinecraftServer().worldServerForDimension(0).getChunkSaveLocation(), "galacticraft/overworldMap");
+        File baseFolder = MapUtil.getBaseFolder();;
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
@@ -365,6 +365,11 @@ public class MapUtil
         getBiomeMapForCoords(world, cx - SIZE_STD2, cz - SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
         getBiomeMapForCoords(world, cx + SIZE_STD2, cz - SIZE_STD2, 1, SIZE_STD, SIZE_STD, baseFolder);
         return true;
+    }
+
+    private static File getBaseFolder()
+    {
+        return new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft/overworldMap");
     }
 
     private static int convertMap(int x)
@@ -1225,7 +1230,7 @@ public class MapUtil
         {
             for (int z0 = -12; z0 <= 12; z0++)
             {
-                Chunk chunk = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(dim).getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
+                Chunk chunk = GCCoreUtil.getServer().worldServerForDimension(dim).getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
 
                 if (chunk != null)
                 {

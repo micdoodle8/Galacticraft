@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -27,13 +26,16 @@ public class PlayerUtil
     public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
         return server.getPlayerList().getPlayerByUsername(username);
-//        return VersionUtil.getPlayerForUsername(server, username);
     }
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer server = GCCoreUtil.getServer();
+        return getPlayerBaseServerFromPlayerUsername(server, username, ignoreCase);
+    }
 
+    public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(MinecraftServer server, String username, boolean ignoreCase)
+    {
         if (server != null)
         {
             if (ignoreCase)
@@ -146,7 +148,7 @@ public class PlayerUtil
     
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
-        List players = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayerList();
+        List<EntityPlayerMP> players = PlayerUtil.getPlayersOnline();
         EntityPlayerMP entityplayermp;
         for (int i = players.size() - 1; i >= 0; --i)
         {
@@ -159,10 +161,16 @@ public class PlayerUtil
         }
         return null;
     }
+    
+    
+    public static List<EntityPlayerMP> getPlayersOnline()
+    {
+        return GCCoreUtil.getServer().getPlayerList().getPlayerList();
+    }
 
 
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
-        return player.worldObj.getMinecraftServer().getPlayerList().getPlayerList().contains(player);
+        return getPlayersOnline().contains(player);
     }
 }

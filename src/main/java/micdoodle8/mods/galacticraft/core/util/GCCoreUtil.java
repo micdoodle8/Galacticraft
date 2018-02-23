@@ -20,6 +20,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
@@ -63,6 +64,7 @@ public class GCCoreUtil
     private static boolean deobfuscated;
     private static String lastLang = "";
     public static boolean langDisable;
+    private static MinecraftServer serverCached;
 
     static
     {
@@ -321,9 +323,28 @@ public class GCCoreUtil
         return tileEntity.getWorld().provider.getDimension();
     }
 
+    public static WorldServer[] getWorldServerList()
+    {
+        MinecraftServer server = getServer();
+        if (server != null)
+        {
+            return server.worldServers;
+        }
+        return new WorldServer[0];
+    }
+    
+    public static WorldServer[] getWorldServerList(World world)
+    {
+        if (world instanceof WorldServer)
+        {
+            return ((WorldServer)world).getMinecraftServer().worldServers;
+        }
+        return GCCoreUtil.getWorldServerList();
+    }
+    
     public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
     {
-        for (WorldServer world : FMLCommonHandler.instance().getMinecraftServerInstance().worldServers)
+        for (WorldServer world : GCCoreUtil.getWorldServerList())
         {
             int id = getDimensionID(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
@@ -446,7 +467,20 @@ public class GCCoreUtil
 
         return Side.CLIENT;
     }
-    
+
+    public static MinecraftServer getServer()
+    {
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        if (server == null)
+        {
+            // This may be called from a different thread e.g. MapUtil
+            // If on a different thread, FMLCommonHandler.instance().getMinecraftServerInstance() can return null on LAN servers
+            // (I think because the FMLCommonHandler wrongly picks the client proxy if it's not in the Integrated Server thread)
+            return serverCached;
+        }
+        return server;
+    }
+
     public static ItemStack getMatchingItemEitherHand(EntityPlayer player, Item item)
     {
         ItemStack stack = player.inventory.getStackInSlot(player.inventory.currentItem);
@@ -535,5 +569,10 @@ public class GCCoreUtil
     
             world.spawnEntityInWorld(entityitem);
         }
+    }
+
+    public static void notifyStarted(MinecraftServer server)
+    {
+        serverCached = server;
     }
 }

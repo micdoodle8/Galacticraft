@@ -61,7 +61,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -232,7 +231,7 @@ public class GCPlayerHandler
 
         if (stats.getFrequencyModuleInSlot() != stats.getLastFrequencyModuleInSlot() || forceSend)
         {
-            if (FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+            if (player.mcServer != null)
             {
                 if (stats.getFrequencyModuleInSlot() == null)
                 {
@@ -1179,7 +1178,7 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType, int gearID)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer theServer = player.mcServer;
         if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { player.getGameProfile().getName(), packetType.ordinal(), gearType.ordinal(), gearID }), new TargetPoint(GCCoreUtil.getDimensionID(player.worldObj), player.posX, player.posY, player.posZ, 50.0D));

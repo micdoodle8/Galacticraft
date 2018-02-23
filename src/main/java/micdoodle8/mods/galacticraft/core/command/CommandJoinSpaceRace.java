@@ -43,7 +43,7 @@ public class CommandJoinSpaceRace extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
+        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(server, sender.getName(), true);
 
         if (args.length == 0)
         {
@@ -55,7 +55,7 @@ public class CommandJoinSpaceRace extends CommandBase
 
                     if (stats.getSpaceRaceInviteTeamID() > 0)
                     {
-                        SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.getSpaceRaceInviteTeamID()));
+                        SpaceRaceManager.sendSpaceRaceData(server, playerBase, SpaceRaceManager.getSpaceRaceFromID(stats.getSpaceRaceInviteTeamID()));
                         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_JOIN_RACE_GUI, GCCoreUtil.getDimensionID(playerBase.worldObj), new Object[] { stats.getSpaceRaceInviteTeamID() }), playerBase);
                     }
                     else
