@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
@@ -12,7 +13,6 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.SpawnerAnimals;
@@ -29,7 +29,7 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderVenus implements IChunkProvider
+public class ChunkProviderVenus extends ChunkProviderBase
 {
     public static final IBlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
@@ -319,12 +319,6 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public boolean chunkExists(int x, int z)
-    {
-        return true;
-    }
-
-    @Override
     public void populate(IChunkProvider provider, int x, int z)
     {
         BlockFalling.fallInstantly = true;
@@ -376,35 +370,6 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public boolean func_177460_a(IChunkProvider p_177460_1_, Chunk p_177460_2_, int p_177460_3_, int p_177460_4_)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean saveChunks(boolean p_73151_1_, IProgressUpdate progressCallback)
-    {
-        return true;
-    }
-
-    @Override
-    public void saveExtraData()
-    {
-    }
-
-    @Override
-    public boolean unloadQueuedChunks()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    @Override
     public String makeString()
     {
         return "VenusLevelSource";
@@ -419,26 +384,8 @@ public class ChunkProviderVenus implements IChunkProvider
     }
 
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position)
-    {
-        return null;
-    }
-
-    @Override
-    public int getLoadedChunkCount()
-    {
-        return 0;
-    }
-
-    @Override
     public void recreateStructures(Chunk chunk, int x, int z)
     {
         this.dungeonGenerator.generate(this, this.worldObj, x, z, null);
-    }
-
-    @Override
-    public Chunk provideChunk(BlockPos blockPosIn)
-    {
-        return this.provideChunk(blockPosIn.getX() >> 4, blockPosIn.getZ() >> 4);
     }
 }

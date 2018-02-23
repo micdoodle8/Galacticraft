@@ -1,20 +1,23 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import net.minecraft.block.BlockFalling;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
 
+import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderOrbit extends ChunkProviderGenerate
+public class ChunkProviderOrbit extends ChunkProviderBase
 {
     private final Random rand;
 
@@ -22,7 +25,6 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
 
     public ChunkProviderOrbit(World par1World, long par2, boolean par4)
     {
-        super(par1World, par2, par4, "");
         this.rand = new Random(par2);
         this.worldObj = par1World;
     }
@@ -107,5 +109,16 @@ public class ChunkProviderOrbit extends ChunkProviderGenerate
     public String makeString()
     {
         return "OrbitLevelSource";
+    }
+
+    @Override
+    public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    {
+        return null;
+    }
+
+    @Override
+    public void recreateStructures(Chunk p_180514_1_, int p_180514_2_, int p_180514_3_)
+    {
     }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
@@ -16,7 +17,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
@@ -24,7 +24,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.ChunkProviderGenerate;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
@@ -36,7 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderAsteroids extends ChunkProviderGenerate
+public class ChunkProviderAsteroids extends ChunkProviderBase
 {
     final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
     final byte ASTEROID_STONE_META_0 = 0;
@@ -125,7 +124,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
 
     public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
     {
-        super(par1World, par2, par4, "");
         this.worldObj = par1World;
         this.rand = new Random(par2);
 
@@ -612,12 +610,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     }
 
     @Override
-    public boolean chunkExists(int par1, int par2)
-    {
-        return true;
-    }
-
-    @Override
     public void populate(IChunkProvider par1IChunkProvider, int chunkX, int chunkZ)
     {
         int x = chunkX << 4;
@@ -967,24 +959,6 @@ public class ChunkProviderAsteroids extends ChunkProviderGenerate
     public void resetBase()
     {
         this.dungeonGenerator.reset();
-    }
-    
-    @Override
-    public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canSave()
-    {
-        return true;
-    }
-
-    @Override
-    public String makeString()
-    {
-        return "RandomLevelSource";
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })

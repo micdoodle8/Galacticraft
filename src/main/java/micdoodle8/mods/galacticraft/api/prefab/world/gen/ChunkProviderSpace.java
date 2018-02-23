@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import net.minecraft.block.Block;
@@ -8,21 +9,18 @@ import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.IProgressUpdate;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.world.gen.ChunkProviderGenerate;
-
 import java.util.List;
 import java.util.Random;
 
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class ChunkProviderSpace extends ChunkProviderGenerate
+public abstract class ChunkProviderSpace extends ChunkProviderBase
 {
     protected final Random rand;
 
@@ -57,7 +55,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
 
     public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
     {
-        super(par1World, seed, mapFeaturesEnabled, "");
         this.worldObj = par1World;
         this.rand = new Random(seed);
 
@@ -145,7 +142,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return x;
     }
 
-    @Override
     public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
     {
         final int var5 = 20;
@@ -339,12 +335,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         return 1.0 - (n * (n * n * 15731 + 789221) + 1376312589 & 0x7fffffff) / 1073741824.0;
     }
 
-    @Override
-    public boolean chunkExists(int par1, int par2)
-    {
-        return true;
-    }
-
     public void decoratePlanet(World par1World, Random par2Random, int par3, int par4)
     {
         this.getBiomeGenerator().decorate(par1World, par2Random, par3, par4);
@@ -365,18 +355,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderGenerate
         this.onPopulate(par1IChunkProvider, par2, par3);
 
         BlockFalling.fallInstantly = false;
-    }
-
-    @Override
-    public boolean saveChunks(boolean par1, IProgressUpdate par2IProgressUpdate)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean canSave()
-    {
-        return true;
     }
 
     @Override
