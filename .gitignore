@@ -192,7 +192,7 @@ Desktop.ini
 dist
 build
 eggs
-parts
+#parts
 bin
 var
 sdist
@@ -216,3 +216,14 @@ pip-log.txt
 .DS_Store
 
 *.xcf
+
+#if miccore is in dependencies folder
+dependencies/main/resources/micdoodlecore_at.deobf
+dependencies/main/resources/micdoodlecore_at.cfg
+dependencies/main/resources/META-INF/MANIFEST.MF
+dependencies/main/java/micdoodle8/mods/miccore/*
+dependencies/main/java/codechicken/core/CCUpdateChecker.java
+
+#gradle
+gradle/wrapper/
+gradlew
