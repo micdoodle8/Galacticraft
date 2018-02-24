@@ -15,7 +15,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.vecmath.Matrix4f;
 import java.util.List;
 
-@SuppressWarnings({ "deprecation", "unchecked" })
+@SuppressWarnings({ "deprecation" })
 public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISmartItemModel, ISmartBlockModel, IPerspectiveAwareModel
 {
     private final IBakedModel iBakedModel;

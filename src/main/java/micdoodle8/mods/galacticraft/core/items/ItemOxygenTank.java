@@ -35,7 +35,6 @@ public class ItemOxygenTank extends Item implements ISortableItem
         return false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -57,7 +56,6 @@ public class ItemOxygenTank extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
     {

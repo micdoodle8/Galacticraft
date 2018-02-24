@@ -961,7 +961,6 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
         this.dungeonGenerator.reset();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {

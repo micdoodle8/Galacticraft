@@ -60,7 +60,6 @@ public class ThreadFindSeal
         this(sealer.getWorld(), sealer.getPos().up(), sealer.getFindSealChecks(), new ArrayList<TileEntityOxygenSealer>(Collections.singletonList(sealer)));
     }
 
-    @SuppressWarnings("unchecked")
     public ThreadFindSeal(World world, BlockPos head, int checkCount, List<TileEntityOxygenSealer> sealers)
     {
         if (ThreadFindSeal.anylooping.getAndSet(true))
