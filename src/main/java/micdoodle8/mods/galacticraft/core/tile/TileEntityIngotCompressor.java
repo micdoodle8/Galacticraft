@@ -149,11 +149,8 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             }
             else if (recipe instanceof ShapelessOreRecipeGC)
             {
-                @SuppressWarnings("unchecked")
                 ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
-
                 Iterator<Object> req = required.iterator();
-
                 int match = 0;
 
                 while (req.hasNext())

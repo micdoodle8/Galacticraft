@@ -120,7 +120,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
     @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
         int meta = getMetaFromState(state);
 

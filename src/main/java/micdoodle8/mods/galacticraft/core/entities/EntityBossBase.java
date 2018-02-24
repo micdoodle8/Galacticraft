@@ -26,7 +26,7 @@ import java.util.Random;
 
 public abstract class EntityBossBase extends EntityMob implements IBossDisplayData, IBoss
 {
-    protected TileEntityDungeonSpawner spawner;
+    protected TileEntityDungeonSpawner<?> spawner;
     public int deathTicks = 0;
 
     public int entitiesWithin;

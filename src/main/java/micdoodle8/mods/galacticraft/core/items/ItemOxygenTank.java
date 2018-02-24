@@ -25,20 +25,12 @@ public class ItemOxygenTank extends Item implements ISortableItem
         this.setMaxStackSize(1);
         this.setMaxDamage(tier * 900);
         this.setUnlocalizedName(assetName);
-//        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
         this.setNoRepair();
     }
 
     @Override
-    public boolean isItemTool(ItemStack stack)
-    {
-        return false;
-    }
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
@@ -57,7 +49,6 @@ public class ItemOxygenTank extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
     {

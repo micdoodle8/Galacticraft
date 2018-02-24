@@ -702,6 +702,8 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             case NORTH:
                 this.facing = EnumFacing.EAST;
                 break;
+            default:
+                break;
             }
 
             super.updateFacing();

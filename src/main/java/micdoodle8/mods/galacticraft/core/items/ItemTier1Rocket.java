@@ -38,7 +38,6 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
-        //this.setTextureName("arrow");
         this.setUnlocalizedName(assetName);
     }
 
@@ -141,9 +140,8 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < EnumRocketType.values().length; i++)
         {
@@ -158,7 +156,6 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)

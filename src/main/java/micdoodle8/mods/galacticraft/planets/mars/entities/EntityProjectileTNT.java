@@ -51,6 +51,8 @@ public class EntityProjectileTNT extends EntityFireball
                     break;
                 case NORMAL : difficulty = 1F;
                     break;
+                default:
+                    break;
                 }
                 movingObjectPosition.entityHit.attackEntityFrom(DamageSource.causeFireballDamage(this, this.shootingEntity), 6.0F + 3.0F * difficulty);
             }

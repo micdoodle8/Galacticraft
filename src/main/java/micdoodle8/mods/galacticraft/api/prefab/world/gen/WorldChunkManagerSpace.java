@@ -29,7 +29,7 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
     }
 
     @Override
-    public List getBiomesToSpawnIn()
+    public List<BiomeGenBase> getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }

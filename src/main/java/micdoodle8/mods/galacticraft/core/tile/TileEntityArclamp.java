@@ -273,9 +273,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         IBlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
         checkedClear();
-        HashSet airToRevert = new HashSet<>();
+        HashSet<BlockVec3> airToRevert = new HashSet<>();
         airToRevert.addAll(airToRestore);
-        LinkedList airNew = new LinkedList<>();
+        LinkedList<BlockVec3> airNew = new LinkedList<>();
         LinkedList<BlockVec3> currentLayer = new LinkedList<>();
         LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         BlockVec3 thisvec = new BlockVec3(this);
@@ -485,19 +485,17 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         super.readFromNBT(nbt);
 
         this.facing = nbt.getInteger("Facing");
-        if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
+
+        this.airToRestore.clear();
+        NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
+        if (airBlocks.tagCount() > 0)
         {
-            this.airToRestore.clear();
-            NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
-            if (airBlocks.tagCount() > 0)
+            for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
             {
-                for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
+                NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
+                if (tag1 != null)
                 {
-                    NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
-                    if (tag1 != null)
-                    {
-                        this.airToRestore.add(BlockVec3.readFromNBT(tag1));
-                    }
+                    this.airToRestore.add(BlockVec3.readFromNBT(tag1));
                 }
             }
         }

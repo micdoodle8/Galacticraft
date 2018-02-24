@@ -119,6 +119,8 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
                     worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
                     worldIn.spawnParticle(EnumParticleTypes.FLAME, particlePosX - particleSize0, particlePosY, particlePosZ + particleSize1, 0.0D, 0.0D, 0.0D);
                     break;
+                default:
+                    break;
                 }
             }
         }

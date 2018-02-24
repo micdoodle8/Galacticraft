@@ -60,7 +60,6 @@ public class ThreadFindSeal
         this(sealer.getWorld(), sealer.getPos().up(), sealer.getFindSealChecks(), new ArrayList<TileEntityOxygenSealer>(Collections.singletonList(sealer)));
     }
 
-    @SuppressWarnings("unchecked")
     public ThreadFindSeal(World world, BlockPos head, int checkCount, List<TileEntityOxygenSealer> sealers)
     {
         if (ThreadFindSeal.anylooping.getAndSet(true))
@@ -452,7 +451,7 @@ public class ThreadFindSeal
         Block airBlockBright = GCBlocks.brightAir;
         List<BlockVec3> toReplaceLocal = this.breatheableToReplace;
         List<BlockVec3> toReplaceLocalBright = this.breatheableToReplaceBright;
-        LinkedList nextLayer = new LinkedList<BlockVec3>();
+        LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         World world = this.world;
         int side, bits;
 
@@ -555,7 +554,7 @@ public class ThreadFindSeal
         Block airBlock = Blocks.air;
         Block airBlockBright = GCBlocks.brightAir;
         List<BlockVec3> toReplaceLocal = this.breatheableToReplace;
-        LinkedList nextLayer = new LinkedList<BlockVec3>();
+        LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         World world = this.world;
         int side, bits;
 
@@ -648,7 +647,7 @@ public class ThreadFindSeal
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block airIDBright = GCBlocks.brightAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
-        LinkedList nextLayer = new LinkedList<BlockVec3>();
+        LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         World world = this.world;
         int side, bits;
 
@@ -783,7 +782,7 @@ public class ThreadFindSeal
         Block breatheableAirIDBright = GCBlocks.brightBreatheableAir;
         Block airIDBright = GCBlocks.brightAir;
         Block oxygenSealerID = GCBlocks.oxygenSealer;
-        LinkedList nextLayer = new LinkedList<BlockVec3>();
+        LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         World world = this.world;
         int side, bits;
 

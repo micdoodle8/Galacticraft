@@ -140,6 +140,8 @@ public class MapGenAbandonedBase extends MapGenStructure
             case EAST:
                 xoffset = size;
                 break;
+            default:
+                break;
             }
             BaseStart startPiece = new BaseStart(configuration, rand, posX + xoffset, posZ + zoffset, direction);
             startPiece.buildComponent(startPiece, this.components, rand);

@@ -104,7 +104,6 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {

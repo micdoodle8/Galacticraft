@@ -928,6 +928,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             this.minePoints.add(inFront.clone().translate(otherEnd, -3, 2));
             this.minePoints.add(inFront.clone().translate(otherEnd, 0, 0));
             break;
+        default:
+            break;
         }
     }
 
@@ -975,6 +977,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 break;
             case EAST:
                 this.targetYaw = 90;
+                break;
+            default:
                 break;
             }
         }
@@ -1192,6 +1196,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 wayBarred = true;
             }
+            break;
+        default:
             break;
         }
 
@@ -1421,6 +1427,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 wayBarred = true;
             }
+            break;
+        default:
             break;
         }
 
@@ -2001,6 +2009,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         case EAST:
             miner.targetYaw = 90;
             break;
+        default:
+            break;
         }
         miner.rotationPitch = miner.targetPitch;
         miner.rotationYaw = miner.targetYaw;
@@ -2432,6 +2442,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
                 break;
             case EAST:
                 this.targetYaw = 90;
+                break;
+            default:
                 break;
             }
         }

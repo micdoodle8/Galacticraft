@@ -234,6 +234,8 @@ public class BaseRoom extends SizedPiece
             facing2 = 3;
             facingLamp = 4;
             facingScreen = 3;
+        default:
+            break;
         }
 
         //Offset from centre - used for some rooms

@@ -55,7 +55,6 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {
@@ -99,7 +98,7 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }

@@ -217,6 +217,8 @@ public class RenderPlayerGC extends RenderPlayer
                             case WEST:
                                 rotation = 90.0F;
                                 break;
+                            default:
+                                break;
                             }
                         }
                     }

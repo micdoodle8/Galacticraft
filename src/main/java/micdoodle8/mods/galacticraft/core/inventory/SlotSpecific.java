@@ -42,20 +42,20 @@ public class SlotSpecific extends Slot
             {
                 if (EnergyConfigHandler.isRFAPILoaded())
                 {
-                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
                     existing.add(cofh.api.energy.IEnergyContainerItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }
                 if (EnergyConfigHandler.isIndustrialCraft2Loaded())
                 {
-                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
                     existing.add(ic2.api.item.IElectricItem.class);
                     existing.add(ic2.api.item.ISpecialElectricItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }
                 if (EnergyConfigHandler.isMekanismLoaded())
                 {
-                    ArrayList<Class> existing = new ArrayList(Arrays.asList(validClasses));
+                    ArrayList<Class> existing = new ArrayList<>(Arrays.asList(validClasses));
                     existing.add(mekanism.api.energy.IEnergizedItem.class);
                     validClasses = existing.toArray(new Class[existing.size()]);
                 }

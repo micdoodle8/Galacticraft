@@ -41,9 +41,8 @@ public class ItemBasicMars extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < ItemBasicMars.names.length; i++)
         {
@@ -62,7 +61,6 @@ public class ItemBasicMars extends Item implements ISortableItem
         return "unnamed";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)

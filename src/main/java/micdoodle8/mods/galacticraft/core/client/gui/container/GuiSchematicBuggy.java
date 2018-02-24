@@ -24,7 +24,6 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
         this.ySize = 221;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

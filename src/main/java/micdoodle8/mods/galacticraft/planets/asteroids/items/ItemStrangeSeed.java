@@ -15,15 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemStrangeSeed extends Item implements ISortableItem
 {
-//    public IIcon[] icons;
-
     public ItemStrangeSeed(String assetName)
     {
         super();
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
-        //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
     @Override
@@ -46,7 +43,7 @@ public class ItemStrangeSeed extends Item implements ISortableItem
     }
     
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
