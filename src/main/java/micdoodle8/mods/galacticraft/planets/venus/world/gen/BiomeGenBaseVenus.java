@@ -20,7 +20,6 @@ public class BiomeGenBaseVenus extends BiomeGenBaseGC
     public static final BiomeGenBase venusMountain = new BiomeGenVenusMountain(ConfigManagerCore.biomeIDbase + 5).setBiomeName("Venus Mountain");
     public static final BiomeGenBase venusValley = new BiomeGenVenusValley(ConfigManagerCore.biomeIDbase + 6).setBiomeName("Venus Valley");
 
-    @SuppressWarnings("unchecked")
     BiomeGenBaseVenus(int var1)
     {
         super(var1);

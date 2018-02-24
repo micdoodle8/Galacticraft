@@ -45,7 +45,6 @@ public class GuiCargoUnloader extends GuiContainerGC
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

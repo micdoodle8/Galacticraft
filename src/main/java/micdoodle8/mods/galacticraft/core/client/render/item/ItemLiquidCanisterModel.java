@@ -11,7 +11,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.List;
 
-@SuppressWarnings({ "deprecation", "unchecked" })
+@SuppressWarnings({ "deprecation" })
 public class ItemLiquidCanisterModel implements ISmartItemModel
 {
     private final IBakedModel iBakedModel;

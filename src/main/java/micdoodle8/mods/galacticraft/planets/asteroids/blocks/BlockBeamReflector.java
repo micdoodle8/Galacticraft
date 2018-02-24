@@ -66,7 +66,6 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
         this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.8F, 0.75F);
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {
@@ -80,7 +79,6 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
         return new TileEntityBeamReflector();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)

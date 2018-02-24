@@ -10,7 +10,6 @@ public class BiomeGenBaseOrbit extends BiomeGenBase
 {
     public static final BiomeGenBase space = new BiomeGenBaseOrbit(ConfigManagerCore.biomeIDbase + 3).setBiomeName("Space");
 
-    @SuppressWarnings("unchecked")
     private BiomeGenBaseOrbit(int var1)
     {
         super(var1);

@@ -65,7 +65,6 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
     {

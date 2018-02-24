@@ -80,7 +80,6 @@ public class RecipeManagerGC
         RecipeManagerGC.addExNihiloRecipes();
     }
 
-    @SuppressWarnings("unchecked")
     private static void addUniversalRecipes()
     {
         RecipeSorter.register("galacticraftcore:shapedore", OreRecipeUpdatable.class, SHAPED, "after:minecraft:shaped before:minecraft:shapeless");

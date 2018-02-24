@@ -46,7 +46,6 @@ public class TileEntityAirLockController extends TileEntityAirLock
         this.lastProtocol = this.protocol;
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public void update()
     {

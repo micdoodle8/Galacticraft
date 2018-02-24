@@ -149,7 +149,6 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {

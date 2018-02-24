@@ -8,7 +8,6 @@ public class BiomeGenBaseMars extends BiomeGenBaseGC
 {
     public static final BiomeGenBase marsFlat = new BiomeGenFlatMars(ConfigManagerCore.biomeIDbase + 1).setBiomeName("Mars Flat");
 
-    @SuppressWarnings("unchecked")
     BiomeGenBaseMars(int var1)
     {
         super(var1);

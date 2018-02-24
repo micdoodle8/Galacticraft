@@ -39,7 +39,6 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
