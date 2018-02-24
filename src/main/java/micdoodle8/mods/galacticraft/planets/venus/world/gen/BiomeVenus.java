@@ -19,7 +19,6 @@ public class BiomeVenus extends BiomeGenBaseGC
     public static final Biome venusMountain = new BiomeGenVenusMountain(new BiomeProperties("Venus Mountain").setRainfall(0.0F).setRainDisabled().setBaseHeight(2.0F).setHeightVariation(1.0F));
     public static final Biome venusValley = new BiomeGenVenusValley(new BiomeProperties("Venus Valley").setRainfall(0.0F).setRainDisabled().setBaseHeight(-0.4F).setHeightVariation(0.2F));
 
-    @SuppressWarnings("unchecked")
     BiomeVenus(BiomeProperties properties)
     {
         super(properties);

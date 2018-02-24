@@ -42,7 +42,6 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         this.bossClass = bossClass;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void update()
     {
@@ -156,7 +155,6 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         this.roomSize = size;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

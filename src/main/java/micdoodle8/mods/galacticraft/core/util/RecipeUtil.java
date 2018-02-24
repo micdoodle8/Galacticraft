@@ -47,7 +47,6 @@ public class RecipeUtil
         return ItemStack.EMPTY;
     }
 
-    @SuppressWarnings("unchecked")
     public static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(result, obj));

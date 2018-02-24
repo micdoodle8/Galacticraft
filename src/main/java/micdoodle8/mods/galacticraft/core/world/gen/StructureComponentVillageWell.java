@@ -53,7 +53,6 @@ public class StructureComponentVillageWell extends StructureComponentVillage
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
     {

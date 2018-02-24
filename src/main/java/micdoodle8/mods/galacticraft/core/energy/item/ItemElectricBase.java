@@ -62,7 +62,6 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         return this.transferMax;
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> tooltip, boolean par4)
     {

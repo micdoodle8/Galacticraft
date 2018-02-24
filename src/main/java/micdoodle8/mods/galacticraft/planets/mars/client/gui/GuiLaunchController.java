@@ -176,7 +176,6 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

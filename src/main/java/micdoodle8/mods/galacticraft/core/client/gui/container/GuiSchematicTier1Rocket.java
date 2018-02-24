@@ -23,7 +23,6 @@ public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements I
         this.ySize = 221;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

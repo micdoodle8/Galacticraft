@@ -43,7 +43,6 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)

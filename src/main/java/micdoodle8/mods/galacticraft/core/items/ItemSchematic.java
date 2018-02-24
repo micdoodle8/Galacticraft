@@ -67,7 +67,6 @@ public class ItemSchematic extends ItemHangingEntity implements ISchematicItem, 
         return par1;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
