@@ -269,7 +269,7 @@ public class RecipeManagerGC
             aluminumIngots.addAll(addedList);
         }
 
-        final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>();
+        final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>(4, 1.0F);
         spaceStationRequirements.put("ingotTin", 32);
         spaceStationRequirements.put(aluminumIngots, 16);
         spaceStationRequirements.put(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED), 1);
