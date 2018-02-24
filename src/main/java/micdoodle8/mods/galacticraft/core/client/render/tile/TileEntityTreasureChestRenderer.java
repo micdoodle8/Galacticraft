@@ -91,11 +91,11 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
             var14.renderAll(!chest.locked);
         }
 
-        /*if (var14b != null) TODO Not used anymore?
+        if (var14b != null)
         {
             var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
             var14b.renderAll(!chest.locked);
-        }*/
+        }
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();
