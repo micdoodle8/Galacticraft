@@ -312,15 +312,27 @@ public class WorldUtil
      * @param id
      * @return
      */
-    public static WorldProvider getProviderForDimensionServer(int id)
+    public static World getWorldForDimensionServer(int id)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer theServer = GCCoreUtil.getServer();
         if (theServer == null)
         {
             GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
             return null;
         }
-        World ws = theServer.worldServerForDimension(id);
+        return theServer.worldServerForDimension(id);
+    }
+    
+    /**
+     * CAUTION: this loads the dimension if it is not already loaded.  This can cause
+     * server load if used too frequently or with a list of multiple dimensions.
+     *
+     * @param id
+     * @return
+     */
+    public static WorldProvider getProviderForDimensionServer(int id)
+    {
+        World ws = getWorldForDimensionServer(id);
         if (ws != null)
         {
             return ws.provider;
@@ -436,11 +448,10 @@ public class WorldUtil
         }
     }
 
-    public static void registerSpaceStations(File spaceStationList)
+    public static void registerSpaceStations(MinecraftServer theServer, File spaceStationList)
     {
 //        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
         WorldUtil.registeredSpaceStations = Maps.newHashMap();
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (theServer == null || !spaceStationList.exists() && !spaceStationList.isDirectory())
         {
             return;
@@ -587,7 +598,7 @@ public class WorldUtil
                     return false;
                 }
             }
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(id);
+            World w = getWorldForDimensionServer(id);
             WorldUtil.dimNames.put(id, getDimensionName(w.provider));
             return true;
         }
@@ -714,7 +725,7 @@ public class WorldUtil
         {
             //GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
 
-            MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            MinecraftServer mcServer = world.getMinecraftServer();
 
             if (mcServer != null)
             {

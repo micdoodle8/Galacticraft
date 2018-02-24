@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import net.minecraft.block.Block;
@@ -12,15 +13,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkProviderOverworld;
-
 import java.util.List;
 import java.util.Random;
 
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class ChunkProviderSpace extends ChunkProviderOverworld
+public abstract class ChunkProviderSpace extends ChunkProviderBase
 {
     protected final Random rand;
 
@@ -55,7 +54,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
 
     public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
     {
-        super(par1World, seed, mapFeaturesEnabled, "");
         this.world = par1World;
         this.rand = new Random(seed);
 
@@ -143,7 +141,6 @@ public abstract class ChunkProviderSpace extends ChunkProviderOverworld
         return x;
     }
 
-    @Override
 //    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
     public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
     {

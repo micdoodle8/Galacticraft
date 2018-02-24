@@ -457,6 +457,7 @@ public class GalacticraftCore
     @EventHandler
     public void onServerStarting(FMLServerStartingEvent event)
     {
+        GCCoreUtil.notifyStarted(event.getServer());
         File worldFolder = DimensionManager.getCurrentSaveRootDirectory();
         moveLegacyGCFileLocations(worldFolder);
         
@@ -471,7 +472,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandJoinSpaceRace());
 
         WorldUtil.initialiseDimensionNames();
-        WorldUtil.registerSpaceStations(new File(worldFolder, "galacticraft"));
+        WorldUtil.registerSpaceStations(event.getServer(), new File(worldFolder, "galacticraft"));
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
@@ -541,6 +542,7 @@ public class GalacticraftCore
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
         MapUtil.saveMapProgress();
+        GCCoreUtil.notifyStarted(null);
     }
 
     private static void registerCoreGameScreens()

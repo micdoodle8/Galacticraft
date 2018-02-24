@@ -35,7 +35,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -349,10 +348,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         this.frequency = frequency;
 
-        if (this.frequency >= 0 && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+        if (this.frequency >= 0)
         {
             this.frequencyValid = true;
-            WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
+            WorldServer[] servers = GCCoreUtil.getWorldServerList(this.world);
 
             worldLoop:
             for (int i = 0; i < servers.length; i++)
@@ -402,12 +401,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public void checkDestFrequencyValid()
     {
-        if (!this.world.isRemote && FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+        if (!this.world.isRemote)
         {
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
             {
-                WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
+                WorldServer[] servers = GCCoreUtil.getWorldServerList(this.world);
                 for (int i = 0; i < servers.length; i++)
                 {
                     WorldServer world = servers[i];

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen;
 
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Billowed;
@@ -22,7 +23,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.minecraft.world.gen.ChunkProviderOverworld;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.feature.WorldGenTallGrass;
@@ -34,7 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderAsteroids extends ChunkProviderOverworld
+public class ChunkProviderAsteroids extends ChunkProviderBase
 {
     final Block ASTEROID_STONE = AsteroidBlocks.blockBasic;
     final byte ASTEROID_STONE_META_0 = 0;
@@ -123,7 +123,6 @@ public class ChunkProviderAsteroids extends ChunkProviderOverworld
 
     public ChunkProviderAsteroids(World par1World, long par2, boolean par4)
     {
-        super(par1World, par2, par4, "");
         this.world = par1World;
         this.rand = new Random(par2);
 

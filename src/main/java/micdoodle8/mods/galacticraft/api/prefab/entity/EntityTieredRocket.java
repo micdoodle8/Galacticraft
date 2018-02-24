@@ -28,7 +28,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -188,10 +187,10 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.preGenIterator.hasNext())
                 {
-                    MinecraftServer mcserver = FMLCommonHandler.instance().getMinecraftServerInstance();
-                    //mcserver can be null if client switches to a LAN server
-                    if (mcserver != null)
+                    MinecraftServer mcserver;
+                    if (this.world instanceof WorldServer)
                     {
+                        mcserver = ((WorldServer) this.world).getMinecraftServer();
 	                	BlockVec3 coords = this.preGenIterator.next();
 	                    World w = mcserver.worldServerForDimension(coords.y);
                         if (w != null)
