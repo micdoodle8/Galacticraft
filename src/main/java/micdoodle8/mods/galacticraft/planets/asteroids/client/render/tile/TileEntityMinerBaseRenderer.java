@@ -58,7 +58,19 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
         }
 
         int j = 0, k = 0;
-        int light = tile.getWorld().getCombinedLight(tile.getPos().up(), 0);
+        int light = tile.getWorld().getCombinedLight(tile.getPos(), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 0, 0), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(0, 0, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 0, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = tile.getWorld().getCombinedLight(tile.getPos().up(), 0);
         j += light % 65536;
         k += light / 65536;
         light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 0), 0);
@@ -70,7 +82,7 @@ public class TileEntityMinerBaseRenderer extends TileEntitySpecialRenderer<TileE
         light = tile.getWorld().getCombinedLight(tile.getPos().add(1, 1, 1), 0);
         j += light % 65536;
         k += light / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 4.0F, k / 4.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 8.0F, k / 8.0F);
 
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
