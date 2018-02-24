@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
@@ -20,7 +21,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.NoiseGenerator;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
@@ -28,7 +28,7 @@ import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderVenus implements IChunkGenerator
+public class ChunkProviderVenus extends ChunkProviderBase
 {
     public static final IBlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
@@ -377,26 +377,8 @@ public class ChunkProviderVenus implements IChunkGenerator
     }
 
     @Override
-    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean p_180513_4_)
-    {
-        return null;
-    }
-
-    @Override
-    public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos)
-    {
-        return false;
-    }
-
-    @Override
     public void recreateStructures(Chunk chunk, int x, int z)
     {
         this.dungeonGenerator.generate(this.world, x, z, null);
-    }
-
-    @Override
-    public boolean generateStructures(Chunk chunkIn, int x, int z)
-    {
-        return false;
     }
 }

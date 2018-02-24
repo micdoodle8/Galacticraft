@@ -521,7 +521,6 @@ public class RecipeManagerGC
         ItemStack dustStone = IC2Items.getItem("dust", "stone").copy();
         NBTTagCompound amountTag = new NBTTagCompound();
         amountTag.setInteger("amount", 1000);
-        Recipes.oreWashing.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), amountTag, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 1), dustSmallIron, dustStone });
         ItemStack dustSmallTitanium = new ItemStack(GCItems.ic2compat, 1, 7);
         NBTTagCompound heatTag1 = new NBTTagCompound();
         heatTag1.setInteger("minHeat", 2000);
@@ -529,6 +528,9 @@ public class RecipeManagerGC
         NBTTagCompound heatTag2 = new NBTTagCompound();
         heatTag2.setInteger("minHeat", 750);
         Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), heatTag1, false, new ItemStack [] { dustSmallIron, new ItemStack(GCItems.ic2compat, 1, 0), dustStone });
+        dustSmallIron = dustSmallIron.copy();
+        dustSmallIron.setCount(2);
+        Recipes.oreWashing.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), amountTag, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 1), dustSmallIron, dustStone });
         
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:copper,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:gold,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });

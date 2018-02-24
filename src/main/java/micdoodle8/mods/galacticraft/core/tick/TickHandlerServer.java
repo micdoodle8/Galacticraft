@@ -298,7 +298,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.spaceRaceData == null)
             {
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance().getWorld(0);
+                World world = server.getWorld(0);
                 TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
@@ -387,7 +387,7 @@ public class TickHandlerServer
             {
                 for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
-                    WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worlds;
+                    WorldServer[] worlds = server.worlds;
 
                     for (int i = 0; i < worlds.length; i++)
                     {

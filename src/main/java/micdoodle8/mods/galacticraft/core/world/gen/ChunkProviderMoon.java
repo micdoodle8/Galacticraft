@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
+import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.perlin.NoiseModule;
@@ -21,12 +22,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
 import java.util.List;
 import java.util.Random;
 
-public class ChunkProviderMoon extends ChunkGeneratorOverworld
+public class ChunkProviderMoon extends ChunkProviderBase
 {
     private final IBlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
     private final IBlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
@@ -58,7 +58,6 @@ public class ChunkProviderMoon extends ChunkGeneratorOverworld
 
     public ChunkProviderMoon(World par1World, long par2, boolean par4)
     {
-        super(par1World, par2, par4, "");
         this.world = par1World;
         this.rand = new Random(par2);
         this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
@@ -67,7 +66,6 @@ public class ChunkProviderMoon extends ChunkGeneratorOverworld
         this.noiseGen4 = new Gradient(this.rand.nextLong(), 1, 0.25F);
     }
 
-    @Override
     public void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
     {
         this.noiseGen1.setFrequency(0.0125F);
