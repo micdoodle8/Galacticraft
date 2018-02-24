@@ -1069,7 +1069,7 @@ public class WorldUtil
 
         if (directlyRemove)
         {
-            List l = new ArrayList<Entity>();
+            List<Entity> l = new ArrayList<>();
             l.add(var1);
             var0.unloadEntities(l);
             //This will automatically remove the entity from the world and the chunk prior to the world's next update entities tick

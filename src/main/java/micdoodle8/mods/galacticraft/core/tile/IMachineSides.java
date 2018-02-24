@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
+import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties.MachineSidesModel;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -368,7 +369,7 @@ public interface IMachineSides extends ITileClientUpdates
      * 
      * @return   A blockstate with the property added
      */
-    public static IBlockState addPropertyForTile(IBlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum key)
+    public static IBlockState addPropertyForTile(IBlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum<MachineSidesModel> key)
     {
         if (tile instanceof IMachineSides)
         {

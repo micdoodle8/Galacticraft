@@ -45,7 +45,7 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
     }

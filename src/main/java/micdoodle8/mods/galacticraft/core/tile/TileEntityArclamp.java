@@ -273,9 +273,9 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         IBlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
         checkedClear();
-        HashSet airToRevert = new HashSet<>();
+        HashSet<Object> airToRevert = new HashSet<>();
         airToRevert.addAll(airToRestore);
-        LinkedList airNew = new LinkedList<>();
+        LinkedList<Object> airNew = new LinkedList<>();
         LinkedList<BlockVec3> currentLayer = new LinkedList<>();
         LinkedList<BlockVec3> nextLayer = new LinkedList<>();
         BlockVec3 thisvec = new BlockVec3(this);
