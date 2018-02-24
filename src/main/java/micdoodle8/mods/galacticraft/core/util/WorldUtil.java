@@ -363,7 +363,7 @@ public class WorldUtil
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(int tier, EntityPlayerMP playerBase)
     {
         List<Integer> ids = WorldUtil.getPossibleDimensionsForSpaceshipTier(tier, playerBase);
-        final HashMap<String, Integer> map = new HashMap<String, Integer>();
+        final HashMap<String, Integer> map = new HashMap<String, Integer>(ids.size(), 1F);
 
         for (Integer id : ids)
         {

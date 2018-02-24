@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SpaceStationRecipe
 {
-    private final HashMap<Object, Integer> input = new HashMap<Object, Integer>();
+    private final HashMap<Object, Integer> input = new HashMap<Object, Integer>(4, 1.0F);
 
     /**
      * @param objMap a map of the items required. Each entry should be an object of

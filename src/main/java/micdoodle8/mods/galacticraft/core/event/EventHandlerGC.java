@@ -104,7 +104,7 @@ import java.util.*;
 
 public class EventHandlerGC
 {
-    public static Map<Block, Item> bucketList = new HashMap<Block, Item>();
+    public static Map<Block, Item> bucketList = new HashMap<Block, Item>(4, 1F);
     public static boolean bedActivated;
 
     @SubscribeEvent
@@ -720,12 +720,12 @@ public class EventHandlerGC
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getNextSchematic(int currentIndex)
     {
-        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
-
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
+        final int size = stats.getUnlockedSchematics().size();
+        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>(size, 1F);
+        for (int i = 0; i < size; i++)
         {
             idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }
@@ -757,12 +757,12 @@ public class EventHandlerGC
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getLastSchematic(int currentIndex)
     {
-        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>();
-
         EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().thePlayer, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
-        for (int i = 0; i < stats.getUnlockedSchematics().size(); i++)
+        final int size = stats.getUnlockedSchematics().size();
+        final HashMap<Integer, Integer> idList = new HashMap<Integer, Integer>(size, 1F);
+        for (int i = 0; i < size; i++)
         {
             idList.put(i, stats.getUnlockedSchematics().get(i).getPageID());
         }

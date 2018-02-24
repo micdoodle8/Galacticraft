@@ -93,7 +93,6 @@ public class ItemBasic extends Item implements ISortableItem
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -110,7 +109,6 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {

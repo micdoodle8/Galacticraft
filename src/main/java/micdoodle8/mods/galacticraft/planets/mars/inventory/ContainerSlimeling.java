@@ -53,7 +53,6 @@ public class ContainerSlimeling extends Container
         container.inventorySlots = container.inventorySlots.subList(0, 37);
     }
 
-    @SuppressWarnings("unchecked")
     public static void addAdditionalSlots(ContainerSlimeling container, EntitySlimeling slimeling, ItemStack stack)
     {
         if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)

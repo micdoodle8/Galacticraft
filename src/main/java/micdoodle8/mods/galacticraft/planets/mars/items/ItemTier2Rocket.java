@@ -168,7 +168,6 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
         return EnumActionResult.SUCCESS;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {

@@ -54,9 +54,9 @@ public class CompressorRecipes
             }
         }
 
-        HashMap<Character, ItemStack> hashmap;
+        HashMap<Character, ItemStack> hashmap = new HashMap<>(inputList.length / 2, 1.0F);
 
-        for (hashmap = new HashMap<>(); i < inputList.length; i += 2)
+        for (; i < inputList.length; i += 2)
         {
             Character character = (Character) inputList[i];
             ItemStack itemstack1 = null;

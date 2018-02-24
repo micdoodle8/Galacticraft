@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  * @author Calclavia
  */
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 public abstract class TileBaseConductor extends TileEntity implements IConductor
 {
     protected IGridNetwork network;

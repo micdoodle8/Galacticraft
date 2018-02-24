@@ -81,7 +81,6 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 //        return r;
 //    }
 //
-//    @SuppressWarnings("rawtypes")
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
 //    {

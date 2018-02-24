@@ -153,7 +153,6 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 //        }
 //    }
 //
-//    @SuppressWarnings("rawtypes")
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
 //    {
@@ -269,7 +268,6 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         return new TileEntityBeamReceiver();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)

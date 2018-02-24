@@ -48,7 +48,6 @@ public class ItemThermalPadding extends Item implements IItemThermal, ISortableI
         return GalacticraftCore.galacticraftItemsTab;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {

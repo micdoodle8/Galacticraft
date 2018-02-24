@@ -3,15 +3,18 @@ package micdoodle8.mods.galacticraft.core.client.screen;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.client.IScreenManager;
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,17 +22,18 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.SkeletonType;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import java.lang.reflect.Method;
 import java.nio.DoubleBuffer;
 
 public class GameScreenText implements IGameScreen
@@ -39,12 +43,36 @@ public class GameScreenText implements IGameScreen
     private float frameBy;
     private int yPos;
     private DoubleBuffer planes;
+    private Method renderModelMethod;
+    private Method renderLayersMethod;
 
     public GameScreenText()
     {
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
+            try {
+                Class clazz = RenderLivingBase.class;
+                int count = 0;
+                for (Method m : clazz.getDeclaredMethods())
+                {
+                    String s = m.getName();
+                    if (s.equals(GCCoreUtil.isDeobfuscated() ? "renderModel" : "func_77036_a"))
+                    {
+                        m.setAccessible(true);
+                        this.renderModelMethod = m;
+                        if (count == 1) break;
+                        count = 1;
+                    }
+                    else if (s.equals(GCCoreUtil.isDeobfuscated() ? "renderLayers" : "func_177093_a"))
+                    {
+                        m.setAccessible(true);
+                        this.renderLayersMethod = m;
+                        if (count == 1) break;
+                        count = 1;
+                    }
+                }
+            } catch (Exception e) { }
         }
     }
 
@@ -106,7 +134,7 @@ public class GameScreenText implements IGameScreen
                     {
                         strName = telemeter.clientName;
                         entity = new EntityOtherPlayerMP(screen.driver.getWorld(), telemeter.clientGameProfile);
-                        renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(EntityPlayer.class);
+                        renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().getEntityRenderObject(entity);
                     }
                     else
                     {
@@ -282,9 +310,16 @@ public class GameScreenText implements IGameScreen
             {
                 ((ITelemetry) entity).adjustDisplay(telemeter.clientData);
             }
-//        	RenderPlayerGC.flagThermalOverride = true;
-//        	renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F); TODO
-//            RenderPlayerGC.flagThermalOverride = false;
+        	RenderPlayerGC.flagThermalOverride = true;
+        	if (entity instanceof EntityLivingBase && renderEntity instanceof RenderLivingBase && renderModelMethod != null)
+        	{
+        	    this.renderLiving((EntityLivingBase) entity, (RenderLivingBase) renderEntity, ticks % 1F);
+        	}
+        	else
+        	{
+        	    renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        	}
+            RenderPlayerGC.flagThermalOverride = false;
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -304,6 +339,60 @@ public class GameScreenText implements IGameScreen
         GL11.glDisable(GL11.GL_CLIP_PLANE0);
     }
 
+    // This is a simplified version of doRender() in RenderLivingEntity
+    // No lighting adjustment, no sitting, no name text, no sneaking and no Forge events
+    private void renderLiving(EntityLivingBase entity, RenderLivingBase render, float partialTicks)
+    {
+        GlStateManager.pushMatrix();
+        GlStateManager.disableCull();
+        render.mainModel.isChild = entity.isChild();
+
+        try
+        {
+            float f = 0F;
+            float f1 = 0F;
+            float f2 = f1 - f;
+            float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+            float f8 = 0F;
+            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.enableRescaleNormal();
+            GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+            float f4 = 0.0625F;
+            GlStateManager.translate(0.0F, -1.5078125F, 0.0F);
+            float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
+            float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
+
+            if (entity.isChild())
+            {
+                f6 *= 3.0F;
+            }
+
+            if (f5 > 1.0F)
+            {
+                f5 = 1.0F;
+            }
+
+            GlStateManager.enableAlpha();
+            render.mainModel.setLivingAnimations(entity, f6, f5, partialTicks);
+            render.mainModel.setRotationAngles(f6, f5, f8, f2, f7, 0.0625F, entity);
+
+            renderModelMethod.invoke(render, entity, f6, f5, f8, f2, f7, 0.0625F);
+            GlStateManager.depthMask(true);
+            renderLayersMethod.invoke(render, entity, f6, f5, partialTicks, f8, f2, f7, 0.0625F);
+
+            GlStateManager.disableRescaleNormal();
+        }
+        catch (Exception exception)
+        {
+        }
+
+        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+        GlStateManager.enableTexture2D();
+        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.enableCull();
+        GlStateManager.popMatrix();
+    }
+    
     private String makeTimeString(int l)
     {
         int hrs = l / 360000;

@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.tick;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
@@ -44,7 +46,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiIngameMenu;
@@ -53,8 +54,10 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldProviderSurface;
@@ -355,10 +358,18 @@ public class TickHandlerClient
 
         if (event.phase == Phase.START && player != null)
         {
-            if (ClientProxyCore.playerHead == null)
+            if (ClientProxyCore.playerHead == null && player.getGameProfile() != null)
             {
-                ClientProxyCore.playerHead = AbstractClientPlayer.getLocationSkin(player.getGameProfile().getName());
-                AbstractClientPlayer.getDownloadImageSkin(ClientProxyCore.playerHead, player.getGameProfile().getName());
+                Map<Type, MinecraftProfileTexture> map = minecraft.getSkinManager().loadSkinFromCache(player.getGameProfile());
+
+                if (map.containsKey(Type.SKIN))
+                {
+                    ClientProxyCore.playerHead = minecraft.getSkinManager().loadSkin((MinecraftProfileTexture)map.get(Type.SKIN), Type.SKIN);
+                }
+                else
+                {
+                    ClientProxyCore.playerHead = DefaultPlayerSkin.getDefaultSkin(EntityPlayer.getUUID(player.getGameProfile()));
+                }
             }
 
             TickHandlerClient.tickCount++;

@@ -42,7 +42,6 @@ public class ItemPickaxeMars extends ItemPickaxe implements ISortableItem
         this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));
     }*/
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {

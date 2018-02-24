@@ -49,7 +49,6 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
     {
@@ -152,7 +151,6 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)

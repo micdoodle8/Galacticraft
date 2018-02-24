@@ -81,7 +81,7 @@ public class GCPlayerHandler
     public static final int GEAR_NOT_PRESENT = -1;
     
 //    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-    private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
+    private HashMap<Item, Item> torchItems = new HashMap<Item, Item>(4, 1F);
 
 //    public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
 //    {
