@@ -12,14 +12,17 @@
 /logs/*
 /modsrc/*
 /reobf/*
+/run/*
 /runtime/*
 /temp/*
+/temporary/*
 LICENSE.txt
 CHANGELOG
 
 /src/minecraft/*
 /src/main/java/buildcraft/*
 /src/main/java/cofh/*
+/src/main/java/micdoodle8/mods/miccore/*
 /src/main/resources/assets/minecraft/shaders/program/buildcraft/*
 /src/main/resources/buildcraft/*
 /src/main/resources/assets/buildcraftsilicon/*
@@ -189,7 +192,7 @@ Desktop.ini
 dist
 build
 eggs
-parts
+#parts
 bin
 var
 sdist
@@ -213,18 +216,14 @@ pip-log.txt
 .DS_Store
 
 *.xcf
+
+#if miccore is in dependencies folder
 dependencies/main/resources/micdoodlecore_at.deobf
 dependencies/main/resources/micdoodlecore_at.cfg
 dependencies/main/resources/META-INF/MANIFEST.MF
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleTransformer.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodlePlugin.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleAccessTransformerDeObf.java
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleAccessTransformer.java
-dependencies/main/java/micdoodle8/mods/miccore/IntCache.java
-dependencies/main/java/micdoodle8/mods/miccore/ConfigManagerMicCore.java
-dependencies/main/java/micdoodle8/mods/miccore/Annotations.java
-gradle/wrapper/gradle-wrapper.properties
-gradle/wrapper/gradle-wrapper.jar
-dependencies/main/java/micdoodle8/mods/miccore/MicdoodleModContainer.java
+dependencies/main/java/micdoodle8/mods/miccore/*
+dependencies/main/java/codechicken/core/CCUpdateChecker.java
+
+#gradle
+gradle/wrapper/
 gradlew
-dependencies/main/java/micdoodle8/mods/miccore/IIntCache.java
