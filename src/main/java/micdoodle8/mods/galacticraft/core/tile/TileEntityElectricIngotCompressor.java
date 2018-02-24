@@ -432,7 +432,6 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             else if (recipe instanceof ShapelessOreRecipeGC)
             {
-                @SuppressWarnings("unchecked")
                 ArrayList<Object> required = new ArrayList<Object>(((ShapelessOreRecipeGC) recipe).getInput());
                 
                 Iterator<Object> req = required.iterator();

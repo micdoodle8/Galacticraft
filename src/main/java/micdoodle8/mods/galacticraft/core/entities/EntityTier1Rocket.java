@@ -61,7 +61,6 @@ public class EntityTier1Rocket extends EntityTieredRocket
         return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void onUpdate()
     {

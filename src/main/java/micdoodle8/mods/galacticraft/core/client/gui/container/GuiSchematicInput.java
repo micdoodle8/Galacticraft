@@ -29,7 +29,6 @@ public class GuiSchematicInput extends GuiPositionedContainer implements ISchema
         super(new ContainerSchematic(par1InventoryPlayer, pos), pos);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

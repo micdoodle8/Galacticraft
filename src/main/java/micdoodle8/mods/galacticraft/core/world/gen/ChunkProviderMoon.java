@@ -292,7 +292,6 @@ public class ChunkProviderMoon extends ChunkProviderBase
         BlockFalling.fallInstantly = false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {

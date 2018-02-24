@@ -51,7 +51,6 @@ public abstract class StructureComponentVillage extends StructureComponent
         this.villagersSpawned = nbt.getInteger("VCount");
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentNN(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.getCoordBaseMode().getHorizontalIndex())
@@ -69,7 +68,6 @@ public abstract class StructureComponentVillage extends StructureComponent
         }
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected StructureComponent getNextComponentPP(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List par2List, Random par3Random, int par4, int par5)
     {
         switch (this.getCoordBaseMode().getHorizontalIndex())

@@ -73,7 +73,6 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 //        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.8F, 0.75F);
 //    }
 //
-//    @SuppressWarnings("rawtypes")
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
 //    {

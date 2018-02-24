@@ -114,7 +114,6 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void onColorUpdate()
     {

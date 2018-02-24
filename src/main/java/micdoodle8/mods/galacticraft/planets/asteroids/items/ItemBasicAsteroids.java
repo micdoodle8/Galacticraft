@@ -92,7 +92,6 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
         return "unnamed";
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)

@@ -44,7 +44,6 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 
-    @SuppressWarnings("rawtypes")
     public static StructureBoundingBox func_74904_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6)
     {
         final StructureBoundingBox var7 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 4, 2, par6);

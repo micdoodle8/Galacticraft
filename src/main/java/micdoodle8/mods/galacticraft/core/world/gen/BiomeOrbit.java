@@ -10,7 +10,6 @@ public class BiomeOrbit extends BiomeGenBaseGC
 {
     public static final Biome space = new BiomeOrbit(new BiomeProperties("Space").setRainfall(0.0F));
 
-    @SuppressWarnings("unchecked")
     private BiomeOrbit(BiomeProperties properties)
     {
         super(properties, true);

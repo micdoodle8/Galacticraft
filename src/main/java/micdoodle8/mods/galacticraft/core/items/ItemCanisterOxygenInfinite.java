@@ -50,7 +50,6 @@ public class ItemCanisterOxygenInfinite extends Item implements IItemOxygenSuppl
         return true;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {

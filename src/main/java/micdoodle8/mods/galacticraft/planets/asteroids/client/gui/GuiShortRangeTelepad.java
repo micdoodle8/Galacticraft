@@ -84,7 +84,6 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         super.keyTyped(keyChar, keyID);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

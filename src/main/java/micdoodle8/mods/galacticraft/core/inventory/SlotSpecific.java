@@ -20,7 +20,6 @@ import java.util.Arrays;
 public class SlotSpecific extends Slot
 {
     public ItemStack[] validItemStacks = new ItemStack[0];
-    @SuppressWarnings("rawtypes")
     public Class[] validClasses = new Class[0];
 
     public boolean isInverted = false;
@@ -32,7 +31,6 @@ public class SlotSpecific extends Slot
         this.setItemStacks(itemStacks);
     }
 
-    @SuppressWarnings("rawtypes")
     public SlotSpecific(IInventory par2IInventory, int par3, int par4, int par5, Class... validClasses)
     {
         super(par2IInventory, par3, par4, par5);
@@ -80,7 +78,6 @@ public class SlotSpecific extends Slot
         return this;
     }
 
-    @SuppressWarnings("rawtypes")
     public SlotSpecific setClasses(Class... validClasses)
     {
         this.validClasses = validClasses;
@@ -97,7 +94,6 @@ public class SlotSpecific extends Slot
      * Check if the stack is a valid item for this slot. Always true beside for
      * the armor slots.
      */
-    @SuppressWarnings("rawtypes")
     @Override
     public boolean isItemValid(ItemStack compareStack)
     {

@@ -195,7 +195,6 @@ public class GCItems
 
             if (GCItems.itemsList != null)
             {
-                @SuppressWarnings("unchecked")
                 ItemStack stack = GCItems.itemsList.get(key);
                 return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
             }
@@ -234,7 +233,6 @@ public class GCItems
 
             if (GCItems.blocksList != null)
             {
-                @SuppressWarnings("unchecked")
                 ItemStack stack = GCItems.blocksList.get(key);
                 return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
             }

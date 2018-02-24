@@ -102,7 +102,6 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {

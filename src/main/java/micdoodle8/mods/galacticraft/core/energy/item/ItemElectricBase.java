@@ -66,7 +66,6 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         return this.transferMax;
     }
     
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {

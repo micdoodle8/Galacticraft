@@ -69,7 +69,6 @@ public class GuiCargoRocket extends GuiContainerGC
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {
