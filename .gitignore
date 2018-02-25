@@ -191,11 +191,8 @@ Desktop.ini
 *.egg-info
 dist
 build
-<<<<<<< HEAD
-=======
 eggs
 #parts
->>>>>>> master
 bin
 var
 sdist

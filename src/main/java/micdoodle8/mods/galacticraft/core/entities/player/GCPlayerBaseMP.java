@@ -5,7 +5,6 @@ import api.player.server.ServerPlayerBase;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 
 public class GCPlayerBaseMP extends ServerPlayerBase
@@ -18,13 +17,6 @@ public class GCPlayerBaseMP extends ServerPlayerBase
     private IPlayerServer getClientHandler()
     {
         return GalacticraftCore.proxy.player;
-    }
-
-    @Override
-    public void clonePlayer(EntityPlayerMP oldPlayer, boolean keepInv)
-    {
-        super.clonePlayer(oldPlayer, keepInv);
-        this.getClientHandler().clonePlayer(this.player, oldPlayer, keepInv);
     }
 
 //    @Override

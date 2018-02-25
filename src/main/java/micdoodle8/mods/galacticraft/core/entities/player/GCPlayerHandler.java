@@ -118,12 +118,12 @@ public class GCPlayerHandler
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event)
     {
-        if (event.isWasDeath())  //TODO: why only on death?  we could copy the stats capability on all cloning events
+        GCPlayerStats oldStats = GCPlayerStats.get(event.getOriginal());
+        GCPlayerStats newStats = GCPlayerStats.get(event.getEntityPlayer());
+        newStats.copyFrom(oldStats, !event.isWasDeath()|| event.getOriginal().world.getGameRules().getBoolean("keepInventory"));
+        if (event.getOriginal() instanceof EntityPlayerMP && event.getEntityPlayer() instanceof EntityPlayerMP)
         {
-            GCPlayerStats oldStats = GCPlayerStats.get(event.getOriginal());
-            GCPlayerStats newStats = GCPlayerStats.get(event.getEntityPlayer());
-
-            newStats.copyFrom(oldStats, false);
+            TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) event.getOriginal(), (EntityPlayerMP) event.getEntityPlayer());
         }
     }
 
