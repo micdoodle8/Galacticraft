@@ -808,7 +808,7 @@ public class RecipeManagerGC
     {
         try
         {
-            Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+            Class<?> registry = Class.forName("exnihilo.registries.HeatRegistry");
             Method m = registry.getMethod("register", Block.class, float.class);
             m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
             for (Block torch : GCBlocks.otherModTorchesLit)
