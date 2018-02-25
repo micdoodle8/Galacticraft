@@ -428,6 +428,7 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandKeepDim());
         event.registerServerCommand(new CommandGCInv());
         event.registerServerCommand(new CommandGCHelp());
+        event.registerServerCommand(new CommandGCKit());
         event.registerServerCommand(new CommandGCEnergyUnits());
         event.registerServerCommand(new CommandJoinSpaceRace());
 
