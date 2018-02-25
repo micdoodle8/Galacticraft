@@ -1,11 +1,13 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
@@ -23,18 +25,7 @@ import net.minecraftforge.common.MinecraftForge;
 public class PlayerServer implements IPlayerServer
 {
     boolean updatingRidden = false;
-
-    @Override
-    public void clonePlayer(EntityPlayerMP player, EntityPlayer oldPlayer, boolean keepInv)
-    {
-        if (oldPlayer instanceof EntityPlayerMP)
-        {
-            GCPlayerStats newStats = GCPlayerStats.get(player);
-            GCPlayerStats oldStats = GCPlayerStats.get(oldPlayer);
-            newStats.copyFrom(oldStats, keepInv || player.worldObj.getGameRules().getBoolean("keepInventory"));
-            TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, player);
-        }
-    }
+    static List<EntityPlayer> noClipList = new LinkedList<>();
 
     @Override
     public void updateRiddenPre(EntityPlayerMP player)
@@ -81,7 +72,7 @@ public class PlayerServer implements IPlayerServer
         //No damage while in Celestial Selection screen
         if (player.ridingEntity instanceof EntityCelestialFake)
         {
-            return -1;
+            return -1F;
         }
 
         if (GalacticraftCore.isPlanetsLoaded)
@@ -92,7 +83,7 @@ public class PlayerServer implements IPlayerServer
                 {
                     if (player.posY > -120D)
                     {
-                        return -1;
+                        return -1F;
                     }
                     if (player.posY > -180D)
                     {
@@ -122,7 +113,7 @@ public class PlayerServer implements IPlayerServer
             }
         }
 
-        return par2;
+        return (par2 == -1F) ? -0.9999F : par2;
     }
 
     @Override
@@ -177,5 +168,25 @@ public class PlayerServer implements IPlayerServer
         }
 
         return true;
+    }
+
+    @Override
+    public boolean isSpectator(EntityPlayerMP player)
+    {
+        return noClipList.contains(player);
+    }
+
+    @Override
+    public void setNoClip(EntityPlayerMP player, boolean noClip)
+    {
+        if (noClip)
+        {
+            if (!noClipList.contains(player))
+                noClipList.add(player);
+        }
+        else
+        {
+            noClipList.remove(player);
+        }
     }
 }

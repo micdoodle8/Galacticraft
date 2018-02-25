@@ -1235,14 +1235,14 @@ public class PacketSimple extends PacketBase implements Packet
             boolean noClip = (Boolean) this.data.get(0);
             if (player instanceof GCEntityPlayerMP)
             {
-                ((GCEntityPlayerMP)player).setNoClip(noClip);
+                GalacticraftCore.proxy.player.setNoClip((EntityPlayerMP) player, noClip);
                 if (noClip == false)
                 {
                     player.fallDistance = 0.0F;
                     ((EntityPlayerMP)player).playerNetServerHandler.floatingTickCount = 0;
                 }
             }
-            else if (CompatibilityManager.PlayerAPILoaded && player instanceof EntityPlayerMP)
+            else if (player instanceof EntityPlayerMP)
             {
                 EntityPlayerMP emp = ((EntityPlayerMP)player); 
                 try
