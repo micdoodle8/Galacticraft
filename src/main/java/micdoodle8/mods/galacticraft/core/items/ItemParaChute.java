@@ -18,10 +18,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import static net.minecraft.item.EnumDyeColor.*;
 
-public class ItemParaChute extends Item implements ISortableItem
+public class ItemParaChute extends Item implements ISortableItem, IClickableItem
 {
     public static final String[] names = { "plain", // 0
             "black", // 1
@@ -256,18 +255,33 @@ public class ItemParaChute extends Item implements ISortableItem
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
         ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
-            ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
-
-            if (gear.isEmpty())
+            if (itemStack.getItem() instanceof IClickableItem)
             {
-                stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
-                itemStack = ItemStack.EMPTY;
+                itemStack = ((IClickableItem)itemStack.getItem()).onItemRightClick(itemStack, worldIn, player);
+            }
+
+            if (itemStack.isEmpty())
+            {
                 return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
             }
         }
         return new ActionResult<>(EnumActionResult.PASS, itemStack);
+    }
+    
+    public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player)
+    {
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
+
+        if (gear.isEmpty())
+        {
+            stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
+            itemStack = ItemStack.EMPTY;
+        }
+        
+        return itemStack;
     }
 }
