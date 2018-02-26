@@ -39,7 +39,7 @@ public class ConnectionEvents
 
     protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet<? extends INetHandler>> packetClass)
     {
-        BiMap<Integer, Class<? extends Packet<?>>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
+        BiMap<Integer, Class<? extends Packet<?>>> bimap = (BiMap<Integer, Class<? extends Packet<?>>>) EnumConnectionState.PLAY.directionMaps.get(direction);
 
         if (bimap == null)
         {

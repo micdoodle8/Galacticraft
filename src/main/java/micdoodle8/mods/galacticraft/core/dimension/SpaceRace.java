@@ -2,16 +2,21 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +32,8 @@ public class SpaceRace
     private FlagData flagData;
     private Vector3 teamColor;
     private int ticksSpent;
-    private Map<CelestialBody, Integer> celestialBodyStatusList = new HashMap<CelestialBody, Integer>();
+    private Map<CelestialBody, Integer> celestialBodyStatusList = new HashMap<>(4, 1F);
+    private Map<String, List<ItemStack>> schematicsToUnlock = new HashMap<>(4, 1F);
 
     public SpaceRace()
     {
@@ -74,6 +80,22 @@ public class SpaceRace
                 this.celestialBodyStatusList.put(body, tagAt.getInteger("TimeTaken"));
             }
         }
+
+        tagList = nbt.getTagList("SchList", 10);
+        for (int i = 0; i < tagList.tagCount(); i++)
+        {
+            NBTTagCompound tagAt = tagList.getCompoundTagAt(i);
+            String name = tagAt.getString("Mem");
+            if (name != null && this.playerNames.contains(name))
+            {
+                final NBTTagList itemList = tagAt.getTagList("Sch", 10);
+                for (int j = 0; j < itemList.tagCount(); ++j)
+                {
+                    addNewSchematic(name, new ItemStack(itemList.getCompoundTagAt(j)));
+                }
+            }
+        }
+
         if (ConfigManagerCore.enableDebug)
         {
             GCLog.info("Loaded spacerace team data OK.");
@@ -112,8 +134,28 @@ public class SpaceRace
             tagComp.setInteger("TimeTaken", celestialBody.getValue());
             tagList.appendTag(tagComp);
         }
-
         nbt.setTag("CelestialBodyList", tagList);
+
+        tagList = new NBTTagList();
+        for (Entry<String, List<ItemStack>> schematic : this.schematicsToUnlock.entrySet())
+        {
+            if (this.playerNames.contains(schematic.getKey()))
+            {
+                NBTTagCompound tagComp = new NBTTagCompound();
+                tagComp.setString("Mem", schematic.getKey());
+                final NBTTagList itemList = new NBTTagList();
+                for (ItemStack stack : schematic.getValue())
+                {
+                    final NBTTagCompound itemTag = new NBTTagCompound();
+                    stack.writeToNBT(itemTag);
+                    itemList.appendTag(itemTag);
+                }
+                tagComp.setTag("Sch", itemList);
+                tagList.appendTag(tagComp);
+            }
+        }
+        nbt.setTag("SchList", tagList);
+
         if (ConfigManagerCore.enableDebug)
         {
             GCLog.info("Saved spacerace team data OK.");
@@ -210,5 +252,36 @@ public class SpaceRace
         }
 
         return false;
+    }
+
+    /*
+     * Used to store schematics which need to be unlocked for offline players
+     */
+    public void addNewSchematic(String member, ItemStack stack)
+    {
+        List<ItemStack> list;
+        list = this.schematicsToUnlock.get(member);
+        if (list == null)
+        {
+            list = new ArrayList<>(1);
+            this.schematicsToUnlock.put(member, list);
+        }
+        list.add(stack);
+    }
+
+    /*
+     * Used to give a stored schematic to a team player on next login
+     */
+    public void updatePlayerSchematics(EntityPlayerMP player)
+    {
+        List<ItemStack> list = this.schematicsToUnlock.get(player.getGameProfile().getName());
+        if (list != null)
+        {
+            for (ItemStack stack : list)
+            {
+                SchematicRegistry.unlockNewPage(player, stack);
+            }
+            this.schematicsToUnlock.remove(player.getGameProfile().getName());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.inventory.ContainerPlayer;
@@ -107,7 +108,7 @@ public class TabRegistry
 		}
 	}
 
-	public static void addTabsToList(List buttonList)
+	public static void addTabsToList(List<GuiButton> buttonList)
 	{
 		for (AbstractTab tab : TabRegistry.tabList)
 		{

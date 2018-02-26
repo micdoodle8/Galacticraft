@@ -43,7 +43,7 @@ import java.util.UUID;
 
 public class TileEntityTelemetry extends TileEntity implements ITickable
 {
-    public Class clientClass;
+    public Class<?> clientClass;
     public int[] clientData = { -1 };
     public String clientName;
     public GameProfile clientGameProfile = null;

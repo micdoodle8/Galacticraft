@@ -114,7 +114,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public IProperty getVariantProperty()
+    public IProperty<?> getVariantProperty()
     {
         return VARIANT;
     }

@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed.EnumEnclosedBlockType;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.items.ItemEmergencyKit;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -268,6 +269,9 @@ public class RecipeManagerGC
         spaceStationRequirements.put(Items.IRON_INGOT, 24);
         GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworld, new SpaceStationRecipe(spaceStationRequirements)));
 
+        //EmergencyKit (locked recipe, not configurable in resource packs!)
+        RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
+        
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 8), "ingotAluminum", "ingotAluminum");
@@ -523,7 +527,7 @@ public class RecipeManagerGC
     {
         try
         {
-            Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+            Class<?> registry = Class.forName("exnihilo.registries.HeatRegistry");
             Method m = registry.getMethod("register", Block.class, float.class);
             m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
             for (Block torch : GCBlocks.otherModTorchesLit)

@@ -214,7 +214,7 @@ public class CompressorRecipes
 
     public static List<IRecipe> getRecipeListAll()
     {
-        List<IRecipe> result = new ArrayList(CompressorRecipes.recipesAdventure);
+        List<IRecipe> result = new ArrayList<>(CompressorRecipes.recipesAdventure);
         List<IRecipe> endList = getRecipeListHidden(true, true);
         result.removeIf(irecipe -> endList.contains(irecipe));
         IRecipe ice = null;
@@ -240,11 +240,11 @@ public class CompressorRecipes
     {
         if (!hideAdventure) return new ArrayList<IRecipe>(0);
 
-        List<IRecipe> result = new ArrayList(CompressorRecipes.recipesAdventure);
+        List<IRecipe> result = new ArrayList<>(CompressorRecipes.recipesAdventure);
         result.removeIf(irecipe -> CompressorRecipes.recipes.contains(irecipe));
         if (steelIngotsPresent && hideSteel)
         {
-            List<IRecipe> resultSteelless = new ArrayList(result.size());
+            List<IRecipe> resultSteelless = new ArrayList<>(result.size());
             for (IRecipe recipe : result)
             {
                 ItemStack output = recipe.getRecipeOutput();
@@ -271,7 +271,7 @@ public class CompressorRecipes
     	// Filter out the GC steel recipe in Hard Mode
         if (steelIngotsPresent && GalacticraftConfigAccess.getHardMode())
         {
-            List<IRecipe> resultSteelless = new ArrayList(CompressorRecipes.recipes.size());
+            List<IRecipe> resultSteelless = new ArrayList<>(CompressorRecipes.recipes.size());
             for (IRecipe recipe : CompressorRecipes.recipes)
             {
                 ItemStack output = recipe.getRecipeOutput();

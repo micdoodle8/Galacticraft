@@ -28,7 +28,7 @@ public abstract class BiomeProviderSpace extends BiomeProvider
     }
 
     @Override
-    public List getBiomesToSpawnIn()
+    public List<Biome> getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }

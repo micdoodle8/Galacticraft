@@ -83,7 +83,7 @@ public class BlockNasaWorkbench extends BlockContainer implements ITileEntityPro
 //    }
 //
 //    @Override
-//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
 //        this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
 //        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);

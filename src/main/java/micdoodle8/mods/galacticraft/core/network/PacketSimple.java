@@ -906,7 +906,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                     if (page != null)
                     {
                         SchematicRegistry.unlockNewPage(playerBase, stack);
-
+                        SpaceRaceManager.teamUnlockSchematic(playerBase, stack);
                         stack.shrink(1);
 
                         schematicContainer.craftMatrix.setInventorySlotContents(0, stack);

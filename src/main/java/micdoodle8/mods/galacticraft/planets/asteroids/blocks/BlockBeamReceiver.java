@@ -152,7 +152,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 //    }
 //
 //    @Override
-//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
 //        this.setBlockBoundsBasedOnState(worldIn, pos);
 //        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);

@@ -243,7 +243,7 @@ public class ConfigManagerCore
 
             prop = getConfig(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT1", 0);
             prop.setComment("Schematic ID for Tier 1 Rocket, must be unique.");
-            prop.setLanguageKey("gc.configgui.id_schematic-rocket_t1");
+            prop.setLanguageKey("gc.configgui.id_schematic_rocket_t1");
             idSchematicRocketT1 = prop.getInt(0);
             finishProp(prop);
 
@@ -425,7 +425,7 @@ public class ConfigManagerCore
 
             prop = getConfig(Constants.CONFIG_CATEGORY_SERVER, "Space Stations Require Permission", true);
             prop.setComment("While true, space stations require you to invite other players using /ssinvite <playername>");
-            prop.setLanguageKey("gc.configgui.space_stations_require_Permission");
+            prop.setLanguageKey("gc.configgui.space_stations_require_permission");
             spaceStationsRequirePermission = prop.getBoolean(true);
             finishProp(prop);
 
