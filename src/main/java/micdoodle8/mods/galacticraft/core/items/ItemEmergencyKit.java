@@ -67,8 +67,6 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, newGear, 0);
                 }
-                else
-                    System.out.println(newGear.stackSize);
             }
 
             itemStack.stackSize = 0;
