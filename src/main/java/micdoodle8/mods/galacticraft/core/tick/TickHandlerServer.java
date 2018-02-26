@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
+import micdoodle8.mods.galacticraft.core.command.CommandGCHouston;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
@@ -75,6 +76,7 @@ public class TickHandlerServer
     private final int MAX_BLOCKS_PER_TICK = 50000;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static List<FluidNetwork> fluidNetworks = Lists.newArrayList();
+    public static int timerHoustonCommand;
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -252,6 +254,14 @@ public class TickHandlerServer
 
         if (event.phase == Phase.START)
         {
+            if (timerHoustonCommand > 0)
+            {
+                if (--timerHoustonCommand == 0)
+                {
+                    CommandGCHouston.reset();
+                }
+            }
+            
             for (ScheduledDimensionChange change : TickHandlerServer.scheduledDimensionChanges)
             {
                 try

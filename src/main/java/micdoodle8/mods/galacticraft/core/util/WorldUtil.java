@@ -886,11 +886,6 @@ public class WorldUtil
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
 
-                if (worldNew.provider instanceof WorldProviderSpaceStation)
-                {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
-                }
-
                 if (ridingRocket != null)
                 {
                     spawnPos = new Vector3(ridingRocket);
@@ -995,6 +990,72 @@ public class WorldUtil
 
         return entity;
     }
+    
+    public static Entity teleportEntitySimple(World worldNew, int dimID, EntityPlayerMP player, Vector3 spawnPos)
+    {
+        if (player.ridingEntity != null)
+        {
+            player.ridingEntity.setDead();
+            player.mountEntity(null);
+        }
+
+        World worldOld = player.worldObj;
+        int oldDimID = GCCoreUtil.getDimensionID(worldOld);
+        boolean dimChange = worldOld != worldNew;
+        //Make sure the entity is added to the correct chunk in the OLD world so that it will be properly removed later if it needs to be unloaded from that world
+        worldOld.updateEntityWithOptionalForce(player, false);
+
+        if (dimChange)
+        {
+            player.dimension = dimID;
+            if (ConfigManagerCore.enableDebug)
+            {
+                GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
+            }
+            player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+            if (worldNew.provider instanceof WorldProviderSpaceStation)
+            {
+                if (WorldUtil.registeredSpaceStations.containsKey(dimID))
+                    //TODO This has never been effective before due to the earlier bug - what does it actually do?
+                {
+                    NBTTagCompound var2 = new NBTTagCompound();
+                    SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { dimID, var2 }), player);
+                }
+            }
+            removeEntityFromWorld(worldOld, player, true);
+            forceMoveEntityToPos(player, (WorldServer) worldNew, spawnPos, true);
+            GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
+
+            player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldOld);
+            player.theItemInWorldManager.setWorld((WorldServer) worldNew);
+            player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
+            player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+
+            for (Object o : player.getActivePotionEffects())
+            {
+                PotionEffect var10 = (PotionEffect) o;
+                player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
+            }
+
+            player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+            FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) player, oldDimID, dimID);
+        }
+        else
+        {
+            forceMoveEntityToPos(player, (WorldServer) worldNew, spawnPos, false);
+            GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
+        }
+        player.capabilities.isFlying = false;
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
+
+        // Update PlayerStatsGC
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        GCPlayerHandler.setUsingParachute(player, stats, false);
+
+        return player;
+    }
+    
     
     /**
      * This correctly positions an entity at spawnPos in worldNew
