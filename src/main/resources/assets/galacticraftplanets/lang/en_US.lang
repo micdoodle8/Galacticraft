@@ -49,6 +49,7 @@ gas.oxygen.name=Oxygen
 gc.configgui.astro_miners_max=Maximum number of Astro Miners per player
 gc.configgui.dimension_i_d_asteroids=Asteroids Dimension ID
 gc.configgui.dimension_i_d_mars=Mars Dimension ID
+gc.configgui.dimensionIDVenus=Venus Dimension ID
 gc.configgui.disable_aluminum_gen_asteroids=Disable Aluminum Ore Gen (Asteroids)
 gc.configgui.disable_ambient_lightning=Disable Lightning (Venus)
 gc.configgui.disable_copper_gen_mars=Disable Copper Ore Gen (Mars)
