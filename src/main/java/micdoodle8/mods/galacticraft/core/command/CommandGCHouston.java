@@ -130,7 +130,16 @@ public class CommandGCHouston extends CommandBase
                         }
                         dimID = 0;
                     }
-                    BlockPos spawnPoint = worldserver.getSpawnPoint();
+                    BlockPos spawnPoint = null;
+                    BlockPos bedPos = playerBase.getBedLocation(dimID);
+                    if (bedPos != null)
+                    {
+                        spawnPoint = EntityPlayer.getBedSpawnLocation(worldserver, bedPos, false);
+                    }
+                    if (spawnPoint == null)
+                    {
+                        spawnPoint = worldserver.getTopSolidOrLiquidBlock(worldserver.getSpawnPoint());
+                    }
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.setRocketStacks(new ItemStack[0]);
                     stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
