@@ -169,7 +169,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < EnumRocketType.values().length; i++)
         {

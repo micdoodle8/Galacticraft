@@ -64,7 +64,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {
-        return new TileEntityDungeonSpawner(EntitySkeletonBoss.class);
+        return new TileEntityDungeonSpawner<>(EntitySkeletonBoss.class);
     }
 
     @Override

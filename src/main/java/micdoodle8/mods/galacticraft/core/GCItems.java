@@ -82,6 +82,7 @@ public class GCItems
     public static Item prelaunchChecklist;
     public static Item dungeonFinder;
     public static Item ic2compat;
+    public static Item emergencyKit;
 
     public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
     public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 6, 8, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
@@ -141,6 +142,7 @@ public class GCItems
         GCItems.prelaunchChecklist = new ItemPreLaunchChecklist("prelaunch_checklist");
         GCItems.dungeonFinder = new ItemBase("dungeonfinder");
         GCItems.ic2compat = new ItemIC2Compat("ic2compat");
+        GCItems.emergencyKit = new ItemEmergencyKit("emergency_kit"); 
 
         GCItems.registerHarvestLevels();
 
@@ -297,6 +299,7 @@ public class GCItems
         GCItems.registerItem(GCItems.parachute);
         GCItems.registerItem(GCItems.prelaunchChecklist);
         GCItems.registerItem(GCItems.dungeonFinder);
+        GCItems.registerItem(GCItems.emergencyKit);
         
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.fuelCanister);
         GCItems.canisterTypes.add((ItemCanisterGeneric) GCItems.oilCanister);

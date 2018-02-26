@@ -34,7 +34,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < 3; i++)
         {

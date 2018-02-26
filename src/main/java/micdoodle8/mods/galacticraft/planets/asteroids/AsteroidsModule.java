@@ -332,7 +332,7 @@ public class AsteroidsModule implements IPlanetsModule
     {
         try
         {
-            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+            Class<?> clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
             if (clazz != null)
             {
                 Method registerMethod = null;
@@ -345,7 +345,7 @@ public class AsteroidsModule implements IPlanetsModule
                         break;
                     }
                 }
-                Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+                Class<?> clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 0), "tile.asteroids_block.asteroid_rock_0");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 1), "tile.asteroids_block.asteroid_rock_1");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(AsteroidBlocks.blockBasic, 2), "tile.asteroids_block.asteroid_rock_2");

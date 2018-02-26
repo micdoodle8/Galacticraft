@@ -48,7 +48,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     }
 
     @Override
-    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
+    public void buildComponent(StructureComponent par1StructureComponent, List<StructureComponent> par2List, Random par3Random)
     {
         boolean var4 = false;
         int var5;
@@ -113,7 +113,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
         }
     }
 
-    public static StructureBoundingBox func_74933_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6)
+    public static StructureBoundingBox func_74933_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6)
     {
         for (int var7 = 7 * MathHelper.getRandomIntegerInRange(par2Random, 3, 5); var7 >= 7; var7 -= 7)
         {

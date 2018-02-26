@@ -48,11 +48,11 @@ public class TileEntityBuggyFueler extends TileEntityMulti implements IMultiBloc
 
         if (!this.worldObj.isRemote)
         {
-            final List<?> list = this.worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
-                    this.getPos().getX() + 1.5D, this.getPos().getY() + 4.0, this.getPos().getZ() + 1.5D), new Predicate()
+            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(this.getPos().getX() - 1.5D, this.getPos().getY() - 2.0, this.getPos().getZ() - 1.5D,
+                    this.getPos().getX() + 1.5D, this.getPos().getY() + 4.0, this.getPos().getZ() + 1.5D), new Predicate<Entity>()
             {
                 @Override
-                public boolean apply(Object input)
+                public boolean apply(Entity input)
                 {
                     return input instanceof IFuelable;
                 }

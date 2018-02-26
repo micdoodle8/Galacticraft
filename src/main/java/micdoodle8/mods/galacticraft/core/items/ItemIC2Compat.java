@@ -48,7 +48,7 @@ public class ItemIC2Compat extends Item implements ISortableItem
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         if (CompatibilityManager.isIc2Loaded())

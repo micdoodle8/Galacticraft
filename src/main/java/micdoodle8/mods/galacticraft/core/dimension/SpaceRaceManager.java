@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
+import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -14,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -141,6 +143,7 @@ public class SpaceRaceManager
             if (toPlayer != null)
             {
                 GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.worldObj), objList), toPlayer);
+                spaceRace.updatePlayerSchematics(toPlayer);
             }
             else
             {
@@ -178,6 +181,27 @@ public class SpaceRaceManager
         {
             SpaceRaceManager.sendSpaceRaceData(server, playerToRemove, newRace);
             SpaceRaceManager.sendSpaceRaceData(server, playerToRemove, race);
+        }
+    }
+    
+    public static void teamUnlockSchematic(EntityPlayerMP player, ItemStack stack)
+    {
+        SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+        if (race == null) return;
+        MinecraftServer server = player.mcServer;
+        for (String member : race.getPlayerNames())
+        {
+            if (player.getName().equalsIgnoreCase(member)) continue;
+            
+            EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(server, member);
+            if (memberObj != null)
+            {
+                SchematicRegistry.unlockNewPage(memberObj, stack);
+            }
+            else
+            {
+                race.addNewSchematic(member, stack);
+            }
         }
     }
 }

@@ -50,7 +50,7 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     }*/
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < ItemMoon.names.length; i++)
         {
