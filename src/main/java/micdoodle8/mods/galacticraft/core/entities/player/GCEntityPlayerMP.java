@@ -53,7 +53,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     @Override
     public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (!GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
+        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
         {
             return;
         }
