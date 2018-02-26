@@ -65,9 +65,9 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
             for (int i = 0; i < SIZE; i++)
             {
                 ItemStack newGear = getContents(i);
-                if (newGear.getItem() instanceof ISortableItem && ((ISortableItem)newGear.getItem()).getCategory(newGear.getItemDamage()) == EnumSortCategoryItem.GEAR)
+                if (newGear.getItem() instanceof IClickableItem)
                 {
-                    newGear = newGear.getItem().onItemRightClick(worldIn, player, hand).getResult();
+                    newGear = ((IClickableItem)newGear.getItem()).onItemRightClick(newGear, worldIn, player);
                 }
                 if (newGear.getCount() >= 1)
                 {

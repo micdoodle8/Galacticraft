@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemOxygenMask extends Item implements ISortableItem
+public class ItemOxygenMask extends Item implements ISortableItem, IClickableItem
 {
     public ItemOxygenMask(String assetName)
     {
@@ -52,16 +52,30 @@ public class ItemOxygenMask extends Item implements ISortableItem
 
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
-            ItemStack gear = stats.getExtendedInventory().getStackInSlot(0);
-
-            if (gear.isEmpty())
+            if (itemStack.getItem() instanceof IClickableItem)
             {
-                stats.getExtendedInventory().setInventorySlotContents(0, itemStack.copy());
-                itemStack = ItemStack.EMPTY;
+                itemStack = ((IClickableItem)itemStack.getItem()).onItemRightClick(itemStack, worldIn, player);
+            }
+
+            if (itemStack.isEmpty())
+            {
                 return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
             }
         }
         return new ActionResult<>(EnumActionResult.PASS, itemStack);
+    }
+    
+    public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player)
+    {
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        ItemStack gear = stats.getExtendedInventory().getStackInSlot(0);
+
+        if (gear.isEmpty())
+        {
+            stats.getExtendedInventory().setInventorySlotContents(0, itemStack.copy());
+            itemStack = ItemStack.EMPTY;
+        }
+        
+        return itemStack;
     }
 }
