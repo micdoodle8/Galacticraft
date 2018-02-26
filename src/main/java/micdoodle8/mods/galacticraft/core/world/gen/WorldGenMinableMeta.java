@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
+import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -51,14 +52,15 @@ public class WorldGenMinableMeta extends WorldGenMinable
         double clumpYb = (double) (position.getY() + rand.nextInt(3) - 2) - clumpYa;
 
         final IBlockState oreState = this.minableBlockId.getStateFromMeta(this.usingMetadata ? this.metadata : 0);
-
+        float concentricRadius = this.numberOfBlocks;
+        double size = (rand.nextDouble() * (double) this.numberOfBlocks + 1D) / 16.0D;
+        
         for (int i = 0; i < this.numberOfBlocks; ++i)
         {
-            float f1 = (float) i / (float) this.numberOfBlocks;
+            float f1 = (float) i / concentricRadius;
             double centreX = clumpXa + clumpXb * (double) f1;
             double centreY = clumpYa + clumpYb * (double) f1;
             double centreZ = clumpZa + clumpZb * (double) f1;
-            double size = rand.nextDouble() * (double) this.numberOfBlocks / 16.0D;
             double sizeXZ = ((double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * size + 1.0D) / 2.0D;
             double sizeY = sizeXZ;
             int xmin = MathHelper.floor(centreX - sizeXZ);
@@ -91,6 +93,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
                                 if (xySquared + dz * dz < 1.0D)
                                 {
                                     BlockPos blockpos = new BlockPos(x, y, z);
+                                    if (this.minableBlockId == GCBlocks.blockMoon && metadata == 2) System.out.println("trying to place cheese at " + blockpos);
                                     IBlockState state = worldIn.getBlockState(blockpos);
 
                                     if (state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)

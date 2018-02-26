@@ -29,12 +29,12 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         this.targetTasks.taskEntries.clear();
         this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.25F, true));
         this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget(this, EntityPlayer.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedZombie.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSkeleton.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedSpider.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityEvolvedCreeper.class, 0, false, true, null));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget(this, EntitySlimeling.class, 200, false, true, null));
+        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedZombie.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedSkeleton.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedSpider.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedCreeper.class, 0, false, true, null));
+        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntitySlimeling.class, 200, false, true, null));
     }
 
     @Override

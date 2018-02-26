@@ -212,7 +212,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 //    }
 
 //    @Override
-//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
 //        TileEntity tileEntity = worldIn.getTileEntity(pos);
 //        TileEntity[] connectable = new TileEntity[6];

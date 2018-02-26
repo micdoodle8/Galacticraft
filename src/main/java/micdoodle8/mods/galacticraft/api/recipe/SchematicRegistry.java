@@ -100,7 +100,7 @@ public class SchematicRegistry
             if (schematic != null)
             {
                 SchematicRegistry.addUnlockedPage(player, schematic);
-
+                
                 return schematic;
             }
         }

@@ -74,19 +74,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 public class GCPlayerHandler
 {
     private static final int OXYGENHEIGHTLIMIT = 450;
     public static final int GEAR_NOT_PRESENT = -1;
     
-//    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-    private HashMap<Item, Item> torchItems = new HashMap<Item, Item>(4, 1F);
-
-//    public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
-//    {
-//        return this.playerStatsMap;
-//    }
+    private HashMap<Item, Item> torchItems = new HashMap<>(4, 1F);
+    private static HashMap<UUID, Integer> deathTimes = new HashMap<>();
 
     @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent event)
@@ -124,6 +120,25 @@ public class GCPlayerHandler
         if (event.getOriginal() instanceof EntityPlayerMP && event.getEntityPlayer() instanceof EntityPlayerMP)
         {
             TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) event.getOriginal(), (EntityPlayerMP) event.getEntityPlayer());
+        }
+        if (event.isWasDeath() && event.getOriginal() instanceof EntityPlayerMP)
+        {
+            UUID uu = event.getOriginal().getPersistentID();
+            if (event.getOriginal().world.provider instanceof IGalacticraftWorldProvider)
+            {
+                Integer timeA = deathTimes.get(uu);
+                int bb = ((EntityPlayerMP) event.getOriginal()).mcServer.getTickCounter();
+                if (timeA != null && (bb - timeA) < 1500)
+                {
+                    String msg = EnumColor.YELLOW + GCCoreUtil.translate("commands.gchouston.help.1") + " " + EnumColor.WHITE + GCCoreUtil.translate("commands.gchouston.help.2");
+                    event.getOriginal().sendMessage(new TextComponentString(msg));
+                }
+                deathTimes.put(uu, bb);
+            }
+            else
+            {
+                deathTimes.remove(uu);
+            }
         }
     }
 

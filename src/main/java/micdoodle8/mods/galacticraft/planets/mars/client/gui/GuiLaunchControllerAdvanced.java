@@ -62,9 +62,9 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         }
 
         // Hacky way of rendering buttons properly, possibly bugs here:
-        List buttonList = new ArrayList(this.buttonList);
-        List labelList = new ArrayList(this.labelList);
-        List<GuiElementInfoRegion> infoRegions = new ArrayList(this.infoRegions);
+        List<GuiButton> buttonList = new ArrayList<>(this.buttonList);
+        List<GuiLabel> labelList = new ArrayList<>(this.labelList);
+        List<GuiElementInfoRegion> infoRegions = new ArrayList<>(this.infoRegions);
         this.buttonList.clear();
         this.labelList.clear();
         this.infoRegions.clear();
