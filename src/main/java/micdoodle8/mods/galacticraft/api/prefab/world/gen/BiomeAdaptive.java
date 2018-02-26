@@ -74,6 +74,11 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         biomeDefault.setBodyInstance(body);
     }
     
+    public boolean isInstance(Class<?> clazz)
+    {
+        return clazz.isInstance(this.biomeTrue);
+    }
+    
     /**
      * Be sure to call this from your BiomeProvider in:
      * <br>-- getBiome(BlockPos pos, Biome defaultBiome)

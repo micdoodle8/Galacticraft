@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
@@ -329,8 +330,9 @@ public class ChunkProviderVenus extends ChunkProviderBase
         long k = this.rand.nextLong() / 2L * 2L + 1L;
         long l = this.rand.nextLong() / 2L * 2L + 1L;
         this.rand.setSeed((long) x * k + (long) z * l ^ this.world.getSeed());
+        boolean isValley = biomegenbase instanceof BiomeAdaptive && ((BiomeAdaptive)biomegenbase).isInstance(BiomeGenVenusValley.class);
 
-        if (this.rand.nextInt(biomegenbase instanceof BiomeGenVenusValley ? 3 : 10) == 0)
+        if (this.rand.nextInt(isValley ? 3 : 10) == 0)
         {
             int i2 = this.rand.nextInt(16) + 8;
             int l2 = this.rand.nextInt(this.rand.nextInt(248) + 8);
@@ -340,7 +342,7 @@ public class ChunkProviderVenus extends ChunkProviderBase
         }
 
 
-        if (biomegenbase instanceof BiomeGenVenusValley)
+        if (isValley)
         {
             if (this.rand.nextInt(5) == 0)
             {
