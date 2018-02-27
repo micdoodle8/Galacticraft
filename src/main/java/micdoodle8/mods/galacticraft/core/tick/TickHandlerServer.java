@@ -599,33 +599,22 @@ public class TickHandlerServer
 
             if (world.provider instanceof IOrbitDimension)
             {
-                final Object[] entityList = world.loadedEntityList.toArray();
-
-                for (final Object o : entityList)
+                try
                 {
-                    if (o instanceof Entity)
+                    int dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.provider).getPlanetToOrbit()));
+                    int minY = ((IOrbitDimension)world.provider).getYCoordToTeleportToPlanet();
+
+                    final Entity[] entityList = world.loadedEntityList.toArray(new Entity[world.loadedEntityList.size()]);
+                    for (final Entity e : entityList)
                     {
-                        final Entity e = (Entity) o;
-
-                        if (e.world.provider instanceof IOrbitDimension)
+                        if (e.posY <= minY && e.world == world)
                         {
-                            final IOrbitDimension dimension = (IOrbitDimension) e.world.provider;
-
-                            if (e.posY <= dimension.getYCoordToTeleportToPlanet())
-                            {
-                                int dim = 0;
-                                try
-                                {
-                                    dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()));
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-
-                                WorldUtil.transferEntityToDimension(e, dim, world, false, null);
-                            }
+                            WorldUtil.transferEntityToDimension(e, dim, world, false, null);
                         }
                     }
+                }
+                catch (Exception ex)
+                {
                 }
             }
 

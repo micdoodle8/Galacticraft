@@ -45,7 +45,7 @@ public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdata
             Ingredient test = this.input.get(i);
             if (test.apply(inputA))
             {
-                this.input.set(i, Ingredient.fromStacks((ItemStack[]) inputB.toArray()));
+                this.input.set(i, Ingredient.fromStacks(inputB.toArray(new ItemStack[inputB.size()])));
 //            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
 //            {
 //                this.input[i] = inputB;
