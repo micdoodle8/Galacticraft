@@ -182,6 +182,10 @@ public class ContainerCrafting extends Container
 
     private boolean mergeToCrafting(ItemStack stack, boolean b)
     {
+        if (stack.isEmpty())
+        {
+            return false;
+        }
         List<Slot> acceptSlots = new LinkedList<>();
         List<Integer> acceptQuantity = new LinkedList<>();
         int minQuantity = 64;
@@ -197,7 +201,7 @@ public class ContainerCrafting extends Container
                 if (target2.isEmpty()) continue;
                 if (target.isEmpty())
                 {
-                    target = target2;
+                    target = target2.copy();
                 }
                 if (matchingStacks(stack, target))
                 {
@@ -210,6 +214,22 @@ public class ContainerCrafting extends Container
             }
         }
         
+        //First fill any empty slots
+        for (Slot slot : acceptSlots)
+        {
+            ItemStack target = slot.getStack();
+            if (target.isEmpty())
+            {
+                ItemStack target2 = this.memory.get(slot.slotNumber - 1);
+                this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target2.copy());
+                stack.shrink(1);
+                if (stack.isEmpty())
+                {
+                    return false;
+                }
+            }
+        }        
+        
         //The stack more than exceeds what the crafting inventory requires
         if (stack.getCount() >= acceptTotal)
         {
@@ -219,13 +239,6 @@ public class ContainerCrafting extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target.isEmpty())
-                {
-                    ItemStack target2 = this.memory.get(slot.slotNumber - 1);
-                    if (target2.isEmpty()) continue;
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
                 stack.shrink(target.getMaxStackSize() - target.getCount());
                 target.setCount(target.getMaxStackSize());
                 slot.onSlotChanged();
@@ -249,13 +262,6 @@ public class ContainerCrafting extends Container
                 for (Slot slot : acceptSlots)
                 {
                     ItemStack target = slot.getStack();
-                    if (target.isEmpty())
-                    {
-                        ItemStack target2 = this.memory.get(slot.slotNumber - 1);
-                        if (target2.isEmpty()) continue;
-                        target = target2.copy();
-                        this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                    }
                     if (target.getCount() < smallestStack)
                     {
                         smallestStack = target.getCount();
@@ -280,13 +286,6 @@ public class ContainerCrafting extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target.isEmpty())
-                {
-                    ItemStack target2 = this.memory.get(slot.slotNumber - 1);
-                    if (target2.isEmpty()) continue;
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
                 stack.shrink(targetSize - target.getCount());
                 acceptTotal -= targetSize - target.getCount();
                 target.setCount(targetSize);
@@ -302,13 +301,6 @@ public class ContainerCrafting extends Container
             if (slot != null)
             {
                 ItemStack target = slot.getStack();
-                ItemStack target2 = this.memory.get(slot.slotNumber - 1);
-                if (target2.isEmpty()) continue;
-                if (target.isEmpty())
-                {
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
                 int transfer = average;
                 if (modulus > 0)
                 {
