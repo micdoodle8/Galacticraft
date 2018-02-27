@@ -248,7 +248,7 @@ public class TransformerHooks
             }
             catch (Exception e)
             {
-                GCLog.severe("Error in another mod's worldgen.  This is NOT a Galacticraft bug.");
+                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
                 e.printStackTrace();
             }
         }
