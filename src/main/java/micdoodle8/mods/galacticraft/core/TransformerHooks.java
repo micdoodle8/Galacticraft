@@ -180,7 +180,14 @@ public class TransformerHooks
 
         if (!(world.provider instanceof IGalacticraftWorldProvider) || ConfigManagerCore.enableOtherModsFeatures)
         {
-            net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+            try {
+                net.minecraftforge.fml.common.registry.GameRegistry.generateWorld(chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+            } catch (Exception e)
+            {
+                GCLog.severe("Error in another mod's worldgen.  This is *NOT* a Galacticraft bug, report it to the other mod please.");
+                GCLog.severe("Details:- Dimension:" + GCCoreUtil.getDimensionID(world) + "  Chunk cx,cz:" + chunkX + "," + chunkZ + "  Seed:" + world.getSeed());
+                e.printStackTrace();
+            }
             return;
         }
 
