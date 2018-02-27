@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -14,6 +15,7 @@ import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.chunk.IChunkProvider;
+
 import java.util.List;
 import java.util.Random;
 
@@ -229,27 +231,34 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
     @Override
     public Chunk provideChunk(int par1, int par2)
     {
-        ChunkPrimer primer = new ChunkPrimer();
-        this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-//        final Block[] ids = new Block[32768 * 2];
-//        final byte[] meta = new byte[32768 * 2];
-        this.generateTerrain(par1, par2, primer);
-        this.createCraters(par1, par2, primer);
-        this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-        this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
-
-        if (this.worldGenerators == null)
-        {
-            this.worldGenerators = this.getWorldGenerators();
+            ChunkPrimer primer = new ChunkPrimer();
+        try {
+            this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
+    //        final Block[] ids = new Block[32768 * 2];
+    //        final byte[] meta = new byte[32768 * 2];
+            this.generateTerrain(par1, par2, primer);
+            this.createCraters(par1, par2, primer);
+            this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
+            this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
+    
+            if (this.worldGenerators == null)
+            {
+                this.worldGenerators = this.getWorldGenerators();
+            }
+    
+            for (MapGenBaseMeta generator : this.worldGenerators)
+            {
+                generator.generate(this, this.worldObj, par1, par2, primer);
+            }
+    
+                this.onChunkProvide(par1, par2, primer);
         }
-
-        for (MapGenBaseMeta generator : this.worldGenerators)
+        catch (Exception e)
         {
-            generator.generate(this, this.worldObj, par1, par2, primer);
+            GCLog.severe("Error caught in planetary worldgen at coords " + par1 + "," + par2 + ".  If the next 2 lines are showing an Add-On mod name, please report to that mod's author!");
+            e.printStackTrace();
         }
-
-        this.onChunkProvide(par1, par2, primer);
-
+        
         final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
         final byte[] var5 = var4.getBiomeArray();
 

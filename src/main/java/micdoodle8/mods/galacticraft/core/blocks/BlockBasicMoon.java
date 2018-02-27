@@ -329,7 +329,6 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
                     if (!toRemove.isEmpty())
                     {
                         footprintList.removeAll(toRemove);
-                        footprintChunkMap.put(chunkKey, footprintList);
                     }
                 }
             }
