@@ -40,6 +40,8 @@ public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdata
     @Override
     public void replaceInput(ItemStack inputA, List<ItemStack> inputB)
     {
+        if (inputB.isEmpty()) return;
+
         for (int i = 0; i < this.input.size(); i++)
         {
             Ingredient test = this.input.get(i);
