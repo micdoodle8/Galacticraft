@@ -72,6 +72,11 @@ public class RecipeManagerGC
             RecipeManagerGC.addAppEngRecipes();
         }
 
+        if (CompatibilityManager.modAALoaded)
+        {
+            CompatModuleActuallyAdditions.addRecipes();
+        }
+        
         RecipeManagerGC.addUniversalRecipes();
 
         RecipeManagerGC.addExNihiloRecipes();
