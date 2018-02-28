@@ -53,7 +53,7 @@ public class SpaceRaceManager
 
             for (EntityPlayerMP player: PlayerUtil.getPlayersOnline())
             {
-                if (race.getPlayerNames().contains(player.getGameProfile().getName()))
+                if (race.getPlayerNames().contains(PlayerUtil.getName(player)))
                 {
                     CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(GCCoreUtil.getDimensionID(player.worldObj));
 
@@ -186,7 +186,7 @@ public class SpaceRaceManager
     
     public static void teamUnlockSchematic(EntityPlayerMP player, ItemStack stack)
     {
-        SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+        SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
         if (race == null) return;
         MinecraftServer server = player.mcServer;
         for (String member : race.getPlayerNames())

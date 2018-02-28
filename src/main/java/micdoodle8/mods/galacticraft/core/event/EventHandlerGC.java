@@ -922,7 +922,7 @@ public class EventHandlerGC
             //Only modify standard game sounds, not music
             if (event.result.getAttenuationType() != ISound.AttenuationType.NONE)
             {
-                PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getGameProfile().getName());
+                PlayerGearData gearData = ClientProxyCore.playerItemData.get(PlayerUtil.getName(player));
 
                 float x = event.result.getXPosF();
                 float y = event.result.getYPosF();

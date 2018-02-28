@@ -95,7 +95,7 @@ public class CommandSpaceStationAddOwner extends CommandBase
 
                     if (playerToAdd != null)
                     {
-                        playerToAdd.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.added", playerBase.getGameProfile().getName())));
+                        playerToAdd.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.added", PlayerUtil.getName(playerBase))));
                     }
                 }
             }

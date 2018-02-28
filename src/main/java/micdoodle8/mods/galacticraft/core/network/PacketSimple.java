@@ -290,14 +290,14 @@ public class PacketSimple extends PacketBase implements Packet
         switch (this.type)
         {
         case C_AIR_REMAINING:
-            if (String.valueOf(this.data.get(2)).equals(String.valueOf(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName())))
+            if (String.valueOf(this.data.get(2)).equals(String.valueOf(PlayerUtil.getName(FMLClientHandler.instance().getClient().thePlayer))))
             {
                 TickHandlerClient.airRemaining = (Integer) this.data.get(0);
                 TickHandlerClient.airRemaining2 = (Integer) this.data.get(1);
             }
             break;
         case C_UPDATE_DIMENSION_LIST:
-            if (String.valueOf(this.data.get(0)).equals(FMLClientHandler.instance().getClient().thePlayer.getGameProfile().getName()))
+            if (String.valueOf(this.data.get(0)).equals(PlayerUtil.getName(FMLClientHandler.instance().getClient().thePlayer)))
             {
                 String dimensionList = (String) this.data.get(1);
                 if (ConfigManagerCore.enableDebug)
@@ -397,7 +397,7 @@ public class PacketSimple extends PacketBase implements Packet
 
             if (gearDataPlayer != null)
             {
-                PlayerGearData gearData = ClientProxyCore.playerItemData.get(gearDataPlayer.getGameProfile().getName());
+                PlayerGearData gearData = ClientProxyCore.playerItemData.get(PlayerUtil.getName(gearDataPlayer));
 
                 if (gearData == null)
                 {
@@ -938,7 +938,7 @@ public class PacketSimple extends PacketBase implements Packet
         case S_RENAME_SPACE_STATION:
             final SpaceStationWorldData ssdata = SpaceStationWorldData.getStationData(playerBase.worldObj, (Integer) this.data.get(1), playerBase);
 
-            if (ssdata != null && ssdata.getOwner().equalsIgnoreCase(player.getGameProfile().getName()))
+            if (ssdata != null && ssdata.getOwner().equalsIgnoreCase(PlayerUtil.getName(player)))
             {
                 ssdata.setSpaceStationName((String) this.data.get(0));
                 ssdata.setDirty(true);
@@ -1060,7 +1060,7 @@ public class PacketSimple extends PacketBase implements Packet
 
             if (previousData)
             {
-                SpaceRaceManager.sendSpaceRaceData(server, null, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
+                SpaceRaceManager.sendSpaceRaceData(server, null, SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(playerBase)));
             }
             break;
         case S_REQUEST_FLAG_DATA:
@@ -1085,7 +1085,7 @@ public class PacketSimple extends PacketBase implements Packet
                     {
                         teamNameTotal = teamNameTotal.concat(dB + teamNamePart + " ");
                     }
-                    playerInvited.addChatMessage(new ChatComponentText(dA + GCCoreUtil.translateWithFormat("gui.space_race.chat.invite_received", bG + player.getGameProfile().getName() + dA) + "  " + GCCoreUtil.translateWithFormat("gui.space_race.chat.to_join", teamNameTotal, EnumColor.AQUA + "/joinrace" + dA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                    playerInvited.addChatMessage(new ChatComponentText(dA + GCCoreUtil.translateWithFormat("gui.space_race.chat.invite_received", bG + PlayerUtil.getName(player) + dA) + "  " + GCCoreUtil.translateWithFormat("gui.space_race.chat.to_join", teamNameTotal, EnumColor.AQUA + "/joinrace" + dA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
                 }
             }
             break;

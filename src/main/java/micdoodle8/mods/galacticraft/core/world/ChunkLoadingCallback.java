@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
@@ -320,7 +321,7 @@ public class ChunkLoadingCallback implements LoadingCallback
     {
         for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
         {
-            if (player.getGameProfile().getName().equals(playerEntry.getKey()))
+            if (PlayerUtil.getName(player).equals(playerEntry.getKey()))
             {
                 for (Entry<Integer, HashSet<BlockPos>> dimensionEntry : playerEntry.getValue().entrySet())
                 {
@@ -401,7 +402,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // dimEntry.getValue().remove(loader);
         //
         // HashMap<Integer, HashSet<BlockPos>> dimMap =
-        // chunkLoaderList.get(player.getGameProfile().getName());
+        // chunkLoaderList.get(PlayerUtil.getName(player));
         //
         // if (dimMap != null)
         // {
@@ -413,7 +414,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // }
         //
         // dimm
-        // chunkLoaderList.put(player.getGameProfile().getName(), dimMap);
+        // chunkLoaderList.put(PlayerUtil.getName(player), dimMap);
         // }
         // }
         // }
