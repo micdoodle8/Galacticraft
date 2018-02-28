@@ -76,6 +76,11 @@ public class RecipeManagerGC
             RecipeManagerGC.addAppEngRecipes();
         }
 
+        if (CompatibilityManager.modAALoaded)
+        {
+            CompatModuleActuallyAdditions.addRecipes();
+        }
+        
         RecipeManagerGC.addUniversalRecipes();
 
         RecipeManagerGC.addExNihiloRecipes();
@@ -551,7 +556,7 @@ public class RecipeManagerGC
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.POTATO, Items.POTATO });
 
         //EmergencyKit
-        RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
+        CraftingManager.getInstance().getRecipeList().add(new ShapedRecipeNBT(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe()));
         
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw });
 

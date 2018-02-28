@@ -323,6 +323,16 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
     public boolean overrideMemory(ItemStack itemstack1, ItemStack[] memory2)
     {
+        boolean allEmpty = true;
+        for (int i = 0; i < 9; i++)
+        {
+            if (this.craftMatrix.getStackInSlot(i) != null)
+            {
+                allEmpty = false;
+                break;
+            }
+        }        
+        if (allEmpty) return false;
         if (CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld()) != null)
         {
             //Valid recipe on the table.  Does it fuzzy match this tile's memory (empty slots which should have recipe components are OK)
