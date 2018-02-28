@@ -118,9 +118,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List list, Entity collidingEntity)
+    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
     {
         int meta = getMetaFromState(state);
 
@@ -438,7 +437,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumBlockMultiType) state.getValue(MULTI_TYPE)).getMeta();
+        return state.getValue(MULTI_TYPE).getMeta();
     }
 
     @Override
@@ -450,7 +449,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        EnumBlockMultiType type = (EnumBlockMultiType) state.getValue(MULTI_TYPE);
+        EnumBlockMultiType type = state.getValue(MULTI_TYPE);
         int renderType = 0;
 
         switch (type)

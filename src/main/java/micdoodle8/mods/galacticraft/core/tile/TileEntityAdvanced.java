@@ -24,7 +24,7 @@ public abstract class TileEntityAdvanced extends TileEntity implements IPacketRe
     public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
-    private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
+    private Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
     private boolean networkDataChanged = false;
 
     @Override

@@ -66,7 +66,6 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
         }
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

@@ -307,15 +307,28 @@ public class WorldUtil
      * @param id
      * @return
      */
-    public static WorldProvider getProviderForDimensionServer(int id)
+    public static World getWorldForDimensionServer(int id)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer theServer = MinecraftServer.getServer();
         if (theServer == null)
         {
             GCLog.debug("Called WorldUtil server side method but FML returned no server - is this a bug?");
             return null;
         }
-        World ws = theServer.worldServerForDimension(id);
+        return theServer.worldServerForDimension(id);
+    }
+
+    
+    /**
+     * CAUTION: this loads the dimension if it is not already loaded.  This can cause
+     * server load if used too frequently or with a list of multiple dimensions.
+     *
+     * @param id
+     * @return
+     */
+    public static WorldProvider getProviderForDimensionServer(int id)
+    {
+        World ws = getWorldForDimensionServer(id);
         if (ws != null)
         {
             return ws.provider;
@@ -346,7 +359,7 @@ public class WorldUtil
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(int tier, EntityPlayerMP playerBase)
     {
         List<Integer> ids = WorldUtil.getPossibleDimensionsForSpaceshipTier(tier, playerBase);
-        final HashMap<String, Integer> map = new HashMap<String, Integer>();
+        final HashMap<String, Integer> map = new HashMap<String, Integer>(ids.size(), 1F);
 
         for (Integer id : ids)
         {
@@ -431,11 +444,10 @@ public class WorldUtil
         }
     }
 
-    public static void registerSpaceStations(File spaceStationList)
+    public static void registerSpaceStations(MinecraftServer theServer, File spaceStationList)
     {
 //        WorldUtil.registeredSpaceStations = WorldUtil.getExistingSpaceStationList(spaceStationList);
         WorldUtil.registeredSpaceStations = Maps.newHashMap();
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
         if (theServer == null || !spaceStationList.exists() && !spaceStationList.isDirectory())
         {
             return;
@@ -551,7 +563,7 @@ public class WorldUtil
                 WorldUtil.registeredPlanets.add(defaultID);
                 return false;
             }
-            World w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(planetID);
+            World w = getWorldForDimensionServer(planetID);
             WorldUtil.dimNames.put(planetID, getDimensionName(w.provider));
             return true;
         }
@@ -669,7 +681,7 @@ public class WorldUtil
             GCLog.severe("Dimension already registered to another mod: unable to register space station dimension " + dimID);
         }
 
-        for (WorldServer server : MinecraftServer.getServer().worldServers)
+        for (WorldServer server : GCCoreUtil.getWorldServerList(world))
         {
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_LIST, GCCoreUtil.getDimensionID(server), WorldUtil.getSpaceStationList()), GCCoreUtil.getDimensionID(server));
         }
@@ -692,7 +704,7 @@ public class WorldUtil
         {
             //GalacticraftCore.packetPipeline.sendToAll(new PacketSimple(EnumSimplePacket.C_UPDATE_PLANETS_LIST, WorldUtil.getPlanetList()));
 
-            MinecraftServer mcServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+            MinecraftServer mcServer = world.getMinecraftServer();
 
             if (mcServer != null)
             {
@@ -874,11 +886,6 @@ public class WorldUtil
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setUsingPlanetSelectionGui(false);
 
-                if (worldNew.provider instanceof WorldProviderSpaceStation)
-                {
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
-                }
-
                 if (ridingRocket != null)
                 {
                     spawnPos = new Vector3(ridingRocket);
@@ -984,6 +991,72 @@ public class WorldUtil
         return entity;
     }
     
+    public static Entity teleportEntitySimple(World worldNew, int dimID, EntityPlayerMP player, Vector3 spawnPos)
+    {
+        if (player.ridingEntity != null)
+        {
+            player.ridingEntity.setDead();
+            player.mountEntity(null);
+        }
+
+        World worldOld = player.worldObj;
+        int oldDimID = GCCoreUtil.getDimensionID(worldOld);
+        boolean dimChange = worldOld != worldNew;
+        //Make sure the entity is added to the correct chunk in the OLD world so that it will be properly removed later if it needs to be unloaded from that world
+        worldOld.updateEntityWithOptionalForce(player, false);
+
+        if (dimChange)
+        {
+            player.dimension = dimID;
+            if (ConfigManagerCore.enableDebug)
+            {
+                GCLog.info("DEBUG: Sending respawn packet to player for dim " + dimID);
+            }
+            player.playerNetServerHandler.sendPacket(new S07PacketRespawn(dimID, player.worldObj.getDifficulty(), player.worldObj.getWorldInfo().getTerrainType(), player.theItemInWorldManager.getGameType()));
+            if (worldNew.provider instanceof WorldProviderSpaceStation)
+            {
+                if (WorldUtil.registeredSpaceStations.containsKey(dimID))
+                    //TODO This has never been effective before due to the earlier bug - what does it actually do?
+                {
+                    NBTTagCompound var2 = new NBTTagCompound();
+                    SpaceStationWorldData.getStationData(worldNew, dimID, player).writeToNBT(var2);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_DATA, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { dimID, var2 }), player);
+                }
+            }
+            removeEntityFromWorld(worldOld, player, true);
+            forceMoveEntityToPos(player, (WorldServer) worldNew, spawnPos, true);
+            GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " to dimension " + GCCoreUtil.getDimensionID(worldNew));
+
+            player.mcServer.getConfigurationManager().preparePlayer(player, (WorldServer) worldOld);
+            player.theItemInWorldManager.setWorld((WorldServer) worldNew);
+            player.mcServer.getConfigurationManager().updateTimeAndWeatherForPlayer(player, (WorldServer) worldNew);
+            player.mcServer.getConfigurationManager().syncPlayerInventory(player);
+
+            for (Object o : player.getActivePotionEffects())
+            {
+                PotionEffect var10 = (PotionEffect) o;
+                player.playerNetServerHandler.sendPacket(new S1DPacketEntityEffect(player.getEntityId(), var10));
+            }
+
+            player.playerNetServerHandler.sendPacket(new S1FPacketSetExperience(player.experience, player.experienceTotal, player.experienceLevel));
+            FMLCommonHandler.instance().firePlayerChangedDimensionEvent((EntityPlayerMP) player, oldDimID, dimID);
+        }
+        else
+        {
+            forceMoveEntityToPos(player, (WorldServer) worldNew, spawnPos, false);
+            GCLog.info("Server attempting to transfer player " + player.getGameProfile().getName() + " within same dimension " + GCCoreUtil.getDimensionID(worldNew));
+        }
+        player.capabilities.isFlying = false;
+        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(player.worldObj), new Object[] {}), player);
+
+        // Update PlayerStatsGC
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        GCPlayerHandler.setUsingParachute(player, stats, false);
+
+        return player;
+    }
+    
+    
     /**
      * This correctly positions an entity at spawnPos in worldNew
      * loading and adding it to the chunk as required.
@@ -1057,7 +1130,7 @@ public class WorldUtil
 
         if (directlyRemove)
         {
-            List l = new ArrayList<Entity>();
+            List<Entity> l = new ArrayList<>();
             l.add(var1);
             var0.unloadEntities(l);
             //This will automatically remove the entity from the world and the chunk prior to the world's next update entities tick
@@ -1487,7 +1560,7 @@ public class WorldUtil
         else
         {
             long diff = newTime - current;
-            for (WorldServer worldServer : MinecraftServer.getServer().worldServers)
+            for (WorldServer worldServer : GCCoreUtil.getWorldServerList(world))
             {
                 if (worldServer == world) continue;
                 if (worldServer.provider instanceof WorldProviderSpace)

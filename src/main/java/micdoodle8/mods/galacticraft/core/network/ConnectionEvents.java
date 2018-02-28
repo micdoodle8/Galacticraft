@@ -38,7 +38,7 @@ public class ConnectionEvents
 
     protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet> packetClass)
     {
-        BiMap<Integer, Class<? extends Packet>> bimap = (BiMap) EnumConnectionState.PLAY.directionMaps.get(direction);
+        BiMap<Integer, Class<? extends Packet>> bimap = (BiMap<Integer, Class<? extends Packet>>) EnumConnectionState.PLAY.directionMaps.get(direction);
 
         if (bimap == null)
         {
@@ -79,7 +79,7 @@ public class ConnectionEvents
             SpaceRace raceForPlayer = SpaceRaceManager.getSpaceRaceFromPlayer(thePlayer.getGameProfile().getName());
             if (raceForPlayer != null)
             {
-                SpaceRaceManager.sendSpaceRaceData(thePlayer, raceForPlayer);
+                SpaceRaceManager.sendSpaceRaceData(thePlayer.mcServer, thePlayer, raceForPlayer);
             }
         }
 

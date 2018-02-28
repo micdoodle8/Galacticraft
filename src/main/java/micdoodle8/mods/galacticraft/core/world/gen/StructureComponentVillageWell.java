@@ -52,9 +52,8 @@ public class StructureComponentVillageWell extends StructureComponentVillage
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
-    public void buildComponent(StructureComponent par1StructureComponent, List par2List, Random par3Random)
+    public void buildComponent(StructureComponent par1StructureComponent, List<StructureComponent> par2List, Random par3Random)
     {
         StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.maxY - 4, this.boundingBox.minZ + 1, EnumFacing.getHorizontal(1), this.getComponentType());
         StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.maxY - 4, this.boundingBox.minZ + 1, EnumFacing.getHorizontal(3), this.getComponentType());

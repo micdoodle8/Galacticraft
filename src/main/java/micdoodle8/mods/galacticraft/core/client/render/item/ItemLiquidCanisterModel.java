@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.IBakedModel;
@@ -11,7 +12,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.List;
 
-@SuppressWarnings({ "deprecation", "unchecked" })
+@SuppressWarnings({ "deprecation" })
 public class ItemLiquidCanisterModel implements ISmartItemModel
 {
     private final IBakedModel iBakedModel;
@@ -22,13 +23,13 @@ public class ItemLiquidCanisterModel implements ISmartItemModel
     }
 
     @Override
-    public List getFaceQuads(EnumFacing enumFacing)
+    public List<BakedQuad> getFaceQuads(EnumFacing enumFacing)
     {
         return iBakedModel.getFaceQuads(enumFacing);
     }
 
     @Override
-    public List getGeneralQuads()
+    public List<BakedQuad> getGeneralQuads()
     {
         return iBakedModel.getGeneralQuads();
     }

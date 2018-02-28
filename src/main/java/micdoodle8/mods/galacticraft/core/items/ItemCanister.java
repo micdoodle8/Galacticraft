@@ -71,9 +71,8 @@ public class ItemCanister extends Item implements ISortableItem
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         for (int i = 0; i < 2; i++)
         {

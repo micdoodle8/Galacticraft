@@ -29,7 +29,7 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
     }
 
     @Override
-    public List getBiomesToSpawnIn()
+    public List<BiomeGenBase> getBiomesToSpawnIn()
     {
         return this.biomesToSpawnIn;
     }
@@ -108,14 +108,12 @@ public abstract class WorldChunkManagerSpace extends WorldChunkManager
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public boolean areBiomesViable(int par1, int par2, int par3, List par4List)
     {
         return par4List.contains(this.getBiome());
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
     public BlockPos findBiomePosition(int par1, int par2, int par3, List par4List, Random par5Random)
     {

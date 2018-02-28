@@ -37,7 +37,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -184,12 +183,11 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        //Server instance can sometimes be null on a single player game switched to LAN mode
-        if (FMLCommonHandler.instance().getMinecraftServerInstance() == null || FMLCommonHandler.instance().getMinecraftServerInstance().worldServers == null || !GalacticraftCore.isPlanetsLoaded || controllerClass == null)
+        WorldServer[] servers = GCCoreUtil.getWorldServerList(this.worldObj);
+        if (!GalacticraftCore.isPlanetsLoaded || controllerClass == null)
         {
             return false;
         }
-        WorldServer[] servers = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
 
         for (int i = 0; i < servers.length; i++)
         {

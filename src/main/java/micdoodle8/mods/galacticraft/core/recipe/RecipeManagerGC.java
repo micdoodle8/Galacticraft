@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine3;
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.items.ItemEmergencyKit;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -32,15 +33,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
-import ic2.api.item.IC2Items;
-import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.Recipes;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -67,7 +64,7 @@ public class RecipeManagerGC
 
         if (CompatibilityManager.isIc2Loaded())
         {
-            RecipeManagerGC.addIndustrialCraft2Recipes();
+            CompatModuleIC2.addIndustrialCraft2Recipes();
         }
 
         if (CompatibilityManager.isAppEngLoaded())
@@ -75,12 +72,16 @@ public class RecipeManagerGC
             RecipeManagerGC.addAppEngRecipes();
         }
 
+        if (CompatibilityManager.modAALoaded)
+        {
+            CompatModuleActuallyAdditions.addRecipes();
+        }
+        
         RecipeManagerGC.addUniversalRecipes();
 
         RecipeManagerGC.addExNihiloRecipes();
     }
 
-    @SuppressWarnings("unchecked")
     private static void addUniversalRecipes()
     {
         RecipeSorter.register("galacticraftcore:shapedore", OreRecipeUpdatable.class, SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
@@ -270,7 +271,7 @@ public class RecipeManagerGC
             aluminumIngots.addAll(addedList);
         }
 
-        final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>();
+        final HashMap<Object, Integer> spaceStationRequirements = new HashMap<Object, Integer>(4, 1.0F);
         spaceStationRequirements.put("ingotTin", 32);
         spaceStationRequirements.put(aluminumIngots, 16);
         spaceStationRequirements.put(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_ADVANCED), 1);
@@ -544,6 +545,7 @@ public class RecipeManagerGC
 		RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRedstone, 4, 0), new Object[] { " X ", "XYX", " X ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', "dustRedstone" });
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRepeater_Unpowered, 1, 0), new Object[] { "   ", "XYX", "   ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', Items.repeater });
 		
+        // Food
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 15), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.apple, Items.apple });
 
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 16), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.carrot, Items.carrot });
@@ -552,6 +554,9 @@ public class RecipeManagerGC
 
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato });
 
+        //EmergencyKit
+        RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
+        
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw });
 
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
@@ -799,34 +804,6 @@ public class RecipeManagerGC
         }
     }
 
-    private static void addIndustrialCraft2Recipes()
-    {
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 1), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 2), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
-        Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCBlocks.basicBlock, 1, 7), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
-        Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCItems.basicItem, 1, 5), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 0));
-        Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCItems.basicItem, 1, 8), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 0));
-        ItemStack dustSmallIron = IC2Items.getItem("dust", "small_iron").copy();
-        ItemStack dustStone = IC2Items.getItem("dust", "stone").copy();
-        NBTTagCompound amountTag = new NBTTagCompound();
-        amountTag.setInteger("amount", 1000);
-        Recipes.oreWashing.addRecipe(new RecipeInputItemStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), amountTag, false, new ItemStack [] { new ItemStack(GCItems.ic2compat, 1, 1), dustSmallIron, dustStone });
-        ItemStack dustSmallTitanium = new ItemStack(GCItems.ic2compat, 1, 7);
-        NBTTagCompound heatTag1 = new NBTTagCompound();
-        heatTag1.setInteger("minHeat", 2000);
-        Recipes.centrifuge.addRecipe(new RecipeInputItemStack(new ItemStack(GCItems.ic2compat, 1, 1), 1), heatTag1, false, new ItemStack [] { dustSmallTitanium, new ItemStack(GCItems.ic2compat, 1, 0) });
-        NBTTagCompound heatTag2 = new NBTTagCompound();
-        heatTag2.setInteger("minHeat", 750);
-        Recipes.centrifuge.addRecipe(new RecipeInputItemStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), heatTag1, false, new ItemStack [] { dustSmallIron, new ItemStack(GCItems.ic2compat, 1, 0), dustStone });
-        
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_COPPER_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:copper,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GOLD_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:gold,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_HV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:iron,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_GLASS_FIBRE_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:glass,insulation:0"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, BlockEnclosed.EnumEnclosedBlockType.IC2_LV_CABLE.getMeta()), new Object[] { "XYX", 'Y', RecipeUtil.getIndustrialCraftItem("cable", "type:tin,insulation:1"), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-    }
-
     private static void addAppEngRecipes()
     {
 //         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlock.ME_CABLE.getMetadata()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.Transparent, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
@@ -836,7 +813,7 @@ public class RecipeManagerGC
     {
         try
         {
-            Class registry = Class.forName("exnihilo.registries.HeatRegistry");
+            Class<?> registry = Class.forName("exnihilo.registries.HeatRegistry");
             Method m = registry.getMethod("register", Block.class, float.class);
             m.invoke(null, GCBlocks.unlitTorchLit, 0.1F);
             for (Block torch : GCBlocks.otherModTorchesLit)

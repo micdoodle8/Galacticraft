@@ -231,9 +231,8 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         return new ItemStack(this, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(this.getTerraformer());
         par3List.add(this.getChamber());

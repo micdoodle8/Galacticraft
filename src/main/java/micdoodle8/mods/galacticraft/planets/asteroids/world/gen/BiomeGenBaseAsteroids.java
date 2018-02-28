@@ -9,7 +9,6 @@ public class BiomeGenBaseAsteroids extends BiomeGenBase
 {
     public static final BiomeGenBase asteroid = new BiomeGenBaseAsteroids(ConfigManagerCore.biomeIDbase + 2).setBiomeName("Asteroids");
 
-    @SuppressWarnings("unchecked")
     private BiomeGenBaseAsteroids(int var1)
     {
         super(var1);

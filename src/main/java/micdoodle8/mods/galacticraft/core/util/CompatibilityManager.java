@@ -35,6 +35,8 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded = Loader.isModLoaded("BiomesOPlenty");
+    private static boolean modEIOLoaded = Loader.isModLoaded("EnderIO");
+    public static boolean modAALoaded = Loader.isModLoaded("ActuallyAdditions");
     private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
     public static boolean isMFRLoaded = Loader.isModLoaded("MineFactoryReloaded");
@@ -398,6 +400,6 @@ public class CompatibilityManager
     
     public static boolean useAluDust()
     {
-        return modIc2Loaded || modAppEngLoaded || modTELoaded;
+        return modIc2Loaded || modAppEngLoaded || modTELoaded || modEIOLoaded || modAALoaded;
     }
 }

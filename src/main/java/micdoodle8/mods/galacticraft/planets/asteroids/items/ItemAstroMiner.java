@@ -131,7 +131,6 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
         return false;
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)

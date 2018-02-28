@@ -85,17 +85,15 @@ public class ItemMeteorChunk extends Item implements ISortableItem
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, 0));
         par3List.add(new ItemStack(par1, 1, 1));
     }
 
     @SideOnly(Side.CLIENT)
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void addInformation(ItemStack itemstack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
     {

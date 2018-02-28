@@ -428,11 +428,13 @@ public class GalacticraftCore
         event.registerServerCommand(new CommandKeepDim());
         event.registerServerCommand(new CommandGCInv());
         event.registerServerCommand(new CommandGCHelp());
+        event.registerServerCommand(new CommandGCKit());
+        event.registerServerCommand(new CommandGCHouston());
         event.registerServerCommand(new CommandGCEnergyUnits());
         event.registerServerCommand(new CommandJoinSpaceRace());
 
         WorldUtil.initialiseDimensionNames();
-        WorldUtil.registerSpaceStations(new File(worldFolder, "galacticraft"));
+        WorldUtil.registerSpaceStations(event.getServer(), new File(worldFolder, "galacticraft"));
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());

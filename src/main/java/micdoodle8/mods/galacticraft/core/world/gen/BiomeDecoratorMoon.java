@@ -75,7 +75,7 @@ public class BiomeDecoratorMoon extends BiomeDecorator
         }
         if (!ConfigManagerCore.disableCheeseMoon)
         {
-            this.genStandardOre(12, this.cheeseGen, 0, 128);
+            this.genStandardOre(14, this.cheeseGen, 0, 85);
         }
         if (!ConfigManagerCore.disableSapphireMoon)
         {

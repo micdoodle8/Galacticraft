@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
+import micdoodle8.mods.galacticraft.core.command.CommandGCHouston;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
 import micdoodle8.mods.galacticraft.core.dimension.WorldDataSpaceRaces;
@@ -75,6 +76,7 @@ public class TickHandlerServer
     private final int MAX_BLOCKS_PER_TICK = 50000;
     private static List<GalacticraftPacketHandler> packetHandlers = Lists.newCopyOnWriteArrayList();
     private static List<FluidNetwork> fluidNetworks = Lists.newArrayList();
+    public static int timerHoustonCommand;
 
     public static void addFluidNetwork(FluidNetwork network)
     {
@@ -252,6 +254,14 @@ public class TickHandlerServer
 
         if (event.phase == Phase.START)
         {
+            if (timerHoustonCommand > 0)
+            {
+                if (--timerHoustonCommand == 0)
+                {
+                    CommandGCHouston.reset();
+                }
+            }
+            
             for (ScheduledDimensionChange change : TickHandlerServer.scheduledDimensionChanges)
             {
                 try
@@ -298,7 +308,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.spaceRaceData == null)
             {
-                World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+                World world = server.worldServerForDimension(0);
                 TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
@@ -387,7 +397,7 @@ public class TickHandlerServer
             {
                 for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
-                    WorldServer[] worlds = FMLCommonHandler.instance().getMinecraftServerInstance().worldServers;
+                    WorldServer[] worlds = server.worldServers;
 
                     for (int i = 0; i < worlds.length; i++)
                     {
@@ -589,33 +599,22 @@ public class TickHandlerServer
 
             if (world.provider instanceof IOrbitDimension)
             {
-                final Object[] entityList = world.loadedEntityList.toArray();
-
-                for (final Object o : entityList)
+                try
                 {
-                    if (o instanceof Entity)
+                    int dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.provider).getPlanetToOrbit()));
+                    int minY = ((IOrbitDimension)world.provider).getYCoordToTeleportToPlanet();
+
+                    final Entity[] entityList = world.loadedEntityList.toArray(new Entity[world.loadedEntityList.size()]);
+                    for (final Entity e : entityList)
                     {
-                        final Entity e = (Entity) o;
-
-                        if (e.worldObj.provider instanceof IOrbitDimension)
+                        if (e.posY <= minY && e.worldObj == world)
                         {
-                            final IOrbitDimension dimension = (IOrbitDimension) e.worldObj.provider;
-
-                            if (e.posY <= dimension.getYCoordToTeleportToPlanet())
-                            {
-                                int dim = 0;
-                                try
-                                {
-                                    dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(dimension.getPlanetToOrbit()));
-                                }
-                                catch (Exception ex)
-                                {
-                                }
-
-                                WorldUtil.transferEntityToDimension(e, dim, world, false, null);
-                            }
+                            WorldUtil.transferEntityToDimension(e, dim, world, false, null);
                         }
                     }
+                }
+                catch (Exception ex)
+                {
                 }
             }
 

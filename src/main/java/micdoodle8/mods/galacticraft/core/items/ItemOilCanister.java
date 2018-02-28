@@ -65,7 +65,6 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         return super.getIconFromDamage(damage);
     }*/
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
@@ -76,10 +75,9 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
         }
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
         par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
         par3List.add(new ItemStack(par1, 1, 1));

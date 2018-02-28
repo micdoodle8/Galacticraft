@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CanisterRecipes extends ShapelessRecipes
 {
-    public CanisterRecipes(ItemStack stack, List list)
+    public CanisterRecipes(ItemStack stack, List<ItemStack> list)
     {
         super(stack, list);
     }

@@ -208,6 +208,7 @@ item.desh_pick_slime.name=อีเต้อเดรชเหนียว
 item.desh_spade.name=พลั่วเดรช
 item.desh_stick.name=แท่งเดรช
 item.desh_sword.name=ดาบเดรช
+item.dust_titanium.name=ผงไทเนียม
 item.empty_gas_canister.name=กระป๋องก๊าซเปล่า
 item.engine_t2.name=เครื่องยนต์จรวดแบบทนทาน
 item.fluid_manip.name=ตัวจัดการของเหลว

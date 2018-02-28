@@ -84,7 +84,6 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldSettings;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -392,18 +391,9 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case C_UPDATE_GEAR_SLOT:
             int subtype = (Integer) this.data.get(3);
-            EntityPlayer gearDataPlayer = null;
-            MinecraftServer server = MinecraftServer.getServer();
             String gearName = (String) this.data.get(0);
 
-            if (server != null && server.getConfigurationManager() != null)
-            {
-                gearDataPlayer = PlayerUtil.getPlayerForUsernameVanilla(server, gearName);
-            }
-            else
-            {
-                gearDataPlayer = player.worldObj.getPlayerEntityByName(gearName);
-            }
+            EntityPlayer gearDataPlayer = player.worldObj.getPlayerEntityByName(gearName);
 
             if (gearDataPlayer != null)
             {
@@ -796,7 +786,8 @@ public class PacketSimple extends PacketBase implements Packet
         {
             return;
         }
-
+        
+        final MinecraftServer server = playerBase.mcServer;
         final GCPlayerStats stats = GCPlayerStats.get(playerBase);
 
         switch (this.type)
@@ -913,7 +904,7 @@ public class PacketSimple extends PacketBase implements Packet
                     if (page != null)
                     {
                         SchematicRegistry.unlockNewPage(playerBase, stack);
-
+                        SpaceRaceManager.teamUnlockSchematic(playerBase, stack);
                         if (--stack.stackSize <= 0)
                         {
                             stack = null;
@@ -1069,14 +1060,14 @@ public class PacketSimple extends PacketBase implements Packet
 
             if (previousData)
             {
-                SpaceRaceManager.sendSpaceRaceData(null, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
+                SpaceRaceManager.sendSpaceRaceData(server, null, SpaceRaceManager.getSpaceRaceFromPlayer(playerBase.getGameProfile().getName()));
             }
             break;
         case S_REQUEST_FLAG_DATA:
-            SpaceRaceManager.sendSpaceRaceData(playerBase, SpaceRaceManager.getSpaceRaceFromPlayer((String) this.data.get(0)));
+            SpaceRaceManager.sendSpaceRaceData(server, playerBase, SpaceRaceManager.getSpaceRaceFromPlayer((String) this.data.get(0)));
             break;
         case S_INVITE_RACE_PLAYER:
-            EntityPlayerMP playerInvited = PlayerUtil.getPlayerBaseServerFromPlayerUsername((String) this.data.get(0), true);
+            EntityPlayerMP playerInvited = PlayerUtil.getPlayerBaseServerFromPlayerUsername(server, (String) this.data.get(0), true);
             if (playerInvited != null)
             {
                 Integer teamInvitedTo = (Integer) this.data.get(1);
@@ -1112,7 +1103,7 @@ public class PacketSimple extends PacketBase implements Packet
                 }
                 else
                 {
-                    SpaceRaceManager.onPlayerRemoval(playerToRemove, race);
+                    SpaceRaceManager.onPlayerRemoval(server, playerToRemove, race);
                 }
             }
             break;
@@ -1133,11 +1124,11 @@ public class PacketSimple extends PacketBase implements Packet
                     }
 
                     spaceRaceToAddPlayer.getPlayerNames().add(playerToAdd);
-                    SpaceRaceManager.sendSpaceRaceData(null, spaceRaceToAddPlayer);
+                    SpaceRaceManager.sendSpaceRaceData(server, null, spaceRaceToAddPlayer);
 
                     for (String member : spaceRaceToAddPlayer.getPlayerNames())
                     {
-                        EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(MinecraftServer.getServer(), member);
+                        EntityPlayerMP memberObj = PlayerUtil.getPlayerForUsernameVanilla(server, member);
 
                         if (memberObj != null)
                         {
@@ -1213,7 +1204,7 @@ public class PacketSimple extends PacketBase implements Packet
             break;
         case S_REQUEST_PLAYERSKIN:
             String strName = (String) this.data.get(0);
-            EntityPlayerMP playerRequested = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerByUsername(strName);
+            EntityPlayerMP playerRequested = server.getConfigurationManager().getPlayerByUsername(strName);
 
             //Player not online
             if (playerRequested == null)
@@ -1244,14 +1235,14 @@ public class PacketSimple extends PacketBase implements Packet
             boolean noClip = (Boolean) this.data.get(0);
             if (player instanceof GCEntityPlayerMP)
             {
-                ((GCEntityPlayerMP)player).setNoClip(noClip);
+                GalacticraftCore.proxy.player.setNoClip((EntityPlayerMP) player, noClip);
                 if (noClip == false)
                 {
                     player.fallDistance = 0.0F;
                     ((EntityPlayerMP)player).playerNetServerHandler.floatingTickCount = 0;
                 }
             }
-            else if (CompatibilityManager.PlayerAPILoaded && player instanceof EntityPlayerMP)
+            else if (player instanceof EntityPlayerMP)
             {
                 EntityPlayerMP emp = ((EntityPlayerMP)player); 
                 try
@@ -1281,7 +1272,7 @@ public class PacketSimple extends PacketBase implements Packet
             }
             break;
         case S_REQUEST_DATA:
-            WorldServer worldServer = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension((Integer) this.data.get(0));
+            WorldServer worldServer = server.worldServerForDimension((Integer) this.data.get(0));
             if (worldServer != null)
             {
                 TileEntity requestedTile = worldServer.getTileEntity((BlockPos) this.data.get(1));

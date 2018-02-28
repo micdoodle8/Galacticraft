@@ -2,10 +2,8 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ItemInWorldManager;
@@ -13,13 +11,13 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 
 /**
- * Do not reference this or test 'intance of' this in your code:
+ * This class provides various hooks which are missing from Forge or don't quite do what we need.
+ * </p>
+ * Do not reference this or test 'instance of' this in your code:
  * if PlayerAPI is installed, GCEntityPlayerMP will not be used.
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
-    private boolean noClipOverride;
-
     public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
     {
         super(server, world, profile, itemInWorldManager);
@@ -27,15 +25,6 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         {
             GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
         }
-    }
-
-    //Server-only method
-    @Override
-    public void clonePlayer(EntityPlayer oldPlayer, boolean keepInv)
-    {
-        super.clonePlayer(oldPlayer, keepInv);
-        GalacticraftCore.proxy.player.clonePlayer(this, oldPlayer, keepInv);
-        TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) oldPlayer, this);
     }
 
     @Override
@@ -65,23 +54,18 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     @Override
     public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
     {
-        if (!GalacticraftCore.proxy.player.wakeUpPlayer(this, par1, par2, par3))
+        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, par1, par2, par3))
         {
-            super.wakeUpPlayer(par1, par2, par3);
+            return;
         }
+        super.wakeUpPlayer(par1, par2, par3);
     }
 
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         par2 = GalacticraftCore.proxy.player.attackEntityFrom(this, par1DamageSource, par2);
-
-        if (par2 == -1)
-        {
-            return false;
-        }
-
-        return super.attackEntityFrom(par1DamageSource, par2);
+        return par2 != -1F && super.attackEntityFrom(par1DamageSource, par2);
     }
 
     @Override
@@ -90,18 +74,12 @@ public class GCEntityPlayerMP extends EntityPlayerMP
         GalacticraftCore.proxy.player.knockBack(this, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
 
-    public void setNoClip(boolean b)
-    {
-        this.noClipOverride = b;
-    }
-    
     @Override
     public boolean isSpectator()
     {
-        if (this.noClipOverride)
-            return true;
-        return super.isSpectator();
+        return GalacticraftCore.proxy.player.isSpectator(this) || super.isSpectator();
     }
+
     /*@Override
     public void setInPortal()
     {

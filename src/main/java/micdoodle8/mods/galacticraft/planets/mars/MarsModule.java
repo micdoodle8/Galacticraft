@@ -177,7 +177,7 @@ public class MarsModule implements IPlanetsModule
     {
         try
         {
-            Class clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
+            Class<?> clazz = Class.forName("codechicken.microblock.MicroMaterialRegistry");
             if (clazz != null)
             {
                 Method registerMethod = null;
@@ -190,7 +190,7 @@ public class MarsModule implements IPlanetsModule
                         break;
                     }
                 }
-                Class clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
+                Class<?> clazzbm = Class.forName("codechicken.microblock.BlockMicroMaterial");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 4), "tile.mars.marscobblestone");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 5), "tile.mars.marsgrass");
                 registerMethod.invoke(null, clazzbm.getConstructor(Block.class, int.class).newInstance(MarsBlocks.marsBlock, 6), "tile.mars.marsdirt");

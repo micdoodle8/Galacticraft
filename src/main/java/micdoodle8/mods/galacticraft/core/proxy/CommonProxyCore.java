@@ -10,17 +10,16 @@ import micdoodle8.mods.galacticraft.core.entities.player.PlayerServer;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -65,12 +64,7 @@ public class CommonProxyCore
 
     public World getWorldForID(int dimensionID)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
-        if (theServer == null)
-        {
-            return null;
-        }
-        return theServer.worldServerForDimension(dimensionID);
+        return WorldUtil.getWorldForDimensionServer(dimensionID);
     }
 
     public EntityPlayer getPlayerFromNetHandler(INetHandler handler)

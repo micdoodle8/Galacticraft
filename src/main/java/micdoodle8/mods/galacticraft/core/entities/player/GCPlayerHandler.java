@@ -59,7 +59,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
@@ -76,13 +75,8 @@ public class GCPlayerHandler
     private static final int OXYGENHEIGHTLIMIT = 450;
     public static final int GEAR_NOT_PRESENT = -1;
     
-//    private ConcurrentHashMap<UUID, GCPlayerStats> playerStatsMap = new ConcurrentHashMap<UUID, GCPlayerStats>();
-    private HashMap<Item, Item> torchItems = new HashMap<Item, Item>();
-
-//    public ConcurrentHashMap<UUID, GCPlayerStats> getServerStatList()
-//    {
-//        return this.playerStatsMap;
-//    }
+    private HashMap<Item, Item> torchItems = new HashMap<>(4, 1F);
+    private static HashMap<UUID, Integer> deathTimes = new HashMap<>();
 
     @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent event)
@@ -105,12 +99,31 @@ public class GCPlayerHandler
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event)
     {
-        if (event.wasDeath)  //TODO: why only on death?  we could copy the stats capability on all cloning events
+        GCPlayerStats oldStats = GCPlayerStats.get(event.original);
+        GCPlayerStats newStats = GCPlayerStats.get(event.entityPlayer);
+        newStats.copyFrom(oldStats, !event.wasDeath|| event.original.worldObj.getGameRules().getBoolean("keepInventory"));
+        if (event.original instanceof EntityPlayerMP && event.entityPlayer instanceof EntityPlayerMP)
         {
-            GCPlayerStats oldStats = GCPlayerStats.get(event.original);
-            GCPlayerStats newStats = GCPlayerStats.get(event.entityPlayer);
-
-            newStats.copyFrom(oldStats, false);
+            TileEntityTelemetry.updateLinkedPlayer((EntityPlayerMP) event.original, (EntityPlayerMP) event.entityPlayer);
+        }
+        if (event.wasDeath && event.original instanceof EntityPlayerMP)
+        {
+            UUID uu = event.original.getPersistentID();
+            if (event.original.worldObj.provider instanceof IGalacticraftWorldProvider)
+            {
+                Integer timeA = deathTimes.get(uu);
+                int bb = ((EntityPlayerMP) event.original).mcServer.getTickCounter();
+                if (timeA != null && (bb - timeA) < 1500)
+                {
+                    String msg = EnumColor.YELLOW + GCCoreUtil.translate("commands.gchouston.help.1") + " " + EnumColor.WHITE + GCCoreUtil.translate("commands.gchouston.help.2");
+                    event.original.addChatMessage(new ChatComponentText(msg));
+                }
+                deathTimes.put(uu, bb);
+            }
+            else
+            {
+                deathTimes.remove(uu);
+            }
         }
     }
 
@@ -227,7 +240,7 @@ public class GCPlayerHandler
 
         if (stats.getFrequencyModuleInSlot() != stats.getLastFrequencyModuleInSlot() || forceSend)
         {
-            if (FMLCommonHandler.instance().getMinecraftServerInstance() != null)
+            if (player.mcServer != null)
             {
                 if (stats.getFrequencyModuleInSlot() == null)
                 {
@@ -1147,7 +1160,7 @@ public class GCPlayerHandler
 
     public static void sendGearUpdatePacket(EntityPlayerMP player, EnumModelPacketType packetType, EnumExtendedInventorySlot gearType, int gearID)
     {
-        MinecraftServer theServer = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer theServer = player.mcServer;
         if (theServer != null && PlayerUtil.getPlayerForUsernameVanilla(theServer, player.getGameProfile().getName()) != null)
         {
             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_GEAR_SLOT, GCCoreUtil.getDimensionID(player.worldObj), new Object[] { player.getGameProfile().getName(), packetType.ordinal(), gearType.ordinal(), gearID }), new TargetPoint(GCCoreUtil.getDimensionID(player.worldObj), player.posX, player.posY, player.posZ, 50.0D));
