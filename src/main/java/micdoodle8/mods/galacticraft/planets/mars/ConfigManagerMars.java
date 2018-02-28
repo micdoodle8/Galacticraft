@@ -56,7 +56,7 @@ public class ConfigManagerMars
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDMars", -29);
             prop.comment = "Dimension ID for Mars";
-            prop.setLanguageKey("gc.configgui.dimension_i_d_mars").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.dimension_id_mars").setRequiresMcRestart(true);
             dimensionIDMars = prop.getInt();
 
             //
