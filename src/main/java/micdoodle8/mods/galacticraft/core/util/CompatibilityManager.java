@@ -40,6 +40,8 @@ public class CompatibilityManager
     private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded = Loader.isModLoaded("biomesoplenty");
+    private static boolean modEIOLoaded = Loader.isModLoaded("enderio");
+    public static boolean modAALoaded = Loader.isModLoaded("actuallyadditions");
     private static boolean spongeLoaded;
     private static boolean modMatterOverdriveLoaded;
     private static boolean wailaLoaded;
@@ -419,6 +421,6 @@ public class CompatibilityManager
     
     public static boolean useAluDust()
     {
-        return modIc2Loaded || modAppEngLoaded || modTELoaded;
+        return modIc2Loaded || modAppEngLoaded || modTELoaded || modEIOLoaded || modAALoaded;
     }
 }
