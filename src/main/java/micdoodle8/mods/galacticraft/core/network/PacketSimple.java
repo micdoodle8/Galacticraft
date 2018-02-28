@@ -290,14 +290,14 @@ public class PacketSimple extends PacketBase implements Packet
         switch (this.type)
         {
         case C_AIR_REMAINING:
-            if (String.valueOf(this.data.get(2)).equals(String.valueOf(PlayerUtil.getName(FMLClientHandler.instance().getClient().thePlayer))))
+            if (String.valueOf(this.data.get(2)).equals(String.valueOf(PlayerUtil.getName(player))))
             {
                 TickHandlerClient.airRemaining = (Integer) this.data.get(0);
                 TickHandlerClient.airRemaining2 = (Integer) this.data.get(1);
             }
             break;
         case C_UPDATE_DIMENSION_LIST:
-            if (String.valueOf(this.data.get(0)).equals(PlayerUtil.getName(FMLClientHandler.instance().getClient().thePlayer)))
+            if (String.valueOf(this.data.get(0)).equals(PlayerUtil.getName(player)))
             {
                 String dimensionList = (String) this.data.get(1);
                 if (ConfigManagerCore.enableDebug)
