@@ -49,6 +49,7 @@ gas.oxygen.name=氧气
 gc.configgui.astro_miners_max=玩家太空采矿机数量上限
 gc.configgui.dimension_i_d_asteroids=小行星带维度ID
 gc.configgui.dimension_i_d_mars=火星维度ID
+gc.configgui.dimensionIDVenus=金星维度ID
 gc.configgui.disable_aluminum_gen_asteroids=禁止小行星带铝矿生成
 gc.configgui.disable_ambient_lightning=关闭金星雷暴
 gc.configgui.disable_copper_gen_mars=禁止火星铜矿石生成
