@@ -72,6 +72,11 @@ public class RecipeManagerGC
             RecipeManagerGC.addAppEngRecipes();
         }
 
+        if (CompatibilityManager.modAALoaded)
+        {
+            CompatModuleActuallyAdditions.addRecipes();
+        }
+
         RecipeManagerGC.addExNihiloHeatSource();
     }
 
@@ -269,8 +274,8 @@ public class RecipeManagerGC
         spaceStationRequirements.put(Items.IRON_INGOT, 24);
         GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworld, new SpaceStationRecipe(spaceStationRequirements)));
 
-        //EmergencyKit (locked recipe, not configurable in resource packs!)
-        RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
+        //EmergencyKit
+        RecipeUtil.addCustomRecipe(new ShapedRecipeNBT(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe()));
         
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 6), "ingotCopper", "ingotCopper");
         CompressorRecipes.addShapelessRecipe(new ItemStack(GCItems.basicItem, 1, 7), "ingotTin", "ingotTin");
