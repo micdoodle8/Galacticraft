@@ -255,8 +255,10 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
-                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		if(GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null) {
+                	GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
+               	 	GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		}
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot1.getItem() != GCPlayer.lastTankInSlot1.getItem())
@@ -273,8 +275,10 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
-                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		if(GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null) {    
+                	GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
+                	GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		}
             }
 
             GCPlayer.lastTankInSlot1 = GCPlayer.tankInSlot1;
@@ -304,8 +308,10 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
-                GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
-                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		if(GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null) {
+                	GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
+                	GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		}
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (GCPlayer.tankInSlot2.getItem() != GCPlayer.lastTankInSlot2.getItem())
@@ -322,8 +328,10 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
-                GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
-                GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		if(GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null) {
+               	 	GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
+                	GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
+		}
             }
 
             GCPlayer.lastTankInSlot2 = GCPlayer.tankInSlot2;
