@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
@@ -24,6 +25,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -61,7 +63,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
         else
         {
             List<String> playerList = new ArrayList<String>();
-            playerList.add(player.getGameProfile().getName());
+            playerList.add(PlayerUtil.getName(player));
             this.spaceRaceData = new SpaceRace(playerList, SpaceRace.DEFAULT_NAME, new FlagData(48, 32), new Vector3(1, 1, 1));
         }
     }
@@ -97,7 +99,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
             this.thePlayer.closeScreen();
             break;
         case 1:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.thePlayer.getGameProfile().getName(), this.spaceRaceData.getSpaceRaceID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
             this.thePlayer.closeScreen();
             break;
         default:

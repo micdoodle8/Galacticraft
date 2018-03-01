@@ -91,7 +91,7 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, mc.theWorld.provider.getDimension(), new Object[] { playerBase.getGameProfile().getName() }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { PlayerUtil.getName(playerBase) }));
                 }
             }
             else if (kb.getKeyCode() == KeyHandlerClient.toggleAdvGoggles.getKeyCode())

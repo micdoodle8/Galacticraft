@@ -56,7 +56,7 @@ public class ConfigManagerVenus
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDVenus", -31);
             prop.setComment("Dimension ID for Venus");
-            prop.setLanguageKey("gc.configgui.dimensionIDVenus").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.dimension_id_venus").setRequiresMcRestart(true);
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.getComment());

@@ -14,10 +14,12 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAirLockController;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
@@ -194,7 +196,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     @Override
     public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
     {
-        return player.getGameProfile().getName().equals(this.controller.ownerName);
+        return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }
 
     @Override
@@ -227,7 +229,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     @Override
     public boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player)
     {
-        return player.getGameProfile().getName().equals(this.controller.ownerName);
+        return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }
 
     @Override
@@ -249,7 +251,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     @Override
     public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
     {
-        return player.getGameProfile().getName().equals(this.controller.ownerName);
+        return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }
 
     @Override

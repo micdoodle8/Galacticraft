@@ -67,7 +67,7 @@ public class ConfigManagerAsteroids
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDAsteroids", -30);
             prop.setComment("Dimension ID for Asteroids");
-            prop.setLanguageKey("gc.configgui.dimension_i_d_asteroids").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.dimension_id_asteroids").setRequiresMcRestart(true);
             if (update)
             {
                 propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, prop.getName(), prop.getInt(), prop.getComment());

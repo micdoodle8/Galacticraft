@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -255,14 +256,14 @@ public class SpaceStationWorldData extends WorldSavedData
 
                 if (owner != null)
                 {
-                    stationData.owner = owner.getGameProfile().getName().replace(".", "");
+                    stationData.owner = PlayerUtil.getName(owner).replace(".", "");
                 }
 
                 stationData.spaceStationName = "Station: " + stationData.owner;
 
                 if (owner != null)
                 {
-                    stationData.allowedPlayers.add(owner.getGameProfile().getName());
+                    stationData.allowedPlayers.add(PlayerUtil.getName(owner));
                 }
 
                 if (homeID == -1)
@@ -323,14 +324,14 @@ public class SpaceStationWorldData extends WorldSavedData
 
             if (player != null)
             {
-                var3.owner = player.getGameProfile().getName().replace(".", "");
+                var3.owner = PlayerUtil.getName(player).replace(".", "");
             }
 
             var3.spaceStationName = "Station: " + var3.owner;
 
             if (player != null)
             {
-                var3.allowedPlayers.add(player.getGameProfile().getName());
+                var3.allowedPlayers.add(PlayerUtil.getName(player));
             }
 
             var3.markDirty();
@@ -380,7 +381,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
     public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
     {
-        String name = thePlayer.getGameProfile().getName().replace(".", "");
+        String name = PlayerUtil.getName(thePlayer).replace(".", "");
         for (int id : WorldUtil.registeredSpaceStations.keySet())
         {
             SpaceStationWorldData.updateSSOwnership(thePlayer, name, stats, id, null);
