@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.recipe.OreRecipeUpdatable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
@@ -76,7 +77,6 @@ public class RecipeUtil
         }
     }
 
-
     public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
     {
         GalacticraftRegistry.addT1RocketRecipe(new NasaWorkbenchRecipe(result, input));
@@ -95,5 +95,42 @@ public class RecipeUtil
     public static void addRecipeUpdatable(ItemStack result, Object[] obj)
     {
         CraftingManager.getInstance().getRecipeList().add(new OreRecipeUpdatable(result, obj));
+    }
+    
+    /**
+     * An extended version of areItemStackTagsEqual which ignores LevelUp's "NoPlacing" tag on mined blocks
+     */
+    public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB)
+    {
+        if (ItemStack.areItemStackTagsEqual(stackA, stackB))
+            return true;
+        
+        NBTTagCompound query = null;
+        if (stackA.getTagCompound() == null && stackB.getTagCompound() != null)
+        {
+            query = stackB.getTagCompound();
+        }
+        else if (stackA.getTagCompound() != null && stackB.getTagCompound() == null)
+        {
+            query = stackA.getTagCompound();
+        }
+        if (query != null)
+        {
+            if (query.getKeySet().size() == 1 && query.hasKey("NoPlacing"))
+                return true;
+        }
+
+       return false;
+    }
+    
+    /**
+     * 
+     * @param itemstack - it is assumed this one is not null in calling code
+     * @param itemstack1
+     * @return
+     */
+    public static boolean stacksMatch(ItemStack itemstack, ItemStack itemstack1)
+    {
+        return itemstack1 != null && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && RecipeUtil.areItemStackTagsEqual(itemstack, itemstack1);
     }
 }

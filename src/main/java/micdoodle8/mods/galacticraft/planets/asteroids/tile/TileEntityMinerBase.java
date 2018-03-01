@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
@@ -450,7 +451,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 existingStack = this.containingItems[k];
 
-                if (existingStack != null && existingStack.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == existingStack.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, existingStack))
+                if (RecipeUtil.stacksMatch(itemstack, existingStack))
                 {
                     int combined = existingStack.stackSize + itemstack.stackSize;
 

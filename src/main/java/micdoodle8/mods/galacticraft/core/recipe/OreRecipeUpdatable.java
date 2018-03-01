@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.recipe;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.recipe.IRecipeUpdatable;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +23,7 @@ public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdata
         for (int i = 0; i < this.input.length; i++)
         {
             Object test = this.input[i];
-            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
+            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && RecipeUtil.areItemStackTagsEqual(inputA, (ItemStack) test))
             {
                 this.input[i] = inputB;
             }
@@ -50,7 +51,7 @@ public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdata
     {
         for (Object b : test)
         {
-            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && RecipeUtil.areItemStackTagsEqual(stack, (ItemStack) b))
                 return true;
         }
         return false;

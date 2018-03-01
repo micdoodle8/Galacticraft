@@ -7,6 +7,7 @@ import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -361,7 +362,7 @@ public class ContainerCrafting extends Container
     
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return target != null && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.stackSize < target.getMaxStackSize() || target.stackSize == 0);
+        return target != null && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && RecipeUtil.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.stackSize < target.getMaxStackSize() || target.stackSize == 0);
     }
 
     /**
