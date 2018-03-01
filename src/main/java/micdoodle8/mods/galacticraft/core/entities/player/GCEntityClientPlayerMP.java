@@ -410,7 +410,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
             }
             if (EventHandlerClient.sneakRenderOverride)
             {
-                if (this.movementInput.sneak != this.sneakLast)
+                if (this.movementInput != null && this.movementInput.sneak != this.sneakLast)
                 { 
                     this.sneakLast = this.movementInput.sneak;
                     return false;
