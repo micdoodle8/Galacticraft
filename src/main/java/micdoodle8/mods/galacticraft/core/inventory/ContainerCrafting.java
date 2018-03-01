@@ -104,7 +104,10 @@ public class ContainerCrafting extends Container
     public void onContainerClosed(EntityPlayer playerIn)
     {
         super.onContainerClosed(playerIn);
-        craftMatrix.eventHandler = null;
+        if (!playerIn.worldObj.isRemote)
+        {
+            craftMatrix.eventHandler = null;
+        }
     }
 
     @Override
