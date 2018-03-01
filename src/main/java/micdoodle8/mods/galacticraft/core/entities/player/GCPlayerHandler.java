@@ -322,8 +322,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
-                stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (stats.getTankInSlot1().getItem() != stats.getLastTankInSlot1().getItem())
@@ -334,8 +337,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
-                stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
 
             stats.setLastTankInSlot1(stats.getTankInSlot1());
@@ -359,8 +365,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
-                stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (stats.getTankInSlot2().getItem() != stats.getLastTankInSlot2().getItem())
@@ -371,8 +380,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
-                stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
 
             stats.setLastTankInSlot2(stats.getTankInSlot2());
