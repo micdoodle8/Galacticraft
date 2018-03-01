@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -187,7 +188,7 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
         for (int i = 0; i < this.input.size(); i++)
         {
             Object test = this.input.get(i);
-            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
+            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && RecipeUtil.areItemStackTagsEqual(inputA, (ItemStack) test))
             {
                 this.input.set(i, inputB);
             }
@@ -215,7 +216,7 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
     {
         for (Object b : test)
         {
-            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && RecipeUtil.areItemStackTagsEqual(stack, (ItemStack) b))
                 return true;
         }
         return false;

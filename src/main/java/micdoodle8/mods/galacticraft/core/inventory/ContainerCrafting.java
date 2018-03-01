@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -99,7 +100,10 @@ public class ContainerCrafting extends Container
     public void onContainerClosed(EntityPlayer playerIn)
     {
         super.onContainerClosed(playerIn);
-        craftMatrix.eventHandler = null;
+        if (!playerIn.world.isRemote)
+        {
+            craftMatrix.eventHandler = null;
+        }
     }
 
     @Override
@@ -348,7 +352,7 @@ public class ContainerCrafting extends Container
     
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (!target.isStackable() || target.getCount() < target.getMaxStackSize());
+        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && RecipeUtil.areItemStackTagsEqual(stack, target) && (!target.isStackable() || target.getCount() < target.getMaxStackSize());
     }
 
     /**

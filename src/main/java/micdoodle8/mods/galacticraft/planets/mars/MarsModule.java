@@ -140,7 +140,7 @@ public class MarsModule implements IPlanetsModule
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
         MarsModule.planetMars.addMobInfo(new Biome.SpawnListEntry(EntityEvolvedEnderman.class, 10, 1, 4));
-        MarsModule.planetMars.addChecklistKeys("equipOxygenSuit");
+        MarsModule.planetMars.addChecklistKeys("equip_oxygen_suit", "thermal_padding");
 
         GalaxyRegistry.registerPlanet(MarsModule.planetMars);
         GalacticraftRegistry.registerTeleportType(WorldProviderMars.class, new TeleportTypeMars());

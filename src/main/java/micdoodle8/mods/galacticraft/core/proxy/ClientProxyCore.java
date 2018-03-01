@@ -54,6 +54,7 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
@@ -915,7 +916,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         if (gearData == null)
         {
-            String id = player.getGameProfile().getName();
+            String id = PlayerUtil.getName(player);
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {

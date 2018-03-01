@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
@@ -140,7 +141,7 @@ public class CircuitFabricatorRecipes
                 else if (recipeStack instanceof ItemStack)
                 {
                     ItemStack stack = ((ItemStack) recipeStack); 
-                    if (stack.getItem() != inputStack.getItem() || stack.getItemDamage() != inputStack.getItemDamage() || !ItemStack.areItemStackTagsEqual(stack, inputStack))
+                    if (stack.getItem() != inputStack.getItem() || stack.getItemDamage() != inputStack.getItemDamage() || !RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                     {
                         found = false;
                         break;
@@ -151,7 +152,7 @@ public class CircuitFabricatorRecipes
                     boolean listMatchOne = false;
                     for (ItemStack stack : (List<ItemStack>)recipeStack)
                     {
-                        if (stack.getItem() == inputStack.getItem() && stack.getItemDamage() == inputStack.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, inputStack))
+                        if (stack.getItem() == inputStack.getItem() && stack.getItemDamage() == inputStack.getItemDamage() && RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                         {
                             listMatchOne = true;
                             break;

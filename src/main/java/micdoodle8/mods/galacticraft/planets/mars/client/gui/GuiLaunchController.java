@@ -11,12 +11,12 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.renderer.RenderHelper;
@@ -25,6 +25,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -67,7 +68,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         }
         else
         {
-            boolean isOwner = FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName());
+            boolean isOwner = PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName());
             this.enableControllerButton.enabled = isOwner;
             this.hideDestinationFrequency.enabled = isOwner;
         }
@@ -116,8 +117,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
 
         if (Math.random() < 0.025 && !destinationFrequency.isTextFocused)
         {
-            if (!Minecraft.getMinecraft().player.getGameProfile().getName().equals(this.launchController.getOwnerName()) &&
-                    !this.launchController.getDisabled(2))
+            if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()) && !this.launchController.getDisabled(2))
             {
                 // in case the player is not equal to the owner of the controller,
                 // scramble the destination number such that other players can't
@@ -229,7 +229,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
     @Override
     protected void actionPerformed(GuiButton par1GuiButton)
     {
-        if (!FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
             this.cannotEditTimer = 50;
             return;
@@ -327,13 +327,13 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
     @Override
     public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
     {
-        return player.getGameProfile().getName().equals(this.launchController.getOwnerName());
+        return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
     }
 
     @Override
     public void onTextChanged(GuiElementTextBox textBox, String newText)
     {
-        if (FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        if (PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
             if (textBox.equals(this.frequency))
             {
@@ -357,7 +357,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         }
         else if (textBox.equals(this.destinationFrequency))
         {
-            if (Minecraft.getMinecraft().player.getGameProfile().getName().equals(this.launchController.getOwnerName()) || this.launchController.getDisabled(2))
+            if (PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()) || this.launchController.getDisabled(2))
             {
                 return String.valueOf(this.launchController.destFrequency);
             }

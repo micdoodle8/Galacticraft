@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -28,10 +29,12 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -105,7 +108,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     {
         this.thePlayer = player;
 
-        SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(player.getGameProfile().getName());
+        SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
 
         if (race != null)
         {
@@ -114,7 +117,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
         else
         {
             List<String> playerList = new ArrayList<String>();
-            playerList.add(player.getGameProfile().getName());
+            playerList.add(PlayerUtil.getName(player));
             this.spaceRaceData = new SpaceRace(playerList, SpaceRace.DEFAULT_NAME, new FlagData(48, 32), new Vector3(1, 1, 1));
         }
 
@@ -124,7 +127,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
     private boolean canPlayerEdit()
     {
-        return mc.player.getGameProfile().getName().equals(this.spaceRaceData.getPlayerNames().get(0));
+        return PlayerUtil.getName(this.mc.player).equals(this.spaceRaceData.getPlayerNames().get(0));
     }
 
     @Override
@@ -329,7 +332,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 ListElement playerToInvite = this.gradientListAddPlayers.getSelectedElement();
                 if (playerToInvite != null && !this.recentlyInvited.containsKey(playerToInvite.value))
                 {
-                    SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
+                    SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                     if (race != null)
                     {
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_INVITE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { playerToInvite.value, race.getSpaceRaceID() }));
@@ -342,7 +345,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
                 ListElement playerToRemove = this.gradientListRemovePlayers.getSelectedElement();
                 if (playerToRemove != null)
                 {
-                    SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(this.thePlayer.getGameProfile().getName());
+                    SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(this.thePlayer));
                     if (race != null)
                     {
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REMOVE_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { playerToRemove.value, race.getSpaceRaceID() }));
@@ -410,7 +413,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
                 if (player.getDistanceSq(this.thePlayer) <= 25 * 25)
                 {
-                    String username = player.getGameProfile().getName();
+                    String username = PlayerUtil.getName(player);
 
                     if (!this.spaceRaceData.getPlayerNames().contains(username))
                     {
@@ -620,7 +623,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
     public void updateSpaceRaceData()
     {
-        String playerName = FMLClientHandler.instance().getClient().player.getGameProfile().getName();
+        String playerName = PlayerUtil.getName(this.mc.player);
         SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(playerName);
 
         if (race != null && !this.isDirty)

@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementDropdown.I
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
@@ -22,6 +23,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -57,7 +59,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         }
         else
         {
-            boolean isOwner = FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName());
+            boolean isOwner = PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName());
             this.enablePadRemovalButton.enabled = isOwner;
         }
 
@@ -141,7 +143,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     @Override
     protected void actionPerformed(GuiButton button)
     {
-        if (!FMLClientHandler.instance().getClient().player.getGameProfile().getName().equals(this.launchController.getOwnerName()))
+        if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
             this.cannotEditTimer = 50;
             return;
@@ -201,7 +203,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     {
         if (dropdown.equals(this.dropdownTest))
         {
-            return player.getGameProfile().getName().equals(this.launchController.getOwnerName());
+            return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
         }
 
         return false;
@@ -246,7 +248,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     @Override
     public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
     {
-        return player.getGameProfile().getName().equals(this.launchController.getOwnerName());
+        return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
     }
 
     @Override

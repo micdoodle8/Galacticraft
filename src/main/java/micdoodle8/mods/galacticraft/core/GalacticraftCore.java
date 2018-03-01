@@ -208,7 +208,7 @@ public class GalacticraftCore
         GalacticraftCore.planetOverworld.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
         GalacticraftCore.planetOverworld.setDimensionInfo(ConfigManagerCore.idDimensionOverworld, WorldProvider.class, false).setTierRequired(1);
         GalacticraftCore.planetOverworld.atmosphereComponent(EnumAtmosphericGas.NITROGEN).atmosphereComponent(EnumAtmosphericGas.OXYGEN).atmosphereComponent(EnumAtmosphericGas.ARGON).atmosphereComponent(EnumAtmosphericGas.WATER);
-        GalacticraftCore.planetOverworld.addChecklistKeys("equipParachute");
+        GalacticraftCore.planetOverworld.addChecklistKeys("equip_parachute");
 
         GalacticraftCore.moonMoon.setDimensionInfo(ConfigManagerCore.idDimensionMoon, WorldProviderMoon.class).setTierRequired(1);
         GalacticraftCore.moonMoon.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/moon.png"));
@@ -218,13 +218,13 @@ public class GalacticraftCore
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
         GalacticraftCore.moonMoon.addMobInfo(new SpawnListEntry(EntityEvolvedEnderman.class, 10, 1, 4));
-        GalacticraftCore.moonMoon.addChecklistKeys("equipOxygenSuit");
+        GalacticraftCore.moonMoon.addChecklistKeys("equip_oxygen_suit");
 
         //Satellites must always have a WorldProvider implementing IOrbitDimension
         GalacticraftCore.satelliteSpaceStation.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderOverworldOrbit.class).setTierRequired(1);
         GalacticraftCore.satelliteSpaceStation.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/space_station.png"));
         GalacticraftCore.satelliteSpaceStation.setAtmosphere(new AtmosphereInfo(false, false, false, 0.0F, 0.1F, 0.02F));
-        GalacticraftCore.satelliteSpaceStation.addChecklistKeys("equipOxygenSuit", "createGrapple");
+        GalacticraftCore.satelliteSpaceStation.addChecklistKeys("equip_oxygen_suit", "create_grapple");
 
         ForgeChunkManager.setForcedChunkLoadingCallback(GalacticraftCore.instance, new ChunkLoadingCallback());
         MinecraftForge.EVENT_BUS.register(new ConnectionEvents());

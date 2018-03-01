@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
 import micdoodle8.mods.galacticraft.api.recipe.IRecipeUpdatable;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -69,7 +70,7 @@ public class OreRecipeUpdatable extends ShapedOreRecipe implements IRecipeUpdata
     {
         for (Object b : test)
         {
-            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && RecipeUtil.areItemStackTagsEqual(stack, (ItemStack) b))
                 return true;
         }
         return false;

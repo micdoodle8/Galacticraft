@@ -129,7 +129,7 @@ public class VenusModule implements IPlanetsModule
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedSkeleton.class, 8, 2, 3));
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedCreeper.class, 8, 2, 3));
         VenusModule.planetVenus.addMobInfo(new SpawnListEntry(EntityEvolvedEnderman.class, 10, 1, 4));
-        VenusModule.planetVenus.addChecklistKeys("equipOxygenSuit", "equipShieldController", "thermalPaddingT2");
+        VenusModule.planetVenus.addChecklistKeys("equip_oxygen_suit", "equip_shield_controller", "thermal_padding_t2");
 
         GalaxyRegistry.registerPlanet(VenusModule.planetVenus);
         GalacticraftRegistry.registerTeleportType(WorldProviderVenus.class, new TeleportTypeVenus());
