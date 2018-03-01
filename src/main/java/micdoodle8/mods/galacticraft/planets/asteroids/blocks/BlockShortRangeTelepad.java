@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
@@ -143,7 +144,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         if (tile instanceof TileEntityShortRangeTelepad)
         {
             ((TileEntityShortRangeTelepad) tile).onCreate(worldIn, pos);
-            ((TileEntityShortRangeTelepad) tile).setOwner(((EntityPlayer) placer).getGameProfile().getName());
+            ((TileEntityShortRangeTelepad) tile).setOwner(PlayerUtil.getName(((EntityPlayer) placer)));
         }
     }
 

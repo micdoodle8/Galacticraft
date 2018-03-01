@@ -14,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
 import net.minecraft.block.state.IBlockState;
@@ -1127,7 +1128,7 @@ public class StatsCapability extends GCPlayerStats
             EntityPlayerMP p = this.player.get();
             if (p != null)
             {
-                ItemStack[] saveinv = CommandGCInv.getSaveData(p.getGameProfile().getName().toLowerCase());
+                ItemStack[] saveinv = CommandGCInv.getSaveData(PlayerUtil.getName(p).toLowerCase());
                 if (saveinv != null)
                 {
                     CommandGCInv.doLoad(p);
@@ -1284,17 +1285,17 @@ public class StatsCapability extends GCPlayerStats
             }
 
             
-            GCLog.debug("Loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+            GCLog.debug("Loading GC player data for " + PlayerUtil.getName(player.get()) + " : " + this.buildFlags);
 
             this.sentFlags = false;
         }
         catch (Exception e)
         {
-            GCLog.severe("Found error in saved Galacticraft player data for " + player.get().getGameProfile().getName() + " - this should fix itself next relog.");
+            GCLog.severe("Found error in saved Galacticraft player data for " + PlayerUtil.getName(player.get()) + " - this should fix itself next relog.");
             e.printStackTrace();
         }
 
-        GCLog.debug("Finished loading GC player data for " + player.get().getGameProfile().getName() + " : " + this.buildFlags);
+        GCLog.debug("Finished loading GC player data for " + PlayerUtil.getName(player.get()) + " : " + this.buildFlags);
     }
 
     @Override

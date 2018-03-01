@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -274,14 +275,14 @@ public class SpaceRace
      */
     public void updatePlayerSchematics(EntityPlayerMP player)
     {
-        List<ItemStack> list = this.schematicsToUnlock.get(player.getGameProfile().getName());
+        List<ItemStack> list = this.schematicsToUnlock.get(PlayerUtil.getName(player));
         if (list != null)
         {
             for (ItemStack stack : list)
             {
                 SchematicRegistry.unlockNewPage(player, stack);
             }
-            this.schematicsToUnlock.remove(player.getGameProfile().getName());
+            this.schematicsToUnlock.remove(PlayerUtil.getName(player));
         }
     }
 }

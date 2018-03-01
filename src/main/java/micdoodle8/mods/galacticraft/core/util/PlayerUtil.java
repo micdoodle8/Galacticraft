@@ -89,7 +89,7 @@ public class PlayerUtil
 
         if (clientPlayer == null && player != null)
         {
-            GCLog.severe("Warning: Could not find player base client instance for player " + player.getGameProfile().getName());
+            GCLog.severe("Warning: Could not find player base client instance for player " + PlayerUtil.getName(player));
         }
 
         return clientPlayer;
@@ -172,5 +172,14 @@ public class PlayerUtil
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
         return player.mcServer.getPlayerList().getPlayers().contains(player);
+    }
+    
+    public static String getName(EntityPlayer player)
+    {
+        if (player == null) return null;
+        
+        if (player.getGameProfile() == null) return null;
+        
+        return player.getGameProfile().getName();
     }
 }

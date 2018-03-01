@@ -755,7 +755,7 @@ public class GuiCelestialSelection extends GuiScreen
                     // Apply
                     if (x >= width / 2 - 90 + 17 && x <= width / 2 - 90 + 17 + 72 && y >= this.height / 2 - 38 + 59 && y <= this.height / 2 - 38 + 59 + 12)
                     {
-                        String strName = this.mc.player.getGameProfile().getName();
+                        String strName = PlayerUtil.getName(this.mc.player);
 //                        Integer spacestationID = this.spaceStationIDs.get(strName);
 //                        if (spacestationID == null) spacestationID = this.spaceStationIDs.get(strName.toLowerCase());
                         Satellite selectedSatellite = (Satellite) this.selectedBody;
@@ -786,7 +786,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (x >= width / 2 - 47 && x <= width / 2 - 47 + 94 && y >= TOP && y <= TOP + 11)
                 {
-                    if (this.selectedStationOwner.length() != 0 && this.selectedStationOwner.equalsIgnoreCase(this.mc.player.getGameProfile().getName()))
+                    if (this.selectedStationOwner.length() != 0 && this.selectedStationOwner.equalsIgnoreCase(PlayerUtil.getName(this.mc.player)))
                     {
                         this.renamingSpaceStation = true;
                         this.renamingString = null;
@@ -2031,7 +2031,7 @@ public class GuiCelestialSelection extends GuiScreen
                 GL11.glColor4f(0.0F, 0.6F, 1.0F, 1);
                 if (this.selectedBody instanceof Satellite)
                 {
-                    if (this.selectedStationOwner.length() == 0 || !this.selectedStationOwner.equalsIgnoreCase(this.mc.player.getGameProfile().getName()))
+                    if (this.selectedStationOwner.length() == 0 || !this.selectedStationOwner.equalsIgnoreCase(PlayerUtil.getName(this.mc.player)))
                     {
                         GL11.glColor4f(1.0F, 0.0F, 0.0F, 1);
                     }
@@ -2152,7 +2152,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (this.renamingString == null)
                     {
                         Satellite selectedSatellite = (Satellite) this.selectedBody;
-                        String playerName = FMLClientHandler.instance().getClient().player.getGameProfile().getName();
+                        String playerName = PlayerUtil.getName(this.mc.player);
                         this.renamingString = this.spaceStationMap.get(getSatelliteParentID(selectedSatellite)).get(playerName).getStationName();
                         if (this.renamingString == null)
                         {

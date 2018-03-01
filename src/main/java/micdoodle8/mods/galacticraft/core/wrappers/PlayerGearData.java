@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 
@@ -129,7 +130,7 @@ public class PlayerGearData
     @Override
     public int hashCode()
     {
-        return this.player.getGameProfile().getName().hashCode();
+        return PlayerUtil.getName(this.player).hashCode();
     }
 
     @Override
@@ -137,7 +138,7 @@ public class PlayerGearData
     {
         if (obj instanceof PlayerGearData)
         {
-            return ((PlayerGearData) obj).player.getGameProfile().getName().equals(this.player.getGameProfile().getName());
+            return PlayerUtil.getName(((PlayerGearData) obj).player).equals(PlayerUtil.getName(this.player));
         }
 
         return false;

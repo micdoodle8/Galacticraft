@@ -1640,7 +1640,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 itemstack1 = this.stacks.get(k);
 
-                if (!itemstack1.isEmpty() && itemstack1.getItem() == itemstack.getItem() && (!itemstack.getHasSubtypes() || itemstack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack.areItemStackTagsEqual(itemstack, itemstack1))
+                if (RecipeUtil.stacksMatch(itemstack, itemstack1))
                 {
                     int l = itemstack1.getCount() + itemstack.getCount();
 

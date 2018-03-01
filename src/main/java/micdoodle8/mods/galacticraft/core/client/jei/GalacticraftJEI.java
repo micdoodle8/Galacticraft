@@ -118,6 +118,7 @@ public class GalacticraftJEI extends BlankModPlugin
             registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
             registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
         }
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(new MagneticCraftingTransferInfo());
 
         GCItems.hideItemsJEI(registry.getJeiHelpers().getIngredientBlacklist());
     }

@@ -196,7 +196,7 @@ public class ConfigManagerCore
 
             prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "biomeIDBase", 102);
             prop.setComment("Biome ID for Moon (Mars will be this + 1, Asteroids + 2 etc). Allowed range 40-250.");
-            prop.setLanguageKey("gc.configgui.biome_i_d_base").setRequiresMcRestart(true);
+            prop.setLanguageKey("gc.configgui.biome_id_base").setRequiresMcRestart(true);
             biomeIDbase = prop.getInt();
             if (biomeIDbase < 40 || biomeIDbase > 250)
             {

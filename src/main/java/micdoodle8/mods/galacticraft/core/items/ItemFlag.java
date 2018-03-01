@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -82,7 +83,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
                 {
                     worldIn.spawnEntity(flag);
                     flag.setType(stack.getItemDamage());
-                    flag.setOwner(player.getGameProfile().getName());
+                    flag.setOwner(PlayerUtil.getName(player));
                     worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 2.0F);
                     placed = true;
                 }
