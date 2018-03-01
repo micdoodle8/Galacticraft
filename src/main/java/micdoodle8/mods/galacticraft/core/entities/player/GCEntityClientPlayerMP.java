@@ -425,7 +425,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     return false;
                 }
             }
-            this.sneakLast = this.movementInput.sneak;
+            this.sneakLast = this.movementInput == null ? false : this.movementInput.sneak;
         }
         else
         {
