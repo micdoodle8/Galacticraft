@@ -210,7 +210,7 @@ public class ConfigManagerCore
             staticLoadDimensions = prop.getIntList();
             finishProp(prop);
             
-            prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "Set new Space Stations to be static loaded", false);
+            prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "Set new Space Stations to be static loaded", true);
             prop.setComment("Set this to true to have an automatic /gckeeploaded for any new Space Station created.");
             prop.setLanguageKey("gc.configgui.static_loaded_new_ss");
             keepLoadedNewSpaceStations = prop.getBoolean();

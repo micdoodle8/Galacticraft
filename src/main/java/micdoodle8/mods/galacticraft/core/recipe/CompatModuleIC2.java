@@ -15,7 +15,6 @@ public class CompatModuleIC2
 {
     public static void addIndustrialCraft2Recipes()
     {
-        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 1), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 2), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(GCBlocks.basicBlock, 1, 7), 1), null, false, new ItemStack(GCItems.ic2compat, 2, 2));
