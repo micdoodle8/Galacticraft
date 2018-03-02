@@ -99,6 +99,10 @@ public class RecipeManagerGC
         //Recycling: smelt tin/copper canisters back into ingots
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.canister, 1, 0), new ItemStack(GCItems.basicItem, 3, 4), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.canister, 1, 1), new ItemStack(GCItems.basicItem, 3, 3), 1.0F);
+        if (CompatibilityManager.useAluDust())
+        {
+            FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
+        }
 
         HashMap<Integer, ItemStack> input = new HashMap<>();
         input.put(1, new ItemStack(GCItems.partNoseCone));

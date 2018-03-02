@@ -327,4 +327,7 @@ public abstract class GCPlayerStats
 
     public abstract Object[] getMiscNetworkedStats();
 
+    public abstract void setSavedSpeed(float value);
+
+    public abstract float getSavedSpeed();
 }
