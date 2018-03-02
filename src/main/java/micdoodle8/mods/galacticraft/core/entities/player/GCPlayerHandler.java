@@ -255,7 +255,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
+                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
                 {
                     GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -276,7 +276,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
+                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
                 {
                     GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -310,7 +310,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
-                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
+                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
                 {
                     GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -331,7 +331,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDRIGHTREDTANK);
                 }
-                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
+                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
                 {
                     GCPlayer.airRemaining2 = GCPlayer.tankInSlot2.getMaxDamage() - GCPlayer.tankInSlot2.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
