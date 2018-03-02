@@ -60,7 +60,8 @@ public class GalacticraftJEI extends BlankModPlugin
                 new CircuitFabricatorRecipeHandler(),
                 new IngotCompressorShapedRecipeHandler(),
                 new IngotCompressorShapelessRecipeHandler(),
-                new RefineryRecipeHandler());
+                new RefineryRecipeHandler(),
+                new NBTSensitiveShapedRecipeHandler());
         registry.addRecipes(Tier1RocketRecipeMaker.getRecipesList());
         registry.addRecipes(BuggyRecipeMaker.getRecipesList());
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList());
