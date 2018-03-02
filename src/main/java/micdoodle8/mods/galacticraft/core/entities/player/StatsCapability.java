@@ -139,6 +139,7 @@ public class StatsCapability extends GCPlayerStats
     public int buildFlags = 0;
 
     public int incrementalDamage = 0;
+    private float savedSpeed = 0F;  // used by titanium armor
 
     public String startDimension = "";
     public int glassColor1 = -1;
@@ -1391,5 +1392,17 @@ public class StatsCapability extends GCPlayerStats
         BlockPanelLighting.getNetworkedData(result, this.panelLightingBases);
         result[length - 1] = this.panelLightingColor;
         return result;
+    }
+
+    @Override
+    public void setSavedSpeed(float value)
+    {
+        this.savedSpeed = value;
+    }
+
+    @Override
+    public float getSavedSpeed()
+    {
+        return this.savedSpeed;
     }
 }
