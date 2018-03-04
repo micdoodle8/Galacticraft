@@ -23,6 +23,9 @@ import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompres
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapedRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapelessRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor.IngotCompressorShapelessRecipeWrapper;
+import micdoodle8.mods.galacticraft.core.client.jei.oxygencompressor.OxygenCompressorRecipeCategory;
+import micdoodle8.mods.galacticraft.core.client.jei.oxygencompressor.OxygenCompressorRecipeHandler;
+import micdoodle8.mods.galacticraft.core.client.jei.oxygencompressor.OxygenCompressorRecipeMaker;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker;
@@ -54,18 +57,21 @@ public class GalacticraftJEI extends BlankModPlugin
                 new BuggyRecipeCategory(guiHelper),
                 new CircuitFabricatorRecipeCategory(guiHelper),
                 ingotCompressorCategory,
+                new OxygenCompressorRecipeCategory(guiHelper),
                 new RefineryRecipeCategory(guiHelper));
         registry.addRecipeHandlers(new Tier1RocketRecipeHandler(),
                 new BuggyRecipeHandler(),
                 new CircuitFabricatorRecipeHandler(),
                 new IngotCompressorShapedRecipeHandler(),
                 new IngotCompressorShapelessRecipeHandler(),
+                new OxygenCompressorRecipeHandler(),
                 new RefineryRecipeHandler(),
                 new NBTSensitiveShapedRecipeHandler());
         registry.addRecipes(Tier1RocketRecipeMaker.getRecipesList());
         registry.addRecipes(BuggyRecipeMaker.getRecipesList());
         registry.addRecipes(CircuitFabricatorRecipeMaker.getRecipesList());
         registry.addRecipes(CompressorRecipes.getRecipeListAll());
+        registry.addRecipes(OxygenCompressorRecipeMaker.getRecipesList());
         registry.addRecipes(RefineryRecipeMaker.getRecipesList());
 
         ItemStack nasaWorkbench = new ItemStack(GCBlocks.nasaWorkbench);
@@ -75,6 +81,7 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase, 1, 12), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.machineBase2, 1, 0), RecipeCategories.INGOT_COMPRESSOR_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.refinery), RecipeCategories.REFINERY_ID);
+        registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.oxygenCompressor), RecipeCategories.OXYGEN_COMPRESSOR_ID);
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
         registry.getRecipeTransferRegistry().addRecipeTransferHandler(new MagneticCraftingTransferInfo());
 
