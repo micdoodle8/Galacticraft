@@ -56,7 +56,7 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
     {
         super.dropFewItems(wasRecentlyHit, lootingModifier);
 
-        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.015F)
         {
             this.addRandomDrop();
         }
