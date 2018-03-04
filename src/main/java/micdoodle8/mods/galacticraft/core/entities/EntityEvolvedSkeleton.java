@@ -23,6 +23,7 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -155,6 +156,14 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     }
 
     @Override
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        // No loot table
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+        this.dropEquipment(wasRecentlyHit, lootingModifier);
+    }
+
+    @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
         Item item = this.getDropItem();
@@ -182,7 +191,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) <= lootingModifier)
             this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
 
-        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
+        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
         {
             this.addRandomDrop();
         }
