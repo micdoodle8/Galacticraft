@@ -155,7 +155,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                 this.lightArea();
             }
 
-            if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(10) == 0)
+            if (!this.worldObj.isRemote && this.worldObj.rand.nextInt(20) == 0)
             {
                 List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, this.thisAABB, IMob.MOB_SELECTOR);
 
@@ -170,7 +170,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                         }
                         EntityCreature mob = (EntityCreature) entry;
                         //Check whether the mob can actually *see* the arclamp tile
-                        //if (this.worldObj.func_147447_a(thisPos, Vec3d.createVectorHelper(e.posX, e.posY, e.posZ), true, true, false) != null) continue;
+                        //if (this.worldObj.func_147447_a(thisPos, new Vec3(entry.posX, entry.posY, entry.posZ), true, true, false) != null) continue;
 
                         PathNavigate nav = mob.getNavigator();
                         if (nav == null)
@@ -184,7 +184,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             continue;
                         }
 
-                        double distanceNew = vecNewTarget.distanceTo(thisVec3);
+                        double distanceNew = vecNewTarget.squareDistanceTo(thisVec3);
                         double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.posX, mob.posY, mob.posZ));
                         if (distanceNew > distanceCurrent)
                         {

@@ -521,6 +521,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityArclamp.class, new TileEntityArclampRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPanelLight.class, new TileEntityPanelLightRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlatform.class, new TileEntityPlatformRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityEmergencyBox.class, new TileEntityEmergencyBoxRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidPipe.class, new TileEntityOxygenPipeRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityOxygenStorageModule.class, new TileEntityMachineRenderer());
 //            ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCircuitFabricator.class, new TileEntityMachineRenderer());
@@ -695,6 +696,8 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 3, "panel_lighting_3");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.panelLighting, 4, "panel_lighting_4");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.platform);
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.emergencyBox, 0, "emergency_box");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.emergencyBox, 1, "emergency_box_full");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");
@@ -757,6 +760,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         addCoreVariant("space_glass_vanilla", "space_glass_vanilla", "space_glass_tin_vanilla");
         addCoreVariant("space_glass_strong", "space_glass_strong", "space_glass_tin_strong");
         addCoreVariant("panel_lighting", "panel_lighting", "panel_lighting_1", "panel_lighting_2", "panel_lighting_3", "panel_lighting_4");
+        addCoreVariant("emergency_box", "emergency_box", "emergency_box_full");
 
         //Item variants: best if the damage=0 variant has the registered item name, to avoid ModelLoader errors for the #inventory variant
         addCoreVariant("canister", "canister", "canister_copper");

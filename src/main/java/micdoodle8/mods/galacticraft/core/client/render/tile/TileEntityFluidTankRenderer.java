@@ -67,7 +67,14 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         else
         {
             level = tank.fluidTank.getFluidAmount() / 16400.0F;
-            levelInv = 0.988F - level;  //1.2% inset from each end of the tank, to avoid z-fighting with blocks above/below
+            if (level <= 0.012F)
+            {
+                levelInv = 1.0F;  //Empty tanks render empty - see #3222
+            }
+            else
+            {
+                levelInv = 0.988F - level;  //1.2% inset from each end of the tank, to avoid z-fighting with blocks above/below
+            }
         }
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, opacity);
