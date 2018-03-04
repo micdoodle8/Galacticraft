@@ -55,16 +55,7 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
     @Override
     protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
     {
-        // No loot table
-        this.dropFewItems(wasRecentlyHit, lootingModifier);
-        this.dropEquipment(wasRecentlyHit, lootingModifier);
-    }
-
-    @Override
-    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
-    {
-        super.dropFewItems(wasRecentlyHit, lootingModifier);
-
+        super.dropLoot(wasRecentlyHit, lootingModifier, source);
         if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.015F)
         {
             this.addRandomDrop();

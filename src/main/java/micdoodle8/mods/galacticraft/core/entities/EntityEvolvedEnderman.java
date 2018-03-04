@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -25,18 +24,8 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
     @Override
     protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
     {
-        // No loot table
-        this.dropFewItems(wasRecentlyHit, lootingModifier);
-        this.dropEquipment(wasRecentlyHit, lootingModifier);
-    }
-
-    @Override
-    protected void dropFewItems(boolean drop, int fortune)
-    {
-        super.dropFewItems(drop, fortune);
-        IBlockState state = this.getHeldBlockState();
-        this.entityDropItem(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)), 0.0F);
-        if (drop && this.rand.nextFloat() < 0.025F + (float)fortune * 0.015F)
+        super.dropLoot(wasRecentlyHit, lootingModifier, source);
+        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.015F)
         {
             this.addRandomDrop();
         }
