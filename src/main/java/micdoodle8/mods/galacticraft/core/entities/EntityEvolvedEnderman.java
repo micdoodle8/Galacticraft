@@ -27,7 +27,7 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
         super.dropFewItems(drop, fortune);
         IBlockState state = this.getHeldBlockState();
         this.entityDropItem(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)), 0.0F);
-        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)fortune * 0.01F)
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)fortune * 0.015F)
         {
             this.addRandomDrop();
         }

@@ -220,7 +220,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         super.dropFewItems(wasRecentlyHit, lootingModifier);
 
-        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.01F)
+        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
         {
             this.addRandomDrop();
         }
