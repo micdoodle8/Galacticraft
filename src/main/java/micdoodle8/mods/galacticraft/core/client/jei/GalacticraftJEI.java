@@ -32,9 +32,10 @@ import micdoodle8.mods.galacticraft.core.client.jei.refinery.RefineryRecipeMaker
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeHandler;
 import micdoodle8.mods.galacticraft.core.client.jei.tier1rocket.Tier1RocketRecipeMaker;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-
 import javax.annotation.Nonnull;
 
 @JEIPlugin
@@ -85,7 +86,28 @@ public class GalacticraftJEI extends BlankModPlugin
         registry.addRecipeCategoryCraftingItem(new ItemStack(GCBlocks.crafting), VanillaRecipeCategoryUid.CRAFTING);
         registry.getRecipeTransferRegistry().addRecipeTransferHandler(new MagneticCraftingTransferInfo());
 
+        this.addInformationPages(registry);
         GCItems.hideItemsJEI(registry.getJeiHelpers().getItemBlacklist());
+    }
+
+    private void addInformationPages(IModRegistry registry)
+    {
+        registry.addDescription(new ItemStack(GCBlocks.oxygenPipe), GCCoreUtil.translate("jei.fluid_pipe.info"));
+        registry.addDescription(new ItemStack(GCBlocks.fuelLoader), GCCoreUtil.translate("jei.fuel_loader.info"));
+        registry.addDescription(new ItemStack(GCBlocks.oxygenCollector), GCCoreUtil.translate("jei.oxygen_collector.info"));
+        registry.addDescription(new ItemStack(GCBlocks.oxygenDistributor), GCCoreUtil.translate("jei.oxygen_distributor.info"));
+        registry.addDescription(new ItemStack(GCBlocks.oxygenSealer), GCCoreUtil.translate("jei.oxygen_sealer.info"));
+        if (CompatibilityManager.isAppEngLoaded())
+        {
+            registry.addDescription(new ItemStack(GCBlocks.machineBase2), new String [] { GCCoreUtil.translate("jei.electric_compressor.info"), GCCoreUtil.translate("jei.electric_compressor.appeng.info") });
+        }
+        else
+        {
+            registry.addDescription(new ItemStack(GCBlocks.machineBase2), GCCoreUtil.translate("jei.electric_compressor.info"));
+        }
+        registry.addDescription(new ItemStack(GCBlocks.crafting), GCCoreUtil.translate("jei.magnetic_crafting.info"));
+        registry.addDescription(new ItemStack(GCBlocks.brightLamp), GCCoreUtil.translate("jei.arc_lamp.info"));
+        registry.addDescription(new ItemStack(GCItems.wrench), GCCoreUtil.translate("jei.wrench.info"));
     }
 
     @Override
