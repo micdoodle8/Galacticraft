@@ -132,7 +132,6 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        super.dropFewItems(wasRecentlyHit, lootingModifier);
         Item item = this.getDropItem();
 
         //Less rotten flesh than vanilla

@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -174,6 +175,16 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 
         this.isAirBorne = true;
         ForgeHooks.onLivingJump(this);
+    }
+
+    @Override
+    protected Item getDropItem()
+    {
+        if (this.isBurning())
+        {
+            return Items.BLAZE_ROD;
+        }
+        return Items.REDSTONE;
     }
 
     protected void addRandomDrop()
