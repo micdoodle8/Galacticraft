@@ -109,7 +109,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     @Override
     protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
     {
-        Item item = this.getDropItem();
+        Item item = Items.BONE;
 
         int j = this.rand.nextInt(3);
 
