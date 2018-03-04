@@ -228,5 +228,4 @@ public abstract class BlockAdvanced extends Block
             
         world.setBlockState(pos, this.getStateFromMeta(metaDir), 3);
     }
-
 }

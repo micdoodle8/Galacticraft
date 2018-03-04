@@ -560,6 +560,8 @@ public class RecipeManagerGC
 
         //EmergencyKit
         RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.emergencyBox), new Object[] { "XYX", "Y Y", "XYX", 'X', GCBlocks.glowstoneTorch, 'Y', new ItemStack(GCItems.basicItem, 1, 7) });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCBlocks.emergencyBox, 1, 1), new ItemStack(GCBlocks.emergencyBox, 1, 0), new ItemStack(GCItems.emergencyKit) );
         
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.meteorChunk, 3), new Object[] { GCItems.meteoricIronRaw });
 

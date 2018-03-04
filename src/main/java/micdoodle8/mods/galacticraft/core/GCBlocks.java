@@ -97,6 +97,7 @@ public class GCBlocks
     public static Block concealedRepeater_Unpowered;
     public static Block concealedDetector;
     public static Block platform;
+    public static Block emergencyBox;
 
     public static final Material machine = new Material(MapColor.ironColor);
 
@@ -172,6 +173,7 @@ public class GCBlocks
         GCBlocks.concealedRepeater_Unpowered = new BlockConcealedRepeater("concealed_repeater", false);
         GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
         GCBlocks.platform = new BlockPlatform("platform");
+        GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -430,6 +432,7 @@ public class GCBlocks
         registerBlock(GCBlocks.concealedRepeater_Unpowered, ItemBlockGC.class);
         registerBlock(GCBlocks.concealedDetector, ItemBlockCreativeGC.class);
         registerBlock(GCBlocks.platform, ItemBlockDesc.class);
+        registerBlock(GCBlocks.emergencyBox, ItemBlockEmergencyBox.class);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));
