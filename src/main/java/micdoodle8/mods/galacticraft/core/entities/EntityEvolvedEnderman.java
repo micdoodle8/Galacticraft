@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBreathable
@@ -22,12 +23,20 @@ public class EntityEvolvedEnderman extends EntityEnderman implements IEntityBrea
     }
 
     @Override
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        // No loot table
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+        this.dropEquipment(wasRecentlyHit, lootingModifier);
+    }
+
+    @Override
     protected void dropFewItems(boolean drop, int fortune)
     {
         super.dropFewItems(drop, fortune);
         IBlockState state = this.getHeldBlockState();
         this.entityDropItem(new ItemStack(state.getBlock(), 1, state.getBlock().getMetaFromState(state)), 0.0F);
-        if (this.recentlyHit > 0 && this.rand.nextFloat() < 0.025F + (float)fortune * 0.015F)
+        if (drop && this.rand.nextFloat() < 0.025F + (float)fortune * 0.015F)
         {
             this.addRandomDrop();
         }
