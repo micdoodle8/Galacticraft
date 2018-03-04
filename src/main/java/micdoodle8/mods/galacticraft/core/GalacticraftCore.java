@@ -574,6 +574,7 @@ public class GalacticraftCore
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
         GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
         GameRegistry.registerTileEntity(TileEntityPlatform.class, "GC Platform");
+        GameRegistry.registerTileEntity(TileEntityEmergencyBox.class, "GC Emergency Post");
         GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
     }
 

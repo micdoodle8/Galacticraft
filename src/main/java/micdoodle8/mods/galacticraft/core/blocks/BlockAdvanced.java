@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Method;
@@ -229,4 +230,9 @@ public abstract class BlockAdvanced extends Block
         world.setBlockState(pos, this.getStateFromMeta(metaDir), 3);
     }
 
+    @Override
+    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return this.isNormalCube(world, pos);
+    }
 }

@@ -235,7 +235,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.riddenByEntity.fallDistance = 0.0F;
         }
 
-        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200))
+        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) && this.launchPhase != EnumLaunchPhase.LANDING.ordinal())
         {
             this.onReachAtmosphere();
 //            if (this.worldObj.isRemote)
@@ -259,7 +259,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	            this.setDead();
 	        }
 	        else
-	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + 100)
+	        if (this.posY > (this.worldObj.provider instanceof IExitHeight ? ((IExitHeight) this.worldObj.provider).getYCoordinateToTeleport() : 1200) + (this.launchPhase == EnumLaunchPhase.LANDING.ordinal() ? 355 : 100))
 	        {
 	        	if (this.riddenByEntity instanceof EntityPlayerMP)
 	        	{

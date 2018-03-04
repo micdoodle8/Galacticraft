@@ -34,6 +34,7 @@ import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -67,6 +68,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Field;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -322,8 +324,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
-                stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (stats.getTankInSlot1().getItem() != stats.getLastTankInSlot1().getItem())
@@ -334,8 +339,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.LEFT_TANK, gearID);
                 }
-                stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining(stats.getTankInSlot1().getMaxDamage() - stats.getTankInSlot1().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
 
             stats.setLastTankInSlot1(stats.getTankInSlot1());
@@ -359,8 +367,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
-                stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
             //if the else is reached then both tankInSlot and lastTankInSlot are non-null
             else if (stats.getTankInSlot2().getItem() != stats.getLastTankInSlot2().getItem())
@@ -371,8 +382,11 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacketType.ADD, EnumExtendedInventorySlot.RIGHT_TANK, gearID);
                 }
-                stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
-                GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                if (stats.getMaskInSlot() != null && stats.getGearInSlot() != null)
+                {
+                    stats.setAirRemaining2(stats.getTankInSlot2().getMaxDamage() - stats.getTankInSlot2().getItemDamage());
+                    GCPlayerHandler.sendAirRemainingPacket(player, stats);
+                }
             }
 
             stats.setLastTankInSlot2(stats.getTankInSlot2());
@@ -1456,6 +1470,45 @@ public class GCPlayerHandler
             }
             player.addChatMessage(new ChatComponentText(EnumColor.YELLOW + GCCoreUtil.translate("gui.frequencymodule.warning0") + " " + EnumColor.AQUA + GCItems.basicItem.getItemStackDisplayName(new ItemStack(GCItems.basicItem, 1, 19)) + sb.toString()));
             stats.setReceivedSoundWarning(true);
+        }
+        
+        // Player moves and sprints 18% faster with full set of Titanium Armor
+        if (GalacticraftCore.isPlanetsLoaded && tick % 40 == 1 && player.inventory != null)
+        {
+            int titaniumCount = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                ItemStack armorPiece = player.getCurrentArmor(i);
+                if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
+                {
+                    titaniumCount++;
+                }
+            }
+            if (stats.getSavedSpeed() == 0F)
+            {
+                if (titaniumCount == 4)
+                {
+                    float speed = player.capabilities.getWalkSpeed();
+                    if (speed < 0.118F)
+                    {
+                        try {
+                            Field f = player.capabilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
+                            f.setAccessible(true);
+                            f.set(player.capabilities, 0.118F);
+                            stats.setSavedSpeed(speed);
+                        } catch (Exception e) { e.printStackTrace(); }
+                    }
+                }
+            }
+            else if (titaniumCount < 4)
+            {
+                try {
+                    Field f = player.capabilities.getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "walkSpeed" : "field_75097_g");
+                    f.setAccessible(true);
+                    f.set(player.capabilities, stats.getSavedSpeed());
+                    stats.setSavedSpeed(0F);
+                } catch (Exception e) { e.printStackTrace(); }
+            }
         }
 
         stats.setLastOxygenSetupValid(stats.isOxygenSetupValid());
