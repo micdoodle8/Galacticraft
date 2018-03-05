@@ -20,9 +20,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -67,6 +69,7 @@ public class RenderPlayerGC extends RenderPlayer
         // The following code removes the vanilla armor and item layer renderers and replaces them with the Galacticraft ones
         int itemLayerIndex = -1;
         int armorLayerIndex = -1;
+        int skullLayerIndex = -1;
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
             LayerRenderer layer = this.layerRenderers.get(i); 
@@ -74,14 +77,22 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 itemLayerIndex = i;
             }
-            if (layer instanceof LayerBipedArmor)
+            else if (layer instanceof LayerBipedArmor)
             {
                 armorLayerIndex = i;
             }
+            else if (layer instanceof LayerCustomHead)
+            {
+                skullLayerIndex = i;
+            }
+        }
+        if (skullLayerIndex >= 0)
+        {
+            this.setLayer(skullLayerIndex, new LayerCustomHead(this.getMainModel().bipedHead));
         }
         if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
         {
-            this.layerRenderers.set(itemLayerIndex, new LayerHeldItemGC(this));
+            this.setLayer(itemLayerIndex, new LayerHeldItemGC(this));
         }
         if (armorLayerIndex >= 0)
         {
@@ -94,7 +105,7 @@ public class RenderPlayerGC extends RenderPlayer
                     this.field_177186_d = new ModelBipedGC(1.0F);
                 }
             };
-            this.layerRenderers.set(armorLayerIndex, playerArmor);
+            this.setLayer(armorLayerIndex, playerArmor);
         }
 
         this.addLayer(new LayerOxygenTanks(this));
@@ -114,6 +125,11 @@ public class RenderPlayerGC extends RenderPlayer
 
             this.addLayer(new LayerShield(this));
         }
+    }
+
+    private <V extends EntityLivingBase, U extends LayerRenderer<V>> void setLayer(int index, U layer)
+    {
+        this.layerRenderers.set(index, (LayerRenderer<AbstractClientPlayer>)layer);
     }
 
     public RenderPlayerGC(RenderPlayer old, boolean smallArms)
