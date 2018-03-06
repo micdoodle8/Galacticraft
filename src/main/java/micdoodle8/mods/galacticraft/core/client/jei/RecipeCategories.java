@@ -10,6 +10,7 @@ public class RecipeCategories
     public static final String CIRCUIT_FABRICATOR_ID = "galacticraft.circuits";
     public static final String INGOT_COMPRESSOR_ID = "galacticraft.ingotcompressor";
     public static final String REFINERY_ID = "galacticraft.refinery";
+    public static final String OXYGEN_COMPRESSOR_ID = "galacticraft.oxygencompressor";
     public static final String GAS_LIQUEFIER_ID = "galacticraft.gas_liquefier";
     public static final String METHANE_SYNTHESIZER_ID = "galacticraft.methaneSynthesizer";
     public static final String ASTRO_MINER_ID = "galacticraft.astroMiner";
