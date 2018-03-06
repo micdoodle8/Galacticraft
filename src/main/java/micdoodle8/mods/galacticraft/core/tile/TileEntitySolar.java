@@ -269,17 +269,27 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float angle = this.worldObj.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
         float celestialAngle = (this.worldObj.getCelestialAngle(1.0F) + angle) * 360.0F;
+        if (!(this.worldObj.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
 
-        celestialAngle %= 360;
+        if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        celestialAngle %= 360F;
 
-        float difference = (180.0F - Math.abs(this.currentAngle % 180 - celestialAngle)) / 180.0F;
+        float difference = (180.0F - Math.abs((this.currentAngle + 12.5F) % 180F - celestialAngle)) / 180.0F;
 
         return MathHelper.floor_float(0.01F * difference * difference * (this.solarStrength * (Math.abs(difference) * 500.0F)) * this.getSolarBoost());
     }
 
     public float getSolarBoost()
     {
-        return (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
+        float result = (float) (this.worldObj.provider instanceof ISolarLevel ? ((ISolarLevel) this.worldObj.provider).getSolarEnergyMultiplier() : 1.0F);
+        if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderVenus)
+        {
+            if (this.pos.getY() > 90)
+            {
+                result += (this.pos.getY() - 90) / 1000F;   //Small improvement on Venus at higher altitudes
+            }
+        }
+        return result;
     }
 
     @Override
