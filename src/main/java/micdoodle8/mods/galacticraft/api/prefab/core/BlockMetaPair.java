@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.api.prefab.core;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 
 /**
  * Do not include this prefab class in your released mod download.
@@ -24,5 +25,10 @@ public class BlockMetaPair
     public byte getMetadata()
     {
         return this.metadata;
+    }
+
+    public IBlockState getBlockState()
+    {
+        return this.block.getStateFromMeta(this.metadata);
     }
 }
