@@ -197,7 +197,7 @@ public class TransformerHooks
             
             if (ConfigManagerCore.whitelistCoFHCoreGen)
             {   
-                addWorldGenForName("CoFHCore custom oregen", "cofh.core.world.WorldHandler");
+                addWorldGenForName("CoFHCore custom oregen", "cofh.cofhworld.init.WorldHandler");
             }
             addWorldGenForName("GalacticGreg oregen", "bloodasp.galacticgreg.GT_Worldgenerator_Space");
             addWorldGenForName("Dense Ores oregen", "com.rwtema.denseores.WorldGenOres");

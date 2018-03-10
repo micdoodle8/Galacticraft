@@ -106,6 +106,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     protected boolean setBodyInstance(CelestialBody body)
     {
         this.biomeTrue = body.biomesToAdapt[this.index];
+        this.fillerBlock = this.biomeTrue.fillerBlock;
+        this.topBlock = this.biomeTrue.topBlock;
+        this.decorator = this.biomeTrue.decorator;
         return this.index == body.biomesToAdapt.length - 1;
     }
 
