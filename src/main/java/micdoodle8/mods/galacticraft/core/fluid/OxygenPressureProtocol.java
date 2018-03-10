@@ -89,6 +89,11 @@ public class OxygenPressureProtocol
             return true;
         }
 
+        if (block instanceof IPartialSealableBlock)
+        {
+            return !((IPartialSealableBlock) block).isSealed(world, pos, side);
+        }
+
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
         if (block instanceof BlockLeavesBase)
@@ -105,11 +110,6 @@ public class OxygenPressureProtocol
         if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
         {
             return false;
-        }
-
-        if (block instanceof IPartialSealableBlock)
-        {
-            return !((IPartialSealableBlock) block).isSealed(world, pos, side);
         }
 
         //Solid but non-opaque blocks, for example special glass

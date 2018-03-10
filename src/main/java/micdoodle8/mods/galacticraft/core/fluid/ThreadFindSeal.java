@@ -1060,6 +1060,37 @@ public class ThreadFindSeal
 
     private boolean canBlockPassAirCheck(Block block, BlockVec3 vec, int side)
     {
+        if (block instanceof IPartialSealableBlock)
+        {
+            EnumFacing testSide = EnumFacing.getFront(side);
+            IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
+            BlockPos vecPos = new BlockPos(vec.x, vec.y, vec.z);
+            if (blockPartial.isSealed(this.world, vecPos, testSide))
+            {
+                // If a partial block checks as solid, allow it to be tested
+                // again from other directions
+                // This won't cause an endless loop, because the block won't
+                // be included in nextLayer if it checks as solid
+                this.checkCount--;
+                return false;
+            }
+
+            //Find the solid sides so they don't get iterated into, when doing the next layer
+            for (EnumFacing face : EnumFacing.VALUES)
+            {
+                if (face == testSide)
+                {
+                    continue;
+                }
+                if (blockPartial.isSealed(this.world, vecPos, face))
+                {
+                    vec.setSideDone(face.getIndex() ^ 1);
+                }
+            }
+            checkedAdd(vec);
+            return true;
+        }
+
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
         if (block instanceof BlockLeavesBase)
@@ -1091,37 +1122,6 @@ public class ThreadFindSeal
                 checkedAdd(vec);
                 return false;
             }
-        }
-
-        if (block instanceof IPartialSealableBlock)
-        {
-            EnumFacing testSide = EnumFacing.getFront(side);
-            IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
-            BlockPos vecPos = new BlockPos(vec.x, vec.y, vec.z);
-            if (blockPartial.isSealed(this.world, vecPos, testSide))
-            {
-                // If a partial block checks as solid, allow it to be tested
-                // again from other directions
-                // This won't cause an endless loop, because the block won't
-                // be included in nextLayer if it checks as solid
-                this.checkCount--;
-                return false;
-            }
-
-            //Find the solid sides so they don't get iterated into, when doing the next layer
-            for (EnumFacing face : EnumFacing.VALUES)
-            {
-                if (face == testSide)
-                {
-                    continue;
-                }
-                if (blockPartial.isSealed(this.world, vecPos, face))
-                {
-                    vec.setSideDone(face.getIndex() ^ 1);
-                }
-            }
-            checkedAdd(vec);
-            return true;
         }
 
         if (block instanceof BlockUnlitTorch)
