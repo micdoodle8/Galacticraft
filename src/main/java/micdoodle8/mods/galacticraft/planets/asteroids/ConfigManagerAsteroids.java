@@ -104,7 +104,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 6);
-            prop.comment = "Maximum number of Astro Miners each player is allowed to have active (default 4).";
+            prop.comment = "Maximum number of Astro Miners each player is allowed to have active (default 6).";
             prop.setLanguageKey("gc.configgui.astro_miners_max");
             if (update)
             {
