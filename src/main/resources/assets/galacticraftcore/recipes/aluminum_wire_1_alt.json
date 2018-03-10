@@ -12,7 +12,7 @@
   "key": {
     "X": {
       "item": "minecraft:wool",
-      "data": 0
+      "data": 32767
     },
     "Y": {
       "item": "galacticraftcore:aluminum_wire",
