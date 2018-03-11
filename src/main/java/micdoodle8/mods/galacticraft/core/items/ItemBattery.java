@@ -15,6 +15,7 @@ public class ItemBattery extends ItemElectricBase implements ISortableItem
     public ItemBattery(String assetName)
     {
         super();
+        this.setMaxStackSize(4);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
@@ -42,5 +43,15 @@ public class ItemBattery extends ItemElectricBase implements ISortableItem
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.GENERAL;
+    }
+
+    @Override
+    public int getItemStackLimit(ItemStack stack)
+    {
+        if (stack.getItemDamage() < 100 || stack.hasTagCompound() && stack.getTagCompound().hasKey("electricity"))
+        {
+            return 1;
+        }
+        return this.getItemStackLimit();
     }
 }
