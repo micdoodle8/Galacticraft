@@ -22,13 +22,8 @@ import net.minecraftforge.common.MinecraftForge;
 
 import java.util.List;
 
-public class ModelBipedGC extends ModelBiped
+public class ModelBipedGC
 {
-    public ModelBipedGC(float var1)
-    {
-        super(var1);
-    }
-
     public static void setRotationAngles(ModelBiped biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
         final EntityPlayer player = (EntityPlayer) par7Entity;
@@ -161,19 +156,7 @@ public class ModelBipedGC extends ModelBiped
 
         if (biped instanceof ModelPlayer)
         {
-            copyModelAngles(biped.bipedLeftLeg, ((ModelPlayer) biped).bipedLeftLegwear);
-            copyModelAngles(biped.bipedRightLeg, ((ModelPlayer) biped).bipedRightLegwear);
-            copyModelAngles(biped.bipedLeftArm, ((ModelPlayer) biped).bipedLeftArmwear);
-            copyModelAngles(biped.bipedRightArm, ((ModelPlayer) biped).bipedRightArmwear);
-            copyModelAngles(biped.bipedBody, ((ModelPlayer) biped).bipedBodyWear);
-            copyModelAngles(biped.bipedHead, ((ModelPlayer) biped).bipedHeadwear);
+            ModelBiped.copyModelAngles(biped.bipedHead, ((ModelPlayer) biped).bipedHeadwear);
         }
-    }
-
-    @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
-    {
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, par7Entity);
-        ModelBipedGC.setRotationAngles(this, par1, par2, par3, par4, par5, par6, par7Entity);
     }
 }
