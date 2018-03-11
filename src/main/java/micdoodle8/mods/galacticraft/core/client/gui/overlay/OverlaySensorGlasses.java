@@ -61,10 +61,10 @@ public class OverlaySensorGlasses extends Overlay
         final Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(i / 2 - 2 * k - f * 80, k + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
-        worldRenderer.pos(i / 2 + 2 * k + f * 80, k + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
-        worldRenderer.pos(i / 2 + 2 * k + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
-        worldRenderer.pos(i / 2 - 2 * k - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
+        worldRenderer.pos(i / 2 - k - f * 80, k + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
+        worldRenderer.pos(i / 2 + k + f * 80, k + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
+        worldRenderer.pos(i / 2 + k + f * 80, 0.0D - f * 40, -90D).tex(1.0D, 0.0D).endVertex();
+        worldRenderer.pos(i / 2 - k - f * 80, 0.0D - f * 40, -90D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
 
         GL11.glDepthMask(true);
