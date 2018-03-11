@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
@@ -72,11 +71,7 @@ public class RenderPlayerGC extends RenderPlayer
         Field f3 = null;
         try {
             f1 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
-            f2 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "modelArmor" : "field_177186_d");
-            f3 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "modelLeggings" : "field_177189_c");
             f1.setAccessible(true);
-            f2.setAccessible(true);
-            f3.setAccessible(true);
         } catch (Exception ignore) {}
         // The following code removes the vanilla skull and item layer renderers and replaces them with the Galacticraft ones
         // Also updates all armor layers (including layers added by other mods) to reflect GC model limb positioning
@@ -91,12 +86,10 @@ public class RenderPlayerGC extends RenderPlayer
             }
             else if (layer instanceof LayerArmorBase)
             {
-                if (f3 != null)
+                if (f1 != null)
                 {
                     try {
                         f1.set(layer, this);
-                        f2.set(layer, new ModelBipedGC(1.0F));
-                        f3.set(layer, new ModelBipedGC(0.5F));
                     } catch (Exception ignore) {}
                 }
             }
