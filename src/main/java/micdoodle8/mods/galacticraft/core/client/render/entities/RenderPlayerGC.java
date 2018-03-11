@@ -18,11 +18,14 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
+import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -64,9 +67,21 @@ public class RenderPlayerGC extends RenderPlayer
     
     private void addGCLayers()
     {
-        // The following code removes the vanilla armor and item layer renderers and replaces them with the Galacticraft ones
+        Field f1 = null;
+        Field f2 = null;
+        Field f3 = null;
+        try {
+            f1 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
+            f2 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "modelArmor" : "field_177186_d");
+            f3 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "modelLeggings" : "field_177189_c");
+            f1.setAccessible(true);
+            f2.setAccessible(true);
+            f3.setAccessible(true);
+        } catch (Exception ignore) {}
+        // The following code removes the vanilla skull and item layer renderers and replaces them with the Galacticraft ones
+        // Also updates all armor layers (including layers added by other mods) to reflect GC model limb positioning
         int itemLayerIndex = -1;
-        int armorLayerIndex = -1;
+        int skullLayerIndex = -1;
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
             LayerRenderer layer = this.layerRenderers.get(i); 
@@ -74,27 +89,29 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 itemLayerIndex = i;
             }
-            if (layer instanceof LayerBipedArmor)
+            else if (layer instanceof LayerArmorBase)
             {
-                armorLayerIndex = i;
+                if (f3 != null)
+                {
+                    try {
+                        f1.set(layer, this);
+                        f2.set(layer, new ModelBipedGC(1.0F));
+                        f3.set(layer, new ModelBipedGC(0.5F));
+                    } catch (Exception ignore) {}
+                }
             }
+            else if (layer instanceof LayerCustomHead)
+            {
+                skullLayerIndex = i;
+            }
+        }
+        if (skullLayerIndex >= 0)
+        {
+            this.setLayer(skullLayerIndex, new LayerCustomHead(this.getMainModel().bipedHead));
         }
         if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
         {
-            this.layerRenderers.set(itemLayerIndex, new LayerHeldItemGC(this));
-        }
-        if (armorLayerIndex >= 0)
-        {
-            LayerRenderer playerArmor = new LayerBipedArmor(this)
-            {
-                @Override
-                protected void initArmor()
-                {
-                    this.modelLeggings = new ModelBipedGC(0.5F);
-                    this.modelArmor = new ModelBipedGC(1.0F);
-                }
-            };
-            this.layerRenderers.set(armorLayerIndex, playerArmor);
+            this.setLayer(itemLayerIndex, new LayerHeldItemGC(this));
         }
 
         this.addLayer(new LayerOxygenTanks(this));
@@ -116,6 +133,11 @@ public class RenderPlayerGC extends RenderPlayer
         }
     }
 
+    private <V extends EntityLivingBase, U extends LayerRenderer<V>> void setLayer(int index, U layer)
+    {
+        this.layerRenderers.set(index, (LayerRenderer<AbstractClientPlayer>)layer);
+    }
+
     public RenderPlayerGC(RenderPlayer old, boolean smallArms)
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
@@ -129,10 +151,21 @@ public class RenderPlayerGC extends RenderPlayer
             List<LayerRenderer<?>> layers = (List<LayerRenderer<?>>) f.get(old);
             if (layers.size() > 0)
             {
-                this.layerRenderers.clear();
                 for (LayerRenderer<?> oldLayer : layers)
                 {
-                    this.addLayer(oldLayer);
+                    if (this.hasNoLayer(oldLayer.getClass()))
+                    {
+                        LayerRenderer newInstance = null;
+                        try {
+                            newInstance = oldLayer.getClass().getConstructor(RenderLivingBase.class).newInstance(this);
+                        }
+                        catch (Exception ignore) { }
+                        if (newInstance != null)
+                        {
+                            oldLayer = newInstance;
+                        }
+                        this.addLayer(oldLayer);
+                    }
                 }
             }
         } catch (Exception e)
@@ -141,6 +174,15 @@ public class RenderPlayerGC extends RenderPlayer
         }
         
         this.addGCLayers();
+    }
+
+    private boolean hasNoLayer(Class<? extends LayerRenderer> test)
+    {
+        for (LayerRenderer<?> oldLayer : this.layerRenderers)
+        {
+            if (oldLayer.getClass() == test) return false;
+        }
+        return true;
     }
 
     @Override
