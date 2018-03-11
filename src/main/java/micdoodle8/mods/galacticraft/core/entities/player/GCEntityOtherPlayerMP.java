@@ -2,7 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
 
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
@@ -57,5 +61,23 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
         if (height > 255D) height = 255D;
         BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
         return this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
+    }
+
+    @Override
+    public boolean isSneaking()
+    {
+        if (EventHandlerClient.sneakRenderOverride && !(this.worldObj.provider instanceof IZeroGDimension))
+        {
+            if (this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.ridingEntity instanceof ICameraZoomEntity))
+            {
+                IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
+
+                if (holdableItem.shouldCrouch(this))
+                {
+                    return true;
+                }
+            }
+        }
+        return super.isSneaking();
     }
 }
