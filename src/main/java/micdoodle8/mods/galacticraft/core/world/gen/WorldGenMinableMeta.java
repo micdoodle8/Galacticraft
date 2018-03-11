@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockHelper;
@@ -93,7 +92,6 @@ public class WorldGenMinableMeta extends WorldGenMinable
                                 if (xySquared + dz * dz < 1.0D)
                                 {
                                     BlockPos blockpos = new BlockPos(x, y, z);
-                                    if (this.minableBlockId == GCBlocks.blockMoon && metadata == 2) System.out.println("trying to place cheese at " + blockpos);
                                     IBlockState state = worldIn.getBlockState(blockpos);
 
                                     if (state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)
