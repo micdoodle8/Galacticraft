@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -340,6 +341,31 @@ public class GalacticraftRegistry
             gearType.add(type);
             GalacticraftRegistry.gearSlotMap.put(gearID, gearType);
         }
+    }
+    
+    public static List<ItemStack> listAllGearForSlot(EnumExtendedInventorySlot slotType)
+    {
+        List<ItemStack> result = new LinkedList<>();
+        for (Map.Entry<Integer, List<Object>> entry : GalacticraftRegistry.gearMap.entrySet())
+        {
+            List<EnumExtendedInventorySlot> slotType1 = getSlotType(entry.getKey());
+            if (slotType1.contains(slotType))
+            {
+                List<Object> objectList = entry.getValue();
+                for (Object o : objectList)
+                {
+                    if (o instanceof ItemStack)
+                    {
+                        result.add((ItemStack) o);
+                    }
+                    else if (o instanceof Item)
+                    {
+                        result.add(new ItemStack((Item)o));
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     public static int findMatchingGearID(ItemStack stack, EnumExtendedInventorySlot slotType)

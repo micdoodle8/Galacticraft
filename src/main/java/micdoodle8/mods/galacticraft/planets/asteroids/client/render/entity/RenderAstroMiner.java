@@ -7,6 +7,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -592,5 +594,11 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     protected ResourceLocation getEntityTexture(EntityAstroMiner entity)
     {
         return TextureMap.LOCATION_BLOCKS_TEXTURE;
+    }
+    
+    @Override
+    public boolean shouldRender(EntityAstroMiner miner, ICamera camera, double camX, double camY, double camZ)
+    {
+        return miner.isInRangeToRender3d(camX, camY, camZ);
     }
 }

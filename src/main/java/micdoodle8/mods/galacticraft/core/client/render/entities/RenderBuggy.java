@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
@@ -9,12 +10,14 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
@@ -163,5 +166,12 @@ public class RenderBuggy extends Render<EntityBuggy>
 
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
+    }
+    
+    @Override
+    public boolean shouldRender(EntityBuggy buggy, ICamera camera, double camX, double camY, double camZ)
+    {
+        AxisAlignedBB axisalignedbb = buggy.getEntityBoundingBox().expand(2D, 1D, 2D);
+        return buggy.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

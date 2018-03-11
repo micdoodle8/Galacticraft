@@ -2,12 +2,14 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -78,5 +80,11 @@ public class RenderGrapple extends Render<EntityGrapple>
     protected ResourceLocation getEntityTexture(EntityGrapple entity)
     {
         return new ResourceLocation("missing");
+    }
+    
+    @Override
+    public boolean shouldRender(EntityGrapple entity, ICamera camera, double camX, double camY, double camZ)
+    {
+        return entity.isInRangeToRender3d(camX, camY, camZ);
     }
 }
