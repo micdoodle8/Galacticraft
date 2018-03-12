@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
-import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -22,7 +21,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
+public class ItemBlockMachine extends ItemBlockDesc
 {
     public ItemBlockMachine(Block block)
     {
@@ -112,26 +111,5 @@ public class ItemBlockMachine extends ItemBlockDesc implements IHoldableItem
     public String getUnlocalizedName()
     {
         return this.getBlock().getUnlocalizedName() + ".0";
-    }
-
-    @Override
-    public boolean shouldHoldLeftHandUp(EntityPlayer player)
-    {
-        ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
-
-    }
-
-    @Override
-    public boolean shouldHoldRightHandUp(EntityPlayer player)
-    {
-        ItemStack currentStack = player.getHeldItemMainhand();
-        return currentStack != null && this.getBlock() == MarsBlocks.machine && currentStack.getItemDamage() >= BlockMachineMars.CRYOGENIC_CHAMBER_METADATA && currentStack.getItemDamage() < BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
-    }
-
-    @Override
-    public boolean shouldCrouch(EntityPlayer player)
-    {
-        return false;
     }
 }
