@@ -37,7 +37,7 @@ public class GCSounds
         closeAirLock = registerSound("player.closeairlock", registry);
         singleDrip = registerSound("ambience.singledrip", registry);
         scaryScape = registerSound("ambience.scaryscape", registry);
-        music = registerSound("galacticraft.musicSpace", registry);
+        music = registerSound("galacticraft.music_space", registry);
         deconstructor = registerSound("block.deconstructor", registry);
     }
 

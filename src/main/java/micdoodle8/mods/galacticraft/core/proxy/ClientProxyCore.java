@@ -38,6 +38,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.item.TextureDungeonFinder;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
+import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -175,10 +176,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     @Override
     public void init(FMLInitializationEvent event)
     {
-        Class[][] commonTypes =
-                {
-                        { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
-                };
         MUSIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new Class[] { SoundEvent.class, Integer.TYPE, Integer.TYPE }, GCSounds.music, 12000, 24000);
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
@@ -224,6 +221,12 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         
         ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+
+        try {
+            Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
+            ftc.setAccessible(true);
+            ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+        } catch (Exception e) {e.printStackTrace();} 
     }
 
     @Override
