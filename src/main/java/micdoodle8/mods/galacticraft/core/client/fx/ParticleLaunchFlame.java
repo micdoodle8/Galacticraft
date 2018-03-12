@@ -99,7 +99,7 @@ public class ParticleLaunchFlame extends Particle
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        final List<?> var3 = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox().expand(1.0D, 0.5D, 1.0D));
+        final List<?> var3 = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox().grow(1.0D, 0.5D, 1.0D));
 
         if (var3 != null)
         {

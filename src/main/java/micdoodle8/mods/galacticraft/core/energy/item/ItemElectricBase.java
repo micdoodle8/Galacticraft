@@ -32,12 +32,13 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
     private static Object itemManagerIC2;
     public float transferMax;
     private DefaultArtifactVersion mcVersion = null;
+    private static final int DAMAGE_RANGE = 100;
 
     public ItemElectricBase()
     {
         super();
         this.setMaxStackSize(1);
-        this.setMaxDamage(100);
+        this.setMaxDamage(DAMAGE_RANGE);
         this.setNoRepair();
         this.setMaxTransfer();
 
@@ -146,10 +147,13 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
 
         float electricityStored = Math.max(Math.min(joules, this.getMaxElectricityStored(itemStack)), 0);
-        itemStack.getTagCompound().setFloat("electricity", electricityStored);
+        if (joules > 0F)
+        {
+            itemStack.getTagCompound().setFloat("electricity", electricityStored);
+        }
 
         /** Sets the damage as a percentage to render the bar properly. */
-        itemStack.setItemDamage((int) (100 - electricityStored / this.getMaxElectricityStored(itemStack) * 100));
+        itemStack.setItemDamage(DAMAGE_RANGE - (int) (electricityStored / this.getMaxElectricityStored(itemStack) * DAMAGE_RANGE));
     }
 
     @Override
@@ -183,12 +187,15 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
         else //First time check item - maybe from addInformation() in a JEI recipe display?
         {
-            energyStored = this.getMaxElectricityStored(itemStack) * ((100F - itemStack.getItemDamage()) / 100F);
+            if (itemStack.getItemDamage() == DAMAGE_RANGE)
+                return 0F;
+
+            energyStored = this.getMaxElectricityStored(itemStack) * (DAMAGE_RANGE - itemStack.getItemDamage()) / DAMAGE_RANGE;
             itemStack.getTagCompound().setFloat("electricity", energyStored);
         }
 
         /** Sets the damage as a percentage to render the bar properly. */
-        itemStack.setItemDamage((int) (100 - energyStored / this.getMaxElectricityStored(itemStack) * 100));
+        itemStack.setItemDamage(DAMAGE_RANGE - (int) (energyStored / this.getMaxElectricityStored(itemStack) * DAMAGE_RANGE));
         return energyStored;
     }
 

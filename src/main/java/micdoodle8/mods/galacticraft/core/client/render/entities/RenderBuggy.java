@@ -171,7 +171,7 @@ public class RenderBuggy extends Render<EntityBuggy>
     @Override
     public boolean shouldRender(EntityBuggy buggy, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = buggy.getEntityBoundingBox().expand(2D, 1D, 2D);
+        AxisAlignedBB axisalignedbb = buggy.getEntityBoundingBox().grow(2D, 1D, 2D);
         return buggy.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

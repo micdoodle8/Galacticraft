@@ -84,7 +84,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             }
         }
 
-        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.4D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().grow(0.2D, 0.4D, 0.2D);
 
         final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 

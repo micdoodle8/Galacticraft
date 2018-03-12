@@ -95,7 +95,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             final Vec3d var25 = playerIn.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().expand(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
+            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
             int var29;
 
             for (var29 = 0; var29 < var28.size(); ++var29)

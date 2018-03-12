@@ -204,10 +204,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
             this.rotationPitch += 1F;
 
             Entity entity = null;
-            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int l;
             float f1;
+            final double border = 0.3D;
 
             for (l = 0; l < list.size(); ++l)
             {
@@ -215,8 +216,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
-                    f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(border, border, border);
                     RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec3, vec31);
 
                     if (movingobjectposition1 != null)

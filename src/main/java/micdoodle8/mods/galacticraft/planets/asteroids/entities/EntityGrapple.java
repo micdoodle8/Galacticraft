@@ -311,10 +311,10 @@ public class EntityGrapple extends Entity implements IProjectile
             }
 
             Entity entity = null;
-            List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
-            float f1;
+            final double border = 0.3D;
 
             for (i = 0; i < list.size(); ++i)
             {
@@ -322,8 +322,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
-                    f1 = 0.3F;
-                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand(f1, f1, f1);
+                    AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(border, border, border);
                     RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                     if (movingobjectposition1 != null)
@@ -412,7 +411,7 @@ public class EntityGrapple extends Entity implements IProjectile
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
             float f3 = 0.99F;
-            f1 = 0.05F;
+            float f1 = 0.05F;
 
             if (this.isInWater())
             {

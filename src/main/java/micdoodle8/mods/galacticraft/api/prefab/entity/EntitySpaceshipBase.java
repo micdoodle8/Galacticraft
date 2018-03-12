@@ -311,7 +311,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             this.timeUntilLaunch--;
         }
 
-        AxisAlignedBB box = this.getEntityBoundingBox().expand(0.2D, 0.2D, 0.2D);
+        AxisAlignedBB box = this.getEntityBoundingBox().grow(0.2D);
 
         final List<?> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 

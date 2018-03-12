@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -329,11 +331,11 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                     if (this.getRidingEntity() != null && !this.getRidingEntity().isDead)
                     {
-                        axisalignedbb = this.getEntityBoundingBox().union(this.getRidingEntity().getEntityBoundingBox()).expand(1.0D, 0.0D, 1.0D);
+                        axisalignedbb = this.getEntityBoundingBox().union(this.getRidingEntity().getEntityBoundingBox()).grow(1.0D, 0.0D, 1.0D);
                     }
                     else
                     {
-                        axisalignedbb = this.getEntityBoundingBox().expand(1.0D, 0.5D, 1.0D);
+                        axisalignedbb = this.getEntityBoundingBox().grow(1.0D, 0.5D, 1.0D);
                     }
 
                     List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, axisalignedbb);
@@ -430,6 +432,15 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         else
         {
             this.sneakLast = false;
+            if (EventHandlerClient.sneakRenderOverride && this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
+            {
+                IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
+
+                if (holdableItem.shouldCrouch(this))
+                {
+                    return true;
+                }
+            }
         }
         return super.isSneaking();
     }
@@ -465,7 +476,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 ySize = 0.08F;
             }
         }
-        else if (this.isSneaking())
+        else if (this.isSneaking() && this.movementInput != null && this.movementInput.sneak)
         {
             ySize = 0.08F;
         }

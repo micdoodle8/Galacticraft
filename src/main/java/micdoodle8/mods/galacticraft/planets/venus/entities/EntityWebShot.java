@@ -191,8 +191,9 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
         Entity entity = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
+        final double border = 0.3D;
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -200,8 +201,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
             if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
             {
-                float f1 = 0.3F;
-                AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand((double)f1, (double)f1, (double)f1);
+                AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(border, border, border);
                 RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                 if (movingobjectposition1 != null)

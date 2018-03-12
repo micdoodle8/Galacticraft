@@ -54,7 +54,7 @@ public class RenderFlag extends Render<EntityFlag>
     @Override
     public boolean shouldRender(EntityFlag lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().expand(1D, 2D, 1D);
+        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(1D, 2D, 1D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

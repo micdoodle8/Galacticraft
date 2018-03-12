@@ -59,7 +59,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 final Vector3 thisVec = new Vector3(this);
                 this.range15 = new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15);
                 this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
-                this.rangeBoundsPlus3 = this.rangeBounds.expand(3, 3, 3);
+                this.rangeBoundsPlus3 = this.rangeBounds.grow(3, 3, 3);
             }
 
             if (this.lastKillTime > 0 && MinecraftServer.getCurrentTimeMillis() - lastKillTime > 900000) // 15 minutes
@@ -273,7 +273,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public AxisAlignedBB getRangeBoundsPlus11()
     {
         if (this.rangeBoundsPlus11 == null)
-            this.rangeBoundsPlus11 = this.getRangeBounds().expand(11, 11, 11);
+            this.rangeBoundsPlus11 = this.getRangeBounds().grow(11, 11, 11);
 
         return this.rangeBoundsPlus11;
     }
