@@ -36,6 +36,7 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.item.TextureDungeonFinder;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
@@ -200,6 +201,12 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+        
+        try {
+            Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
+            ftc.setAccessible(true);
+            ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+        } catch (Exception e) {e.printStackTrace();} 
     }
 
     @Override
