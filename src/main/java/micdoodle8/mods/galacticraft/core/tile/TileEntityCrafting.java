@@ -93,54 +93,64 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
         else if (par1 == SIZEINVENTORY)
         {
-            boolean stillMatchesRecipe = true;
-            for (int i = 0; i < SIZEINVENTORY; i++)
-            {
-                ItemStack stack = this.craftMatrix.getStackInSlot(i);
-                ItemStack targetOther = this.memory[i];
-                if (targetOther == null && stack == null)
-                    continue;
-
-                if (targetOther == null || stack == null || stack.stackSize <= 0 || !sameItem(targetOther, stack))
-                {
-                    stillMatchesRecipe = false;
-                    break;
-                }
-            }
-            if (stillMatchesRecipe)
+            if (this.stillMatchesRecipe())
             {
                 ItemStack craftingResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
                 if (craftingResult != null)
                 {
-                    ItemStack[] aitemstack = CraftingManager.getInstance().func_180303_b(this.craftMatrix, this.worldObj);
-
-                    for (int i = 0; i < aitemstack.length; ++i)
-                    {
-                        ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
-                        ItemStack itemstack1 = aitemstack[i];
-
-                        if (itemstack != null)
-                        {
-                            this.craftMatrix.decrStackSize(i, 1);
-                        }
-
-                        if (itemstack1 != null)
-                        {
-                            if (this.craftMatrix.getStackInSlot(i) == null)
-                            {
-                                this.craftMatrix.setInventorySlotContents(i, itemstack1);
-                            }
-                            else
-                            {
-                                //TODO - things like buckets which can't go back into this - drop?
-                            }
-                        }
-                    }
+                    this.pullOneResultStack();
+                    this.markDirty();
                     return craftingResult;
                 }
             }
         }
         return null;
+    }
+    
+    private void pullOneResultStack()
+    {
+        ItemStack[] aitemstack = CraftingManager.getInstance().func_180303_b(this.craftMatrix, this.worldObj);
+
+        for (int i = 0; i < aitemstack.length; ++i)
+        {
+            ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
+            ItemStack itemstack1 = aitemstack[i];
+
+            if (itemstack != null)
+            {
+                this.craftMatrix.decrStackSize(i, 1);
+            }
+
+            if (itemstack1 != null)
+            {
+                if (this.craftMatrix.getStackInSlot(i) == null)
+                {
+                    this.craftMatrix.setInventorySlotContents(i, itemstack1);
+                }
+                else
+                {
+                    //TODO - things like buckets which can't go back into this - drop?
+                }
+            }
+        }
+    }
+
+    protected boolean stillMatchesRecipe()
+    {
+        int emptyCount = 0;
+        for (int i = 0; i < SIZEINVENTORY; i++)
+        {
+            ItemStack stack = this.craftMatrix.getStackInSlot(i);
+            ItemStack targetOther = this.memory[i];
+            if (targetOther == null && stack == null)
+                continue;
+
+            if (targetOther == null || stack == null || stack.stackSize <= 0 || !sameItem(targetOther, stack))
+            {
+                return false;
+            }
+        }
+        return emptyCount < SIZEINVENTORY;
     }
 
     @Override
@@ -162,6 +172,17 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         if (par1 >= 0 && par1 < SIZEINVENTORY)
         {
             this.craftMatrix.setInventorySlotContents(par1, par2ItemStack);
+        }
+        else if (par1 == SIZEINVENTORY && par2ItemStack == null || par2ItemStack.stackSize == 0)
+        {
+            if (this.stillMatchesRecipe())
+            {
+                ItemStack craftingResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
+                if (craftingResult != null)
+                {
+                    this.pullOneResultStack();
+                }
+            }
         }
     }
 
@@ -309,7 +330,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
     {
-        return index == SIZEINVENTORY;
+        return index == SIZEINVENTORY && this.stillMatchesRecipe();
     }
 
     /**
