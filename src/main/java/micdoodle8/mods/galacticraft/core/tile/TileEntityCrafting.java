@@ -79,8 +79,13 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     {
         if (par1 < SIZEINVENTORY)
             return this.craftMatrix.getStackInSlot(par1);
-        
-        return CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
+
+        // Crafting Manager can produce concurrent modification exception in single player
+        // if a server-side tick (e.g. from a Hopper) calls this while client-side is still initialising recipes
+        try {
+            return CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
+        } catch (Exception ignore) { }
+        return null;
     }
 
     @Override
