@@ -87,7 +87,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         try {
             return CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
         } catch (Exception ignore) { }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 }
             }
         }
-        return null;
+        return ItemStack.EMPTY;
     }
     
     private void pullOneResultStack()
@@ -202,7 +202,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             if (this.stillMatchesRecipe())
             {
                 ItemStack craftingResult = CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.getWorld());
-                if (craftingResult != null)
+                if (!craftingResult.isEmpty())
                 {
                     this.pullOneResultStack();
                 }
