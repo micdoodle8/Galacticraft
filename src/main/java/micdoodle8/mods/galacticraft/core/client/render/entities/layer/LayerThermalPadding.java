@@ -158,13 +158,13 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     @Override
     protected void initArmor()
     {
-        this.modelLeggings = new ModelPlayerGC(0.9F, false);
-        this.modelArmor = new ModelPlayerGC(0.275F, false);
+        this.modelLeggings = new ModelPlayerGC(0.55F, false);  //Head inside Oxygen Mask
+        this.modelArmor = new ModelPlayerGC(0.05F, false);  //Chest and limbs close to skin
     }
 
     @Override
     public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn)
     {
-        return slotIn == EntityEquipmentSlot.LEGS ? this.modelLeggings : this.modelArmor;
+        return slotIn == EntityEquipmentSlot.FEET ? this.modelLeggings : this.modelArmor;  //FEET is intended here, actually picks up the helmet (yes really)
     }
 }

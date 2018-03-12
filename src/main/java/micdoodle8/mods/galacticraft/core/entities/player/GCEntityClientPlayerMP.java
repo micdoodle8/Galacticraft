@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
+import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
+import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -424,6 +426,18 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 }
             }
         }
+        else if (EventHandlerClient.sneakRenderOverride)
+        {
+            if (this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
+            {
+                IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
+
+                if (holdableItem.shouldCrouch(this))
+                {
+                    return true;
+                }
+            }
+        }
         this.sneakLast = false;
         return super.isSneaking();
     }
@@ -459,7 +473,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 ySize = 0.08F;
             }
         }
-        else if (this.isSneaking())
+        else if (this.isSneaking() && this.movementInput != null && this.movementInput.sneak)
         {
             ySize = 0.08F;
         }

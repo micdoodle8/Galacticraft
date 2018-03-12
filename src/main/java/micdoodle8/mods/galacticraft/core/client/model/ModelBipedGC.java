@@ -27,6 +27,7 @@ public class ModelBipedGC
 {
     public static void setRotationAngles(ModelBiped biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
+        if (!(par7Entity instanceof EntityPlayer)) return;
         final EntityPlayer player = (EntityPlayer) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
         final float floatPI = 3.1415927F;
@@ -114,17 +115,6 @@ public class ModelBipedGC
                 biped.bipedRightArm.rotateAngleX = angle.floatX();
                 biped.bipedRightArm.rotateAngleY = angle.floatY();
                 biped.bipedRightArm.rotateAngleZ = angle.floatZ();
-            }
-
-            if (player.onGround && holdableItem.shouldCrouch(player))
-            {
-                biped.bipedBody.rotateAngleX = 0.5F;
-                biped.bipedRightLeg.rotationPointZ = 4.0F;
-                biped.bipedLeftLeg.rotationPointZ = 4.0F;
-                biped.bipedRightLeg.rotationPointY = 9.0F;
-                biped.bipedLeftLeg.rotationPointY = 9.0F;
-                biped.bipedHead.rotationPointY = 1.0F;
-                biped.bipedHeadwear.rotationPointY = 1.0F;
             }
         }
 
