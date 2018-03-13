@@ -7,11 +7,18 @@ import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import net.minecraft.block.BlockDispenser;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
+import net.minecraft.dispenser.IBehaviorDispenseItem;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -168,6 +175,49 @@ public class GCFluids
         if (!FluidRegistry.isFluidRegistered("fuelgc"))
         {
             FluidRegistry.registerFluid(new Fluid("fuelgc", stillFuel, flowingFuel).setDensity(400).setViscosity(900));
+        }
+    }
+
+    public static void registerDispenserBehaviours()
+    {
+        IBehaviorDispenseItem ibehaviordispenseitem = new BehaviorDefaultDispenseItem()
+        {
+            private final BehaviorDefaultDispenseItem dispenseBehavior = new BehaviorDefaultDispenseItem();
+            @Override
+            public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
+            {
+                ItemBucketGC itembucket = (ItemBucketGC)stack.getItem();
+                BlockPos blockpos = source.getBlockPos().offset(BlockDispenser.getFacing(source.getBlockMetadata()));
+                if (itembucket.tryPlaceContainedLiquid(source.getWorld(), blockpos))
+                {
+                    stack.setItem(Items.bucket);
+                    stack.stackSize = 1;
+                    return stack;
+                }
+                else
+                {
+                    return this.dispenseBehavior.dispense(source, stack);
+                }
+            }
+       };
+        if (GCItems.bucketFuel != null)
+        {
+            BlockDispenser.dispenseBehaviorRegistry.putObject(GCItems.bucketFuel, ibehaviordispenseitem);
+        }
+        if (GCItems.bucketOil != null)
+        {
+            BlockDispenser.dispenseBehaviorRegistry.putObject(GCItems.bucketOil, ibehaviordispenseitem);
+        }
+        if (GalacticraftCore.isPlanetsLoaded)
+        {
+            if (MarsItems.bucketSludge != null)
+            {
+                BlockDispenser.dispenseBehaviorRegistry.putObject(MarsItems.bucketSludge, ibehaviordispenseitem);
+            }
+            if (VenusItems.bucketSulphuricAcid != null)
+            {
+                BlockDispenser.dispenseBehaviorRegistry.putObject(VenusItems.bucketSulphuricAcid, ibehaviordispenseitem);
+            }
         }
     }
 }
