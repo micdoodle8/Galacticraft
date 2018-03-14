@@ -282,12 +282,8 @@ public class GCFluids
                 if (rocketPlaced)
                 {
                     stack.splitStack(1);
-                    return stack;
                 }
-                else
-                {
-                    return super.dispenseStack(source, stack);
-                }
+                return stack;
             }
         });
 
@@ -313,12 +309,8 @@ public class GCFluids
                     if (rocketPlaced)
                     {
                         stack.splitStack(1);
-                        return stack;
                     }
-                    else
-                    {
-                        return super.dispenseStack(source, stack);
-                    }
+                    return stack;
                 }
             });
             
@@ -342,12 +334,8 @@ public class GCFluids
                     if (rocketPlaced)
                     {
                         stack.splitStack(1);
-                        return stack;
                     }
-                    else
-                    {
-                        return super.dispenseStack(source, stack);
-                    }
+                    return stack;
                 }
             });
         }
