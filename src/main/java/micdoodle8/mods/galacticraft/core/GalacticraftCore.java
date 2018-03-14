@@ -539,12 +539,17 @@ public class GalacticraftCore
     }
 
     @EventHandler
+    public void onServerStopping(FMLServerStoppingEvent var1)
+    {
+        MapUtil.saveMapProgress();
+    }
+
+    @EventHandler
     public void onServerStop(FMLServerStoppedEvent var1)
     {
         // Unregister dimensions
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
-        MapUtil.saveMapProgress();
         GCCoreUtil.notifyStarted(null);
     }
 

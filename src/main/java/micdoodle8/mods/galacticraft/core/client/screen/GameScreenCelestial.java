@@ -197,15 +197,16 @@ public class GameScreenCelestial implements IGameScreen
         }
     }
 
-    private void drawTexturedRect(float x, float y, float width, float height)
+    private void drawTexturedRectCBody(float x, float y, float width, float height)
     {
+        double v = 0.75D;    // Celestial body textures are 12x12 in a 16x16 .png
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(x, y + height, 0F).tex(0, 1.0F).endVertex();
-        worldRenderer.pos(x + width, y + height, 0F).tex(1.0F, 1.0F).endVertex();
-        worldRenderer.pos(x + width, y, 0F).tex(1.0F, 0.0F).endVertex();
-        worldRenderer.pos(x, y, 0F).tex(0.0F, 0.0F).endVertex();
+        worldRenderer.pos(x, y + height, 0F).tex(0D, v).endVertex();
+        worldRenderer.pos(x + width, y + height, 0F).tex(v, v).endVertex();
+        worldRenderer.pos(x + width, y, 0F).tex(v, 0D).endVertex();
+        worldRenderer.pos(x, y, 0F).tex(0D, 0D).endVertex();
         tessellator.draw();
     }
 
@@ -237,7 +238,7 @@ public class GameScreenCelestial implements IGameScreen
         if (!preEvent.isCanceled())
         {
             float size = relSize / 70 * scale;
-            this.drawTexturedRect(-size / 2, -size / 2, size, size);
+            this.drawTexturedRectCBody(-size / 2, -size / 2, size, size);
         }
 
         CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(planet);
