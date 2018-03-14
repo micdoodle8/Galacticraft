@@ -23,10 +23,10 @@ public class GameScreenBasic implements IGameScreen
     private float frameA;
     private float frameBx;
     private float frameBy;
-    private float textureAx = 0F;
-    private float textureAy = 0F;
-    private float textureBx = 1.0F;
-    private float textureBy = 1.0F;
+    private double textureAx = 0D;
+    private double textureAy = 0D;
+    private double textureBx = 1.0D;
+    private double textureBy = 1.0D;
 
     public GameScreenBasic()
     {
@@ -52,24 +52,24 @@ public class GameScreenBasic implements IGameScreen
 
         if (scaleX == scaleY)
         {
-            textureAx = 0F;
-            textureAy = 0F;
-            textureBx = 1.0F;
-            textureBy = 1.0F;
+            textureAx = 0D;
+            textureAy = 0D;
+            textureBx = 1.0D;
+            textureBy = 1.0D;
         }
         else if (scaleX < scaleY)
         {
-            textureAx = (1.0F - (scaleX / scaleY)) / 2;
-            textureAy = 0F;
-            textureBx = 1.0F - textureAx;
-            textureBy = 1.0F;
+            textureAx = (1.0D - (scaleX / scaleY)) / 2D;
+            textureAy = 0D;
+            textureBx = 1.0D - textureAx;
+            textureBy = 1.0D;
         }
         else if (scaleY < scaleX)
         {
-            textureAx = 0F;
-            textureAy = (1.0F - (scaleY / scaleX)) / 2;
-            textureBx = 1.0F;
-            textureBy = 1.0F - textureAy;
+            textureAx = 0D;
+            textureAy = (1.0D - (scaleY / scaleX)) / 2D;
+            textureBx = 1.0D;
+            textureBy = 1.0D - textureAy;
         }
 
         switch (type)
@@ -101,7 +101,12 @@ public class GameScreenBasic implements IGameScreen
                     GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] {}));
                     ClientProxyCore.overworldTextureRequestSent = true;
                 }
+                // Overworld texture is 48x48 in a 64x64 .png file
+                this.textureBx -= 0.25D;
+                this.textureBy -= 0.25D;
                 draw2DTexture();
+                this.textureBx += 0.25D;
+                this.textureBy += 0.25D;
             }
             break;
         }
