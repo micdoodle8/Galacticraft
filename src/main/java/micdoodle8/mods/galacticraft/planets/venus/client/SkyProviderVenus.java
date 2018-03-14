@@ -254,10 +254,11 @@ public class SkyProviderVenus extends IRenderHandler
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderVenus.overworldTexture);
+        double v = 0.75D;
         worldRenderer1.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer1.pos(-f10, -100.0D, f10).tex(0, 1).endVertex();
-        worldRenderer1.pos(f10, -100.0D, f10).tex(1, 1).endVertex();
-        worldRenderer1.pos(f10, -100.0D, -f10).tex(1, 0).endVertex();
+        worldRenderer1.pos(-f10, -100.0D, f10).tex(0, v).endVertex();
+        worldRenderer1.pos(f10, -100.0D, f10).tex(v, v).endVertex();
+        worldRenderer1.pos(f10, -100.0D, -f10).tex(v, 0).endVertex();
         worldRenderer1.pos(-f10, -100.0D, -f10).tex(0, 0).endVertex();
         tessellator1.draw();
 

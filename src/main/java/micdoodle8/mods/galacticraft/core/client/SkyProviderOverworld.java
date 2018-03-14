@@ -358,6 +358,7 @@ public class SkyProviderOverworld extends IRenderHandler
             scale = Math.max(scale, 0.2F);
             GL11.glScalef(scale, 1.0F, scale);
             GL11.glTranslatef(0.0F, -(float) mc.thePlayer.posY, 0.0F);
+            double cornerB = 1.0D;
 //	        if (ClientProxyCore.overworldTextureLocal != null)
 //	        {
 //	            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureLocal.getGlTextureId());
@@ -365,6 +366,8 @@ public class SkyProviderOverworld extends IRenderHandler
 //	        else
             {
                 this.minecraft.renderEngine.bindTexture(this.planetToRender);
+                // Overworld texture is 48x48 in a 64x64 .png file, and same for other celestial bodies
+                cornerB = 0.75D;
             }
 
             size = 1.0F;
@@ -374,8 +377,8 @@ public class SkyProviderOverworld extends IRenderHandler
 
 //	        float zoomIn = (1F - (float) var25 / 768F) / 5.86F;
 //	        if (zoomIn < 0F) zoomIn = 0F;
-            float zoomIn = 0.0F;
-            float cornerB = 1.0F - zoomIn;
+            double zoomIn = 0.0D;
+            cornerB -= zoomIn;
             worldRenderer.pos(-size, 0, size).tex(zoomIn, cornerB).endVertex();
             worldRenderer.pos(size, 0, size).tex(cornerB, cornerB).endVertex();
             worldRenderer.pos(size, 0, -size).tex(cornerB, zoomIn).endVertex();
