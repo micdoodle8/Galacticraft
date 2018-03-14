@@ -102,28 +102,9 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
 
             if (padFound)
             {
-                //Check whether there is already a rocket on the pad
-                if (tile instanceof TileEntityLandingPad)
-                {
-                    if (((TileEntityLandingPad) tile).getDockedEntity() != null)
-                    {
-                        return false;
-                    }
-                }
-                else
+                if (!placeRocketOnPad(stack, worldIn, tile, centerX, centerY, centerZ))
                 {
                     return false;
-                }
-
-                EntityTier3Rocket rocket = new EntityTier3Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
-
-                rocket.rotationYaw += 45;
-                rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                worldIn.spawnEntityInWorld(rocket);
-
-                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
-                {
-                    rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
@@ -134,11 +115,6 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
                     {
                         stack = null;
                     }
-                }
-
-                if (rocket.getType().getPreFueled())
-                {
-                    rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
                 }
             }
             else
@@ -218,5 +194,38 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
     public EnumSortCategoryItem getCategory(int meta)
     {
         return EnumSortCategoryItem.ROCKET;
+    }
+
+    public static boolean placeRocketOnPad(ItemStack stack, World worldIn, TileEntity tile, float centerX, float centerY, float centerZ)
+    {
+        //Check whether there is already a rocket on the pad
+        if (tile instanceof TileEntityLandingPad)
+        {
+            if (((TileEntityLandingPad) tile).getDockedEntity() != null)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        EntityTier3Rocket rocket = new EntityTier3Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
+
+        rocket.rotationYaw += 45;
+        rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
+        worldIn.spawnEntityInWorld(rocket);
+
+        if (rocket.getType().getPreFueled())
+        {
+            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
+        }
+        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
+        {
+            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+        }
+        
+        return true;
     }
 }
