@@ -279,6 +279,7 @@ public class GalacticraftCore
         registerCoreGameScreens();
 
         GCFluids.registerLegacyFluids();
+        GCFluids.registerDispenserBehaviours();
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_MASK, EnumExtendedInventorySlot.MASK, GCItems.oxMask);
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_GEAR, EnumExtendedInventorySlot.GEAR, GCItems.oxygenGear);
