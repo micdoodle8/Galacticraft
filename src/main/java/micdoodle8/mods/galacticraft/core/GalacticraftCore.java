@@ -287,6 +287,7 @@ public class GalacticraftCore
         registerCoreGameScreens();
 
         GCFluids.registerLegacyFluids();
+        GCFluids.registerDispenserBehaviours();
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_MASK, EnumExtendedInventorySlot.MASK, GCItems.oxMask);
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_GEAR, EnumExtendedInventorySlot.GEAR, GCItems.oxygenGear);
@@ -544,12 +545,17 @@ public class GalacticraftCore
     }
 
     @EventHandler
+    public void onServerStopping(FMLServerStoppingEvent var1)
+    {
+        MapUtil.saveMapProgress();
+    }
+
+    @EventHandler
     public void onServerStop(FMLServerStoppedEvent var1)
     {
         // Unregister dimensions
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
-        MapUtil.saveMapProgress();
         GCCoreUtil.notifyStarted(null);
     }
 

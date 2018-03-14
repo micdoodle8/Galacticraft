@@ -180,6 +180,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
+        double v = 1.0D;
 
         if (ClientProxyCore.overworldTexturesValid)
         {
@@ -187,14 +188,16 @@ public class SkyProviderMoon extends IRenderHandler
         }
         else
         {
+            // Overworld texture is 48x48 in a 64x64 .png file
             FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.overworldTexture);
+            v = 0.75D;
         }
         world.getMoonPhase();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(-var12, -100.0D, var12).tex(0, 1).endVertex();
-        worldRenderer.pos(var12, -100.0D, var12).tex(1, 1).endVertex();
-        worldRenderer.pos(var12, -100.0D, -var12).tex(1, 0).endVertex();
-        worldRenderer.pos(-var12, -100.0D, -var12).tex(0, 0).endVertex();
+        worldRenderer.pos(-var12, -100.0D, var12).tex(0D, v).endVertex();
+        worldRenderer.pos(var12, -100.0D, var12).tex(v, v).endVertex();
+        worldRenderer.pos(var12, -100.0D, -var12).tex(v, 0D).endVertex();
+        worldRenderer.pos(-var12, -100.0D, -var12).tex(0D, 0D).endVertex();
         var23.draw();
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
