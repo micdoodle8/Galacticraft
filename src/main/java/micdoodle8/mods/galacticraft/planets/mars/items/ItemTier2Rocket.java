@@ -106,36 +106,9 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
 
             if (padFound)
             {
-                //Check whether there is already a rocket on the pad
-                if (tile instanceof TileEntityLandingPad)
+                if (!placeRocketOnPad(stack, world, tile, centerX, centerY, centerZ))
                 {
-                    if (((TileEntityLandingPad) tile).getDockedEntity() != null)
-                    {
-                        return EnumActionResult.PASS;
-                    }
-                }
-                else
-                {
-                    return EnumActionResult.PASS;
-                }
-
-                EntityAutoRocket rocket;
-
-                if (stack.getItemDamage() < 10)
-                {
-                    rocket = new EntityTier2Rocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
-                }
-                else
-                {
-                    rocket = new EntityCargoRocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage() - 10]);
-                }
-
-                rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-                world.spawnEntityInWorld(rocket);
-
-                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
-                {
-                    rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+                    return EnumActionResult.FAIL;
                 }
 
                 if (!player.capabilities.isCreativeMode)
@@ -147,25 +120,61 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                         stack = null;
                     }
                 }
-
-                if (((IRocketType) rocket).getType().getPreFueled())
-                {
-                    if (rocket instanceof EntityTieredRocket)
-                    {
-                        ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
-                    }
-                    else
-                    {
-                        ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
-                    }
-                }
+                return EnumActionResult.SUCCESS;
             }
             else
             {
                 return EnumActionResult.PASS;
             }
         }
-        return EnumActionResult.SUCCESS;
+    }
+
+    public static boolean placeRocketOnPad(ItemStack stack, World world, TileEntity tile, float centerX, float centerY, float centerZ)
+    {
+        //Check whether there is already a rocket on the pad
+        if (tile instanceof TileEntityLandingPad)
+        {
+            if (((TileEntityLandingPad) tile).getDockedEntity() != null)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        EntityAutoRocket rocket;
+
+        if (stack.getItemDamage() < 10)
+        {
+            rocket = new EntityTier2Rocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
+        }
+        else
+        {
+            rocket = new EntityCargoRocket(world, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage() - 10]);
+        }
+
+        rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
+        world.spawnEntityInWorld(rocket);
+
+        if (((IRocketType) rocket).getType().getPreFueled())
+        {
+            if (rocket instanceof EntityTieredRocket)
+            {
+                ((EntityTieredRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
+            }
+            else
+            {
+                ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
+            }
+        }
+        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
+        {
+            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+        }
+
+        return true;
     }
 
     @Override
