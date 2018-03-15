@@ -963,7 +963,6 @@ public class GCPlayerHandler
             int changeItem = 0;
             for (Item i : itemChangesPre)
             {
-                System.out.println("Searching for " + i);
                 if (i == theCurrentItem.getItem())
                 {
                     player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(itemChangesPost.get(changeItem), theCurrentItem.getCount(), 0));
