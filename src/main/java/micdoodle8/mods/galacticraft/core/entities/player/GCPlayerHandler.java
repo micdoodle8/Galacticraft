@@ -83,7 +83,10 @@ public class GCPlayerHandler
     private static final int OXYGENHEIGHTLIMIT = 450;
     public static final int GEAR_NOT_PRESENT = -1;
     
-    private HashMap<Item, Item> torchItems = new HashMap<>(4, 1F);
+    private List<Item> torchItemsSpace = new ArrayList<>(2);
+    private List<Item> torchItemsRegular = new ArrayList<>(2);
+    private List<Item> itemChangesPre = new ArrayList<>(2);
+    private List<Item> itemChangesPost = new ArrayList<>(2);
     private static HashMap<UUID, Integer> deathTimes = new HashMap<>();
 
     @SubscribeEvent
@@ -957,37 +960,50 @@ public class GCPlayerHandler
 
         if (!theCurrentItem.isEmpty())
         {
+            int changeItem = 0;
+            for (Item i : itemChangesPre)
+            {
+                System.out.println("Searching for " + i);
+                if (i == theCurrentItem.getItem())
+                {
+                    player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(itemChangesPost.get(changeItem), theCurrentItem.getCount(), 0));
+                    break;
+                }
+                changeItem++;
+            }
             if (OxygenUtil.noAtmosphericCombustion(player.world.provider))
             {
                 //Is it a type of overworld torch?
-                if (torchItems.containsValue(theCurrentItem.getItem()))
+                if (torchItemsRegular.contains(theCurrentItem.getItem()))
                 {
-                    Item torchItem = null;
                     //Get space torch for this overworld torch
-                    for (Item i : torchItems.keySet())
+                    int torchItem = 0;
+                    for (Item i : torchItemsRegular)
                     {
-                        if (torchItems.get(i) == theCurrentItem.getItem())
+                        if (i == theCurrentItem.getItem())
                         {
-                            torchItem = i;
+                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsSpace.get(torchItem), theCurrentItem.getCount(), 0));
                             break;
                         }
-                    }
-                    if (torchItem != null)
-                    {
-                        player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItem, theCurrentItem.getCount(), 0));
+                        torchItem ++;
                     }
                 }
             }
             else
             {
                 //Is it a type of space torch?
-                if (torchItems.containsKey(theCurrentItem.getItem()))
+                if (torchItemsSpace.contains(theCurrentItem.getItem()))
                 {
-                    //Get overworld torch for this space torch
-                    Item torchItem = torchItems.get(theCurrentItem.getItem());
-                    if (torchItem != null)
+                    //Get the overworld torch equivalent
+                    int torchItem = 0;
+                    for (Item i : torchItemsSpace)
                     {
-                        player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItem, theCurrentItem.getCount(), 0));
+                        if (i == theCurrentItem.getItem())
+                        {
+                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsSpace.get(torchItem), theCurrentItem.getCount(), 0));
+                            break;
+                        }
+                        torchItem ++;
                     }
                 }
             }
@@ -1021,9 +1037,22 @@ public class GCPlayerHandler
         for (Entry<Block, Block> type : BlockUnlitTorch.registeredTorches.entrySet())
         {
             //Space Torch registration must be unique; there may be multiple mappings for vanillaTorch
-            Item itemSpaceTorch = Item.getItemFromBlock(type.getKey());
-            Item itemVanillaTorch = Item.getItemFromBlock(type.getValue());
-            torchItems.put(itemSpaceTorch, itemVanillaTorch);
+            torchItemsSpace.add(Item.getItemFromBlock(type.getKey()));
+            torchItemsRegular.add(Item.getItemFromBlock(type.getValue()));
+        }
+    }
+
+    public void registerItemChanges()
+    {
+        for (Entry<Block, Block> type : GCBlocks.itemChanges.entrySet())
+        {
+            itemChangesPre.add(Item.getItemFromBlock(type.getKey()));
+            itemChangesPost.add(Item.getItemFromBlock(type.getValue()));
+        }
+        for (Entry<Item, Item> type : GCItems.itemChanges.entrySet())
+        {
+            itemChangesPre.add(type.getKey());
+            itemChangesPost.add(type.getValue());
         }
     }
 

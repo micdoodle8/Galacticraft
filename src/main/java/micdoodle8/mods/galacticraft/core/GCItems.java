@@ -26,6 +26,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -91,6 +92,7 @@ public class GCItems
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
     public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
     public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
+    public static HashMap<Item, Item> itemChanges = new HashMap<>(4, 1.0F);
 
     public static void initItems()
     {

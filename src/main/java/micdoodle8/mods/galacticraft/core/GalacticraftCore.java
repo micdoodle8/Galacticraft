@@ -732,6 +732,7 @@ public class GalacticraftCore
         public static void registerItemsLast(RegistryEvent.Register<Item> event)
         {
             GalacticraftCore.handler.registerTorchTypes();
+            GalacticraftCore.handler.registerItemChanges();
         }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)

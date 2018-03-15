@@ -57,7 +57,8 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         unlittorch.litVersion = littorch;
         unlittorch.unlitVersion = unlittorch;
         unlittorch.fallback = vanillatorch;
-        registeredTorches.put(unlittorch, vanillatorch);
+        registeredTorches.put(littorch, vanillatorch);
+        GCBlocks.itemChanges.put(unlittorch, littorch);
     }
 
     @Override
