@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
@@ -14,9 +15,7 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeli
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -34,7 +33,6 @@ import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -171,24 +169,7 @@ public class GalacticraftPlanets
     private void configSyncEnd(boolean load)
     {
         //Cleanup older GC config files
-        Configuration config = ConfigManagerMars.config;
-        for (String catName : config.getCategoryNames())
-        {
-            ConfigCategory cat = config.getCategory(catName);
-            List<String> toRemove = new LinkedList<>();
-            for (String oldprop : cat.keySet())
-            {
-                if (!propOrder.get(catName).contains(oldprop))
-                {
-                    toRemove.add(oldprop);
-                }
-            }
-            for (String removeMe : toRemove)
-            {
-                cat.remove(removeMe);
-            }
-            config.setCategoryPropertyOrder(catName, propOrder.get(catName));
-        }
+        ConfigManagerCore.cleanConfig(ConfigManagerMars.config, propOrder);
 
         //Always save - this is last to be called both at load time and at mid-game
         if (ConfigManagerMars.config.hasChanged())
