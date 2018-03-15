@@ -629,23 +629,7 @@ public class ConfigManagerCore
             finishProp(prop);
 
             //Cleanup older GC config files
-            for (String catName : config.getCategoryNames())
-            {
-                ConfigCategory cat = config.getCategory(catName);
-                List<String> toRemove = new LinkedList<>();
-                for (String oldprop : cat.keySet())
-                {
-                    if (!propOrder.get(catName).contains(oldprop))
-                    {
-                        toRemove.add(oldprop);
-                    }
-                }
-                for (String removeMe : toRemove)
-                {
-                    cat.remove(removeMe);
-                }
-                config.setCategoryPropertyOrder(catName, propOrder.get(catName));
-            }
+            cleanConfig(config, propOrder);
 
             if (config.hasChanged())
             {
@@ -658,6 +642,40 @@ public class ConfigManagerCore
         {
             GCLog.severe("Problem loading core config (\"core.conf\")");
             e.printStackTrace();
+        }
+    }
+    
+    public static void cleanConfig(Configuration config, Map<String, List<String>> propOrder)
+    {
+        List<String> categoriesToRemove = new LinkedList<>();
+        for (String catName : config.getCategoryNames())
+        {
+            List<String> newProps = propOrder.get(catName); 
+            if (newProps == null)
+            {
+                categoriesToRemove.add(catName);
+            }
+            else
+            {
+                ConfigCategory cat = config.getCategory(catName);
+                List<String> toRemove = new LinkedList<>();
+                for (String oldprop : cat.keySet())
+                {
+                    if (!newProps.contains(oldprop))
+                    {
+                        toRemove.add(oldprop);
+                    }
+                }
+                for (String removeMe : toRemove)
+                {
+                    cat.remove(removeMe);
+                }
+                config.setCategoryPropertyOrder(catName, propOrder.get(catName));
+            }
+        }
+        for (String catName : categoriesToRemove)
+        {
+            config.removeCategory(config.getCategory(catName));
         }
     }
     
