@@ -8,18 +8,24 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCommandBlock;
+import net.minecraft.block.BlockStructure;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -122,18 +128,41 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
 
                 //:Replicate logic of PlayerInteractionManager.tryHarvestBlock(pos1)
                 IBlockState state1 = worldIn.getBlockState(pos1);
-                TileEntity tileentity = worldIn.getTileEntity(pos1);
-                Block harvestedBlock = state1.getBlock(); 
-                boolean canHarvest = harvestedBlock.canHarvestBlock(worldIn, pos1, player);
-                boolean destroyed = harvestedBlock.removedByPlayer(state1, worldIn, pos1, player, canHarvest);
-                if (destroyed)
+                float f = state1.getBlockHardness(worldIn, pos);
+                if (f >= 0F)
                 {
-                    harvestedBlock.onBlockDestroyedByPlayer(worldIn, pos1, state1);
-                }
-                if (canHarvest && destroyed)
-                {
-                    harvestedBlock.harvestBlock(worldIn, player, pos1, state1, tileentity, stack);
-                    stack.damageItem(1, player);
+                    BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(worldIn, pos1, state1, player);
+                    MinecraftForge.EVENT_BUS.post(event);
+                    if (!event.isCanceled())
+                    {
+                        Block block = state1.getBlock(); 
+                        if ((block instanceof BlockCommandBlock || block instanceof BlockStructure) && !player.canUseCommandBlock())
+                        {
+                            worldIn.notifyBlockUpdate(pos1, state1, state1, 3);
+                            continue;
+                        }
+                        TileEntity tileentity = worldIn.getTileEntity(pos1);
+                        if (tileentity != null)
+                        {
+                            Packet<?> pkt = tileentity.getUpdatePacket();
+                            if (pkt != null)
+                            {
+                                ((EntityPlayerMP)player).connection.sendPacket(pkt);
+                            }
+                        }
+    
+                        boolean canHarvest = block.canHarvestBlock(worldIn, pos1, player);
+                        boolean destroyed = block.removedByPlayer(state1, worldIn, pos1, player, canHarvest);
+                        if (destroyed)
+                        {
+                            block.onBlockDestroyedByPlayer(worldIn, pos1, state1);
+                        }
+                        if (canHarvest && destroyed)
+                        {
+                            block.harvestBlock(worldIn, player, pos1, state1, tileentity, stack);
+                            stack.damageItem(1, player);
+                        }
+                    }
                 }
             }
         }
