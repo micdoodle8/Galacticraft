@@ -150,7 +150,11 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() - 5/16D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ());
-                        clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+
+                        if (bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs) != null)
+                        {
+                            clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+                        }
                     }
                 }
                 if (clash)
@@ -173,7 +177,11 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() + 1D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ() + 21/16D);
-                        clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+
+                        if (bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs) != null)
+                        {
+                            clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+                        }
                     }
                 }
                 if (clash)
@@ -196,7 +204,11 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() - 5/16D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX(), this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+
+                        if (bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs) != null)
+                        {
+                            clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+                        }
                     }
                 }
                 if (clash)
@@ -219,7 +231,11 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 1D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX() + 21/16D, this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+
+                        if (bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs) != null)
+                        {
+                            clash = check.intersectsWith(bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs));
+                        }
                     }
                 }
                 if (clash)
