@@ -136,6 +136,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 this.cooldown--;
             }
             
+            boolean updateRequired = false;
             if (this.openN)
             {
                 boolean clash = false;
@@ -150,13 +151,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() - 5/16D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ());
-                        clash = check.intersectsWith(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(bs, this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersectsWith(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openN = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openS)
@@ -173,13 +178,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() + 1D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ() + 21/16D);
-                        clash = check.intersectsWith(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(bs, this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersectsWith(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openS = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openW)
@@ -196,13 +205,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(this.pos.getX() - 5/16D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX(), this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        clash = check.intersectsWith(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(bs, this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersectsWith(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openW = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openE)
@@ -219,14 +232,23 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(this.pos.getX() + 1D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX() + 21/16D, this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        clash = check.intersectsWith(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(bs, this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersectsWith(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openE = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
+            }
+            
+            if (updateRequired)
+            {
+                this.updateClients();
             }
             
             if (this.world.rand.nextInt(15) == 0)
