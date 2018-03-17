@@ -599,8 +599,9 @@ public class WorldUtil
                     return false;
                 }
             }
-            World w = getWorldForDimensionServer(id);
-            WorldUtil.dimNames.put(id, getDimensionName(w.provider));
+            DimensionType dt = WorldUtil.getDimensionTypeById(id);
+            WorldProvider wp = dt.createDimension();
+            WorldUtil.dimNames.put(id, WorldUtil.getDimensionName(wp));
             return true;
         }
 

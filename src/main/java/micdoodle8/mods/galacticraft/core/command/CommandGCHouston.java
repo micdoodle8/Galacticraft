@@ -30,11 +30,11 @@ import net.minecraft.world.WorldServer;
 
 public class CommandGCHouston extends CommandBase
 {
-    private static List<EntityPlayerMP> noClipList = new LinkedList<>();
+    private static List<EntityPlayerMP> timerList = new LinkedList<>();
 
     public static void reset()
     {
-        noClipList.clear();
+        timerList.clear();
     }
     
     @Override
@@ -114,13 +114,13 @@ public class CommandGCHouston extends CommandBase
                         }
                     }
 
-                    if (noClipList.contains(playerBase))
+                    if (timerList.contains(playerBase))
                     {
-                        noClipList.remove(playerBase);
+                        timerList.remove(playerBase);
                     }
                     else
                     {
-                        noClipList.add(playerBase);
+                        timerList.add(playerBase);
                         TickHandlerServer.timerHoustonCommand = 250;
                         String msg = EnumColor.YELLOW + GCCoreUtil.translate("commands.gchouston.confirm.1") + " " + EnumColor.WHITE + GCCoreUtil.translate("commands.gchouston.confirm.2");
                         CommandBase.notifyCommandListener(sender, this, msg);

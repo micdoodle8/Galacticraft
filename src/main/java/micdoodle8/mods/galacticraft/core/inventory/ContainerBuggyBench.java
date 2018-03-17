@@ -190,7 +190,7 @@ public class ContainerBuggyBench extends Container
                 slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == ItemStack.EMPTY)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
                     stackOneItem.setCount(1);
