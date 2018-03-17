@@ -109,12 +109,12 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     {
         super.initGui();
         this.buttonList.clear();
-        final int var5 = (this.width - this.xSize) / 2;
-        final int var6 = (this.height - this.ySize) / 2;
-        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 61, var6 + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
-        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 61, var6 + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
-        this.dropdownTest = new GuiElementDropdown(3, this, var5 + 52, var6 + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-        this.closeAdvancedConfig = new GuiButton(4, var5 + 5, var6 + 5, 20, 20, "<");
+        final int xLeft = (this.width - this.xSize) / 2;
+        final int yTop = (this.height - this.ySize) / 2;
+        this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
+        this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
+        this.dropdownTest = new GuiElementDropdown(3, this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
+        this.closeAdvancedConfig = new GuiButton(4, xLeft + 5, yTop + 5, 20, 20, "<");
         this.buttonList.add(this.enablePadRemovalButton);
         this.buttonList.add(this.launchWhenCheckbox);
         this.buttonList.add(this.dropdownTest);
@@ -122,22 +122,13 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.0"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 20, 109, 13, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.1"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 5, (this.height - this.ySize) / 2 + 42, 88, 13, batterySlotDesc, this.width, this.height, this));
+        this.infoRegions.add(new GuiElementInfoRegion(xLeft + 151, yTop + 104, 18, 18, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.2"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 59, 78, 13, batterySlotDesc, this.width, this.height, this));
+        this.infoRegions.add(new GuiElementInfoRegion(xLeft + 27, yTop + 20, 13, 13, batterySlotDesc, this.width, this.height, this));
         batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.3"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 10, (this.height - this.ySize) / 2 + 77, 82, 13, batterySlotDesc, this.width, this.height, this));
-        batterySlotDesc = new ArrayList<String>();
-        batterySlotDesc.addAll(GCCoreUtil.translateWithSplit("gui.launch_controller.desc.4"));
-        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 95, (this.height - this.ySize) / 2 + 38, 38, 20, batterySlotDesc, this.width, this.height, this));
+        this.infoRegions.add(new GuiElementInfoRegion(xLeft + 52, yTop + 53, 99, 13, batterySlotDesc, this.width, this.height, this));
     }
 
     @Override
