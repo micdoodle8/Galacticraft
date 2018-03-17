@@ -136,6 +136,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 this.cooldown--;
             }
             
+            boolean updateRequired = false;
             if (this.openN)
             {
                 boolean clash = false;
@@ -150,13 +151,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(0.125D, 0.125D, 11/16D, 0.875D, 0.875D, 1D);
-                        clash = check.intersects(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersects(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openN = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openS)
@@ -173,13 +178,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(0.125D, 0.125D, 0D, 0.875D, 0.875D, 5/16D);
-                        clash = check.intersects(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersects(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openS = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openW)
@@ -196,13 +205,17 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(11/16D, 0.125D, 0.125D, 1D, 0.875D, 0.875D);
-                        clash = check.intersects(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersects(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openW = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
             }
             if (this.openE)
@@ -219,14 +232,23 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     else
                     {
                         AxisAlignedBB check = new AxisAlignedBB(0D, 0.125D, 0.125D, 5/16D, 0.875D, 0.875D);
-                        clash = check.intersects(bs.getCollisionBoundingBox(this.world, testPos));
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
+                        if (neighbour != null)
+                        {
+                            clash = check.intersects(neighbour);
+                        }
                     }
                 }
                 if (clash)
                 {
                     this.openE = false;
-                    this.updateClients();
+                    updateRequired = true;
                 }
+            }
+            
+            if (updateRequired)
+            {
+                this.updateClients();
             }
             
             if (this.world.rand.nextInt(15) == 0)
