@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -136,8 +137,20 @@ public class EntityMeteor extends Entity
         {
             if (movingObjPos != null)
             {
-                BlockPos above = movingObjPos.getBlockPos().up();
-                if (this.worldObj.getBlockState(above).getBlock().isAir(worldObj.getBlockState(above), worldObj, above))
+                BlockPos pos = movingObjPos.getBlockPos();
+                if (pos == null)
+                {
+                    if (movingObjPos.entityHit != null)
+                    {
+                        pos = this.worldObj.getTopSolidOrLiquidBlock(movingObjPos.entityHit.getPosition());
+                    }
+                    else
+                    {
+                        pos = this.worldObj.getTopSolidOrLiquidBlock(this.getPosition());
+                    }
+                }
+                BlockPos above = pos.up();
+                if (this.worldObj.getBlockState(above).getBlock() instanceof BlockAir)
                 {
                     this.worldObj.setBlockState(above, GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
