@@ -361,7 +361,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         rocketStacks[i++] = new ItemStack(MarsItems.marsItemBasic, 16, 2); //Desh ingot
         rocketStacks[i++] = new ItemStack(GCItems.basicItem, 8, 13); //Basic Wafer
         rocketStacks[i++] = new ItemStack(GCItems.basicItem, 2, 1); //Solar Panels
-        rocketStacks[i++] = new ItemStack(GCItems.basicItem, 16, 15);  //Canned food
+        rocketStacks[i++] = new ItemStack(GCItems.foodItem, 16, 0);  //Canned food
         rocketStacks[i++] = new ItemStack(Items.EGG, 12);
 
         rocketStacks[i++] = new ItemStack(Items.SPAWN_EGG, 2, EntityList.CLASS_TO_ID.get(EntityCow.class));
