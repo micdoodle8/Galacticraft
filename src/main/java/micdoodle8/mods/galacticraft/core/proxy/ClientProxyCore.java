@@ -534,13 +534,13 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 12, "wafer_solar");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 13, "wafer_basic");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 14, "wafer_advanced");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydrated_apple");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 15, "food");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydrated_carrot");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydrated_melon");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 0, "dehydrated_apple");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 0, "food");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 1, "dehydrated_carrot");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 2, "dehydrated_melon");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 3, "dehydrated_potato");
@@ -731,8 +731,8 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("schematic", "schematic", "schematic_rocket_t2");
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "buggymat", "seat", "storage");
-        addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
-        addCoreVariant("food", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato");
+        addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "food", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("food", "food", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato");
         addCoreVariant("item_basic_moon", "item_basic_moon", "compressed_meteoric_iron", "lunar_sapphire");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy", "buggy_1", "buggy_2", "buggy_3");
