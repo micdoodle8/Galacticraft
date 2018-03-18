@@ -666,7 +666,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
+        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
             return this.getElectricalInputDirections().contains(facing);
         }
@@ -676,7 +676,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
+        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
             return this.getElectricalInputDirections().contains(facing) ? (T) this : null;
         }

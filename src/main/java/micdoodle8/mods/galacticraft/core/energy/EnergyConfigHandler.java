@@ -221,7 +221,7 @@ public class EnergyConfigHandler
         return CompatibilityManager.isIc2Loaded();
     }
 
-    public static boolean isBuildcraftReallyLoaded()
+    public static boolean isBuildcraftLoaded()
     {
         if (!cachedBCRLoaded)
         {

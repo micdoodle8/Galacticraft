@@ -36,7 +36,7 @@ public class EnergyNetwork implements IElectricityNetwork
     private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
     private boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
-    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
+    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
 
     /* Re-written by radfast for better performance
      *
