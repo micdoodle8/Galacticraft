@@ -28,6 +28,8 @@ import net.minecraftforge.common.capabilities.Capability;
 
 import java.util.EnumSet;
 
+import buildcraft.api.mj.MjAPI;
+
 public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
 {
     /*
@@ -248,6 +250,10 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         {
             return this.canOutputEnergy(side);
         }
+        if (EnergyConfigHandler.isBuildcraftLoaded() && cap == MjAPI.CAP_CONNECTOR && this.canOutputEnergy(side))
+        {
+            return true;
+        }
         return super.hasCapability(cap, side);
     }
     
@@ -255,6 +261,10 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
     public <T> T getCapability(Capability<T> cap, EnumFacing side)
     {
         if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        {
+            return (T) this;
+        }
+        if (EnergyConfigHandler.isBuildcraftLoaded() && cap == MjAPI.CAP_CONNECTOR && this.canOutputEnergy(side))
         {
             return (T) this;
         }
