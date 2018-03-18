@@ -52,7 +52,7 @@ public class EnergyUtil
     private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
     private static boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded();
     private static boolean isIC2TileLoaded = false;
-    private static boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded();
+    private static boolean isBCReallyLoaded = EnergyConfigHandler.isBuildcraftLoaded();
 
     public static boolean voltageParameterIC2 = false;
     public static Method demandedEnergyIC2 = null;

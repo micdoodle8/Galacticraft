@@ -445,7 +445,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         {
             return true;
         }
-        if (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
+        if (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
         {
             TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, facing);
             return !(CompatibilityManager.classBCTransportPipeTile.isInstance(tile));
@@ -460,7 +460,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         {
             return (T) this;
         }
-        if (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
+        if (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
         {
             TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, facing);
             if (!(CompatibilityManager.classBCTransportPipeTile.isInstance(tile)))
