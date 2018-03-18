@@ -1,5 +1,9 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
+import javax.annotation.Nonnull;
+
+import buildcraft.api.mj.IMjConnector;
+import buildcraft.api.mj.MjAPI;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySource;
@@ -217,10 +221,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate)
     {
-        if (!canReceive())
-            return 0;
-
-        if (this.getNetwork() == null)
+        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
         {
             return 0;
         }
@@ -230,11 +231,11 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         return MathHelper.floor(sentGC / EnergyConfigHandler.RF_RATIO);
     }
     
-    //ForgeEnergy
+    //ForgeEnergy OR BuildCraft (method name clash!)
     @Override
     public boolean canReceive()
     {
-        return !EnergyConfigHandler.disableFEInput;
+        return !EnergyConfigHandler.disableBuildCraftInput || !EnergyConfigHandler.disableFEInput;
     }
 
     //ForgeEnergy
@@ -248,7 +249,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @Override
     public int getMaxEnergyStored()
     {
-        if (this.getNetwork() == null)
+        if (this.getNetwork() == null || EnergyConfigHandler.disableFEInput)
         {
             return 0;
         }
@@ -268,6 +269,39 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     public boolean canExtract()
     {
         return false;
+    }
+
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public long getPowerRequested()
+    {
+        if (this.getNetwork() == null || EnergyConfigHandler.disableBuildCraftInput)
+        {
+            return 0L;
+        }
+
+        return (long) (this.getNetwork().getRequest(this) / EnergyConfigHandler.BC3_RATIO * 1000000F);
+    }
+
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public long receivePower(long microJoules, boolean simulate)
+    {
+        System.out.println("ReceivePower " + microJoules + " sim " + simulate);
+        if (this.getNetwork() == null || EnergyConfigHandler.disableBuildCraftInput)
+        {
+            return microJoules;
+        }
+        float receiveGC = microJoules * EnergyConfigHandler.BC3_RATIO / 1000000F;
+        float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
+        return (long) (sentGC / EnergyConfigHandler.BC3_RATIO * 1000000F);
+    }
+    
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public boolean canConnect(@Nonnull IMjConnector other)
+    {
+        return true;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
@@ -411,6 +445,11 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         {
             return true;
         }
+        if (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
+        {
+            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, facing);
+            return !(CompatibilityManager.classBCTransportPipeTile.isInstance(tile));
+        }
         return super.hasCapability(capability, facing);
     }
 
@@ -420,6 +459,14 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         if (capability == CapabilityEnergy.ENERGY)
         {
             return (T) this;
+        }
+        if (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
+        {
+            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, facing);
+            if (!(CompatibilityManager.classBCTransportPipeTile.isInstance(tile)))
+            {
+                return (T) this;
+            }
         }
         return super.getCapability(capability, facing);
     }

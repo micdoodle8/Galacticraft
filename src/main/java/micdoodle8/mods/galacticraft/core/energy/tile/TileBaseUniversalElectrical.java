@@ -31,6 +31,11 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 
 import java.util.EnumSet;
 
+import javax.annotation.Nonnull;
+
+import buildcraft.api.mj.IMjConnector;
+import buildcraft.api.mj.MjAPI;
+
 
 public abstract class TileBaseUniversalElectrical extends EnergyStorageTile implements net.minecraftforge.energy.IEnergyStorage
 {
@@ -429,23 +434,26 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate)
     {
-        if (!canReceive())
+        if (EnergyConfigHandler.disableFEInput)
             return 0;
 
         return MathHelper.floor(super.receiveElectricity(null, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
     }
     
-    //ForgeEnergy
+    //ForgeEnergy OR BuildCraft (method name clash!)
     @Override
     public boolean canReceive()
     {
-        return !EnergyConfigHandler.disableFEInput;
+        return !EnergyConfigHandler.disableBuildCraftInput || !EnergyConfigHandler.disableFEInput;
     }
 
     //ForgeEnergy
     @Override
     public int getEnergyStored()
     {
+        if (EnergyConfigHandler.disableFEInput)
+            return 0;
+
         return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
@@ -453,6 +461,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public int getMaxEnergyStored()
     {
+        if (EnergyConfigHandler.disableFEInput)
+            return 0;
+
         return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
@@ -468,6 +479,39 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     public boolean canExtract()
     {
         return false;
+    }
+
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public long getPowerRequested()
+    {
+        if (EnergyConfigHandler.disableBuildCraftInput)
+        {
+            return 0L;
+        }
+
+        // Boost stated demand by factor of 20, otherwise Buildcraft seems to send only a trickle of power
+        return (long) (this.storage.receiveEnergyGC(Integer.MAX_VALUE, true) / EnergyConfigHandler.BC3_RATIO * 1000000F * 20F);
+    }
+
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public long receivePower(long microJoules, boolean simulate)
+    {
+        if (EnergyConfigHandler.disableBuildCraftInput)
+        {
+            return microJoules;
+        }
+        float receiveGC = microJoules * EnergyConfigHandler.BC3_RATIO / 1000000F;
+        float sentGC = receiveGC - super.receiveElectricity(null, receiveGC, 1, !simulate);
+        return (long) (sentGC / EnergyConfigHandler.BC3_RATIO * 1000000F);
+    }
+    
+    //Buildcraft 7
+    @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+    public boolean canConnect(@Nonnull IMjConnector other)
+    {
+        return true;
     }
 
     @RuntimeInterface(clazz = "cofh.api.energy.IEnergyReceiver", modID = "")
@@ -622,7 +666,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY)
+        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
             return this.getElectricalInputDirections().contains(facing);
         }
@@ -632,7 +676,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing)
     {
-        if (capability == CapabilityEnergy.ENERGY)
+        if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftReallyLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
             return this.getElectricalInputDirections().contains(facing) ? (T) this : null;
         }

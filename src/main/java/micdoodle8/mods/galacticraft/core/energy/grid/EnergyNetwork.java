@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
+import buildcraft.api.mj.IMjReceiver;
 import cofh.api.energy.IEnergyReceiver;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
@@ -35,6 +36,7 @@ public class EnergyNetwork implements IElectricityNetwork
     private boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded() && !EnergyConfigHandler.disableRFOutput;
     private boolean isIC2Loaded = EnergyConfigHandler.isIndustrialCraft2Loaded() && !EnergyConfigHandler.disableIC2Output;
     private boolean isFELoaded = !EnergyConfigHandler.disableFEOutput;
+    private boolean isBCLoaded = EnergyConfigHandler.isBuildcraftReallyLoaded() && !EnergyConfigHandler.disableBuildCraftOutput;
 
     /* Re-written by radfast for better performance
      *
@@ -281,6 +283,12 @@ public class EnergyNetwork implements IElectricityNetwork
                         result = Math.min(result, this.networkTierGC * 128D);
                         e = (float) result / EnergyConfigHandler.TO_IC2_RATIO;
                     }
+                    else if (isBCLoaded && acceptor instanceof IMjReceiver)
+                    {
+                        long bcDemand = ((IMjReceiver)acceptor).getPowerRequested();
+                        bcDemand = Math.min(bcDemand,  this.networkTierGC * this.networkTierGC * 16000000L);  //Capped at 16 MJ/tick for standard Alu wire, 64 for heavy. 
+                        e = (float) bcDemand / EnergyConfigHandler.TO_BC_RATIO;
+                    }
                     else if (isRF2Loaded && acceptor instanceof IEnergyReceiver)
                     {
                         e = ((IEnergyReceiver) acceptor).receiveEnergy(sideFrom, Integer.MAX_VALUE, true) / EnergyConfigHandler.TO_RF_RATIO;
@@ -422,6 +430,11 @@ public class EnergyNetwork implements IElectricityNetwork
                         {
                             sentToAcceptor = 0F;
                         }
+                    }
+                    else if (isBCLoaded && tileEntity instanceof IMjReceiver)
+                    {
+                        long toSendBC = (long) (currentSending * EnergyConfigHandler.TO_BC_RATIO);
+                        sentToAcceptor = (float) (toSendBC - ((IMjReceiver)tileEntity).receivePower(toSendBC, false)) / EnergyConfigHandler.TO_BC_RATIO;
                     }
                     else if (isRF2Loaded && tileEntity instanceof IEnergyReceiver)
                     {

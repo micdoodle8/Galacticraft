@@ -248,7 +248,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         {
             return this.canOutputEnergy(side);
         }
-        return false;
+        return super.hasCapability(cap, side);
     }
     
     @Override
@@ -258,7 +258,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
         {
             return (T) this;
         }
-        return null;
+        return super.getCapability(cap, side);
     }
     
     @Override

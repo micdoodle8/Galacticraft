@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import buildcraft.api.blocks.CustomRotationHelper;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
@@ -17,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -48,12 +51,17 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
-    public boolean canWrench(EntityPlayer entityPlayer, BlockPos pos)
+    public boolean canWrench(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
     {
         return true;
     }
 
     @RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
+    public void wrenchUsed(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
+    {
+        this.wrenchUsed(player, rayTrace == null ? null : rayTrace.getBlockPos());
+    }
+
     public void wrenchUsed(EntityPlayer entityPlayer, BlockPos pos)
     {
         ItemStack stack = entityPlayer.inventory.getCurrentItem();
@@ -141,6 +149,15 @@ public class ItemUniversalWrench extends Item implements ISortableItem
             this.wrenchUsed(player, pos);
 
             return EnumActionResult.SUCCESS;
+        }
+        else if (CompatibilityManager.modBCraftLoaded)
+        {
+            state = state.getActualState(world, pos);
+            EnumActionResult result = CustomRotationHelper.INSTANCE.attemptRotateBlock(world, pos, state, side);
+            if (result == EnumActionResult.SUCCESS) {
+                wrenchUsed(player, hand, player.getHeldItem(hand), new RayTraceResult(new Vec3d(hitX, hitY, hitZ), side, pos));
+            }
+            return result;
         }
 
         return EnumActionResult.PASS;
