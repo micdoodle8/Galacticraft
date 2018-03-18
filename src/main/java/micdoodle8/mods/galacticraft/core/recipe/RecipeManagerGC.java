@@ -550,13 +550,13 @@ public class RecipeManagerGC
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.concealedRepeater_Unpowered, 1, 0), new Object[] { "   ", "XYX", "   ", 'X', new ItemStack(GCBlocks.basicBlock, 1, 4), 'Y', Items.repeater });
 		
         // Food
-        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 15), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.apple, Items.apple });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 0), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.apple, Items.apple });
 
-        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 16), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.carrot, Items.carrot });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 1), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.carrot, Items.carrot });
 
-        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 17), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.melon, Items.melon });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 2), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.melon, Items.melon });
 
-        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.basicItem, 1, 18), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 3), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato });
 
         //EmergencyKit
         RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());

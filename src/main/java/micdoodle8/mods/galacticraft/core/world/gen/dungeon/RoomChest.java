@@ -29,10 +29,10 @@ public class RoomChest extends RoomEmpty
         List<WeightedRandomChestContent> list = Lists.newArrayList(new WeightedRandomChestContent[] {
                 new WeightedRandomChestContent(GCItems.cheeseCurd, 0, 1, 4, 10),
                 new WeightedRandomChestContent(Items.iron_ingot, 0, 2, 14, 10),
-                new WeightedRandomChestContent(GCItems.basicItem, 15, 1, 2, 6),  //Food cans
-                new WeightedRandomChestContent(GCItems.basicItem, 16, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.basicItem, 17, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.basicItem, 18, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 0, 1, 2, 6),  //Food cans
+                new WeightedRandomChestContent(GCItems.foodItem, 1, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 2, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 3, 1, 2, 6),
                 new WeightedRandomChestContent(GCItems.oilCanister, ItemCanisterGeneric.EMPTY, 1, 1, 5),
                 new WeightedRandomChestContent(Items.golden_apple, 0, 1, 1, 2),
                 new WeightedRandomChestContent(Items.redstone, 0, 4, 21, 10),
