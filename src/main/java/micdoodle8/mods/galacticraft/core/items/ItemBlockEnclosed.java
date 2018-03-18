@@ -123,15 +123,6 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     @Override
     public int getMetadata(int damage)
     {
-        //TE_CONDUIT (item damage 0: currently unused) and HV_CABLE (item damage 4) have had to have swapped metadata in 1.7.10 because IC2's TileCable tile entity doesn't like a block with metadata 4
-//        if (damage == 4)
-//        {
-//            return 0;
-//        }
-//        if (damage == 0)
-//        {
-//            return 4;
-//        }
         return damage;
     }
 }

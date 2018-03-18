@@ -24,13 +24,15 @@ public class CompatibilityManager
 	public final static String modidMekanism = "mekanism";
 	public final static String modidBuildcraft = "buildcraftcore";
     public final static String modBCraftTransport = "buildcrafttransport";
+    public final static String modBCraftEnergy = "buildcraftenergy";
     	
     public static boolean PlayerAPILoaded = Loader.isModLoaded("PlayerAPI");
     public static boolean RenderPlayerAPILoaded = Loader.isModLoaded("RenderPlayerAPI");
 
     public static boolean modJEILoaded = Loader.isModLoaded("jei");
     private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
-	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded("buildcraftenergy");
+    public static boolean modBCraftLoaded = Loader.isModLoaded(modidBuildcraft);
+	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded(modBCraftEnergy);
     private static boolean modBCraftTransportLoaded;
     private static boolean modGTLoaded;
     private static boolean modTELoaded = Loader.isModLoaded("thermalexpansion");

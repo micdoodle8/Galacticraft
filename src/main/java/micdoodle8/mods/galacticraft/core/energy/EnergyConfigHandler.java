@@ -58,9 +58,9 @@ public class EnergyConfigHandler
     private static int conversionLossFactor = 100;
 
     /**
-     * Convert gJ back to Buildcraft MJ
+     * Convert gJ back to Buildcraft MJ (microJoules)
      */
-    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
+    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO * 1000000F;
 
     /**
      * Convert gJ back to RF
@@ -93,6 +93,8 @@ public class EnergyConfigHandler
     private static boolean cachedBCLoaded = false;
     private static boolean cachedBCLoadedValue = false;
     private static int cachedBCVersion = -1;
+    private static boolean cachedBCRLoaded = false;
+    private static boolean cachedBCRLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
     private static boolean cachedRF1LoadedValue = false;
@@ -221,40 +223,20 @@ public class EnergyConfigHandler
 
     public static boolean isBuildcraftReallyLoaded()
     {
-        return CompatibilityManager.isBCraftEnergyLoaded();
-    }
-
-    public static int getBuildcraftVersion()
-    {
-        if (cachedBCVersion != -1)
+        if (!cachedBCRLoaded)
         {
-            return cachedBCVersion;
-        }
-
-        if (cachedBCLoaded)
-        {
-            boolean bc6Found = true;
-
+            boolean mjAPIFound = false;
             try
             {
                 Class.forName("buildcraft.api.mj.MjAPI");
+                mjAPIFound = true;
             }
-            catch (Throwable t)
-            {
-                bc6Found = false;
-            }
-
-            if (bc6Found)
-            {
-                cachedBCVersion = 6;
-            }
-            else
-            {
-                cachedBCVersion = 5;
-            }
+            catch (Throwable ignore) {}
+            cachedBCRLoaded = true;
+            cachedBCRLoadedValue = mjAPIFound && CompatibilityManager.isBCraftEnergyLoaded() && CompatibilityManager.classBCTransportPipeTile != null;
         }
 
-        return cachedBCVersion;
+        return cachedBCRLoadedValue;
     }
 
     public static boolean isRFAPILoaded()
@@ -383,7 +365,7 @@ public class EnergyConfigHandler
         }
 
         float factor = conversionLossFactor / 100F;
-        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
+        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO * 1000000F;
         TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
         TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
         TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
