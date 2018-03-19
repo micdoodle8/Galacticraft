@@ -12,25 +12,21 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemFood extends Item implements ISortableItem
+public class ItemFood extends net.minecraft.item.ItemFood implements ISortableItem
 {
     public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "cheese_slice", "burger_bun", "beef_patty_raw", "beef_patty_cooked", "cheeseburger" };
 
     public ItemFood(String assetName)
     {
-        super();
+        super(2, 0.3F, false);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
@@ -85,8 +81,13 @@ public class ItemFood extends Item implements ISortableItem
         {
             tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getItemDamage()] + ".name"));
         }
+        else if (par1ItemStack.getItemDamage() == 8)
+        {
+            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.food.cheeseburger.desc"));
+        }
     }
 
+    @Override
     public int getHealAmount(ItemStack par1ItemStack)
     {
         switch (par1ItemStack.getItemDamage())
@@ -114,6 +115,7 @@ public class ItemFood extends Item implements ISortableItem
         }
     }
 
+    @Override
     public float getSaturationModifier(ItemStack par1ItemStack)
     {
         switch (par1ItemStack.getItemDamage())
@@ -147,7 +149,7 @@ public class ItemFood extends Item implements ISortableItem
         --stack.stackSize;
         if (entityLiving instanceof EntityPlayer)
         {
-            ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
+            ((EntityPlayer) entityLiving).getFoodStats().addStats(this, stack);
         }
         worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
         if (!worldIn.isRemote && stack.getItemDamage() < 4)
@@ -155,29 +157,6 @@ public class ItemFood extends Item implements ISortableItem
             entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
         }
         return stack;
-    }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        return 32;
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        return EnumAction.EAT;
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand)
-    {
-        if (playerIn.canEat(false))
-        {
-            playerIn.setActiveHand(hand);
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-        }
-        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
     }
 
     @Override
