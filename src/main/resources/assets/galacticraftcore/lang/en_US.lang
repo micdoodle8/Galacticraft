@@ -471,6 +471,7 @@ item.food.cheese_slice.name=Cheese Slice
 item.food.burger_bun.name=Burger Bun
 item.food.beef_patty_raw.name=Ground Beef (Raw)
 item.food.beef_patty_cooked.name=Beef Patty (Cooked)
+item.food.cheeseburger.desc=Astronauts love cheeseburgers! A very satisfying food.
 item.food.cheeseburger.name=Cheeseburger
 item.fuel.name=Rocket Fuel
 item.fuel_canister.name=Filled Fuel Canister

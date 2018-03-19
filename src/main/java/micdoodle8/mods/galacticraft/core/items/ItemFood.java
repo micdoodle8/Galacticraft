@@ -79,6 +79,10 @@ public class ItemFood extends Item implements ISortableItem
         {
             tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.basic_item." + ItemFood.names[par1ItemStack.getItemDamage()] + ".name"));
         }
+        else if (par1ItemStack.getItemDamage() == 8)
+        {
+            tooltip.add(EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("item.food.cheeseburger.desc"));
+        }
     }
 
     public int getHealAmount(ItemStack par1ItemStack)
