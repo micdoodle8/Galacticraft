@@ -162,6 +162,7 @@ public class GalacticraftCore
     public void init(FMLInitializationEvent event)
     {
         GCBlocks.doOtherModsTorches();
+        GalacticraftCore.handler.registerItemChanges();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
 
@@ -258,6 +259,7 @@ public class GalacticraftCore
         registerCoreGameScreens();
 
         GCFluids.registerLegacyFluids();
+        GCFluids.registerDispenserBehaviours();
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_MASK, EnumExtendedInventorySlot.MASK, GCItems.oxMask);
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_GEAR, EnumExtendedInventorySlot.GEAR, GCItems.oxygenGear);
@@ -500,12 +502,17 @@ public class GalacticraftCore
     }
 
     @EventHandler
+    public void onServerStopping(FMLServerStoppingEvent var1)
+    {
+        MapUtil.saveMapProgress();
+    }
+
+    @EventHandler
     public void onServerStop(FMLServerStoppedEvent var1)
     {
         // Unregister dimensions
         WorldUtil.unregisterPlanets();
         WorldUtil.unregisterSpaceStations();
-        MapUtil.saveMapProgress();
     }
 
     private static void registerCoreGameScreens()

@@ -1434,7 +1434,7 @@ public class GuiCelestialSelection extends GuiScreen
                     if (!preEvent.isCanceled())
                     {
                         int size = getWidthForCelestialBodyStatic(planet);
-                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, preEvent.textureSize, preEvent.textureSize);
+                        this.drawTexturedModalRect(-size / 2, -size / 2, size, size, 0, 0, preEvent.textureSize, preEvent.textureSize, false, false, 16, 16);  // Celestial body textures are 12x12 in a 16x16 .png
                         matrixMap.put(planet, worldMatrix1);
                     }
 

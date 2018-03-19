@@ -36,12 +36,14 @@ import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelRocket;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelWorkbench;
 import micdoodle8.mods.galacticraft.core.client.render.item.TextureDungeonFinder;
 import micdoodle8.mods.galacticraft.core.client.render.tile.*;
+import micdoodle8.mods.galacticraft.core.client.sounds.MusicTickerGC;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseSP;
 import micdoodle8.mods.galacticraft.core.entities.player.IPlayerClient;
 import micdoodle8.mods.galacticraft.core.entities.player.PlayerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
+import micdoodle8.mods.galacticraft.core.items.ItemFood;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
@@ -165,7 +167,7 @@ public class ClientProxyCore extends CommonProxyCore
                 {
                         { MusicTicker.MusicType.class, ResourceLocation.class, int.class, int.class },
                 };
-        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(Constants.ASSET_PREFIX, "galacticraft.musicSpace"), 12000, 24000);
+        MUSIC_TYPE_MARS = EnumHelper.addEnum(commonTypes, MusicTicker.MusicType.class, "MARS_JC", new ResourceLocation(Constants.ASSET_PREFIX, "galacticraft.music_space"), 12000, 24000);
         ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.updateCapeList();
@@ -200,6 +202,12 @@ public class ClientProxyCore extends CommonProxyCore
                 e.printStackTrace();
             }
         }
+        
+        try {
+            Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
+            ftc.setAccessible(true);
+            ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+        } catch (Exception e) {e.printStackTrace();} 
     }
 
     @Override
@@ -527,12 +535,17 @@ public class ClientProxyCore extends CommonProxyCore
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 12, "wafer_solar");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 13, "wafer_basic");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 14, "wafer_advanced");
-        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 15, "dehydrated_apple");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 15, "food");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 16, "dehydrated_carrot");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 17, "dehydrated_melon");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 18, "dehydrated_potato");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 19, "frequency_module");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.basicItem, 20, "ambient_thermal_controller");
+        ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, 0, "food");
+        for (int j = 1; j < ItemFood.names.length; j++)
+        {
+            ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.foodItem, j, ItemFood.names[j]);
+        }
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 0, "item_basic_moon");  //This was meteoric_iron_ingot
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 1, "compressed_meteoric_iron");
         ClientUtil.registerItemJson(Constants.TEXTURE_PREFIX, GCItems.itemBasicMoon, 2, "lunar_sapphire");
@@ -720,7 +733,8 @@ public class ClientProxyCore extends CommonProxyCore
         addCoreVariant("schematic", "schematic", "schematic_rocket_t2");
         addCoreVariant("key", "key");
         addCoreVariant("buggymat", "buggymat", "seat", "storage");
-        addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("basic_item", "basic_item", "solar_module_1", "raw_silicon", "ingot_copper", "ingot_tin", "ingot_aluminum", "compressed_copper", "compressed_tin", "compressed_aluminum", "compressed_steel", "compressed_bronze", "compressed_iron", "wafer_solar", "wafer_basic", "wafer_advanced", "food", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "frequency_module", "ambient_thermal_controller");
+        addCoreVariant("food", "food", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", ItemFood.names[4], ItemFood.names[5], ItemFood.names[6], ItemFood.names[7], ItemFood.names[8], ItemFood.names[9]);
         addCoreVariant("item_basic_moon", "item_basic_moon", "compressed_meteoric_iron", "lunar_sapphire");
         addCoreVariant("meteor_chunk", "meteor_chunk", "meteor_chunk_hot");
         addCoreVariant("buggy", "buggy", "buggy_1", "buggy_2", "buggy_3");

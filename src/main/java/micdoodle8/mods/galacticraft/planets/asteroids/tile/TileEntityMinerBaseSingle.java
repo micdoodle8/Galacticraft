@@ -11,10 +11,12 @@ import java.util.ArrayList;
 
 public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
 {
+    private int corner = 0;
+
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.worldObj.isRemote && this.corner == 0)
         {
             final ArrayList<TileEntity> attachedBaseBlocks = new ArrayList<TileEntity>();
             
@@ -33,7 +35,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                         BlockPos pos = new BlockPos(x + thisX, y + thisY, z + thisZ);
                         final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
 
-                        if (tile instanceof TileEntityMinerBaseSingle && !tile.isInvalid())
+                        if (tile instanceof TileEntityMinerBaseSingle && !tile.isInvalid() && ((TileEntityMinerBaseSingle) tile).corner == 0)
                         {
                             attachedBaseBlocks.add(tile);
                         }
@@ -51,6 +53,7 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
                 TileEntityMinerBase.addNewMinerBase(GCCoreUtil.getDimensionID(this), this.getPos());
                 for (final TileEntity tile : attachedBaseBlocks)
                 {
+                    ((TileEntityMinerBaseSingle) tile).corner = 1;
                     this.worldObj.setBlockToAir(this.getPos());
                 }
                 //Don't try setting a new block with a TileEntity, because new tiles can

@@ -78,6 +78,8 @@ public class GCPlayerHandler
     public static final int GEAR_NOT_PRESENT = -1;
     
     private HashMap<Item, Item> torchItems = new HashMap<>(4, 1F);
+    private List<ItemStack> itemChangesPre = new ArrayList<>(4);
+    private List<ItemStack> itemChangesPost = new ArrayList<>(4);
     private static HashMap<UUID, Integer> deathTimes = new HashMap<>();
 
     @SubscribeEvent
@@ -947,6 +949,18 @@ public class GCPlayerHandler
         ItemStack theCurrentItem = player.inventory.getCurrentItem();
         if (theCurrentItem != null)
         {
+            int postChangeItem = 0;
+            for (ItemStack i : itemChangesPre)
+            {
+                if (i.getItem() == theCurrentItem.getItem() && i.getItemDamage() == theCurrentItem.getItemDamage())
+                {
+                    ItemStack postChange = itemChangesPost.get(postChangeItem).copy();
+                    postChange.stackSize = theCurrentItem.stackSize;
+                    player.inventory.mainInventory[player.inventory.currentItem] = postChange;
+                    break;
+                }
+                postChangeItem++;
+            }
             if (OxygenUtil.noAtmosphericCombustion(player.worldObj.provider))
             {
                 //Is it a type of overworld torch?
@@ -990,6 +1004,20 @@ public class GCPlayerHandler
         Item itemSpaceTorch = Item.getItemFromBlock(spaceTorch);
         Item itemVanillaTorch = Item.getItemFromBlock(vanillaTorch);
         torchItems.put(itemSpaceTorch, itemVanillaTorch);
+    }
+
+    public void registerItemChanges()
+    {
+        for (Entry<Block, Block> type : GCBlocks.itemChanges.entrySet())
+        {
+            itemChangesPre.add(new ItemStack(type.getKey()));
+            itemChangesPost.add(new ItemStack(type.getValue()));
+        }
+        for (Entry<ItemStack, ItemStack> type : GCItems.itemChanges.entrySet())
+        {
+            itemChangesPre.add(type.getKey());
+            itemChangesPost.add(type.getValue());
+        }
     }
 
     public static void setUsingParachute(EntityPlayerMP player, GCPlayerStats playerStats, boolean tf)

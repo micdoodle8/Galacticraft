@@ -547,22 +547,22 @@ public class ConfigManagerCore
             recipesRequireGCAdvancedMetals = prop.getBoolean(true);
             finishProp(prop);
             
-            prop = getConfig(Constants.CONFIG_CATEGORY_CONTROLS, "Open Galaxy Map", "KEY_M");
-            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop = getConfig(Constants.CONFIG_CATEGORY_KEYS, "Open Galaxy Map", "KEY_M");
+            prop.comment = "Default Map key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.";
             prop.setLanguageKey("gc.configgui.override_map").setRequiresMcRestart(true);
             keyOverrideMap = prop.getString();
             keyOverrideMapI = parseKeyValue(keyOverrideMap);
             finishProp(prop);
 
-            prop = getConfig(Constants.CONFIG_CATEGORY_CONTROLS, "Open Rocket GUI", "KEY_G");
-            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop = getConfig(Constants.CONFIG_CATEGORY_KEYS, "Open Rocket GUI", "KEY_G");
+            prop.comment = "Default Rocket/Fuel key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.";
             prop.setLanguageKey("gc.configgui.key_override_fuel_level").setRequiresMcRestart(true);
             keyOverrideFuelLevel = prop.getString();
             keyOverrideFuelLevelI = parseKeyValue(keyOverrideFuelLevel);
             finishProp(prop);
 
-            prop = getConfig(Constants.CONFIG_CATEGORY_CONTROLS, "Toggle Advanced Goggles", "KEY_K");
-            prop.comment = "Leave 'KEY_' value, adding the intended keyboard character to replace the letter. Values 0-9 and A-Z are accepted";
+            prop = getConfig(Constants.CONFIG_CATEGORY_KEYS, "Toggle Advanced Goggles", "KEY_K");
+            prop.comment = "Default Goggles key on first Galacticraft run only. After first run, change keys by Minecraft in-game Controls menu.  Valid settings: KEY_ followed by 0-9 or A-Z.";
             prop.setLanguageKey("gc.configgui.key_override_toggle_adv_goggles").setRequiresMcRestart(true);
             keyOverrideToggleAdvGoggles = prop.getString();
             keyOverrideToggleAdvGogglesI = parseKeyValue(keyOverrideToggleAdvGoggles);
@@ -629,23 +629,7 @@ public class ConfigManagerCore
             finishProp(prop);
 
             //Cleanup older GC config files
-            for (String catName : config.getCategoryNames())
-            {
-                ConfigCategory cat = config.getCategory(catName);
-                List<String> toRemove = new LinkedList<>();
-                for (String oldprop : cat.keySet())
-                {
-                    if (!propOrder.get(catName).contains(oldprop))
-                    {
-                        toRemove.add(oldprop);
-                    }
-                }
-                for (String removeMe : toRemove)
-                {
-                    cat.remove(removeMe);
-                }
-                config.setCategoryPropertyOrder(catName, propOrder.get(catName));
-            }
+            cleanConfig(config, propOrder);
 
             if (config.hasChanged())
             {
@@ -658,6 +642,40 @@ public class ConfigManagerCore
         {
             GCLog.severe("Problem loading core config (\"core.conf\")");
             e.printStackTrace();
+        }
+    }
+    
+    public static void cleanConfig(Configuration config, Map<String, List<String>> propOrder)
+    {
+        List<String> categoriesToRemove = new LinkedList<>();
+        for (String catName : config.getCategoryNames())
+        {
+            List<String> newProps = propOrder.get(catName); 
+            if (newProps == null)
+            {
+                categoriesToRemove.add(catName);
+            }
+            else
+            {
+                ConfigCategory cat = config.getCategory(catName);
+                List<String> toRemove = new LinkedList<>();
+                for (String oldprop : cat.keySet())
+                {
+                    if (!newProps.contains(oldprop))
+                    {
+                        toRemove.add(oldprop);
+                    }
+                }
+                for (String removeMe : toRemove)
+                {
+                    cat.remove(removeMe);
+                }
+                config.setCategoryPropertyOrder(catName, propOrder.get(catName));
+            }
+        }
+        for (String catName : categoriesToRemove)
+        {
+            config.removeCategory(config.getCategory(catName));
         }
     }
     
@@ -685,6 +703,7 @@ public class ConfigManagerCore
     private static Property getConfig(String cat, String key, String defaultValue)
     {
         config.moveProperty(Constants.CONFIG_CATEGORY_GENERAL, key, cat);
+        config.moveProperty(Constants.CONFIG_CATEGORY_CONTROLS, key, cat);
         currentCat = cat;
         return config.get(cat, key, defaultValue);
     }

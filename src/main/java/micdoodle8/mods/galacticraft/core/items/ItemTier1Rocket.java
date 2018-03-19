@@ -95,27 +95,9 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
 
             if (padFound)
             {
-                //Check whether there is already a rocket on the pad
-                if (tile instanceof TileEntityLandingPad)
-                {
-                    if (((TileEntityLandingPad) tile).getDockedEntity() != null)
-                    {
-                        return false;
-                    }
-                }
-                else
+                if (!placeRocketOnPad(stack, worldIn, tile, centerX, centerY, centerZ))
                 {
                     return false;
-                }
-
-                final EntityTier1Rocket spaceship = new EntityTier1Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
-
-                spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
-                worldIn.spawnEntityInWorld(spaceship);
-
-                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
-                {
-                    spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
@@ -127,17 +109,44 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                         stack = null;
                     }
                 }
-
-                if (spaceship.rocketType.getPreFueled())
-                {
-                    spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, spaceship.getMaxFuel()), true);
-                }
             }
             else
             {
                 return false;
             }
         }
+        return true;
+    }
+
+    public static boolean placeRocketOnPad(ItemStack stack, World worldIn, TileEntity tile, float centerX, float centerY, float centerZ)
+    {
+        //Check whether there is already a rocket on the pad
+        if (tile instanceof TileEntityLandingPad)
+        {
+            if (((TileEntityLandingPad) tile).getDockedEntity() != null)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        final EntityTier1Rocket spaceship = new EntityTier1Rocket(worldIn, centerX, centerY, centerZ, EnumRocketType.values()[stack.getItemDamage()]);
+
+        spaceship.setPosition(spaceship.posX, spaceship.posY + spaceship.getOnPadYOffset(), spaceship.posZ);
+        worldIn.spawnEntityInWorld(spaceship);
+
+        if (spaceship.rocketType.getPreFueled())
+        {
+            spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, spaceship.getMaxFuel()), true);
+        }
+        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
+        {
+            spaceship.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+        }
+
         return true;
     }
 

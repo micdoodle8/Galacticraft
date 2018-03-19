@@ -26,6 +26,7 @@ public class Constants
     public static final String CONFIG_CATEGORY_CLIENT = "client";
     public static final String CONFIG_CATEGORY_SERVER = "server";
     public static final String CONFIG_CATEGORY_CONTROLS = "controls";
+    public static final String CONFIG_CATEGORY_KEYS = "keybindings_initial";
     public static final String CONFIG_CATEGORY_DIFFICULTY = "difficulty";
     public static final String CONFIG_CATEGORY_COMPATIBILITY = "compatibility";
 

@@ -61,19 +61,19 @@ public class ChunkProviderMars extends ChunkProviderSpace
     @Override
     protected BlockMetaPair getGrassBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 5);
+        return BiomeGenBaseMars.BLOCK_TOP;
     }
 
     @Override
     protected BlockMetaPair getDirtBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 6);
+        return BiomeGenBaseMars.BLOCK_FILL;
     }
 
     @Override
     protected BlockMetaPair getStoneBlock()
     {
-        return new BlockMetaPair(MarsBlocks.marsBlock, (byte) 9);
+        return BiomeGenBaseMars.BLOCK_LOWER;
     }
 
     @Override

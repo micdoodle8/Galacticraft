@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
@@ -12,11 +13,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
@@ -116,5 +119,12 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
     protected ResourceLocation getEntityTexture(EntityEntryPodVenus entityEntryPod)
     {
         return new ResourceLocation("missing");
+    }
+    
+    @Override
+    public boolean shouldRender(EntityEntryPodVenus lander, ICamera camera, double camX, double camY, double camZ)
+    {
+        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().expand(1D, 2D, 1D);
+        return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

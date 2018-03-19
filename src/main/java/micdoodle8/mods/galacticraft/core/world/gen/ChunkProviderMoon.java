@@ -28,9 +28,9 @@ import java.util.Random;
 
 public class ChunkProviderMoon extends ChunkProviderBase
 {
-    private final IBlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
-    private final IBlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
-    private final IBlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
+    public static final IBlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
+    public static final IBlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
+    public static final IBlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
 
     private final Random rand;
 

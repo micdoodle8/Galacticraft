@@ -28,10 +28,10 @@ public class RoomTreasureMars extends RoomTreasure
     {
         List<WeightedRandomChestContent> list = Lists.newArrayList(new WeightedRandomChestContent[] {
                 new WeightedRandomChestContent(MarsItems.carbonFragments, 0, 18, 64, 10),
-                new WeightedRandomChestContent(GCItems.basicItem, 15, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.basicItem, 16, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.basicItem, 17, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.basicItem, 18, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 0, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 1, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 2, 1, 2, 6),
+                new WeightedRandomChestContent(GCItems.foodItem, 3, 1, 2, 6),
                 new WeightedRandomChestContent(GCItems.oilCanister, ItemCanisterGeneric.EMPTY, 1, 1, 5),
                 new WeightedRandomChestContent(MarsItems.deshBoots, 0, 1, 1, 2),
                 new WeightedRandomChestContent(MarsItems.deshChestplate, 0, 1, 1, 2),

@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import micdoodle8.mods.galacticraft.core.client.model.ModelBipedGC;
 import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.*;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
@@ -19,7 +18,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -66,9 +66,15 @@ public class RenderPlayerGC extends RenderPlayer
     
     private void addGCLayers()
     {
-        // The following code removes the vanilla armor and item layer renderers and replaces them with the Galacticraft ones
+        Field f1 = null;
+        Field f2 = null;
+        Field f3 = null;
+        try {
+            f1 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
+            f1.setAccessible(true);
+        } catch (Exception ignore) {}
+        // The following code removes the vanilla skull and item layer renderers and replaces them with the Galacticraft ones
         int itemLayerIndex = -1;
-        int armorLayerIndex = -1;
         int skullLayerIndex = -1;
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
@@ -77,9 +83,14 @@ public class RenderPlayerGC extends RenderPlayer
             {
                 itemLayerIndex = i;
             }
-            else if (layer instanceof LayerBipedArmor)
+            if (layer instanceof LayerArmorBase)
             {
-                armorLayerIndex = i;
+                if (f1 != null)
+                {
+                    try {
+                        f1.set(layer, this);
+                    } catch (Exception ignore) {}
+                }
             }
             else if (layer instanceof LayerCustomHead)
             {
@@ -93,19 +104,6 @@ public class RenderPlayerGC extends RenderPlayer
         if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
         {
             this.setLayer(itemLayerIndex, new LayerHeldItemGC(this));
-        }
-        if (armorLayerIndex >= 0)
-        {
-            LayerRenderer playerArmor = new LayerBipedArmor(this)
-            {
-                @Override
-                protected void initArmor()
-                {
-                    this.field_177189_c = new ModelBipedGC(0.5F);
-                    this.field_177186_d = new ModelBipedGC(1.0F);
-                }
-            };
-            this.setLayer(armorLayerIndex, playerArmor);
         }
 
         this.addLayer(new LayerOxygenTanks(this));
@@ -145,10 +143,21 @@ public class RenderPlayerGC extends RenderPlayer
             List<LayerRenderer<?>> layers = (List<LayerRenderer<?>>) f.get(old);
             if (layers.size() > 0)
             {
-                this.layerRenderers.clear();
                 for (LayerRenderer<?> oldLayer : layers)
                 {
-                    this.addLayer(oldLayer);
+                    if (this.hasNoLayer(oldLayer.getClass()))
+                    {
+                        LayerRenderer newInstance = null;
+                        try {
+                            newInstance = oldLayer.getClass().getConstructor(RendererLivingEntity.class).newInstance(this);
+                        }
+                        catch (Exception ignore) { }
+                        if (newInstance != null)
+                        {
+                            oldLayer = newInstance;
+                        }
+                        this.addLayer(oldLayer);
+                    }
                 }
             }
         } catch (Exception e)
@@ -157,6 +166,15 @@ public class RenderPlayerGC extends RenderPlayer
         }
         
         this.addGCLayers();
+    }
+
+    private boolean hasNoLayer(Class<? extends LayerRenderer> test)
+    {
+        for (LayerRenderer<?> oldLayer : this.layerRenderers)
+        {
+            if (oldLayer.getClass() == test) return false;
+        }
+        return true;
     }
 
     @Override
