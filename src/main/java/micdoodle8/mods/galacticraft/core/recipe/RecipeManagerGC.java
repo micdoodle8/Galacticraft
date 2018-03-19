@@ -105,6 +105,7 @@ public class RecipeManagerGC
         {
             FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         }
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.foodItem, 1, 6), new ItemStack(GCItems.foodItem, 1, 7), 1.0F);
 
         RecipeUtil.addRecipeUpdatable(new ItemStack(GCItems.rocketEngine, 1, 1), new Object[] { "ZYZ", "ZWZ", "XVX", 'V', GCItems.oxygenVent, 'W', new ItemStack(GCItems.fuelCanister, 1, 1), 'X', GCItems.heavyPlatingTier1, 'Y', new ItemStack(Blocks.wool, 1, 4), 'Z', meteoricIronPlate });
 
@@ -558,6 +559,11 @@ public class RecipeManagerGC
 
         RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 3), new Object[] { new ItemStack(GCItems.canister, 1, 0), Items.potato, Items.potato });
 
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 6, 4), new Object[] { new ItemStack(GCBlocks.cheeseBlock) });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 2, 5), new Object[] { Items.wheat, Items.wheat, Items.egg, Items.milk_bucket });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 2, 6), new Object[] { Items.beef });
+        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 8), new Object[] { new ItemStack(GCItems.foodItem, 1, 5), new ItemStack(GCItems.foodItem, 1, 4), new ItemStack(GCItems.foodItem, 1, 7), new ItemStack(GCItems.foodItem, 1, 5) });
+        
         //EmergencyKit
         RecipeUtil.addRecipe(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe());
         RecipeUtil.addRecipe(new ItemStack(GCBlocks.emergencyBox), new Object[] { "XYX", "Y Y", "XYX", 'X', GCBlocks.glowstoneTorch, 'Y', new ItemStack(GCItems.basicItem, 1, 7) });
