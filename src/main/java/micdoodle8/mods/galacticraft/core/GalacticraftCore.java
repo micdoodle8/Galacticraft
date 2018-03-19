@@ -148,7 +148,6 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
-        GalacticraftCore.handler.registerItemChanges();
 
         proxy.registerVariants();
 
@@ -163,6 +162,7 @@ public class GalacticraftCore
     public void init(FMLInitializationEvent event)
     {
         GCBlocks.doOtherModsTorches();
+        GalacticraftCore.handler.registerItemChanges();
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(Item.getItemFromBlock(GCBlocks.machineBase2));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(GCItems.rocketTier1);
 
