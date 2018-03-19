@@ -29,7 +29,7 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
         case 1:
         case 9:
             //Dehydrated carrot
-            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 16), 0.0F);
+            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 1), 0.0F);
             break;
         case 2:
         case 3:

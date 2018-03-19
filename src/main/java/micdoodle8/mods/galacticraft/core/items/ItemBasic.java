@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -9,11 +8,8 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -56,18 +52,6 @@ public class ItemBasic extends Item implements ISortableItem
         return ClientProxyCore.galacticraftItem;
     }
 
-    /*@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IIconRegister iconRegister)
-    {
-        int i = 0;
-
-        for (final String name : ItemBasic.names)
-        {
-            this.icons[i++] = iconRegister.registerIcon(this.getIconString() + "." + name);
-        }
-    }*/
-
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
@@ -78,17 +62,6 @@ public class ItemBasic extends Item implements ISortableItem
 
         return this.getUnlocalizedName() + "." + ItemBasic.names[itemStack.getItemDamage()];
     }
-
-    /*@Override
-    public IIcon getIconFromDamage(int damage)
-    {
-        if (this.icons.length > damage)
-        {
-            return this.icons[damage];
-        }
-
-        return super.getIconFromDamage(damage);
-    }*/
 
     @Override
     public void getSubItems(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list)
@@ -120,93 +93,11 @@ public class ItemBasic extends Item implements ISortableItem
         }
     }
 
-    public int getHealAmount(ItemStack par1ItemStack)
-    {
-        switch (par1ItemStack.getItemDamage())
-        {
-        case 15:
-            return 8;
-        case 16:
-            return 8;
-        case 17:
-            return 4;
-        case 18:
-            return 2;
-        default:
-            return 0;
-        }
-    }
-
-    public float getSaturationModifier(ItemStack par1ItemStack)
-    {
-        switch (par1ItemStack.getItemDamage())
-        {
-        case 15:
-            return 0.3F;
-        case 16:
-            return 0.6F;
-        case 17:
-            return 0.3F;
-        case 18:
-            return 0.3F;
-        default:
-            return 0.0F;
-        }
-    }
-
-    @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
-    {
-        if (stack.getItemDamage() > 14 && stack.getItemDamage() < 19)
-        {
-            stack.shrink(1);
-            if (entityLiving instanceof EntityPlayer)
-            {
-                ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
-            }
-            worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-            if (!worldIn.isRemote)
-            {
-                entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
-            }
-            return stack;
-        }
-
-        return super.onItemUseFinish(stack, worldIn, entityLiving);
-    }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
-        {
-            return 32;
-        }
-
-        return super.getMaxItemUseDuration(par1ItemStack);
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-        if (par1ItemStack.getItemDamage() > 14 && par1ItemStack.getItemDamage() < 19)
-        {
-            return EnumAction.EAT;
-        }
-
-        return super.getItemUseAction(par1ItemStack);
-    }
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
         ItemStack itemStackIn = playerIn.getHeldItem(hand);
-        if (itemStackIn.getItemDamage() > 14 && itemStackIn.getItemDamage() < 19 && playerIn.canEat(false))
-        {
-            playerIn.setActiveHand(hand);
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStackIn);
-        }
-        else if (itemStackIn.getItemDamage() == 19)
+        if (itemStackIn.getItemDamage() == 19)
         {
             if (playerIn instanceof EntityPlayerMP)
             {

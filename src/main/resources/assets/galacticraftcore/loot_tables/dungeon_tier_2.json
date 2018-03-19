@@ -24,12 +24,12 @@
                 {
                     "type": "item",
                     "entryName": "canned_apple",
-                    "name": "galacticraftcore:basic_item",
+                    "name": "galacticraftcore:food",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "minecraft:set_data",
-                            "data": 15
+                            "data": 0
                         },
                         {
                             "function": "minecraft:set_count",
@@ -43,12 +43,12 @@
                 {
                     "type": "item",
                     "entryName": "canned_carrot",
-                    "name": "galacticraftcore:basic_item",
+                    "name": "galacticraftcore:food",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "minecraft:set_data",
-                            "data": 16
+                            "data": 1
                         },
                         {
                             "function": "minecraft:set_count",
@@ -62,12 +62,12 @@
                 {
                     "type": "item",
                     "entryName": "canned_melon",
-                    "name": "galacticraftcore:basic_item",
+                    "name": "galacticraftcore:food",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "minecraft:set_data",
-                            "data": 17
+                            "data": 2
                         },
                         {
                             "function": "minecraft:set_count",
@@ -81,12 +81,12 @@
                 {
                     "type": "item",
                     "entryName": "canned_potato",
-                    "name": "galacticraftcore:basic_item",
+                    "name": "galacticraftcore:food",
                     "weight": 6,
                     "functions": [
                         {
                             "function": "minecraft:set_data",
-                            "data": 18
+                            "data": 3
                         },
                         {
                             "function": "minecraft:set_count",

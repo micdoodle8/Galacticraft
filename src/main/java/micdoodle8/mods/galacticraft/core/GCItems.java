@@ -27,6 +27,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,7 @@ public class GCItems
     public static Item key;
     public static Item partBuggy;
     public static Item basicItem;
+    public static Item foodItem;
     public static Item battery;
     public static Item infiniteBatery;
     public static Item meteorChunk;
@@ -92,6 +94,7 @@ public class GCItems
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
     public static LinkedList<ItemCanisterGeneric> canisterTypes = new LinkedList<ItemCanisterGeneric>();
     public static Map<EnumSortCategoryItem, List<StackSorted>> sortMapItems = Maps.newHashMap();
+    public static HashMap<ItemStack, ItemStack> itemChanges = new HashMap<>(4, 1.0F);
 
     public static void initItems()
     {
@@ -132,6 +135,7 @@ public class GCItems
         GCItems.key = new ItemKey("key");
         GCItems.partBuggy = new ItemBuggyMaterial("buggymat");
         GCItems.basicItem = new ItemBasic("basic_item");
+        GCItems.foodItem = new ItemFood("food");
         GCItems.battery = new ItemBattery("battery");
         GCItems.infiniteBatery = new ItemBatteryInfinite("infinite_battery");
         GCItems.meteorChunk = new ItemMeteorChunk("meteor_chunk");
@@ -148,6 +152,10 @@ public class GCItems
         GCItems.registerHarvestLevels();
 
         GCItems.registerItems();
+        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 15), new ItemStack(GCItems.foodItem, 1, 0));
+        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 16), new ItemStack(GCItems.foodItem, 1, 1));
+        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 17), new ItemStack(GCItems.foodItem, 1, 2));
+        GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 18), new ItemStack(GCItems.foodItem, 1, 3));
 
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
@@ -191,6 +199,11 @@ public class GCItems
     {
         if (jeiHidden != null)
         {
+            for (ItemStack item : GCItems.itemChanges.keySet())
+            {
+                jeiHidden.addIngredientToBlacklist(item.copy());
+            }
+
             for (Item item : GCItems.hiddenItems)
             {
                 jeiHidden.addIngredientToBlacklist(new ItemStack(item, 1, 0));
@@ -289,6 +302,7 @@ public class GCItems
         GCItems.registerItem(GCItems.partBuggy);
         GCItems.registerItem(GCItems.buggy);
         GCItems.registerItem(GCItems.basicItem);
+        GCItems.registerItem(GCItems.foodItem);
         GCItems.registerItem(GCItems.battery);
         GCItems.registerItem(GCItems.infiniteBatery);
         GCItems.registerItem(GCItems.meteorChunk);

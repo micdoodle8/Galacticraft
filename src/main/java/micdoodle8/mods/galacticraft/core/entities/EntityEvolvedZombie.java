@@ -96,7 +96,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         case 1:
         case 2:
             //Dehydrated carrot
-            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 16), 0.0F);
+            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 1), 0.0F);
             break;
         case 3:
         case 4:
@@ -105,7 +105,7 @@ public class EntityEvolvedZombie extends EntityZombie implements IEntityBreathab
         case 5:
         case 6:
             //Dehydrated potato
-            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 18), 0.0F);
+            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 3), 0.0F);
             break;
         case 7:
         case 8:

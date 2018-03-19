@@ -30,6 +30,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,7 @@ public class GCBlocks
     public static ArrayList<Block> otherModTorchesUnlit = new ArrayList<Block>();
 
     public static Map<EnumSortCategoryBlock, List<StackSorted>> sortMapBlocks = Maps.newHashMap();
+    public static HashMap<Block, Block> itemChanges = new HashMap<>(4, 1.0F);
 
     public static void initBlocks()
     {

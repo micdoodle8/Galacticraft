@@ -160,6 +160,7 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
+        GalacticraftCore.handler.registerItemChanges();
 
         proxy.registerVariants();
 
