@@ -90,7 +90,7 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
         case 2: return new ItemStack(GCItems.oxTankLight);
         case 3: return new ItemStack(GCItems.oxTankLight);
         case 4: return new ItemStack(GCItems.steelPickaxe);
-        case 5: return new ItemStack(GCItems.basicItem, 1, 18);
+        case 5: return new ItemStack(GCItems.foodItem, 1, 3);
         case 6: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING);
         case 7: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_NIGHT_VISION);
         case 8: return new ItemStack(GCItems.parachute, 1, 13);

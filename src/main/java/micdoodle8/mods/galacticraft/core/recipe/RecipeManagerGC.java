@@ -103,6 +103,7 @@ public class RecipeManagerGC
         {
             FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.basicItem, 1, 5), 1.0F);
         }
+        FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.foodItem, 1, 6), new ItemStack(GCItems.foodItem, 1, 7), 1.0F);
 
         HashMap<Integer, ItemStack> input = new HashMap<>();
         input.put(1, new ItemStack(GCItems.partNoseCone));
@@ -278,6 +279,11 @@ public class RecipeManagerGC
         spaceStationRequirements.put(Items.IRON_INGOT, 24);
         GalacticraftRegistry.registerSpaceStation(new SpaceStationType(ConfigManagerCore.idDimensionOverworldOrbit, ConfigManagerCore.idDimensionOverworld, new SpaceStationRecipe(spaceStationRequirements)));
 
+//        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 6, 4), new Object[] { new ItemStack(GCBlocks.cheeseBlock) });
+//        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 2, 5), new Object[] { Items.WHEAT, Items.WHEAT, Items.EGG, Items.MILK_BUCKET });
+//        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 2, 6), new Object[] { Items.BEEF });
+//        RecipeUtil.addShapelessOreRecipe(new ItemStack(GCItems.foodItem, 1, 8), new Object[] { new ItemStack(GCItems.foodItem, 1, 5), new ItemStack(GCItems.foodItem, 1, 4), new ItemStack(GCItems.foodItem, 1, 7), new ItemStack(GCItems.foodItem, 1, 5) });
+        
         //EmergencyKit
         RecipeUtil.addCustomRecipe(new ShapedRecipeNBT(new ItemStack(GCItems.emergencyKit), ItemEmergencyKit.getRecipe()));
         

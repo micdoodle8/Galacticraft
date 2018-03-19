@@ -85,8 +85,8 @@ public class GCPlayerHandler
     
     private List<Item> torchItemsSpace = new ArrayList<>(2);
     private List<Item> torchItemsRegular = new ArrayList<>(2);
-    private List<Item> itemChangesPre = new ArrayList<>(2);
-    private List<Item> itemChangesPost = new ArrayList<>(2);
+    private List<ItemStack> itemChangesPre = new ArrayList<>(6);
+    private List<ItemStack> itemChangesPost = new ArrayList<>(6);
     private static HashMap<UUID, Integer> deathTimes = new HashMap<>();
 
     @SubscribeEvent
@@ -960,15 +960,17 @@ public class GCPlayerHandler
 
         if (!theCurrentItem.isEmpty())
         {
-            int changeItem = 0;
-            for (Item i : itemChangesPre)
+            int postChangeItem = 0;
+            for (ItemStack i : itemChangesPre)
             {
-                if (i == theCurrentItem.getItem())
+                if (i.getItem() == theCurrentItem.getItem() && i.getItemDamage() == theCurrentItem.getItemDamage())
                 {
-                    player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(itemChangesPost.get(changeItem), theCurrentItem.getCount(), 0));
+                    ItemStack postChange = itemChangesPost.get(postChangeItem).copy();
+                    postChange.setCount(theCurrentItem.getCount());
+                    player.inventory.mainInventory.set(player.inventory.currentItem, postChange);
                     break;
                 }
-                changeItem++;
+                postChangeItem++;
             }
             if (OxygenUtil.noAtmosphericCombustion(player.world.provider))
             {
@@ -1045,10 +1047,10 @@ public class GCPlayerHandler
     {
         for (Entry<Block, Block> type : GCBlocks.itemChanges.entrySet())
         {
-            itemChangesPre.add(Item.getItemFromBlock(type.getKey()));
-            itemChangesPost.add(Item.getItemFromBlock(type.getValue()));
+            itemChangesPre.add(new ItemStack(type.getKey()));
+            itemChangesPost.add(new ItemStack(type.getValue()));
         }
-        for (Entry<Item, Item> type : GCItems.itemChanges.entrySet())
+        for (Entry<ItemStack, ItemStack> type : GCItems.itemChanges.entrySet())
         {
             itemChangesPre.add(type.getKey());
             itemChangesPost.add(type.getValue());

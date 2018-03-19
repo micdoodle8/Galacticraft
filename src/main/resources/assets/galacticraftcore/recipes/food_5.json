@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:food",
+    "data": 5,
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

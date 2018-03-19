@@ -280,7 +280,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
             return 0L;
         }
 
-        return (long) (this.getNetwork().getRequest(this) / EnergyConfigHandler.BC3_RATIO * 1000000F);
+        return (long) (this.getNetwork().getRequest(this) / EnergyConfigHandler.BC8_INTERNAL_RATIO);
     }
 
     //Buildcraft 7
@@ -292,9 +292,9 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         {
             return microJoules;
         }
-        float receiveGC = microJoules * EnergyConfigHandler.BC3_RATIO / 1000000F;
+        float receiveGC = microJoules * EnergyConfigHandler.BC8_INTERNAL_RATIO;
         float sentGC = receiveGC - this.getNetwork().produce(receiveGC, !simulate, 1);
-        return (long) (sentGC / EnergyConfigHandler.BC3_RATIO * 1000000F);
+        return (long) (sentGC / EnergyConfigHandler.BC8_INTERNAL_RATIO);
     }
     
     //Buildcraft 7

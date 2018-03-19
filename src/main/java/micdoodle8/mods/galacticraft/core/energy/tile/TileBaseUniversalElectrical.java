@@ -490,8 +490,8 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
             return 0L;
         }
 
-        // Boost stated demand by factor of 20, otherwise Buildcraft seems to send only a trickle of power
-        return (long) (this.storage.receiveEnergyGC(Integer.MAX_VALUE, true) / EnergyConfigHandler.BC3_RATIO * 1000000F * 20F);
+        // Boost stated demand by factor of 30, otherwise Buildcraft seems to send only a trickle of power
+        return (long) (this.storage.receiveEnergyGC(Integer.MAX_VALUE, true) / EnergyConfigHandler.BC8_INTERNAL_RATIO * 30F);
     }
 
     //Buildcraft 7
@@ -502,9 +502,9 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
         {
             return microJoules;
         }
-        float receiveGC = microJoules * EnergyConfigHandler.BC3_RATIO / 1000000F;
+        float receiveGC = microJoules * EnergyConfigHandler.BC8_INTERNAL_RATIO;
         float sentGC = receiveGC - super.receiveElectricity(null, receiveGC, 1, !simulate);
-        return (long) (sentGC / EnergyConfigHandler.BC3_RATIO * 1000000F);
+        return (long) (sentGC / EnergyConfigHandler.BC8_INTERNAL_RATIO);
     }
     
     //Buildcraft 7

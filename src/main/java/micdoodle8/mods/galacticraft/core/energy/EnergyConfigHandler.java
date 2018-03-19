@@ -10,6 +10,8 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 import java.util.ArrayList;
 
+import buildcraft.api.mj.MjAPI;
+
 /**
  * The universal energy compatibility module allows Galacticraft to be
  * compatible with most other major power systems in Minecraft as well.
@@ -18,6 +20,7 @@ import java.util.ArrayList;
  */
 public class EnergyConfigHandler
 {
+
     private static Configuration config;
 
     /**
@@ -25,6 +28,8 @@ public class EnergyConfigHandler
      * Multiply BC3 energy by this to convert to gJ.
      */
     public static float BC3_RATIO = 16F;
+    private static float BC8_MICROJOULE_RATIO = 1000000F;
+    public static float BC8_INTERNAL_RATIO = BC3_RATIO / BC8_MICROJOULE_RATIO;
 
     //Note on energy equivalence:
     //
@@ -60,7 +65,7 @@ public class EnergyConfigHandler
     /**
      * Convert gJ back to Buildcraft MJ (microJoules)
      */
-    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO * 1000000F;
+    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
 
     /**
      * Convert gJ back to RF
@@ -230,6 +235,9 @@ public class EnergyConfigHandler
             {
                 Class.forName("buildcraft.api.mj.MjAPI");
                 mjAPIFound = true;
+                BC8_MICROJOULE_RATIO = MjAPI.MJ;
+                BC8_INTERNAL_RATIO = BC3_RATIO / BC8_MICROJOULE_RATIO;
+                TO_BC_RATIO = conversionLossFactor / 100F / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
             }
             catch (Throwable ignore) {}
             cachedBCRLoaded = true;
@@ -365,7 +373,7 @@ public class EnergyConfigHandler
         }
 
         float factor = conversionLossFactor / 100F;
-        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO * 1000000F;
+        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
         TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
         TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
         TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;
