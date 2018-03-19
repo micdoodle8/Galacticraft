@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFood extends Item implements ISortableItem
 {
-    public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato" };
+    public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "cheese_slice", "burger_bun", "beef_patty_raw", "beef_patty_cooked", "cheeseburger" };
 
     public ItemFood(String assetName)
     {
@@ -52,7 +52,14 @@ public class ItemFood extends Item implements ISortableItem
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
     {
-        return "item.basic_item.canned_food";
+        if (itemStack.getItemDamage() < 4)
+        {
+            return "item.basic_item.canned_food";
+        }
+        else
+        {
+            return "item.food." + ItemFood.names[itemStack.getItemDamage()];
+        }
     }
 
     @Override
@@ -92,6 +99,16 @@ public class ItemFood extends Item implements ISortableItem
             return 4;
         case 3:
             return 2;
+        case 4:
+            return 2;
+        case 5:
+            return 4;
+        case 6:
+            return 2;
+        case 7:
+            return 4;
+        case 8:
+            return 14;
         default:
             return 0;
         }
@@ -109,6 +126,16 @@ public class ItemFood extends Item implements ISortableItem
             return 0.3F;
         case 3:
             return 0.3F;
+        case 4:
+            return 0.1F;
+        case 5:
+            return 0.8F;
+        case 6:
+            return 0.3F;
+        case 7:
+            return 0.6F;
+        case 8:
+            return 1.0F;
         default:
             return 0.0F;
         }
@@ -123,7 +150,7 @@ public class ItemFood extends Item implements ISortableItem
             ((EntityPlayer) entityLiving).getFoodStats().addStats(this.getHealAmount(stack), this.getSaturationModifier(stack));
         }
         worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-        if (!worldIn.isRemote)
+        if (!worldIn.isRemote && stack.getItemDamage() < 4)
         {
             entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
         }
