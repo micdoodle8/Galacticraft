@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFood extends net.minecraft.item.ItemFood implements ISortableItem
 {
-    public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "cheese_slice", "burger_bun", "beef_patty_raw", "beef_patty_cooked", "cheeseburger" };
+    public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "cheese_slice", "burger_bun", "beef_patty_raw", "beef_patty_cooked", "cheeseburger", "canned_beef" };
 
     public ItemFood(String assetName)
     {
@@ -107,6 +107,8 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
             return 4;
         case 8:
             return 14;
+        case 9:
+            return 8;
         default:
             return 0;
         }
@@ -135,6 +137,8 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
             return 0.6F;
         case 8:
             return 1.0F;
+        case 9:
+            return 0.6F;
         default:
             return 0.0F;
         }
@@ -146,7 +150,7 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
         --stack.stackSize;
         playerIn.getFoodStats().addStats(this, stack);
         worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
-        if (!worldIn.isRemote && stack.getItemDamage() < 4)
+        if (!worldIn.isRemote && (stack.getItemDamage() < 4 || stack.getItemDamage() == 9))
         {
             playerIn.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
         }
