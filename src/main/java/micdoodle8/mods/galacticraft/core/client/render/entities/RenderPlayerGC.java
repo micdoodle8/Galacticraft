@@ -153,6 +153,13 @@ public class RenderPlayerGC extends RenderPlayer
                             newInstance = oldLayer.getClass().getConstructor(RenderLivingBase.class).newInstance(this);
                         }
                         catch (Exception ignore) { }
+                        if (newInstance == null)
+                        {
+                            try {
+                                newInstance = oldLayer.getClass().getConstructor(RenderPlayer.class).newInstance(this);
+                            }
+                            catch (Exception ignore) { }
+                        }
                         if (newInstance != null)
                         {
                             oldLayer = newInstance;

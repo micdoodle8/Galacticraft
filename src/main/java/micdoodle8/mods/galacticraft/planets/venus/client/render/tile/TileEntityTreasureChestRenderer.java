@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.planets.venus.client.render.tile;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelTreasureChest;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -29,13 +29,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
         }
         else
         {
-            final Block var10 = chest.getBlockType();
             var9 = chest.getBlockMetadata();
-
-            if (var10 != null && var9 == 0)
-            {
-                var9 = chest.getBlockMetadata();
-            }
         }
 
         this.bindTexture(TileEntityTreasureChestRenderer.treasureChestTexture);
