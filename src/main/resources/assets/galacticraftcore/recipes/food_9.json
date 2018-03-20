@@ -1,20 +1,20 @@
 {
   "result": {
     "item": "galacticraftcore:food",
-    "data": 8
+    "data": 9
   },
   "ingredients": [
     {
-      "item": "galacticraftcore:food",
-      "data": 4
+      "item": "galacticraftcore:canister",
+      "data": 0
     },
     {
       "item": "galacticraftcore:food",
-      "data": 7
+      "data": 6
     },
     {
       "item": "galacticraftcore:food",
-      "data": 5
+      "data": 6
     }
   ],
   "type": "minecraft:crafting_shapeless"
