@@ -36,7 +36,7 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer
             final Block var10 = par1GCTileEntityTreasureChest.getBlockType();
             var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
 
-            if (var10 != null && var9 == 0)
+            if (var10 instanceof BlockTier2TreasureChest && var9 == 0)
             {
                 ((BlockTier2TreasureChest) var10).unifyAdjacentChests(par1GCTileEntityTreasureChest.getWorldObj(), par1GCTileEntityTreasureChest.xCoord, par1GCTileEntityTreasureChest.yCoord, par1GCTileEntityTreasureChest.zCoord);
                 var9 = par1GCTileEntityTreasureChest.getBlockMetadata();
