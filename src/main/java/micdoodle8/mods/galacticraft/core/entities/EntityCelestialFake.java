@@ -344,7 +344,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public String getName()
     {
-        return null;
+        return "";
     }
 
     @Override
