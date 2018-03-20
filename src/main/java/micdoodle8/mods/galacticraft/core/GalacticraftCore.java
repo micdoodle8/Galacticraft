@@ -177,7 +177,6 @@ public class GalacticraftCore
 
         GCBlocks.initBlocks();
         GCItems.initItems();
-        GalacticraftCore.handler.registerItemChanges();
 
         GCFluids.registerFluids();
 
