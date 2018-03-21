@@ -322,7 +322,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     public String getName()
     {
-        return "AstroMiner";
+        return GCCoreUtil.translate("entity.astro_miner.name");
     }
 
     @Override
