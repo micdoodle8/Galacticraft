@@ -5,18 +5,23 @@ import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
@@ -29,6 +34,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.WorldProvider;
@@ -173,7 +179,15 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
                     this.processTicks = -8;
                 }
             }
+            
+            this.produceOutput(this.getHydrogenInputDirection().getOpposite());
         }
+    }
+
+    private void produceOutput()
+    {
+        // TODO Auto-generated method stub
+        
     }
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
@@ -649,5 +663,35 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public EnumFacing getHydrogenInputDirection()
     {
         return this.getFront().rotateY();
+    }
+    
+    private boolean produceOutput(EnumFacing outputDirection)
+    {
+        int provide = this.getMethaneProvide();
+
+        if (provide > 0)
+        {
+            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.world, outputDirection);
+            FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
+
+            if (outputNetwork != null)
+            {
+                int gasRequested = outputNetwork.getRequest();
+
+                if (gasRequested > 0)
+                {
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(AsteroidsModule.fluidMethaneGas, Math.min(gasRequested, provide)), true);
+                    this.liquidTank.drain(usedGas, true);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private int getMethaneProvide()
+    {
+        return Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.liquidTank.getFluidAmount());
     }
 }
