@@ -1001,7 +1001,7 @@ public class GCPlayerHandler
                     {
                         if (i == theCurrentItem.getItem())
                         {
-                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsSpace.get(torchItem), theCurrentItem.getCount(), 0));
+                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsRegular.get(torchItem), theCurrentItem.getCount(), 0));
                             break;
                         }
                         torchItem ++;
