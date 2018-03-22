@@ -104,7 +104,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 //        return block.isSideSolid(par1World, par2, par3, par4, ForgeDirection.UP);
 //    }
 
-    private boolean beginHatch(World world, BlockPos pos, EntityPlayer player)
+    private boolean beginHatch(World world, BlockPos pos, EntityPlayer player, int time)
     {
         IBlockState state = world.getBlockState(pos);
         int l = state.getBlock().getMetaFromState(state);
@@ -117,7 +117,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 
             if (tile instanceof TileEntitySlimelingEgg)
             {
-                ((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(50) + 20;
+                ((TileEntitySlimelingEgg) tile).timeToHatch = world.rand.nextInt(30 + time) + time;
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerUUID = player.getUniqueID().toString();
                 ((TileEntitySlimelingEgg) tile).lastTouchedPlayerName = player.getName();
             }
@@ -136,7 +136,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
-        ItemStack currentStack = player.getActiveItemStack();
+        ItemStack currentStack = player.getHeldItemMainhand();
         if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
         {
             return world.setBlockToAir(pos);
@@ -147,7 +147,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         }
         else
         {
-            beginHatch(world, pos, player);
+            beginHatch(world, pos, player, 0);
             return false;
         }
     }
@@ -155,20 +155,18 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        return beginHatch(worldIn, pos, playerIn);
+        return beginHatch(worldIn, pos, playerIn, 20);
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack stack)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, @Nullable ItemStack currentStack)
     {
-        ItemStack currentStack = player.getActiveItemStack();
-
         if (!currentStack.isEmpty() && currentStack.getItem() instanceof ItemPickaxe)
         {
             player.addStat(StatList.getBlockStats(this));
             player.addExhaustion(0.025F);
             this.dropBlockAsItem(worldIn, pos, state.getBlock().getStateFromMeta(state.getBlock().getMetaFromState(state) % 3), 0);
-            if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, stack) > 0)
+            if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, currentStack) > 0)
             {
                 ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1, currentStack.getItemDamage());
                 if (currentStack.getTagCompound() != null)
