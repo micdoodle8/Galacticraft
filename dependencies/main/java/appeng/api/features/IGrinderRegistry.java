@@ -98,4 +98,6 @@ public interface IGrinderRegistry
 	 */
 	boolean removeDustRatio( @Nonnull String oredictName );
 
+	//For backwards compatibility with Applied Llamagistics and any other unofficial forks 
+    void addRecipe(ItemStack itemStack, ItemStack itemStack2, ItemStack itemStack3, float f, int i);
 }
