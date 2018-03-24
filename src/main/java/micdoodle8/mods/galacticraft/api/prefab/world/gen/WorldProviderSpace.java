@@ -382,6 +382,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         {
             this.timeCurrentOffset = this.saveTCO;
             this.saveTime();
+            this.preTickTime = time;
         }
         else
         {
@@ -391,9 +392,9 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             if (diff != 0L)
             {
                 this.saveTime();
+                this.preTickTime = time;
             }
         }
-        this.preTickTime = time;
         this.saveTCO = 0L;
     }
 
