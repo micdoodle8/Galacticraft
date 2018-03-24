@@ -201,7 +201,7 @@ public class EventHandlerGC
     public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
     {
         EntityPlayer p = event.getEntityPlayer();
-        if (!p.onGround && p.world.provider instanceof IZeroGDimension && !ConfigManagerCore.hardMode)
+        if (!p.onGround && p.world.provider instanceof IZeroGDimension && !ConfigManagerCore.hardMode && event.getOriginalSpeed() < 5.0F)
         {
             event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
         }
