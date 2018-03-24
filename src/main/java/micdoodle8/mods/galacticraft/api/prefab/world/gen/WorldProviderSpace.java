@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.api.world.IAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
+import net.minecraft.command.CommandTime;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.MathHelper;
@@ -26,6 +28,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 {
     long timeCurrentOffset = 0L;
     long preTickTime = Long.MIN_VALUE;
+    private long saveTCO = 0L;
     static Field tickCounter;
     
     static
@@ -122,6 +125,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 }
             }
             this.preTickTime = newTime;
+            this.saveTCO = 0L;
         }
         
         if (this.canRainOrSnow())
@@ -374,19 +378,32 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public void setWorldTime(long time)
     {
         worldObj.getWorldInfo().setWorldTime(time);
-        long diff = - this.timeCurrentOffset;
-        this.timeCurrentOffset = time - worldObj.getWorldInfo().getWorldTime();
-        diff += this.timeCurrentOffset;
-        this.preTickTime += diff;
-        if (diff != 0L)
+        if (JavaUtil.instance.isCalledBy(CommandTime.class))
         {
+            this.timeCurrentOffset = this.saveTCO;
             this.saveTime();
         }
+        else
+        {
+            long diff = - this.timeCurrentOffset;
+            this.timeCurrentOffset = time - worldObj.getWorldInfo().getWorldTime();
+            diff += this.timeCurrentOffset;
+            if (diff != 0L)
+            {
+                this.saveTime();
+            }
+        }
+        this.preTickTime = time;
+        this.saveTCO = 0L;
     }
 
     @Override
     public long getWorldTime()
     {
+        if (JavaUtil.instance.isCalledBy(CommandTime.class))
+        {
+            this.saveTCO  = this.timeCurrentOffset;
+        }
         return worldObj.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
     }
     
