@@ -27,8 +27,8 @@ import java.util.Arrays;
 
 public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
 {
-    long timeCurrentOffset = 0L;
-    long preTickTime = Long.MIN_VALUE;
+    private long timeCurrentOffset = 0L;
+    public long preTickTime = Long.MIN_VALUE;
     private long saveTCO = 0L;
     static Field tickCounter;
     
@@ -451,6 +451,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             {
                 this.timeCurrentOffset = this.saveTCO;
                 this.saveTime();
+                this.preTickTime = time;
             }
             else
             {
@@ -460,9 +461,9 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 {
                     this.timeCurrentOffset = newTCO; 
                     this.saveTime();
+                    this.preTickTime = time;
                 }
             }
-            this.preTickTime = time;
             this.saveTCO = 0;
         }
     }
@@ -483,10 +484,21 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public void adjustTimeOffset(long diff)
     {
-        this.timeCurrentOffset -= diff;
-        this.preTickTime += diff;
         if (diff != 0L)
         {
+            this.timeCurrentOffset -= diff;
+            this.preTickTime += diff;
+            this.saveTime();
+        }
+    }
+    
+    public void adjustTime(long newTime)
+    {
+        long diff = newTime - this.preTickTime;
+        if (diff != 0L)
+        {
+            this.timeCurrentOffset -= diff;
+            this.preTickTime = newTime;
             this.saveTime();
         }
     }
