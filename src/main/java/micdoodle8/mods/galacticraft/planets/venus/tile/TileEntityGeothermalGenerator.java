@@ -334,7 +334,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public int getInventoryStackLimit()
     {
-        return 64;
+        return 1;
     }
 
     @Override

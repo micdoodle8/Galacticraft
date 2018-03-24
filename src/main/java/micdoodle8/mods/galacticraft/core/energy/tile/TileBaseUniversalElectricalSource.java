@@ -109,7 +109,7 @@ public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectric
      */
     public void recharge(ItemStack itemStack)
     {
-        if (itemStack != null)
+        if (itemStack != null && itemStack.stackSize == 1)
         {
             Item item = itemStack.getItem();
             float maxExtractSave = this.storage.getMaxExtract();
