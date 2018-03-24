@@ -1598,25 +1598,24 @@ public class WorldUtil
 
     public static void setNextMorning(WorldServer world)
     {
-        long current = world.getWorldInfo().getWorldTime();
-        long dayLength = 24000L;
-        long newTime = current - current % dayLength + dayLength;
         if (world.provider instanceof WorldProviderSpace)
         {
-            dayLength = ((WorldProviderSpace)world.provider).getDayLength();
+            long current = ((WorldProviderSpace)world.provider).preTickTime;
+            long dayLength = ((WorldProviderSpace)world.provider).getDayLength();
             if (dayLength <= 0) return;
-            newTime = current - current % dayLength + dayLength;
+            world.setWorldTime(current - current % dayLength + dayLength);
         }
         else
         {
-            long diff = newTime - current;
-            for (WorldServer worldServer : world.getMinecraftServer().worlds)
+            long newTime = world.getWorldTime();
+            for (WorldServer worldServer : GCCoreUtil.getWorldServerList(world))
             {
                 if (worldServer == world) continue;
                 if (worldServer.provider instanceof WorldProviderSpace)
-                    ((WorldProviderSpace)worldServer.provider).adjustTimeOffset(diff);
+                {
+                    ((WorldProviderSpace)worldServer.provider).adjustTime(newTime);
+                }
             }
         }
-        world.provider.setWorldTime(newTime);
     }
 }
