@@ -117,11 +117,12 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
     @Override
     public float discharge(ItemStack itemStack, float energy, boolean doTransfer)
     {
-        float energyToTransfer = Math.min(Math.min(this.getElectricityStored(itemStack), energy), this.transferMax);
+        float thisEnergy = this.getElectricityStored(itemStack);
+        float energyToTransfer = Math.min(Math.min(thisEnergy, energy), this.transferMax);
 
         if (doTransfer)
         {
-            this.setElectricity(itemStack, this.getElectricityStored(itemStack) - energyToTransfer);
+            this.setElectricity(itemStack, thisEnergy - energyToTransfer);
         }
 
         return energyToTransfer;
@@ -143,7 +144,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         }
 
         float electricityStored = Math.max(Math.min(joules, this.getMaxElectricityStored(itemStack)), 0);
-        if (joules > 0F)
+        if (joules > 0F || itemStack.getTagCompound().hasKey("electricity"))
         {
             itemStack.getTagCompound().setFloat("electricity", electricityStored);
         }

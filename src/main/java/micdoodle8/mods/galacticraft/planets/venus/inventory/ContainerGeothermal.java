@@ -55,6 +55,7 @@ public class ContainerGeothermal extends Container
         {
             final ItemStack stack = slot.getStack();
             var2 = stack.copy();
+            boolean movedToMachineSlot = false;
 
             if (par1 == 0)
             {
@@ -71,6 +72,7 @@ public class ContainerGeothermal extends Container
                     {
                         return ItemStack.EMPTY;
                     }
+                    movedToMachineSlot = true;
                 }
                 else
                 {
@@ -90,7 +92,17 @@ public class ContainerGeothermal extends Container
 
             if (stack.isEmpty())
             {
-                slot.putStack(ItemStack.EMPTY);
+                // Needed where tile has inventoryStackLimit of 1
+                if (movedToMachineSlot && var2.getCount() > 1)
+                {
+                    ItemStack remainder = var2.copy();
+                    remainder.shrink(1);
+                    slot.putStack(remainder);
+                }
+                else
+                {
+                   slot.putStack(ItemStack.EMPTY);
+                }
             }
             else
             {

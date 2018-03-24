@@ -66,6 +66,7 @@ public class ContainerEnergyStorageModule extends Container
         {
             ItemStack itemStack = slot.getStack();
             returnStack = itemStack.copy();
+            boolean movedToMachineSlot = false;
 
             if (slotID != 0 && slotID != 1)
             {
@@ -80,6 +81,7 @@ public class ContainerEnergyStorageModule extends Container
                                 return ItemStack.EMPTY;
                             }
                         }
+                        movedToMachineSlot = true;
                     }
                     else
                     {
@@ -87,6 +89,7 @@ public class ContainerEnergyStorageModule extends Container
                         {
                             return ItemStack.EMPTY;
                         }
+                        movedToMachineSlot = true;
                     }
                 }
                 else
@@ -111,7 +114,17 @@ public class ContainerEnergyStorageModule extends Container
 
             if (itemStack.getCount() == 0)
             {
-                slot.putStack(ItemStack.EMPTY);
+                // Needed where tile has inventoryStackLimit of 1
+                if (movedToMachineSlot && returnStack.getCount() > 1)
+                {
+                    ItemStack remainder = returnStack.copy();
+                    remainder.shrink(1);
+                    slot.putStack(remainder);
+                }
+                else
+                {
+                    slot.putStack(ItemStack.EMPTY);
+                }
             }
             else
             {

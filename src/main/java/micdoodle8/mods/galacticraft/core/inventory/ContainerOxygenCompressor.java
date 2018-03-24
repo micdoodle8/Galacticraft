@@ -58,6 +58,7 @@ public class ContainerOxygenCompressor extends Container
         {
             final ItemStack stack = slot.getStack();
             var2 = stack.copy();
+            boolean movedToMachineSlot = false;
 
             if (par1 < 3)
             {
@@ -74,6 +75,7 @@ public class ContainerOxygenCompressor extends Container
                     {
                         return ItemStack.EMPTY;
                     }
+                    movedToMachineSlot = true;
                 }
                 else if (stack.getItem() instanceof IItemOxygenSupply)
                 {
@@ -81,6 +83,7 @@ public class ContainerOxygenCompressor extends Container
                     {
                         return ItemStack.EMPTY;
                     }
+                    movedToMachineSlot = true;
                 }
                 else if (stack.getItem() instanceof ItemOxygenTank && stack.getItemDamage() > 0)
                 {
@@ -88,6 +91,7 @@ public class ContainerOxygenCompressor extends Container
                     {
                         return ItemStack.EMPTY;
                     }
+                    movedToMachineSlot = true;
                 }
                 else
                 {
@@ -107,7 +111,17 @@ public class ContainerOxygenCompressor extends Container
 
             if (stack.getCount() == 0)
             {
-                slot.putStack(ItemStack.EMPTY);
+                // Needed where tile has inventoryStackLimit of 1
+                if (movedToMachineSlot && var2.getCount() > 1)
+                {
+                    ItemStack remainder = var2.copy();
+                    remainder.shrink(1);
+                    slot.putStack(remainder);
+                }
+                else
+                {
+                   slot.putStack(ItemStack.EMPTY);
+                }
             }
             else
             {

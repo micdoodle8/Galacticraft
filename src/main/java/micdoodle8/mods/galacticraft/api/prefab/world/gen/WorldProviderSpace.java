@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
+import net.minecraft.command.CommandTime;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
@@ -27,6 +29,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 {
     long timeCurrentOffset = 0L;
     long preTickTime = Long.MIN_VALUE;
+    private long saveTCO = 0L;
     static Field tickCounter;
     
     static
@@ -111,6 +114,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 }
             }
             this.preTickTime = newTime;
+            this.saveTCO = 0L;
         }
         
         if (this.shouldDisablePrecipitation())
@@ -430,20 +434,33 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         world.getWorldInfo().setWorldTime(time);
         if (!world.isRemote)
         {
-            long newTCO = time - world.getWorldInfo().getWorldTime();
-            long diff = newTCO - this.timeCurrentOffset;
-            if (diff > 1L)
+            if (JavaUtil.instance.isCalledBy(CommandTime.class))
             {
-                this.timeCurrentOffset = newTCO; 
-                this.preTickTime += diff;
+                this.timeCurrentOffset = this.saveTCO;
                 this.saveTime();
             }
+            else
+            {
+                long newTCO = time - world.getWorldInfo().getWorldTime();
+                long diff = newTCO - this.timeCurrentOffset;
+                if (diff > 1L || diff < -1L)
+                {
+                    this.timeCurrentOffset = newTCO; 
+                    this.saveTime();
+                }
+            }
+            this.preTickTime = time;
+            this.saveTCO = 0;
         }
     }
 
     @Override
     public long getWorldTime()
     {
+        if (JavaUtil.instance.isCalledBy(CommandTime.class))
+        {
+            this.saveTCO  = this.timeCurrentOffset;
+        }
         return world.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
     }
     
