@@ -5,10 +5,12 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,12 +18,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockGrating extends Block implements ISortableBlock, IPartialSealableBlock
 {
+    protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
+
     public BlockGrating(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setHardness(1.0F);
         this.blockResistance = 15F;
-        this.setBlockBounds(0.0F, 0.875F, 0.0F, 1.0F, 1.0F, 1.0F);
         this.setUnlocalizedName(assetName);
     }
 
@@ -38,19 +41,25 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing dir)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
     {
         return false;
     }
@@ -60,24 +69,30 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     {
         return false;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-         return EnumWorldBlockLayer.CUTOUT;
+         return BlockRenderLayer.CUTOUT;
     }
 
     @Override
-    public boolean canRenderInLayer(EnumWorldBlockLayer layer)
+    public boolean canRenderInLayer(BlockRenderLayer layer)
     {
-        return layer == EnumWorldBlockLayer.CUTOUT;
+        return layer == BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+    {
+        return BOUNDING_BOX;
     }
 }
