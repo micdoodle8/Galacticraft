@@ -255,7 +255,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
+                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
                 {
                     GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
@@ -276,7 +276,7 @@ public class GCPlayerHandler
                 {
                     GCPlayerHandler.sendGearUpdatePacket(player, EnumModelPacket.ADDLEFTREDTANK);
                 }
-                if (GCPlayer.maskInSlot != null && GCPlayer.gearInSlot != null)
+                if (GCPlayer.maskInSlot.getItem() != null && GCPlayer.gearInSlot.getItem() != null)
                 {
                     GCPlayer.airRemaining = GCPlayer.tankInSlot1.getMaxDamage() - GCPlayer.tankInSlot1.getItemDamage();
                     GCPlayerHandler.sendAirRemainingPacket(player, GCPlayer);
