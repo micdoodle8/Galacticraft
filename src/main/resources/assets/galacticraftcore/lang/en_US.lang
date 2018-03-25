@@ -676,6 +676,7 @@ tile.fuel_loader.description=After being connected to a launch pad, a Fuel Loade
 tile.fuel_loader.name=Fuel Loader
 tile.glowstone_torch.description=Glowstone Torches are best used to light areas when there is no oxygen for wood torches to burn.
 tile.glowstone_torch.name=Glowstone Torch
+tile.grating.name=Grating
 tile.landing_pad.buggy_fueler.name=Buggy Fueling Pad
 tile.landing_pad.cargo_pad.name=Cargo Rocket Pad
 tile.landing_pad.description=Launch Pads will allow placement of Rockets if set up in a 3x3 square. Fuel Loaders, Cargo Loaders, and Launch Controllers can be attached.
