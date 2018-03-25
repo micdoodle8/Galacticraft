@@ -255,7 +255,7 @@ public class BlockMachineMarsT2 extends BlockTileGC implements IShiftDescription
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = this.getMetaFromState(world.getBlockState(pos));
+        int metadata = this.getMetaFromState(world.getBlockState(pos)) & 12;
         return new ItemStack(this, 1, metadata);
     }
 
