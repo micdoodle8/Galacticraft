@@ -676,6 +676,7 @@ tile.fuel_loader.description=燃料装载机可以将燃油注入相连平台上
 tile.fuel_loader.name=燃料装载机
 tile.glowstone_torch.description=萤石火把可以在无氧条件下提供照明.
 tile.glowstone_torch.name=萤石火把
+tile.grating.name=格栅
 tile.landing_pad.buggy_fueler.name=星球车补给台
 tile.landing_pad.cargo_pad.name=货运火箭平台
 tile.landing_pad.description=将发射平台摆成3x3的形状,便可以摆上火箭,并连接燃料装载机,装货器,卸货器和发射控制器.
