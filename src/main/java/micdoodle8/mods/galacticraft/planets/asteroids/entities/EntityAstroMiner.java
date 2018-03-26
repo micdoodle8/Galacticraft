@@ -175,7 +175,6 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
         noMineList.add(Blocks.bedrock);
-        noMineList.add(Blocks.flowing_lava);
         noMineList.add(Blocks.mossy_cobblestone);
         noMineList.add(Blocks.end_portal);
         noMineList.add(Blocks.end_portal_frame);
@@ -298,7 +297,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     @Override
     public String getName()
     {
-        return "AstroMiner";
+        return GCCoreUtil.translate("entity.astro_miner.name");
     }
 
     @Override
@@ -1452,11 +1451,11 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             blockingBlock.block = b;
             blockingBlock.meta = b.getMetaFromState(state);
-            return !(this.AIstate == AISTATE_RETURNING && b == Blocks.lava);
+            return true;
         }
         if (b instanceof BlockLiquid)
         {
-            return false;
+            return (this.AIstate != AISTATE_RETURNING && (b == Blocks.lava || b == Blocks.flowing_lava) && state.getValue(BlockLiquid.LEVEL).intValue() == 0);
         }
         if (b instanceof IFluidBlock)
         {

@@ -56,6 +56,7 @@ public class ContainerFuelLoader extends Container
         {
             final ItemStack var5 = slot.getStack();
             var3 = var5.copy();
+            boolean movedToMachineSlot = false;
 
             if (par2 < 2)
             {
@@ -72,6 +73,7 @@ public class ContainerFuelLoader extends Container
                     {
                         return null;
                     }
+                    movedToMachineSlot = true;
                 }
                 else
                 {
@@ -81,6 +83,7 @@ public class ContainerFuelLoader extends Container
                         {
                             return null;
                         }
+                        movedToMachineSlot = true;
                     }
                     else if (par2 < 29)
                     {
@@ -98,7 +101,17 @@ public class ContainerFuelLoader extends Container
 
             if (var5.stackSize == 0)
             {
-                slot.putStack((ItemStack) null);
+                // Needed where tile has inventoryStackLimit of 1
+                if (movedToMachineSlot && var3.stackSize > 1)
+                {
+                    ItemStack remainder = var3.copy();
+                    --remainder.stackSize;
+                    slot.putStack(remainder);
+                }
+                else
+                {
+                    slot.putStack((ItemStack) null);
+                }
             }
             else
             {

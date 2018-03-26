@@ -5,6 +5,8 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.JavaUtil;
+import net.minecraft.command.CommandTime;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.BlockPos;
@@ -25,8 +27,9 @@ import java.util.Arrays;
 
 public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
 {
-    long timeCurrentOffset = 0L;
-    long preTickTime = Long.MIN_VALUE;
+    private long timeCurrentOffset = 0L;
+    public long preTickTime = Long.MIN_VALUE;
+    private long saveTCO = 0L;
     static Field tickCounter;
     
     static
@@ -118,6 +121,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 }
             }
             this.preTickTime = newTime;
+            this.saveTCO = 0L;
         }
         
         if (this.shouldDisablePrecipitation())
@@ -440,20 +444,34 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         worldObj.getWorldInfo().setWorldTime(time);
         if (!worldObj.isRemote)
         {
-            long newTCO = time - worldObj.getWorldInfo().getWorldTime();
-            long diff = newTCO - this.timeCurrentOffset;
-            if (diff > 1L)
+            if (JavaUtil.instance.isCalledBy(CommandTime.class))
             {
-                this.timeCurrentOffset = newTCO; 
-                this.preTickTime += diff;
+                this.timeCurrentOffset = this.saveTCO;
                 this.saveTime();
+                this.preTickTime = time;
             }
+            else
+            {
+                long newTCO = time - worldObj.getWorldInfo().getWorldTime();
+                long diff = newTCO - this.timeCurrentOffset;
+                if (diff > 1L || diff < -1L)
+                {
+                    this.timeCurrentOffset = newTCO; 
+                    this.saveTime();
+                    this.preTickTime = time;
+                }
+            }
+            this.saveTCO = 0;
         }
     }
 
     @Override
     public long getWorldTime()
     {
+        if (JavaUtil.instance.isCalledBy(CommandTime.class))
+        {
+            this.saveTCO  = this.timeCurrentOffset;
+        }
         return worldObj.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
     }
     
@@ -463,10 +481,21 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public void adjustTimeOffset(long diff)
     {
-        this.timeCurrentOffset -= diff;
-        this.preTickTime += diff;
         if (diff != 0L)
         {
+            this.timeCurrentOffset -= diff;
+            this.preTickTime += diff;
+            this.saveTime();
+        }
+    }
+    
+    public void adjustTime(long newTime)
+    {
+        long diff = newTime - this.preTickTime;
+        if (diff != 0L)
+        {
+            this.timeCurrentOffset -= diff;
+            this.preTickTime = newTime;
             this.saveTime();
         }
     }
