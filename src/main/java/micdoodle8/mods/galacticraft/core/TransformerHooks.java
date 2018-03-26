@@ -72,6 +72,7 @@ public class TransformerHooks
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
     public static List<Block> spawnListAE2_GC = new LinkedList<>();
+    public static VertexBuffer renderBuilder = null;
 
     public static double getGravityForEntity(Entity entity)
     {

@@ -61,4 +61,22 @@ public class JavaUtil extends SecurityManager
         if (context.length < 4) return false;
         return (clazz == context[2] && !clazz.isAssignableFrom(context[3]));
     }
+
+    public int isCalledBySecond(Class<?> clazz1, Class<?> clazz2, Class<?> clazz3)
+    {
+        Class<?>[] context = getClassContext();
+        if (context.length < 4) return 0;
+        Class<?> test = context[3];
+        if (test == clazz1) return 1;
+        if (test == clazz2) return 2;
+        if (test == clazz3) return 3;
+        return 0;
+    }
+
+    public boolean isCalledByThird(Class<?> clazz)
+    {
+        Class<?>[] context = getClassContext();
+        if (context.length < 5) return false;
+        return (context[4] == clazz);
+    }
 }

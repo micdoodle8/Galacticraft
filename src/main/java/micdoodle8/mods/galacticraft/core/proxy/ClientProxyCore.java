@@ -29,6 +29,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
+import micdoodle8.mods.galacticraft.core.client.model.block.ModelGrating;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelPanelLightBase;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
@@ -64,6 +65,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -311,6 +313,23 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.oxygenDetector, new StateMap.Builder().ignore(BlockOxygenDetector.ACTIVE).build());
         ModelLoader.setCustomStateMapper(GCBlocks.panelLighting, new StateMap.Builder().ignore(BlockPanelLighting.TYPE).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.grating, new StateMap.Builder().ignore(BlockLiquid.LEVEL).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.gratingWater, new StateMapperBase()
+        {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState ignore)
+            {
+                return new ModelResourceLocation("galacticraftcore:grating", "normal");
+            }
+        });
+        ModelLoader.setCustomStateMapper(GCBlocks.gratingLava, new StateMapperBase()
+        {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState ignore)
+            {
+                return new ModelResourceLocation("galacticraftcore:grating", "normal");
+            }
+        });
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRedstone, new StateMap.Builder().ignore(BlockConcealedRedstone.POWER).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Powered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Unpowered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
@@ -455,6 +474,12 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":basic_block_core", "basictype=deco_block_1");
         }
         event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
+        defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating", "normal");
+        event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc));
+        blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating1", "normal");
+        event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc));
+        blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating2", "normal");
+        event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc));
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
 //        {
