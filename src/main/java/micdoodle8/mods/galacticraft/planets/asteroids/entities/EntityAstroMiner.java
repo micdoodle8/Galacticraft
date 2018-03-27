@@ -186,7 +186,6 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //Anything with a tileEntity will also be avoided:
         // spawners, chests, oxygen pipes, hydrogen pipes, wires
         noMineList.add(Blocks.BEDROCK);
-        noMineList.add(Blocks.FLOWING_LAVA);
         noMineList.add(Blocks.MOSSY_COBBLESTONE);
         noMineList.add(Blocks.END_PORTAL);
         noMineList.add(Blocks.END_PORTAL_FRAME);
@@ -1471,11 +1470,11 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         {
             blockingBlock.block = b;
             blockingBlock.meta = b.getMetaFromState(state);
-            return !(this.AIstate == AISTATE_RETURNING && b == Blocks.LAVA);
+            return true;
         }
         if (b instanceof BlockLiquid)
         {
-            return false;
+            return (this.AIstate != AISTATE_RETURNING && (b == Blocks.LAVA || b == Blocks.FLOWING_LAVA) && state.getValue(BlockLiquid.LEVEL).intValue() == 0);
         }
         if (b instanceof IFluidBlock)
         {
