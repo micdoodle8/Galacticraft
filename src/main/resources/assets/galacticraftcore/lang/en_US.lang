@@ -63,6 +63,7 @@ entity.oxygen_bubble.name=Oxygen Bubble
 entity.para_chest.name=Parachest
 entity.rocket_t1.name=Tier 1 Rocket
 galaxy.milky_way=Milky Way
+gc.configgui.allow_liquids_grating=Allow liquids to flow into Grating
 gc.configgui.alternate_canister_recipe=Alternate Canister Recipe
 gc.configgui.asteroids_flags=Challenge Mode Flags
 gc.configgui.asteroids_start=Challenge Mode (Asteroids start)
