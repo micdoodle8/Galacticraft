@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -179,7 +180,7 @@ public class GCBlocks
         GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
         GCBlocks.platform = new BlockPlatform("platform");
         GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
-        GCBlocks.grating = new BlockGrating("grating", Material.CARPET);
+        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings ? Material.CARPET : Material.IRON);
         GCBlocks.gratingWater = new BlockGrating("grating1", Material.WATER);
         GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA);
 

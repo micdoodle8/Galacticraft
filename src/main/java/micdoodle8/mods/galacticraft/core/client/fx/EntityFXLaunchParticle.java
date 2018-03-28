@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import java.util.LinkedList;
 import java.util.List;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.Particle;
@@ -106,7 +107,7 @@ public abstract class EntityFXLaunchParticle extends Particle
                         {
                             mutablePos.setPos(x, y, z);
                             iblockstate1 = w.getBlockState(mutablePos);
-                            if (!(iblockstate1.getBlock() instanceof BlockAir))
+                            if (!(iblockstate1.getBlock() instanceof BlockAir) && !(iblockstate1.getBlock() instanceof BlockGrating))
                                 iblockstate1.addCollisionBoxToList(w, mutablePos, bb, list, null);
                         }
                     }

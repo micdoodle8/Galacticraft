@@ -615,10 +615,10 @@ public class ConfigManagerCore
             disableUpdateCheck = prop.getBoolean(false);
             finishProp(prop);
 
-            prop = getConfig(Constants.CONFIG_CATEGORY_GENERAL, "Allow liquids in Grating", true);
+            prop = getConfig(Constants.CONFIG_CATEGORY_GENERAL, "Allow liquids into Gratings", true);
             prop.setComment("Liquids will not flow into Grating block if this is set to false.");
             prop.setLanguageKey("gc.configgui.allow_liquids_grating");
-            disableUpdateCheck = prop.getBoolean(true);
+            allowLiquidGratings = prop.getBoolean(true);
             finishProp(prop);
 
             prop = getConfig(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Biome Type Registrations", false);

@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
@@ -17,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -76,6 +76,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         }
         this.setHardness(0.5F);
         this.blockResistance = 15F;
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
     
@@ -221,7 +222,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         {
             return;
         }
-        if (newBlock.getBlock() instanceof BlockLiquid && ConfigManagerCore.allowLiquidGratings)
+        if (newBlock.getBlock() instanceof BlockLiquid)
         {
             if (newBlock.getMaterial() == Material.WATER)
             {
@@ -285,6 +286,8 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
+        if (!this.blockMaterial.isLiquid()) return;
+
         int i = ((Integer)state.getValue(BlockLiquid.LEVEL)).intValue();
         int j = 1;
 
@@ -556,7 +559,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     @Override
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
-        if (this.blockMaterial != Material.CARPET)
+        if (this.blockMaterial.isLiquid())
         {
             worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
         }
@@ -565,7 +568,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
-        if (this.blockMaterial != Material.CARPET)
+        if (this.blockMaterial.isLiquid())
         {
             this.updateLiquid(worldIn, pos, state);
         }

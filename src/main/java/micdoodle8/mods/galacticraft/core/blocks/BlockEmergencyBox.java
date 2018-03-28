@@ -21,6 +21,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.IBlockAccess;
@@ -86,6 +87,12 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override

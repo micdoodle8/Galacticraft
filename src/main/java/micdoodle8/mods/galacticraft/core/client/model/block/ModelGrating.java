@@ -46,14 +46,14 @@ public class ModelGrating implements IBakedModel
     @Override
     public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
     {
-        if (state.getBlock() instanceof BlockGrating && side == EnumFacing.DOWN)
+        if (side == EnumFacing.DOWN && state.getBlock() instanceof BlockGrating)
         {
             IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
             if (baseState != null && baseState.getRenderType() == EnumBlockRenderType.LIQUID)
             {
                 IBlockAccess blockAccess = BlockGrating.savedBlockAccess;
                 BlockPos pos = BlockGrating.savedPos;
-                VertexBuffer buffer = TransformerHooks.renderBuilder;
+                VertexBuffer buffer = TransformerHooks.renderBuilder.get();
                 if (buffer != null && buffer.isDrawing)
                 {
                     try {
