@@ -63,6 +63,7 @@ entity.oxygen_bubble.name=Кислородный пузырь
 entity.para_chest.name=Сундук с парашютом
 entity.rocket_t1.name=Ракета 1-го уровня
 galaxy.milky_way=Млечный Путь
+gc.configgui.allow_liquids_grating=Разрешить жидкостям течь через решетки
 gc.configgui.alternate_canister_recipe=Альтернативный рецепт канистры
 gc.configgui.asteroids_flags=Флаги режима приключений на астероидах
 gc.configgui.asteroids_start=Режим приключения (Старт на астероидах)
