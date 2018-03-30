@@ -101,6 +101,7 @@ public class VenusModule implements IPlanetsModule
 
         if (VenusBlocks.sulphuricAcid != null)
         {
+            GalacticraftRegistry.registerGratingFluid(VenusBlocks.sulphuricAcid);
             VenusItems.bucketSulphuricAcid = new ItemBucketGC(VenusBlocks.sulphuricAcid).setUnlocalizedName("bucket_sulphuric_acid");
             VenusItems.registerItem(VenusItems.bucketSulphuricAcid);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("sulphuricacid", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(VenusItems.bucketSulphuricAcid), new ItemStack(Items.BUCKET));

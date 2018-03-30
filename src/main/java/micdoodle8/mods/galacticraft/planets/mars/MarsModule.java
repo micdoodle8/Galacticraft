@@ -106,6 +106,7 @@ public class MarsModule implements IPlanetsModule
 
         if (MarsBlocks.blockSludge != null)
         {
+            GalacticraftRegistry.registerGratingFluid(MarsBlocks.blockSludge);
             MarsItems.bucketSludge = new ItemBucketGC(MarsBlocks.blockSludge).setUnlocalizedName("bucket_sludge");
             MarsItems.registerItem(MarsItems.bucketSludge);
             FluidContainerRegistry.registerFluidContainer(FluidRegistry.getFluidStack("bacterialsludge", FluidContainerRegistry.BUCKET_VOLUME), new ItemStack(MarsItems.bucketSludge), new ItemStack(Items.BUCKET));

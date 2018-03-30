@@ -22,7 +22,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -49,15 +48,16 @@ public class ModelGrating implements IBakedModel
         if (side == EnumFacing.DOWN && state.getBlock() instanceof BlockGrating)
         {
             IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
-            if (baseState != null && baseState.getRenderType() == EnumBlockRenderType.LIQUID)
+            if (baseState != null)
             {
                 IBlockAccess blockAccess = BlockGrating.savedBlockAccess;
                 BlockPos pos = BlockGrating.savedPos;
                 VertexBuffer buffer = TransformerHooks.renderBuilder.get();
                 if (buffer != null && buffer.isDrawing)
                 {
+                    if (baseState.getBlock().canRenderInLayer(baseState, MinecraftForgeClient.getRenderLayer()))
                     try {
-                        this.fluidRenderer.renderFluid(blockAccess, baseState, pos, buffer);
+                        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(baseState, pos, blockAccess, buffer);
                     } catch (Exception ignore) { ignore.printStackTrace(); }
                 }
             }

@@ -1,6 +1,10 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -10,6 +14,7 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
 import net.minecraft.block.Block;
@@ -22,6 +27,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,9 +44,11 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.fluids.BlockFluidBase;
+import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -53,7 +62,25 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     private int adjacentSourceBlocks;
     private final IBlockState liquidEquivalentDynamic;
     private final IBlockState liquidEquivalentStatic;
+    private boolean forgeFluid = false;
+    private BlockFluidClassic forgeBlock = null;
+    public static List<BlockGrating> forgeBlocks = new ArrayList<>();
+    public static int number = 3;  //That's Plain, Water, Lava - any more will be Forge Fluids
+    private static Method gofd;
+    private static Field fieldQuantaPerBlock;
 
+    static
+    {
+        try {
+            gofd = BlockFluidClassic.class.getDeclaredMethod("getOptimalFlowDirections", World.class, BlockPos.class);
+            gofd.setAccessible(true);
+        } catch (Exception e) { e.printStackTrace(); }
+        try {
+            fieldQuantaPerBlock = BlockFluidBase.class.getDeclaredField("quantaPerBlock");
+            fieldQuantaPerBlock.setAccessible(true);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+    
     public BlockGrating(String assetName, Material material)
     {
         super(material);
@@ -78,6 +105,31 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         this.blockResistance = 15F;
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
+    }
+
+    public BlockGrating(Block forge)
+    {
+        super(forge.getMaterial(forge.getDefaultState()));
+        this.forgeFluid = true;
+        this.forgeBlock = (BlockFluidClassic) forge;
+        this.liquidEquivalentStatic = null;
+        this.liquidEquivalentDynamic = null;
+        this.setHardness(0.5F);
+        this.blockResistance = 15F;
+        this.setSoundType(SoundType.METAL);
+        this.setUnlocalizedName("grating" + number);
+        number++;
+    }
+
+    public static void createForgeFluidVersion(Block b)
+    {
+        if (b instanceof BlockFluidClassic)
+        {
+            BlockGrating grating = new BlockGrating(b); 
+            BlockGrating.forgeBlocks.add(grating);
+            GCBlocks.registerBlock(grating, null);
+            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT) BlockGrating.remapVariant(grating);
+        }
     }
     
     @Override
@@ -147,6 +199,19 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     {
         return true;
     }
+    
+    @SideOnly(Side.CLIENT)
+    public static void remapVariant(Block grating)
+    {
+        ModelLoader.setCustomStateMapper(grating, new StateMapperBase()
+        {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState ignore)
+            {
+                return new ModelResourceLocation("galacticraftcore:grating", "normal");
+            }
+        });
+    }
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
@@ -157,7 +222,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        if (JavaUtil.instance.isCalledBy(BlockDynamicLiquid.class))
+        if (JavaUtil.instance.isCalledBy(BlockDynamicLiquid.class, BlockFluidBase.class))
         {
             return Item.getItemFromBlock(Blocks.AIR);
         }
@@ -180,13 +245,13 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new ExtendedBlockState(this, new IProperty[] { BlockLiquid.LEVEL }, new IUnlistedProperty[] { BASE_STATE });
+        return new BlockGratingExtendedState(this, new IProperty[] { BlockLiquid.LEVEL, BlockFluidBase.LEVEL }, new IUnlistedProperty[] { BASE_STATE });
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BlockLiquid.LEVEL, Integer.valueOf(meta));
+        return this.getDefaultState().withProperty(BlockLiquid.LEVEL, Integer.valueOf(meta)).withProperty(BlockFluidBase.LEVEL, Integer.valueOf(meta));
     }
 
     @Override
@@ -203,9 +268,14 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         return ((IExtendedBlockState) state).withProperty(BASE_STATE, this.getLiquidBlock(state));
     }
 
-    private IBlockState getLiquidBlock(IBlockState state)
+    public IBlockState getLiquidBlock(IBlockState state)
     {
-        if (this.blockMaterial == Material.WATER || this.blockMaterial == Material.LAVA)
+        if (this.forgeFluid && state.getPropertyNames().contains(BlockFluidBase.LEVEL))
+        {
+            int level = state.getValue(BlockFluidBase.LEVEL).intValue();
+            return this.forgeBlock.getDefaultState().withProperty(BlockFluidBase.LEVEL, level);
+        }
+        else if (this.blockMaterial == Material.WATER || this.blockMaterial == Material.LAVA)
         {
             int level = state.getValue(BlockLiquid.LEVEL).intValue();
             return this.liquidEquivalentStatic.withProperty(BlockLiquid.LEVEL, level);
@@ -220,6 +290,20 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         IBlockState newBlock = world.getBlockState(pos);
         if (newBlock.getBlock() instanceof BlockGrating)
         {
+            return;
+        }
+        if (newBlock.getBlock() instanceof BlockFluidBase)
+        {
+            for (BlockGrating b : forgeBlocks)
+            {
+                if (newBlock.getBlock() == b.forgeBlock)
+                {
+                    int level = newBlock.getValue(BlockFluidBase.LEVEL).intValue();
+                    IBlockState bs = b.getDefaultState().withProperty(BlockFluidBase.LEVEL, level).withProperty(BlockLiquid.LEVEL, level);
+                    world.setBlockState(pos, bs);
+                    break;
+                }
+            }
             return;
         }
         if (newBlock.getBlock() instanceof BlockLiquid)
@@ -237,6 +321,41 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
                 world.setBlockState(pos, bs);
             }
         }
+    }
+    
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack)
+    {
+        IBlockState oldBlock = world.getBlockState(pos);
+        if (oldBlock.getBlock() instanceof BlockGrating)
+        {
+            return this.getStateFromMeta(meta);
+        }
+        if (oldBlock.getBlock() instanceof BlockFluidBase)
+        {
+            for (BlockGrating b : forgeBlocks)
+            {
+                if (oldBlock.getBlock() == b.forgeBlock)
+                {
+                    int level = oldBlock.getValue(BlockFluidBase.LEVEL).intValue();
+                    return b.getDefaultState().withProperty(BlockFluidBase.LEVEL, level).withProperty(BlockLiquid.LEVEL, level);
+                }
+            }
+        }
+        else if (oldBlock.getBlock() instanceof BlockLiquid)
+        {
+            if (oldBlock.getMaterial() == Material.WATER)
+            {
+                int level = oldBlock.getValue(BlockLiquid.LEVEL).intValue();
+                return GCBlocks.gratingWater.getDefaultState().withProperty(BlockLiquid.LEVEL, level);
+            }
+            else if (oldBlock.getMaterial() == Material.LAVA)
+            {
+                int level = oldBlock.getValue(BlockLiquid.LEVEL).intValue();
+                return GCBlocks.gratingLava.getDefaultState().withProperty(BlockLiquid.LEVEL, level);
+            }
+        }
+        return this.getStateFromMeta(meta);
     }
     
     @Override
@@ -287,6 +406,11 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
         if (!this.blockMaterial.isLiquid()) return;
+        if (this.forgeFluid)
+        {
+            this.updateTickForge(worldIn, pos, state, rand);
+            return;
+        }
 
         int i = ((Integer)state.getValue(BlockLiquid.LEVEL)).intValue();
         int j = 1;
@@ -570,23 +694,159 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     {
         if (this.blockMaterial.isLiquid())
         {
-            this.updateLiquid(worldIn, pos, state);
+            worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
         }
     }
     
-    private void updateLiquid(World worldIn, BlockPos pos, IBlockState state)
-    {
-        worldIn.scheduleUpdate(pos, this, this.tickRate(worldIn));
-    }
-
     @Override
     public int tickRate(World worldIn)
     {
+        if (this.forgeFluid)
+        {
+            return this.forgeBlock.tickRate(worldIn);
+        }
         return this.blockMaterial == Material.WATER ? 5 : (this.blockMaterial == Material.LAVA ? (worldIn.provider.getHasNoSky() ? 10 : 30) : 0);
     }
     
     protected int getDepth(IBlockState p_189542_1_)
     {
         return p_189542_1_.getMaterial() == this.blockMaterial ? ((Integer)p_189542_1_.getValue(BlockLiquid.LEVEL)).intValue() : -1;
+    }
+    
+    //------------------From BlockFluidBase
+    
+    public void updateTickForge(World world, BlockPos pos, IBlockState state, Random rand)
+    {
+//        if (!isSourceBlock(world, pos) && ForgeEventFactory.canCreateFluidSource(world, pos, state, false))
+//        {
+//            int adjacentSourceBlocks =
+//                    (isSourceBlock(world, pos.north()) ? 1 : 0) +
+//                    (isSourceBlock(world, pos.south()) ? 1 : 0) +
+//                    (isSourceBlock(world, pos.east()) ? 1 : 0) +
+//                    (isSourceBlock(world, pos.west()) ? 1 : 0);
+//            if (adjacentSourceBlocks >= 2 && (world.getBlockState(pos.down(1)).getMaterial().isSolid() || isSourceBlock(world, pos.down(1))))
+//                world.setBlockState(pos, state.withProperty(BlockFluidBase.LEVEL, 0));
+//        }
+
+        int quantaPerBlock = 8;
+        try {
+            quantaPerBlock = fieldQuantaPerBlock.getInt(this.forgeBlock);
+        } catch (Exception e) { }
+        int tickRate = this.forgeBlock.tickRate(world);
+        int quantaRemaining = quantaPerBlock - state.getValue(BlockFluidBase.LEVEL);
+        int expQuanta = -101;
+
+        // check adjacent block levels if non-source
+        if (quantaRemaining < quantaPerBlock)
+        {
+            if (testSame(world, pos.add( 0, 1,  0)) ||
+                testSame(world, pos.add(-1, 1,  0)) ||
+                testSame(world, pos.add( 1, 1,  0)) ||
+                testSame(world, pos.add( 0, 1, -1)) ||
+                testSame(world, pos.add( 0, 1,  1)))
+            {
+                expQuanta = quantaPerBlock - 1;
+            }
+            else
+            {
+                int maxQuanta = -100;
+                maxQuanta = getLargerQuanta(world, pos.add(-1, 0,  0), maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.add( 1, 0,  0), maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.add( 0, 0, -1), maxQuanta);
+                maxQuanta = getLargerQuanta(world, pos.add( 0, 0,  1), maxQuanta);
+
+                expQuanta = maxQuanta - 1;
+            }
+
+            // decay calculation
+            if (expQuanta != quantaRemaining)
+            {
+                quantaRemaining = expQuanta;
+
+                if (expQuanta <= 0)
+                {
+                    world.setBlockState(pos, GCBlocks.grating.getDefaultState(), 3);
+                }
+                else
+                {
+                    world.setBlockState(pos, state.withProperty(BlockFluidBase.LEVEL, quantaPerBlock - expQuanta), 2);
+                    world.scheduleUpdate(pos, this, tickRate);
+                    world.notifyNeighborsOfStateChange(pos, this.forgeBlock);
+                }
+            }
+        }
+        // This is a "source" block, set meta to zero, and send a server only update
+        else if (quantaRemaining >= quantaPerBlock)
+        {
+            world.setBlockState(pos, this.getDefaultState(), 2);
+        }
+
+        // Flow vertically if possible
+        if (this.forgeBlock.canDisplace(world, pos.down(1)))
+        {
+            flowIntoBlock(world, pos.down(1), 1);
+            return;
+        }
+
+        // Flow outward if possible
+        int flowMeta = quantaPerBlock - quantaRemaining + 1;
+        if (flowMeta >= quantaPerBlock)
+        {
+            return;
+        }
+
+        if (isSourceBlock(world, pos) || !this.forgeBlock.isFlowingVertically(world, pos))
+        {
+            Block test = world.getBlockState(pos.up(1)).getBlock(); 
+            if (test == this || test == this.forgeBlock)
+            {
+                flowMeta = 1;
+            }
+            
+            boolean flowTo[];
+            try
+            {
+                flowTo = (boolean []) gofd.invoke(this.forgeBlock, world, pos);
+
+                if (flowTo[0]) flowIntoBlock(world, pos.add(-1, 0,  0), flowMeta);
+                if (flowTo[1]) flowIntoBlock(world, pos.add( 1, 0,  0), flowMeta);
+                if (flowTo[2]) flowIntoBlock(world, pos.add( 0, 0, -1), flowMeta);
+                if (flowTo[3]) flowIntoBlock(world, pos.add( 0, 0,  1), flowMeta);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    private boolean testSame(World world, BlockPos pos)
+    {
+        Block test = world.getBlockState(pos).getBlock();
+        return test == this || test == this.forgeBlock;
+    }
+
+    private boolean isSourceBlock(IBlockAccess world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() instanceof BlockFluidBase && state.getValue(BlockFluidBase.LEVEL) == 0;
+    }
+    
+    protected int getLargerQuanta(IBlockAccess world, BlockPos pos, int compare)
+    {
+        int quantaRemaining = this.forgeBlock.getQuantaValue(world, pos);
+        if (quantaRemaining <= 0)
+        {
+            return compare;
+        }
+        return quantaRemaining >= compare ? quantaRemaining : compare;
+    }
+
+    protected void flowIntoBlock(World world, BlockPos pos, int meta)
+    {
+        if (meta < 0) return;
+        if (this.forgeBlock.displaceIfPossible(world, pos))
+        {
+            world.setBlockState(pos, this.forgeBlock.getBlockState().getBaseState().withProperty(BlockFluidBase.LEVEL, meta), 3);
+        }
     }
 }
