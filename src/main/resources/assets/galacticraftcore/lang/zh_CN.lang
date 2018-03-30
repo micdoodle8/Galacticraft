@@ -63,6 +63,7 @@ entity.oxygen_bubble.name=含氧气泡
 entity.para_chest.name=伞降箱
 entity.rocket_t1.name=一阶火箭
 galaxy.milky_way=银河系
+gc.configgui.allow_liquids_grating=允许流体从格栅中流过
 gc.configgui.alternate_canister_recipe=罐的其它合成配方
 gc.configgui.asteroids_flags=挑战模式旗帜
 gc.configgui.asteroids_start=挑战模式 (从小行星带启程)
