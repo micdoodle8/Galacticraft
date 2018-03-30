@@ -48,7 +48,6 @@ public class ModelGrating implements IBakedModel
                 {
                     if (baseState.getBlock().canRenderInLayer(baseState, MinecraftForgeClient.getRenderLayer()))
                     try {
-                        if (pos.getX() == -207 && pos.getZ() == 183) System.out.println(MinecraftForgeClient.getRenderLayer());
                         Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlock(baseState, pos, blockAccess, buffer);
                     } catch (Exception ignore) { ignore.printStackTrace(); }
                 }
