@@ -56,6 +56,7 @@ public class ConfigManagerCore
     public static boolean enableSealerEdgeChecks;
     public static boolean disableLander;
     public static boolean recipesRequireGCAdvancedMetals = true;
+    public static boolean allowLiquidGratings;
 //    public static int mapfactor;
 //    public static int mapsize;
 
@@ -614,6 +615,12 @@ public class ConfigManagerCore
             disableUpdateCheck = prop.getBoolean(false);
             finishProp(prop);
 
+            prop = getConfig(Constants.CONFIG_CATEGORY_GENERAL, "Allow liquids into Gratings", true);
+            prop.setComment("Liquids will not flow into Grating block if this is set to false.");
+            prop.setLanguageKey("gc.configgui.allow_liquids_grating").setRequiresMcRestart(true);
+            allowLiquidGratings = prop.getBoolean(true);
+            finishProp(prop);
+
             prop = getConfig(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Biome Type Registrations", false);
             prop.setComment("Biome Types will not be registered in the BiomeDictionary if this is set to true.");
             prop.setLanguageKey("gc.configgui.disable_biome_type_registrations");
@@ -944,6 +951,7 @@ public class ConfigManagerCore
     	modeFlags += ConfigManagerCore.disableSpaceStationCreation ? 8 : 0;
     	modeFlags += ConfigManagerCore.recipesRequireGCAdvancedMetals ? 16 : 0;
     	modeFlags += ConfigManagerCore.challengeRecipes ? 32 : 0;
+        modeFlags += ConfigManagerCore.allowLiquidGratings ? 64 : 0;
     	returnList.add(modeFlags);
     	returnList.add(ConfigManagerCore.dungeonBossHealthMod);
     	returnList.add(ConfigManagerCore.suffocationDamage);
@@ -969,6 +977,7 @@ public class ConfigManagerCore
     	ConfigManagerCore.disableSpaceStationCreation = (modeFlag & 8) != 0;
     	ConfigManagerCore.recipesRequireGCAdvancedMetals = (modeFlag & 16) != 0;
     	ConfigManagerCore.challengeRecipes = (modeFlag & 32) != 0;
+        ConfigManagerCore.allowLiquidGratings = (modeFlag & 64) != 0;
     	ConfigManagerCore.dungeonBossHealthMod = (Double) configs.get(dataCount++);
     	ConfigManagerCore.suffocationDamage = (Integer) configs.get(dataCount++);
     	ConfigManagerCore.suffocationCooldown = (Integer) configs.get(dataCount++);

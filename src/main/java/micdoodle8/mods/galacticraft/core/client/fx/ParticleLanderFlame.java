@@ -92,17 +92,17 @@ public class ParticleLanderFlame extends Particle
         this.motionY *= 0.9599999785423279D;
         this.motionZ *= 0.9599999785423279D;
 
-        final List<?> var3 = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox().expand(1.0D, 0.5D, 1.0D));
-
-        if (var3 != null)
+        if (this.world.rand.nextInt(5) == 1)
         {
-            for (int var4 = 0; var4 < var3.size(); ++var4)
-            {
-                final Entity var5 = (Entity) var3.get(var4);
+            final List<?> var3 = this.world.getEntitiesWithinAABB(Entity.class, this.getBoundingBox().expand(1.0D, 0.5D, 1.0D));
 
-                if (var5 instanceof EntityLivingBase)
+            if (var3 != null)
+            {
+                for (int var4 = 0; var4 < var3.size(); ++var4)
                 {
-                    if (!var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
+                    final Entity var5 = (Entity) var3.get(var4);
+
+                    if (var5 instanceof EntityLivingBase && !var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[] { var5.getEntityId() }));

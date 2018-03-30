@@ -169,7 +169,7 @@ public class GalacticraftCore
         Biome biomeOrbitPreInit = BiomeOrbit.space;
         Biome biomeMoonPreInit = BiomeMoon.moonFlat;
     }
-
+    
     @EventHandler
     public void init(FMLInitializationEvent event)
     {

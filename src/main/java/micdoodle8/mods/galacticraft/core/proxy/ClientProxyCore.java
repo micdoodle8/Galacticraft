@@ -21,6 +21,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRedstone;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedRepeater;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFallenMeteor;
+import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
@@ -29,6 +30,7 @@ import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
 import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRocketTier1;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
+import micdoodle8.mods.galacticraft.core.client.model.block.ModelGrating;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelPanelLightBase;
 import micdoodle8.mods.galacticraft.core.client.render.entities.*;
 import micdoodle8.mods.galacticraft.core.client.render.item.ItemModelBuggy;
@@ -64,6 +66,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
@@ -98,6 +101,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -311,6 +315,9 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ModelLoader.setCustomModelResourceLocation(GCItems.flag, 0, modelResourceLocation);
         ModelLoader.setCustomStateMapper(GCBlocks.oxygenDetector, new StateMap.Builder().ignore(BlockOxygenDetector.ACTIVE).build());
         ModelLoader.setCustomStateMapper(GCBlocks.panelLighting, new StateMap.Builder().ignore(BlockPanelLighting.TYPE).build());
+        ModelLoader.setCustomStateMapper(GCBlocks.grating, new StateMap.Builder().ignore(BlockLiquid.LEVEL).ignore(BlockFluidBase.LEVEL).build());
+        BlockGrating.remapVariant(GCBlocks.gratingWater);
+        BlockGrating.remapVariant(GCBlocks.gratingLava);
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRedstone, new StateMap.Builder().ignore(BlockConcealedRedstone.POWER).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Powered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Unpowered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
@@ -455,6 +462,13 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":basic_block_core", "basictype=deco_block_1");
         }
         event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
+        defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating", "normal");
+        event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc));
+        for (int i = 1; i < BlockGrating.number; i++)
+        {
+            blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating" + i, "normal");
+            event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc));
+        }
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
 //        {
@@ -706,6 +720,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.platform);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.emergencyBox, 0, "emergency_box");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.emergencyBox, 1, "emergency_box_full");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.grating);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.glowstoneTorch);
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 0, "ore_copper_moon");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.blockMoon, 1, "ore_tin_moon");

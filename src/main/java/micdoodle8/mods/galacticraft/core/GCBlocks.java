@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
@@ -102,6 +103,9 @@ public class GCBlocks
     public static Block concealedDetector;
     public static Block platform;
     public static Block emergencyBox;
+    public static Block grating;
+    public static Block gratingWater;
+    public static Block gratingLava;
 
     public static final Material machine = new Material(MapColor.IRON);
 
@@ -179,6 +183,9 @@ public class GCBlocks
         GCBlocks.concealedDetector = new BlockConcealedDetector("concealed_detector");
         GCBlocks.platform = new BlockPlatform("platform");
         GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
+        GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings ? Material.CARPET : Material.IRON);
+        GCBlocks.gratingWater = new BlockGrating("grating1", Material.WATER);
+        GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA);
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
@@ -474,6 +481,9 @@ public class GCBlocks
         registerBlock(GCBlocks.concealedDetector, ItemBlockCreativeGC.class);
         registerBlock(GCBlocks.platform, ItemBlockDesc.class);
         registerBlock(GCBlocks.emergencyBox, ItemBlockEmergencyBox.class);
+        registerBlock(GCBlocks.grating, ItemBlockGC.class);
+        registerBlock(GCBlocks.gratingWater, null);
+        registerBlock(GCBlocks.gratingLava, null);
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 0, new StackSorted(GCBlocks.landingPad, 1));
 //        GCCoreUtil.sortBlock(GCBlocks.aluminumWire, 1, new StackSorted(GCBlocks.aluminumWire, 0));
 //        GCCoreUtil.sortBlock(GCBlocks.oxygenPipe, 0, new StackSorted(GCBlocks.aluminumWire, 1));
