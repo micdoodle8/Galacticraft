@@ -319,6 +319,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ModelLoader.setCustomStateMapper(GCBlocks.grating, new StateMap.Builder().ignore(BlockLiquid.LEVEL).ignore(BlockFluidBase.LEVEL).build());
         BlockGrating.remapVariant(GCBlocks.gratingWater);
         BlockGrating.remapVariant(GCBlocks.gratingLava);
+        BlockGrating.remapForgeVariants();
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRedstone, new StateMap.Builder().ignore(BlockConcealedRedstone.POWER).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Powered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());
         ModelLoader.setCustomStateMapper(GCBlocks.concealedRepeater_Unpowered, new StateMap.Builder().ignore(BlockConcealedRepeater.FACING, BlockConcealedRepeater.DELAY, BlockConcealedRepeater.LOCKED).build());

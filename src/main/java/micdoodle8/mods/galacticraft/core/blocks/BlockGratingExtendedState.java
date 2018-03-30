@@ -13,6 +13,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterables;
+
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;

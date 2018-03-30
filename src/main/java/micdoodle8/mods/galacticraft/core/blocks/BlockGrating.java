@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import micdoodle8.mods.galacticraft.core.util.PropertyObject;
 import net.minecraft.block.Block;
@@ -130,10 +129,17 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
             BlockGrating grating = new BlockGrating(b); 
             BlockGrating.forgeBlocks.add(grating);
             GCBlocks.registerBlock(grating, null);
-            if (GCCoreUtil.getEffectiveSide() == Side.CLIENT) BlockGrating.remapVariant(grating);
         }
     }
-    
+
+    public static void remapForgeVariants()
+    {
+        for (Block b : forgeBlocks)
+        {
+            BlockGrating.remapVariant(b);
+        }
+    }
+
     @Override
     public String getLocalizedName()
     {
@@ -228,6 +234,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         {
             return Item.getItemFromBlock(Blocks.AIR);
         }
+        Thread.dumpStack();
         return Item.getItemFromBlock(GCBlocks.grating);
     }
 

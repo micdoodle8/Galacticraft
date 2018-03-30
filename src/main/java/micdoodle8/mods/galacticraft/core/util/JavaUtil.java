@@ -28,7 +28,7 @@ public class JavaUtil extends SecurityManager
     {
         Class<?>[] context = getClassContext();
         
-        int imax = Math.min(context.length, 6);
+        int imax = Math.min(context.length, 7);
         for (int i = 2; i < imax; i++)
         {
             Class<?> test = context[i]; 
