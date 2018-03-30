@@ -23,6 +23,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -159,6 +160,12 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
     }
 
     @Override

@@ -184,7 +184,7 @@ public class GalacticraftCore
         GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
         GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
     }
-
+    
     @EventHandler
     public void init(FMLInitializationEvent event)
     {

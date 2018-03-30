@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:grating",
+    "count": 4
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:iron_bars"
+    },
+    {
+      "item": "minecraft:iron_bars"
+    },
+    {
+      "item": "minecraft:iron_bars"
+    },
+    {
+      "item": "minecraft:iron_bars"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

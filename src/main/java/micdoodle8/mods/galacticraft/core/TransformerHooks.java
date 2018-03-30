@@ -72,6 +72,7 @@ public class TransformerHooks
     private static Method generateTCAuraNodes = null;
     private static boolean generatorsInitialised = false;
     public static List<Block> spawnListAE2_GC = new LinkedList<>();
+    public static ThreadLocal<BufferBuilder> renderBuilder = new ThreadLocal<>();
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -599,5 +600,10 @@ public class TransformerHooks
             }
         }
         return 1D;
+    }
+    
+    public static void setCurrentBuffer(BufferBuilder buffer)
+    {
+        renderBuilder.set(buffer);
     }
 }

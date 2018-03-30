@@ -9,21 +9,25 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.Level;
 
 public class GalacticraftRegistry
 {
@@ -42,6 +46,7 @@ public class GalacticraftRegistry
     private static int maxScreenTypes;
     private static Map<Integer, List<Object>> gearMap = new HashMap<>();
     private static Map<Integer, List<EnumExtendedInventorySlot>> gearSlotMap = new HashMap<>();
+    private static Method gratingRegister = null;
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -235,7 +240,7 @@ public class GalacticraftRegistry
         GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
         if (type == null)
         {
-            GCLog.severe("Problem registering dimension type " + id + ".  May be fixable by changing config.");
+            FMLRelaunchLog.log("Galacticraft", Level.ERROR, "Problem registering dimension type " + id + ".  May be fixable by changing config.");
         }
         
         return type;
@@ -405,5 +410,23 @@ public class GalacticraftRegistry
     public static List<EnumExtendedInventorySlot> getSlotType(int gearID)
     {
         return GalacticraftRegistry.gearSlotMap.get(gearID);
+    }
+    
+    public static void registerGratingFluid(Block fluidBlock)
+    {
+        if (gratingRegister == null)
+        {
+            try {
+                Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.blocks.BlockGrating");
+                gratingRegister = clazz.getMethod("createForgeFluidVersion", Block.class);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        if (gratingRegister != null)
+        {
+            try {
+                gratingRegister.invoke(null, fluidBlock);
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+    
     }
 }
