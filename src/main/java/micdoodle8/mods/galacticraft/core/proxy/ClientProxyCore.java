@@ -464,11 +464,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
         defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating", "normal");
-        event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc));
+        event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc, event.getModelManager()));
         for (int i = 1; i < BlockGrating.number; i++)
         {
             blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating" + i, "normal");
-            event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc));
+            event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc, event.getModelManager()));
         }
 //
 //        for (PartialCanister container : ClientProxyCore.canisters)
