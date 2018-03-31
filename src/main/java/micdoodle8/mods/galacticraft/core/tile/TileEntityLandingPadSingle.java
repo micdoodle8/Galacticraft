@@ -11,12 +11,14 @@ import java.util.ArrayList;
 
 public class TileEntityLandingPadSingle extends TileEntity implements ITickable
 {
+    private int corner = 0;
+
     @Override
     public void update()
     {
-        if (!this.world.isRemote)
+        if (!this.world.isRemote && this.corner == 0)
         {
-            final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<TileEntity>();
+            final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<>();
 
             for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
             {
@@ -24,7 +26,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
                 {
                     final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
-                    if (tile instanceof TileEntityLandingPadSingle)
+                    if (tile instanceof TileEntityLandingPadSingle && !tile.isInvalid() && ((TileEntityLandingPadSingle)tile).corner == 0)
                     {
                         attachedLaunchPads.add(tile);
                     }
@@ -36,6 +38,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
                 for (final TileEntity tile : attachedLaunchPads)
                 {
                     this.world.markTileEntityForRemoval(tile);
+                    ((TileEntityLandingPadSingle)tile).corner = 1;
                 }
 
                 this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 2);
