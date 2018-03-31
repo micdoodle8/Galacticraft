@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
+import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -60,12 +61,12 @@ public class BiomeDecoratorVenus extends BiomeDecorator
     private void generateVenus(Random random)
     {
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.worldObj, random, chunkPos));
-        this.genStandardOre(18, this.aluminumGen, 0, 60, random);
-        this.genStandardOre(24, this.copperGen, 0, 60, random);
-        this.genStandardOre(18, this.galenaGen, 0, 60, random);
-        this.genStandardOre(26, this.quartzGen, 0, 60, random);
-        this.genStandardOre(4, this.siliconGen, 0, 60, random);
-        this.genStandardOre(22, this.tinGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableAluminumGen) this.genStandardOre(18, this.aluminumGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableCopperGen) this.genStandardOre(24, this.copperGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableGalenaGen) this.genStandardOre(18, this.galenaGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableQuartzGen) this.genStandardOre(26, this.quartzGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableSiliconGen) this.genStandardOre(4, this.siliconGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableTinGen) this.genStandardOre(22, this.tinGen, 0, 60, random);
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, random, chunkPos));
     }
 }
