@@ -102,13 +102,8 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
 
     public int willFit(int max)
     {
-<<<<<<< HEAD
         int size = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
-        System.out.println(displayString + " " + size + " " + max);
-=======
-        int size = Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
         GCLog.debug(displayString + " " + size + " " + max);
->>>>>>> MC1.11
         if (size > max)
         {
             return -1;
