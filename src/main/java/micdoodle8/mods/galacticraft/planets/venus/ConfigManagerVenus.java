@@ -41,6 +41,13 @@ public class ConfigManagerVenus
 
     public static boolean disableAmbientLightning;
 
+    public static boolean disableAluminumGen;
+    public static boolean disableCopperGen;
+    public static boolean disableGalenaGen;
+    public static boolean disableQuartzGen;
+    public static boolean disableSiliconGen;
+    public static boolean disableTinGen;
+
     public static void syncConfig(boolean load, boolean update)
     {
         try
@@ -78,6 +85,43 @@ public class ConfigManagerVenus
             prop.setLanguageKey("gc.configgui.disable_ambient_lightning");
             disableAmbientLightning = prop.getBoolean(oldLightning);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Aluminum Ore Gen on Venus", false);
+            prop.setComment("Disable Aluminum Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_aluminum_gen");
+            disableAluminumGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Copper Ore Gen on Venus", false);
+            prop.setComment("Disable Copper Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_copper_gen");
+            disableCopperGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Galena Ore Gen on Venus", false);
+            prop.setComment("Disable Galena Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_galena_gen");
+            disableGalenaGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Quartz Ore Gen on Venus", false);
+            prop.setComment("Disable Quartz Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_quartz_gen");
+            disableQuartzGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Silicon Ore Gen on Venus", false);
+            prop.setComment("Disable Silicon Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_silicon_gen");
+            disableSiliconGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Tin Ore Gen on Venus", false);
+            prop.setComment("Disable Tin Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_tin_gen");
+            disableTinGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
         }
         catch (final Exception e)
         {

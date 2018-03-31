@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
@@ -10,6 +11,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 public class GuiElementCheckboxPreLaunch extends GuiButton
@@ -100,8 +102,13 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
 
     public int willFit(int max)
     {
+<<<<<<< HEAD
         int size = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
         System.out.println(displayString + " " + size + " " + max);
+=======
+        int size = Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
+        GCLog.debug(displayString + " " + size + " " + max);
+>>>>>>> MC1.11
         if (size > max)
         {
             return -1;

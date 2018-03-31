@@ -287,7 +287,6 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
     public long receivePower(long microJoules, boolean simulate)
     {
-        System.out.println("ReceivePower " + microJoules + " sim " + simulate);
         if (this.getNetwork() == null || EnergyConfigHandler.disableBuildCraftInput)
         {
             return microJoules;
