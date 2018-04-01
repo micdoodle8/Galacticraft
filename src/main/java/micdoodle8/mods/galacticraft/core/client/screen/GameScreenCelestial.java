@@ -154,7 +154,7 @@ public class GameScreenCelestial implements IGameScreen
 
         if (star != null && star.getBodyIcon() != null)
         {
-            this.drawCelestialBody(star, 0F, 0F, ticks, 6F);
+            this.drawCelestialBody(star, 0F, 0F, ticks, 6F, 1.0);
         }
 
         String mainSolarSystem = solarSystem.getUnlocalizedName();
@@ -166,7 +166,7 @@ public class GameScreenCelestial implements IGameScreen
                 {
                     Vector3f pos = this.getCelestialBodyPosition(planet, ticks);
                     this.drawCircle(planet);
-                    this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F);
+                    this.drawCelestialBody(planet, pos.x, pos.y, ticks, (planet.getRelativeDistanceFromCenter().unScaledDistance < 1.5F) ? 2F : 2.8F, 0.75);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class GameScreenCelestial implements IGameScreen
 
     private void drawCelestialBodiesZ(CelestialBody planet, float ticks)
     {
-        this.drawCelestialBody(planet, 0F, 0F, ticks, 11F);
+        this.drawCelestialBody(planet, 0F, 0F, ticks, 11F, 0.75);
 
         for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
         {
@@ -182,7 +182,7 @@ public class GameScreenCelestial implements IGameScreen
             {
                 Vector3f pos = this.getCelestialBodyPosition(moon, ticks);
                 this.drawCircle(moon);
-                this.drawCelestialBody(moon, pos.x, pos.y, ticks, 4F);
+                this.drawCelestialBody(moon, pos.x, pos.y, ticks, 4F, 0.75);
             }
         }
 
@@ -192,25 +192,32 @@ public class GameScreenCelestial implements IGameScreen
             {
                 Vector3f pos = this.getCelestialBodyPosition(satellite, ticks);
                 this.drawCircle(satellite);
-                this.drawCelestialBody(satellite, pos.x, pos.y, ticks, 3F);
+                this.drawCelestialBody(satellite, pos.x, pos.y, ticks, 3F, 0.75);
             }
         }
     }
 
-    private void drawTexturedRectCBody(float x, float y, float width, float height)
+    /**
+     * @param texSize 0-1 value for size of texture
+     *                  e.g. Celestial body textures are 12x12 in a 16x16 .png so value of 0.75 is passed
+     */
+    private void drawTexturedRectCBody(float x, float y, float width, float height, double texSize)
     {
-        double v = 0.75D;    // Celestial body textures are 12x12 in a 16x16 .png
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldRenderer = tessellator.getWorldRenderer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(x, y + height, 0F).tex(0D, v).endVertex();
-        worldRenderer.pos(x + width, y + height, 0F).tex(v, v).endVertex();
-        worldRenderer.pos(x + width, y, 0F).tex(v, 0D).endVertex();
+        worldRenderer.pos(x, y + height, 0F).tex(0D, texSize).endVertex();
+        worldRenderer.pos(x + width, y + height, 0F).tex(texSize, texSize).endVertex();
+        worldRenderer.pos(x + width, y, 0F).tex(texSize, 0D).endVertex();
         worldRenderer.pos(x, y, 0F).tex(0D, 0D).endVertex();
         tessellator.draw();
     }
 
-    private void drawCelestialBody(CelestialBody planet, float xPos, float yPos, float ticks, float relSize)
+    /**
+     * @param texSize 0-1 value for size of texture
+     *                  e.g. Celestial body textures are 12x12 in a 16x16 .png so value of 0.75 is passed
+     */
+    private void drawCelestialBody(CelestialBody planet, float xPos, float yPos, float ticks, float relSize, double texSize)
     {
         if (xPos + centreX > frameBx || xPos + centreX < frameA)
         {
@@ -238,7 +245,7 @@ public class GameScreenCelestial implements IGameScreen
         if (!preEvent.isCanceled())
         {
             float size = relSize / 70 * scale;
-            this.drawTexturedRectCBody(-size / 2, -size / 2, size, size);
+            this.drawTexturedRectCBody(-size / 2, -size / 2, size, size, texSize);
         }
 
         CelestialBodyRenderEvent.Post postEvent = new CelestialBodyRenderEvent.Post(planet);
