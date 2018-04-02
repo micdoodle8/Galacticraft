@@ -388,14 +388,29 @@ public class GuiCelestialSelection extends GuiScreen
             return new Vector2f(this.position.x + translation.x, this.position.y + translation.y);
         }
 
-        if (this.selectedBody instanceof Planet && this.lastSelectedBody instanceof IChildBody && ((IChildBody) this.lastSelectedBody).getParentPlanet() == this.selectedBody)
+//        if (this.selectedBody instanceof Planet && this.lastSelectedBody instanceof IChildBody && ((IChildBody) this.lastSelectedBody).getParentPlanet() == this.selectedBody)
+//        {
+//            Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
+//            return new Vector2f(posVec.x, posVec.y);
+//        }
+
+        Vector2f pos = this.position;
+
+        if (this.selectedBody instanceof IChildBody)
         {
-            Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
-            return new Vector2f(posVec.x, posVec.y);
+            Vector3f pos3 = this.getCelestialBodyPosition(((IChildBody) this.selectedBody).getParentPlanet());
+            pos.x = pos3.x;
+            pos.y = pos3.y;
+        }
+        else if (this.lastSelectedBody instanceof IChildBody)
+        {
+            Vector3f pos3 = this.getCelestialBodyPosition(this.lastSelectedBody);
+            pos.x = pos3.x;
+            pos.y = pos3.y;
         }
 
         Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
-        return this.lerpVec2(this.position, new Vector2f(posVec.x, posVec.y), Math.max(0.0F, Math.min((this.ticksSinceSelection + partialTicks - 18) / 7.5F, 1.0F)));
+        return this.lerpVec2(pos, new Vector2f(posVec.x, posVec.y), Math.max(0.0F, Math.min((this.ticksSinceSelection + partialTicks - 18) / 7.5F, 1.0F)));
     }
 
     @Override
@@ -1460,8 +1475,6 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (this.selectedBody != null)
         {
-            Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
-
             List<CelestialBody> objects = Lists.newArrayList();
             objects.addAll(GalaxyRegistry.getRegisteredSatellites().values());
             objects.addAll(GalaxyRegistry.getRegisteredMoons().values());
@@ -1469,9 +1482,7 @@ public class GuiCelestialSelection extends GuiScreen
             for (CelestialBody sat : objects)
             {
                 boolean selected = sat == this.selectedBody || (((IChildBody) sat).getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED);
-                boolean isMoon = this.lastSelectedBody instanceof Moon && GalaxyRegistry.getMoonsForPlanet(((Moon) this.lastSelectedBody).getParentPlanet()).contains(sat);
-                boolean isSat = this.lastSelectedBody instanceof Satellite && GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(sat);
-                boolean ready = this.ticksSinceSelection > 35 || this.selectedBody == sat || isMoon || isSat;
+                boolean ready = this.lastSelectedBody != null || this.ticksSinceSelection > 35;
                 boolean isSibling = getSiblings(this.selectedBody).contains(sat);
                 boolean isPossible = !(sat instanceof Satellite) || (this.possibleBodies != null && this.possibleBodies.contains(sat));
                 if (((selected && ready) || isSibling) && isPossible)
@@ -2535,30 +2546,48 @@ public class GuiCelestialSelection extends GuiScreen
 
             GL11.glTranslatef(planetPos.x, planetPos.y, 0);
 
-            for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
+            List<CelestialBody> objects = Lists.newArrayList();
+            objects.addAll(GalaxyRegistry.getRegisteredSatellites().values());
+            objects.addAll(GalaxyRegistry.getRegisteredMoons().values());
+
+            for (CelestialBody sat : objects)
             {
-                if ((moon.getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED) || moon == this.selectedBody || getSiblings(this.selectedBody).contains(moon))
+                boolean selected = sat == this.selectedBody || (((IChildBody) sat).getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED);
+                boolean isSibling = getSiblings(this.selectedBody).contains(sat);
+                boolean isPossible = !(sat instanceof Satellite) || (this.possibleBodies != null && this.possibleBodies.contains(sat));
+                if ((selected || isSibling) && isPossible)
                 {
-                    if (this.drawCircle(moon, count, sin, cos))
+                    if (this.drawCircle(sat, count, sin, cos))
                     {
                         count++;
                     }
                 }
             }
 
-            for (Satellite sat : GalaxyRegistry.getRegisteredSatellites().values())
-            {
-                if (this.possibleBodies != null && this.possibleBodies.contains(sat))
-                {
-                    if ((sat.getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED) && this.ticksSinceSelection > 24 || sat == this.selectedBody || getSiblings(this.selectedBody).contains(sat))
-                    {
-                        if (this.drawCircle(sat, count, sin, cos))
-                        {
-                            count++;
-                        }
-                    }
-                }
-            }
+//            for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
+//            {
+//                if ((moon.getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED) || moon == this.selectedBody || getSiblings(this.selectedBody).contains(moon))
+//                {
+//                    if (this.drawCircle(moon, count, sin, cos))
+//                    {
+//                        count++;
+//                    }
+//                }
+//            }
+//
+//            for (Satellite sat : GalaxyRegistry.getRegisteredSatellites().values())
+//            {
+//                if (this.possibleBodies != null && this.possibleBodies.contains(sat))
+//                {
+//                    if ((sat.getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED) && this.ticksSinceSelection > 24 || sat == this.selectedBody || getSiblings(this.selectedBody).contains(sat))
+//                    {
+//                        if (this.drawCircle(sat, count, sin, cos))
+//                        {
+//                            count++;
+//                        }
+//                    }
+//                }
+//            }
         }
 
         GL11.glLineWidth(1);
@@ -2569,29 +2598,19 @@ public class GuiCelestialSelection extends GuiScreen
         float x = this.getScale(body);
         float y = 0;
 
-        float alpha = 1;
+        float alpha = 1.0F;
 
-        if (this.isZoomed())
+        boolean selected = body == this.selectedBody || (((IChildBody) body).getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED);
+        boolean ready = this.lastSelectedBody != null || this.ticksSinceSelection > 35;
+        boolean isSibling = getSiblings(this.selectedBody).contains(body);
+        boolean isPossible = !(body instanceof Satellite) || (this.possibleBodies != null && this.possibleBodies.contains(body));
+        if (this.isZoomed() && (((!selected || !ready) && !isSibling) || !isPossible))
         {
-            alpha = this.selectedBody instanceof IChildBody ? 1.0F : Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
-
-            if (this.lastSelectedBody instanceof Moon && body instanceof Moon)
-            {
-                if (GalaxyRegistry.getMoonsForPlanet(((Moon) this.lastSelectedBody).getParentPlanet()).contains(body))
-                {
-                    alpha = 1.0F;
-                }
-            }
-            else if (this.lastSelectedBody instanceof Satellite && body instanceof Satellite)
-            {
-                if (GalaxyRegistry.getSatellitesForCelestialBody(((Satellite) this.lastSelectedBody).getParentPlanet()).contains(body))
-                {
-                    alpha = 1.0F;
-                }
-            }
+            // Fade in when first selected
+            alpha = Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
         }
 
-        if (alpha != 0)
+        if (alpha > 0.0F)
         {
             switch (count % 2)
             {
