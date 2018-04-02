@@ -5,7 +5,6 @@ import com.google.common.collect.Maps;
 import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
-
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.client.CelestialBodyRenderEvent;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -20,7 +19,6 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -33,7 +31,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -62,61 +59,61 @@ public class GuiCelestialSelection extends GuiScreen
         ZOOMED
     }
 
-    protected static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
+    private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
 
-    protected Matrix4f mainWorldMatrix;
+    private Matrix4f mainWorldMatrix;
     protected float zoom = 0.0F;
-    protected float planetZoom = 0.0F;
-    protected boolean doneZooming = false;
-    protected float preSelectZoom = 0.0F;
-    protected Vector2f preSelectPosition = new Vector2f();
-    public static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
-    public static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
-    protected int ticksSinceSelection = 0;
-    protected int ticksSinceUnselection = -1;
-    protected int ticksSinceMenuOpen = 0;
-    protected int ticksTotal = 0;
-    protected int animateGrandchildren = 0;
+    private float planetZoom = 0.0F;
+    private boolean doneZooming = false;
+    private float preSelectZoom = 0.0F;
+    private Vector2f preSelectPosition = new Vector2f();
+    private static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
+    private static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
+    private int ticksSinceSelection = 0;
+    private int ticksSinceUnselection = -1;
+    private int ticksSinceMenuOpen = 0;
+    private int ticksTotal = 0;
+    private int animateGrandchildren = 0;
     protected Vector2f position = new Vector2f(0, 0);
-    protected Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
-    protected Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
-    protected CelestialBody selectedBody;
-    protected CelestialBody lastSelectedBody;
-    protected static int BORDER_SIZE = 0;
-    protected static int BORDER_EDGE_SIZE = 0;
-    protected int canCreateOffset = 24;
-    protected EnumView viewState = EnumView.PREVIEW;
-    protected EnumSelection selectionState = EnumSelection.UNSELECTED;
-    protected int zoomTooltipPos = 0;
-    protected Object selectedParent = GalacticraftCore.solarSystemSol;
-    protected final boolean mapMode;
+    private Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
+    private Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
+    private CelestialBody selectedBody;
+    private CelestialBody lastSelectedBody;
+    private static int BORDER_SIZE = 0;
+    private static int BORDER_EDGE_SIZE = 0;
+    private int canCreateOffset = 24;
+    private EnumView viewState = EnumView.PREVIEW;
+    private EnumSelection selectionState = EnumSelection.UNSELECTED;
+    private int zoomTooltipPos = 0;
+    private Object selectedParent = GalacticraftCore.solarSystemSol;
+    private final boolean mapMode;
     public List<CelestialBody> possibleBodies;
 
     // Each home planet has a map of owner's names linked with their station data:
     public Map<Integer, Map<String, StationDataGUI>> spaceStationMap = Maps.newHashMap();
 
-    protected String selectedStationOwner = "";
-    protected int spaceStationListOffset = 0;
-    protected boolean renamingSpaceStation;
-    protected String renamingString = "";
+    private String selectedStationOwner = "";
+    private int spaceStationListOffset = 0;
+    private boolean renamingSpaceStation;
+    private String renamingString = "";
     protected Vector2f translation = new Vector2f(0.0F, 0.0F);
-    protected boolean mouseDragging = false;
-    protected int lastMovePosX = -1;
-    protected int lastMovePosY = -1;
-    protected boolean errorLogged = false;
+    private boolean mouseDragging = false;
+    private int lastMovePosX = -1;
+    private int lastMovePosY = -1;
+    private boolean errorLogged = false;
 
     // String colours
-    protected static final int WHITE = ColorUtil.to32BitColor(255, 255, 255, 255);
-    protected static final int GREY5 = ColorUtil.to32BitColor(255, 150, 150, 150);
-    protected static final int GREY4 = ColorUtil.to32BitColor(255, 140, 140, 140);
-    protected static final int GREY3 = ColorUtil.to32BitColor(255, 120, 120, 120);
-    protected static final int GREY2 = ColorUtil.to32BitColor(255, 100, 100, 100);
-    protected static final int GREY1 = ColorUtil.to32BitColor(255, 80, 80, 80);
-    protected static final int GREY0 = ColorUtil.to32BitColor(255, 40, 40, 40);
-    protected static final int GREEN = ColorUtil.to32BitColor(255, 0, 255, 0);
-    protected static final int RED = ColorUtil.to32BitColor(255, 255, 0, 0);
-    protected static final int RED3 = ColorUtil.to32BitColor(255, 255, 100, 100);
-    protected static final int CYAN = ColorUtil.to32BitColor(255, 150, 200, 255);
+    private static final int WHITE = ColorUtil.to32BitColor(255, 255, 255, 255);
+    private static final int GREY5 = ColorUtil.to32BitColor(255, 150, 150, 150);
+    private static final int GREY4 = ColorUtil.to32BitColor(255, 140, 140, 140);
+    private static final int GREY3 = ColorUtil.to32BitColor(255, 120, 120, 120);
+    private static final int GREY2 = ColorUtil.to32BitColor(255, 100, 100, 100);
+    private static final int GREY1 = ColorUtil.to32BitColor(255, 80, 80, 80);
+    private static final int GREY0 = ColorUtil.to32BitColor(255, 40, 40, 40);
+    private static final int GREEN = ColorUtil.to32BitColor(255, 0, 255, 0);
+    private static final int RED = ColorUtil.to32BitColor(255, 255, 0, 0);
+    private static final int RED3 = ColorUtil.to32BitColor(255, 255, 100, 100);
+    private static final int CYAN = ColorUtil.to32BitColor(255, 150, 200, 255);
     
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
@@ -1224,16 +1221,17 @@ public class GuiCelestialSelection extends GuiScreen
         case SELECTED:
             if (this.selectedBody != null)
             {
-                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
-                Matrix4f.translate(this.getCelestialBodyPosition(this.selectedBody), worldMatrix0, worldMatrix0);
-                Matrix4f worldMatrix1 = new Matrix4f();
-                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
-                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
-                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
-                fb.rewind();
-                worldMatrix1.store(fb);
-                fb.flip();
-                GL11.glMultMatrix(fb);
+//                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//                Matrix4f.translate(this.getCelestialBodyPosition(this.selectedBody), worldMatrix0, worldMatrix0);
+//                Matrix4f worldMatrix1 = new Matrix4f();
+//                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+//                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+//                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+//                fb.rewind();
+//                worldMatrix1.store(fb);
+//                fb.flip();
+//                GL11.glMultMatrix(fb);
+                setupMatrix(this.selectedBody, worldMatrix, fb);
                 fb.clear();
                 GL11.glScalef(1 / 15.0F, 1 / 15.0F, 1);
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
@@ -1247,16 +1245,17 @@ public class GuiCelestialSelection extends GuiScreen
         case ZOOMED:
             if (this.selectedBody != null)
             {
-                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
-                Matrix4f.translate(this.getCelestialBodyPosition(this.selectedBody), worldMatrix0, worldMatrix0);
-                Matrix4f worldMatrix1 = new Matrix4f();
-                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
-                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
-                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
-                fb.rewind();
-                worldMatrix1.store(fb);
-                fb.flip();
-                GL11.glMultMatrix(fb);
+//                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//                Matrix4f.translate(this.getCelestialBodyPosition(this.selectedBody), worldMatrix0, worldMatrix0);
+//                Matrix4f worldMatrix1 = new Matrix4f();
+//                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+//                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+//                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+//                fb.rewind();
+//                worldMatrix1.store(fb);
+//                fb.flip();
+//                GL11.glMultMatrix(fb);
+                setupMatrix(this.selectedBody, worldMatrix, fb);
                 fb.clear();
                 float div = (this.zoom + 1.0F - this.planetZoom);
                 float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelection / 5.0F)) * 2.0F / div;
@@ -1331,19 +1330,21 @@ public class GuiCelestialSelection extends GuiScreen
             if (star != null && star.getBodyIcon() != null)
             {
                 GL11.glPushMatrix();
-                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//
+//                Matrix4f.translate(this.getCelestialBodyPosition(star), worldMatrix0, worldMatrix0);
+//
+//                Matrix4f worldMatrix1 = new Matrix4f();
+//                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+//                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+//                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+//
+//                fb.rewind();
+//                worldMatrix1.store(fb);
+//                fb.flip();
+//                GL11.glMultMatrix(fb);
 
-                Matrix4f.translate(this.getCelestialBodyPosition(star), worldMatrix0, worldMatrix0);
-
-                Matrix4f worldMatrix1 = new Matrix4f();
-                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
-                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
-                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
-
-                fb.rewind();
-                worldMatrix1.store(fb);
-                fb.flip();
-                GL11.glMultMatrix(fb);
+                Matrix4f worldMatrix1 = setupMatrix(star, worldMatrix, fb);
 
                 float alpha = 1.0F;
 
@@ -1402,19 +1403,21 @@ public class GuiCelestialSelection extends GuiScreen
             if (planet.getBodyIcon() != null)
             {
                 GL11.glPushMatrix();
-                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//                Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+//
+//                Matrix4f.translate(this.getCelestialBodyPosition(planet), worldMatrix0, worldMatrix0);
+//
+//                Matrix4f worldMatrix1 = new Matrix4f();
+//                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+//                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+//                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+//
+//                fb.rewind();
+//                worldMatrix1.store(fb);
+//                fb.flip();
+//                GL11.glMultMatrix(fb);
 
-                Matrix4f.translate(this.getCelestialBodyPosition(planet), worldMatrix0, worldMatrix0);
-
-                Matrix4f worldMatrix1 = new Matrix4f();
-                Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
-                Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
-                worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
-
-                fb.rewind();
-                worldMatrix1.store(fb);
-                fb.flip();
-                GL11.glMultMatrix(fb);
+                Matrix4f worldMatrix1 = setupMatrix(planet, worldMatrix, fb);
 
                 float alpha = 1.0F;
 
@@ -1476,19 +1479,21 @@ public class GuiCelestialSelection extends GuiScreen
                 if (((selected && ready) || isSibling) && isPossible)
                 {
                     GL11.glPushMatrix();
-                    Matrix4f worldMatrix1 = new Matrix4f(worldMatrix0);
-                    Matrix4f.translate(this.getCelestialBodyPosition(sat), worldMatrix1, worldMatrix1);
+//                    Matrix4f worldMatrix1 = new Matrix4f(worldMatrix0);
+//                    Matrix4f.translate(this.getCelestialBodyPosition(sat), worldMatrix1, worldMatrix1);
+//
+//                    Matrix4f worldMatrix2 = new Matrix4f();
+//                    Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix2, worldMatrix2);
+//                    Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix2, worldMatrix2);
+//                    Matrix4f.scale(new Vector3f(0.25F, 0.25F, 1.0F), worldMatrix2, worldMatrix2);
+//                    worldMatrix2 = Matrix4f.mul(worldMatrix1, worldMatrix2, worldMatrix2);
 
-                    Matrix4f worldMatrix2 = new Matrix4f();
-                    Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix2, worldMatrix2);
-                    Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix2, worldMatrix2);
-                    Matrix4f.scale(new Vector3f(0.25F, 0.25F, 1.0F), worldMatrix2, worldMatrix2);
-                    worldMatrix2 = Matrix4f.mul(worldMatrix1, worldMatrix2, worldMatrix2);
+//                    fb.rewind();
+//                    worldMatrix2.store(fb);
+//                    fb.flip();
+//                    GL11.glMultMatrix(fb);
 
-                    fb.rewind();
-                    worldMatrix2.store(fb);
-                    fb.flip();
-                    GL11.glMultMatrix(fb);
+                    Matrix4f worldMatrix1 = setupMatrix(sat, worldMatrix, fb, 0.25F);
 
                     CelestialBodyRenderEvent.Pre preEvent = new CelestialBodyRenderEvent.Pre(sat, sat.getBodyIcon(), 8);
                     MinecraftForge.EVENT_BUS.post(preEvent);
@@ -2628,16 +2633,6 @@ public class GuiCelestialSelection extends GuiScreen
         return false;
     }
 
-    @Override
-    protected void actionPerformed(GuiButton button)
-    {
-        switch (button.id)
-        {
-        default:
-            break;
-        }
-    }
-
     public static class StationDataGUI
     {
         private String stationName;
@@ -2673,5 +2668,30 @@ public class GuiCelestialSelection extends GuiScreen
     protected boolean isSelected()
     {
         return this.selectionState != EnumSelection.UNSELECTED;
+    }
+
+    private Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb)
+    {
+        return setupMatrix(body, worldMatrix, fb, 1.0F);
+    }
+
+    private Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb, float scaleXZ)
+    {
+        Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
+        Matrix4f.translate(this.getCelestialBodyPosition(body), worldMatrix0, worldMatrix0);
+        Matrix4f worldMatrix1 = new Matrix4f();
+        Matrix4f.rotate((float) Math.toRadians(45), new Vector3f(0, 0, 1), worldMatrix1, worldMatrix1);
+        Matrix4f.rotate((float) Math.toRadians(-55), new Vector3f(1, 0, 0), worldMatrix1, worldMatrix1);
+        if (scaleXZ != 1.0F)
+        {
+            Matrix4f.scale(new Vector3f(scaleXZ, scaleXZ, 1.0F), worldMatrix1, worldMatrix1);
+        }
+        worldMatrix1 = Matrix4f.mul(worldMatrix0, worldMatrix1, worldMatrix1);
+        fb.rewind();
+        worldMatrix1.store(fb);
+        fb.flip();
+        GL11.glMultMatrix(fb);
+
+        return worldMatrix1;
     }
 }
