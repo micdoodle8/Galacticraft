@@ -409,6 +409,7 @@ public class TickHandlerClient
                     {
                         Footprint fp = fpIt.next();
                         fp.age += 20;
+                        fp.lightmapVal = player.worldObj.getCombinedLight(new BlockPos(fp.position.x, fp.position.y, fp.position.z), 0);
 
                         if (fp.age >= Footprint.MAX_AGE)
                         {

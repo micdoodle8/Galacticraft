@@ -1114,7 +1114,7 @@ public class GCPlayerHandler
                         pos = WorldUtil.getFootprintPosition(player.worldObj, rotation, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkPos.asLong(pos.intX() >> 4, pos.intZ() >> 4);
-                        TickHandlerServer.addFootprint(chunkKey, new Footprint(GCCoreUtil.getDimensionID(player.worldObj), pos, rotation, player.getName()), GCCoreUtil.getDimensionID(player.worldObj));
+                        TickHandlerServer.addFootprint(chunkKey, new Footprint(GCCoreUtil.getDimensionID(player.worldObj), pos, rotation, player.getName(), -1), GCCoreUtil.getDimensionID(player.worldObj));
 
                         // Increment and cap step counter at 1
                         stats.setLastStep((stats.getLastStep() + 1) % 2);

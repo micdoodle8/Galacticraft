@@ -332,7 +332,8 @@ public class PlayerClient implements IPlayerClient
                         pos = WorldUtil.getFootprintPosition(player.worldObj, player.rotationYaw - 180, pos, new BlockVec3(player));
 
                         long chunkKey = ChunkPos.asLong(pos.intX() >> 4, pos.intZ() >> 4);
-                        FootprintRenderer.addFootprint(chunkKey, player.worldObj.provider.getDimension(), pos, player.rotationYaw, player.getName());
+                        int lightmapVal = player.worldObj.getCombinedLight(new BlockPos(pos.intX(), pos.intY(), pos.intZ()), 0);
+                        FootprintRenderer.addFootprint(chunkKey, GCCoreUtil.getDimensionID(player.worldObj), pos, player.rotationYaw, player.getName(), lightmapVal);
 
                         // Increment and cap step counter at 1
                         stats.setLastStep((stats.getLastStep() + 1) % 2);

@@ -28,10 +28,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.lang.reflect.Method;
 import java.nio.DoubleBuffer;
@@ -320,10 +318,10 @@ public class GameScreenText implements IGameScreen
         	    renderEntity.doRender(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
         	}
             RenderPlayerGC.flagThermalOverride = false;
-            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
+//            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//            OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+//            GL11.glDisable(GL11.GL_TEXTURE_2D);
+//            OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
         }
 
         //TODO  Cross-dimensional tracking (i.e. old entity setDead, new entity created)
