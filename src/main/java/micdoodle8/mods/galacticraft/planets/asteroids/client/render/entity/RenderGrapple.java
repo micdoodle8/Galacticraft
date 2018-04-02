@@ -1,23 +1,45 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 
+import com.google.common.base.Function;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
-
+import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 public class RenderGrapple extends Render<EntityGrapple>
 {
+    private ItemModelGrapple grappleModel;
+
     public RenderGrapple(RenderManager manager)
     {
         super(manager);
+    }
+
+    private void updateModel()
+    {
+        if (grappleModel == null)
+        {
+            Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER = input -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
+
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "grapple", "inventory");
+            grappleModel = (ItemModelGrapple) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+        }
     }
 
     @Override
@@ -65,6 +87,22 @@ public class RenderGrapple extends Render<EntityGrapple>
         GL11.glRotatef(grapple.prevRotationYaw + (grapple.rotationYaw - grapple.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(grapple.prevRotationPitch + (grapple.rotationPitch - grapple.prevRotationPitch) * partialTicks - 180, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(grapple.prevRotationRoll + (grapple.rotationRoll - grapple.prevRotationRoll) * partialTicks, 1.0F, 0.0F, 0.0F);
+
+        updateModel();
+
+        this.bindTexture(TextureMap.locationBlocksTexture);
+
+        if (Minecraft.isAmbientOcclusionEnabled())
+        {
+            GlStateManager.shadeModel(GL11.GL_SMOOTH);
+        }
+        else
+        {
+            GlStateManager.shadeModel(GL11.GL_FLAT);
+        }
+
+        ClientUtil.drawBakedModel(grappleModel);
+
 //        this.bindEntityTexture(grapple);
 //        ItemRendererGrappleHook.modelGrapple.renderAll(); TODO
 

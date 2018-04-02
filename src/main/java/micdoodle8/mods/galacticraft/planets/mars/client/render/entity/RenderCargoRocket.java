@@ -26,7 +26,6 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderCargoRocket extends Render<EntityCargoRocket>
 {
-    private static Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER;
     private ItemModelCargoRocket rocketModel;
 
     public RenderCargoRocket(RenderManager renderManager)
@@ -39,7 +38,7 @@ public class RenderCargoRocket extends Render<EntityCargoRocket>
     {
         if (rocketModel == null)
         {
-            TEXTUREGETTER = input -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
+            Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER = input -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
 
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
             rocketModel = (ItemModelCargoRocket) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
