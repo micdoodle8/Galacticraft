@@ -59,61 +59,60 @@ public class GuiCelestialSelection extends GuiScreen
         ZOOMED
     }
 
-    private static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
+    protected static final int MAX_SPACE_STATION_NAME_LENGTH = 32;
 
-    private Matrix4f mainWorldMatrix;
     protected float zoom = 0.0F;
-    private float planetZoom = 0.0F;
-    private boolean doneZooming = false;
-    private float preSelectZoom = 0.0F;
-    private Vector2f preSelectPosition = new Vector2f();
-    private static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
-    private static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
-    private int ticksSinceSelection = 0;
-    private int ticksSinceUnselection = -1;
-    private int ticksSinceMenuOpen = 0;
-    private int ticksTotal = 0;
-    private int animateGrandchildren = 0;
+    protected float planetZoom = 0.0F;
+    protected boolean doneZooming = false;
+    protected float preSelectZoom = 0.0F;
+    protected Vector2f preSelectPosition = new Vector2f();
+    protected static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
+    protected static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
+    protected int ticksSinceSelection = 0;
+    protected int ticksSinceUnselection = -1;
+    protected int ticksSinceMenuOpen = 0;
+    protected int ticksTotal = 0;
+    protected int animateGrandchildren = 0;
     protected Vector2f position = new Vector2f(0, 0);
-    private Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
-    private Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
-    private CelestialBody selectedBody;
-    private CelestialBody lastSelectedBody;
-    private static int BORDER_SIZE = 0;
-    private static int BORDER_EDGE_SIZE = 0;
-    private int canCreateOffset = 24;
-    private EnumView viewState = EnumView.PREVIEW;
-    private EnumSelection selectionState = EnumSelection.UNSELECTED;
-    private int zoomTooltipPos = 0;
-    private Object selectedParent = GalacticraftCore.solarSystemSol;
-    private final boolean mapMode;
+    protected Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
+    protected Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
+    protected CelestialBody selectedBody;
+    protected CelestialBody lastSelectedBody;
+    protected static int BORDER_SIZE = 0;
+    protected static int BORDER_EDGE_SIZE = 0;
+    protected int canCreateOffset = 24;
+    protected EnumView viewState = EnumView.PREVIEW;
+    protected EnumSelection selectionState = EnumSelection.UNSELECTED;
+    protected int zoomTooltipPos = 0;
+    protected Object selectedParent = GalacticraftCore.solarSystemSol;
+    protected final boolean mapMode;
     public List<CelestialBody> possibleBodies;
 
     // Each home planet has a map of owner's names linked with their station data:
     public Map<Integer, Map<String, StationDataGUI>> spaceStationMap = Maps.newHashMap();
 
-    private String selectedStationOwner = "";
-    private int spaceStationListOffset = 0;
-    private boolean renamingSpaceStation;
-    private String renamingString = "";
+    protected String selectedStationOwner = "";
+    protected int spaceStationListOffset = 0;
+    protected boolean renamingSpaceStation;
+    protected String renamingString = "";
     protected Vector2f translation = new Vector2f(0.0F, 0.0F);
-    private boolean mouseDragging = false;
-    private int lastMovePosX = -1;
-    private int lastMovePosY = -1;
-    private boolean errorLogged = false;
+    protected boolean mouseDragging = false;
+    protected int lastMovePosX = -1;
+    protected int lastMovePosY = -1;
+    protected boolean errorLogged = false;
 
     // String colours
-    private static final int WHITE = ColorUtil.to32BitColor(255, 255, 255, 255);
-    private static final int GREY5 = ColorUtil.to32BitColor(255, 150, 150, 150);
-    private static final int GREY4 = ColorUtil.to32BitColor(255, 140, 140, 140);
-    private static final int GREY3 = ColorUtil.to32BitColor(255, 120, 120, 120);
-    private static final int GREY2 = ColorUtil.to32BitColor(255, 100, 100, 100);
-    private static final int GREY1 = ColorUtil.to32BitColor(255, 80, 80, 80);
-    private static final int GREY0 = ColorUtil.to32BitColor(255, 40, 40, 40);
-    private static final int GREEN = ColorUtil.to32BitColor(255, 0, 255, 0);
-    private static final int RED = ColorUtil.to32BitColor(255, 255, 0, 0);
-    private static final int RED3 = ColorUtil.to32BitColor(255, 255, 100, 100);
-    private static final int CYAN = ColorUtil.to32BitColor(255, 150, 200, 255);
+    protected static final int WHITE = ColorUtil.to32BitColor(255, 255, 255, 255);
+    protected static final int GREY5 = ColorUtil.to32BitColor(255, 150, 150, 150);
+    protected static final int GREY4 = ColorUtil.to32BitColor(255, 140, 140, 140);
+    protected static final int GREY3 = ColorUtil.to32BitColor(255, 120, 120, 120);
+    protected static final int GREY2 = ColorUtil.to32BitColor(255, 100, 100, 100);
+    protected static final int GREY1 = ColorUtil.to32BitColor(255, 80, 80, 80);
+    protected static final int GREY0 = ColorUtil.to32BitColor(255, 40, 40, 40);
+    protected static final int GREEN = ColorUtil.to32BitColor(255, 0, 255, 0);
+    protected static final int RED = ColorUtil.to32BitColor(255, 255, 0, 0);
+    protected static final int RED3 = ColorUtil.to32BitColor(255, 255, 100, 100);
+    protected static final int CYAN = ColorUtil.to32BitColor(255, 150, 200, 255);
     
     public GuiCelestialSelection(boolean mapMode, List<CelestialBody> possibleBodies)
     {
@@ -1160,7 +1159,6 @@ public class GuiCelestialSelection extends GuiScreen
 
         GL11.glPushMatrix();
         Matrix4f worldMatrix = this.setIsometric(partialTicks);
-        mainWorldMatrix = worldMatrix;
         float gridSize = 7000F; //194.4F;
         //TODO: Add dynamic map sizing, to allow the map to be small by default and expand when more distant solar systems are added.
         this.drawGrid(gridSize, height / 3 / 3.5F);
@@ -2670,12 +2668,12 @@ public class GuiCelestialSelection extends GuiScreen
         return this.selectionState != EnumSelection.UNSELECTED;
     }
 
-    private Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb)
+    protected Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb)
     {
         return setupMatrix(body, worldMatrix, fb, 1.0F);
     }
 
-    private Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb, float scaleXZ)
+    protected Matrix4f setupMatrix(CelestialBody body, Matrix4f worldMatrix, FloatBuffer fb, float scaleXZ)
     {
         Matrix4f worldMatrix0 = new Matrix4f(worldMatrix);
         Matrix4f.translate(this.getCelestialBodyPosition(body), worldMatrix0, worldMatrix0);
