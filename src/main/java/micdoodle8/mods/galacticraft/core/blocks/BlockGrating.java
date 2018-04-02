@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -52,6 +53,7 @@ import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class BlockGrating extends Block implements ISortableBlock, IPartialSealableBlock
 {
@@ -64,7 +66,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     private final IBlockState liquidEquivalentDynamic;
     private final IBlockState liquidEquivalentStatic;
     private boolean forgeFluid = false;
-    private BlockFluidClassic forgeBlock = null;
+    private BlockFluidBase forgeBlock = null;
     public static List<BlockGrating> forgeBlocks = new ArrayList<>();
     public static int number = 3;  //That's Plain, Water, Lava - any more will be Forge Fluids
     private static Method gofd;
@@ -112,7 +114,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     {
         super(forge.getMaterial(forge.getDefaultState()));
         this.forgeFluid = true;
-        this.forgeBlock = (BlockFluidClassic) forge;
+        this.forgeBlock = (BlockFluidBase) forge;
         this.liquidEquivalentStatic = null;
         this.liquidEquivalentDynamic = null;
         this.setHardness(0.5F);
@@ -122,13 +124,28 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         number++;
     }
 
-    public static void createForgeFluidVersion(Block b)
+    public static void createForgeFluidVersion(Block b, IForgeRegistry<Block> blockRegistry)
     {
-        if (b instanceof BlockFluidClassic)
+        if (b instanceof BlockFluidBase)
         {
             BlockGrating grating = new BlockGrating(b); 
             BlockGrating.forgeBlocks.add(grating);
             GCBlocks.registerBlock(grating, null);
+            blockRegistry.register(grating);
+        }
+    }
+
+    public static void createForgeFluidVersions(IForgeRegistry<Block> blockRegistry)
+    {
+        Iterator<Block> it = Block.REGISTRY.iterator();
+        while(it.hasNext())
+        {
+            Block test = it.next();
+            if (test instanceof BlockFluidBase)
+            {
+                System.out.println("================Grating for " + test.getUnlocalizedName());
+                createForgeFluidVersion(test, blockRegistry);
+            }
         }
     }
 
@@ -310,9 +327,11 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
                     int level = newBlock.getValue(BlockFluidBase.LEVEL).intValue();
                     IBlockState bs = b.getDefaultState().withProperty(BlockFluidBase.LEVEL, level).withProperty(BlockLiquid.LEVEL, level);
                     world.setBlockState(pos, bs);
-                    break;
+                    return;
                 }
             }
+            //If not a known Forge fluid block, drop grating item
+            Block.spawnAsEntity(world, pos, new ItemStack(GCBlocks.grating));
             return;
         }
         if (newBlock.getBlock() instanceof BlockLiquid)
@@ -417,7 +436,10 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         if (!this.blockMaterial.isLiquid()) return;
         if (this.forgeFluid)
         {
-            this.updateTickForge(worldIn, pos, state, rand);
+            if (this.forgeBlock instanceof BlockFluidClassic) 
+            {
+                this.updateTickForge(worldIn, pos, state, rand);
+            }
             return;
         }
 
@@ -804,7 +826,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
             return;
         }
 
-        if (isSourceBlock(world, pos) || !this.forgeBlock.isFlowingVertically(world, pos))
+        if (isSourceBlock(world, pos) || !((BlockFluidClassic)this.forgeBlock).isFlowingVertically(world, pos))
         {
             Block test = world.getBlockState(pos.up(1)).getBlock(); 
             if (test == this || test == this.forgeBlock)

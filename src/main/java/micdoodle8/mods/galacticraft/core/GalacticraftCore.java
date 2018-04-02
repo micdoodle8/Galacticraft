@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenCelestial;
@@ -72,6 +73,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.registries.GameData;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
 
@@ -700,15 +704,14 @@ public class GalacticraftCore
             CompatibilityManager.registerMicroBlocks();
         }
 
-        @SubscribeEvent(priority = EventPriority.LOWEST)
-        public static void registerBlocksLast(RegistryEvent.Register<Block> event)
-        {
-            GCBlocks.doOtherModsTorches(event.getRegistry());
-        }
-
         @SubscribeEvent
         public static void registerItems(RegistryEvent.Register<Item> event)
         {
+            // First, the final steps of block registration
+            IForgeRegistry<Block> blockRegistry = RegistryManager.ACTIVE.getRegistry(GameData.BLOCKS);
+            GCBlocks.doOtherModsTorches(blockRegistry);
+            BlockGrating.createForgeFluidVersions(blockRegistry);
+
             GCItems.registerItems(event.getRegistry());
 
             //RegisterSorted for blocks cannot be run until all the items have been registered 
@@ -726,13 +729,6 @@ public class GalacticraftCore
             
             GCBlocks.oreDictRegistrations();
             GCItems.oreDictRegistrations();
-        }
-
-        @SubscribeEvent(priority = EventPriority.LOWEST)
-        public static void registerItemsLast(RegistryEvent.Register<Item> event)
-        {
-            GalacticraftCore.handler.registerTorchTypes();
-            GalacticraftCore.handler.registerItemChanges();
         }
 
         @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -755,6 +751,10 @@ public class GalacticraftCore
         @SubscribeEvent
         public static void registerBiomes(RegistryEvent.Register<Biome> event)
         {
+            // First, final steps of item registration
+            GalacticraftCore.handler.registerTorchTypes();
+            GalacticraftCore.handler.registerItemChanges();
+
             for (BiomeGenBaseGC biome : GalacticraftCore.biomesList)
             {
                 event.getRegistry().register(biome);

@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core;
 
-import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
@@ -122,9 +121,6 @@ public class GCFluids
             GCItems.registerItem(GCItems.bucketFuel);
             EventHandlerGC.bucketList.put(GCBlocks.fuel, GCItems.bucketFuel);
         }
-
-        GalacticraftRegistry.registerGratingFluid(GCBlocks.fuel);
-        GalacticraftRegistry.registerGratingFluid(GCBlocks.crudeOil);
     }
 
     private static Fluid registerFluid(String fluidName, int density, int viscosity, int temperature, boolean gaseous, String fluidTexture)

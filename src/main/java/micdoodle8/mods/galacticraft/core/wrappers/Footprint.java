@@ -10,18 +10,20 @@ public class Footprint
     public final Vector3 position;
     public short age;
     public final String owner;
+    public int lightmapVal;
 
-    public Footprint(int dimension, Vector3 position, float rotation, String ownerUUID)
+    public Footprint(int dimension, Vector3 position, float rotation, String ownerUUID, int lightmapVal)
     {
-        this(dimension, position, rotation, (short) 0, ownerUUID);
+        this(dimension, position, rotation, (short) 0, ownerUUID, lightmapVal);
     }
 
-    public Footprint(int dimension, Vector3 position, float rotation, short age, String ownerUUID)
+    public Footprint(int dimension, Vector3 position, float rotation, short age, String ownerUUID, int lightmapVal)
     {
         this.dimension = dimension;
         this.position = position;
         this.rotation = rotation;
         this.age = age;
         this.owner = ownerUUID;
+        this.lightmapVal = lightmapVal;
     }
 }
