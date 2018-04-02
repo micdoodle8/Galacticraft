@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockReed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.ISound;
@@ -1479,7 +1480,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         boolean gtFlag = false;
         if (b != GCBlocks.fallenMeteor)
         {
-            if (b instanceof IPlantable && b != Blocks.tallgrass && b != Blocks.deadbush && b != Blocks.double_plant && b != Blocks.waterlily && !(b instanceof BlockFlower))
+            if (b instanceof IPlantable && b != Blocks.tallgrass && b != Blocks.deadbush && b != Blocks.double_plant && b != Blocks.waterlily && !(b instanceof BlockFlower) && b != Blocks.reeds)
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = b.getMetaFromState(state);
@@ -1522,7 +1523,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         this.tryBlockLimit--;
         
         //Collect the mined block - unless it's a plant or leaves in which case just break it
-        if (!(b instanceof IPlantable || b instanceof BlockLeaves))
+        if (!((b instanceof IPlantable && !(b instanceof BlockReed)) || b instanceof BlockLeaves))
         {
             ItemStack drops = gtFlag ? getGTDrops(this.worldObj, pos, b) : getPickBlock(this.worldObj, pos, b);
             if (drops != null && !this.addToInventory(drops))
