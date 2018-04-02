@@ -100,6 +100,7 @@ gui.message.address.name=Address
 gui.message.astro_miner.fail=This base already has an Astro Miner!
 gui.message.astro_miner1.fail=The docking area is blocked by:
 gui.message.astro_miner1_a.fail=The Astro Miner's route is blocked by:
+gui.message.astro_miner1_b.fail=Protected Area!
 gui.message.astro_miner2.fail=That would be one Astro Miner too many!
 gui.message.astro_miner3.fail=The Astro Miner's base was removed!
 gui.message.astro_miner4.fail=The Astro Miner is low on energy and cannot get back to base!

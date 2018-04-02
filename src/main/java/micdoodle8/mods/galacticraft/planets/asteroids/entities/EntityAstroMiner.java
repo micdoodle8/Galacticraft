@@ -1197,9 +1197,16 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //If it is obstructed, return to base, or stand still if that is impossible
         if (wayBarred)
         {
-            if (this.playerMP != null)
+            if (this.playerMP != null && blockingBlock.block != Blocks.air)
             {
-                this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                if (blockingBlock.block == Blocks.stone)
+                {
+                    this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate("gui.message.astro_miner1_b.fail")));
+                }
+                else
+                {
+                    this.playerMP.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                }
             }
             this.motionX = 0;
             this.motionY = 0;
@@ -1222,6 +1229,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 this.freeze(FAIL_RETURNPATHBLOCKED);
             }
+            blockingBlock = new BlockTuple(Blocks.air, 0);
         }
 
         if (this.tryBlockLimit == limit && !this.noSpeedup)
@@ -1455,7 +1463,13 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         }
         if (b instanceof BlockLiquid)
         {
-            return (this.AIstate != AISTATE_RETURNING && (b == Blocks.lava || b == Blocks.flowing_lava) && state.getValue(BlockLiquid.LEVEL).intValue() == 0);
+            if ((b == Blocks.lava || b == Blocks.flowing_lava) && state.getValue(BlockLiquid.LEVEL).intValue() == 0 && this.AIstate != AISTATE_RETURNING)
+            {
+                blockingBlock.block = Blocks.lava;
+                blockingBlock.meta = 0;
+                return true;
+            }
+            return false;
         }
         if (b instanceof IFluidBlock)
         {
@@ -1500,6 +1514,8 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         int result = ForgeHooks.onBlockBreakEvent(this.worldObj, this.playerMP.theItemInWorldManager.getGameType(), this.playerMP, pos);
         if (result < 0)
         {
+            blockingBlock.block = Blocks.stone;
+            blockingBlock.meta = 0;
             return true;
         }
 
