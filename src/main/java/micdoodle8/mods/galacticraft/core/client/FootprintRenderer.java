@@ -2,8 +2,10 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -48,6 +50,15 @@ public class FootprintRenderer
 
         float f10 = 0.4F;
         GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
+        boolean sensorGlasses = OverlaySensorGlasses.overrideMobTexture();
+        if (sensorGlasses)
+        {
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
+        }
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
         for (List<Footprint> footprintList : footprints.values())
         {
@@ -56,6 +67,14 @@ public class FootprintRenderer
                 if (footprint.dimension == GCCoreUtil.getDimensionID(player.world))
                 {
                     GL11.glPushMatrix();
+
+                    if (!sensorGlasses)
+                    {
+                        int j = footprint.lightmapVal % 65536;
+                        int k = footprint.lightmapVal / 65536;
+                        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+                    }
+
                     float ageScale = footprint.age / (float) Footprint.MAX_AGE;
                     VertexBuffer worldRenderer = tessellator.getBuffer();
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -65,6 +84,7 @@ public class FootprintRenderer
                     float f13 = (float) (footprint.position.z - interpPosZ);
 
                     GL11.glTranslatef(f11, f12, f13);
+
 
                     int brightness = (int) (100 + ageScale * 155);
 //                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
@@ -81,6 +101,8 @@ public class FootprintRenderer
             }
         }
 
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
@@ -95,13 +117,13 @@ public class FootprintRenderer
             footprintList = new ArrayList<Footprint>();
         }
 
-        footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation, footprint.owner));
+        footprintList.add(new Footprint(footprint.dimension, footprint.position, footprint.rotation, footprint.owner, footprint.lightmapVal));
         footprints.put(chunkKey, footprintList);
     }
 
-    public static void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation, String owner)
+    public static void addFootprint(long chunkKey, int dimension, Vector3 position, float rotation, String owner, int lightmapVal)
     {
-        addFootprint(chunkKey, new Footprint(dimension, position, rotation, owner));
+        addFootprint(chunkKey, new Footprint(dimension, position, rotation, owner, lightmapVal));
     }
 
     public static void setFootprints(long chunkKey, List<Footprint> prints)

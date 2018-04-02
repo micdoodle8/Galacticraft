@@ -414,19 +414,5 @@ public class GalacticraftRegistry
     
     public static void registerGratingFluid(Block fluidBlock)
     {
-        if (gratingRegister == null)
-        {
-            try {
-                Class clazz = Class.forName("micdoodle8.mods.galacticraft.core.blocks.BlockGrating");
-                gratingRegister = clazz.getMethod("createForgeFluidVersion", Block.class);
-            } catch (Exception e) { e.printStackTrace(); }
-        }
-        if (gratingRegister != null)
-        {
-            try {
-                gratingRegister.invoke(null, fluidBlock);
-            } catch (Exception e) { e.printStackTrace(); }
-        }
-    
     }
 }

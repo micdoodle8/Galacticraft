@@ -612,4 +612,9 @@ public class TransformerHooks
     {
         return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
     }
+    
+    public static void preInitFinal()
+    {
+        BlockGrating.remapForgeVariants();
+    }
 }
