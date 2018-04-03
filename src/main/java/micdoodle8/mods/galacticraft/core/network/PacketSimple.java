@@ -525,7 +525,7 @@ public class PacketSimple extends PacketBase implements Packet
             player.playSound("random.explode", 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(Constants.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 1.1F);
+            player.playSound(Constants.TEXTURE_PREFIX + "entity.bosslaugh", 10.0F, 0.2F);
             break;
         case C_PLAY_SOUND_BOW:
             player.playSound("random.bow", 10.0F, 0.2F);
