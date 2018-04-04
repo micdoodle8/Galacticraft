@@ -31,7 +31,8 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
         this.addLayer(new LayerHeldItem(this));
         this.addLayer(new LayerBipedArmor(this)
         {
-            protected void func_177177_a()
+            @Override
+            protected void initArmor()
             {
                 this.field_177189_c = new ModelSkeleton(0.5F, true);
                 this.field_177186_d = new ModelSkeleton(1.0F, true);

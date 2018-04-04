@@ -24,8 +24,6 @@ public class ModelEvolvedSkeleton extends ModelBiped
     ModelRenderer tubeRight6;
     ModelRenderer oxygenMask;
 
-    public boolean aimedBow;
-
     public ModelEvolvedSkeleton()
     {
         this(0.0F);
@@ -35,8 +33,8 @@ public class ModelEvolvedSkeleton extends ModelBiped
     {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.aimedBow = false;
         final int par2 = 0;
+        this.aimedBow = true;
         this.leftOxygenTank = new ModelRenderer(this, 48, 20);
         this.leftOxygenTank.addBox(-1.5F, 0F, -1.5F, 3, 7, 3, par1);
         this.leftOxygenTank.setRotationPoint(2F, 2F, 3.8F);
