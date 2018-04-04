@@ -145,6 +145,7 @@ gui.message.target_no_energy.name=Target doesn't have enough Energy!
 gui.message.telepad_not_found.name=Telepad Not Found!
 gui.message.telepad_too_far.name=Target too far! (Max %d)
 gui.message.telepad_wrong_dim.name=Target is in wrong dimension!
+gui.message.telepad_target_disabled.name=Target is disabled
 gui.message.ten_sec.name=10 Seconds
 gui.message.terraforming.name=Terraforming
 gui.message.thirty_sec.name=30 Seconds

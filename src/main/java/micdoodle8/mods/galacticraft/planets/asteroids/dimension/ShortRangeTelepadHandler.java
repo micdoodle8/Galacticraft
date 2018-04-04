@@ -27,17 +27,19 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     {
         public int dimensionID;
         public BlockVec3 position;
+        public boolean enabled;
 
-        public TelepadEntry(int dimID, BlockVec3 position)
+        public TelepadEntry(int dimID, BlockVec3 position, boolean enabled)
         {
             this.dimensionID = dimID;
             this.position = position;
+            this.enabled = enabled;
         }
 
         @Override
         public int hashCode()
         {
-            return new HashCodeBuilder().append(dimensionID).append(position.hashCode()).toHashCode();
+            return new HashCodeBuilder().append(dimensionID).append(position.hashCode()).append(enabled).toHashCode();
         }
 
         @Override
@@ -45,7 +47,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (other instanceof TelepadEntry)
             {
-                return new EqualsBuilder().append(((TelepadEntry) other).dimensionID, this.dimensionID).append(((TelepadEntry) other).position, this.position).isEquals();
+                return new EqualsBuilder().append(((TelepadEntry) other).dimensionID, this.dimensionID).append(((TelepadEntry) other).position, this.position).append(((TelepadEntry) other).enabled, this.enabled).isEquals();
             }
 
             return false;
@@ -66,7 +68,12 @@ public class ShortRangeTelepadHandler extends WorldSavedData
             int posX = nbt2.getInteger("PosX");
             int posY = nbt2.getInteger("PosY");
             int posZ = nbt2.getInteger("PosZ");
-            tileMap.put(address, new TelepadEntry(dimID, new BlockVec3(posX, posY, posZ)));
+            boolean enabled = true;
+            if (nbt2.hasKey("Enabled"))
+            {
+                enabled = nbt2.getBoolean("Enabled");
+            }
+            tileMap.put(address, new TelepadEntry(dimID, new BlockVec3(posX, posY, posZ), enabled));
         }
     }
 
@@ -83,6 +90,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
             nbt2.setInteger("PosX", e.getValue().position.x);
             nbt2.setInteger("PosY", e.getValue().position.y);
             nbt2.setInteger("PosZ", e.getValue().position.z);
+            nbt2.setBoolean("Enabled", e.getValue().enabled);
             tagList.appendTag(nbt2);
         }
 
@@ -95,7 +103,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
         {
             if (telepad.addressValid)
             {
-                TelepadEntry newEntry = new TelepadEntry(GCCoreUtil.getDimensionID(telepad.getWorld()), new BlockVec3(telepad));
+                TelepadEntry newEntry = new TelepadEntry(GCCoreUtil.getDimensionID(telepad.getWorld()), new BlockVec3(telepad), !telepad.getDisabled(0));
                 TelepadEntry previous = tileMap.put(telepad.address, newEntry);
 
                 if (previous == null || !previous.equals(newEntry))
