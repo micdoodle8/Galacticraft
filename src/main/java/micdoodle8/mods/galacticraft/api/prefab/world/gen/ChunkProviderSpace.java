@@ -244,6 +244,11 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                 this.worldGenerators = this.getWorldGenerators();
             }
 
+            for (MapGenBaseMeta generator : this.worldGenerators)
+            {
+                generator.generate(this.worldObj, x, z, primer);
+            }
+
             this.onChunkProvide(x, z, primer);
         }
         catch (Exception e)
