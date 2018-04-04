@@ -24,6 +24,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockReed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.audio.ISound;
@@ -1199,9 +1200,16 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         //If it is obstructed, return to base, or stand still if that is impossible
         if (wayBarred)
         {
-            if (this.playerMP != null)
+            if (this.playerMP != null && blockingBlock.block != Blocks.AIR)
             {
-                this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                if (blockingBlock.block == Blocks.STONE)
+                {
+                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate("gui.message.astro_miner1_b.fail")));
+                }
+                else
+                {
+                    this.playerMP.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1_a.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                }
             }
             this.motionX = 0;
             this.motionY = 0;
@@ -1224,6 +1232,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
             {
                 this.freeze(FAIL_RETURNPATHBLOCKED);
             }
+            blockingBlock = new BlockTuple(Blocks.AIR, 0);
         }
 
         if (this.tryBlockLimit == limit && !this.noSpeedup)
@@ -1457,7 +1466,13 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         }
         if (b instanceof BlockLiquid)
         {
-            return (this.AIstate != AISTATE_RETURNING && (b == Blocks.LAVA || b == Blocks.FLOWING_LAVA) && state.getValue(BlockLiquid.LEVEL).intValue() == 0);
+            if ((b == Blocks.LAVA || b == Blocks.FLOWING_LAVA) && state.getValue(BlockLiquid.LEVEL) == 0 && this.AIstate != AISTATE_RETURNING)
+            {
+                blockingBlock.block = Blocks.LAVA;
+                blockingBlock.meta = 0;
+                return true;
+            }
+            return false;
         }
         if (b instanceof IFluidBlock)
         {
@@ -1467,7 +1482,7 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         boolean gtFlag = false;
         if (b != GCBlocks.fallenMeteor)
         {
-            if (b instanceof IPlantable && b != Blocks.TALLGRASS && b != Blocks.DEADBUSH && b != Blocks.DOUBLE_PLANT && b != Blocks.WATERLILY && !(b instanceof BlockFlower))
+            if (b instanceof IPlantable && b != Blocks.TALLGRASS && b != Blocks.DEADBUSH && b != Blocks.DOUBLE_PLANT && b != Blocks.WATERLILY && !(b instanceof BlockFlower) && b != Blocks.REEDS)
             {
                 blockingBlock.block = b;
                 blockingBlock.meta = b.getMetaFromState(state);
@@ -1502,13 +1517,15 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         int result = ForgeHooks.onBlockBreakEvent(this.world, this.playerMP.interactionManager.getGameType(), this.playerMP, pos);
         if (result < 0)
         {
+            blockingBlock.block = Blocks.STONE;
+            blockingBlock.meta = 0;
             return true;
         }
 
         this.tryBlockLimit--;
         
         //Collect the mined block - unless it's a plant or leaves in which case just break it
-        if (!(b instanceof IPlantable || b instanceof BlockLeaves))
+        if (!((b instanceof IPlantable && !(b instanceof BlockReed)) || b instanceof BlockLeaves))
         {
 		    ItemStack drops = gtFlag ? getGTDrops(this.world, pos, b) : getPickBlock(this.world, pos, b);
 		    if (drops != null && !this.addToInventory(drops))
