@@ -45,12 +45,13 @@ import java.util.Random;
 
 public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implements IMultiBlock, IInventoryDefaults, ISidedInventory
 {
-    public static enum EnumTelepadSearchResult
+    public enum EnumTelepadSearchResult
     {
         VALID,
         NOT_FOUND,
         TOO_FAR,
-        WRONG_DIM
+        WRONG_DIM,
+        TARGET_DISABLED
     }
 
     public static final int MAX_TELEPORT_TIME = 150;
@@ -113,7 +114,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (!this.worldObj.isRemote)
         {
-            if (this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
+            if (!this.getDisabled(0) && this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
                 List containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                         this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
@@ -149,7 +150,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                         List<EntityLivingBase> containedEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                                 this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
-                        if (tileAt != null && tileAt instanceof TileEntityShortRangeTelepad)
+                        if (tileAt instanceof TileEntityShortRangeTelepad)
                         {
                             TileEntityShortRangeTelepad destTelepad = (TileEntityShortRangeTelepad) tileAt;
                             int teleportResult = destTelepad.canTeleportHere();
@@ -455,6 +456,10 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             case 0:
                 this.disabled = disabled;
                 this.disableCooldown = 10;
+                if (worldObj != null && !worldObj.isRemote)
+                {
+                    ShortRangeTelepadHandler.addShortRangeTelepad(this);
+                }
                 break;
             default:
                 break;
@@ -517,6 +522,12 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
                     if (distance < Math.pow(TELEPORTER_RANGE * TELEPORTER_RANGE, 2))
                     {
+                        if (!addressResult.enabled)
+                        {
+                            this.targetAddressResult = EnumTelepadSearchResult.TARGET_DISABLED;
+                            return false;
+                        }
+
                         this.targetAddressResult = EnumTelepadSearchResult.VALID;
                         return true;
                     }
@@ -664,19 +675,24 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
             return EnumColor.RED + GCCoreUtil.translate("gui.message.invalid_target_address.name");
         }
 
-        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.TOO_FAR)
+        if (this.targetAddressResult == EnumTelepadSearchResult.TOO_FAR)
         {
             return EnumColor.RED + GCCoreUtil.translateWithFormat("gui.message.telepad_too_far.name", TELEPORTER_RANGE);
         }
 
-        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.WRONG_DIM)
+        if (this.targetAddressResult == EnumTelepadSearchResult.WRONG_DIM)
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_wrong_dim.name");
         }
 
-        if (this.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.NOT_FOUND)
+        if (this.targetAddressResult == EnumTelepadSearchResult.NOT_FOUND)
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.telepad_not_found.name");
+        }
+
+        if (this.targetAddressResult == EnumTelepadSearchResult.TARGET_DISABLED)
+        {
+            return EnumColor.ORANGE + GCCoreUtil.translate("gui.message.telepad_target_disabled.name");
         }
 
         if (this.getEnergyStoredGC() <= 0.0F)

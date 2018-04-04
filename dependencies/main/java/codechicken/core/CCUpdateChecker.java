@@ -5,7 +5,6 @@ import com.google.common.base.Function;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.ForgeVersion;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.versioning.ComparableVersion;
 import net.minecraftforge.fml.relauncher.FMLInjectionData;
 
@@ -96,7 +95,7 @@ public class CCUpdateChecker {
     }
 
     public static void updateCheck(String mod) {
-        updateCheck(mod, Loader.instance().getIndexedModList().get(mod).getVersion());
+//        updateCheck(mod, Loader.instance().getIndexedModList().get(mod).getVersion());
     }
 
     public static void updateCheck(String url, Function<String, Void> handler) {

@@ -68,7 +68,7 @@ public class GuiElectricIngotCompressor extends GuiContainerGC
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
         }
 
-        String str = GCCoreUtil.translate("gui.message.status.name") + ": " + displayText;
+        String str = GCCoreUtil.translate("gui.message.status.name") + ": " + this.tileEntity.getGUIstatus(displayText, null, true);
         this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 75, 4210752);
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();

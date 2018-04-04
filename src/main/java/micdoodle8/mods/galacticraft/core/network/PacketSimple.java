@@ -528,7 +528,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             player.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 10.0F, 0.7F);
             break;
         case C_PLAY_SOUND_BOSS_LAUGH:
-            player.playSound(GCSounds.bossLaugh, 10.0F, 1.1F);
+            player.playSound(GCSounds.bossLaugh, 10.0F, 0.2F);
             break;
         case C_PLAY_SOUND_BOW:
             player.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 10.0F, 0.2F);
