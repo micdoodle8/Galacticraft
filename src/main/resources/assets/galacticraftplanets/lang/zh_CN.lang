@@ -100,6 +100,7 @@ gui.message.address.name=坐标
 gui.message.astro_miner.fail=此基站已绑定太空采矿机!
 gui.message.astro_miner1.fail=停泊区被占用:
 gui.message.astro_miner1_a.fail=太空采矿机被以下方块阻挡:
+gui.message.astro_miner1_b.fail=区域受保护！
 gui.message.astro_miner2.fail=有多余的太空采矿机!
 gui.message.astro_miner3.fail=太空采矿机基站被拆除!
 gui.message.astro_miner4.fail=太空采矿机剩余能量不足以返航!

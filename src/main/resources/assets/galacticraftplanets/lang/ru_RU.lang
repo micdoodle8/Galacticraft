@@ -100,6 +100,7 @@ gui.message.address.name=Адрес
 gui.message.astro_miner.fail=У этой базы уже есть астрошахтёр!
 gui.message.astro_miner1.fail=Область стыковки заблокирована:
 gui.message.astro_miner1_a.fail=Путь астрошахтёра преграждён:
+gui.message.astro_miner1_b.fail=Защищенная зона!
 gui.message.astro_miner2.fail=Достигнут лимит астрошахтёров!
 gui.message.astro_miner3.fail=Основание астрошахтёра было демонтировано!
 gui.message.astro_miner4.fail=У астрошахтёра кончилась энергия и он не может вернуться на базу!

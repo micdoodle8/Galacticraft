@@ -227,7 +227,18 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         }
         else if (textBox.equals(this.targetAddress))
         {
-            return this.telepad.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.VALID ? ColorUtil.to32BitColor(255, 20, 255, 20) : ColorUtil.to32BitColor(255, 255, 25, 25);
+            if (this.telepad.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.VALID)
+            {
+                return ColorUtil.to32BitColor(255, 20, 255, 20);
+            }
+            else if (this.telepad.targetAddressResult == TileEntityShortRangeTelepad.EnumTelepadSearchResult.TARGET_DISABLED)
+            {
+                return ColorUtil.to32BitColor(255, 255, 170, 25);
+            }
+            else
+            {
+                return ColorUtil.to32BitColor(255, 255, 25, 25);
+            }
         }
 
         return 0;
