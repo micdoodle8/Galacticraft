@@ -143,7 +143,6 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
             Block test = it.next();
             if (test instanceof BlockFluidBase)
             {
-                System.out.println("================Grating for " + test.getUnlocalizedName());
                 createForgeFluidVersion(test, blockRegistry);
             }
         }
