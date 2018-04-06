@@ -17,6 +17,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
@@ -157,6 +158,13 @@ public class RenderPlayerGC extends RenderPlayer
                         {
                             try {
                                 newInstance = oldLayer.getClass().getConstructor(RenderPlayer.class).newInstance(this);
+                            }
+                            catch (Exception ignore) { }
+                        }
+                        if (newInstance == null)
+                        {
+                            try {
+                                newInstance = oldLayer.getClass().getConstructor(boolean.class, ModelPlayer.class).newInstance(smallArms, this.mainModel);
                             }
                             catch (Exception ignore) { }
                         }
