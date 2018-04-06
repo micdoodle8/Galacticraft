@@ -65,7 +65,11 @@ public class ItemBasic extends Item implements ISortableItem
     @Override
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
-        for (int i = 0; i < ItemBasic.names.length; i++)
+        for (int i = 0; i < 15; i++)
+        {
+            par3List.add(new ItemStack(par1, 1, i));
+        }
+        for (int i = 19; i < ItemBasic.names.length; i++)
         {
             par3List.add(new ItemStack(par1, 1, i));
         }
