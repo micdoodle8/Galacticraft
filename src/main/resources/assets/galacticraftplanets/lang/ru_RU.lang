@@ -145,6 +145,7 @@ gui.message.target_no_energy.name=У цели не хватает энергии
 gui.message.telepad_not_found.name=Телепорт не найден!
 gui.message.telepad_too_far.name=Цель слишком далеко! (Макс.: %d)
 gui.message.telepad_wrong_dim.name=Цель в другом измерении!
+gui.message.telepad_target_disabled.name=Цель отключена
 gui.message.ten_sec.name=10 секунд
 gui.message.terraforming.name=Терраформирование
 gui.message.thirty_sec.name=30 секунд
