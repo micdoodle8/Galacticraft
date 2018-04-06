@@ -69,6 +69,7 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     public static int number = 3;  //That's Plain, Water, Lava - any more will be Forge Fluids
     private static Method gofd;
     private static Field fieldQuantaPerBlock;
+    private ThreadLocal<Boolean> replaceWithFluidIntended = new ThreadLocal<>().withInitial(() -> false);
 
     static
     {
@@ -312,6 +313,17 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
         {
             return;
         }
+        if (Blocks.AIR == newBlock.getBlock() && this != GCBlocks.grating)
+        {
+            world.setBlockState(pos, this.getLiquidBlock(state));
+            this.dropBlockAsItem(world, pos, state, 0);
+        }
+        if (this.replaceWithFluidIntended.get())
+        {
+            // Intended replacement with fluid block, called from this.removedByPlayer()
+            this.replaceWithFluidIntended.set(false);
+            return;
+        }
         if (newBlock.getBlock() instanceof BlockFluidBase)
         {
             for (BlockGrating b : forgeBlocks)
@@ -344,7 +356,19 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
             }
         }
     }
-    
+
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
+    {
+        this.onBlockHarvested(world, pos, state, player);
+        if (this == GCBlocks.grating)
+        {
+            return world.setBlockState(pos, Blocks.AIR.getDefaultState(), world.isRemote ? 11 : 3);
+        }
+        this.replaceWithFluidIntended.set(true);
+        return world.setBlockState(pos, this.getLiquidBlock(state), world.isRemote ? 11 : 3);
+    }
+
     @Override
     public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack)
     {
