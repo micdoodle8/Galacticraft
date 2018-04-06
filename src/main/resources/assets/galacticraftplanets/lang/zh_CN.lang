@@ -145,6 +145,7 @@ gui.message.target_no_energy.name=目标能量不足!
 gui.message.telepad_not_found.name=未找到传送台!
 gui.message.telepad_too_far.name=目标距离过远! (上限%d)
 gui.message.telepad_wrong_dim.name=目标维度有误!
+gui.message.telepad_target_disabled.name=目标无效！
 gui.message.ten_sec.name=10秒
 gui.message.terraforming.name=环境改造中
 gui.message.thirty_sec.name=30秒
