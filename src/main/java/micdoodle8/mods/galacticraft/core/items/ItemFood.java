@@ -61,7 +61,12 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
     @Override
     public void getSubItems(Item itemIn, CreativeTabs par2CreativeTabs, List<ItemStack> list)
     {
-        for (int i = 0; i < ItemFood.names.length; i++)
+        for (int i = 0; i < 4; i++)
+        {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
+        list.add(new ItemStack(itemIn, 1, 9));
+        for (int i = 4; i < 9; i++)
         {
             list.add(new ItemStack(itemIn, 1, i));
         }
