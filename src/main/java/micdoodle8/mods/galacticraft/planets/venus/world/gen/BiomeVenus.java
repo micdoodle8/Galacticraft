@@ -15,9 +15,9 @@ import java.util.Random;
 
 public class BiomeVenus extends BiomeGenBaseGC
 {
-    public static final Biome venusFlat = new BiomeGenFlatVenus(new BiomeProperties("Venus Flat").setRainfall(0.0F).setRainDisabled().setBaseHeight(0.5F).setHeightVariation(0.4F));
-    public static final Biome venusMountain = new BiomeGenVenusMountain(new BiomeProperties("Venus Mountain").setRainfall(0.0F).setRainDisabled().setBaseHeight(2.0F).setHeightVariation(1.0F));
-    public static final Biome venusValley = new BiomeGenVenusValley(new BiomeProperties("Venus Valley").setRainfall(0.0F).setRainDisabled().setBaseHeight(-0.4F).setHeightVariation(0.2F));
+    public static final Biome venusFlat = new BiomeGenFlatVenus(new BiomeProperties("Venus Flat").setRainfall(0.0F).setRainDisabled().setBaseHeight(0.5F).setHeightVariation(0.4F).setTemperature(4.0F));
+    public static final Biome venusMountain = new BiomeGenVenusMountain(new BiomeProperties("Venus Mountain").setRainfall(0.0F).setRainDisabled().setBaseHeight(2.0F).setHeightVariation(1.0F).setTemperature(4.0F));
+    public static final Biome venusValley = new BiomeGenVenusValley(new BiomeProperties("Venus Valley").setRainfall(0.0F).setRainDisabled().setBaseHeight(-0.4F).setHeightVariation(0.2F).setTemperature(4.0F));
 
     BiomeVenus(BiomeProperties properties)
     {
