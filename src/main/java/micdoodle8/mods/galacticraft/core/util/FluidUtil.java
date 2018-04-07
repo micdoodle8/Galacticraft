@@ -66,7 +66,7 @@ public class FluidUtil
      */
     public static boolean testFuel(String name)
     {
-        if (name.startsWith("fuel"))
+        if (name.equals("fuel") || name.equals("fuelgc")|| name.equals("fuel_light"))
         {
             return true;
         }
@@ -81,12 +81,17 @@ public class FluidUtil
             return true;
         }
 
+        if (name.startsWith("fuel"))
+        {
+            return !name.contains("dense") && !name.contains("heavy") && !name.contains("mixed") && !name.contains("gaseous");
+        }
+
         return false;
     }
     
     public static boolean testOil(String name)
     {
-        if (name.startsWith("oil"))
+        if (name.equals("oil") || name.equals("oilgc"))
         {
             return true;
         }
@@ -94,6 +99,11 @@ public class FluidUtil
         if (name.equals("crude_oil"))
         {
             return true;
+        }
+
+        if (name.startsWith("oil"))
+        {
+            return !name.contains("dense") && !name.contains("residue");
         }
 
         return false;
