@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
-import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -17,6 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ContainerCircuitFabricator extends Container
 {
@@ -123,9 +125,9 @@ public class ContainerCircuitFabricator extends Container
                         return null;
                     }
                 }
-                else if (i == GCItems.basicItem && i.getDamage(var4) == 2)
+                else if (this.isSilicon(var4))
                 {
-                    if (!this.mergeItemStack(var4, 2, 4, false))
+                    if (!this.mergeEven(var4, 2, 4))
                     {
                         return null;
                     }
@@ -175,5 +177,174 @@ public class ContainerCircuitFabricator extends Container
         }
 
         return var2;
+    }
+
+    private boolean mergeEven(ItemStack stack, int a, int b)
+    {
+        List<Slot> acceptSlots = new LinkedList<>();
+        List<Integer> acceptQuantity = new LinkedList<>();
+        int minQuantity = 64;
+        int acceptTotal = 0;
+        for (int i = a; i < b; i++)
+        {
+            Slot slot = (Slot)this.inventorySlots.get(i);
+
+            if (slot != null)
+            {
+                ItemStack target = slot.getStack();
+                if (matchingStacks(stack, target))
+                {
+                    acceptSlots.add(slot);
+                    int availSpace = target.getMaxStackSize() - target.stackSize;
+                    acceptQuantity.add(availSpace);
+                    acceptTotal += availSpace;
+                    if (availSpace < minQuantity) minQuantity = availSpace;
+                }
+            }
+        }
+        
+        //The stack more than exceeds what the crafting inventory requires
+        if (stack.stackSize >= acceptTotal)
+        {
+            if (acceptTotal == 0)
+                return false;
+            
+            for (Slot slot : acceptSlots)
+            {
+                ItemStack target = slot.getStack();
+                if (target == null)
+                {
+                    target = stack.copy();
+                    slot.putStack(target);
+                }
+                else
+                {
+                    stack.stackSize += target.stackSize;
+                }
+                target.stackSize = target.getMaxStackSize();
+                stack.stackSize -= target.getMaxStackSize();
+                slot.onSlotChanged();
+            }
+            return true;
+        }
+        
+        int uneven = 0;
+        for (int q : acceptQuantity)
+        {
+            uneven += q - minQuantity;
+        }
+        
+        //Use the whole stack to try to even up the neediest slots
+        if (stack.stackSize < uneven)
+        {
+            do
+            {
+                Slot neediest = null;
+                int smallestStack = 64; 
+                for (Slot slot : acceptSlots)
+                {
+                    ItemStack target = slot.getStack();
+                    if (target == null)
+                    {
+                        target = stack.copy();
+                        target.stackSize = 0;
+                        slot.putStack(target);
+                        neediest = slot;
+                        break;
+                    }
+                    if (target.stackSize < smallestStack)
+                    {
+                        smallestStack = target.stackSize;
+                        neediest = slot;
+                    }
+                }
+                neediest.getStack().stackSize++;
+            }
+            while (--stack.stackSize > 0);
+            for (Slot slot : acceptSlots)
+            {
+                slot.onSlotChanged();
+            }
+            return true;
+        }
+
+        //Use some of the stack to even things up
+        if (uneven > 0)
+        {
+            int targetSize = stack.getMaxStackSize() - minQuantity;
+            for (Slot slot : acceptSlots)
+            {
+                ItemStack target = slot.getStack();
+                if (target == null)
+                {
+                    target = stack.copy();
+                    slot.putStack(target);
+                }
+                else
+                {
+                    stack.stackSize += target.stackSize;
+                    acceptTotal += target.stackSize;
+                }
+                stack.stackSize -= targetSize;
+                acceptTotal -= targetSize;
+                target.stackSize = targetSize;
+                slot.onSlotChanged();
+            }
+        }
+        
+        //Spread the remaining stack over all slots evenly
+        int average = stack.stackSize / acceptSlots.size();
+        int modulus = stack.stackSize - average * acceptSlots.size();
+        for (Slot slot : acceptSlots)
+        {
+            if (slot != null)
+            {
+                ItemStack target = slot.getStack();
+                if (target == null)
+                {
+                    target = stack.copy();
+                    target.stackSize = 0;
+                    slot.putStack(target);
+                }
+                int transfer = average;
+                if (modulus > 0)
+                {
+                    transfer++;
+                    modulus--;
+                }
+                stack.stackSize -= transfer;
+                target.stackSize += transfer;
+                if (target.stackSize > target.getMaxStackSize())
+                {
+                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.stackSize);
+                    stack.stackSize += target.stackSize - target.getMaxStackSize();
+                    target.stackSize = target.getMaxStackSize();
+                }
+                if (stack.stackSize < 0)
+                {
+                    target.stackSize += stack.stackSize;
+                    stack.stackSize = 0;
+                }
+                slot.onSlotChanged();
+                if (stack.stackSize == 0)
+                    break;
+            }
+        }
+    
+        return true;
+    }
+
+    private boolean isSilicon(ItemStack test)
+    {
+        for (ItemStack stack : CircuitFabricatorRecipes.slotValidItems.get(1))
+        {
+            if (stack.isItemEqual(test)) return true;
+        }
+        return false;
+    }
+
+    private boolean matchingStacks(ItemStack stack, ItemStack target)
+    {
+        return target == null || target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.stackSize < target.getMaxStackSize() || target.stackSize == 0);
     }
 }
