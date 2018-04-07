@@ -24,6 +24,7 @@ public class BiomeGenBaseVenus extends BiomeGenBaseGC
     {
         super(var1);
         this.rainfall = 0F;
+        this.temperature = 4.0F;
     }
 
     @Override
