@@ -71,7 +71,11 @@ public class ItemBasic extends Item implements ISortableItem
     {
         if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            for (int i = 0; i < ItemBasic.names.length; i++)
+            for (int i = 0; i < 15; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
+            for (int i = 19; i < ItemBasic.names.length; i++)
             {
                 list.add(new ItemStack(this, 1, i));
             }

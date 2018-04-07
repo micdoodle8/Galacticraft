@@ -50,7 +50,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     public final GlassType type;
     private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
-    private int color = 0xFFFFFF;
+    public int color = 0xFFFFFF;
     private final Block baseBlock;
     private boolean isClient; 
     private static Class clazz = Blocks.WATER.getClass().getSuperclass();
