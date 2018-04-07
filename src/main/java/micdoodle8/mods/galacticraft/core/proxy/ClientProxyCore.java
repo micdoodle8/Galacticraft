@@ -24,6 +24,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockFallenMeteor;
 import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass;
 import micdoodle8.mods.galacticraft.core.client.DynamicTextureProper;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.client.fx.EffectHandler;
@@ -75,7 +76,6 @@ import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.resources.IReloadableResourceManager;
@@ -87,11 +87,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -187,42 +186,30 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientProxyCore.updateCapeList();
         ClientProxyCore.registerInventoryJsons();
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return BlockFallenMeteor.colorMultiplier(worldIn, pos);   }
-        }, new Block[] { GCBlocks.fallenMeteor });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tintIndex) -> {
+                return BlockFallenMeteor.colorMultiplier(world, pos);
+            }, GCBlocks.fallenMeteor);
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassVanilla.color;   }
-        }, new Block[] { GCBlocks.spaceGlassVanilla });
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassClear.color;   }
-        }, new Block[] { GCBlocks.spaceGlassClear });
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassStrong.color;   }
-        }, new Block[] { GCBlocks.spaceGlassStrong });
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassTinVanilla.color;   }
-        }, new Block[] { GCBlocks.spaceGlassTinVanilla });
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassTinClear.color;   }
-        }, new Block[] { GCBlocks.spaceGlassTinClear });
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {   @Override
-            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {   return GCBlocks.spaceGlassTinStrong.color;   }
-        }, new Block[] { GCBlocks.spaceGlassTinStrong });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tintIndex) -> {
+                Block b = state.getBlock();
+                return (b instanceof BlockSpaceGlass) ? ((BlockSpaceGlass)b).color : 0xFFFFFF;
+            }, new Block[] { GCBlocks.spaceGlassVanilla, GCBlocks.spaceGlassClear, GCBlocks.spaceGlassStrong });
+
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+            (state, world, pos, tintIndex) -> {
+                if (world != null && pos != null)
+                {
+                    TileEntity tile = world.getTileEntity(pos);
+                    if (tile instanceof TileEntityPanelLight)
+                    {
+                        IBlockState baseState = ((TileEntityPanelLight)tile).getBaseBlock();
+                        return Minecraft.getMinecraft().getBlockColors().colorMultiplier(baseState, world, pos, tintIndex);
+                    }
+                }
+                return 0xFFFFFF;
+            }, GCBlocks.panelLighting);
     }
 
     @Override
