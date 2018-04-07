@@ -281,6 +281,7 @@ public class GalacticraftCore
 
         GCFluids.registerLegacyFluids();
         GCFluids.registerDispenserBehaviours();
+        if (CompatibilityManager.isBCraftEnergyLoaded()) GCFluids.registerBCFuel();
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_MASK, EnumExtendedInventorySlot.MASK, GCItems.oxMask);
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_OXYGEN_GEAR, EnumExtendedInventorySlot.GEAR, GCItems.oxygenGear);

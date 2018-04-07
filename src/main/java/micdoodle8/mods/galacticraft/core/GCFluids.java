@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core;
 
+import buildcraft.api.fuels.BuildcraftFuelRegistry;
+import buildcraft.api.mj.MjAPI;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.MaterialOleaginous;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
@@ -329,5 +331,10 @@ public class GCFluids
                 }
             });
         }
+    }
+
+    public static void registerBCFuel()
+    {
+        BuildcraftFuelRegistry.fuel.addFuel(GCFluids.fluidFuel, 5 * MjAPI.MJ, 9000);
     }
 }
