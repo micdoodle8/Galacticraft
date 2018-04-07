@@ -19,23 +19,23 @@ public class ContainerPainter extends Container
         this.tileEntity = tileEntity2;
  
         // To be painted
-        this.addSlotToContainer(new Slot(tileEntity2, 0, 56, 25));
+        this.addSlotToContainer(new Slot(tileEntity2, 0, 40, 25));
         //TODO: slots which can only accept one item
 
         // For dyes and other colour giving items
-        this.addSlotToContainer(new Slot(tileEntity2, 1, 109, 25));
+        this.addSlotToContainer(new Slot(tileEntity2, 1, 122, 25));
 
         int i;
         for (i = 0; i < 3; ++i)
         {
             for (int j = 0; j < 9; ++j)
             {
-                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+                this.addSlotToContainer(new Slot(par1InventoryPlayer, j + i * 9 + 9, 8 + j * 18, 104 + i * 18));
             }
         }
         for (i = 0; i < 9; ++i)
         {
-            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 142));
+            this.addSlotToContainer(new Slot(par1InventoryPlayer, i, 8 + i * 18, 162));
         }
 
         tileEntity2.playersUsing.add(par1InventoryPlayer.player);
