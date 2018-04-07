@@ -188,13 +188,41 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientProxyCore.registerInventoryJsons();
 
         Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-        {
-            @Override
+        {   @Override
             public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
-            {
-                return BlockFallenMeteor.colorMultiplier(worldIn, pos);
-            }
+            {   return BlockFallenMeteor.colorMultiplier(worldIn, pos);   }
         }, new Block[] { GCBlocks.fallenMeteor });
+
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassVanilla.color;   }
+        }, new Block[] { GCBlocks.spaceGlassVanilla });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassClear.color;   }
+        }, new Block[] { GCBlocks.spaceGlassClear });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassStrong.color;   }
+        }, new Block[] { GCBlocks.spaceGlassStrong });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassTinVanilla.color;   }
+        }, new Block[] { GCBlocks.spaceGlassTinVanilla });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassTinClear.color;   }
+        }, new Block[] { GCBlocks.spaceGlassTinClear });
+        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+        {   @Override
+            public int colorMultiplier(IBlockState state, IBlockAccess worldIn, BlockPos pos, int tintIndex)
+            {   return GCBlocks.spaceGlassTinStrong.color;   }
+        }, new Block[] { GCBlocks.spaceGlassTinStrong });
     }
 
     @Override

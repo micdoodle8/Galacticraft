@@ -31,15 +31,16 @@ public class GuiPainter extends GuiContainerGC
     {
         super(new ContainerPainter(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
+        this.ySize = 186;
     }
 
     @Override
     public void initGui()
     {
         super.initGui();
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(0, this.width / 2 + 4, this.height / 2 - 40, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name")));
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(1, this.width / 2 - 80, this.height / 2 - 40, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name")));
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(2, this.width / 2 - 80, this.height / 2 - 40 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name")));
+        this.buttonList.add(this.buttonApplyPaint = new GuiButton(0, this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name")));
+        this.buttonList.add(this.buttonApplyPaint = new GuiButton(1, this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name")));
+        this.buttonList.add(this.buttonApplyPaint = new GuiButton(2, this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name")));
     }
 
     @Override
@@ -56,7 +57,7 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getName(), 45, 6, 4210752);
+        this.fontRendererObj.drawString(this.tileEntity.getName(), 39, 6, 4210752);
         String displayText = "";
 
         this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
@@ -82,7 +83,7 @@ public class GuiPainter extends GuiContainerGC
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer worldrenderer = tessellator.getBuffer();
         int x = guiLeft + this.xSize / 2 - 9;
-        int y = guiBottom + this.ySize / 2 - 60;
+        int y = guiBottom + this.ySize / 2 - 69;
         int height = 18;
         int width = 18;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
