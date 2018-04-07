@@ -70,7 +70,8 @@ public class GuiCircuitFabricator extends GuiContainerGC
 
         String str = GCCoreUtil.translate("gui.message.status.name") + ":";
         this.fontRenderer.drawString(str, 115 - this.fontRenderer.getStringWidth(str) / 2, 80, 4210752);
-        this.fontRenderer.drawString(displayText, 115 - this.fontRenderer.getStringWidth(this.tileEntity.getGUIstatus(displayText, null, false)) / 2, 90, 4210752);
+        displayText = this.tileEntity.getGUIstatus(displayText, null, false);
+        this.fontRenderer.drawString(displayText, 115 - this.fontRenderer.getStringWidth(displayText) / 2, 90, 4210752);
         this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();
 //		this.fontRenderer.drawString(str, 5, 42, 4210752);
