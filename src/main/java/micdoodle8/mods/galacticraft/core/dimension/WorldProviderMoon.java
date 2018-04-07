@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -11,11 +12,13 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockBasicMoon;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -177,4 +180,9 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
         list.add(GCBlocks.blockMoon);
         return list;
     }
+
+	@Override
+	public BlockMetaPair getStoneBlock() {
+		return new BlockMetaPair(GCBlocks.blockMoon, (byte) 4);
+	}
 }

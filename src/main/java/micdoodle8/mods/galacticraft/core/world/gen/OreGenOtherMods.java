@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -12,6 +14,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
@@ -80,14 +83,27 @@ public class OreGenOtherMods
                     {
                         extraRandom = true;
                     }
+                    
+//                    if (params.contains("ONLYMOON"))
+//                    {
+//                        dim = 1;
+//                    }
+//                    else if (params.contains("ONLYMARS"))
+//                    {
+//                        dim = 2;
+//                    }
 
-                    if (params.contains("ONLYMOON"))
+                    if (params.contains("ONLY:")) // Format: ONLY:DIMENSION_ID  Example: ONLY:-29
                     {
-                        dim = 1;
-                    }
-                    else if (params.contains("ONLYMARS"))
-                    {
-                        dim = 2;
+                    	try{
+                    		String id = params.substring(6);
+                    		if(id.contains("/"))
+                    			id = id.substring(0, id.indexOf('/')).trim();
+                    		dim = Integer.parseInt(id);
+                    	}catch(Exception ex){
+                    		GCLog.severe("[config] Generate non GC(including addons) ores on the moons and planets from GC(including addons): error parsing '" + params + "'. /ONLY: must be in the format /ONLY:DIMENSION_ID ");
+                    		continue; // Skip entry if not a value number to convert
+                    	}
                     }
 
                 }
@@ -112,7 +128,7 @@ public class OreGenOtherMods
             }
             catch (final Exception e)
             {
-                GCLog.severe("[config] External Sealable IDs: error parsing '" + str + "'. Must be in the form Blockname or BlockName:metadata followed by / parameters ");
+                GCLog.severe("[config] Generate non GC(including addons) ores on the moons and planets from GC(including addons): error parsing '" + str + "'. Must be in the form Blockname or BlockName:metadata followed by / parameters ");
             }
         }
     }
@@ -225,32 +241,39 @@ public class OreGenOtherMods
             return;
         }
 
-        Block stoneBlock = null;
-        int stoneMeta = 0;
+//        Block stoneBlock = null;
+//        int stoneMeta = 0;
 
-        if (prov instanceof WorldProviderMoon)
-        {
-            stoneBlock = GCBlocks.blockMoon;
-            stoneMeta = 4;
-            dimDetected = 1;
-        }
-        else if (GalacticraftCore.isPlanetsLoaded && prov instanceof WorldProviderMars)
-        {
-            stoneBlock = MarsBlocks.marsBlock;
-            stoneMeta = 9;
-            dimDetected = 2;
-        }
-
-        if (stoneBlock == null)
-        {
-            return;
-        }
+        BlockMetaPair stoneBlock = ((WorldProviderSpace) prov).getStoneBlock();
+        
+        if(stoneBlock == null)
+        	return;
+        
+        dimDetected = ((WorldProviderSpace) prov).getDimensionId();
+        
+//        if (prov instanceof WorldProviderMoon)
+//        {
+//            stoneBlock = GCBlocks.blockMoon;
+//            stoneMeta = 4;
+//            dimDetected = 1;
+//        }
+//        else if (GalacticraftCore.isPlanetsLoaded && prov instanceof WorldProviderMars)
+//        {
+//            stoneBlock = MarsBlocks.marsBlock;
+//            stoneMeta = 9;
+//            dimDetected = 2;
+//        }
+//
+//        if (stoneBlock == null)
+//        {
+//            return;
+//        }
 
         for (OreGenData ore : OreGenOtherMods.data)
         {
             if (ore.dimRestrict == 0 || ore.dimRestrict == dimDetected)
             {
-                this.oreGen = new WorldGenMinableMeta(ore.oreBlock, ore.sizeCluster, ore.oreMeta, true, stoneBlock, stoneMeta);
+                this.oreGen = new WorldGenMinableMeta(ore.oreBlock, ore.sizeCluster, ore.oreMeta, true, stoneBlock.getBlock(), stoneBlock.getMetadata());
                 this.genStandardOre1(ore.numClusters, this.oreGen, ore.minHeight, ore.maxHeight);
             }
         }

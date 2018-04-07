@@ -3,8 +3,10 @@ package micdoodle8.mods.galacticraft.api.world;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.core.BlockMetaPair;
 
 public interface IGalacticraftWorldProvider
 {
@@ -163,4 +165,6 @@ public interface IGalacticraftWorldProvider
     String getDungeonChestType();
 
     List<Block> getSurfaceBlocks();
+    
+    BlockMetaPair getStoneBlock();
 }
