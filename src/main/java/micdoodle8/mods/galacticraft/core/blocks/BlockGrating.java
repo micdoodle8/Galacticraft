@@ -127,7 +127,8 @@ public class BlockGrating extends Block implements ISortableBlock, IPartialSeala
     {
         if (b instanceof BlockFluidBase)
         {
-            BlockGrating grating = new BlockGrating(b); 
+            BlockGrating grating = new BlockGrating(b);
+            grating.setLightLevel(b.getLightValue(b.getDefaultState()) / 15F);
             BlockGrating.forgeBlocks.add(grating);
             GCBlocks.registerBlock(grating, null);
         }
