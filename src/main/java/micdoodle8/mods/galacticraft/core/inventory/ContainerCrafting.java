@@ -257,7 +257,7 @@ public class ContainerCrafting extends Container
         }
         
         //Use the whole stack to try to even up the neediest slots
-        if (stack.getCount() < uneven)
+        if (stack.getCount() <= uneven)
         {
             do
             {
