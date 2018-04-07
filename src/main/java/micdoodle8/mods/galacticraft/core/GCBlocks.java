@@ -185,7 +185,7 @@ public class GCBlocks
         GCBlocks.emergencyBox = new BlockEmergencyBox("emergency_box");
         GCBlocks.grating = new BlockGrating("grating", ConfigManagerCore.allowLiquidGratings ? Material.CARPET : Material.IRON);
         GCBlocks.gratingWater = new BlockGrating("grating1", Material.WATER);
-        GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA);
+        GCBlocks.gratingLava = new BlockGrating("grating2", Material.LAVA).setLightLevel(1.0F);
 
         // Hide certain items from NEI
         GCBlocks.hiddenBlocks.add(GCBlocks.airLockSeal);
