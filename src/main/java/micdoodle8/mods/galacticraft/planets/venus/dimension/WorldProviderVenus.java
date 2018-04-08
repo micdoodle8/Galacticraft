@@ -195,7 +195,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     @Override
     public boolean shouldDisablePrecipitation()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -285,7 +285,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     {
         if ((int)yy >= blockpos.getY() + 1 && world.getPrecipitationHeight(blockpos).getY() > blockpos.getY())
         {
-            mc.theWorld.playSound(xx, yy, zz, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.03F, 0.6F + random.nextFloat() * 0.2F, false);
+            mc.theWorld.playSound(xx, yy, zz, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.025F, 0.6F + random.nextFloat() * 0.2F, false);
         }
         else
         {
