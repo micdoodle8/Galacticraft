@@ -113,20 +113,23 @@ public class EventHandlerMars
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
         BlockPos blockPos = event.entityPlayer.playerLocation;
-        IBlockState state = event.entityPlayer.worldObj.getBlockState(blockPos);
-        if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+        if (blockPos != null)
         {
-            TileEntity tile = event.entityPlayer.worldObj.getTileEntity(blockPos);
-            if (tile instanceof TileEntityMulti)
+            IBlockState state = event.entityPlayer.worldObj.getBlockState(blockPos);
+            if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
-                state = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                TileEntity tile = event.entityPlayer.worldObj.getTileEntity(blockPos);
+                if (tile instanceof TileEntityMulti)
+                {
+                    state = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                }
             }
-        }
 
-        if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
-        {
-            event.shouldRotate = true;
-        	event.vanillaOverride = true;
+            if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+            {
+                event.shouldRotate = true;
+                event.vanillaOverride = true;
+            }
         }
     }
 
