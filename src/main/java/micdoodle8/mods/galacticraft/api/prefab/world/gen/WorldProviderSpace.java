@@ -135,8 +135,16 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         }
         else
         {
-            super.updateWeather();
+            this.updateWeatherOverride();
         }
+    }
+
+    /*
+     * Override this to circumvent vanilla updateWeather()
+     */
+    protected void updateWeatherOverride()
+    {
+        super.updateWeather();
     }
 
     @Override
@@ -228,7 +236,8 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public boolean canBlockFreeze(BlockPos pos, boolean byWater)
     {
-        return !this.shouldDisablePrecipitation();
+        //TODO: if block is water and world temperature is low, freeze
+        return super.canBlockFreeze(pos, byWater);
     }
 
     @Override
