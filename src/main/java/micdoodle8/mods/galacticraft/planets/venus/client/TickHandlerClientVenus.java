@@ -79,6 +79,11 @@ public class TickHandlerClientVenus
                 {
                     world.provider.setCloudRenderer(new CloudRenderer());
                 }
+
+                if (world.provider.getWeatherRenderer() == null)
+                {
+                    world.provider.setWeatherRenderer(new WeatherRendererVenus());
+                }
             }
         }
     }
@@ -109,7 +114,7 @@ public class TickHandlerClientVenus
                     }
                 }
 
-                if (player.getRNG().nextInt(500) == 0 && minecraft.theWorld.provider instanceof WorldProviderVenus)
+                if (player.getRNG().nextInt(300 + (int) (800F * minecraft.theWorld.rainingStrength)) == 0 && minecraft.theWorld.provider instanceof WorldProviderVenus)
                 {
                     double freq = player.getRNG().nextDouble() * Math.PI * 2.0F;
                     double dist = 180.0F;
@@ -118,7 +123,7 @@ public class TickHandlerClientVenus
                     double posX = player.posX + dX;
                     double posY = 70;
                     double posZ = player.posZ + dZ;
-                    minecraft.theWorld.playSound(player, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 1000.0F, 1.0F + player.getRNG().nextFloat() * 0.2F);
+                    minecraft.theWorld.playSound(player, posX, posY, posZ, SoundEvents.ENTITY_LIGHTNING_THUNDER, SoundCategory.WEATHER, 500.0F + player.getRNG().nextFloat() * 500F, 1.0F + player.getRNG().nextFloat() * 0.2F);
                     lightning.put(new BlockPos(posX, posY, posZ), 20);
                 }
             }
