@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.item.IArmorGravity;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
+import micdoodle8.mods.galacticraft.api.world.IWeatherProvider;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.client.BubbleRenderer;
@@ -20,6 +21,8 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.Tessellator;
@@ -31,14 +34,20 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -77,6 +86,7 @@ public class TransformerHooks
     private static boolean generatorsInitialised = false;
     public static List<Block> spawnListAE2_GC = new LinkedList<>();
     public static ThreadLocal<BufferBuilder> renderBuilder = new ThreadLocal<>();
+    private static int rainSoundCounter = 0;
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -615,5 +625,103 @@ public class TransformerHooks
     public static boolean isGrating(boolean orig, Block b)
     {
         return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public static void addRainParticles(Random random, int rendererUpdateCount, float f)
+    {
+        Minecraft mc = Minecraft.getMinecraft();
+        random.setSeed((long)rendererUpdateCount * 312987231L);
+        Entity entity = mc.getRenderViewEntity();
+        World world = mc.world;
+        BlockPos blockpos = new BlockPos(entity);
+        int i = 10;
+        double x = 0.0D;
+        double y = 0.0D;
+        double z = 0.0D;
+        double xx = 0.0D;
+        double yy = 0.0D;
+        double zz = 0.0D;
+        int j = 0;
+        int k = (int)(100.0F * f * f);
+
+        if (mc.gameSettings.particleSetting == 1)
+        {
+            k >>= 1;
+        }
+        else if (mc.gameSettings.particleSetting == 2)
+        {
+            k = 0;
+        }
+
+        for (int l = 0; l < k; ++l)
+        {
+            BlockPos blockpos1 = world.getPrecipitationHeight(blockpos.add(random.nextInt(i) - random.nextInt(i), 0, random.nextInt(i) - random.nextInt(i)));
+            Biome biome = world.getBiome(blockpos1);
+
+            boolean canRain = biome.canRain() && biome.getTemperature(blockpos1) >= 0.15F;
+            if (world.provider instanceof IWeatherProvider) canRain = true;
+
+            if (canRain && blockpos1.getY() <= blockpos.getY() + i && blockpos1.getY() >= blockpos.getY() - i)
+            {
+                double xd = random.nextDouble();
+                double zd = random.nextDouble();
+                BlockPos blockpos2 = blockpos1.down();
+                IBlockState iblockstate = world.getBlockState(blockpos2);
+                AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(world, blockpos2);
+
+                if (iblockstate.getMaterial() != Material.LAVA && iblockstate.getBlock() != Blocks.MAGMA)
+                {
+                    if (iblockstate.getMaterial() != Material.AIR)
+                    {
+                        ++j;
+
+                        x = blockpos2.getX() + xd;
+                        y = blockpos2.getY() + 0.1D + axisalignedbb.maxY;
+                        z = blockpos2.getZ() + zd;
+                        if (random.nextInt(j) == 0)
+                        {
+                            xx = x;
+                            yy = y - 1.0D;
+                            zz = z;
+                        }
+
+                        if (world.provider instanceof IWeatherProvider)
+                        {
+                            mc.effectRenderer.addEffect(((IWeatherProvider) world.provider).getParticle(mc.world, x, y, z));
+                        }
+                        else
+                        {
+                            mc.world.spawnParticle(EnumParticleTypes.WATER_DROP, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
+                        }
+                    }
+                }
+                else
+                {
+                    mc.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, blockpos1.getX() + xd, blockpos1.getY() + 0.1D - axisalignedbb.minY, blockpos1.getZ() + zd, 0.0D, 0.0D, 0.0D, new int[0]);
+                }
+            }
+        }
+
+        if (j > 0 && random.nextInt((world.provider instanceof IWeatherProvider) ? ((IWeatherProvider) world.provider).getSoundInterval(f) : 3) < rainSoundCounter++)
+        {
+            rainSoundCounter = 0;
+
+            if (world.provider instanceof IWeatherProvider)
+            {
+                ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
+            }
+            else
+            {
+                if ((int)yy >= blockpos.getY() + 1 && world.getPrecipitationHeight(blockpos).getY() > blockpos.getY())
+                {
+                    mc.world.playSound(xx, yy, zz, SoundEvents.WEATHER_RAIN_ABOVE, SoundCategory.WEATHER, 0.1F, 0.5F, false);
+                }
+                else
+                {
+                    mc.world.playSound(xx, yy, zz, SoundEvents.WEATHER_RAIN, SoundCategory.WEATHER, 0.2F, 1.0F, false);
+                }
+            }
+        }
     }
 }

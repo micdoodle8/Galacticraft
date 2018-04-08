@@ -66,6 +66,8 @@ public class FluidUtil
      */
     public static boolean testFuel(String name)
     {
+        if (name == null) return false;
+        
         if (name.equals("fuel") || name.equals("fuelgc")|| name.equals("fuel_light"))
         {
             return true;
@@ -91,6 +93,8 @@ public class FluidUtil
     
     public static boolean testOil(String name)
     {
+        if (name == null) return false;
+
         if (name.equals("oil") || name.equals("oilgc"))
         {
             return true;
