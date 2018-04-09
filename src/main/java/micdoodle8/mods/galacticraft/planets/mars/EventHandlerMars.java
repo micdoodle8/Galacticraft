@@ -79,7 +79,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        EntityPlayer player = event.getEntityPlayer(); 
+        EntityPlayer player = event.getEntityPlayer();
         BlockPos c = player.bedLocation;
         IBlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
@@ -113,20 +113,23 @@ public class EventHandlerMars
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
         BlockPos blockPos = event.getEntityPlayer().bedLocation;
-        IBlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
-        if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+        if (blockPos != null)
         {
-            TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
-            if (tile instanceof TileEntityMulti)
+            IBlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
+            if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
-                state = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
+                if (tile instanceof TileEntityMulti)
+                {
+                    state = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                }
             }
-        }
 
-        if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
-        {
-            event.shouldRotate = true;
-        	event.vanillaOverride = true;
+            if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+            {
+                event.shouldRotate = true;
+                event.vanillaOverride = true;
+            }
         }
     }
 

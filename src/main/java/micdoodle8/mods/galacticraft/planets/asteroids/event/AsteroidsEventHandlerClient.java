@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroid
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -54,9 +55,12 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-            if (FMLClientHandler.instance().getClient().currentScreen instanceof GuiCelestialSelection)
+            float alpha = 1.0F;
+            GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
+            if (screen instanceof GuiCelestialSelection)
             {
-                GL11.glColor4f(0.7F, 0.0F, 0.0F, 0.5F);
+                alpha = ((GuiCelestialSelection) screen).getAlpha(renderEvent.celestialBody);
+                GL11.glColor4f(0.7F, 0.0F, 0.0F, alpha / 2.0F);
             }
             else
             {
@@ -101,7 +105,7 @@ public class AsteroidsEventHandlerClient
             }
 
             GL11.glEnd();
-            GL11.glColor4f(0.7F, 0.0F, 0.0F, 0.1F);
+            GL11.glColor4f(0.7F, 0.0F, 0.0F, alpha / 10.0F);
             GL11.glBegin(GL11.GL_QUADS);
 
             x = min * renderEvent.celestialBody.getRelativeDistanceFromCenter().unScaledDistance;
