@@ -290,11 +290,10 @@ public class SkyProviderOrbit extends IRenderHandler
             final float alpha = 0.5F;
             GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
             BufferBuilder worldRenderer = var23.getBuffer();
-            double v = 0.75D;   // Overworld texture is 48x48 in a 64x64 .png
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            worldRenderer.pos(-var10, 0, var10).tex(0D, v).endVertex();
-            worldRenderer.pos(var10, 0, var10).tex(v, v).endVertex();
-            worldRenderer.pos(var10, 0, -var10).tex(v, 0D).endVertex();
+            worldRenderer.pos(-var10, 0, var10).tex(0D, 1.0).endVertex();
+            worldRenderer.pos(var10, 0, var10).tex(1.0, 1.0).endVertex();
+            worldRenderer.pos(var10, 0, -var10).tex(1.0, 0D).endVertex();
             worldRenderer.pos(-var10, 0, -var10).tex(0D, 0D).endVertex();
             var23.draw();
             GL11.glPopMatrix();

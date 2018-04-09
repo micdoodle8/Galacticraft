@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -22,6 +18,9 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemFood extends net.minecraft.item.ItemFood implements ISortableItem
 {
@@ -161,7 +160,6 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
     @Override
     public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
-        stack.shrink(1);
         if (entityLiving instanceof EntityPlayer)
         {
             ((EntityPlayer) entityLiving).getFoodStats().addStats(this, stack);
@@ -171,6 +169,7 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
         {
             entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
         }
+        stack.shrink(1);
         return stack;
     }
 

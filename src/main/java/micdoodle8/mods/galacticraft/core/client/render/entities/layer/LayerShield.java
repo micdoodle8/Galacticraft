@@ -69,7 +69,7 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
                     float g = 0.2F * sTime;
                     float b = 0.9F * sTime;
 
-                    GlStateManager.depthMask(true);
+                    GlStateManager.depthMask(false);
                     GL11.glColor4f(r, g, b, 0.2F);
                     GlStateManager.blendFunc(GL11.GL_ONE, GL11.GL_ONE);
                     this.shieldModel.render(entitylivingbaseIn, f2, f3, f5, f6, f7, scale);
@@ -80,6 +80,7 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
                     GL11.glDisable(GL11.GL_BLEND);
                     GL11.glEnable(GL11.GL_ALPHA_TEST);
                     GL11.glEnable(GL11.GL_LIGHTING);
+                    GlStateManager.depthMask(true);
                 }
             }
         }
