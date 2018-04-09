@@ -2466,11 +2466,11 @@ public class GuiCelestialSelection extends GuiScreen
             boolean ready = this.lastSelectedBody != null || this.ticksSinceSelection > 35;
             boolean isSibling = getSiblings(this.selectedBody).contains(body);
             boolean isPossible = !(body instanceof Satellite) || (this.possibleBodies != null && this.possibleBodies.contains(body));
-            if (!selected && !isSibling)
+            if ((!selected && !isSibling) || !isPossible)
             {
                 alpha = 0.0F;
             }
-            else if (this.isZoomed() && (((!selected || !ready) && !isSibling) || !isPossible))
+            else if (this.isZoomed() && ((!selected || !ready) && !isSibling))
             {
                 alpha = Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
             }
