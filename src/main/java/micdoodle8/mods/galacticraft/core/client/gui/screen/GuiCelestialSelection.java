@@ -406,13 +406,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         Vector2f pos = this.position;
 
-        if (this.selectedBody instanceof IChildBody)
-        {
-            Vector3f pos3 = this.getCelestialBodyPosition(((IChildBody) this.selectedBody).getParentPlanet());
-            pos.x = pos3.x;
-            pos.y = pos3.y;
-        }
-        else if (this.lastSelectedBody instanceof IChildBody)
+        if (this.lastSelectedBody != null)
         {
             Vector3f pos3 = this.getCelestialBodyPosition(this.lastSelectedBody);
             pos.x = pos3.x;
@@ -954,7 +948,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (!clickHandled)
         {
-            List<CelestialBody> children = this.getChildren(this.isZoomed() ? this.selectedBody : this.selectedParent);
+            List<CelestialBody> children = this.getChildren(this.isZoomed() && !(this.selectedParent instanceof Planet) ? this.selectedBody : this.selectedParent);
     
             yPos = TOP + 50;
             for (CelestialBody child : children)
@@ -1004,11 +998,11 @@ public class GuiCelestialSelection extends GuiScreen
                     {
                         if (this.isSelected() && this.selectedBody != bodyClicked)
                         {
-                            if (!(this.selectedBody instanceof IChildBody && ((IChildBody) this.selectedBody).getParentPlanet() == bodyClicked))
+                            /*if (!(this.selectedBody instanceof IChildBody) || ((IChildBody) this.selectedBody).getParentPlanet() != bodyClicked)
                             {
-                                this.unselectCelestialBody();
+//                                this.unselectCelestialBody();
                             }
-                            else if (this.isZoomed())
+                            else */if (this.isZoomed())
                             {
                                 this.selectionState = EnumSelection.SELECTED;
                             }
@@ -1087,7 +1081,7 @@ public class GuiCelestialSelection extends GuiScreen
         int xPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset;
         if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
         {
-            if (this.selectedBody != body || !this.isZoomed())
+            if (this.selectedBody != body/* || !this.isZoomed()*/)
             {
                 if (this.selectedBody == null)
                 {
@@ -1097,10 +1091,10 @@ public class GuiCelestialSelection extends GuiScreen
 
                 EnumSelection selectionCountOld = this.selectionState;
 
-                if (this.isSelected() && this.selectedBody != body)
-                {
-                    this.unselectCelestialBody();
-                }
+//                if (this.isSelected() && this.selectedBody != body)
+//                {
+//                    this.unselectCelestialBody();
+//                }
 
                 if (selectionCountOld == EnumSelection.ZOOMED)
                 {
