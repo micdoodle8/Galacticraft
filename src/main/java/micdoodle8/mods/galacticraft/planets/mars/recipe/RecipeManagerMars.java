@@ -73,11 +73,9 @@ public class RecipeManagerMars
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 9, 2), new Object[] { "X", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 8) });
 
         // Mars Cobblestone Stairs
-        RecipeUtil.addRecipe(new ItemStack(MarsBlocks.marsCobblestoneStairs, 4), new Object[] { "  X", " XX", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 4) });
         RecipeUtil.addRecipe(new ItemStack(MarsBlocks.marsCobblestoneStairs, 4), new Object[] { "X  ", "XX ", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 4) });
 
         // Mars Dungeon Brick Stairs
-        RecipeUtil.addRecipe(new ItemStack(MarsBlocks.marsBricksStairs, 4), new Object[] { "  X", " XX", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 7) });
         RecipeUtil.addRecipe(new ItemStack(MarsBlocks.marsBricksStairs, 4), new Object[] { "X  ", "XX ", "XXX", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 7) });
 
 //		// Slab Block
