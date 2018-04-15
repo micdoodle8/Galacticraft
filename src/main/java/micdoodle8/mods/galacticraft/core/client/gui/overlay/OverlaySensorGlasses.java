@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import java.util.Iterator;
+
+import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
-import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -24,8 +26,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
-
-import java.util.Iterator;
 
 @SideOnly(Side.CLIENT)
 public class OverlaySensorGlasses extends Overlay
@@ -151,6 +151,6 @@ public class OverlaySensorGlasses extends Overlay
     public static boolean overrideMobTexture()
     {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        return (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses);
+        return (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ISensorGlassesArmor);
     }
 }
