@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
+import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceModule;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeling;
@@ -86,6 +87,7 @@ public class GalacticraftPlanets
         GalacticraftPlanets.commonModules.add(new MarsModule());
         GalacticraftPlanets.commonModules.add(new AsteroidsModule());
         GalacticraftPlanets.commonModules.add(new VenusModule());
+        GalacticraftPlanets.commonModules.add(new DeepSpaceModule());
         GalacticraftPlanets.proxy.preInit(event);
         GalacticraftPlanets.proxy.registerVariants();
         

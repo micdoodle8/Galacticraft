@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftplanets:blocks/grey",
+        "down": "galacticraftplanets:blocks/grey",
+        "up": "galacticraftplanets:blocks/grey",
+        "north": "galacticraftplanets:blocks/grey",
+        "east": "galacticraftplanets:blocks/grey",
+        "south": "galacticraftplanets:blocks/grey",
+        "west": "galacticraftplanets:blocks/grey"
+    }
+}

@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModuleClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceModuleClient;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModuleClient;
 import net.minecraft.item.Item;
@@ -26,6 +27,7 @@ public class PlanetsProxyClient extends PlanetsProxy
         GalacticraftPlanets.clientModules.add(new MarsModuleClient());
         GalacticraftPlanets.clientModules.add(new AsteroidsModuleClient());
         GalacticraftPlanets.clientModules.add(new VenusModuleClient());
+        GalacticraftPlanets.clientModules.add(new DeepSpaceModuleClient());
 
         super.preInit(event);
 
