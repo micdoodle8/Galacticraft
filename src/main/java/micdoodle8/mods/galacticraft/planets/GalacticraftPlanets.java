@@ -10,6 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
+import micdoodle8.mods.galacticraft.planets.deepspace.ConfigManagerDeepSpace;
 import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceModule;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
@@ -82,6 +83,7 @@ public class GalacticraftPlanets
         new ConfigManagerMars(newPlanetsConf, update);
         new ConfigManagerAsteroids(new File(event.getModConfigurationDirectory(), "Galacticraft/asteroids.conf"));
         new ConfigManagerVenus(new File(event.getModConfigurationDirectory(), "Galacticraft/venus.conf"));
+        new ConfigManagerDeepSpace(new File(event.getModConfigurationDirectory(), "Galacticraft/deep_space.conf"));
         this.configSyncEnd(true);
 
         GalacticraftPlanets.commonModules.add(new MarsModule());

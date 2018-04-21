@@ -7,7 +7,9 @@ import micdoodle8.mods.galacticraft.api.galaxies.Moon;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.dimension.TeleportTypeSpaceStation;
+import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModule;
 import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import micdoodle8.mods.galacticraft.planets.deepspace.tile.TileEntityDeepStructure;
@@ -42,20 +44,23 @@ public class DeepSpaceModule implements IPlanetsModule
 
 //        RecipeManagerDeepSpace.loadRecipes();
 
-        DeepSpaceModule.stationDeepSpace = new Moon("deep_space").setParentPlanet(GalacticraftCore.planetJupiter);
+        // That's no moon!
+        DeepSpaceModule.stationDeepSpace = new Moon("deep_space");
         DeepSpaceModule.stationDeepSpace.setRelativeSize(0.2667F).setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(23.5F, 23.5F)).setRelativeOrbitTime(1 / 0.02F);
-        DeepSpaceModule.stationDeepSpace.setDimensionInfo(ConfigManagerCore.idDimensionOverworldOrbitStatic, WorldProviderDeepSpace.class).setTierRequired(3);
+        DeepSpaceModule.stationDeepSpace.setDimensionInfo(ConfigManagerDeepSpace.dimensionIDDeepSpace, WorldProviderDeepSpace.class).setTierRequired(3);
         DeepSpaceModule.stationDeepSpace.setBodyIcon(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/space_station.png"));
         DeepSpaceModule.stationDeepSpace.setAtmosphere(new AtmosphereInfo(false, false, false, 0.0F, 0.1F, 0.02F));
         GalaxyRegistry.registerMoon(DeepSpaceModule.stationDeepSpace);
-//        GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
 
+        GalacticraftRegistry.registerTeleportType(WorldProviderDeepSpace.class, new TeleportTypeSpaceStation());
         GalacticraftRegistry.registerRocketGui(WorldProviderDeepSpace.class, new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/overworld_rocket_gui.png"));
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
+        DeepSpaceModule.stationDeepSpace.setParentPlanet(WorldUtil.getPlanetByName("jupiter", GalacticraftCore.solarSystemSol));
+        GCPlanetDimensions.DEEP_SPACE = WorldUtil.getDimensionTypeById(ConfigManagerDeepSpace.dimensionIDDeepSpace);
     }
 
     @Override

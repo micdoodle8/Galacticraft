@@ -56,8 +56,8 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
 import net.minecraftforge.server.permission.PermissionAPI;
+
 import org.apache.commons.lang3.ArrayUtils;
 
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -305,6 +305,22 @@ public class WorldUtil
         return null;
     }
 
+    public static Planet getPlanetByName(String name, SolarSystem system)
+    {
+        for (CelestialBody body : GalaxyRegistry.getRegisteredPlanets().values())
+        {
+            if (body instanceof Planet && name.equals(body.getName()))
+            {
+                if (((Planet) body).getParentSolarSystem() == system)
+                {
+                    return (Planet) body;
+                }
+            }
+        }
+        
+        return null;
+    }
+    
     /**
      * CAUTION: this loads the dimension if it is not already loaded.  This can cause
      * server load if used too frequently or with a list of multiple dimensions.

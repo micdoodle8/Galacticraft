@@ -7,15 +7,19 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.CloudRenderer;
-import micdoodle8.mods.galacticraft.core.client.SkyProviderOrbit;
-import micdoodle8.mods.galacticraft.core.dimension.GCDimensions;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.world.gen.BiomeProviderOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceModule;
+import micdoodle8.mods.galacticraft.planets.deepspace.client.SkyProviderDeepSpace;
+import micdoodle8.mods.galacticraft.planets.deepspace.world.ChunkProviderDeepSpace;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -31,7 +35,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @Override
     public DimensionType getDimensionType()
     {
-        return GCDimensions.ORBIT_KEEPLOADED;
+        return GCPlanetDimensions.DEEP_SPACE;
     }
 
     @Override
@@ -122,7 +126,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @Override
     public String getSaveFolder()
     {
-        return "DIM_DEEPSPACE";
+        return "DIM-32";
     }
 
     @Override
@@ -172,7 +176,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @SideOnly(Side.CLIENT)
     public void setSpinDeltaPerTick(float angle)
     {
-        SkyProviderOrbit skyProvider = ((SkyProviderOrbit)this.getSkyRenderer());
+        SkyProviderDeepSpace skyProvider = ((SkyProviderDeepSpace)this.getSkyRenderer());
         if (skyProvider != null)
             skyProvider.spinDeltaPerTick = angle;
     }
@@ -181,7 +185,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @SideOnly(Side.CLIENT)
     public float getSkyRotation()
     {
-        SkyProviderOrbit skyProvider = ((SkyProviderOrbit)this.getSkyRenderer());
+        SkyProviderDeepSpace skyProvider = ((SkyProviderDeepSpace)this.getSkyRenderer());
         return skyProvider.spinAngle;
     }
     
@@ -189,7 +193,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @SideOnly(Side.CLIENT)
     public void createSkyProvider()
     {
-        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
+        this.setSkyRenderer(new SkyProviderDeepSpace(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/jupiter.png"), true, true));
         this.setSpinDeltaPerTick(this.getSpinManager().getSpinRate());
         
         if (this.getCloudRenderer() == null)
@@ -212,5 +216,17 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     public List<Block> getSurfaceBlocks()
     {
         return null;
+    }
+
+    @Override
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
+    {
+        return ChunkProviderDeepSpace.class;
+    }
+
+    @Override
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
+    {
+        return BiomeProviderOrbit.class;
     }
 }
