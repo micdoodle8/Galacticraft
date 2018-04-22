@@ -19,7 +19,7 @@ public class StructureVillageStartMoon extends StructureStart
         super(par3, par4);
 
         final ArrayList<StructureVillagePieceWeightMoon> var6 = StructureVillagePiecesMoon.getStructureVillageWeightedPieceList(par2Random, par5);
-        final StructureComponentVillageStartPiece var7 = new StructureComponentVillageStartPiece(par1World.getWorldChunkManager(), 0, par2Random, (par3 << 4) + 2, (par4 << 4) + 2, var6, par5);
+        final StructureComponentVillageStartPiece var7 = new StructureComponentVillageStartPiece(par1World.getBiomeProvider(), 0, par2Random, (par3 << 4) + 2, (par4 << 4) + 2, var6, par5);
         this.components.add(var7);
         var7.buildComponent(var7, this.components, par2Random);
         final ArrayList<Object> var8 = var7.field_74930_j;

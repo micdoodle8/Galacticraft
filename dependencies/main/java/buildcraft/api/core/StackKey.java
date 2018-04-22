@@ -7,8 +7,8 @@ package buildcraft.api.core;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 /** This class is used whenever stacks needs to be stored as keys. */
@@ -54,7 +54,7 @@ public final class StackKey {
     }
 
     public static StackKey fluid(Fluid fluid) {
-        return new StackKey(new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME));
+        return new StackKey(new FluidStack(fluid, 1000));
     }
 
     public static StackKey fluid(FluidStack fluidStack) {
@@ -80,8 +80,7 @@ public final class StackKey {
             }
         }
         if (fluidStack != null) {
-            if (fluidStack.getFluid().getID() != k.fluidStack.getFluid().getID() || fluidStack.amount != k.fluidStack.amount || !objectsEqual(
-                    fluidStack.tag, k.fluidStack.tag)) {
+            if (!fluidStack.isFluidEqual(k.fluidStack) || fluidStack.amount != k.fluidStack.amount) {
                 return false;
             }
         }
@@ -98,7 +97,7 @@ public final class StackKey {
         }
         result = 31 * result + 7;
         if (fluidStack != null) {
-            result = 31 * result + fluidStack.getFluid().getID();
+            result = 31 * result + fluidStack.getFluid().getName().hashCode();
             result = 31 * result + fluidStack.amount;
             result = 31 * result + objectHashCode(fluidStack.tag);
         }

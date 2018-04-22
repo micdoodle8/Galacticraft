@@ -1,0 +1,13 @@
+{
+  "result": {
+    "item": "galacticraftcore:food",
+    "data": 6,
+    "count": 2
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:beef"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

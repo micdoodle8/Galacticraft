@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeGenBaseVenus;
+import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.miccore.IntCache;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.layer.GenLayer;
 
 public class GenLayerVenusBiomes extends GenLayer
 {
-    private static final BiomeGenBase[] biomes = new BiomeGenBase[] { BiomeGenBaseVenus.venusFlat, BiomeGenBaseVenus.venusMountain, BiomeGenBaseVenus.venusValley};
+    private static final Biome[] biomes = VenusModule.planetVenus.biomesToGenerate.toArray(new Biome[0]);
 
     public GenLayerVenusBiomes(long l, GenLayer parent)
     {
@@ -30,7 +30,7 @@ public class GenLayerVenusBiomes extends GenLayer
             for (int i = 0; i < width; ++i)
             {
                 initChunkSeed(x + i, z + k);
-                dest[i + k * width] = biomes[nextInt(biomes.length)].biomeID;
+                dest[i + k * width] = Biome.getIdForBiome(biomes[nextInt(biomes.length)]);
             }
         }
 

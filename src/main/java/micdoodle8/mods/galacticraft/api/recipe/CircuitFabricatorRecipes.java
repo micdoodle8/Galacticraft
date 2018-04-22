@@ -1,16 +1,18 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CircuitFabricatorRecipes
 {
-    private static List<Object[]> recipeInputs = new ArrayList<>();
+    private static List<NonNullList<Object>> recipeInputs = new ArrayList<>();
     private static List<ItemStack> recipeOutputs = new ArrayList<>();
 
-    public static ArrayList<ArrayList<ItemStack>> slotValidItems = new ArrayList<ArrayList<ItemStack>>(5);
+    public static ArrayList<ArrayList<ItemStack>> slotValidItems = new ArrayList<>(5);
 
     /**
      * Input list must be array with 5 elements matching the 5 slots in the machine.  Use null if no
@@ -23,11 +25,11 @@ public class CircuitFabricatorRecipes
      * 
      * @return
      */
-    public static void addRecipe(ItemStack output, Object[] inputList)
+    public static void addRecipe(ItemStack output, List<Object> inputList)
     {
-        if (inputList.length != 5)
+        if (inputList.size() != 5)
         {
-            throw new RuntimeException("Invalid circuit fabricator recipe!  Inputs length should be 5, was " + inputList.length);
+            throw new RuntimeException("Invalid circuit fabricator recipe!  Inputs length should be 5, was " + inputList.size());
         }
         for (Object o : inputList)
         {
@@ -42,19 +44,9 @@ public class CircuitFabricatorRecipes
             throw new RuntimeException("Invalid circuit fabricator recipe!  Input must be ItemStack or List<ItemStack>: " + o.toString());
         }
 
-        if (inputList.getClass() != Object[].class)
-        {
-            Object[] inputs = new Object[inputList.length];
-            for (int i = 0; i < inputList.length; i++)
-            {
-                inputs[i] = inputList[i];
-            }
-            CircuitFabricatorRecipes.recipeInputs.add(inputs);
-        }
-        else
-        {
-            CircuitFabricatorRecipes.recipeInputs.add(inputList);
-        }
+        NonNullList<Object> inputs = NonNullList.create();
+        inputs.addAll(inputList);
+        CircuitFabricatorRecipes.recipeInputs.add(inputs);
         CircuitFabricatorRecipes.recipeOutputs.add(output);
         validateItems(inputList);
     }
@@ -63,7 +55,7 @@ public class CircuitFabricatorRecipes
      * 
      * @param inputList
      */
-    private static void validateItems(Object[] inputList)
+    private static void validateItems(List<Object> inputList)
     {
         //First initialise the ArrayList if this is the first time it's used
         if (CircuitFabricatorRecipes.slotValidItems.size() == 0)
@@ -77,7 +69,7 @@ public class CircuitFabricatorRecipes
         //Now see if the recipe items are already valid for their slots, if not add them
         for (int i = 0; i < 5; i++)
         {
-            Object input = inputList[i];
+            Object input = inputList.get(i);
             if (input instanceof ItemStack)
             {
                 validateItem(i, (ItemStack) input);
@@ -94,7 +86,7 @@ public class CircuitFabricatorRecipes
 
     private static void validateItem(int i, ItemStack inputStack)
     {
-        if (inputStack == null)
+        if (inputStack.isEmpty())
         {
             return;
         }
@@ -122,26 +114,25 @@ public class CircuitFabricatorRecipes
      * @param inputList ItemStack array of input items
      * @return The result ItemStack
      */
-    public static ItemStack getOutputForInput(ItemStack[] inputList)
+    public static ItemStack getOutputForInput(List<ItemStack> inputList)
     {
-        if (inputList.length != 5)
+        if (inputList.size() != 5)
         {
-            return null;
+            return ItemStack.EMPTY;
         }
 
         int count = 0;
-        for (Object[] recipe : CircuitFabricatorRecipes.recipeInputs)
+        for (NonNullList<Object> recipe : CircuitFabricatorRecipes.recipeInputs)
         {
             boolean found = true;
-
             for (int i = 0; i < 5; i++)
             {
-                Object recipeStack = recipe[i];
-                ItemStack inputStack = inputList[i];
+                Object recipeStack = recipe.get(i);
+                ItemStack inputStack = inputList.get(i);
 
-                if (recipeStack == null || inputStack == null)
+                if (recipeStack instanceof ItemStack && ((ItemStack)recipeStack).isEmpty() || inputStack.isEmpty())
                 {
-                    if (recipeStack != null || inputStack != null)
+                    if (!(recipeStack instanceof ItemStack && ((ItemStack)recipeStack).isEmpty()) || !inputStack.isEmpty())
                     {
                         found = false;
                         break;
@@ -150,7 +141,7 @@ public class CircuitFabricatorRecipes
                 else if (recipeStack instanceof ItemStack)
                 {
                     ItemStack stack = ((ItemStack) recipeStack); 
-                    if (stack.getItem() != inputStack.getItem() || stack.getItemDamage() != inputStack.getItemDamage() || !ItemStack.areItemStackTagsEqual(stack, inputStack))
+                    if (stack.getItem() != inputStack.getItem() || stack.getItemDamage() != inputStack.getItemDamage() || !RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                     {
                         found = false;
                         break;
@@ -161,7 +152,7 @@ public class CircuitFabricatorRecipes
                     boolean listMatchOne = false;
                     for (ItemStack stack : (List<ItemStack>)recipeStack)
                     {
-                        if (stack.getItem() == inputStack.getItem() && stack.getItemDamage() == inputStack.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, inputStack))
+                        if (stack.getItem() == inputStack.getItem() && stack.getItemDamage() == inputStack.getItemDamage() && RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                         {
                             listMatchOne = true;
                             break;
@@ -183,10 +174,10 @@ public class CircuitFabricatorRecipes
             count++;
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
     
-    public static List<Object[]> getRecipes()
+    public static List<NonNullList<Object>> getRecipes()
     {
         return recipeInputs;
     }
@@ -220,11 +211,11 @@ public class CircuitFabricatorRecipes
         CircuitFabricatorRecipes.slotValidItems.clear();
         Object newIngredient = replacement;
 
-        for (Object[] recipe : CircuitFabricatorRecipes.recipeInputs)
+        for (NonNullList<Object> recipe : CircuitFabricatorRecipes.recipeInputs)
         {
             for (int i = 0; i < 5; i++)
             {
-                Object recipeStack = recipe[i];
+                Object recipeStack = recipe.get(i);
                 if (recipeStack == null)
                 {
                     continue;
@@ -235,7 +226,7 @@ public class CircuitFabricatorRecipes
                     ItemStack stack = ((ItemStack) recipeStack); 
                     if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                     {
-                        recipe[i] = newIngredient;
+                        recipe.set(i, newIngredient);
                     }
                 }
                 else if (recipeStack instanceof List<?>)
@@ -245,7 +236,7 @@ public class CircuitFabricatorRecipes
                     {
                         if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                         {
-                            recipe[i] = newIngredient;
+                            recipe.set(i, newIngredient);
                             break;
                         }
                     }

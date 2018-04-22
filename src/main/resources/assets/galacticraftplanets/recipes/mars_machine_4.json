@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars_machine",
+    "data": 4
+  },
+  "pattern": [
+    "XYX",
+    "XZX",
+    "XYX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 3
+    },
+    "Z": {
+      "item": "minecraft:bed",
+      "data": 0
+    }
+  }
+}

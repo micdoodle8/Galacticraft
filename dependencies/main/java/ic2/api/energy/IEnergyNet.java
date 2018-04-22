@@ -1,9 +1,13 @@
 package ic2.api.energy;
 
-import net.minecraft.util.BlockPos;
+import java.io.PrintStream;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import ic2.api.energy.tile.IEnergyTile;
+import ic2.api.info.ILocatable;
 
 /**
  * Interface representing the methods provided by the global EnergyNet class.
@@ -44,6 +48,11 @@ public interface IEnergyNet {
 	 */
 	IEnergyTile getSubTile(World world, BlockPos pos);
 
+	<T extends TileEntity & IEnergyTile> void addTile(T tile);
+	<T extends ILocatable & IEnergyTile> void addTile(T tile);
+
+	void removeTile(IEnergyTile tile);
+
 	World getWorld(IEnergyTile tile);
 
 	BlockPos getPos(IEnergyTile tile);
@@ -53,10 +62,12 @@ public interface IEnergyNet {
 	 *
 	 * The statistics apply to the last simulated tick.
 	 *
-	 * @param te Tile entity to check.
+	 * @param tile Tile entity to check.
 	 * @return Statistics for the tile entity.
 	 */
 	NodeStats getNodeStats(IEnergyTile tile);
+
+	boolean dumpDebugInfo(World world, BlockPos pos, PrintStream console, PrintStream chat);
 
 	/**
 	 * Determine the typical power used by the specific tier, e.g. 128 eu/t for tier 2.
@@ -73,4 +84,7 @@ public interface IEnergyNet {
 	 * @return tier
 	 */
 	int getTierFromPower(double power);
+
+	void registerEventReceiver(IEnergyNetEventReceiver receiver);
+	void unregisterEventReceiver(IEnergyNetEventReceiver receiver);
 }

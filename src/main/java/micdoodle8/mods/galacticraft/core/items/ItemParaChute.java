@@ -11,15 +11,16 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
 import static net.minecraft.item.EnumDyeColor.*;
 
-public class ItemParaChute extends Item implements ISortableItem
+public class ItemParaChute extends Item implements ISortableItem, IClickableItem
 {
     public static final String[] names = { "plain", // 0
             "black", // 1
@@ -51,7 +52,7 @@ public class ItemParaChute extends Item implements ISortableItem
     }
 
     @Override
-    public boolean isItemTool(ItemStack stack)
+    public boolean isEnchantable(ItemStack stack)
     {
         return false;
     }
@@ -63,11 +64,14 @@ public class ItemParaChute extends Item implements ISortableItem
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < ItemParaChute.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < ItemParaChute.names.length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
@@ -251,19 +255,36 @@ public class ItemParaChute extends Item implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
+
         if (player instanceof EntityPlayerMP)
         {
-            GCPlayerStats stats = GCPlayerStats.get(player);
-            ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
-
-            if (gear == null)
+            if (itemStack.getItem() instanceof IClickableItem)
             {
-                stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
-                itemStack.stackSize = 0;
+                itemStack = ((IClickableItem)itemStack.getItem()).onItemRightClick(itemStack, worldIn, player);
+            }
+
+            if (itemStack.isEmpty())
+            {
+                return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
             }
         }
+        return new ActionResult<>(EnumActionResult.PASS, itemStack);
+    }
+    
+    public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player)
+    {
+        GCPlayerStats stats = GCPlayerStats.get(player);
+        ItemStack gear = stats.getExtendedInventory().getStackInSlot(4);
+
+        if (gear.isEmpty())
+        {
+            stats.getExtendedInventory().setInventorySlotContents(4, itemStack.copy());
+            itemStack = ItemStack.EMPTY;
+        }
+        
         return itemStack;
     }
 }

@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_hoe"
+  },
+  "pattern": [
+    "XX",
+    " Y",
+    " Y"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_mars",
+      "data": 1
+    }
+  }
+}

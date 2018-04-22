@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "galacticraftplanets:telepad_short"
+  },
+  "pattern": [
+    "XWX",
+    "ZYZ",
+    "XXX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "W": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "minecraft:redstone"
+    },
+    "Z": {
+      "item": "minecraft:ender_pearl"
+    }
+  }
+}

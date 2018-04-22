@@ -10,15 +10,16 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.ChunkProviderMars;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.RoomTreasureMars;
-import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldChunkManagerMars;
 import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -53,22 +54,16 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderMars.class;
-    }
-
-    @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
-    {
-        return WorldChunkManagerMars.class;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
-        float f1 = this.worldObj.getCelestialAngle(par1);
+        float f1 = this.world.getCelestialAngle(par1);
         float f2 = 1.0F - (MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (f2 < 0.0F)
@@ -156,15 +151,15 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public String getInternalNameSuffix()
-    {
-        return "_mars";
-    }
-
-    @Override
     public int getDungeonSpacing()
     {
         return 704;
+    }
+
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.MARS;
     }
 
     @Override
@@ -174,7 +169,7 @@ public class WorldProviderMars extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public String getDungeonChestType()
+    public ResourceLocation getDungeonChestType()
     {
         return RoomTreasureMars.MARSCHEST;
     }

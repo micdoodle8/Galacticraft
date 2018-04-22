@@ -70,12 +70,12 @@ public class GuiCargoLoader extends GuiContainerGC
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.fontRendererObj.drawString(this.cargoLoader.getName(), 60, 12, 4210752);
+        this.fontRenderer.drawString(this.cargoLoader.getName(), 60, 12, 4210752);
         this.buttonLoadItems.enabled = this.cargoLoader.disableCooldown == 0;
         this.buttonLoadItems.displayString = !this.cargoLoader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stoploading.name") : GCCoreUtil.translate("gui.button.loaditems.name");
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
-        //this.fontRendererObj.drawString("" + this.cargoLoader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        //this.fontRenderer.drawString("" + this.cargoLoader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
     }
 
     private String getStatus()

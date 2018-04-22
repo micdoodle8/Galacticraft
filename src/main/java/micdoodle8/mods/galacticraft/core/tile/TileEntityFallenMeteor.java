@@ -19,7 +19,7 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     {
         super.update();
 
-        if (!this.worldObj.isRemote && this.heatLevel > 0)
+        if (!this.world.isRemote && this.heatLevel > 0)
         {
             this.heatLevel--;
         }
@@ -43,9 +43,9 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     @Override
     public void readExtraNetworkedData(ByteBuf dataStream)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
-            this.worldObj.notifyLightSet(this.getPos());
+            this.world.notifyLightSet(this.getPos());
         }
     }
 
@@ -63,10 +63,17 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("MeteorHeatLevel", this.heatLevel);
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     @Override

@@ -1,12 +1,10 @@
 package micdoodle8.mods.galacticraft.core.dimension;
 
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
-import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerOrbit;
+import net.minecraft.world.gen.IChunkGenerator;
 
 /***
  * Properties of a WorldProviderSpaceStation
@@ -37,24 +35,18 @@ public abstract class WorldProviderSpaceStation extends WorldProviderSpace
      * so this provides a handy initialisation method
      */
     @Override
-    public void registerWorldChunkManager()
+    protected void init()
     {
-        super.registerWorldChunkManager();
+        super.init();
         this.getSpinManager().registerServerSide();
     }
-    
+
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderOrbit.class;
     }
 
-    @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
-    {
-        return WorldChunkManagerOrbit.class;
-    }
-    
     @Override
     public void updateWeather()
     {

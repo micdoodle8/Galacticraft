@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.OreDictionary;
@@ -13,7 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ShapelessOreRecipeGC implements IRecipeUpdatable
+public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipeUpdatable
 {
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
@@ -57,8 +60,11 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable
     }
 
     @Override
-    public int getRecipeSize(){ return input.size(); }
-
+    public boolean canFit(int width, int height)
+    {
+        return width * height >= input.size();
+    }
+    
     @Override
     public ItemStack getRecipeOutput(){ return output; }
 
@@ -75,7 +81,7 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable
         {
             ItemStack slot = var1.getStackInSlot(x);
 
-            if (slot != null)
+            if (!slot.isEmpty())
             {
                 boolean inRecipe = false;
                 Iterator<Object> req = required.iterator();
@@ -171,7 +177,7 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable
     }
 
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
     {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
@@ -182,7 +188,7 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable
         for (int i = 0; i < this.input.size(); i++)
         {
             Object test = this.input.get(i);
-            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && ItemStack.areItemStackTagsEqual(inputA, (ItemStack) test))
+            if (test instanceof ItemStack && ItemStack.areItemsEqual(inputA, (ItemStack) test) && RecipeUtil.areItemStackTagsEqual(inputA, (ItemStack) test))
             {
                 this.input.set(i, inputB);
             }
@@ -210,7 +216,7 @@ public class ShapelessOreRecipeGC implements IRecipeUpdatable
     {
         for (Object b : test)
         {
-            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && ItemStack.areItemStackTagsEqual(stack, (ItemStack) b))
+            if (b instanceof ItemStack && ItemStack.areItemsEqual(stack, (ItemStack) b) && RecipeUtil.areItemStackTagsEqual(stack, (ItemStack) b))
                 return true;
         }
         return false;

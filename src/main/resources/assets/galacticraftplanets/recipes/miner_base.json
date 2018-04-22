@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftplanets:miner_base",
+    "count": 4
+  },
+  "pattern": [
+    "XCX",
+    "W W",
+    "XBX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:machine_tiered",
+      "data": 0
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "W": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    }
+  }
+}

@@ -51,15 +51,14 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityBeamReflector tile, double d, double d1, double d2, float f, int i)
+    public void render(TileEntityBeamReflector tile, double d, double d1, double d2, float f, int i, float alpha)
     {
-        GL11.glPushMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
+        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-        GL11.glTranslatef((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
-        GL11.glScalef(0.5F, 0.5F, 0.5F);
-        RenderHelper.disableStandardItemLighting();
-
-        this.bindTexture(TextureMap.locationBlocksTexture);
         if (Minecraft.isAmbientOcclusionEnabled())
         {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -69,39 +68,22 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        updateModels();
-
+        this.updateModels();
         ClientUtil.drawBakedModel(reflectorModelBase);
-        GL11.glRotatef(tile.yaw, 0, 1, 0);
+        GlStateManager.rotate(tile.yaw, 0, 1, 0);
         ClientUtil.drawBakedModel(reflectorModelAxle);
         float dX = 0.0F;
         float dY = 1.13228F;
         float dZ = 0.0F;
-        GL11.glTranslatef(dX, dY, dZ);
-        GL11.glRotatef(tile.pitch, 1, 0, 0);
-        GL11.glTranslatef(-dX, -dY, -dZ);
+        GlStateManager.translate(dX, dY, dZ);
+        GlStateManager.rotate(tile.pitch, 1, 0, 0);
+        GlStateManager.translate(-dX, -dY, -dZ);
         ClientUtil.drawBakedModel(reflectorModelEnergyBlaster);
-        GL11.glTranslatef(dX, dY, dZ);
-        GL11.glRotatef(tile.ticks * 5, 0, 0, 1);
-        GL11.glTranslatef(-dX, -dY, -dZ);
+        GlStateManager.translate(dX, dY, dZ);
+        GlStateManager.rotate(tile.ticks * 5, 0, 0, 1);
+        GlStateManager.translate(-dX, -dY, -dZ);
         ClientUtil.drawBakedModel(reflectorModelRing);
-
-//        TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Base");
-//        GL11.glRotatef(tileEntity.yaw, 0, 1, 0);
-//        TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Axle");
-//        float dX = 0.0F;
-//        float dY = 1.13228F;
-//        float dZ = 0.0F;
-//        GL11.glTranslatef(dX, dY, dZ);
-//        GL11.glRotatef(tileEntity.pitch, 1, 0, 0);
-//        GL11.glTranslatef(-dX, -dY, -dZ);
-//        TileEntityBeamReflectorRenderer.reflectorModel.renderPart("EnergyBlaster");
-//        GL11.glTranslatef(dX, dY, dZ);
-//        GL11.glRotatef(tileEntity.ticks * 500, 0, 0, 1);
-//        GL11.glTranslatef(-dX, -dY, -dZ);
-//        TileEntityBeamReflectorRenderer.reflectorModel.renderPart("Ring");
-
+        GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
-        GL11.glPopMatrix();
     }
 }

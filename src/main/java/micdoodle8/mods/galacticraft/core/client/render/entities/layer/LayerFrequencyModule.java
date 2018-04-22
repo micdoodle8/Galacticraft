@@ -72,8 +72,9 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                 if (wearingModule)
                 {
                     this.updateModels();
+                    GlStateManager.enableRescaleNormal();
                     GlStateManager.pushMatrix();
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
                     if (Minecraft.isAmbientOcclusionEnabled())
                     {

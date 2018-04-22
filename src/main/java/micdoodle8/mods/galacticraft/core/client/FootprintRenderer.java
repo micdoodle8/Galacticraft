@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -30,7 +30,7 @@ public class FootprintRenderer
 
     public static void renderFootprints(EntityPlayer player, float partialTicks)
     {
-        int dimActive = GCCoreUtil.getDimensionID(player.worldObj);
+        int dimActive = GCCoreUtil.getDimensionID(player.world);
         List<Footprint> footprintsToDraw = new LinkedList<>();
 
         for (List<Footprint> footprintList : footprints.values())
@@ -88,11 +88,11 @@ public class FootprintRenderer
             {
                 int j = footprint.lightmapVal % 65536;
                 int k = footprint.lightmapVal / 65536;
-                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+                OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j, (float)k);
             }
 
             float ageScale = footprint.age / (float) Footprint.MAX_AGE;
-            WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+            BufferBuilder worldRenderer = tessellator.getBuffer();
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
             float f11 = (float) (footprint.position.x - interpPosX);
@@ -103,7 +103,7 @@ public class FootprintRenderer
 
             int brightness = (int) (100 + ageScale * 155);
             //                    worldRenderer.putBrightness4(brightness, brightness, brightness, brightness);
-            GlStateManager.color(1 - ageScale, 1 - ageScale, 1 - ageScale, 1 - ageScale);
+            GlStateManager.color(1F - ageScale, 1F - ageScale, 1F - ageScale, 1F - ageScale);
             double footprintScale = 0.5F;
             worldRenderer.pos(Math.sin((45 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale, 0, Math.cos((45 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale).tex(f7, f9).endVertex();
             worldRenderer.pos(Math.sin((135 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale, 0, Math.cos((135 - footprint.rotation) / Constants.RADIANS_TO_DEGREES_D) * footprintScale).tex(f7, f8).endVertex();
@@ -153,7 +153,7 @@ public class FootprintRenderer
         while (i.hasNext())
         {
             Footprint print = i.next();
-            if (!print.owner.equals(FMLClientHandler.instance().getClient().thePlayer.getName()))
+            if (!print.owner.equals(FMLClientHandler.instance().getClient().player.getName()))
             {
                 i.remove();
             }

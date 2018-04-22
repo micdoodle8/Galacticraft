@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:titanium_leggings"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    }
+  }
+}

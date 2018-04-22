@@ -6,12 +6,10 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemMoon extends ItemDesc implements ISortableItem
 {
@@ -50,11 +48,14 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     }*/
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < ItemMoon.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < ItemMoon.names.length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 

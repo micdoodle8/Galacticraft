@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import com.google.common.collect.Lists;
+
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
@@ -52,7 +54,7 @@ public class DungeonStartVenus extends RoomEntranceVenus
             attempts++;
         }
 
-        System.out.println("Dungeon generation took " + attempts + " attempt(s)");
+        GCLog.debug("Dungeon generation took " + attempts + " attempt(s)");
 
         if (!validAttempt)
         {

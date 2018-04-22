@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -96,14 +96,15 @@ public class OxygenPressureProtocol
 
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
-        if (block instanceof BlockLeavesBase)
+        if (block instanceof BlockLeaves)
         {
             return true;
         }
 
-        if (block.isOpaqueCube())
+        IBlockState state = world.getBlockState(pos);
+        if (block.isOpaqueCube(state))
         {
-            return block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge;
+            return block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge;
 
         }
 
@@ -116,7 +117,6 @@ public class OxygenPressureProtocol
         if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
         {
             ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
-            IBlockState state = world.getBlockState(pos);
             if (metaList.contains(Integer.valueOf(-1)) || metaList.contains(state.getBlock().getMetaFromState(state)))
             {
                 return false;
@@ -126,7 +126,6 @@ public class OxygenPressureProtocol
         //Half slab seals on the top side or the bottom side according to its metadata
         if (block instanceof BlockSlab)
         {
-            IBlockState state = world.getBlockState(pos);
             int meta = state.getBlock().getMetaFromState(state);
             return !(side == EnumFacing.DOWN && (meta & 8) == 8 || side == EnumFacing.UP && (meta & 8) == 0);
         }
@@ -139,11 +138,9 @@ public class OxygenPressureProtocol
 
         if (block instanceof BlockPistonBase)
         {
-            BlockPistonBase piston = (BlockPistonBase) block;
-            IBlockState state = world.getBlockState(pos);
             if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
             {
-                EnumFacing facing = (EnumFacing) state.getValue(BlockPistonBase.FACING);
+                EnumFacing facing = state.getValue(BlockPistonBase.FACING);
                 return side != facing;
             }
             return false;
@@ -152,6 +149,6 @@ public class OxygenPressureProtocol
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        return !block.isSideSolid(world, pos, EnumFacing.getFront(side.getIndex() ^ 1));
+        return !block.isSideSolid(state, world, pos, side.getOpposite());
     }
 }

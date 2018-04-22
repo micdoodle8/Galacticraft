@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftcore:fuel_loader"
+  },
+  "pattern": [
+    "XXX",
+    "XZX",
+    "WYW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedCopper"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    }
+  }
+}

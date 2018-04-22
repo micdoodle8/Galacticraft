@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftcore:air_vent"
+  },
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

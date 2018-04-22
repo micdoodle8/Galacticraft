@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class TileEntitySpaceStationBase extends TileEntityMulti implements IMultiBlock
@@ -26,7 +26,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     {
         if (!this.initialised)
         {
-            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.world);
         }
     }
 
@@ -56,7 +56,7 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
-        int buildHeight = this.worldObj.getHeight() - 1;
+        int buildHeight = this.world.getHeight() - 1;
 
         for (int y = 1; y < 3; y++)
         {
@@ -77,13 +77,13 @@ public class TileEntitySpaceStationBase extends TileEntityMulti implements IMult
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.worldObj.getBlockState(pos);
+            IBlockState stateAt = this.world.getBlockState(pos);
 
             if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.SPACE_STATION_BASE)
             {
-                this.worldObj.setBlockToAir(pos);
+                this.world.setBlockToAir(pos);
             }
         }
-        this.worldObj.destroyBlock(this.getPos(), false);
+        this.world.destroyBlock(this.getPos(), false);
     }
 }

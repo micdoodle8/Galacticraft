@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
@@ -12,27 +13,32 @@ import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
 import micdoodle8.mods.galacticraft.api.world.IWeatherProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.planets.GCPlanetDimensions;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeProviderVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.ChunkProviderVenus;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.WorldChunkManagerVenus;
-import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomChestVenus;
+import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderVenus extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel, IWeatherProvider
 {
-    private double solarMultiplier = 0.36D;
+    private double solarMultiplier = -0.36D;
     private float prevRainingStrength;
     private float rainingStrength;
     private boolean raining = false;
@@ -85,22 +91,23 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderVenus.class;
     }
 
     @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
     {
-        return WorldChunkManagerVenus.class;
+        BiomeAdaptive.setBodyMultiBiome(VenusModule.planetVenus);
+        return BiomeProviderVenus.class;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
-        float f1 = this.worldObj.getCelestialAngle(par1);
+        float f1 = this.world.getCelestialAngle(par1);
         float f2 = 1.0F - (MathHelper.cos(f1 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (f2 < 0.0F)
@@ -188,11 +195,17 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public String getInternalNameSuffix()
+    public boolean shouldDisablePrecipitation()
     {
-        return "_venus";
+        return false;
     }
 
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCPlanetDimensions.VENUS;
+    }
+    
     @Override
     public int getDungeonSpacing()
     {
@@ -206,9 +219,9 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    public String getDungeonChestType()
+    public ResourceLocation getDungeonChestType()
     {
-        return RoomChestVenus.VENUSCHEST;
+        return RoomTreasureVenus.VENUSCHEST;
     }
 
     @Override
@@ -226,37 +239,37 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EntityFX getParticle(WorldClient world, double x, double y, double z)
+    public Particle getParticle(WorldClient world, double x, double y, double z)
     {
-        return new EntityAcidVaporFX(world, x, y, z, 0.0D, 0.0D, 0.0D, 0.95F);
+        return new ParticleAcidVapor(world, x, y, z, 0.0D, 0.0D, 0.0D, 0.95F);
     }
 
     @Override
     protected void updateWeatherOverride()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (--this.rainTime <= 0)
             {
                 this.raining = !this.raining;
                 if (this.raining)
                 {
-                    this.rainTime = (this.worldObj.rand.nextInt(3600) + 1000);
+                    this.rainTime = (this.world.rand.nextInt(3600) + 1000);
                 }
                 else
                 {
-                    this.rainTime = (this.worldObj.rand.nextInt(2000) + 1000);
+                    this.rainTime = (this.world.rand.nextInt(2000) + 1000);
                 }
             }
 
             if (--this.rainChange <= 0)
             {
-                this.targetRain = 0.15F + this.worldObj.rand.nextFloat() * 0.45F;
-                this.rainChange = (this.worldObj.rand.nextInt(200) + 100);
+                this.targetRain = 0.15F + this.world.rand.nextFloat() * 0.45F;
+                this.rainChange = (this.world.rand.nextInt(200) + 100);
             }
 
-            float strength = this.worldObj.rainingStrength;
-            this.worldObj.prevRainingStrength = strength;
+            float strength = this.world.rainingStrength;
+            this.world.prevRainingStrength = strength;
             if (this.raining && strength < this.targetRain)
             {
                 strength += 0.004F;
@@ -265,7 +278,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
             {
                 strength -= 0.004F;
             }
-            this.worldObj.rainingStrength = MathHelper.clamp_float(strength, 0.0F, 0.6F);
+            this.world.rainingStrength = MathHelper.clamp(strength, 0.0F, 0.6F);
         }
     }
 
@@ -274,11 +287,11 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     {
         if ((int)yy >= blockpos.getY() + 1 && world.getPrecipitationHeight(blockpos).getY() > blockpos.getY())
         {
-            mc.theWorld.playSound(xx, yy, zz, "random.fizz", 0.03F, 0.6F + random.nextFloat() * 0.2F, false);
+            mc.world.playSound(xx, yy, zz, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.025F, 0.6F + random.nextFloat() * 0.2F, false);
         }
         else
         {
-            mc.theWorld.playSound(xx, yy, zz, "random.fizz", 0.04F, 0.8F + random.nextFloat() * 0.06F + random.nextFloat() * 0.06F, false);
+            mc.world.playSound(xx, yy, zz, SoundEvents.BLOCK_LAVA_EXTINGUISH, SoundCategory.BLOCKS, 0.04F, 0.8F + random.nextFloat() * 0.06F + random.nextFloat() * 0.06F, false);
         }
     }
 

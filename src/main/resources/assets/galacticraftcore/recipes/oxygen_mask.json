@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_mask"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "item": "minecraft:iron_helmet"
+    }
+  }
+}

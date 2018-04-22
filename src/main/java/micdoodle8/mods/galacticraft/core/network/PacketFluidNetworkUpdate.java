@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -141,7 +141,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        TileEntity tile = player.worldObj.getTileEntity(this.pos);
+        TileEntity tile = player.world.getTileEntity(this.pos);
 
         if (tile instanceof IBufferTransmitter)
         {
@@ -157,7 +157,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
 
                 for (BlockPos pos : this.transmittersCoords)
                 {
-                    TileEntity transmitterTile = player.worldObj.getTileEntity(pos);
+                    TileEntity transmitterTile = player.world.getTileEntity(pos);
 
                     if (transmitterTile instanceof IBufferTransmitter)
                     {

@@ -45,7 +45,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
 
     public GuiLaunchControllerAdvanced(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
     {
-        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
         this.launchController = launchController;
     }
@@ -59,7 +59,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         }
         else
         {
-            boolean isOwner = PlayerUtil.getName(this.mc.thePlayer).equals(this.launchController.getOwnerName());
+            boolean isOwner = PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName());
             this.enablePadRemovalButton.enabled = isOwner;
         }
 
@@ -81,7 +81,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         int k;
         for (k = 0; k < buttonList.size(); ++k)
         {
-            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2);
+            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
         }
 
         for (k = 0; k < labelList.size(); ++k)
@@ -134,7 +134,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     @Override
     protected void actionPerformed(GuiButton button)
     {
-        if (!PlayerUtil.getName(this.mc.thePlayer).equals(this.launchController.getOwnerName()))
+        if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
             this.cannotEditTimer = 50;
             return;
@@ -145,7 +145,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
             switch (button.id)
             {
                 case 4:
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.launchController.getPos(), 1 }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_SWITCH_LAUNCH_CONTROLLER_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.launchController.getPos(), 1 }));
                     break;
                 default:
                     break;
@@ -157,15 +157,15 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String displayString = GCCoreUtil.translate("gui.launch_controller.owner") + ": " + this.launchController.getOwnerName();
-        this.fontRendererObj.drawString(displayString, this.xSize - this.fontRendererObj.getStringWidth(displayString) - 5, 5, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize - this.fontRenderer.getStringWidth(displayString) - 5, 5, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRenderer.drawString(this.launchController.getOwnerName(), this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
     }
 
     @Override
@@ -206,7 +206,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         if (dropdown.equals(this.dropdownTest))
         {
             this.launchController.launchDropdownSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 1, this.launchController.getPos(), this.launchController.launchDropdownSelection }));
         }
     }
 
@@ -227,12 +227,12 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         if (checkbox.equals(this.enablePadRemovalButton))
         {
             this.launchController.launchPadRemovalDisabled = !newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 3, this.launchController.getPos(), this.launchController.launchPadRemovalDisabled ? 1 : 0 }));
         }
         else if (checkbox.equals(this.launchWhenCheckbox))
         {
             this.launchController.launchSchedulingEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 4, this.launchController.getPos(), this.launchController.launchSchedulingEnabled ? 1 : 0 }));
         }
     }
 

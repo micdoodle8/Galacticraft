@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "galacticraftcore:engine",
+    "data": 1
+  },
+  "pattern": [
+    "ZYZ",
+    "ZWZ",
+    "XVX"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "W": {
+      "item": "galacticraftcore:fuel_canister_partial",
+      "data": 1
+    },
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "item": "minecraft:wool",
+      "data": 4
+    },
+    "Z": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_plate"
+    }
+  }
+}

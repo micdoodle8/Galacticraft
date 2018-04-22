@@ -11,8 +11,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +30,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     @Override
     public boolean onActivated(EntityPlayer entityPlayer)
     {
-        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.worldObj, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         return true;
     }
 
@@ -39,7 +39,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     {
         if (!this.initialised)
         {
-            this.initialised = this.initialiseMultiTiles(this.getPos(), this.worldObj);
+            this.initialised = this.initialiseMultiTiles(this.getPos(), this.world);
         }
     }
 
@@ -62,7 +62,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     @Override
     public void getPositions(BlockPos placedPosition, List<BlockPos> positions)
     {
-        int buildHeight = this.worldObj.getHeight() - 1;
+        int buildHeight = this.world.getHeight() - 1;
 
         for (int y = 1; y < 3; y++)
         {
@@ -98,24 +98,24 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.worldObj.getBlockState(pos);
+            IBlockState stateAt = this.world.getBlockState(pos);
 
-            if (stateAt.getBlock() == GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.NASA_WORKBENCH)
+            if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.NASA_WORKBENCH)
             {
-                if (this.worldObj.isRemote && this.worldObj.rand.nextDouble() < 0.05D)
+                if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.worldObj.getBlockState(thisBlock));
+                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(thisBlock));
                 }
-                this.worldObj.setBlockToAir(pos);
+                this.world.setBlockToAir(pos);
             }
         }
-        this.worldObj.destroyBlock(thisBlock, true);
+        this.world.destroyBlock(thisBlock, true);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(getPos().getX() - 1, getPos().getY() - 1, getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 5, getPos().getZ() + 2);
+        return new AxisAlignedBB(getPos().getX() - 1, getPos().getY() - 1, getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 5, getPos().getZ() + 2);
     }
 }

@@ -10,6 +10,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +61,9 @@ public abstract class GCPlayerStats
 
     public abstract void setSpaceshipTier(int spaceshipTier);
 
-    public abstract ItemStack[] getRocketStacks();
+    public abstract NonNullList<ItemStack> getRocketStacks();
 
-    public abstract void setRocketStacks(ItemStack[] rocketStacks);
+    public abstract void setRocketStacks(NonNullList<ItemStack> rocketStacks);
 
     public abstract int getRocketType();
 

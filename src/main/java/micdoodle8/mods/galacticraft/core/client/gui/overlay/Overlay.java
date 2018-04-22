@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
@@ -17,9 +17,9 @@ public class Overlay
      */
     protected static int getPlayerPositionY(EntityPlayer player)
     {
-        if (player.ridingEntity != null && player.ridingEntity instanceof EntityTier1Rocket)
+        if (player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityTier1Rocket)
         {
-            return (int) Math.floor(((EntityTier1Rocket) player.ridingEntity).posY);
+            return (int) Math.floor(((EntityTier1Rocket) player.getRidingEntity()).posY);
         }
 
         return (int) Math.floor(player.posY);
@@ -40,7 +40,7 @@ public class Overlay
         final float var7 = 0.00390625F;
         final float var8 = 0.00390625F;
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(par1 + 0, par2 + par6, 0.0).tex((par3 + 0) * var7, (par4 + par6) * var8).endVertex();
         worldRenderer.pos(par1 + par5, par2 + par6, 0.0).tex((par3 + par5) * var7, (par4 + par6) * var8).endVertex();
@@ -63,7 +63,7 @@ public class Overlay
         var7 *= 0.5D;
         var9 *= 0.5D;
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(var1 - var7, var3 + var9, var5).tex(0.0D, 1.0D).endVertex();
         worldRenderer.pos(var1 + var7, var3 + var9, var5).tex(1.0D, 1.0D).endVertex();

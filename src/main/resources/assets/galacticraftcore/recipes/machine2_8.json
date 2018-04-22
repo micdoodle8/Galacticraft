@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine2",
+    "data": 8
+  },
+  "pattern": [
+    "SSS",
+    "BBB",
+    "SSS"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "B": {
+      "item": "galacticraftcore:oxygen_tank_heavy_full",
+      "data": 2700
+    },
+    "S": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

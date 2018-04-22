@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftcore:view_screen"
+  },
+  "pattern": [
+    "XYX",
+    "YGY",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    }
+  }
+}

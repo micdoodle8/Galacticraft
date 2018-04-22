@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.MapGenStructure;
 import net.minecraft.world.gen.structure.MapGenStructureIO;
@@ -59,7 +60,7 @@ public class MapGenDungeonVenus extends MapGenStructure
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.worldObj, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.worldObj.provider).getDungeonSpacing());
+        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.provider).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;
         return i == chunkX && j == chunkZ;
@@ -68,7 +69,13 @@ public class MapGenDungeonVenus extends MapGenStructure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        return new MapGenDungeonVenus.Start(this.worldObj, this.rand, chunkX, chunkZ, this.configuration);
+        return new MapGenDungeonVenus.Start(this.world, this.rand, chunkX, chunkZ, this.configuration);
+    }
+
+    @Override
+    public BlockPos getNearestStructurePos(World worldIn, BlockPos pos, boolean p_180706_3_)
+    {
+        return null;
     }
 
     public static class Start extends StructureStart

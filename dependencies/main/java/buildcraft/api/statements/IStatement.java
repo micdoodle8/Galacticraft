@@ -4,15 +4,9 @@
  * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.statements;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-public interface IStatement {
-    /** Every statement needs a unique tag, it should be in the format of "&lt;modid&gt;:&lt;name&gt;.
-     *
-     * @return the unique id */
-    String getUniqueTag();
+/** Designates some sort of statement. Most of the time you should implement {@link ITriggerExternal},
+ * {@link ITriggerInternal}, {@link IActionExternal} or {@link IActionInternal} though. */
+public interface IStatement extends IGuiSlot {
 
     /** Return the maximum number of parameter this statement can have, 0 if none. */
     int maxParameters();
@@ -20,17 +14,35 @@ public interface IStatement {
     /** Return the minimum number of parameter this statement can have, 0 if none. */
     int minParameters();
 
-    /** Return the statement description in the UI */
-    String getDescription();
-
     /** Create parameters for the statement. */
     IStatementParameter createParameter(int index);
+
+    /** Creates a parameter for the given index, optionally returning the old param if it is still valid. By default
+     * this checks the classes of the old and new parameters, however it is sensible to override this check in case the
+     * parameters given no longer match. For example if you return {@link StatementParameterItemStack} from
+     * {@link #createParameter(int)} and require the stack to match a filter, but the incoming stack might not.
+     * 
+     * @param old
+     * @param index
+     * @return */
+    default IStatementParameter createParameter(IStatementParameter old, int index) {
+        IStatementParameter _new = createParameter(index);
+        if (old == null || _new == null) {
+            return _new;
+        } else if (old.getClass() == _new.getClass()) {
+            return old;
+        }
+        return _new;
+    }
 
     /** This returns the statement after a left rotation. Used in particular in blueprints orientation. */
     IStatement rotateLeft();
 
-    /** This should return the icon for this statement, suitable for rending directly into a GUI. This should refer to a
-     * texture on the map block texture map. */
-    @SideOnly(Side.CLIENT)
-    TextureAtlasSprite getGuiSprite();
+    /** This returns a group of related statements. For example "redstone signal input" should probably return an array
+     * of "RS_SIGNAL_ON" and "RS_SIGNAL_OFF". It is recommended to return an array containing this object. */
+    IStatement[] getPossible();
+
+    default boolean isPossibleOrdered() {
+        return false;
+    }
 }

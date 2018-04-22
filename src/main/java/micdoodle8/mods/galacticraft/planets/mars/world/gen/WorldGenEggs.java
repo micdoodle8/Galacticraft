@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -29,7 +29,7 @@ public class WorldGenEggs extends WorldGenerator
 
         if (!par1World.isBlockLoaded(newPos.add(1, 0, 1))) return false;
 
-        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.getHasNoSky()))
+        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.isNether()))
         {
             IBlockState below = par1World.getBlockState(newPos.down()); 
             if (below.getBlock() == MarsBlocks.marsBlock && below.getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)

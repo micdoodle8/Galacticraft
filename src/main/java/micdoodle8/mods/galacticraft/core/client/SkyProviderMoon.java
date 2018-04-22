@@ -12,11 +12,11 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -46,7 +46,7 @@ public class SkyProviderMoon extends IRenderHandler
         final byte byte2 = 64;
         final int i = 256 / byte2 + 2;
         float f = 16F;
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
 
         for (int j = -byte2 * i; j <= byte2 * i; j += byte2)
         {
@@ -87,7 +87,7 @@ public class SkyProviderMoon extends IRenderHandler
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] {}));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(mc.world), new Object[] {}));
             ClientProxyCore.overworldTextureRequestSent = true;
         }
 
@@ -148,7 +148,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(0.0F, 0.0F, 0.0F, 1.0F);
         var12 = 20.0F / 3.5F;
-        WorldRenderer worldRenderer = var23.getWorldRenderer();
+        BufferBuilder worldRenderer = var23.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(-var12, 99.9D, -var12).endVertex();
         worldRenderer.pos(var12, 99.9D, -var12).endVertex();
@@ -175,7 +175,7 @@ public class SkyProviderMoon extends IRenderHandler
 
         // HOME:
         var12 = 10.0F;
-        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.thePlayer.posZ) * 0.01F;
+        final float earthRotation = (float) (world.getSpawnPoint().getZ() - mc.player.posZ) * 0.01F;
         GL11.glScalef(0.6F, 0.6F, 0.6F);
         GL11.glRotatef(earthRotation, 1.0F, 0.0F, 0.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
@@ -206,7 +206,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glPopMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GL11.glColor3f(0.0F, 0.0F, 0.0F);
-        final double var25 = mc.thePlayer.getPosition().getY() - world.getHorizon();
+        final double var25 = mc.player.getPosition().getY() - world.getHorizon();
 
         if (var25 < 0.0D)
         {
@@ -258,7 +258,7 @@ public class SkyProviderMoon extends IRenderHandler
     {
         final Random var1 = new Random(10842L);
         final Tessellator var2 = Tessellator.getInstance();
-        WorldRenderer worldRenderer = var2.getWorldRenderer();
+        BufferBuilder worldRenderer = var2.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         for (int var3 = 0; var3 < (ConfigManagerCore.moreStars ? 20000 : 6000); ++var3)
@@ -307,14 +307,14 @@ public class SkyProviderMoon extends IRenderHandler
         var2.draw();
     }
 
-    private Vec3 getCustomSkyColor()
+    private Vec3d getCustomSkyColor()
     {
-        return new Vec3(0.26796875D, 0.1796875D, 0.0D);
+        return new Vec3d(0.26796875D, 0.1796875D, 0.0D);
     }
 
     public float getSkyBrightness(float par1)
     {
-        final float var2 = FMLClientHandler.instance().getClient().theWorld.getCelestialAngle(par1);
+        final float var2 = FMLClientHandler.instance().getClient().world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.sin(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)

@@ -8,16 +8,16 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
@@ -48,19 +48,19 @@ public class RenderGrapple extends Render<EntityGrapple>
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPushMatrix();
 
-        Vec3 vec3 = new Vec3(0.0D, -0.2D, 0.0D);
+        Vec3d vec3 = new Vec3d(0.0D, -0.2D, 0.0D);
         EntityPlayer shootingEntity = grapple.getShootingEntity();
 
         if (shootingEntity != null && grapple.getPullingEntity())
         {
-            double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.xCoord;
-            double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.yCoord;
-            double d5 = shootingEntity.prevPosZ + (shootingEntity.posZ - shootingEntity.prevPosZ) * partialTicks + vec3.zCoord;
+            double d3 = shootingEntity.prevPosX + (shootingEntity.posX - shootingEntity.prevPosX) * partialTicks + vec3.x;
+            double d4 = shootingEntity.prevPosY + (shootingEntity.posY - shootingEntity.prevPosY) * partialTicks + vec3.y;
+            double d5 = shootingEntity.prevPosZ + (shootingEntity.posZ - shootingEntity.prevPosZ) * partialTicks + vec3.z;
 
             Tessellator tessellator = Tessellator.getInstance();
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             GL11.glDisable(GL11.GL_LIGHTING);
-            tessellator.getWorldRenderer().begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
+            tessellator.getBuffer().begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION_COLOR);
             byte b2 = 16;
 
             double d14 = grapple.prevPosX + (grapple.posX - grapple.prevPosX) * partialTicks;
@@ -69,16 +69,16 @@ public class RenderGrapple extends Render<EntityGrapple>
             double d11 = (float) (d3 - d14);
             double d12 = (float) (d4 - d8);
             double d13 = (float) (d5 - d10);
-            tessellator.getWorldRenderer().setTranslation(0, -0.2F, 0);
+            tessellator.getBuffer().setTranslation(0, -0.2F, 0);
 
             for (int i = 0; i <= b2; ++i)
             {
                 float f12 = (float) i / (float) b2;
-                tessellator.getWorldRenderer().pos(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12).color(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F, 1.0F).endVertex();
+                tessellator.getBuffer().pos(x + d11 * f12, y + d12 * (f12 * f12 + f12) * 0.5D + 0.15D, z + d13 * f12).color(203.0F / 255.0F, 203.0F / 255.0F, 192.0F / 255.0F, 1.0F).endVertex();
             }
 
             tessellator.draw();
-            tessellator.getWorldRenderer().setTranslation(0, 0, 0);
+            tessellator.getBuffer().setTranslation(0, 0, 0);
             GL11.glEnable(GL11.GL_LIGHTING);
             GL11.glEnable(GL11.GL_TEXTURE_2D);
         }
@@ -90,7 +90,7 @@ public class RenderGrapple extends Render<EntityGrapple>
 
         updateModel();
 
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidExhaustFX;
-import micdoodle8.mods.galacticraft.planets.venus.client.fx.EntityAcidVaporFX;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidExhaust;
+import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.client.gui.GuiGeothermal;
 import micdoodle8.mods.galacticraft.planets.venus.client.render.entity.RenderEntryPodVenus;
@@ -27,23 +27,23 @@ import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityGeothermalGener
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityTreasureChestVenus;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -51,7 +51,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -64,10 +63,6 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        addPlanetVariants("venus", "venus_rock_0", "venus_rock_1", "venus_rock_2", "venus_rock_3", "dungeon_brick_venus_1", "dungeon_brick_venus_2", "venus_ore_aluminum", "venus_ore_copper", "venus_ore_galena", "venus_ore_quartz", "venus_ore_silicon", "venus_ore_tin", "lead_block");
-        addPlanetVariants("thermal_padding_t2", "thermal_helm_t2", "thermal_chestplate_t2", "thermal_leggings_t2", "thermal_boots_t2");
-        addPlanetVariants("basic_item_venus", "shield_controller", "ingot_lead", "radioisotope_core", "thermal_fabric");
-        addPlanetVariants("web_torch", "web_torch_0", "web_torch_1");
         MinecraftForge.EVENT_BUS.register(this);
         RenderingRegistry.registerEntityRenderingHandler(EntityJuicer.class, (RenderManager manager) -> new RenderJuicer(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEntryPodVenus.class, (RenderManager manager) -> new RenderEntryPodVenus(manager));
@@ -77,7 +72,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
     private void addPlanetVariants(String name, String... variants)
     {
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
+        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(Constants.MOD_ID_PLANETS, name));
         ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
@@ -89,6 +84,11 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @Override
     public void registerVariants()
     {
+        addPlanetVariants("venus", "venus_rock_0", "venus_rock_1", "venus_rock_2", "venus_rock_3", "dungeon_brick_venus_1", "dungeon_brick_venus_2", "venus_ore_aluminum", "venus_ore_copper", "venus_ore_galena", "venus_ore_quartz", "venus_ore_silicon", "venus_ore_tin", "lead_block");
+        addPlanetVariants("thermal_padding_t2", "thermal_helm_t2", "thermal_chestplate_t2", "thermal_leggings_t2", "thermal_boots_t2");
+        addPlanetVariants("basic_item_venus", "shield_controller", "ingot_lead", "radioisotope_core", "thermal_fabric");
+        addPlanetVariants("web_torch", "web_torch_0", "web_torch_1");
+
         Item sludge = Item.getItemFromBlock(VenusBlocks.sulphuricAcid);
         ModelBakery.registerItemVariants(sludge, new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "sulphuric_acid"));
         ModelLoader.setCustomMeshDefinition(sludge, IItemMeshDefinitionCustom.create((ItemStack stack) -> sulphuricAcidLocation));
@@ -119,7 +119,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
-        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+        event.getMap().registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @SubscribeEvent
@@ -173,12 +173,6 @@ public class VenusModuleClient implements IPlanetsModuleClient
         ClientUtil.registerItemJson(GalacticraftPlanets.TEXTURE_PREFIX, VenusItems.key, 0, "key_t3");
     }
 
-    private void addVariants(String name, ResourceLocation... variants)
-    {
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
-        ModelBakery.registerItemVariants(itemBlockVariants, variants);
-    }
-
     @Override
     public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
     {
@@ -212,27 +206,24 @@ public class VenusModuleClient implements IPlanetsModuleClient
             double dX = mc.getRenderViewEntity().posX - position.x;
             double dY = mc.getRenderViewEntity().posY - position.y;
             double dZ = mc.getRenderViewEntity().posZ - position.z;
-            EntityFX particle = null;
+            Particle particle = null;
             double viewDistance = 64.0D;
 
             if (particleID.equals("acidVapor"))
             {
-                particle = new EntityAcidVaporFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
+                particle = new ParticleAcidVapor(mc.world, position.x, position.y, position.z, motion.x, motion.y, motion.z, 2.5F);
             }
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("acidExhaust"))
                 {
-                    particle = new EntityAcidExhaustFX(mc.theWorld, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
+                    particle = new ParticleAcidExhaust(mc.world, position.x, position.y, position.z, motion.x, motion.y, motion.z, 0.5F);
                 }
             }
 
             if (particle != null)
             {
-                particle.prevPosX = particle.posX;
-                particle.prevPosY = particle.posY;
-                particle.prevPosZ = particle.posZ;
                 mc.effectRenderer.addEffect(particle);
             }
         }

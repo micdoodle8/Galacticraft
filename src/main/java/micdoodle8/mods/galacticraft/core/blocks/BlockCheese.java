@@ -4,19 +4,23 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,83 +31,58 @@ import java.util.Random;
 public class BlockCheese extends Block implements IShiftDescription, ISortableBlock
 {
     public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
+    protected static final AxisAlignedBB[] CHEESE_AABB = new AxisAlignedBB[] {
+            new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.1875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.3125, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.4375, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.5625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.6875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
+            new AxisAlignedBB(0.8125, 0.0, 0.0625, 0.9375, 0.5, 0.9375)
+    };
 
     public BlockCheese(String assetName)
     {
-        super(Material.cake);
+        super(Material.CAKE);
         this.setTickRandomly(true);
         this.disableStats();
         this.setHardness(0.5F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
-        this.setStepSound(Block.soundTypeCloth);
+        this.setSoundType(SoundType.CLOTH);
         this.setUnlocalizedName(assetName);
     }
 
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y,
-     * z
-     */
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        IBlockState bs = worldIn.getBlockState(pos);
-        if (bs.getBlock() instanceof BlockCheese)
+        int bites = 0;
+        if (state.getBlock() instanceof BlockCheese)
         {
-            float f = 0.0625F;
-            float f1 = (float) (1 + ((Integer) bs.getValue(BITES)).intValue() * 2) / 16.0F;
-            float f2 = 0.5F;
-            this.setBlockBounds(f1, 0.0F, f, 1.0F - f, f2, 1.0F - f);
+            bites = ((Integer)state.getValue(BITES)).intValue();
         }
-    }
-
-    /**
-     * Sets the block's bounds for rendering it as an item
-     */
-    @Override
-    public void setBlockBoundsForItemRender()
-    {
-        float f = 0.0625F;
-        float f1 = 0.5F;
-        this.setBlockBounds(f, 0.0F, f, 1.0F - f, f1, 1.0F - f);
-    }
-
-    /**
-     * Returns a bounding box from the pool of bounding boxes (this means this
-     * box can change after the pool has been cleared to be reused)
-     */
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        float f = 0.0625F;
-        float f1 = (float) (1 + ((Integer) state.getValue(BITES)).intValue() * 2) / 16.0F;
-        float f2 = 0.5F;
-        return new AxisAlignedBB((double) ((float) pos.getX() + f1), (double) pos.getY(), (double) ((float) pos.getZ() + f), (double) ((float) (pos.getX() + 1) - f), (double) ((float) pos.getY() + f2), (double) ((float) (pos.getZ() + 1) - f));
+        return CHEESE_AABB[bites];
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    /**
-     * Returns the bounding box of the wired rectangular prism to render.
-     */
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        return this.getCollisionBoundingBox(worldIn, pos, worldIn.getBlockState(pos));
-    }
-
-    @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         this.eatCheeseSlice(worldIn, pos, worldIn.getBlockState(pos), playerIn);
         return true;
@@ -140,7 +119,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!this.canBlockStay(worldIn, pos))
         {
@@ -150,7 +129,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 
     private boolean canBlockStay(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).getBlock().getMaterial().isSolid();
+        return worldIn.getBlockState(pos.down()).getMaterial().isSolid();
     }
 
     @Override
@@ -162,7 +141,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune)
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -184,17 +163,16 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public Item getItem(World worldIn, BlockPos pos)
+    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state)
     {
-        return Items.cake;
+        return new ItemStack(Items.CAKE, 1, 0);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -204,19 +182,19 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] { BITES });
+        return new BlockStateContainer(this, new IProperty[] { BITES });
     }
 
     @Override
-    public int getComparatorInputOverride(World worldIn, BlockPos pos)
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
     {
         return (7 - ((Integer) worldIn.getBlockState(pos).getValue(BITES)).intValue()) * 2;
     }
 
     @Override
-    public boolean hasComparatorInputOverride()
+    public boolean hasComparatorInputOverride(IBlockState state)
     {
         return true;
     }

@@ -17,23 +17,21 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.IModelState;
-import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.client.model.obj.OBJModel;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -53,7 +51,8 @@ public class ClientUtil
 
     public static void addVariant(String modID, String name, String... variants)
     {
-        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+//        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(modID, name));
         ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
@@ -100,7 +99,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -117,7 +116,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -126,44 +125,60 @@ public class ClientUtil
 
     public static void replaceModel(String modid, ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
-        if (variants.length == 0)
-        {
-            variants = new String[] { "inventory" };
-        }
-
-        IBakedModel newModel;
+        OBJModel model;
         try
         {
-            newModel = modelFromOBJ(new ResourceLocation(modid, objLoc), visibleGroups, parentState);
-            if (clazz != null)
-            {
-                newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
-            }
+            model = (OBJModel) OBJLoaderGC.instance.loadModel(new ResourceLocation(modid, objLoc));
         }
         catch (Exception e)
         {
             throw new RuntimeException(e);
         }
 
+
+        Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+        IBakedModel newModelBase = model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
+        IBakedModel newModelAlt = null;
+        if (variants.length == 0)
+        {
+            variants = new String[] { "inventory" };
+        }
+        else if (variants.length > 1 || !variants[0].equals("inventory"))
+        {
+            newModelAlt = model.bake(new OBJModel.OBJState(visibleGroups, false, TRSRTransformation.identity()), DefaultVertexFormats.ITEM, spriteFunction);
+        }
+
         for (String variant : variants)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(modid + ":" + resLoc, variant);
-            IBakedModel object = event.modelRegistry.getObject(modelResourceLocation);
+            IBakedModel object = event.getModelRegistry().getObject(modelResourceLocation);
             if (object != null)
             {
-                event.modelRegistry.putObject(modelResourceLocation, newModel);
+                IBakedModel newModel = variant.equals("inventory") ? newModelBase : newModelAlt;
+                if (clazz != null)
+                {
+                    try
+                    {
+                        newModel = clazz.getConstructor(IBakedModel.class).newInstance(newModel);
+                    } catch (Exception e)
+                    {
+                        GCLog.severe("ItemModel constructor problem for " + modelResourceLocation);
+                        e.printStackTrace();
+                    }
+                }
+                event.getModelRegistry().putObject(modelResourceLocation, newModel);
             }
         }
     }
 
-    public static IFlexibleBakedModel modelFromOBJ(ResourceLocation loc) throws IOException
+    public static IBakedModel modelFromOBJ(ResourceLocation loc) throws IOException
     {
-        return (IFlexibleBakedModel) modelFromOBJ(loc, ImmutableList.of("main"));
+        return modelFromOBJ(loc, ImmutableList.of("main"));
     }
     
-    public static IFlexibleBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups) throws IOException
+    public static IBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups) throws IOException
     {
-        return (IFlexibleBakedModel) modelFromOBJ(loc, visibleGroups, TRSRTransformation.identity());
+        return modelFromOBJ(loc, visibleGroups, TRSRTransformation.identity());
     }
     
     public static IBakedModel modelFromOBJ(ResourceLocation loc, List<String> visibleGroups, IModelState parentState) throws IOException
@@ -173,13 +188,13 @@ public class ClientUtil
         return model.bake(new OBJModel.OBJState(visibleGroups, false, parentState), DefaultVertexFormats.ITEM, spriteFunction);
     }
 
-    public static void drawBakedModel(IFlexibleBakedModel model)
+    public static void drawBakedModel(IBakedModel model)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+        BufferBuilder worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
-        for (BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {
             worldrenderer.addVertexData(bakedquad.getVertexData());
         }
@@ -187,13 +202,13 @@ public class ClientUtil
         tessellator.draw();
     }
 
-    public static void drawBakedModelColored(IFlexibleBakedModel model, int color)
+    public static void drawBakedModelColored(IBakedModel model, int color)
     {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, model.getFormat());
+        BufferBuilder worldrenderer = tessellator.getBuffer();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
 
-        for (BakedQuad bakedquad : model.getGeneralQuads())
+        for (BakedQuad bakedquad : model.getQuads(null, null, 0))
         {
             int[] data = bakedquad.getVertexData();
             data[3] = color;

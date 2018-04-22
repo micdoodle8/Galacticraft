@@ -1,0 +1,34 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine2",
+    "data": 0
+  },
+  "pattern": [
+    "WXW",
+    "WYW",
+    "VZV"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    "Y": {
+      "item": "galacticraftcore:machine",
+      "data": 12
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    }
+  }
+}

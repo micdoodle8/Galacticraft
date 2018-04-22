@@ -7,18 +7,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock, IShiftDescription
@@ -27,7 +27,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 
     public BlockCrafting(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setUnlocalizedName(assetName);
     }
 
@@ -38,16 +38,18 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (this.useWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
         {
             return true;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
             {
                 return true;
             }
@@ -59,9 +61,9 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
         }
         return true;
     }
-    
+
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         this.rotate6Ways(world, pos);
         return true;
@@ -130,8 +132,8 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] { FACING });
+        return new BlockStateContainer(this, FACING);
     }
 }

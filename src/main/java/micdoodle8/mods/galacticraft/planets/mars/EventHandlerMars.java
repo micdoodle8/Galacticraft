@@ -25,12 +25,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayer.EnumStatus;
-import net.minecraft.potion.Potion;
+import net.minecraft.init.MobEffects;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EntityDamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -46,13 +45,13 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event)
     {
-        if (event.source.damageType.equals("slimeling") && event.source instanceof EntityDamageSource)
+        if (event.getSource().damageType.equals("slimeling") && event.getSource() instanceof EntityDamageSource)
         {
-            EntityDamageSource source = (EntityDamageSource) event.source;
+            EntityDamageSource source = (EntityDamageSource) event.getSource();
 
-            if (source.getEntity() instanceof EntitySlimeling && !source.getEntity().worldObj.isRemote)
+            if (source.getTrueSource() instanceof EntitySlimeling && !source.getTrueSource().world.isRemote)
             {
-                ((EntitySlimeling) source.getEntity()).kills++;
+                ((EntitySlimeling) source.getTrueSource()).kills++;
             }
         }
     }
@@ -60,9 +59,9 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.entity.isEntityInvulnerable(event.source) && !event.entity.worldObj.isRemote && event.entityLiving.getHealth() <= 0.0F && !(event.source.isFireDamage() && event.entityLiving.isPotionActive(Potion.fireResistance)))
+        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
         {
-            Entity entity = event.source.getEntity();
+            Entity entity = event.getSource().getTrueSource();
 
             if (entity instanceof EntitySlimeling)
             {
@@ -80,24 +79,25 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        BlockPos c = event.entityPlayer.playerLocation;
-        IBlockState state = event.entityPlayer.getEntityWorld().getBlockState(c);
+        EntityPlayer player = event.getEntityPlayer();
+        BlockPos c = player.bedLocation;
+        IBlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
 
         if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             if (!event.immediately && event.updateWorld && event.setSpawn)
             {
-                event.result = EnumStatus.NOT_POSSIBLE_HERE;
+                event.result = EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
             }
             else if (!event.immediately && !event.updateWorld && event.setSpawn)
             {
-                if (!event.entityPlayer.worldObj.isRemote)
+                if (!player.world.isRemote)
                 {
-                    event.entityPlayer.heal(5.0F);
-                    GCPlayerStats.get(event.entityPlayer).setCryogenicChamberCooldown(6000);
+                    player.heal(5.0F);
+                    GCPlayerStats.get(player).setCryogenicChamberCooldown(6000);
 
-                    WorldServer ws = (WorldServer)event.entityPlayer.worldObj;
+                    WorldServer ws = (WorldServer)player.world;
                     ws.updateAllPlayersSleepingFlag();
                     if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
                     {
@@ -112,16 +112,16 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
-        BlockPos blockPos = event.entityPlayer.playerLocation;
+        BlockPos blockPos = event.getEntityPlayer().bedLocation;
         if (blockPos != null)
         {
-            IBlockState state = event.entityPlayer.worldObj.getBlockState(blockPos);
+            IBlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
             if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
-                TileEntity tile = event.entityPlayer.worldObj.getTileEntity(blockPos);
+                TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
                 if (tile instanceof TileEntityMulti)
                 {
-                    state = event.entityPlayer.worldObj.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
+                    state = event.getEntityPlayer().world.getBlockState(((TileEntityMulti) tile).mainBlockPosition);
                 }
             }
 
@@ -143,7 +143,7 @@ public class EventHandlerMars
             this.eggGenerator = new WorldGenEggs(MarsBlocks.rock);
         }
 
-        if (event.worldObj.provider instanceof WorldProviderMars)
+        if (event.world.provider instanceof WorldProviderMars)
         {
             int eggsPerChunk = 2;
             BlockPos blockpos;
@@ -151,7 +151,7 @@ public class EventHandlerMars
             for (int eggCount = 0; eggCount < eggsPerChunk; ++eggCount)
             {
                 blockpos = event.pos.add(event.rand.nextInt(16) + 8, event.rand.nextInt(104) + 24, event.rand.nextInt(16) + 8);
-                this.eggGenerator.generate(event.worldObj, event.rand, blockpos);
+                this.eggGenerator.generate(event.world, event.rand, blockpos);
             }
         }
     }
@@ -160,14 +160,14 @@ public class EventHandlerMars
     @SubscribeEvent
     public void orientCamera(OrientCameraEvent event)
     {
-        EntityPlayer entity = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer entity = Minecraft.getMinecraft().player;
 
         if (entity != null)
         {
-            int x = MathHelper.floor_double(entity.posX);
-            int y = MathHelper.floor_double(entity.posY);
-            int z = MathHelper.floor_double(entity.posZ);
-            TileEntity tile = Minecraft.getMinecraft().theWorld.getTileEntity(new BlockPos(x, y - 1, z));
+            int x = MathHelper.floor(entity.posX);
+            int y = MathHelper.floor(entity.posY);
+            int z = MathHelper.floor(entity.posZ);
+            TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityMulti)
             {
@@ -217,7 +217,7 @@ public class EventHandlerMars
                 {
                     final TileEntityLaunchController launchController = (TileEntityLaunchController) connectedTile;
                     if (launchController.getEnergyStoredGC() > 0.0F && launchController.launchPadRemovalDisabled && !launchController.getDisabled(0))
-                    {
+                {
                     	event.allow = false;
                     	return;
                     }

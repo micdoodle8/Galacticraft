@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 
-public class BiomeGenFlatMars extends BiomeGenBaseMars
+public class BiomeGenFlatMars extends BiomeMars
 {
-    public BiomeGenFlatMars(int par1)
+    public BiomeGenFlatMars(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(16711680);
-        this.setHeight(new Height(2.5F, 0.4F));
-        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-        {
-            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
-        }
+        super(properties);
+    }
+    
+    @Override
+    public void registerTypes(Biome b)
+    {
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.COLD, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
     }
 }

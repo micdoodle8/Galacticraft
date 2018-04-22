@@ -26,20 +26,19 @@ public class ConfigGuiFactoryPlanets implements IModGuiFactory
     }
 
     @Override
-    public Class<? extends GuiScreen> mainConfigGuiClass()
-    {
-        return PlanetsConfigGUI.class;
-    }
-
-    @Override
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories()
     {
         return null;
     }
 
-    @Override
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element)
-    {
-        return null;
-    }
+	public GuiScreen createConfigGui(GuiScreen arg0)
+	{
+		// TODO  Forge 2282 addition!
+		return new PlanetsConfigGUI(arg0);
+	}
+
+	public boolean hasConfigGui()
+	{
+		return true;
+	}
 }

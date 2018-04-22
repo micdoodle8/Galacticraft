@@ -63,7 +63,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
     private static float lastPartialTicks = -1F;
 
     @Override
-    public void renderTileEntityAt(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9)
+    public void render(TileEntityPlatform tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
         if (f != lastPartialTicks)
         {
@@ -97,6 +97,11 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
                 {
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, tileEntity.getMeanLightX(yOffset), tileEntity.getMeanLightZ(yOffset));
                 }
+                else
+                {
+                    int light = tileEntity.getBlendedLight();
+                    OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(light % 65536), (float)(light / 65536));
+                }
                 GlStateManager.translate(0F, 0.79F + yOffset, 0F);
                 this.bindTexture(TileEntityPlatformRenderer.platformTexture);
                 this.platform.render();
@@ -112,7 +117,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
 
                 this.bindTexture(TileEntityPlatformRenderer.lightTexture);
                 final Tessellator tess = Tessellator.getInstance();
-                WorldRenderer worldRenderer = tess.getWorldRenderer();
+                BufferBuilder worldRenderer = tess.getBuffer();
                 float frameA, frameB, frameC, frameD;
 
                 // Draw the moving platform side-lights 

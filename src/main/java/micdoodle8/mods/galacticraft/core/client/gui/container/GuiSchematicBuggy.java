@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -20,7 +20,7 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
 
     public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
-        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().thePlayer), pos);
+        super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().player), pos);
         this.ySize = 221;
     }
 
@@ -53,8 +53,8 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("schematic.moonbuggy.name"), 7, -20 + 27, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("schematic.moonbuggy.name"), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
     @Override

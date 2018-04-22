@@ -20,11 +20,11 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
     {
-        tagCompound.setString("brickBlock", Block.blockRegistry.getNameForObject(this.brickBlockFloor.getBlock()).toString());
+        tagCompound.setString("brickBlock", Block.REGISTRY.getNameForObject(this.brickBlockFloor.getBlock()).toString());
 
-        super.writeToNBT(tagCompound);
+        return super.writeToNBT(tagCompound);
     }
 
     @Override

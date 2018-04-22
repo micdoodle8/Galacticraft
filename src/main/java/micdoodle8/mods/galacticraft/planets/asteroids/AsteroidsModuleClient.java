@@ -29,23 +29,22 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.mars.client.fx.EntityCryoFX;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.resources.model.ModelBakery;
-import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.client.model.TRSRTransformation;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -53,11 +52,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.util.vector.Vector3f;
 
 import java.util.List;
 
@@ -71,11 +67,18 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, (RenderManager manager) -> new RenderEntryPod(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, (RenderManager manager) -> new RenderTier3Rocket(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner(manager));
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void registerVariants()
     {
+        addPlanetVariants("asteroids_block", "asteroids_block", "asteroid_rock_1", "asteroid_rock_2", "ore_aluminum_asteroids", "ore_ilmenite_asteroids", "ore_iron_asteroids", "asteroid_deco", "titanium_block");
+        addPlanetVariants("thermal_padding", "thermal_padding", "thermal_chestplate", "thermal_leggings", "thermal_boots");
+        addPlanetVariants("item_basic_asteroids", "item_basic_asteroids", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core", "dust_titanium");
+        addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
+        addPlanetVariants("strange_seed", "strange_seed", "strange_seed1");
+
         Item receiver = Item.getItemFromBlock(AsteroidBlocks.beamReceiver);
         ModelResourceLocation modelResourceLocation = new ModelResourceLocation("galacticraftplanets:beam_receiver", "inventory");
         ModelLoader.setCustomModelResourceLocation(receiver, 0, modelResourceLocation);
@@ -105,9 +108,9 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
-        replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
-        replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(1.0F, 1.0F, 1.0F)), "inventory", "normal");
-        replaceModelDefault(event, "telepad_short", "block/telepad_short.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, new ItemTransformVec3f(new Vector3f(), new Vector3f(), new Vector3f(0.2F, 0.2F, 0.2F)), "inventory", "normal");
+        replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, TRSRTransformation.identity(), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
+        replaceModelDefault(event, "beam_reflector", "block/reflector.obj", ImmutableList.of("Base", "Axle", "EnergyBlaster", "Ring"), ItemModelBeamReflector.class, TRSRTransformation.identity(), "inventory", "normal");
+        replaceModelDefault(event, "telepad_short", "block/telepad_short.obj", ImmutableList.of("Top", "Bottom", "Connector"), ItemModelTelepad.class, TRSRTransformation.identity(), "inventory", "normal");
         replaceModelDefault(event, "grapple", "grapple.obj", ImmutableList.of("Grapple"), ItemModelGrapple.class, TRSRTransformation.identity());
         replaceModelDefault(event, "rocket_t3", "tier3rocket.obj", ImmutableList.of("Boosters", "Cube", "NoseCone", "Rocket"), ItemModelRocketT3.class, TRSRTransformation.identity());
         replaceModelDefault(event, "astro_miner", "astro_miner_inv.obj", ImmutableList.of("Hull_Center"), ItemModelAstroMiner.class, TRSRTransformation.identity());
@@ -147,7 +150,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
     {
-        event.map.registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
+        event.getMap().registerSprite(new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "blocks/" + texture));
     }
 
     @Override
@@ -157,18 +160,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
         MinecraftForge.EVENT_BUS.register(clientEventHandler);
         FluidTexturesGC.init();
         AsteroidsModuleClient.registerBlockRenderers();
-        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        addPlanetVariants("asteroids_block", "asteroids_block", "asteroid_rock_1", "asteroid_rock_2", "ore_aluminum_asteroids", "ore_ilmenite_asteroids", "ore_iron_asteroids", "asteroid_deco", "titanium_block");
-        addPlanetVariants("thermal_padding", "thermal_padding", "thermal_chestplate", "thermal_leggings", "thermal_boots");
-        addPlanetVariants("item_basic_asteroids", "item_basic_asteroids", "engine_t2", "rocket_fins_t2", "shard_iron", "shard_titanium", "ingot_titanium", "compressed_titanium", "thermal_cloth", "beam_core", "dust_titanium");
-        addPlanetVariants("walkway", "walkway", "walkway_wire", "walkway_pipe");
-        addPlanetVariants("strange_seed", "strange_seed", "strange_seed1");
-
 //          RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReflector.class, new TileEntityBeamReflectorRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBeamReceiver.class, new TileEntityBeamReceiverRenderer());
@@ -218,7 +214,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
 
     private void addPlanetVariants(String name, String... variants)
     {
-        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
+        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(Constants.MOD_ID_PLANETS, name));
         ResourceLocation[] variants0 = new ResourceLocation[variants.length];
         for (int i = 0; i < variants.length; ++i)
         {
@@ -267,26 +263,23 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
             double dX = mc.getRenderViewEntity().posX - position.x;
             double dY = mc.getRenderViewEntity().posY - position.y;
             double dZ = mc.getRenderViewEntity().posZ - position.z;
-            EntityFX particle = null;
+            Particle particle = null;
             double viewDistance = 64.0D;
 
             if (dX * dX + dY * dY + dZ * dZ < viewDistance * viewDistance)
             {
                 if (particleID.equals("portalBlue"))
                 {
-                    particle = new EntityFXTeleport(mc.theWorld, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
+                    particle = new EntityFXTeleport(mc.world, position, motion, (TileEntityShortRangeTelepad) extraData[0], (Boolean) extraData[1]);
                 }
                 else if (particleID.equals("cryoFreeze"))
                 {
-                    particle = new EntityCryoFX(mc.theWorld, position, motion);
+                    particle = new EntityCryoFX(mc.world, position, motion);
                 }
             }
 
             if (particle != null)
             {
-                particle.prevPosX = particle.posX;
-                particle.prevPosY = particle.posY;
-                particle.prevPosZ = particle.posZ;
                 mc.effectRenderer.addEffect(particle);
             }
         }

@@ -8,10 +8,12 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,7 +35,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (this.preLoadTarget != null)
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.preLoadTarget);
+            TileEntity tileAtTarget = this.world.getTileEntity(this.preLoadTarget);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {
@@ -51,7 +53,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         this.lastTargetVec = this.targetVec;
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             this.updateOrientation();
         }
@@ -103,9 +105,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         {
             for (int cZ = chunkZMin; cZ <= chunkZMax; cZ++)
             {
-                if (this.worldObj.getChunkProvider().chunkExists(cX, cZ))
+                if (this.world.getChunkProvider().getLoadedChunk(cX, cZ) != null)
                 {
-                    Chunk chunk = this.worldObj.getChunkFromChunkCoords(cX, cZ);
+                    Chunk chunk = this.world.getChunkFromChunkCoords(cX, cZ);
 
                     for (Object obj : chunk.getTileEntityMap().values())
                     {
@@ -262,7 +264,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
         return 0;
     }
 
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (this.nodeList.size() > 1)
         {
@@ -302,7 +304,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         if (this.targetVec.getX() != -1 || this.targetVec.getY() != -1 || this.targetVec.getZ() != -1)
         {
-            TileEntity tileAtTarget = this.worldObj.getTileEntity(this.targetVec);
+            TileEntity tileAtTarget = this.world.getTileEntity(this.targetVec);
 
             if (tileAtTarget != null && tileAtTarget instanceof ILaserNode)
             {
@@ -339,7 +341,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -351,5 +353,13 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
             nbt.setInteger("TargetY", this.getTarget().getTile().getPos().getY());
             nbt.setInteger("TargetZ", this.getTarget().getTile().getPos().getZ());
         }
+
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 }

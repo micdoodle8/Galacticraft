@@ -34,19 +34,20 @@ public final class ClientPlayerConstructorVisitor extends MethodVisitor
 	public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf)
 	{
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
-		if(name.equals("<init>") && owner.equals(isObfuscated ? "bet" : "net/minecraft/client/entity/AbstractClientPlayer"))
+		if(name.equals("<init>") && owner.equals(isObfuscated ? "bua" : "net/minecraft/client/entity/AbstractClientPlayer"))
 		{
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "create", "(Lapi/player/client/IClientPlayerAPI;)Lapi/player/client/ClientPlayerAPI;", false);
-			mv.visitFieldInsn(Opcodes.PUTFIELD, isObfuscated ? "bew" : "net/minecraft/client/entity/EntityPlayerSP", "clientPlayerAPI", "Lapi/player/client/ClientPlayerAPI;");
+			mv.visitFieldInsn(Opcodes.PUTFIELD, isObfuscated ? "bud" : "net/minecraft/client/entity/EntityPlayerSP", "clientPlayerAPI", "Lapi/player/client/ClientPlayerAPI;");
 
 			mv.visitVarInsn(Opcodes.ALOAD, 0);
 			mv.visitVarInsn(Opcodes.ALOAD, 1);
 			mv.visitVarInsn(Opcodes.ALOAD, 2);
 			mv.visitVarInsn(Opcodes.ALOAD, 3);
 			mv.visitVarInsn(Opcodes.ALOAD, 4);
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "beforeLocalConstructing", "(Lapi/player/client/IClientPlayerAPI;Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/client/network/NetHandlerPlayClient;Lnet/minecraft/stats/StatFileWriter;)V", false);
+			mv.visitVarInsn(Opcodes.ALOAD, 5);
+			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "beforeLocalConstructing", "(Lapi/player/client/IClientPlayerAPI;Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/client/network/NetHandlerPlayClient;Lnet/minecraft/stats/StatisticsManager;Lnet/minecraft/stats/RecipeBook;)V", false);
 		}
 	}
 
@@ -59,7 +60,8 @@ public final class ClientPlayerConstructorVisitor extends MethodVisitor
 			mv.visitVarInsn(Opcodes.ALOAD, 2);
 			mv.visitVarInsn(Opcodes.ALOAD, 3);
 			mv.visitVarInsn(Opcodes.ALOAD, 4);
-			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "afterLocalConstructing", "(Lapi/player/client/IClientPlayerAPI;Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/client/network/NetHandlerPlayClient;Lnet/minecraft/stats/StatFileWriter;)V", false);
+			mv.visitVarInsn(Opcodes.ALOAD, 5);
+			mv.visitMethodInsn(Opcodes.INVOKESTATIC, "api/player/client/ClientPlayerAPI", "afterLocalConstructing", "(Lapi/player/client/IClientPlayerAPI;Lnet/minecraft/client/Minecraft;Lnet/minecraft/world/World;Lnet/minecraft/client/network/NetHandlerPlayClient;Lnet/minecraft/stats/StatisticsManager;Lnet/minecraft/stats/RecipeBook;)V", false);
 		}
 		super.visitInsn(opcode);
 	}

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.command;
 
+import java.util.List;
+
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -10,14 +12,16 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemHandlerHelper;
 
 public class CommandGCKit extends CommandBase
 {
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [<player>]";
+        return "/" + this.getName() + " [<player>]";
     }
 
     @Override
@@ -27,13 +31,23 @@ public class CommandGCKit extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gckit";
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
+    {
+        if (args.length == 1)
+        {
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+        }
+        return null;
+    }
+
+    @Override
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         EntityPlayerMP playerBase = null;
 
@@ -53,7 +67,7 @@ public class CommandGCKit extends CommandBase
                 if (playerBase != null)
                 {
                     ItemHandlerHelper.giveItemToPlayer(playerBase, new ItemStack(GCItems.emergencyKit), 0);
-                    CommandBase.notifyOperators(sender, this, "commands.emergencykit", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
+                    CommandBase.notifyCommandListener(sender, this, "commands.emergencykit", new Object[] { String.valueOf(EnumColor.GREY + "[" + playerBase.getName()), "]" });
                 }
                 else
                 {
@@ -67,7 +81,7 @@ public class CommandGCKit extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.dimensiontp.too_many", this.getUsage(sender)), new Object[0]);
         }
     }
 }

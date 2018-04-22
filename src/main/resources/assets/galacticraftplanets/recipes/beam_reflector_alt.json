@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_reflector"
+  },
+  "pattern": [
+    " Y ",
+    " XZ",
+    "XXX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    },
+    "Z": {
+      "item": "minecraft:lever"
+    }
+  }
+}

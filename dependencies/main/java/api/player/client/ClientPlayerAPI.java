@@ -598,8 +598,8 @@ public final class ClientPlayerAPI
 
 		}
 
-		addMethod(id, baseClass, beforeLocalConstructingHookTypes, "beforeLocalConstructing", net.minecraft.client.Minecraft.class, net.minecraft.world.World.class, net.minecraft.client.network.NetHandlerPlayClient.class, net.minecraft.stats.StatFileWriter.class);
-		addMethod(id, baseClass, afterLocalConstructingHookTypes, "afterLocalConstructing", net.minecraft.client.Minecraft.class, net.minecraft.world.World.class, net.minecraft.client.network.NetHandlerPlayClient.class, net.minecraft.stats.StatFileWriter.class);
+		addMethod(id, baseClass, beforeLocalConstructingHookTypes, "beforeLocalConstructing", net.minecraft.client.Minecraft.class, net.minecraft.world.World.class, net.minecraft.client.network.NetHandlerPlayClient.class, net.minecraft.stats.StatisticsManager.class, net.minecraft.stats.RecipeBook.class);
+		addMethod(id, baseClass, afterLocalConstructingHookTypes, "afterLocalConstructing", net.minecraft.client.Minecraft.class, net.minecraft.world.World.class, net.minecraft.client.network.NetHandlerPlayClient.class, net.minecraft.stats.StatisticsManager.class, net.minecraft.stats.RecipeBook.class);
 
 
 		addMethod(id, baseClass, beforeAddExhaustionHookTypes, "beforeAddExhaustion", float.class);
@@ -626,13 +626,13 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideCanBreatheUnderwaterHookTypes, "canBreatheUnderwater");
 		addMethod(id, baseClass, afterCanBreatheUnderwaterHookTypes, "afterCanBreatheUnderwater");
 
-		addMethod(id, baseClass, beforeCanHarvestBlockHookTypes, "beforeCanHarvestBlock", net.minecraft.block.Block.class);
-		addMethod(id, baseClass, overrideCanHarvestBlockHookTypes, "canHarvestBlock", net.minecraft.block.Block.class);
-		addMethod(id, baseClass, afterCanHarvestBlockHookTypes, "afterCanHarvestBlock", net.minecraft.block.Block.class);
+		addMethod(id, baseClass, beforeCanHarvestBlockHookTypes, "beforeCanHarvestBlock", net.minecraft.block.state.IBlockState.class);
+		addMethod(id, baseClass, overrideCanHarvestBlockHookTypes, "canHarvestBlock", net.minecraft.block.state.IBlockState.class);
+		addMethod(id, baseClass, afterCanHarvestBlockHookTypes, "afterCanHarvestBlock", net.minecraft.block.state.IBlockState.class);
 
-		addMethod(id, baseClass, beforeCanPlayerEditHookTypes, "beforeCanPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
-		addMethod(id, baseClass, overrideCanPlayerEditHookTypes, "canPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
-		addMethod(id, baseClass, afterCanPlayerEditHookTypes, "afterCanPlayerEdit", net.minecraft.util.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, beforeCanPlayerEditHookTypes, "beforeCanPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, overrideCanPlayerEditHookTypes, "canPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
+		addMethod(id, baseClass, afterCanPlayerEditHookTypes, "afterCanPlayerEdit", net.minecraft.util.math.BlockPos.class, net.minecraft.util.EnumFacing.class, net.minecraft.item.ItemStack.class);
 
 		addMethod(id, baseClass, beforeCanTriggerWalkingHookTypes, "beforeCanTriggerWalking");
 		addMethod(id, baseClass, overrideCanTriggerWalkingHookTypes, "canTriggerWalking");
@@ -678,17 +678,17 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideGetBedOrientationInDegreesHookTypes, "getBedOrientationInDegrees");
 		addMethod(id, baseClass, afterGetBedOrientationInDegreesHookTypes, "afterGetBedOrientationInDegrees");
 
-		addMethod(id, baseClass, beforeGetBrightnessHookTypes, "beforeGetBrightness", float.class);
-		addMethod(id, baseClass, overrideGetBrightnessHookTypes, "getBrightness", float.class);
-		addMethod(id, baseClass, afterGetBrightnessHookTypes, "afterGetBrightness", float.class);
+		addMethod(id, baseClass, beforeGetBrightnessHookTypes, "beforeGetBrightness");
+		addMethod(id, baseClass, overrideGetBrightnessHookTypes, "getBrightness");
+		addMethod(id, baseClass, afterGetBrightnessHookTypes, "afterGetBrightness");
 
-		addMethod(id, baseClass, beforeGetBrightnessForRenderHookTypes, "beforeGetBrightnessForRender", float.class);
-		addMethod(id, baseClass, overrideGetBrightnessForRenderHookTypes, "getBrightnessForRender", float.class);
-		addMethod(id, baseClass, afterGetBrightnessForRenderHookTypes, "afterGetBrightnessForRender", float.class);
+		addMethod(id, baseClass, beforeGetBrightnessForRenderHookTypes, "beforeGetBrightnessForRender");
+		addMethod(id, baseClass, overrideGetBrightnessForRenderHookTypes, "getBrightnessForRender");
+		addMethod(id, baseClass, afterGetBrightnessForRenderHookTypes, "afterGetBrightnessForRender");
 
-		addMethod(id, baseClass, beforeGetBreakSpeedHookTypes, "beforeGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, overrideGetBreakSpeedHookTypes, "getBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, afterGetBreakSpeedHookTypes, "afterGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.BlockPos.class);
+		addMethod(id, baseClass, beforeGetBreakSpeedHookTypes, "beforeGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, overrideGetBreakSpeedHookTypes, "getBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, afterGetBreakSpeedHookTypes, "afterGetBreakSpeed", net.minecraft.block.state.IBlockState.class, net.minecraft.util.math.BlockPos.class);
 
 		addMethod(id, baseClass, beforeGetDistanceSqHookTypes, "beforeGetDistanceSq", double.class, double.class, double.class);
 		addMethod(id, baseClass, overrideGetDistanceSqHookTypes, "getDistanceSq", double.class, double.class, double.class);
@@ -702,9 +702,9 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideGetFovModifierHookTypes, "getFovModifier");
 		addMethod(id, baseClass, afterGetFovModifierHookTypes, "afterGetFovModifier");
 
-		addMethod(id, baseClass, beforeGetHurtSoundHookTypes, "beforeGetHurtSound");
-		addMethod(id, baseClass, overrideGetHurtSoundHookTypes, "getHurtSound");
-		addMethod(id, baseClass, afterGetHurtSoundHookTypes, "afterGetHurtSound");
+		addMethod(id, baseClass, beforeGetHurtSoundHookTypes, "beforeGetHurtSound", net.minecraft.util.DamageSource.class);
+		addMethod(id, baseClass, overrideGetHurtSoundHookTypes, "getHurtSound", net.minecraft.util.DamageSource.class);
+		addMethod(id, baseClass, afterGetHurtSoundHookTypes, "afterGetHurtSound", net.minecraft.util.DamageSource.class);
 
 		addMethod(id, baseClass, beforeGetNameHookTypes, "beforeGetName");
 		addMethod(id, baseClass, overrideGetNameHookTypes, "getName");
@@ -758,17 +758,17 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideKnockBackHookTypes, "knockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 		addMethod(id, baseClass, afterKnockBackHookTypes, "afterKnockBack", net.minecraft.entity.Entity.class, float.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", double.class, double.class, double.class);
-		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", double.class, double.class, double.class);
-		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", double.class, double.class, double.class);
+		addMethod(id, baseClass, beforeMoveEntityHookTypes, "beforeMoveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
+		addMethod(id, baseClass, overrideMoveEntityHookTypes, "moveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
+		addMethod(id, baseClass, afterMoveEntityHookTypes, "afterMoveEntity", net.minecraft.entity.MoverType.class, double.class, double.class, double.class);
 
-		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class);
-		addMethod(id, baseClass, overrideMoveEntityWithHeadingHookTypes, "moveEntityWithHeading", float.class, float.class);
-		addMethod(id, baseClass, afterMoveEntityWithHeadingHookTypes, "afterMoveEntityWithHeading", float.class, float.class);
+		addMethod(id, baseClass, beforeMoveEntityWithHeadingHookTypes, "beforeMoveEntityWithHeading", float.class, float.class, float.class);
+		addMethod(id, baseClass, overrideMoveEntityWithHeadingHookTypes, "moveEntityWithHeading", float.class, float.class, float.class);
+		addMethod(id, baseClass, afterMoveEntityWithHeadingHookTypes, "afterMoveEntityWithHeading", float.class, float.class, float.class);
 
-		addMethod(id, baseClass, beforeMoveFlyingHookTypes, "beforeMoveFlying", float.class, float.class, float.class);
-		addMethod(id, baseClass, overrideMoveFlyingHookTypes, "moveFlying", float.class, float.class, float.class);
-		addMethod(id, baseClass, afterMoveFlyingHookTypes, "afterMoveFlying", float.class, float.class, float.class);
+		addMethod(id, baseClass, beforeMoveFlyingHookTypes, "beforeMoveFlying", float.class, float.class, float.class, float.class);
+		addMethod(id, baseClass, overrideMoveFlyingHookTypes, "moveFlying", float.class, float.class, float.class, float.class);
+		addMethod(id, baseClass, afterMoveFlyingHookTypes, "afterMoveFlying", float.class, float.class, float.class, float.class);
 
 		addMethod(id, baseClass, beforeOnDeathHookTypes, "beforeOnDeath", net.minecraft.util.DamageSource.class);
 		addMethod(id, baseClass, overrideOnDeathHookTypes, "onDeath", net.minecraft.util.DamageSource.class);
@@ -790,9 +790,9 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideOnUpdateHookTypes, "onUpdate");
 		addMethod(id, baseClass, afterOnUpdateHookTypes, "afterOnUpdate");
 
-		addMethod(id, baseClass, beforePlayStepSoundHookTypes, "beforePlayStepSound", net.minecraft.util.BlockPos.class, net.minecraft.block.Block.class);
-		addMethod(id, baseClass, overridePlayStepSoundHookTypes, "playStepSound", net.minecraft.util.BlockPos.class, net.minecraft.block.Block.class);
-		addMethod(id, baseClass, afterPlayStepSoundHookTypes, "afterPlayStepSound", net.minecraft.util.BlockPos.class, net.minecraft.block.Block.class);
+		addMethod(id, baseClass, beforePlayStepSoundHookTypes, "beforePlayStepSound", net.minecraft.util.math.BlockPos.class, net.minecraft.block.Block.class);
+		addMethod(id, baseClass, overridePlayStepSoundHookTypes, "playStepSound", net.minecraft.util.math.BlockPos.class, net.minecraft.block.Block.class);
+		addMethod(id, baseClass, afterPlayStepSoundHookTypes, "afterPlayStepSound", net.minecraft.util.math.BlockPos.class, net.minecraft.block.Block.class);
 
 		addMethod(id, baseClass, beforePushOutOfBlocksHookTypes, "beforePushOutOfBlocks", double.class, double.class, double.class);
 		addMethod(id, baseClass, overridePushOutOfBlocksHookTypes, "pushOutOfBlocks", double.class, double.class, double.class);
@@ -830,13 +830,13 @@ public final class ClientPlayerAPI
 		addMethod(id, baseClass, overrideSetSprintingHookTypes, "setSprinting", boolean.class);
 		addMethod(id, baseClass, afterSetSprintingHookTypes, "afterSetSprinting", boolean.class);
 
-		addMethod(id, baseClass, beforeTrySleepHookTypes, "beforeTrySleep", net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, overrideTrySleepHookTypes, "trySleep", net.minecraft.util.BlockPos.class);
-		addMethod(id, baseClass, afterTrySleepHookTypes, "afterTrySleep", net.minecraft.util.BlockPos.class);
+		addMethod(id, baseClass, beforeTrySleepHookTypes, "beforeTrySleep", net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, overrideTrySleepHookTypes, "trySleep", net.minecraft.util.math.BlockPos.class);
+		addMethod(id, baseClass, afterTrySleepHookTypes, "afterTrySleep", net.minecraft.util.math.BlockPos.class);
 
-		addMethod(id, baseClass, beforeSwingItemHookTypes, "beforeSwingItem");
-		addMethod(id, baseClass, overrideSwingItemHookTypes, "swingItem");
-		addMethod(id, baseClass, afterSwingItemHookTypes, "afterSwingItem");
+		addMethod(id, baseClass, beforeSwingItemHookTypes, "beforeSwingItem", net.minecraft.util.EnumHand.class);
+		addMethod(id, baseClass, overrideSwingItemHookTypes, "swingItem", net.minecraft.util.EnumHand.class);
+		addMethod(id, baseClass, afterSwingItemHookTypes, "afterSwingItem", net.minecraft.util.EnumHand.class);
 
 		addMethod(id, baseClass, beforeUpdateEntityActionStateHookTypes, "beforeUpdateEntityActionState");
 		addMethod(id, baseClass, overrideUpdateEntityActionStateHookTypes, "updateEntityActionState");
@@ -2088,7 +2088,7 @@ public final class ClientPlayerAPI
 			try
 			{
 				Object minecraft = net.minecraft.client.Minecraft.class.getMethod("getMinecraft").invoke(null);
-				player = minecraft != null ? net.minecraft.client.Minecraft.class.getField("thePlayer").get(minecraft) : null;
+				player = minecraft != null ? net.minecraft.client.Minecraft.class.getField("player").get(minecraft) : null;
 			}
 			catch(Exception deobfuscatedException)
 			{
@@ -2106,21 +2106,21 @@ public final class ClientPlayerAPI
 		return allInstances.toArray(new net.minecraft.client.entity.EntityPlayerSP[allInstances.size()]);
 	}
 
-	public static void beforeLocalConstructing(IClientPlayerAPI clientPlayer, net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	public static void beforeLocalConstructing(IClientPlayerAPI clientPlayer, net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 		ClientPlayerAPI clientPlayerAPI = clientPlayer.getClientPlayerAPI();
 		if(clientPlayerAPI != null)
 			clientPlayerAPI.load();
 
 		if(clientPlayerAPI != null)
-			clientPlayerAPI.beforeLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatFileWriter);
+			clientPlayerAPI.beforeLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatisticsManager, paramRecipeBook);
 	}
 
-	public static void afterLocalConstructing(IClientPlayerAPI clientPlayer, net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	public static void afterLocalConstructing(IClientPlayerAPI clientPlayer, net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 		ClientPlayerAPI clientPlayerAPI = clientPlayer.getClientPlayerAPI();
 		if(clientPlayerAPI != null)
-			clientPlayerAPI.afterLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatFileWriter);
+			clientPlayerAPI.afterLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatisticsManager, paramRecipeBook);
 	}
 
 	public static ClientPlayerBase getClientPlayerBase(IClientPlayerAPI clientPlayer, String baseId)
@@ -2770,19 +2770,19 @@ public final class ClientPlayerAPI
 		return result;
 	}
 
-	private void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	private void beforeLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 		if(beforeLocalConstructingHooks != null)
 			for(int i = beforeLocalConstructingHooks.length - 1; i >= 0 ; i--)
-				beforeLocalConstructingHooks[i].beforeLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatFileWriter);
+				beforeLocalConstructingHooks[i].beforeLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatisticsManager, paramRecipeBook);
 		beforeLocalConstructingHooks = null;
 	}
 
-	private void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatFileWriter paramStatFileWriter)
+	private void afterLocalConstructing(net.minecraft.client.Minecraft paramMinecraft, net.minecraft.world.World paramWorld, net.minecraft.client.network.NetHandlerPlayClient paramNetHandlerPlayClient, net.minecraft.stats.StatisticsManager paramStatisticsManager, net.minecraft.stats.RecipeBook paramRecipeBook)
 	{
 		if(afterLocalConstructingHooks != null)
 			for(int i = 0; i < afterLocalConstructingHooks.length; i++)
-				afterLocalConstructingHooks[i].afterLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatFileWriter);
+				afterLocalConstructingHooks[i].afterLocalConstructing(paramMinecraft, paramWorld, paramNetHandlerPlayClient, paramStatisticsManager, paramRecipeBook);
 		afterLocalConstructingHooks = null;
 	}
 
@@ -3238,32 +3238,32 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterCanBreatheUnderwaterSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterCanBreatheUnderwaterInferiors = new Hashtable<String, String[]>(0);
 
-	public static boolean canHarvestBlock(IClientPlayerAPI target, net.minecraft.block.Block paramBlock)
+	public static boolean canHarvestBlock(IClientPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		boolean _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isCanHarvestBlockModded)
-			_result = clientPlayerAPI.canHarvestBlock(paramBlock);
+			_result = clientPlayerAPI.canHarvestBlock(paramIBlockState);
 		else
-			_result = target.localCanHarvestBlock(paramBlock);
+			_result = target.localCanHarvestBlock(paramIBlockState);
 		return _result;
 	}
 
-	private boolean canHarvestBlock(net.minecraft.block.Block paramBlock)
+	private boolean canHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		if(beforeCanHarvestBlockHooks != null)
 			for(int i = beforeCanHarvestBlockHooks.length - 1; i >= 0 ; i--)
-				beforeCanHarvestBlockHooks[i].beforeCanHarvestBlock(paramBlock);
+				beforeCanHarvestBlockHooks[i].beforeCanHarvestBlock(paramIBlockState);
 
 		boolean _result;
 		if(overrideCanHarvestBlockHooks != null)
-			_result = overrideCanHarvestBlockHooks[overrideCanHarvestBlockHooks.length - 1].canHarvestBlock(paramBlock);
+			_result = overrideCanHarvestBlockHooks[overrideCanHarvestBlockHooks.length - 1].canHarvestBlock(paramIBlockState);
 		else
-			_result = player.localCanHarvestBlock(paramBlock);
+			_result = player.localCanHarvestBlock(paramIBlockState);
 
 		if(afterCanHarvestBlockHooks != null)
 			for(int i = 0; i < afterCanHarvestBlockHooks.length; i++)
-				afterCanHarvestBlockHooks[i].afterCanHarvestBlock(paramBlock);
+				afterCanHarvestBlockHooks[i].afterCanHarvestBlock(paramIBlockState);
 
 		return _result;
 	}
@@ -3300,7 +3300,7 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterCanHarvestBlockSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterCanHarvestBlockInferiors = new Hashtable<String, String[]>(0);
 
-	public static boolean canPlayerEdit(IClientPlayerAPI target, net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public static boolean canPlayerEdit(IClientPlayerAPI target, net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		boolean _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
@@ -3311,7 +3311,7 @@ public final class ClientPlayerAPI
 		return _result;
 	}
 
-	private boolean canPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	private boolean canPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		if(beforeCanPlayerEditHooks != null)
 			for(int i = beforeCanPlayerEditHooks.length - 1; i >= 0 ; i--)
@@ -4024,32 +4024,32 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetBedOrientationInDegreesSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetBedOrientationInDegreesInferiors = new Hashtable<String, String[]>(0);
 
-	public static float getBrightness(IClientPlayerAPI target, float paramFloat)
+	public static float getBrightness(IClientPlayerAPI target)
 	{
 		float _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isGetBrightnessModded)
-			_result = clientPlayerAPI.getBrightness(paramFloat);
+			_result = clientPlayerAPI.getBrightness();
 		else
-			_result = target.localGetBrightness(paramFloat);
+			_result = target.localGetBrightness();
 		return _result;
 	}
 
-	private float getBrightness(float paramFloat)
+	private float getBrightness()
 	{
 		if(beforeGetBrightnessHooks != null)
 			for(int i = beforeGetBrightnessHooks.length - 1; i >= 0 ; i--)
-				beforeGetBrightnessHooks[i].beforeGetBrightness(paramFloat);
+				beforeGetBrightnessHooks[i].beforeGetBrightness();
 
 		float _result;
 		if(overrideGetBrightnessHooks != null)
-			_result = overrideGetBrightnessHooks[overrideGetBrightnessHooks.length - 1].getBrightness(paramFloat);
+			_result = overrideGetBrightnessHooks[overrideGetBrightnessHooks.length - 1].getBrightness();
 		else
-			_result = player.localGetBrightness(paramFloat);
+			_result = player.localGetBrightness();
 
 		if(afterGetBrightnessHooks != null)
 			for(int i = 0; i < afterGetBrightnessHooks.length; i++)
-				afterGetBrightnessHooks[i].afterGetBrightness(paramFloat);
+				afterGetBrightnessHooks[i].afterGetBrightness();
 
 		return _result;
 	}
@@ -4086,32 +4086,32 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetBrightnessSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetBrightnessInferiors = new Hashtable<String, String[]>(0);
 
-	public static int getBrightnessForRender(IClientPlayerAPI target, float paramFloat)
+	public static int getBrightnessForRender(IClientPlayerAPI target)
 	{
 		int _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isGetBrightnessForRenderModded)
-			_result = clientPlayerAPI.getBrightnessForRender(paramFloat);
+			_result = clientPlayerAPI.getBrightnessForRender();
 		else
-			_result = target.localGetBrightnessForRender(paramFloat);
+			_result = target.localGetBrightnessForRender();
 		return _result;
 	}
 
-	private int getBrightnessForRender(float paramFloat)
+	private int getBrightnessForRender()
 	{
 		if(beforeGetBrightnessForRenderHooks != null)
 			for(int i = beforeGetBrightnessForRenderHooks.length - 1; i >= 0 ; i--)
-				beforeGetBrightnessForRenderHooks[i].beforeGetBrightnessForRender(paramFloat);
+				beforeGetBrightnessForRenderHooks[i].beforeGetBrightnessForRender();
 
 		int _result;
 		if(overrideGetBrightnessForRenderHooks != null)
-			_result = overrideGetBrightnessForRenderHooks[overrideGetBrightnessForRenderHooks.length - 1].getBrightnessForRender(paramFloat);
+			_result = overrideGetBrightnessForRenderHooks[overrideGetBrightnessForRenderHooks.length - 1].getBrightnessForRender();
 		else
-			_result = player.localGetBrightnessForRender(paramFloat);
+			_result = player.localGetBrightnessForRender();
 
 		if(afterGetBrightnessForRenderHooks != null)
 			for(int i = 0; i < afterGetBrightnessForRenderHooks.length; i++)
-				afterGetBrightnessForRenderHooks[i].afterGetBrightnessForRender(paramFloat);
+				afterGetBrightnessForRenderHooks[i].afterGetBrightnessForRender();
 
 		return _result;
 	}
@@ -4148,7 +4148,7 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetBrightnessForRenderSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetBrightnessForRenderInferiors = new Hashtable<String, String[]>(0);
 
-	public static float getBreakSpeed(IClientPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public static float getBreakSpeed(IClientPlayerAPI target, net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		float _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
@@ -4159,7 +4159,7 @@ public final class ClientPlayerAPI
 		return _result;
 	}
 
-	private float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	private float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		if(beforeGetBreakSpeedHooks != null)
 			for(int i = beforeGetBreakSpeedHooks.length - 1; i >= 0 ; i--)
@@ -4396,32 +4396,32 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterGetFovModifierSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterGetFovModifierInferiors = new Hashtable<String, String[]>(0);
 
-	public static java.lang.String getHurtSound(IClientPlayerAPI target)
+	public static net.minecraft.util.SoundEvent getHurtSound(IClientPlayerAPI target, net.minecraft.util.DamageSource paramDamageSource)
 	{
-		java.lang.String _result;
+		net.minecraft.util.SoundEvent _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isGetHurtSoundModded)
-			_result = clientPlayerAPI.getHurtSound();
+			_result = clientPlayerAPI.getHurtSound(paramDamageSource);
 		else
-			_result = target.localGetHurtSound();
+			_result = target.localGetHurtSound(paramDamageSource);
 		return _result;
 	}
 
-	private java.lang.String getHurtSound()
+	private net.minecraft.util.SoundEvent getHurtSound(net.minecraft.util.DamageSource paramDamageSource)
 	{
 		if(beforeGetHurtSoundHooks != null)
 			for(int i = beforeGetHurtSoundHooks.length - 1; i >= 0 ; i--)
-				beforeGetHurtSoundHooks[i].beforeGetHurtSound();
+				beforeGetHurtSoundHooks[i].beforeGetHurtSound(paramDamageSource);
 
-		java.lang.String _result;
+		net.minecraft.util.SoundEvent _result;
 		if(overrideGetHurtSoundHooks != null)
-			_result = overrideGetHurtSoundHooks[overrideGetHurtSoundHooks.length - 1].getHurtSound();
+			_result = overrideGetHurtSoundHooks[overrideGetHurtSoundHooks.length - 1].getHurtSound(paramDamageSource);
 		else
-			_result = player.localGetHurtSound();
+			_result = player.localGetHurtSound(paramDamageSource);
 
 		if(afterGetHurtSoundHooks != null)
 			for(int i = 0; i < afterGetHurtSoundHooks.length; i++)
-				afterGetHurtSoundHooks[i].afterGetHurtSound();
+				afterGetHurtSoundHooks[i].afterGetHurtSound(paramDamageSource);
 
 		return _result;
 	}
@@ -5252,29 +5252,29 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterKnockBackSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterKnockBackInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveEntity(IClientPlayerAPI target, double paramDouble1, double paramDouble2, double paramDouble3)
+	public static void moveEntity(IClientPlayerAPI target, net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isMoveEntityModded)
-			clientPlayerAPI.moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			clientPlayerAPI.moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else
-			target.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			target.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 	}
 
-	private void moveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	private void moveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		if(beforeMoveEntityHooks != null)
 			for(int i = beforeMoveEntityHooks.length - 1; i >= 0 ; i--)
-				beforeMoveEntityHooks[i].beforeMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+				beforeMoveEntityHooks[i].beforeMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 		if(overrideMoveEntityHooks != null)
-			overrideMoveEntityHooks[overrideMoveEntityHooks.length - 1].moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			overrideMoveEntityHooks[overrideMoveEntityHooks.length - 1].moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else
-			player.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			player.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 		if(afterMoveEntityHooks != null)
 			for(int i = 0; i < afterMoveEntityHooks.length; i++)
-				afterMoveEntityHooks[i].afterMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+				afterMoveEntityHooks[i].afterMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 	}
 
@@ -5310,29 +5310,29 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterMoveEntitySuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterMoveEntityInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveEntityWithHeading(IClientPlayerAPI target, float paramFloat1, float paramFloat2)
+	public static void moveEntityWithHeading(IClientPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isMoveEntityWithHeadingModded)
-			clientPlayerAPI.moveEntityWithHeading(paramFloat1, paramFloat2);
+			clientPlayerAPI.moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else
-			target.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			target.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 	}
 
-	private void moveEntityWithHeading(float paramFloat1, float paramFloat2)
+	private void moveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		if(beforeMoveEntityWithHeadingHooks != null)
 			for(int i = beforeMoveEntityWithHeadingHooks.length - 1; i >= 0 ; i--)
-				beforeMoveEntityWithHeadingHooks[i].beforeMoveEntityWithHeading(paramFloat1, paramFloat2);
+				beforeMoveEntityWithHeadingHooks[i].beforeMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 		if(overrideMoveEntityWithHeadingHooks != null)
-			overrideMoveEntityWithHeadingHooks[overrideMoveEntityWithHeadingHooks.length - 1].moveEntityWithHeading(paramFloat1, paramFloat2);
+			overrideMoveEntityWithHeadingHooks[overrideMoveEntityWithHeadingHooks.length - 1].moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else
-			player.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			player.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 		if(afterMoveEntityWithHeadingHooks != null)
 			for(int i = 0; i < afterMoveEntityWithHeadingHooks.length; i++)
-				afterMoveEntityWithHeadingHooks[i].afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+				afterMoveEntityWithHeadingHooks[i].afterMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 	}
 
@@ -5368,29 +5368,29 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterMoveEntityWithHeadingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterMoveEntityWithHeadingInferiors = new Hashtable<String, String[]>(0);
 
-	public static void moveFlying(IClientPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3)
+	public static void moveFlying(IClientPlayerAPI target, float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isMoveFlyingModded)
-			clientPlayerAPI.moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			clientPlayerAPI.moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else
-			target.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			target.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 	}
 
-	private void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	private void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		if(beforeMoveFlyingHooks != null)
 			for(int i = beforeMoveFlyingHooks.length - 1; i >= 0 ; i--)
-				beforeMoveFlyingHooks[i].beforeMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+				beforeMoveFlyingHooks[i].beforeMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 		if(overrideMoveFlyingHooks != null)
-			overrideMoveFlyingHooks[overrideMoveFlyingHooks.length - 1].moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			overrideMoveFlyingHooks[overrideMoveFlyingHooks.length - 1].moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else
-			player.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			player.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 		if(afterMoveFlyingHooks != null)
 			for(int i = 0; i < afterMoveFlyingHooks.length; i++)
-				afterMoveFlyingHooks[i].afterMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+				afterMoveFlyingHooks[i].afterMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 	}
 
@@ -5716,7 +5716,7 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterOnUpdateSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterOnUpdateInferiors = new Hashtable<String, String[]>(0);
 
-	public static void playStepSound(IClientPlayerAPI target, net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
+	public static void playStepSound(IClientPlayerAPI target, net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isPlayStepSoundModded)
@@ -5725,7 +5725,7 @@ public final class ClientPlayerAPI
 			target.localPlayStepSound(paramBlockPos, paramBlock);
 	}
 
-	private void playStepSound(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
+	private void playStepSound(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.block.Block paramBlock)
 	{
 		if(beforePlayStepSoundHooks != null)
 			for(int i = beforePlayStepSoundHooks.length - 1; i >= 0 ; i--)
@@ -5836,9 +5836,9 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterPushOutOfBlocksSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterPushOutOfBlocksInferiors = new Hashtable<String, String[]>(0);
 
-	public static net.minecraft.util.MovingObjectPosition rayTrace(IClientPlayerAPI target, double paramDouble, float paramFloat)
+	public static net.minecraft.util.math.RayTraceResult rayTrace(IClientPlayerAPI target, double paramDouble, float paramFloat)
 	{
-		net.minecraft.util.MovingObjectPosition _result;
+		net.minecraft.util.math.RayTraceResult _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isRayTraceModded)
 			_result = clientPlayerAPI.rayTrace(paramDouble, paramFloat);
@@ -5847,13 +5847,13 @@ public final class ClientPlayerAPI
 		return _result;
 	}
 
-	private net.minecraft.util.MovingObjectPosition rayTrace(double paramDouble, float paramFloat)
+	private net.minecraft.util.math.RayTraceResult rayTrace(double paramDouble, float paramFloat)
 	{
 		if(beforeRayTraceHooks != null)
 			for(int i = beforeRayTraceHooks.length - 1; i >= 0 ; i--)
 				beforeRayTraceHooks[i].beforeRayTrace(paramDouble, paramFloat);
 
-		net.minecraft.util.MovingObjectPosition _result;
+		net.minecraft.util.math.RayTraceResult _result;
 		if(overrideRayTraceHooks != null)
 			_result = overrideRayTraceHooks[overrideRayTraceHooks.length - 1].rayTrace(paramDouble, paramFloat);
 		else
@@ -6304,9 +6304,9 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterSetSprintingSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterSetSprintingInferiors = new Hashtable<String, String[]>(0);
 
-	public static net.minecraft.entity.player.EntityPlayer.EnumStatus trySleep(IClientPlayerAPI target, net.minecraft.util.BlockPos paramBlockPos)
+	public static net.minecraft.entity.player.EntityPlayer.SleepResult trySleep(IClientPlayerAPI target, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
-		net.minecraft.entity.player.EntityPlayer.EnumStatus _result;
+		net.minecraft.entity.player.EntityPlayer.SleepResult _result;
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isTrySleepModded)
 			_result = clientPlayerAPI.trySleep(paramBlockPos);
@@ -6315,13 +6315,13 @@ public final class ClientPlayerAPI
 		return _result;
 	}
 
-	private net.minecraft.entity.player.EntityPlayer.EnumStatus trySleep(net.minecraft.util.BlockPos paramBlockPos)
+	private net.minecraft.entity.player.EntityPlayer.SleepResult trySleep(net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		if(beforeTrySleepHooks != null)
 			for(int i = beforeTrySleepHooks.length - 1; i >= 0 ; i--)
 				beforeTrySleepHooks[i].beforeTrySleep(paramBlockPos);
 
-		net.minecraft.entity.player.EntityPlayer.EnumStatus _result;
+		net.minecraft.entity.player.EntityPlayer.SleepResult _result;
 		if(overrideTrySleepHooks != null)
 			_result = overrideTrySleepHooks[overrideTrySleepHooks.length - 1].trySleep(paramBlockPos);
 		else
@@ -6366,29 +6366,29 @@ public final class ClientPlayerAPI
 	private static final Map<String, String[]> allBaseAfterTrySleepSuperiors = new Hashtable<String, String[]>(0);
 	private static final Map<String, String[]> allBaseAfterTrySleepInferiors = new Hashtable<String, String[]>(0);
 
-	public static void swingItem(IClientPlayerAPI target)
+	public static void swingItem(IClientPlayerAPI target, net.minecraft.util.EnumHand paramEnumHand)
 	{
 		ClientPlayerAPI clientPlayerAPI = target.getClientPlayerAPI();
 		if(clientPlayerAPI != null && clientPlayerAPI.isSwingItemModded)
-			clientPlayerAPI.swingItem();
+			clientPlayerAPI.swingItem(paramEnumHand);
 		else
-			target.localSwingItem();
+			target.localSwingItem(paramEnumHand);
 	}
 
-	private void swingItem()
+	private void swingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 		if(beforeSwingItemHooks != null)
 			for(int i = beforeSwingItemHooks.length - 1; i >= 0 ; i--)
-				beforeSwingItemHooks[i].beforeSwingItem();
+				beforeSwingItemHooks[i].beforeSwingItem(paramEnumHand);
 
 		if(overrideSwingItemHooks != null)
-			overrideSwingItemHooks[overrideSwingItemHooks.length - 1].swingItem();
+			overrideSwingItemHooks[overrideSwingItemHooks.length - 1].swingItem(paramEnumHand);
 		else
-			player.localSwingItem();
+			player.localSwingItem(paramEnumHand);
 
 		if(afterSwingItemHooks != null)
 			for(int i = 0; i < afterSwingItemHooks.length; i++)
-				afterSwingItemHooks[i].afterSwingItem();
+				afterSwingItemHooks[i].afterSwingItem(paramEnumHand);
 
 	}
 

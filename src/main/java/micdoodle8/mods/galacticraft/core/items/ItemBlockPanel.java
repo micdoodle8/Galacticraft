@@ -6,8 +6,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemBlockPanel extends ItemBlockDesc
@@ -40,15 +42,28 @@ public class ItemBlockPanel extends ItemBlockDesc
     }
 
     @Override
-    public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
     {
         if (!player.isSneaking())
         {
-            return false;
+            return EnumActionResult.PASS;
         }
         IBlockState state = world.getBlockState(pos);
-        if (state.getBlock().isOpaqueCube() && !(state.getBlock() instanceof BlockPanelLighting))
+        if (state.getBlock().isOpaqueCube(state) && !(state.getBlock() instanceof BlockPanelLighting))
         {
+        	ItemStack stack;
+            if (hand == EnumHand.OFF_HAND)
+            {
+            	stack = player.inventory.offHandInventory.get(0);
+            }
+            else
+            {
+            	stack = player.inventory.getStackInSlot(player.inventory.currentItem);
+            }
+            if (stack.getItem() != this)
+            {
+            	return EnumActionResult.FAIL;
+            }
             if (world.isRemote)
             {
                 BlockPanelLighting.updateClient(stack.getItemDamage(), state);
@@ -63,6 +78,6 @@ public class ItemBlockPanel extends ItemBlockDesc
             }
         }
 
-        return false;
+        return EnumActionResult.PASS;
     }
 }

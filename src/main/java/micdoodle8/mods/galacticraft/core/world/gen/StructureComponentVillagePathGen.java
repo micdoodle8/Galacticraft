@@ -5,12 +5,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -26,7 +27,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     public StructureComponentVillagePathGen(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = par5;
+        this.setCoordBaseMode(par5);
         this.boundingBox = par4StructureBoundingBox;
         this.averageGroundLevel = Math.max(par4StructureBoundingBox.getXSize(), par4StructureBoundingBox.getZSize());
     }
@@ -40,9 +41,9 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(nbt);
+        super.readStructureFromNBT(nbt, manager);
 
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
     }
@@ -78,7 +79,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
         if (var4 && par3Random.nextInt(3) > 0)
         {
-            switch (this.coordBaseMode.getHorizontalIndex())
+            switch (this.getCoordBaseMode().getHorizontalIndex())
             {
             case 0:
                 StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.getHorizontal(1), this.getComponentType());
@@ -96,7 +97,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
         if (var4 && par3Random.nextInt(3) > 0)
         {
-            switch (this.coordBaseMode.getHorizontalIndex())
+            switch (this.getCoordBaseMode().getHorizontalIndex())
             {
             case 0:
                 StructureVillagePiecesMoon.getNextStructureComponentVillagePath((StructureComponentVillageStartPiece) par1StructureComponent, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY, this.boundingBox.maxZ - 2, EnumFacing.getHorizontal(3), this.getComponentType());
@@ -115,7 +116,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
     public static StructureBoundingBox func_74933_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6)
     {
-        for (int var7 = 7 * MathHelper.getRandomIntegerInRange(par2Random, 3, 5); var7 >= 7; var7 -= 7)
+        for (int var7 = 7 * MathHelper.getInt(par2Random, 3, 5); var7 >= 7; var7 -= 7)
         {
             final StructureBoundingBox var8 = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
 
@@ -135,7 +136,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     @Override
     public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
     {
-        final Block var4 = Blocks.planks;
+        final Block var4 = Blocks.PLANKS;
 
         for (int var5 = this.boundingBox.minX; var5 <= this.boundingBox.maxX; ++var5)
         {
@@ -143,7 +144,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
             {
                 BlockPos pos = new BlockPos(var5, par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1, var6);
                 IBlockState state = par1World.getBlockState(pos);
-                if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.air == state.getBlock()))
+                if (par3StructureBoundingBox.isVecInside(new BlockPos(var5, 64, var6)) && (state.getBlock() == GCBlocks.blockMoon && state.getBlock().getMetaFromState(state) == 5 || Blocks.AIR == state.getBlock()))
                 {
                     final int var7 = par1World.getTopSolidOrLiquidBlock(new BlockPos(var5, 0, var6)).getY() - 1;
                     par1World.setBlockState(new BlockPos(var5, var7, var6), var4.getStateFromMeta(1), 2);

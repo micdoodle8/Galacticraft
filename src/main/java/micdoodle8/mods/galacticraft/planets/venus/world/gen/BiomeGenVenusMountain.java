@@ -1,25 +1,25 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraftforge.common.BiomeDictionary;
 
 import java.util.Random;
 
-public class BiomeGenVenusMountain extends BiomeGenBaseVenus
+public class BiomeGenVenusMountain extends BiomeVenus
 {
-    public BiomeGenVenusMountain(int par1)
+    public BiomeGenVenusMountain(BiomeProperties properties)
     {
-        super(par1);
-        this.setColor(255 << 16 | 255 << 8 | 255);
-        this.setHeight(new Height(2.0F, 1.0F));
-        if (!ConfigManagerCore.disableBiomeTypeRegistrations)
-        {
-            BiomeDictionary.registerBiomeType(this, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
-        }
+        super(properties);
+    }
+
+    @Override
+    public void registerTypes(Biome b)
+    {
+        BiomeDictionary.addTypes(b, BiomeDictionary.Type.HOT, BiomeDictionary.Type.DRY, BiomeDictionary.Type.DEAD, BiomeDictionary.Type.SANDY);
     }
 
     @Override

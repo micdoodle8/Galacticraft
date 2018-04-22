@@ -10,6 +10,8 @@ import net.minecraftforge.common.config.Configuration;
 import java.io.File;
 import java.util.ArrayList;
 
+import buildcraft.api.mj.MjAPI;
+
 /**
  * The universal energy compatibility module allows Galacticraft to be
  * compatible with most other major power systems in Minecraft as well.
@@ -18,6 +20,7 @@ import java.util.ArrayList;
  */
 public class EnergyConfigHandler
 {
+
     private static Configuration config;
 
     /**
@@ -25,6 +28,8 @@ public class EnergyConfigHandler
      * Multiply BC3 energy by this to convert to gJ.
      */
     public static float BC3_RATIO = 16F;
+    private static float BC8_MICROJOULE_RATIO = 1000000F;
+    public static float BC8_INTERNAL_RATIO = BC3_RATIO / BC8_MICROJOULE_RATIO;
 
     //Note on energy equivalence:
     //
@@ -58,9 +63,9 @@ public class EnergyConfigHandler
     private static int conversionLossFactor = 100;
 
     /**
-     * Convert gJ back to Buildcraft MJ
+     * Convert gJ back to Buildcraft MJ (microJoules)
      */
-    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO;
+    public static float TO_BC_RATIO = 1 / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
 
     /**
      * Convert gJ back to RF
@@ -93,6 +98,8 @@ public class EnergyConfigHandler
     private static boolean cachedBCLoaded = false;
     private static boolean cachedBCLoadedValue = false;
     private static int cachedBCVersion = -1;
+    private static boolean cachedBCRLoaded = false;
+    private static boolean cachedBCRLoadedValue = false;
     private static boolean cachedRFLoaded = false;
     private static boolean cachedRFLoadedValue = false;
     private static boolean cachedRF1LoadedValue = false;
@@ -104,6 +111,8 @@ public class EnergyConfigHandler
     public static boolean disableBuildCraftOutput = false;
     public static boolean disableRFInput = false;
     public static boolean disableRFOutput = false;
+    public static boolean disableFEInput = false;
+    public static boolean disableFEOutput = false;
     public static boolean disableIC2Input = false;
     public static boolean disableIC2Output = false;
     public static boolean disableMekanismInput = false;
@@ -147,6 +156,8 @@ public class EnergyConfigHandler
         EnergyConfigHandler.disableBuildCraftOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of BuildCraft energy", false).getBoolean(false);
         EnergyConfigHandler.disableRFInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of RF energy", false).getBoolean(false);
         EnergyConfigHandler.disableRFOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of RF energy", false).getBoolean(false);
+        EnergyConfigHandler.disableFEInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Forge Energy to GC machines", false).getBoolean(false);
+        EnergyConfigHandler.disableFEOutput = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of Forge Energy from GC machines", false).getBoolean(false);
         EnergyConfigHandler.disableIC2Input = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of IC2 energy", false).getBoolean(false);
         EnergyConfigHandler.disableIC2Output = EnergyConfigHandler.config.get("Compatibility", "Disable OUTPUT of IC2 energy", false).getBoolean(false);
         EnergyConfigHandler.disableMekanismInput = EnergyConfigHandler.config.get("Compatibility", "Disable INPUT of Mekanism energy", false).getBoolean(false);
@@ -215,42 +226,25 @@ public class EnergyConfigHandler
         return CompatibilityManager.isIc2Loaded();
     }
 
-    public static boolean isBuildcraftReallyLoaded()
+    public static boolean isBuildcraftLoaded()
     {
-        return CompatibilityManager.isBCraftEnergyLoaded();
-    }
-
-    public static int getBuildcraftVersion()
-    {
-        if (cachedBCVersion != -1)
+        if (!cachedBCRLoaded)
         {
-            return cachedBCVersion;
-        }
-
-        if (cachedBCLoaded)
-        {
-            boolean bc6Found = true;
-
+            boolean mjAPIFound = false;
             try
             {
                 Class.forName("buildcraft.api.mj.MjAPI");
+                mjAPIFound = true;
+                BC8_MICROJOULE_RATIO = MjAPI.MJ;
+                BC8_INTERNAL_RATIO = BC3_RATIO / BC8_MICROJOULE_RATIO;
+                TO_BC_RATIO = conversionLossFactor / 100F / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
             }
-            catch (Throwable t)
-            {
-                bc6Found = false;
-            }
-
-            if (bc6Found)
-            {
-                cachedBCVersion = 6;
-            }
-            else
-            {
-                cachedBCVersion = 5;
-            }
+            catch (Throwable ignore) {}
+            cachedBCRLoaded = true;
+            cachedBCRLoadedValue = mjAPIFound && CompatibilityManager.isBCraftEnergyLoaded() && CompatibilityManager.classBCTransportPipeTile != null;
         }
 
-        return cachedBCVersion;
+        return cachedBCRLoadedValue;
     }
 
     public static boolean isRFAPILoaded()
@@ -292,11 +286,11 @@ public class EnergyConfigHandler
         int count2 = 0;
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyConnection") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyConnection") != null)
             {
                 count++;
             }
-            if (Class.forName("cofh.api.energy.IEnergyHandler") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyHandler") != null)
             {
                 count += 2;
             }
@@ -306,7 +300,7 @@ public class EnergyConfigHandler
         }
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyProvider") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyProvider") != null)
             {
                 count2++;
             }
@@ -316,7 +310,7 @@ public class EnergyConfigHandler
         }
         try
         {
-            if (Class.forName("cofh.api.energy.IEnergyReceiver") != null)
+            if (Class.forName("cofh.redstoneflux.api.IEnergyReceiver") != null)
             {
                 count2++;
             }
@@ -379,7 +373,7 @@ public class EnergyConfigHandler
         }
 
         float factor = conversionLossFactor / 100F;
-        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO;
+        TO_BC_RATIO = factor / EnergyConfigHandler.BC3_RATIO * BC8_MICROJOULE_RATIO;
         TO_RF_RATIO = factor / EnergyConfigHandler.RF_RATIO;
         TO_IC2_RATIO = factor / EnergyConfigHandler.IC2_RATIO;
         TO_MEKANISM_RATIO = factor / EnergyConfigHandler.MEKANISM_RATIO;

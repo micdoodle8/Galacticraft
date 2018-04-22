@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_asteroids",
+    "data": 7
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:wool",
+      "data": 32767
+    },
+    "Y": {
+      "item": "minecraft:redstone"
+    }
+  }
+}

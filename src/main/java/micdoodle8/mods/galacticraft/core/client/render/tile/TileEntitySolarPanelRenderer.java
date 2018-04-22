@@ -17,7 +17,7 @@ public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<Tile
     public ModelSolarPanel model = new ModelSolarPanel();
 
     @Override
-    public void renderTileEntityAt(TileEntitySolar panel, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntitySolar panel, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         boolean doSkyRotation = false;
         if (panel.tierGC == 2)

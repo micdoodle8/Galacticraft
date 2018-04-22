@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
@@ -20,7 +21,6 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
         return true;
     }
 
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(10))
@@ -33,7 +33,7 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
             break;
         case 2:
         case 3:
-            this.entityDropItem(new ItemStack(Blocks.glowstone, 1), 0.0F);
+            this.entityDropItem(new ItemStack(Blocks.GLOWSTONE, 1), 0.0F);
             break;
         case 4:
         case 5:
@@ -49,6 +49,16 @@ public class EntityEvolvedWitch extends EntityWitch implements IEntityBreathable
         case 8:
             this.dropItem(GCItems.oxygenVent, 1);
             break;
+        }
+    }
+
+    @Override
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        super.dropLoot(wasRecentlyHit, lootingModifier, source);
+        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.015F)
+        {
+            this.addRandomDrop();
         }
     }
 }

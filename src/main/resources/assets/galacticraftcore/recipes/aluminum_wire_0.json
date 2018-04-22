@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:aluminum_wire",
+    "data": 0,
+    "count": 6
+  },
+  "pattern": [
+    "WWW",
+    "CCC",
+    "WWW"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "ingotAluminum"
+    },
+    "W": {
+      "item": "minecraft:wool",
+      "data": 32767
+    }
+  }
+}

@@ -19,11 +19,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.Style;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.WorldServer;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -55,7 +54,7 @@ public class SpaceRaceManager
             {
                 if (race.getPlayerNames().contains(PlayerUtil.getName(player)))
                 {
-                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(GCCoreUtil.getDimensionID(player.worldObj));
+                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.world.provider.getDimension());
 
                     if (body != null)
                     {
@@ -89,7 +88,7 @@ public class SpaceRaceManager
         }
     }
 
-    public static void saveSpaceRaces(NBTTagCompound nbt)
+    public static NBTTagCompound saveSpaceRaces(NBTTagCompound nbt)
     {
         NBTTagList tagList = new NBTTagList();
 
@@ -101,6 +100,7 @@ public class SpaceRaceManager
         }
 
         nbt.setTag("SpaceRaceList", tagList);
+        return nbt;
     }
 
     public static SpaceRace getSpaceRaceFromPlayer(String username)
@@ -142,12 +142,12 @@ public class SpaceRaceManager
 
             if (toPlayer != null)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.worldObj), objList), toPlayer);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(toPlayer.world), objList), toPlayer);
                 spaceRace.updatePlayerSchematics(toPlayer);
             }
             else
             {
-                for (WorldServer server : theServer.worldServers)
+                for (WorldServer server : theServer.worlds)
                 {
                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(server), objList), GCCoreUtil.getDimensionID(server));
                 }
@@ -168,7 +168,7 @@ public class SpaceRaceManager
 
             if (memberObj != null)
             {
-                memberObj.addChatMessage(new ChatComponentText(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.remove_success", EnumColor.RED + player + EnumColor.DARK_AQUA)).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
+                memberObj.sendMessage(new TextComponentString(EnumColor.DARK_AQUA + GCCoreUtil.translateWithFormat("gui.space_race.chat.remove_success", EnumColor.RED + player + EnumColor.DARK_AQUA)).setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
             }
         }
 

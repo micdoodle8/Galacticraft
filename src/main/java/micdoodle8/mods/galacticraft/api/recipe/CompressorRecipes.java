@@ -152,15 +152,15 @@ public class CompressorRecipes
     public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World par2World)
     {
         int i = 0;
-        ItemStack itemstack = null;
-        ItemStack itemstack1 = null;
+        ItemStack itemstack = ItemStack.EMPTY;
+        ItemStack itemstack1 = ItemStack.EMPTY;
         int j;
 
         for (j = 0; j < inventory.getSizeInventory(); ++j)
         {
             ItemStack itemstack2 = inventory.getStackInSlot(j);
 
-            if (itemstack2 != null)
+            if (!itemstack2.isEmpty())
             {
                 if (i == 0)
                 {
@@ -176,7 +176,7 @@ public class CompressorRecipes
             }
         }
 
-        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.stackSize == 1 && itemstack1.stackSize == 1 && itemstack.getItem().isRepairable())
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.getCount() == 1 && itemstack1.getCount() == 1 && itemstack.getItem().isRepairable())
         {
             int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamage();
             int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamage();
@@ -208,7 +208,7 @@ public class CompressorRecipes
                 }
             }
 
-            return null;
+            return ItemStack.EMPTY;
         }
     }
 
@@ -218,7 +218,7 @@ public class CompressorRecipes
         List<IRecipe> endList = getRecipeListHidden(true, true);
         result.removeIf(irecipe -> endList.contains(irecipe));
         IRecipe ice = null;
-        Item iceItem = new ItemStack(Blocks.ice).getItem();
+        Item iceItem = new ItemStack(Blocks.ICE).getItem();
         for (IRecipe test : result)
         {
             if (test.getRecipeOutput().getItem() == iceItem)
@@ -262,7 +262,7 @@ public class CompressorRecipes
         }
         return result;
     }
-        
+
     public static List<IRecipe> getRecipeList()
     {
     	if (GalacticraftConfigAccess.getChallengeRecipes())
@@ -271,7 +271,7 @@ public class CompressorRecipes
     	// Filter out the GC steel recipe in Hard Mode
         if (steelIngotsPresent && GalacticraftConfigAccess.getHardMode())
         {
-            List<IRecipe> result = new ArrayList<>(CompressorRecipes.recipes.size());
+            List<IRecipe> resultSteelless = new ArrayList<>(CompressorRecipes.recipes.size());
             for (IRecipe recipe : CompressorRecipes.recipes)
             {
                 ItemStack output = recipe.getRecipeOutput();
@@ -283,14 +283,21 @@ public class CompressorRecipes
                         continue;
                     }
                 }
-                result.add(recipe);
+                resultSteelless.add(recipe);
             }
-            return result;
+            return resultSteelless;
         }
 
     	return CompressorRecipes.recipes;
     }
     
+    public static List<IRecipe> getRecipes(ItemStack match)
+    {
+        List<IRecipe> result = new ArrayList(CompressorRecipes.getRecipeList());
+        result.removeIf(irecipe -> !ItemStack.areItemStacksEqual(match, irecipe.getRecipeOutput()));
+        return result;
+    }
+
     /**
      * Caution: call this BEFORE the JEI plugin registers recipes - or else the removed recipe will still be shown in JEI.
      */

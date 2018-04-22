@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:atomic_battery"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "lead_ingot"
+    },
+    "Y": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 2
+    }
+  }
+}

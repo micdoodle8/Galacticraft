@@ -60,7 +60,7 @@ public class ContainerIngotCompressor extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class ContainerIngotCompressor extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -89,7 +89,7 @@ public class ContainerIngotCompressor extends Container
             {
                 if (!this.mergeItemStack(var4, 11, 47, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 1)
@@ -103,37 +103,37 @@ public class ContainerIngotCompressor extends Container
                 {
                     if (!this.mergeItemStack(var4, 9, 10, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 < 38)
                 {
                     if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 38, 47, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, 0, 9, false) && !this.mergeItemStack(var4, 11, 38, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

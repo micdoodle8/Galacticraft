@@ -11,12 +11,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.IRenderHandler;
 
 public class WeatherRendererVenus extends IRenderHandler
@@ -34,7 +34,7 @@ public class WeatherRendererVenus extends IRenderHandler
             for (int j = 0; j < 32; ++j)
             {
                 float f = (float)(j - 16);
-                float f2 = MathHelper.sqrt_float(f * f + f1 * f1);
+                float f2 = MathHelper.sqrt(f * f + f1 * f1);
                 this.rainXCoords[i << 5 | j] = -f1 / f2;
                 this.rainYCoords[i << 5 | j] = f / f2;
             }
@@ -58,7 +58,7 @@ public class WeatherRendererVenus extends IRenderHandler
             Entity entity = mc.getRenderViewEntity();
 
             Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            BufferBuilder worldrenderer = tessellator.getBuffer();
             GlStateManager.disableCull();
             GL11.glNormal3f(0.0F, 1.0F, 0.0F);
             GlStateManager.enableBlend();
@@ -67,7 +67,7 @@ public class WeatherRendererVenus extends IRenderHandler
             double d0 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)partialTicks;
             double d1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
             double d2 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
-            int l = MathHelper.floor_double(d1);
+            int l = MathHelper.floor(d1);
 
             int r = 4;
             if (mc.gameSettings.fancyGraphics)
@@ -80,16 +80,16 @@ public class WeatherRendererVenus extends IRenderHandler
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
             BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-            int px = MathHelper.floor_double(entity.posX);
-            int py = MathHelper.floor_double(entity.posY);
-            int pz = MathHelper.floor_double(entity.posZ);
+            int px = MathHelper.floor(entity.posX);
+            int py = MathHelper.floor(entity.posY);
+            int pz = MathHelper.floor(entity.posZ);
 
             for (int z = pz - r; z <= pz + r; ++z)
             {
                 int indexZ = (z - pz + 16) * 32;
                 for (int x = px - r; x <= px + r; ++x)
                 {
-                    mutablePos.set(x, 0, z);
+                    mutablePos.setPos(x, 0, z);
                     int yHeight = world.getPrecipitationHeight(mutablePos).getY() + 4 - (int)(4.8F * strength);
                     int y = py - r;
                     int ymax = py + r;
@@ -134,9 +134,9 @@ public class WeatherRendererVenus extends IRenderHandler
                         double yo = this.random.nextDouble() / 1.8D;
                         double xx = x + 0.5D - entity.posX;
                         double zz = z + 0.5D - entity.posZ;
-                        float rr = MathHelper.sqrt_double(xx * xx + zz * zz) / r;
+                        float rr = MathHelper.sqrt(xx * xx + zz * zz) / r;
                         float alpha = ((1.0F - rr * rr) * 0.5F + 0.5F) * strength / 0.6F;  //0.6F is the max rainstrength on Venus
-                        mutablePos.set(x, yBase, z);
+                        mutablePos.setPos(x, yBase, z);
                         int light = world.getCombinedLight(mutablePos, 0);
                         int lx = light >> 16 & 65535;
                         int ly = light & 65535;

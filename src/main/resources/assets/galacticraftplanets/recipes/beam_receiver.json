@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftplanets:beam_receiver"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    },
+    "Y": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    }
+  }
+}

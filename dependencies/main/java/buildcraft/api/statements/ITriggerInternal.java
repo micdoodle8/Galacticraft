@@ -4,7 +4,7 @@
  * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.statements;
 
-public interface ITriggerInternal extends IStatement {
+public interface ITriggerInternal extends ITrigger {
 
     boolean isTriggerActive(IStatementContainer source, IStatementParameter[] parameters);
 

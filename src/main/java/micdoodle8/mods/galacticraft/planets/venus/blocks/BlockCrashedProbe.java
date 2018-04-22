@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.venus.blocks;
 
-import com.google.common.collect.Lists;
-
-import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
@@ -10,51 +7,48 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, ITileEntityProvider
 {
-    public static final String CRASHED_PROBE = "crashedProbe";
-    private static final List<WeightedRandomChestContent> CONTENTS = Lists.newArrayList(
-            new WeightedRandomChestContent(MarsItems.marsItemBasic, 3, 3, 6, 5), // Tier 2 plate
-            new WeightedRandomChestContent(GCItems.heavyPlatingTier1, 0, 3, 6, 5), // Tier 1 plate
-            new WeightedRandomChestContent(AsteroidsItems.basicItem, 6, 3, 6, 5), // Titanium plate
-            new WeightedRandomChestContent(Items.iron_ingot, 0, 5, 9, 5), // Titanium plate
-            new WeightedRandomChestContent(AsteroidsItems.basicItem, 5, 3, 6, 5)); // Tier 3 plate
+//    public static final String CRASHED_PROBE = "crashedProbe";
+//    private static final List<WeightedRandomChestContent> CONTENTS = Lists.newArrayList(
+//            new WeightedRandomChestContent(MarsItems.marsItemBasic, 3, 3, 6, 5), // Tier 2 plate
+//            new WeightedRandomChestContent(GCItems.heavyPlatingTier1, 0, 3, 6, 5), // Tier 1 plate
+//            new WeightedRandomChestContent(AsteroidsItems.basicItem, 6, 3, 6, 5), // Titanium plate
+//            new WeightedRandomChestContent(Items.IRON_INGOT, 0, 5, 9, 5), // Titanium plate
+//            new WeightedRandomChestContent(AsteroidsItems.basicItem, 5, 3, 6, 5)); // Tier 3 plate
 
-    static
-    {
-        net.minecraftforge.common.ChestGenHooks.init(CRASHED_PROBE, CONTENTS, 4, 6);
-    }
+//    static
+//    {
+//        net.minecraftforge.common.ChestGenHooks.init(CRASHED_PROBE, CONTENTS, 4, 6);
+//    }
 
     public BlockCrashedProbe(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.blockHardness = 4.5F;
         this.blockResistance = 2.5F;
-        this.setStepSound(soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setTickRandomly(true);
         this.setUnlocalizedName(assetName);
     }
@@ -79,7 +73,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
     }
 
     @Override
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.65, pos.getY() + 1.0, pos.getZ() + 0.9, 0.0, 0.0, 0.0);
         worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.2, pos.getY() + 1.0, pos.getZ() + 0.2, 0.0, 0.0, 0.0);
@@ -87,7 +81,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -116,6 +110,6 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
         final double d2 = syncRandom.nextFloat() * f + (1.0F - f) * 0.5D;
         final EntityItem entityitem = new EntityItem(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(VenusItems.basicItem, 1, 2));
         entityitem.setDefaultPickupDelay();
-        worldIn.spawnEntityInWorld(entityitem);
+        worldIn.spawnEntity(entityitem);
     }
 }

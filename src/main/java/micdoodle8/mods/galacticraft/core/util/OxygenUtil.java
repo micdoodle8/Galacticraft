@@ -28,13 +28,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -89,12 +89,12 @@ public class OxygenUtil
 
         // If entity is within air lock wall, check adjacent blocks for oxygen
         // The value is equal to the max distance from an adjacent oxygen block to the edge of a sealer wall
-        if (entity.worldObj.getBlockState(entity.getPosition()).getBlock() == GCBlocks.airLockSeal)
+        if (entity.world.getBlockState(entity.getPosition()).getBlock() == GCBlocks.airLockSeal)
         {
             offsetXZ = 0.75F;
         }
 
-        return OxygenUtil.isAABBInBreathableAirBlock(entity.worldObj, AxisAlignedBB.fromBounds(x - smin - offsetXZ, y - smin, z - smin - offsetXZ, x + smin + offsetXZ, y + smin, z + smin + offsetXZ), testThermal);
+        return OxygenUtil.isAABBInBreathableAirBlock(entity.world, new AxisAlignedBB(x - smin - offsetXZ, y - smin, z - smin - offsetXZ, x + smin + offsetXZ, y + smin, z + smin + offsetXZ), testThermal);
     }
 
     public static boolean isAABBInBreathableAirBlock(World world, AxisAlignedBB bb)
@@ -123,12 +123,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenBlock(World world, AxisAlignedBB bb)
     {
-        int xm = MathHelper.floor_double(bb.minX + 0.001D);
-        int xx = MathHelper.floor_double(bb.maxX - 0.001D);
-        int ym = MathHelper.floor_double(bb.minY + 0.001D);
-        int yy = MathHelper.floor_double(bb.maxY - 0.001D);
-        int zm = MathHelper.floor_double(bb.minZ + 0.001D);
-        int zz = MathHelper.floor_double(bb.maxZ - 0.001D);
+        int xm = MathHelper.floor(bb.minX + 0.001D);
+        int xx = MathHelper.floor(bb.maxX - 0.001D);
+        int ym = MathHelper.floor(bb.minY + 0.001D);
+        int yy = MathHelper.floor(bb.maxY - 0.001D);
+        int zm = MathHelper.floor(bb.minZ + 0.001D);
+        int zz = MathHelper.floor(bb.maxZ - 0.001D);
 
         OxygenUtil.checked = new HashSet<>();
         if (world.isAreaLoaded(new BlockPos(xm, ym, zm), new BlockPos(xx, yy, zz)))
@@ -155,12 +155,12 @@ public class OxygenUtil
 
     public static boolean isInOxygenAndThermalBlock(World world, AxisAlignedBB bb)
     {
-        int i = MathHelper.floor_double(bb.minX + 0.001D);
-        int j = MathHelper.floor_double(bb.maxX - 0.001D);
-        int k = MathHelper.floor_double(bb.minY + 0.001D);
-        int l = MathHelper.floor_double(bb.maxY - 0.001D);
-        int i1 = MathHelper.floor_double(bb.minZ + 0.001D);
-        int j1 = MathHelper.floor_double(bb.maxZ - 0.001D);
+        int i = MathHelper.floor(bb.minX + 0.001D);
+        int j = MathHelper.floor(bb.maxX - 0.001D);
+        int k = MathHelper.floor(bb.minY + 0.001D);
+        int l = MathHelper.floor(bb.maxY - 0.001D);
+        int i1 = MathHelper.floor(bb.minZ + 0.001D);
+        int j1 = MathHelper.floor(bb.maxZ - 0.001D);
 
         OxygenUtil.checked = new HashSet<>();
         if (world.isAreaLoaded(new BlockPos(i, k, i1), new BlockPos(j, l, j1)))
@@ -201,8 +201,8 @@ public class OxygenUtil
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
-            Block newblock = sidevec.getBlockID_noChunkLoad(world);
-            if (OxygenUtil.testContactWithBreathableAir(world, newblock, sidevec.toBlockPos(), 1) >= 0)
+            IBlockState state = sidevec.getBlockState_noChunkLoad(world);
+            if (OxygenUtil.testContactWithBreathableAir(world, state.getBlock(), sidevec.toBlockPos(), 1) >= 0)
             {
                 return true;
             }
@@ -226,18 +226,19 @@ public class OxygenUtil
             return block.getMetaFromState(world.getBlockState(pos));
         }
 
-        if (block == null || block.getMaterial() == Material.air)
+        IBlockState state = world.getBlockState(pos);
+        if (block == null || block.getMaterial(state) == Material.AIR)
         {
             return -1;
         }
 
         //Test for non-sided permeable or solid blocks first
         boolean permeableFlag = false;
-        if (!(block instanceof BlockLeavesBase))
+        if (!(block instanceof BlockLeaves))
         {
-            if (block.isOpaqueCube())
+            if (block.isOpaqueCube(state))
             {
-                if (block instanceof BlockGravel || block.getMaterial() == Material.cloth || block instanceof BlockSponge)
+                if (block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge)
                 {
                     permeableFlag = true;
                 }
@@ -257,7 +258,6 @@ public class OxygenUtil
             else if (OxygenPressureProtocol.nonPermeableBlocks.containsKey(block))
             {
                 ArrayList<Integer> metaList = OxygenPressureProtocol.nonPermeableBlocks.get(block);
-                IBlockState state = world.getBlockState(pos);
                 if (metaList.contains(-1) || metaList.contains(state.getBlock().getMetaFromState(state)))
                 {
                     return -1;
@@ -319,7 +319,7 @@ public class OxygenUtil
         if (block instanceof BlockPistonBase)
         {
             IBlockState state = world.getBlockState(vec);
-            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if ((Boolean) state.getValue(BlockPistonBase.EXTENDED))
             {
                 int meta0 = state.getBlock().getMetaFromState(state);
                 EnumFacing facing = BlockPistonBase.getFacing(meta0);
@@ -328,7 +328,7 @@ public class OxygenUtil
             return false;
         }
 
-        return !block.isSideSolid(world, vec, EnumFacing.getFront(side.getIndex() ^ 1));
+        return !block.isSideSolid(world.getBlockState(vec), world, vec, EnumFacing.getFront(side.getIndex() ^ 1));
     }
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
@@ -464,6 +464,11 @@ public class OxygenUtil
     {
         TileEntity[] adjacentConnections = new TileEntity[EnumFacing.VALUES.length];
 
+        if (tile == null)
+        {
+            return adjacentConnections;
+        }
+
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
@@ -471,23 +476,20 @@ public class OxygenUtil
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
-            if (tileEntity instanceof IFluidHandler)
+            boolean connectable = false;
+            if (tileEntity instanceof IConnector)
             {
-                if (ignoreConnect || !(tileEntity instanceof IConnector) || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID))
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
+            	connectable = ignoreConnect || ((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.FLUID);
             }
-//            else if (isMekLoaded)
-//            {
-//                if (tileEntity instanceof ITubeConnection && (!(tileEntity instanceof IGasTransmitter) || TransmissionType.checkTransmissionType(tileEntity, TransmissionType.GAS, tileEntity)))
-//                {
-//                    if (((ITubeConnection) tileEntity).canTubeConnect(direction))
-//                    {
-//                        adjacentConnections[direction.ordinal()] = tileEntity;
-//                    }
-//                }
-//            }
+            else if (tileEntity != null)
+            {
+            	connectable = tileEntity.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, direction.getOpposite()) != null;
+            }
+
+            if (connectable)
+            {
+            	adjacentConnections[direction.ordinal()] = tileEntity;
+            }
         }
 
         return adjacentConnections;

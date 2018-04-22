@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_item",
+    "data": 17
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    },
+    {
+      "item": "minecraft:melon"
+    },
+    {
+      "item": "minecraft:melon"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

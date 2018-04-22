@@ -15,7 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -122,7 +122,7 @@ public class PacketSimpleAsteroids extends PacketBase
         switch (this.type)
         {
         case C_TELEPAD_SEND:
-            Entity entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(1));
+            Entity entity = playerBaseClient.world.getEntityByID((Integer) this.data.get(1));
 
             if (entity != null && entity instanceof EntityLivingBase)
             {
@@ -131,7 +131,7 @@ public class PacketSimpleAsteroids extends PacketBase
             }
             break;
         case C_UPDATE_GRAPPLE_POS:
-            entity = playerBaseClient.worldObj.getEntityByID((Integer) this.data.get(0));
+            entity = playerBaseClient.world.getEntityByID((Integer) this.data.get(0));
             if (entity != null && entity instanceof EntityGrapple)
             {
                 Vector3 vec = (Vector3) this.data.get(1);
@@ -151,7 +151,7 @@ public class PacketSimpleAsteroids extends PacketBase
         switch (this.type)
         {
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
+            TileEntity tile = player.world.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {

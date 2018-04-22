@@ -7,9 +7,12 @@ package buildcraft.api.statements;
 import java.util.Arrays;
 import java.util.Objects;
 
+import buildcraft.api.core.EnumPipePart;
+
 public class StatementSlot {
     public IStatement statement;
     public IStatementParameter[] parameters;
+    public EnumPipePart part = EnumPipePart.CENTER;
 
     @Override
     public boolean equals(Object o) {

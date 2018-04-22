@@ -115,16 +115,16 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         this.drawTexturedModalRect(var5 + 11, var6 + 51, 181, 0, 7, 9);
 
         String displayString = GCCoreUtil.translateWithFormat("gui.title.air_lock.name", this.controller.ownerName);
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, 4210752);
 
         if (this.cannotEditTimer > 0)
         {
-            this.fontRendererObj.drawString(this.controller.ownerName, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
+            this.fontRenderer.drawString(this.controller.ownerName, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 - 65, this.cannotEditTimer % 30 < 15 ? ColorUtil.to32BitColor(255, 255, 100, 100) : 4210752);
             this.cannotEditTimer--;
         }
 
         displayString = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 45, 4210752);
         displayString = EnumColor.RED + GCCoreUtil.translate("gui.status.air_lock_closed.name");
 
         if (!this.controller.active)
@@ -132,7 +132,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
             displayString = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.air_lock_open.name");
         }
 
-        this.fontRendererObj.drawString(displayString, this.width / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
+        this.fontRenderer.drawString(displayString, this.width / 2 - this.fontRenderer.getStringWidth(displayString) / 2, this.height / 2 + 55, 4210752);
 
         super.drawScreen(par1, par2, par3);
     }
@@ -143,7 +143,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (checkbox.equals(this.checkboxRedstoneSignal))
         {
             this.controller.redstoneActivation = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 0, this.controller.getPos(), this.controller.redstoneActivation ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 0, this.controller.getPos(), this.controller.redstoneActivation ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 0,
             // this.controller.xCoord, this.controller.yCoord,
@@ -153,7 +153,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxPlayerDistance))
         {
             this.controller.playerDistanceActivation = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 1, this.controller.getPos(), this.controller.playerDistanceActivation ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 1, this.controller.getPos(), this.controller.playerDistanceActivation ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 1,
             // this.controller.xCoord, this.controller.yCoord,
@@ -163,7 +163,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxOpenForPlayer))
         {
             this.controller.playerNameMatches = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 3, this.controller.getPos(), this.controller.playerNameMatches ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 3, this.controller.getPos(), this.controller.playerNameMatches ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 3,
             // this.controller.xCoord, this.controller.yCoord,
@@ -173,7 +173,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         else if (checkbox.equals(this.checkboxInvertSelection))
         {
             this.controller.invertSelection = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 4, this.controller.getPos(), this.controller.invertSelection ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 4, this.controller.getPos(), this.controller.invertSelection ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 4,
             // this.controller.xCoord, this.controller.yCoord,
@@ -184,7 +184,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         {
             this.controller.lastHorizontalModeEnabled = this.controller.horizontalModeEnabled;
             this.controller.horizontalModeEnabled = newSelected;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 5, this.controller.getPos(), this.controller.horizontalModeEnabled ? 1 : 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 5, this.controller.getPos(), this.controller.horizontalModeEnabled ? 1 : 0 }));
             // PacketDispatcher.sendPacketToServer(PacketUtil.createPacket(GalacticraftCore.CHANNEL,
             // EnumPacketServer.ON_ADVANCED_GUI_CLICKED_INT, new Object[] { 5,
             // this.controller.xCoord, this.controller.yCoord,
@@ -238,7 +238,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (dropdown.equals(this.dropdownPlayerDistance))
         {
             this.controller.playerDistanceSelection = selection;
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 2, this.controller.getPos(), this.controller.playerDistanceSelection }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 2, this.controller.getPos(), this.controller.playerDistanceSelection }));
         }
     }
 
@@ -260,7 +260,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
         if (textBox.equals(this.textBoxPlayerToOpenFor))
         {
             this.controller.playerToOpenFor = newText != null ? newText : "";
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_STRING, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 0, this.controller.getPos(), this.controller.playerToOpenFor }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_STRING, GCCoreUtil.getDimensionID(mc.world), new Object[] { 0, this.controller.getPos(), this.controller.playerToOpenFor }));
         }
     }
 

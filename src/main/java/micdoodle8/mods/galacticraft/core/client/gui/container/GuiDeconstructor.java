@@ -57,7 +57,7 @@ public class GuiDeconstructor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getName(), 10, 6, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getName(), 10, 6, 4210752);
         String displayText;
 
         if (this.tileEntity.processTicks > 0)
@@ -70,12 +70,12 @@ public class GuiDeconstructor extends GuiContainerGC
         }
 
         String str = GCCoreUtil.translate("gui.message.status.name") + ": " + displayText;
-        this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 75, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
+        this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 75, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();
-//		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 85, 4210752);
+//		this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 85, 4210752);
 //		//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRendererObj.drawString(str, 120 - this.fontRendererObj.getStringWidth(str) / 2, 95, 4210752);
+//		this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 95, 4210752);
     }
 
     /**

@@ -44,7 +44,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     private int buttonFlag_xPosition;
     private int buttonFlag_yPosition;
 
-    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().theWorld);
+    private EntityFlag dummyFlag = new EntityFlag(FMLClientHandler.instance().getClient().world);
     private ModelFlag dummyModel = new ModelFlag();
 
     private SpaceRace spaceRaceData;
@@ -99,7 +99,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
             this.thePlayer.closeScreen();
             break;
         case 1:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ADD_RACE_PLAYER, GCCoreUtil.getDimensionID(mc.world), new Object[] { PlayerUtil.getName(this.thePlayer), this.spaceRaceData.getSpaceRaceID() }));
             this.thePlayer.closeScreen();
             break;
         default:
@@ -133,15 +133,15 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
         if (this.initialized)
         {
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
+            this.drawCenteredString(this.fontRenderer, GCCoreUtil.translate("gui.space_race.join.title.name"), this.width / 2, this.height / 2 - this.height / 3 - 15, 16777215);
             this.drawFlagButton(par1, par2);
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translate("gui.space_race.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
-            this.drawCenteredString(this.fontRendererObj, GCCoreUtil.translateWithFormat("gui.space_race.join.member_count.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.fontRenderer, GCCoreUtil.translate("gui.space_race.join.owner.name") + ": " + this.spaceRaceData.getPlayerNames().get(0), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 25, ColorUtil.to32BitColor(255, 150, 150, 150));
+            this.drawCenteredString(this.fontRenderer, GCCoreUtil.translateWithFormat("gui.space_race.join.member_count.name", this.spaceRaceData.getPlayerNames().size()), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 40, ColorUtil.to32BitColor(255, 150, 150, 150));
             GL11.glPushMatrix();
-            GL11.glTranslatef(this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5 + FMLClientHandler.instance().getClient().fontRendererObj.FONT_HEIGHT / 2, 0);
+            GL11.glTranslatef(this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5 + FMLClientHandler.instance().getClient().fontRenderer.FONT_HEIGHT / 2, 0);
             GL11.glScalef(1.5F, 1.5F, 1.0F);
-            GL11.glTranslatef(-this.width / 2, (-(this.buttonFlag_yPosition + this.buttonFlag_height + 5)) - FMLClientHandler.instance().getClient().fontRendererObj.FONT_HEIGHT / 2, 0);
-            this.drawCenteredString(this.fontRendererObj, this.spaceRaceData.getTeamName(), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5, ColorUtil.to32BitColor(255, 100, 150, 20));
+            GL11.glTranslatef(-this.width / 2, (-(this.buttonFlag_yPosition + this.buttonFlag_height + 5)) - FMLClientHandler.instance().getClient().fontRenderer.FONT_HEIGHT / 2, 0);
+            this.drawCenteredString(this.fontRenderer, this.spaceRaceData.getTeamName(), this.width / 2, this.buttonFlag_yPosition + this.buttonFlag_height + 5, ColorUtil.to32BitColor(255, 100, 150, 20));
             GL11.glPopMatrix();
         }
 
@@ -164,7 +164,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     @Override
     public void drawWorldBackground(int i)
     {
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
             int scaleX = Math.min(this.ticksPassed * 14, this.width / 3);
             int scaleY = Math.min(this.ticksPassed * 14, this.height / 3);

@@ -2,90 +2,88 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 public class InventorySchematic implements IInventoryDefaults
 {
-    private final ItemStack[] stackList;
+    public NonNullList<ItemStack> stacks;
     private final Container eventHandler;
 
     public InventorySchematic(Container par1Container)
     {
-        this.stackList = new ItemStack[1];
+        this.stacks = NonNullList.withSize(1, ItemStack.EMPTY);
         this.eventHandler = par1Container;
     }
 
     @Override
     public int getSizeInventory()
     {
-        return this.stackList.length;
+        return this.stacks.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int index)
     {
-        return par1 >= this.getSizeInventory() ? null : this.stackList[par1];
+        return this.stacks.get(index);
+    }
+
+    @Override
+    public ItemStack decrStackSize(int index, int count)
+    {
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
+        {
+            this.markDirty();
+        }
+
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+            this.markDirty();
+        }
+    	return oldstack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
     public String getName()
     {
         return "container.crafting";
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (this.stackList[par1] != null)
-        {
-            final ItemStack var2 = this.stackList[par1];
-            this.stackList[par1] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (this.stackList[par1] != null)
-        {
-            ItemStack var3;
-
-            if (this.stackList[par1].stackSize <= par2)
-            {
-                var3 = this.stackList[par1];
-                this.stackList[par1] = null;
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
-            else
-            {
-                var3 = this.stackList[par1].splitStack(par2);
-
-                if (this.stackList[par1].stackSize == 0)
-                {
-                    this.stackList[par1] = null;
-                }
-
-                this.eventHandler.onCraftMatrixChanged(this);
-                return var3;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.stackList[par1] = par2ItemStack;
-        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override
@@ -100,7 +98,7 @@ public class InventorySchematic implements IInventoryDefaults
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
         return true;
     }

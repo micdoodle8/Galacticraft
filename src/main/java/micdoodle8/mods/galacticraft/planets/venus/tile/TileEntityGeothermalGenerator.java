@@ -17,11 +17,12 @@ import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
@@ -33,7 +34,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     private boolean validSpout;
 
-    private ItemStack[] containingItems = new ItemStack[1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean disabled = false;
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
@@ -51,7 +52,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.receiveEnergyGC(null, this.generateWatts, false);
         }
@@ -61,7 +62,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         if (this.ticks % 20 == 0)
         {
             BlockPos below = this.getPos().down();
-            IBlockState stateBelow = this.worldObj.getBlockState(below);
+            IBlockState stateBelow = this.world.getBlockState(below);
 
             boolean lastValidSpout = this.validSpout;
             this.validSpout = false;
@@ -70,13 +71,13 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 BlockPos pos1 = below.down();
                 for (; this.getPos().getY() - pos1.getY() < 20; pos1 = pos1.down())
                 {
-                    IBlockState state = this.worldObj.getBlockState(pos1);
+                    IBlockState state = this.world.getBlockState(pos1);
                     if (state.getBlock() == VenusModule.sulphuricAcid.getBlock())
                     {
                         this.validSpout = true;
                         break;
                     }
-                    else if (!state.getBlock().isAir(this.worldObj, pos1))
+                    else if (!state.getBlock().isAir(this.world.getBlockState(pos1), this.world, pos1))
                     {
                         // Not valid
                         break;
@@ -84,16 +85,17 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 }
             }
 
-            if (this.worldObj.isRemote && this.validSpout != lastValidSpout)
+            if (this.world.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                IBlockState state = this.world.getBlockState(this.getPos());
+                this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.recharge(this.containingItems[0]);
+            this.recharge(this.stacks.get(0));
 
             if (this.disableCooldown > 0)
             {
@@ -145,40 +147,16 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     {
         super.readFromNBT(nbt);
 
-        NBTTagList items = nbt.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < items.tagCount(); ++i)
-        {
-            NBTTagCompound tagAt = items.getCompoundTagAt(i);
-            int slot = tagAt.getByte("Slot") & 255;
-
-            if (slot < this.containingItems.length)
-            {
-                this.containingItems[slot] = ItemStack.loadItemStackFromNBT(tagAt);
-            }
-        }
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-
-        final NBTTagList list = new NBTTagList();
-
-        for (int i = 0; i < this.containingItems.length; ++i)
-        {
-            if (this.containingItems[i] != null)
-            {
-                final NBTTagCompound tagAt = new NBTTagCompound();
-                tagAt.setByte("Slot", (byte) i);
-                this.containingItems[i].writeToNBT(tagAt);
-                list.appendTag(tagAt);
-            }
-        }
-
-        nbt.setTag("Items", list);
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
+        return nbt;
     }
 
     @Override
@@ -200,7 +178,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     public EnumFacing getFront()
     {
-        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        IBlockState state = this.world.getBlockState(getPos()); 
         if (state.getBlock() instanceof BlockGeothermalGenerator)
         {
             return state.getValue(BlockGeothermalGenerator.FACING);
@@ -237,10 +215,11 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     {
         if (this.disableCooldown == 0)
         {
-            if (this.disabled != disabled && this.worldObj.isRemote)
+            if (this.disabled != disabled && this.world.isRemote)
             {
                 // Update active texture
-                this.worldObj.markBlockForUpdate(this.getPos());
+                IBlockState state = this.world.getBlockState(this.getPos());
+                this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
 
             this.disabled = disabled;
@@ -262,70 +241,64 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length;
+        return this.stacks.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int slot)
+    public ItemStack getStackInSlot(int var1)
     {
-        return this.containingItems[slot];
+        return this.stacks.get(var1);
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int amount)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.containingItems[slot] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
+            this.markDirty();
+        }
 
-            if (this.containingItems[slot].stackSize <= amount)
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
             {
-                var3 = this.containingItems[slot];
-                this.containingItems[slot] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.containingItems[slot].splitStack(amount);
-
-                if (this.containingItems[slot].stackSize == 0)
-                {
-                    this.containingItems[slot] = null;
-                }
-
-                return var3;
+                return false;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack removeStackFromSlot(int slot)
-    {
-        if (this.containingItems[slot] != null)
-        {
-            final ItemStack var2 = this.containingItems[slot];
-            this.containingItems[slot] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack itemStack)
-    {
-        this.containingItems[slot] = itemStack;
-
-        if (itemStack != null && itemStack.stackSize > this.getInventoryStackLimit())
-        {
-            itemStack.stackSize = this.getInventoryStackLimit();
-        }
+        return true;
     }
 
     @Override
@@ -335,9 +308,9 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player)
+    public boolean isUsableByPlayer(EntityPlayer player)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
      @Override

@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -54,8 +54,8 @@ public class GuiSchematicCargoRocket extends GuiPositionedContainer implements I
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("item.rocket_t2.cargo_rocket.name"), 7, -20 + 27, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 9, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("item.rocket_t2.cargo_rocket.name"), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 220 - 104 + 2 + 9, 4210752);
     }
 
     @Override

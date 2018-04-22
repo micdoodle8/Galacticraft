@@ -6,11 +6,8 @@ package buildcraft.api.recipes;
 
 public final class BuildcraftRecipeRegistry {
 
-    public static IAssemblyRecipeManager assemblyTable;
-    public static IIntegrationRecipeManager integrationTable;
-    public static IRefineryRecipeManager refinery;
-    public static IProgrammingRecipeManager programmingTable;
-    public static IComplexRefineryRecipeManager complexRefinery;
+    public static IIntegrationRecipeRegistry integrationRecipes;
+    public static IRefineryRecipeManager refineryRecipes;
 
     private BuildcraftRecipeRegistry() {}
 }

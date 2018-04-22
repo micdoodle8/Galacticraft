@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 
-import mezz.jei.api.IItemBlacklist;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import micdoodle8.mods.galacticraft.core.items.*;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -12,15 +12,17 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -84,9 +86,8 @@ public class GCItems
     public static Item ic2compat;
     public static Item emergencyKit;
 
-    //    public static ArmorMaterial addArmorMaterial(String name, String textureName, int durability, int[] reductionAmounts, int enchantability)
-    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0);
-    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 8, 6, 3 }, 9);
+    public static ArmorMaterial ARMOR_SENSOR_GLASSES = EnumHelper.addArmorMaterial("SENSORGLASSES", "", 200, new int[] { 0, 0, 0, 0 }, 0, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 0.0F);
+    public static ArmorMaterial ARMOR_STEEL = EnumHelper.addArmorMaterial("steel", "", 30, new int[] { 3, 6, 8, 3 }, 9, SoundEvents.ITEM_ARMOR_EQUIP_IRON, 1.0F);
     public static ToolMaterial TOOL_STEEL = EnumHelper.addToolMaterial("steel", 3, 768, 5.0F, 2, 8);
 
     public static ArrayList<Item> hiddenItems = new ArrayList<Item>();
@@ -107,10 +108,10 @@ public class GCItems
         GCItems.steelHoe = new ItemHoeGC("steel_hoe");
         GCItems.steelSpade = new ItemSpadeGC("steel_shovel");
         GCItems.steelSword = new ItemSwordGC("steel_sword");
-        GCItems.steelHelmet = new ItemArmorGC(0, "helmet");
-        GCItems.steelChestplate = new ItemArmorGC(1, "chestplate");
-        GCItems.steelLeggings = new ItemArmorGC(2, "leggings");
-        GCItems.steelBoots = new ItemArmorGC(3, "boots");
+        GCItems.steelHelmet = new ItemArmorGC(EntityEquipmentSlot.HEAD, "helmet");
+        GCItems.steelChestplate = new ItemArmorGC(EntityEquipmentSlot.CHEST, "chestplate");
+        GCItems.steelLeggings = new ItemArmorGC(EntityEquipmentSlot.LEGS, "leggings");
+        GCItems.steelBoots = new ItemArmorGC(EntityEquipmentSlot.FEET, "boots");
         GCItems.canister = new ItemCanister("canister");
         GCItems.oxygenVent = new ItemBase("air_vent");
         GCItems.oxygenFan = new ItemBase("air_fan");
@@ -155,6 +156,12 @@ public class GCItems
         GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 17), new ItemStack(GCItems.foodItem, 1, 2));
         GCItems.itemChanges.put(new ItemStack(GCItems.basicItem, 1, 18), new ItemStack(GCItems.foodItem, 1, 3));
 
+        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.oilCanister, Constants.MOD_ID_CORE, "oil_canister_partial", 7));
+        GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
+    }
+    
+    public static void oreDictRegistrations()
+    {
         for (int i = 0; i < ItemBasic.names.length; i++)
         {
             if (ItemBasic.names[i].contains("ingot") || ItemBasic.names[i].contains("compressed") || ItemBasic.names[i].contains("wafer"))
@@ -186,6 +193,8 @@ public class GCItems
         GalacticraftCore.proxy.registerCanister(new PartialCanister(GCItems.fuelCanister, Constants.MOD_ID_CORE, "fuel_canister_partial", 7));
         OreDictionary.registerOre(ConfigManagerCore.otherModsSilicon, new ItemStack(GCItems.basicItem, 1, 2));
     }
+    
+    
 
     /**
      * Do not call this until after mod loading is complete
@@ -193,27 +202,27 @@ public class GCItems
      * until it services an FMLLoadCompleteEvent.
      * (Seriously?!)
      */
-    public static void hideItemsJEI(IItemBlacklist jeiHidden)
+    public static void hideItemsJEI(IIngredientBlacklist jeiHidden)
     {
         if (jeiHidden != null)
         {
             for (ItemStack item : GCItems.itemChanges.keySet())
             {
-                jeiHidden.addItemToBlacklist(item.copy());
+                jeiHidden.addIngredientToBlacklist(item.copy());
             }
 
             for (Item item : GCItems.hiddenItems)
             {
-                jeiHidden.addItemToBlacklist(new ItemStack(item, 1, 0));
+                jeiHidden.addIngredientToBlacklist(new ItemStack(item, 1, 0));
             }
 
             for (Block block : GCBlocks.hiddenBlocks)
             {
-                jeiHidden.addItemToBlacklist(new ItemStack(block, 1, 0));
+                jeiHidden.addIngredientToBlacklist(new ItemStack(block, 1, 0));
                 if (block == GCBlocks.slabGCDouble)
                 {
                     for (int j = 1; j < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); j++)
-                        jeiHidden.addItemToBlacklist(new ItemStack(block, 1, j));
+                        jeiHidden.addIngredientToBlacklist(new ItemStack(block, 1, j));
                 }
             }
         }
@@ -224,7 +233,15 @@ public class GCItems
         List<StackSorted> itemOrderListItems = Lists.newArrayList();
         for (EnumSortCategoryItem type : EnumSortCategoryItem.values())
         {
-            itemOrderListItems.addAll(sortMapItems.get(type));
+            List stackSorteds = sortMapItems.get(type);
+            if (stackSorteds != null)
+            {
+                itemOrderListItems.addAll(stackSorteds);
+            }
+            else
+            {
+                System.out.println("ERROR: null sort stack: " + type.toString());
+            }
         }
 
         Comparator<ItemStack> tabSorterItems = Ordering.explicit(itemOrderListItems).onResultOf(input -> new StackSorted(input.getItem(), input.getItemDamage()));
@@ -244,8 +261,8 @@ public class GCItems
         if (item instanceof ISortableItem)
         {
             ISortableItem sortableItem = (ISortableItem) item;
-            List<ItemStack> items = Lists.newArrayList();
-            item.getSubItems(item, null, items);
+            NonNullList<ItemStack> items = NonNullList.create();
+            item.getSubItems(GalacticraftCore.galacticraftItemsTab, items);
             for (ItemStack stack : items)
             {
                 EnumSortCategoryItem categoryItem = sortableItem.getCategory(stack.getItemDamage());
@@ -323,12 +340,20 @@ public class GCItems
     public static void registerItem(Item item)
     {
         String name = item.getUnlocalizedName().substring(5);
-        GCCoreUtil.registerGalacticraftItem(name, item);
-        GameRegistry.registerItem(item, item.getUnlocalizedName().substring(5));
-        GalacticraftCore.proxy.postRegisterItem(item);
-        if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
+        if (item.getRegistryName() == null)
         {
-            GCItems.registerSorted(item);
+            item.setRegistryName(name);
+        }
+        GCCoreUtil.registerGalacticraftItem(name, item);
+        GalacticraftCore.itemListTrue.add(item);
+        GalacticraftCore.proxy.postRegisterItem(item);
+    }
+    
+    public static void registerItems(IForgeRegistry<Item> registry)
+    {
+        for (ItemStack item : GalacticraftCore.itemList)
+        {
+            registry.register(item.getItem());
         }
     }
 }

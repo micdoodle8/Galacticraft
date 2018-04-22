@@ -1,0 +1,12 @@
+{
+    "recipes": {
+      "replacable": "micdoodle8.mods.galacticraft.core.recipe.OreRecipeUpdatable$RecipeFactory"
+    },
+    "ingredients": {
+      "advanced_metal": "micdoodle8.mods.galacticraft.core.recipe.IngredientAdvancedMetal",
+      "item_silicon": "micdoodle8.mods.galacticraft.core.recipe.IngredientSilicon"
+    },
+    "conditions": {
+      "condition": "micdoodle8.mods.galacticraft.core.recipe.ConditionEnabled"
+    }
+}

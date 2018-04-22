@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.DamageSource;
 
@@ -10,11 +11,11 @@ public interface IPlayerServer
 
     void updateRiddenPost(EntityPlayerMP player);
 
-    boolean mountEntity(EntityPlayerMP player, Entity par1Entity);
+    boolean dismountEntity(EntityPlayerMP player, Entity par1Entity);
 
-    void moveEntity(EntityPlayerMP player, double par1, double par3, double par5);
+    void move(EntityPlayerMP player, MoverType type, double x, double y, double z);
 
-    boolean wakeUpPlayer(EntityPlayerMP player, boolean par1, boolean par2, boolean par3);
+    boolean wakeUpPlayer(EntityPlayerMP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn);
 
     float attackEntityFrom(EntityPlayerMP player, DamageSource par1DamageSource, float par2);
 

@@ -8,13 +8,16 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.block.BlockDragonEgg;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -23,6 +26,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription, ISortableBlock
 {
+    protected static final AxisAlignedBB DRAGON_EGG_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+
     public BlockCreeperEgg(String assetName)
     {
         super();
@@ -30,7 +35,13 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return DRAGON_EGG_AABB;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
@@ -43,13 +54,19 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -62,9 +79,9 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -75,7 +92,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
             EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
             creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
-            world.spawnEntityInWorld(creeper);
+            world.spawnEntity(creeper);
         }
 
         world.setBlockToAir(pos);
@@ -93,22 +110,22 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
         ItemStack stack = player.inventory.getCurrentItem();
-        if (stack == null)
+        if (stack.isEmpty())
         {
-            return player.canHarvestBlock(this);
+            return player.canHarvestBlock(world.getBlockState(pos));
         }
         return stack.getItem() == MarsItems.deshPickSlime;
     }
 
     @Override
-    public float getPlayerRelativeBlockHardness(EntityPlayer playerIn, World worldIn, BlockPos pos)
+    public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos)
     {
-        ItemStack stack = playerIn.inventory.getCurrentItem();
+        ItemStack stack = player.inventory.getCurrentItem();
         if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
         {
             return 0.2F;
         }
-        return super.getPlayerRelativeBlockHardness(playerIn, worldIn, pos);
+        return super.getPlayerRelativeBlockHardness(state, player, worldIn, pos);
     }
 
     @Override

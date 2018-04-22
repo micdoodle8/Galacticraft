@@ -35,11 +35,11 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	public void beforeLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 	}
 
-	public void afterLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.ItemInWorldManager paramItemInWorldManager)
+	public void afterLocalConstructing(net.minecraft.server.MinecraftServer paramMinecraftServer, net.minecraft.world.WorldServer paramWorldServer, com.mojang.authlib.GameProfile paramGameProfile, net.minecraft.server.management.PlayerInteractionManager paramPlayerInteractionManager)
 	{
 	}
 
@@ -202,34 +202,34 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeCanHarvestBlock(net.minecraft.block.Block paramBlock)
+	public void beforeCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 	}
 
-	public boolean canHarvestBlock(net.minecraft.block.Block paramBlock)
+	public boolean canHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenCanHarvestBlock(this);
 
 		boolean _result;
 		if(overwritten == null)
-			_result = playerAPI.localCanHarvestBlock(paramBlock);
+			_result = playerAPI.localCanHarvestBlock(paramIBlockState);
 		else if(overwritten != this)
-			_result = overwritten.canHarvestBlock(paramBlock);
+			_result = overwritten.canHarvestBlock(paramIBlockState);
 		else
 			_result = false;
 
 		return _result;
 	}
 
-	public void afterCanHarvestBlock(net.minecraft.block.Block paramBlock)
+	public void afterCanHarvestBlock(net.minecraft.block.state.IBlockState paramIBlockState)
 	{
 	}
 
-	public void beforeCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public void beforeCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 	}
 
-	public boolean canPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public boolean canPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenCanPlayerEdit(this);
 
@@ -244,7 +244,7 @@ public abstract class ServerPlayerBase
 		return _result;
 	}
 
-	public void afterCanPlayerEdit(net.minecraft.util.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
+	public void afterCanPlayerEdit(net.minecraft.util.math.BlockPos paramBlockPos, net.minecraft.util.EnumFacing paramEnumFacing, net.minecraft.item.ItemStack paramItemStack)
 	{
 	}
 
@@ -271,22 +271,22 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void beforeClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 	}
 
-	public void clonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void clonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenClonePlayer(this);
 
 		if(overwritten == null)
-			playerAPI.localClonePlayer(paramEntityPlayer, paramBoolean);
+			playerAPI.localClonePlayer(paramEntityPlayerMP, paramBoolean);
 		else if(overwritten != this)
-			overwritten.clonePlayer(paramEntityPlayer, paramBoolean);
+			overwritten.clonePlayer(paramEntityPlayerMP, paramBoolean);
 
 	}
 
-	public void afterClonePlayer(net.minecraft.entity.player.EntityPlayer paramEntityPlayer, boolean paramBoolean)
+	public void afterClonePlayer(net.minecraft.entity.player.EntityPlayerMP paramEntityPlayerMP, boolean paramBoolean)
 	{
 	}
 
@@ -435,11 +435,11 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public void beforeGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
-	public float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public float getBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenGetBreakSpeed(this);
 
@@ -454,7 +454,7 @@ public abstract class ServerPlayerBase
 		return _result;
 	}
 
-	public void afterGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.BlockPos paramBlockPos)
+	public void afterGetBreakSpeed(net.minecraft.block.state.IBlockState paramIBlockState, net.minecraft.util.math.BlockPos paramBlockPos)
 	{
 	}
 
@@ -481,26 +481,26 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeGetBrightness(float paramFloat)
+	public void beforeGetBrightness()
 	{
 	}
 
-	public float getBrightness(float paramFloat)
+	public float getBrightness()
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenGetBrightness(this);
 
 		float _result;
 		if(overwritten == null)
-			_result = playerAPI.localGetBrightness(paramFloat);
+			_result = playerAPI.localGetBrightness();
 		else if(overwritten != this)
-			_result = overwritten.getBrightness(paramFloat);
+			_result = overwritten.getBrightness();
 		else
 			_result = 0;
 
 		return _result;
 	}
 
-	public void afterGetBrightness(float paramFloat)
+	public void afterGetBrightness()
 	{
 	}
 
@@ -722,79 +722,83 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeMountEntity(net.minecraft.entity.Entity paramEntity)
+	public void beforeMountEntity(net.minecraft.entity.Entity paramEntity, boolean paramBoolean)
 	{
 	}
 
-	public void mountEntity(net.minecraft.entity.Entity paramEntity)
+	public boolean mountEntity(net.minecraft.entity.Entity paramEntity, boolean paramBoolean)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMountEntity(this);
 
+		boolean _result;
 		if(overwritten == null)
-			playerAPI.localMountEntity(paramEntity);
+			_result = playerAPI.localMountEntity(paramEntity, paramBoolean);
 		else if(overwritten != this)
-			overwritten.mountEntity(paramEntity);
+			_result = overwritten.mountEntity(paramEntity, paramBoolean);
+		else
+			_result = false;
 
+		return _result;
 	}
 
-	public void afterMountEntity(net.minecraft.entity.Entity paramEntity)
+	public void afterMountEntity(net.minecraft.entity.Entity paramEntity, boolean paramBoolean)
 	{
 	}
 
-	public void beforeMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void beforeMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 	}
 
-	public void moveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void moveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveEntity(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveEntity(paramDouble1, paramDouble2, paramDouble3);
+			playerAPI.localMoveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 		else if(overwritten != this)
-			overwritten.moveEntity(paramDouble1, paramDouble2, paramDouble3);
+			overwritten.moveEntity(paramMoverType, paramDouble1, paramDouble2, paramDouble3);
 
 	}
 
-	public void afterMoveEntity(double paramDouble1, double paramDouble2, double paramDouble3)
+	public void afterMoveEntity(net.minecraft.entity.MoverType paramMoverType, double paramDouble1, double paramDouble2, double paramDouble3)
 	{
 	}
 
-	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void beforeMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void moveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void moveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveEntityWithHeading(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2);
+			playerAPI.localMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 		else if(overwritten != this)
-			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2);
+			overwritten.moveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
 	}
 
-	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+	public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
 	{
 	}
 
-	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void beforeMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 
-	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void moveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenMoveFlying(this);
 
 		if(overwritten == null)
-			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3);
+			playerAPI.localMoveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 		else if(overwritten != this)
-			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3);
+			overwritten.moveFlying(paramFloat1, paramFloat2, paramFloat3, paramFloat4);
 
 	}
 
-	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3)
+	public void afterMoveFlying(float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4)
 	{
 	}
 
@@ -1026,22 +1030,22 @@ public abstract class ServerPlayerBase
 	{
 	}
 
-	public void beforeSwingItem()
+	public void beforeSwingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 	}
 
-	public void swingItem()
+	public void swingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 		ServerPlayerBase overwritten = internalServerPlayerAPI.GetOverwrittenSwingItem(this);
 
 		if(overwritten == null)
-			playerAPI.localSwingItem();
+			playerAPI.localSwingItem(paramEnumHand);
 		else if(overwritten != this)
-			overwritten.swingItem();
+			overwritten.swingItem(paramEnumHand);
 
 	}
 
-	public void afterSwingItem()
+	public void afterSwingItem(net.minecraft.util.EnumHand paramEnumHand)
 	{
 	}
 

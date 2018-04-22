@@ -14,4 +14,5 @@ public class RecipeCategories
     public static final String GAS_LIQUEFIER_ID = "galacticraft.gas_liquefier";
     public static final String METHANE_SYNTHESIZER_ID = "galacticraft.methaneSynthesizer";
     public static final String ASTRO_MINER_ID = "galacticraft.astroMiner";
+    public static final String RECIPE_NBTSENSITIVE = "galacticraft.recipeShapedNBT";
 }

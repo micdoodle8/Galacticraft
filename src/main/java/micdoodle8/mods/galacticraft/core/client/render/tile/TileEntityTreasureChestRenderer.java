@@ -23,11 +23,11 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
      * Renders the TileEntity for the chest at a position.
      */
     @Override
-    public void renderTileEntityAt(TileEntityTreasureChest chest, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityTreasureChest chest, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         int var9;
 
-        if (!chest.hasWorldObj())
+        if (!chest.hasWorld())
         {
             var9 = 0;
         }
@@ -85,11 +85,13 @@ public class TileEntityTreasureChestRenderer extends TileEntitySpecialRenderer<T
             var14.renderAll(!chest.locked);
         }
 
-        if (var14b != null)
-        {
-            var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
-            var14b.renderAll(!chest.locked);
-        }
+        
+        //Note: currently var14b is always null - no large Treasure Chest model
+//        if (var14b != null)
+//        {
+//            var14b.chestLid.rotateAngleX = -(var12 * (float) Math.PI / 4.0F);
+//            var14b.renderAll(!chest.locked);
+//        }
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
         GL11.glPopMatrix();

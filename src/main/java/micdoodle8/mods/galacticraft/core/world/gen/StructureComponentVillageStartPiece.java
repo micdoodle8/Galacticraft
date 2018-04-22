@@ -1,14 +1,15 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class StructureComponentVillageStartPiece extends StructureComponentVillageWell
 {
-    public WorldChunkManager worldChunkMngr;
+    public BiomeProvider biomeProvider;
     public int terrainType;
     public StructureVillagePieceWeightMoon structVillagePieceWeight;
     public ArrayList<StructureVillagePieceWeightMoon> structureVillageWeightedPieceList;
@@ -19,10 +20,10 @@ public class StructureComponentVillageStartPiece extends StructureComponentVilla
     {
     }
 
-    public StructureComponentVillageStartPiece(WorldChunkManager par1WorldChunkManager, int par2, Random par3Random, int par4, int par5, ArrayList<StructureVillagePieceWeightMoon> par6ArrayList, int par7)
+    public StructureComponentVillageStartPiece(BiomeProvider biomeProvider, int par2, Random par3Random, int par4, int par5, ArrayList<StructureVillagePieceWeightMoon> par6ArrayList, int par7)
     {
-        super((StructureComponentVillageStartPiece) null, 0, par3Random, par4, par5);
-        this.worldChunkMngr = par1WorldChunkManager;
+        super(null, 0, par3Random, par4, par5);
+        this.biomeProvider = biomeProvider;
         this.structureVillageWeightedPieceList = par6ArrayList;
         this.terrainType = par7;
         this.startPiece = this;
@@ -37,15 +38,15 @@ public class StructureComponentVillageStartPiece extends StructureComponentVilla
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(nbt);
+        super.readStructureFromNBT(nbt, manager);
 
         this.terrainType = nbt.getInteger("TerrainType");
     }
 
-    public WorldChunkManager getWorldChunkManager()
+    public BiomeProvider getBiomeProvider()
     {
-        return this.worldChunkMngr;
+        return this.biomeProvider;
     }
 }

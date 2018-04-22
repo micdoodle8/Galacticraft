@@ -153,7 +153,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntitySpecialRenderer<Ti
     private Pack pack = new Pack();
 
     @Override
-    public void renderTileEntityAt(TileEntityEmergencyBox tileEntity, double d, double d1, double d2, float f, int par9)
+    public void render(TileEntityEmergencyBox tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
         IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (!(b.getBlock() instanceof BlockEmergencyBox)) return;

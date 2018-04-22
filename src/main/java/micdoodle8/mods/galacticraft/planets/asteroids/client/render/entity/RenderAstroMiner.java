@@ -20,7 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -28,7 +28,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
@@ -147,7 +147,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GlStateManager.disableRescaleNormal();
+        GlStateManager.enableRescaleNormal();
         GlStateManager.pushMatrix();
 
         final float rotPitch = astroMiner.prevRotationPitch + (astroMiner.rotationPitch - astroMiner.prevRotationPitch) * partialTickTime;
@@ -224,7 +224,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
                 FMLClientHandler.instance().getClient().renderEngine.bindTexture(scanTexture);
                 final Tessellator tess = Tessellator.getInstance();
                 GlStateManager.color(0, 0.6F, 1.0F, 0.2F);
-                WorldRenderer worldRenderer = tess.getWorldRenderer();
+                BufferBuilder worldRenderer = tess.getBuffer();
                 float scanProgress = (MathHelper.cos(partBlock * 0.012F * 6.283F)) * 0.747F;
                 float scanAngle = 0.69866F - scanProgress * scanProgress;
                 float scanEndX = 38.77F * MathHelper.sin(scanAngle);
@@ -336,7 +336,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         GlStateManager.pushMatrix();
         GlStateManager.translate(blockLaser.x, blockLaser.y, blockLaser.z);
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GlStateManager.color(1.0F, 0.7F, 0.7F, 0.016667F * (12 - level));
         float cA = -0.01F;
         float cB = 1.01F;
@@ -384,7 +384,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         GlStateManager.pushMatrix();
         GlStateManager.translate(blockLaser.x, blockLaser.y, blockLaser.z);
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         GlStateManager.color(1.0F, 0.7F, 0.7F, 0.2F);
         float cA = -0.01F;
         float cB = 1.01F;
@@ -441,10 +441,6 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         float xD = mainLaserX - 0.5F;
         float yD = mainLaserY - 0.5F;
         float zD = mainLaserZ - 0.5F;
-//        Math.abs(xD);
-//        Math.abs(yD);
-//        Math.abs(zD);
-
         float xx, yy, zz;
 
         if (entity.facing.getIndex() > EnumFacing.SOUTH.getIndex())
@@ -469,7 +465,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserX(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1, y1 - 0.01F, z1 - 0.01F).endVertex();
         worldRenderer.pos(x2, y2 - LSIZE, z2 - LSIZE).endVertex();
@@ -499,7 +495,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserY(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1 - 0.01F, y1, z1 - 0.01F).endVertex();
         worldRenderer.pos(x2 - LSIZE, y2, z2 - LSIZE).endVertex();
@@ -529,7 +525,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     private void drawLaserZ(float x1, float y1, float z1, float x2, float y2, float z2)
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldRenderer.pos(x1 - 0.01F, y1 - 0.01F, z1).endVertex();
         worldRenderer.pos(x2 - LSIZE, y2 - LSIZE, z2).endVertex();
@@ -597,7 +593,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     @Override
     protected ResourceLocation getEntityTexture(EntityAstroMiner entity)
     {
-        return TextureMap.locationBlocksTexture;
+        return TextureMap.LOCATION_BLOCKS_TEXTURE;
     }
     
     @Override

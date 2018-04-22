@@ -3,9 +3,10 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class ShapedRecipesGC implements IRecipe
+public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
     public final int recipeWidth;
     public final int recipeHeight;
@@ -27,14 +28,14 @@ public class ShapedRecipesGC implements IRecipe
     }
 
     @Override
-    public ItemStack[] getRemainingItems(InventoryCrafting inv)
+    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
     {
-        ItemStack[] aitemstack = new ItemStack[inv.getSizeInventory()];
+        NonNullList<ItemStack> aitemstack = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
-        for (int i = 0; i < aitemstack.length; ++i)
+        for (int i = 0; i < aitemstack.size(); ++i)
         {
             ItemStack itemstack = inv.getStackInSlot(i);
-            aitemstack[i] = net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack);
+            aitemstack.set(i, net.minecraftforge.common.ForgeHooks.getContainerItem(itemstack));
         }
 
         return aitemstack;
@@ -70,7 +71,7 @@ public class ShapedRecipesGC implements IRecipe
             {
                 int k = i - p_77573_2_;
                 int l = j - p_77573_3_;
-                ItemStack itemstack = null;
+                ItemStack itemstack = ItemStack.EMPTY;
 
                 if (k >= 0 && l >= 0 && k < this.recipeWidth && l < this.recipeHeight)
                 {
@@ -86,9 +87,9 @@ public class ShapedRecipesGC implements IRecipe
 
                 ItemStack itemstack1 = p_77573_1_.getStackInRowAndColumn(i, j);
 
-                if (itemstack1 != null || itemstack != null)
+                if (!itemstack1.isEmpty() || !itemstack.isEmpty())
                 {
-                    if (itemstack1 == null && itemstack != null || itemstack1 != null && itemstack == null)
+                    if (itemstack1.isEmpty() && !itemstack.isEmpty() || !itemstack1.isEmpty() && itemstack.isEmpty())
                     {
                         return false;
                     }
@@ -116,8 +117,8 @@ public class ShapedRecipesGC implements IRecipe
     }
 
     @Override
-    public int getRecipeSize()
+    public boolean canFit(int width, int height)
     {
-        return this.recipeWidth * this.recipeHeight;
+        return width >= 3 && height >= 3;
     }
 }

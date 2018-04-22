@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseRoom.EnumRoomType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.Random;
 
 public class BaseConfiguration
 {

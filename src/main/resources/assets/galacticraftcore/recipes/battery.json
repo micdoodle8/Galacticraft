@@ -1,0 +1,27 @@
+{
+  "result": {
+    "item": "galacticraftcore:battery",
+    "data": 100,
+    "count": 2
+  },
+  "pattern": [
+    " T ",
+    "TRT",
+    "TCT"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "R": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "C": {
+      "item": "minecraft:coal",
+      "data": 0
+    },
+    "T": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    }
+  }
+}

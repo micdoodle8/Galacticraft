@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:parachute",
+    "data": 0
+  },
+  "pattern": [
+    "XXX",
+    "Y Y",
+    " Y "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:canvas"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    }
+  }
+}

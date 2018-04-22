@@ -13,12 +13,12 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -59,7 +59,7 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.hudTexture);
         final Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(i / 2 - k - f * 80, k + f * 40, -90D).tex(0.0D, 1.0D).endVertex();
         worldRenderer.pos(i / 2 + k + f * 80, k + f * 40, -90D).tex(1.0D, 1.0D).endVertex();
@@ -100,7 +100,7 @@ public class OverlaySensorGlasses extends Overlay
 
             boolean var2 = false;
 
-            final EntityPlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.thePlayer, false);
+            final EntityPlayerSP client = PlayerUtil.getPlayerBaseClientFromPlayer(OverlaySensorGlasses.minecraft.player, false);
 
             if (client != null)
             {
@@ -108,7 +108,7 @@ public class OverlaySensorGlasses extends Overlay
                 var2 = stats.isUsingAdvancedGoggles();
             }
 
-            OverlaySensorGlasses.minecraft.fontRendererObj.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
+            OverlaySensorGlasses.minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.sensor.advanced") + ": " + (var2 ? GCCoreUtil.translate("gui.sensor.advancedon") : GCCoreUtil.translate("gui.sensor.advancedoff")), var6 / 2 - 50, 4, 0x03b88f);
 
             try
             {
@@ -150,7 +150,7 @@ public class OverlaySensorGlasses extends Overlay
     
     public static boolean overrideMobTexture()
     {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         return (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses);
     }
 }

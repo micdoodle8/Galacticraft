@@ -3,12 +3,15 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableItem
 {
@@ -57,7 +60,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
         {

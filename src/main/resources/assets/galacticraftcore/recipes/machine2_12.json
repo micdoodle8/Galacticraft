@@ -1,0 +1,32 @@
+{
+  "result": {
+    "item": "galacticraftcore:machine2",
+    "data": 12
+  },
+  "pattern": [
+    "WCW",
+    "VAV",
+    "WBW"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:anvil",
+      "data": 0
+    },
+    "B": {
+      "item": "minecraft:furnace"
+    },
+    "C": {
+      "item": "minecraft:shears"
+    },
+    "V": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:sensor_glasses"
+  },
+  "pattern": [
+    "ZWZ",
+    "Z Z",
+    "XYX"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "X": {
+      "item": "galacticraftcore:sensor_lens"
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    }
+  }
+}

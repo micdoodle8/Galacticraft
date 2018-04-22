@@ -8,8 +8,9 @@ import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
@@ -76,29 +77,28 @@ public class GameScreenBasic implements IGameScreen
         {
         case 0:
             drawBlackBackground(0.09F);
-//        	ClientProxyCore.overworldTextureLocal = null;
             break;
         case 1:
             if (scr instanceof DrawGameScreen && ((DrawGameScreen) scr).mapDone)
             {
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, DrawGameScreen.reusableMap.getGlTextureId());
+                GlStateManager.bindTexture(DrawGameScreen.reusableMap.getGlTextureId());
                 draw2DTexture();
             }
             else if (ClientProxyCore.overworldTexturesValid)
             {
-                GL11.glPushMatrix();
+                GlStateManager.pushMatrix();
                 float centreX = scaleX / 2;
                 float centreY = scaleY / 2;
-                GL11.glTranslatef(centreX, centreY, 0F);
+                GlStateManager.translate(centreX, centreY, 0F);
                 RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
-                GL11.glPopMatrix();
+                GlStateManager.popMatrix();
             }
             else
             {
                 this.renderEngine.bindTexture(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"));
                 if (!ClientProxyCore.overworldTextureRequestSent)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().theWorld), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] {}));
                     ClientProxyCore.overworldTextureRequestSent = true;
                 }
 ////                 Overworld texture is 48x48 in a 64x64 .png file
@@ -115,8 +115,8 @@ public class GameScreenBasic implements IGameScreen
     private void draw2DTexture()
     {
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        BufferBuilder worldRenderer = tess.getBuffer();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
         worldRenderer.pos(frameA, frameBy, 0F).tex(textureAx, textureBy).endVertex();
@@ -128,11 +128,12 @@ public class GameScreenBasic implements IGameScreen
 
     private void drawBlackBackground(float greyLevel)
     {
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableLighting();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
-        GL11.glColor4f(greyLevel, greyLevel, greyLevel, 1.0F);
+        BufferBuilder worldRenderer = tess.getBuffer();
+        GlStateManager.color(greyLevel, greyLevel, greyLevel, 1.0F);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
 
         worldRenderer.pos(frameA, frameBy, 0.005F).endVertex();
@@ -141,7 +142,8 @@ public class GameScreenBasic implements IGameScreen
         worldRenderer.pos(frameA, frameA, 0.005F).endVertex();
         tess.draw();
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableLighting();
     }
 }

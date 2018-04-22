@@ -9,6 +9,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+import java.util.Collections;
+
 public class ContainerSlimeling extends Container
 {
     private final InventorySlimeling slimelingInventory;
@@ -19,7 +21,7 @@ public class ContainerSlimeling extends Container
         this.slimelingInventory.currentContainer = this;
 
         ContainerSlimeling.addSlots(this, playerInventory, slimeling);
-        ContainerSlimeling.addAdditionalSlots(this, slimeling, slimeling.getCargoSlot());
+        ContainerSlimeling.addAdditionalSlots(this, slimeling, this.slimelingInventory.getStackInSlot(1));
 
         this.slimelingInventory.openInventory(player);
     }
@@ -49,13 +51,13 @@ public class ContainerSlimeling extends Container
     
     public static void removeSlots(ContainerSlimeling container)
     {
-        container.inventoryItemStacks = container.inventoryItemStacks.subList(0, 37);
+        Collections.copy(container.inventoryItemStacks, container.inventoryItemStacks.subList(0, 37));
         container.inventorySlots = container.inventorySlots.subList(0, 37);
     }
 
     public static void addAdditionalSlots(ContainerSlimeling container, EntitySlimeling slimeling, ItemStack stack)
     {
-        if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
+        if (!stack.isEmpty() && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
         {
         	//Note that if NEI is installed, this can be called by InventorySlimeling.setInventorySlotContents even if the container already has the slots
         	if (container.inventorySlots.size() < 63)
@@ -67,7 +69,7 @@ public class ContainerSlimeling extends Container
         				Slot slot = new Slot(slimeling.slimelingInventory, var4 + var3 * 9 + 2, 8 + var4 * 18, 54 + var3 * 18);
         				slot.slotNumber = container.inventorySlots.size();
         				container.inventorySlots.add(slot);
-        				container.inventoryItemStacks.add(null);
+        				container.inventoryItemStacks.add(ItemStack.EMPTY);
         			}
         		}
         	}
@@ -83,13 +85,13 @@ public class ContainerSlimeling extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.slimelingInventory.isUseableByPlayer(par1EntityPlayer);
+        return this.slimelingInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
+        ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = (Slot) this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
@@ -104,7 +106,7 @@ public class ContainerSlimeling extends Container
                 {
                     if (!this.mergeItemStack(var4, b - 36, b, true))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -113,19 +115,19 @@ public class ContainerSlimeling extends Container
                     {
                         if (!this.mergeItemStack(var4, 0, 1, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 < b - 9)
                     {
                         if (!this.mergeItemStack(var4, b - 9, b, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
@@ -136,14 +138,14 @@ public class ContainerSlimeling extends Container
                 //Slots 37-63 are the inventory bag slots
                 if (par1 == 0)
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 > 36)
                 {
                     if (!this.mergeItemStack(var4, 1, 37, true))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -154,7 +156,7 @@ public class ContainerSlimeling extends Container
                         {
                             if (!this.mergeItemStack(var4, 28, 37, false))
                             {
-                                return null;
+                                return ItemStack.EMPTY;
                             }
                         }
                     }
@@ -162,27 +164,27 @@ public class ContainerSlimeling extends Container
                     {
                         if (!this.mergeItemStack(var4, 1, 28, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

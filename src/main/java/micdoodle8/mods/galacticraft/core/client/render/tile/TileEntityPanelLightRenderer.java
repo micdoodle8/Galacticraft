@@ -19,7 +19,7 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
 
     @Override
-    public void renderTileEntityAt(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9)
+    public void render(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
         int side = tileEntity.meta;
         int rot = side >> 3;
@@ -85,7 +85,7 @@ public class TileEntityPanelLightRenderer extends TileEntitySpecialRenderer<Tile
         GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GlStateManager.disableTexture2D();
         final Tessellator tess = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tess.getWorldRenderer();
+        BufferBuilder worldRenderer = tess.getBuffer();
         float frameY = 1.01F;
         float frameA, frameB, frameC;
         switch (type) {

@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:air_lock_frame",
+    "data": 0,
+    "count": 4
+  },
+  "pattern": [
+    "XXX",
+    "YZY",
+    "XXX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Z": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    }
+  }
+}

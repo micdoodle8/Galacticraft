@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class OreGenOtherMods
 {
-    private World worldObj;
+    private World world;
     private Random randomGenerator;
 
     private BlockPos pos;
@@ -213,13 +213,13 @@ public class OreGenOtherMods
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
     {
-        this.worldObj = event.worldObj;
+        this.world = event.world;
         this.randomGenerator = event.rand;
         this.pos = event.pos;
 
         int dimDetected = 0;
 
-        WorldProvider prov = worldObj.provider;
+        WorldProvider prov = world.provider;
         if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderSpaceStation))
         {
             return;
@@ -261,7 +261,7 @@ public class OreGenOtherMods
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
             BlockPos blockpos = this.pos.add(this.randomGenerator.nextInt(16), this.randomGenerator.nextInt(maxY - minY) + minY, this.randomGenerator.nextInt(16));
-            worldGenerator.generate(this.worldObj, this.randomGenerator, blockpos);
+            worldGenerator.generate(this.world, this.randomGenerator, blockpos);
         }
     }
 

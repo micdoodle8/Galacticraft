@@ -23,14 +23,16 @@ public class SlotRocketBenchResult extends Slot
         return false;
     }
 
+
+
     @Override
-    public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par1ItemStack)
+    public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack stack)
     {
         for (int var2 = 0; var2 < this.craftMatrix.getSizeInventory(); ++var2)
         {
             final ItemStack var3 = this.craftMatrix.getStackInSlot(var2);
 
-            if (var3 != null)
+            if (!var3.isEmpty())
             {
                 this.craftMatrix.decrStackSize(var2, 1);
 
@@ -40,7 +42,7 @@ public class SlotRocketBenchResult extends Slot
 
                     if (!this.thePlayer.inventory.addItemStackToInventory(var4))
                     {
-                        if (this.craftMatrix.getStackInSlot(var2) == null)
+                        if (this.craftMatrix.getStackInSlot(var2).isEmpty())
                         {
                             this.craftMatrix.setInventorySlotContents(var2, var4);
                         }
@@ -52,5 +54,7 @@ public class SlotRocketBenchResult extends Slot
                 }
             }
         }
+
+        return stack;
     }
 }

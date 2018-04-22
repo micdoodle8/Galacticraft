@@ -1,0 +1,34 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars_machine",
+    "data": 8
+  },
+  "pattern": [
+    "ZVZ",
+    "YXY",
+    "ZWZ"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:basic_item",
+      "data": 19
+    },
+    "W": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "X": {
+      "item": "galacticraftcore:basic_item",
+      "data": 14
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "Z": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

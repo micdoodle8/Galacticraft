@@ -3,15 +3,24 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockTorchBase extends Block
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != EnumFacing.DOWN);
+    protected static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
+    protected static final AxisAlignedBB TORCH_NORTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.699999988079071D, 0.6499999761581421D, 0.800000011920929D, 1.0D);
+    protected static final AxisAlignedBB TORCH_SOUTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.0D, 0.6499999761581421D, 0.800000011920929D, 0.30000001192092896D);
+    protected static final AxisAlignedBB TORCH_WEST_AABB = new AxisAlignedBB(0.699999988079071D, 0.20000000298023224D, 0.3499999940395355D, 1.0D, 0.800000011920929D, 0.6499999761581421D);
+    protected static final AxisAlignedBB TORCH_EAST_AABB = new AxisAlignedBB(0.0D, 0.20000000298023224D, 0.3499999940395355D, 0.30000001192092896D, 0.800000011920929D, 0.6499999761581421D);
 
     public BlockTorchBase(Material materialIn)
     {
@@ -19,7 +28,31 @@ public class BlockTorchBase extends Block
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case EAST:
+            return TORCH_EAST_AABB;
+        case WEST:
+            return TORCH_WEST_AABB;
+        case SOUTH:
+            return TORCH_SOUTH_AABB;
+        case NORTH:
+            return TORCH_NORTH_AABB;
+        default:
+            return STANDING_AABB;
+        }
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    {
+        return NULL_AABB;
+    }
+
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
         if (this.canPlaceAt(worldIn, pos, facing))
         {
@@ -48,14 +81,15 @@ public class BlockTorchBase extends Block
 
     protected boolean canPlaceOn(World worldIn, BlockPos pos)
     {
-        if (World.doesBlockHaveSolidTopSurface(worldIn, pos))
+        IBlockState state = worldIn.getBlockState(pos);
+        Block block = state.getBlock();
+        if (block.isSideSolid(state, worldIn, pos, EnumFacing.UP))
         {
             return true;
         }
         else
         {
-            Block block = worldIn.getBlockState(pos).getBlock();
-            return block.canPlaceTorchOnTop(worldIn, pos);
+            return block.canPlaceTorchOnTop(state, worldIn, pos);
         }
     }
 
@@ -130,5 +164,11 @@ public class BlockTorchBase extends Block
         }
 
         return i;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 }

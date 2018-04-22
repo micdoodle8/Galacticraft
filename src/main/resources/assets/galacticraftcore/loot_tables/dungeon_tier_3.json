@@ -1,0 +1,242 @@
+{
+    "pools": [
+        {
+			"name": "dungeon_tier_3",
+            "rolls": {
+                "min": 6,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "entryName": "canned_apple",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 0
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_carrot",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_melon",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 2
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_potato",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 3
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_boots",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_chestplate",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_helmet",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_leggings",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:oil_canister_partial",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1001
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:bucket_sulphuric_acid",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:golden_apple",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "entryName": "glowing_golden_apple",
+                    "name": "minecraft:golden_apple",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:redstone",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_chirp",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_wait",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_ward",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:basic_item_venus",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 3
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:gold_nugget",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book18",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": 18,
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book27",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": 27,
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book30",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": 30,
+                            "treasure": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

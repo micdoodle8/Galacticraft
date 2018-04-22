@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_block_core",
+    "data": 12
+  },
+  "pattern": [
+    "YYY",
+    "YYY",
+    "YYY"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    }
+  }
+}

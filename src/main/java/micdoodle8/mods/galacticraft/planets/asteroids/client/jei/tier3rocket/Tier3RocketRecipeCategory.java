@@ -4,7 +4,8 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -12,9 +13,8 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class Tier3RocketRecipeCategory extends BlankRecipeCategory
+public class Tier3RocketRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation rocketGuiTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/schematic_rocket_t3_recipe.png");
 
@@ -51,8 +51,9 @@ public class Tier3RocketRecipeCategory extends BlankRecipeCategory
         return this.background;
     }
 
+
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -79,20 +80,12 @@ public class Tier3RocketRecipeCategory extends BlankRecipeCategory
         itemstacks.init(20, true, 141, 7);
         itemstacks.init(21, false, 138, 95);
 
-        if (recipeWrapper instanceof Tier3RocketRecipeWrapper)
-        {
-            Tier3RocketRecipeWrapper rocketRecipeWrapper = (Tier3RocketRecipeWrapper) recipeWrapper;
-            List inputs = rocketRecipeWrapper.getInputs();
+        itemstacks.set(ingredients);
+    }
 
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(21, rocketRecipeWrapper.getOutputs());
-        }
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
     }
 }

@@ -56,7 +56,7 @@ public class GuiElectricFurnace extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(this.tileEntity.getName(), 45, 6, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getName(), 45, 6, 4210752);
         String displayText = "";
 
         if (this.tileEntity.processTicks > 0)
@@ -68,11 +68,11 @@ public class GuiElectricFurnace extends GuiContainerGC
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
         }
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
-        this.fontRendererObj.drawString(this.tileEntity.getGUIstatus(null, displayText, true), 107, 62, 4210752);
-//		this.fontRendererObj.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
-//		this.fontRendererObj.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
+        this.fontRenderer.drawString(this.tileEntity.getGUIstatus(null, displayText, true), 107, 62, 4210752);
+//		this.fontRenderer.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
+//		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**

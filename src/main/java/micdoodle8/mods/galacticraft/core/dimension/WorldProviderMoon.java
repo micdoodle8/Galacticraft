@@ -13,17 +13,23 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderMoon;
-import micdoodle8.mods.galacticraft.core.world.gen.WorldChunkManagerMoon;
-import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomChest;
+import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldProviderMoon extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel
 {
+    @Override
+    public DimensionType getDimensionType()
+    {
+        return GCDimensions.MOON;
+    }
+
     @Override
     public Vector3 getFogColor()
     {
@@ -49,22 +55,16 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public Class<? extends IChunkProvider> getChunkProviderClass()
+    public Class<? extends IChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderMoon.class;
-    }
-
-    @Override
-    public Class<? extends WorldChunkManager> getWorldChunkManagerClass()
-    {
-        return WorldChunkManagerMoon.class;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public float getStarBrightness(float par1)
     {
-        final float var2 = this.worldObj.getCelestialAngle(par1);
+        final float var2 = this.world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.cos(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)
@@ -153,21 +153,15 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
-    public String getInternalNameSuffix()
-    {
-        return "_moon";
-    }
-
-    @Override
     public int getDungeonSpacing()
     {
         return 704;
     }
 
     @Override
-    public String getDungeonChestType()
+    public ResourceLocation getDungeonChestType()
     {
-        return RoomChest.MOONCHEST;
+        return RoomTreasure.MOONCHEST;
     }
 
     @Override

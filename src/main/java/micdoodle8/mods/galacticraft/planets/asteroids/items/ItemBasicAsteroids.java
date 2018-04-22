@@ -5,15 +5,19 @@ import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemBasicAsteroids extends Item implements ISortableItem
 {
@@ -66,11 +70,14 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
     }*/
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < ItemBasicAsteroids.names.length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < ItemBasicAsteroids.names.length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
@@ -87,7 +94,7 @@ public class ItemBasicAsteroids extends Item implements ISortableItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack != null && par1ItemStack.getItemDamage() == 5)
         {

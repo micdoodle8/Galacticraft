@@ -84,7 +84,7 @@ public class SpaceStationRecipe
                     {
                         if (SpaceStationRecipe.checkItemEquals((ItemStack) next, slot))
                         {
-                            amountInInv += slot.stackSize;
+                            amountInInv += slot.getCount();
                         }
                     }
                     else if (next instanceof List)
@@ -93,7 +93,7 @@ public class SpaceStationRecipe
                         {
                             if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
-                                amountInInv += slot.stackSize;
+                                amountInInv += slot.getCount();
                             }
                         }
                     }
@@ -141,13 +141,13 @@ public class SpaceStationRecipe
                     {
                         if (SpaceStationRecipe.checkItemEquals((ItemStack) next, slot))
                         {
-                            final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
+                            final int amountToRemove = Math.min(slot.getCount(), amountRemaining);
                             ItemStack newStack = slot.copy();
-                            newStack.stackSize -= amountToRemove;
+                            newStack.shrink(amountToRemove);
 
-                            if (newStack.stackSize <= 0)
+                            if (newStack.getCount() <= 0)
                             {
-                                newStack = null;
+                                newStack = ItemStack.EMPTY;
                             }
 
                             player.inventory.setInventorySlotContents(x, newStack);
@@ -161,13 +161,13 @@ public class SpaceStationRecipe
                         {
                             if (SpaceStationRecipe.checkItemEquals(item, slot))
                             {
-                                final int amountToRemove = Math.min(slot.stackSize, amountRemaining);
+                                final int amountToRemove = Math.min(slot.getCount(), amountRemaining);
                                 ItemStack newStack = slot.copy();
-                                newStack.stackSize -= amountToRemove;
+                                newStack.shrink(amountToRemove);
 
-                                if (newStack.stackSize <= 0)
+                                if (newStack.getCount() <= 0)
                                 {
-                                    newStack = null;
+                                    newStack = ItemStack.EMPTY;
                                 }
 
                                 player.inventory.setInventorySlotContents(x, newStack);

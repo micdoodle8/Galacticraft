@@ -6,8 +6,8 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -64,7 +64,7 @@ public class RenderLander extends Render<EntityLander>
     @Override
     public boolean shouldRender(EntityLander lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().expand(2D, 1D, 2D);
+        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(2D, 1D, 2D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

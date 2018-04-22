@@ -6,13 +6,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
  * Allows a block to make use of the wrench's removal and rotation functions.
- * Needs to be implemented on the Block.
  */
 public interface IWrenchable {
 	/**

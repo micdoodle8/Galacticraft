@@ -1,21 +1,26 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemFood extends net.minecraft.item.ItemFood implements ISortableItem
 {
@@ -56,16 +61,19 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
     }
 
     @Override
-    public void getSubItems(Item itemIn, CreativeTabs par2CreativeTabs, List<ItemStack> list)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < 4; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            list.add(new ItemStack(itemIn, 1, i));
-        }
-        list.add(new ItemStack(itemIn, 1, 9));
-        for (int i = 4; i < 9; i++)
-        {
-            list.add(new ItemStack(itemIn, 1, i));
+            for (int i = 0; i < 4; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
+            list.add(new ItemStack(this, 1, 9));
+            for (int i = 4; i < 9; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
@@ -77,7 +85,7 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getItemDamage() < 4)
         {
@@ -150,15 +158,18 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
     }
 
     @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityLivingBase entityLiving)
     {
-        --stack.stackSize;
-        playerIn.getFoodStats().addStats(this, stack);
-        worldIn.playSoundAtEntity(playerIn, "random.burp", 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
+        if (entityLiving instanceof EntityPlayer)
+        {
+            ((EntityPlayer) entityLiving).getFoodStats().addStats(this, stack);
+        }
+        worldIn.playSound(null, entityLiving.posX, entityLiving.posY, entityLiving.posZ, SoundEvents.ENTITY_PLAYER_BURP, SoundCategory.PLAYERS, 0.5F, worldIn.rand.nextFloat() * 0.1F + 0.9F);
         if (!worldIn.isRemote && (stack.getItemDamage() < 4 || stack.getItemDamage() == 9))
         {
-            playerIn.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
+            entityLiving.entityDropItem(new ItemStack(GCItems.canister, 1, 0), 0.0F);
         }
+        stack.shrink(1);
         return stack;
     }
 

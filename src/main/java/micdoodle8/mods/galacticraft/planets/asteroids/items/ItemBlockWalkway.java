@@ -6,12 +6,15 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockWalkway;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemBlockWalkway extends ItemBlockDesc
 {
@@ -24,7 +27,7 @@ public class ItemBlockWalkway extends ItemBlockDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> tooltip, boolean advanced)
+    public void addInformation(ItemStack itemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (itemStack.getItemDamage() == BlockWalkway.EnumWalkwayType.WALKWAY_WIRE.getMeta())
         {
@@ -35,7 +38,7 @@ public class ItemBlockWalkway extends ItemBlockDesc
             tooltip.add(EnumColor.AQUA + GCCoreUtil.translate(GCBlocks.oxygenPipe.getUnlocalizedName() + ".name"));
         }
 
-        super.addInformation(itemStack, entityPlayer, tooltip, advanced);
+        super.addInformation(itemStack, worldIn, tooltip, flagIn);
     }
 
     @Override

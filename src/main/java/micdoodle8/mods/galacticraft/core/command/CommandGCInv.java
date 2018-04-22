@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -25,9 +25,9 @@ public class CommandGCInv extends CommandBase
     private static GCInvSaveData savefile;
 
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " [save|restore|drop|clear] <playername>";
+        return "/" + this.getName() + " [save|restore|drop|clear] <playername>";
     }
 
     @Override
@@ -37,13 +37,13 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "gcinv";
     }
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
         if (args.length == 1)
         {
@@ -51,14 +51,9 @@ public class CommandGCInv extends CommandBase
         }
         if (args.length == 2)
         {
-            return getListOfStringsMatchingLastWord(args, this.getPlayers());
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
         }
         return null;
-    }
-
-    protected String[] getPlayers()
-    {
-        return MinecraftServer.getServer().getAllUsernames();
     }
 
     @Override
@@ -68,7 +63,7 @@ public class CommandGCInv extends CommandBase
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         if (CommandGCInv.firstuse)
         {
@@ -81,7 +76,7 @@ public class CommandGCInv extends CommandBase
             try
             {
                 EntityPlayerMP thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[1], true);
-                if (thePlayer != null && !thePlayer.isDead && thePlayer.worldObj != null)
+                if (thePlayer != null && !thePlayer.isDead && thePlayer.world != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(thePlayer);
 
@@ -97,7 +92,7 @@ public class CommandGCInv extends CommandBase
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
                             saveinv[i] = gcInventory.getStackInSlot(i);
-                            gcInventory.setInventorySlotContents(i, null);
+                            gcInventory.setInventorySlotContents(i, ItemStack.EMPTY);
                         }
 
                         CommandGCInv.savedata.put(args[1].toLowerCase(), saveinv);
@@ -122,12 +117,12 @@ public class CommandGCInv extends CommandBase
                         InventoryExtended gcInventory = stats.getExtendedInventory();
                         for (int i = 0; i < gcInventory.getSizeInventory(); i++)
                         {
-                            gcInventory.setInventorySlotContents(i, null);
+                            gcInventory.setInventorySlotContents(i, ItemStack.EMPTY);
                         }
                     }
                     else
                     {
-                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getCommandUsage(sender), new Object[0]);
+                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getUsage(sender));
                     }
                 }
                 else
@@ -154,7 +149,7 @@ public class CommandGCInv extends CommandBase
                     }
                     else
                     {
-                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getCommandUsage(sender), new Object[0]);
+                        throw new WrongUsageException("Invalid GCInv command. Usage: " + this.getUsage(sender), new Object[0]);
                     }
                 }
             }
@@ -166,7 +161,7 @@ public class CommandGCInv extends CommandBase
         }
         else
         {
-            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getCommandUsage(sender), new Object[0]);
+            throw new WrongUsageException("Not enough command arguments! Usage: " + this.getUsage(sender), new Object[0]);
         }
     }
 
@@ -209,11 +204,11 @@ public class CommandGCInv extends CommandBase
         {
             return;
         }
-        CommandGCInv.savefile = (GCInvSaveData) world0.loadItemData(GCInvSaveData.class, GCInvSaveData.SAVE_ID);
+        CommandGCInv.savefile = (GCInvSaveData) world0.loadData(GCInvSaveData.class, GCInvSaveData.SAVE_ID);
         if (CommandGCInv.savefile == null)
         {
             CommandGCInv.savefile = new GCInvSaveData();
-            world0.setItemData(GCInvSaveData.SAVE_ID, CommandGCInv.savefile);
+            world0.setData(GCInvSaveData.SAVE_ID, CommandGCInv.savefile);
         }
     }
 

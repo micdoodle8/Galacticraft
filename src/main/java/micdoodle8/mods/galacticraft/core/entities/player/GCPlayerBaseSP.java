@@ -6,9 +6,10 @@ import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import net.minecraft.entity.MoverType;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -17,7 +18,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     boolean lastIsFlying;
     int lastLandingTicks;
 
-    
+
     public GCPlayerBaseSP(ClientPlayerAPI playerAPI)
     {
         super(playerAPI);
@@ -54,7 +55,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public void beforeUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof IZeroGDimension)
+        if (this.player.world.provider instanceof IZeroGDimension)
         {
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
             if (stats.getLandingTicks() > 0)
@@ -62,35 +63,35 @@ public class GCPlayerBaseSP extends ClientPlayerBase
                 this.player.movementInput.moveStrafe *= 0.5F;
                 this.player.movementInput.moveForward *= 0.5F;
             }
-            
+
             //TODO: equivalent to getEyeHeight() in GCEntityClientPlayerMP
-            
+
             //TODO: set this.player.flyToggleTimer = 0;
-        }        
+        }
     }
 
     @Override
     public void afterUpdateEntityActionState()
     {
-        if (this.player.worldObj.provider instanceof IZeroGDimension)
+        if (this.player.world.provider instanceof IZeroGDimension)
         {
             this.player.setJumping(false);
             AxisAlignedBB aABB = this.player.getEntityBoundingBox();
             if ((aABB.minY % 1D) == 0.5D) this.player.setEntityBoundingBox(aABB.offset(0D, 0.00001D, 0D));
         }
     }
-    
+
     @Override
-    public void moveEntity(double par1, double par3, double par5)
+    public void moveEntity(MoverType moverType, double x, double y, double z)
     {
-        super.moveEntity(par1, par3, par5);
-        this.getClientHandler().moveEntity(this.player, par1, par3, par5);
+        super.moveEntity(moverType, x, y, z);
+        this.getClientHandler().move(this.player, moverType, x, y, z);
     }
 
     @Override
-    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2)
+    public void afterMoveEntityWithHeading(float paramFloat1, float paramFloat2, float paramFloat3)
     {
-        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2);
+        super.afterMoveEntityWithHeading(paramFloat1, paramFloat2, paramFloat3);
 
         if (CompatibilityManager.isSmartMovingLoaded && !this.player.capabilities.isFlying)
         {
@@ -109,7 +110,7 @@ public class GCPlayerBaseSP extends ClientPlayerBase
     @Override
     public boolean isSneaking()
     {
-        if (this.player.worldObj.provider instanceof IZeroGDimension)
+        if (this.player.world.provider instanceof IZeroGDimension)
     	{
             GCPlayerStatsClient stats = GCPlayerStatsClient.get(this.player);
         	if (stats.getLandingTicks() > 0)
@@ -142,11 +143,11 @@ public class GCPlayerBaseSP extends ClientPlayerBase
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getBrightnessForRender(float partialTicks)
+    public int getBrightnessForRender()
     {
         double height = this.player.posY + (double)this.player.getEyeHeight();
         if (height > 255D) height = 255D;
         BlockPos blockpos = new BlockPos(this.player.posX, height, this.player.posZ);
-        return this.player.worldObj.isBlockLoaded(blockpos) ? this.player.worldObj.getCombinedLight(blockpos, 0) : 0;
+        return this.player.world.isBlockLoaded(blockpos) ? this.player.world.getCombinedLight(blockpos, 0) : 0;
     }
 }

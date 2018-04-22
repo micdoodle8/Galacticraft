@@ -10,13 +10,11 @@ import buildcraft.api.statements.IStatement;
 import buildcraft.api.statements.IStatementParameter;
 import buildcraft.api.statements.StatementSlot;
 import buildcraft.api.statements.containers.ISidedStatementContainer;
-import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.pipe.IPipeHolder;
 
 public interface IGate extends ISidedStatementContainer {
-    @Deprecated
-    void setPulsing(boolean pulse);
 
-    IPipe getPipe();
+    IPipeHolder getPipeHolder();
 
     List<IStatement> getTriggers();
 
@@ -24,7 +22,7 @@ public interface IGate extends ISidedStatementContainer {
 
     List<StatementSlot> getActiveActions();
 
-    List<IStatementParameter> getTriggerParameters(int index);
+    List<IStatementParameter> getTriggerParameters(int slot);
 
-    List<IStatementParameter> getActionParameters(int index);
+    List<IStatementParameter> getActionParameters(int slot);
 }

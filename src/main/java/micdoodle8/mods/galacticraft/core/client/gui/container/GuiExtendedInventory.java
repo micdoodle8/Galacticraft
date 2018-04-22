@@ -19,24 +19,19 @@ import net.minecraft.util.ResourceLocation;
 public class GuiExtendedInventory extends InventoryEffectRenderer
 {
     private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/inventory.png");
-
-    private float xSize_lo_2;
-    private float ySize_lo_2;
-
     private int potionOffsetLast;
     private static float rotation = 0.0F;
-
     private boolean initWithPotion;
 
-    public GuiExtendedInventory(EntityPlayer entityPlayer, InventoryExtended inventory)
+    public GuiExtendedInventory(EntityPlayer player, InventoryExtended inventory)
     {
-        super(new ContainerExtendedInventory(entityPlayer, inventory));
+        super(new ContainerExtendedInventory(player, inventory));
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29, 51 - this.xSize_lo_2);
+        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29);
     }
 
     @Override
@@ -59,9 +54,9 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(GuiButton button)
     {
-        switch (par1GuiButton.id)
+        switch (button.id)
         {
         case 0:
             GuiExtendedInventory.rotation += 10.0F;
@@ -73,70 +68,68 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(GuiExtendedInventory.inventoryTexture);
-        final int k = this.guiLeft;
-        final int l = this.guiTop;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         int newPotionOffset = this.getPotionOffsetNEI();
+
         if (newPotionOffset < this.potionOffsetLast)
         {
             int diff = newPotionOffset - this.potionOffsetLast;
             this.potionOffsetLast = newPotionOffset;
             this.guiLeft += diff;
+
             for (int k = 0; k < this.buttonList.size(); ++k)
             {
-                GuiButton b = (GuiButton) this.buttonList.get(k);
-                if (!(b instanceof AbstractTab))
+                GuiButton button = this.buttonList.get(k);
+
+                if (!(button instanceof AbstractTab))
                 {
-                    b.xPosition += diff;
+                    button.x += diff;
                 }
             }
         }
-        super.drawScreen(par1, par2, par3);
-        this.xSize_lo_2 = par1;
-        this.ySize_lo_2 = par2;
+        this.drawDefaultBackground();
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
     }
 
-    public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale, float mouseX)
+    public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale)
     {
+        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F);
         GlStateManager.scale(-scale, scale, scale);
         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-        float f2 = mc.thePlayer.renderYawOffset;
-        float f3 = mc.thePlayer.rotationYaw;
-        float f4 = mc.thePlayer.rotationPitch;
-        float f5 = mc.thePlayer.rotationYawHead;
-        mouseX -= 19;
+        float f2 = mc.player.renderYawOffset;
+        float f3 = mc.player.rotationYaw;
+        float f4 = mc.player.rotationPitch;
+        float f5 = mc.player.rotationYawHead;
         GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        mc.thePlayer.renderYawOffset = GuiExtendedInventory.rotation;
-        mc.thePlayer.rotationYaw = (float) Math.atan(mouseX / 40.0F) * 40.0F;
-        mc.thePlayer.rotationYaw = GuiExtendedInventory.rotation;
-        mc.thePlayer.rotationYawHead = mc.thePlayer.rotationYaw;
-        mc.thePlayer.rotationPitch = (float) Math.sin(mc.getSystemTime() / 500.0F) * 3.0F;
-        GlStateManager.translate(0.0F, (float) mc.thePlayer.getYOffset(), 0.0F);
-        mc.getRenderManager().playerViewY = 180.0F;
-        mc.getRenderManager().renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        mc.player.renderYawOffset = GuiExtendedInventory.rotation;
+        mc.player.rotationYaw = (float) Math.atan(32 / 40.0F) * 40.0F;
+        mc.player.rotationYaw = GuiExtendedInventory.rotation;
+        mc.player.rotationYawHead = mc.player.rotationYaw;
+        mc.player.rotationPitch = (float) Math.sin(Minecraft.getSystemTime() / 500.0F) * 3.0F;
+        GlStateManager.translate(0.0F, (float) mc.player.getYOffset(), 0.0F);
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
-        rendermanager.renderEntityWithPosYaw(mc.thePlayer, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
+        rendermanager.renderEntity(mc.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         rendermanager.setRenderShadow(true);
-        mc.thePlayer.renderYawOffset = f2;
-        mc.thePlayer.rotationYaw = f3;
-        mc.thePlayer.rotationPitch = f4;
-        mc.thePlayer.rotationYawHead = f5;
+        mc.player.renderYawOffset = f2;
+        mc.player.rotationYaw = f3;
+        mc.player.rotationPitch = f4;
+        mc.player.rotationYawHead = f5;
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
@@ -148,13 +141,17 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     //Instanced method of this to have the instance field initWithPotion
     public int getPotionOffset()
     {
+        /*Disabled in 1.12.2 because a vanilla bug means potion offsets are currently not a thing
+         *The vanilla bug is that GuiInventory.initGui() resets GuiLeft to the recipe book version of GuiLeft,
+         *and in GuiRecipeBook.updateScreenPosition() it takes no account of potion offset even if the recipe book is inactive.
+
         // If at least one potion is active...
-        if (!Minecraft.getMinecraft().thePlayer.getActivePotionEffects().isEmpty())
+        if (this.hasActivePotionEffects)
         {
             this.initWithPotion = true;
             return 60 + TabRegistry.getPotionOffsetJEI() + getPotionOffsetNEI();
         }
-
+         */
         // No potions, no offset needed
         this.initWithPotion = false;
         return 0;
@@ -163,13 +160,14 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
     //Instanced method of this to use the instance field initWithPotion
     public int getPotionOffsetNEI()
     {
-        if (initWithPotion && TabRegistry.clazzNEIConfig != null)
+        if (this.initWithPotion && TabRegistry.clazzNEIConfig != null)
         {
             try
             {
                 // Check whether NEI is hidden and enabled
                 Object hidden = TabRegistry.clazzNEIConfig.getMethod("isHidden").invoke(null);
                 Object enabled = TabRegistry.clazzNEIConfig.getMethod("isEnabled").invoke(null);
+
                 if (hidden instanceof Boolean && enabled instanceof Boolean)
                 {
                     if ((Boolean) hidden || !((Boolean) enabled))

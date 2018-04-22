@@ -3,13 +3,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+
 import org.lwjgl.opengl.GL11;
 
 public class GuiElementCheckboxPreLaunch extends GuiButton
@@ -41,7 +43,7 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
     }
 
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3)
+    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partial)
     {
         if (this.isSelected == null)
         {
@@ -52,12 +54,12 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
         {
             par1Minecraft.getTextureManager().bindTexture(GuiElementCheckboxPreLaunch.texture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height;
+            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
             int texWidth = this.isSelected ? 12 : 9;
             int texHeight = this.isSelected ? 16 : 9;
-            this.drawTexturedModalRect(this.xPosition, this.isSelected ? this.yPosition - 7 : this.yPosition, this.hovered ? (this.texX + 12) : this.texX, this.isSelected ? this.texY + 9 : this.texY, texWidth, texHeight);
+            this.drawTexturedModalRect(this.x, this.isSelected ? this.y - 7 : this.y, this.hovered ? (this.texX + 12) : this.texX, this.isSelected ? this.texY + 9 : this.texY, texWidth, texHeight);
             this.mouseDragged(par1Minecraft, par2, par3);
-            par1Minecraft.fontRendererObj.drawSplitString(EnumColor.BLACK + this.displayString, this.xPosition + this.width + 3, this.yPosition + (this.height - 6) / 2, 100, ColorUtil.to32BitColor(255, 5, 5, 5));
+            par1Minecraft.fontRenderer.drawSplitString(EnumColor.BLACK + this.displayString, this.x + this.width + 3, this.y + (this.height - 6) / 2, 100, ColorUtil.to32BitColor(255, 5, 5, 5));
         }
     }
 
@@ -69,7 +71,7 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
         int texWidth = this.isSelected ? 12 : 9;
         int texHeight = this.isSelected ? 16 : 9;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+        BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + texHeight) * f1).endVertex();
         worldRenderer.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + texWidth) * f, (par4 + texHeight) * f1).endVertex();
@@ -81,9 +83,9 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
     @Override
     public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
     {
-        if (this.enabled && this.visible && par2 >= this.xPosition && par3 >= this.yPosition && par2 < this.xPosition + this.width && par3 < this.yPosition + this.height)
+        if (this.enabled && this.visible && par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height)
         {
-            if (this.parentGui.canPlayerEdit(this, par1Minecraft.thePlayer))
+            if (this.parentGui.canPlayerEdit(this, par1Minecraft.player))
             {
                 this.isSelected = !this.isSelected;
                 this.parentGui.onSelectionChanged(this, this.isSelected);
@@ -100,8 +102,8 @@ public class GuiElementCheckboxPreLaunch extends GuiButton
 
     public int willFit(int max)
     {
-        int size = Minecraft.getMinecraft().fontRendererObj.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRendererObj.FONT_HEIGHT;
-        System.out.println(displayString + " " + size + " " + max);
+        int size = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
+        GCLog.debug(displayString + " " + size + " " + max);
         if (size > max)
         {
             return -1;

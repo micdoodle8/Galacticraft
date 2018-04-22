@@ -14,14 +14,14 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 public class CommandSpaceStationChangeOwner extends CommandBase
 {
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " <dim#> <player>";
+        return "/" + this.getName() + " <dim#> <player>";
     }
 
     @Override
@@ -31,35 +31,35 @@ public class CommandSpaceStationChangeOwner extends CommandBase
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "ssnewowner";
     }
 
     @Override
-    public void processCommand(ICommandSender icommandsender, String[] astring) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         String oldOwner = null;
         String newOwner = "ERROR";
         int stationID = -1;
-        EntityPlayerMP playerAdmin = PlayerUtil.getPlayerBaseServerFromPlayerUsername(icommandsender.getName(), true);
+        EntityPlayerMP playerAdmin = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 
-        if (astring.length > 1)
+        if (args.length > 1)
         {
-            newOwner = astring[1];
+            newOwner = args[1];
 
             try
             {
-                stationID = Integer.parseInt(astring[0]);
+                stationID = Integer.parseInt(args[0]);
             }
             catch (final Exception var6)
             {
-                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getUsage(sender)), new Object[0]);
             }
 
             if (stationID < 2)
             {
-                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+                throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getUsage(sender)), new Object[0]);
             }
 
             try
@@ -67,7 +67,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
                 SpaceStationWorldData stationData = SpaceStationWorldData.getMPSpaceStationData(null, stationID, null);
                 if (stationData == null)
                 {
-                    throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+                    throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssnewowner.wrong_usage", this.getUsage(sender)), new Object[0]);
                 }
 
                 oldOwner = stationData.getOwner();
@@ -85,13 +85,13 @@ public class CommandSpaceStationChangeOwner extends CommandBase
                 {
                     GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
                     SpaceStationWorldData.updateSSOwnership(oldPlayer, oldOwner, stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(oldPlayer.worldObj), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), oldPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(oldPlayer.world), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), oldPlayer);
                 }
                 if (newPlayer != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(newPlayer);
                     SpaceStationWorldData.updateSSOwnership(newPlayer, newOwner.replace(".", ""), stats, stationID, stationData);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(oldPlayer.worldObj), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), newPlayer);
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(oldPlayer.world), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), newPlayer);
                 }
             }
             catch (final Exception var6)
@@ -101,22 +101,17 @@ public class CommandSpaceStationChangeOwner extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getCommandUsage(icommandsender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getUsage(sender)), new Object[0]);
         }
 
         if (playerAdmin != null)
         {
-            playerAdmin.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
+            playerAdmin.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
         }
         else
         //Console
         {
             System.out.println(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner));
         }
-    }
-
-    protected String[] getPlayers()
-    {
-        return MinecraftServer.getServer().getAllUsernames();
     }
 }

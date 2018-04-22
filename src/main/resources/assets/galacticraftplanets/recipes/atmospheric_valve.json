@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:atmospheric_valve"
+  },
+  "pattern": [
+    "   ",
+    "XYX",
+    " X "
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Y": {
+      "item": "galacticraftcore:air_vent"
+    }
+  }
+}

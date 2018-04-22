@@ -7,12 +7,13 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Map;
@@ -64,7 +65,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public EntityFX getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
+    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
         return null;
     }
@@ -80,7 +81,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     {
         super.tickInAir();
 
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
@@ -93,7 +94,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     public void onGroundHit()
     {
         BlockPos pos = new BlockPos(this).up(2);
-        this.worldObj.setBlockState(pos, GCBlocks.brightAir.getDefaultState(), 2);
+        this.world.setBlockState(pos, GCBlocks.brightAir.getDefaultState(), 2);
     }
 
     @Override
@@ -173,36 +174,36 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer var1)
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            if (this.riddenByEntity != null)
+            if (!this.getPassengers().isEmpty())
             {
-                this.riddenByEntity.mountEntity(this);
+                this.removePassengers();
             }
 
             return true;
         }
 
-        if (this.riddenByEntity == null && var1 instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) var1, this);
+            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
             return true;
         }
-        else if (var1 instanceof EntityPlayerMP)
+        else if (player instanceof EntityPlayerMP)
         {
             if (!this.onGround)
             {
                 return false;
             }
 
-            var1.mountEntity(null);
+            this.removePassengers();
             return true;
         }
         else

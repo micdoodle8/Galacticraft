@@ -7,7 +7,7 @@ package buildcraft.api.statements;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
-public interface ITriggerExternal extends IStatement {
+public interface ITriggerExternal extends ITrigger {
 
     boolean isTriggerActive(TileEntity target, EnumFacing side, IStatementContainer source, IStatementParameter[] parameters);
 

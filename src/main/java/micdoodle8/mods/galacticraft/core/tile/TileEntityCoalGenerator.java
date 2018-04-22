@@ -12,11 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
@@ -46,17 +47,9 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @NetworkedField(targetSide = Side.CLIENT)
     public float heatGJperTick = 0;
 
-    /**
-     * The number of ticks that a fresh copy of the currently-burning item would
-     * keep the furnace burning for
-     */
     @NetworkedField(targetSide = Side.CLIENT)
     public int itemCookTime = 0;
-    /**
-     * The ItemStacks that hold the items currently being used in the battery
-     * box
-     */
-    private ItemStack[] containingItems = new ItemStack[1];
+    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityCoalGenerator()
     {
@@ -66,14 +59,14 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote && this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
+        if (!this.world.isRemote && this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK > 0)
         {
             this.receiveEnergyGC(null, (this.heatGJperTick - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK), false);
         }
 
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.itemCookTime > 0)
             {
@@ -82,14 +75,14 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
                 this.heatGJperTick = Math.min(this.heatGJperTick + Math.max(this.heatGJperTick * 0.005F, TileEntityCoalGenerator.BASE_ACCELERATION), TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK);
             }
 
-            if (this.itemCookTime <= 0 && this.containingItems[0] != null)
+            if (this.itemCookTime <= 0 && !this.stacks.get(0).isEmpty())
             {
-                if (this.containingItems[0].getItem() == Items.coal && this.containingItems[0].stackSize > 0)
+                if (this.stacks.get(0).getItem() == Items.COAL && this.stacks.get(0).getCount() > 0)
                 {
                     this.itemCookTime = 320;
                     this.decrStackSize(0, 1);
                 }
-                else if (this.containingItems[0].getItem() == Item.getItemFromBlock(Blocks.coal_block) && this.containingItems[0].stackSize > 0)
+                else if (this.stacks.get(0).getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && this.stacks.get(0).getCount() > 0)
                 {
                     this.itemCookTime = 320 * 10;
                     this.decrStackSize(0, 1);
@@ -107,122 +100,89 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         }
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
-        this.itemCookTime = par1NBTTagCompound.getInteger("itemCookTime");
-        this.heatGJperTick = par1NBTTagCompound.getInteger("generateRateInt");
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory()];
+        super.readFromNBT(nbt);
+        this.itemCookTime = nbt.getInteger("itemCookTime");
+        this.heatGJperTick = nbt.getInteger("generateRateInt");
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-        {
-            NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            int var5 = var4.getByte("Slot") & 255;
-
-            if (var5 < this.containingItems.length)
-            {
-                this.containingItems[var5] = ItemStack.loadItemStackFromNBT(var4);
-            }
-        }
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.stacks);
     }
 
-    /**
-     * Writes a tile entity to NBT.
-     */
     @Override
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setInteger("itemCookTime", this.itemCookTime);
-        par1NBTTagCompound.setFloat("generateRate", this.heatGJperTick);
-        NBTTagList var2 = new NBTTagList();
+        super.writeToNBT(nbt);
+        nbt.setInteger("itemCookTime", this.itemCookTime);
+        nbt.setFloat("generateRate", this.heatGJperTick);
 
-        for (int var3 = 0; var3 < this.containingItems.length; ++var3)
-        {
-            if (this.containingItems[var3] != null)
-            {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                this.containingItems[var3].writeToNBT(var4);
-                var2.appendTag(var4);
-            }
-        }
-
-        par1NBTTagCompound.setTag("Items", var2);
+        ItemStackHelper.saveAllItems(nbt, this.stacks);
+        return nbt;
     }
 
     @Override
     public int getSizeInventory()
     {
-        return this.containingItems.length;
+        return this.stacks.size();
     }
 
     @Override
-    public ItemStack getStackInSlot(int par1)
+    public ItemStack getStackInSlot(int var1)
     {
-        return this.containingItems[par1];
+        return this.stacks.get(var1);
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (this.containingItems[par1] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
+            this.markDirty();
+        }
 
-            if (this.containingItems[par1].stackSize <= par2)
+        return itemstack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int index)
+    {
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
+        if (!oldstack.isEmpty())
+        {
+        	this.markDirty();
+        }
+    	return oldstack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.stacks.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
+        }
+
+        this.markDirty();
+    }
+
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.stacks)
+        {
+            if (!itemstack.isEmpty())
             {
-                var3 = this.containingItems[par1];
-                this.containingItems[par1] = null;
-                return var3;
-            }
-            else
-            {
-                var3 = this.containingItems[par1].splitStack(par2);
-
-                if (this.containingItems[par1].stackSize == 0)
-                {
-                    this.containingItems[par1] = null;
-                }
-
-                return var3;
+                return false;
             }
         }
-        else
-        {
-            return null;
-        }
-    }
 
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (this.containingItems[par1] != null)
-        {
-            ItemStack var2 = this.containingItems[par1];
-            this.containingItems[par1] = null;
-            return var2;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.containingItems[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
+        return true;
     }
 
     @Override
@@ -238,9 +198,9 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
 //    @Override
@@ -252,7 +212,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
     {
-        return itemstack.getItem() == Items.coal || itemstack.getItem() == Item.getItemFromBlock(Blocks.coal_block);
+        return itemstack.getItem() == Items.COAL || itemstack.getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK);
     }
 
 //    @Override
@@ -319,7 +279,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     public EnumFacing getFront()
     {
-        IBlockState state = this.worldObj.getBlockState(getPos()); 
+        IBlockState state = this.world.getBlockState(getPos()); 
         if (state.getBlock() instanceof BlockMachine)
         {
             return state.getValue(BlockMachine.FACING);

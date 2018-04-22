@@ -12,38 +12,66 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
-
 public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
 
     public BlockBeamReceiver(String assetName)
     {
-        super(Material.iron);
+        super(Material.IRON);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (state.getValue(FACING))
+        {
+        case UP:
+            return UP_AABB;
+        case DOWN:
+            return DOWN_AABB;
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        default:
+        case NORTH:
+            return NORTH_AABB;
+        }
     }
 
     @SideOnly(Side.CLIENT)
@@ -54,7 +82,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
         int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
@@ -76,7 +104,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             }
         }
 
-        super.onNeighborBlockChange(worldIn, pos, state, neighborBlock);
+        super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
@@ -89,47 +117,47 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         }
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
-    {
-        int meta = getMetaFromState(world.getBlockState(pos));
-
-        if (meta != -1)
-        {
-            EnumFacing dir = EnumFacing.getFront(meta);
-
-            switch (dir)
-            {
-            case UP:
-                this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
-                break;
-            case DOWN:
-                this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
-                break;
-            case EAST:
-                this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-                break;
-            case WEST:
-                this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
-                break;
-            case NORTH:
-                this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
-                break;
-            case SOUTH:
-                this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
-                break;
-            default:
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-    }
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
+//    {
+//        int meta = getMetaFromState(world.getBlockState(pos));
+//
+//        if (meta != -1)
+//        {
+//            EnumFacing dir = EnumFacing.getFront(meta);
+//
+//            switch (dir)
+//            {
+//            case UP:
+//                this.setBlockBounds(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+//                break;
+//            case DOWN:
+//                this.setBlockBounds(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+//                break;
+//            case EAST:
+//                this.setBlockBounds(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+//                break;
+//            case WEST:
+//                this.setBlockBounds(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+//                break;
+//            case NORTH:
+//                this.setBlockBounds(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+//                break;
+//            case SOUTH:
+//                this.setBlockBounds(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+//                break;
+//            default:
+//                break;
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//    }
 
     private int getMetadataFromAngle(World world, BlockPos pos, EnumFacing side)
     {
@@ -182,9 +210,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
     {
-        return getStateFromMeta(this.getMetadataFromAngle(worldIn, pos, facing));
+        return getStateFromMeta(this.getMetadataFromAngle(world, pos, facing));
     }
 
     @Override
@@ -206,25 +234,31 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @SideOnly(Side.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().thePlayer.addChatMessage(new ChatComponentText(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
+        FMLClientHandler.instance().getClient().player.sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public int getRenderType()
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        return -1;
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
@@ -241,19 +275,19 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, 0));
+        list.add(new ItemStack(this, 1, 0));
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
         if (tile instanceof TileEntityBeamReceiver)
         {
-            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
+            return ((TileEntityBeamReceiver) tile).onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
         }
 
         return false;
@@ -285,9 +319,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override

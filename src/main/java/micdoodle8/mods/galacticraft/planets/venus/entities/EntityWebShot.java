@@ -5,10 +5,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,14 +29,12 @@ public class EntityWebShot extends Entity implements IProjectile
     public EntityWebShot(World worldIn)
     {
         super(worldIn);
-        this.renderDistanceWeight = 10.0D;
         this.setSize(0.5F, 0.5F);
     }
 
     public EntityWebShot(World worldIn, double x, double y, double z)
     {
         super(worldIn);
-        this.renderDistanceWeight = 10.0D;
         this.setSize(0.5F, 0.5F);
         this.setPosition(x, y, z);
     }
@@ -40,7 +42,6 @@ public class EntityWebShot extends Entity implements IProjectile
     public EntityWebShot(World worldIn, EntityLivingBase shooter, EntityLivingBase target, float p_i1755_4_, float p_i1755_5_)
     {
         super(worldIn);
-        this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shooter;
 
         if (shooter instanceof EntityPlayer)
@@ -52,7 +53,7 @@ public class EntityWebShot extends Entity implements IProjectile
         double d0 = target.posX - shooter.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - this.posY;
         double d2 = target.posZ - shooter.posZ;
-        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
 
         if (d3 >= 1.0E-7D)
         {
@@ -62,14 +63,13 @@ public class EntityWebShot extends Entity implements IProjectile
             double d5 = d2 / d3;
             this.setLocationAndAngles(shooter.posX + d4, this.posY, shooter.posZ + d5, f, f1);
             float f2 = (float)(d3 * 0.20000000298023224D);
-            this.setThrowableHeading(d0, d1 + (double)f2, d2, p_i1755_4_, p_i1755_5_);
+            this.shoot(d0, d1 + (double)f2, d2, p_i1755_4_, p_i1755_5_);
         }
     }
 
     public EntityWebShot(World worldIn, EntityLivingBase shooter, float velocity)
     {
         super(worldIn);
-        this.renderDistanceWeight = 10.0D;
         this.shootingEntity = shooter;
 
         if (shooter instanceof EntityPlayer)
@@ -86,7 +86,21 @@ public class EntityWebShot extends Entity implements IProjectile
         this.motionX = (double)(-MathHelper.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
         this.motionZ = (double)(MathHelper.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES) * MathHelper.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
         this.motionY = (double)(-MathHelper.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES));
-        this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
+        this.shoot(this.motionX, this.motionY, this.motionZ, velocity * 1.5F, 1.0F);
+    }
+
+    @Override
+    public boolean isInRangeToRenderDist(double distance)
+    {
+        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+
+        if (Double.isNaN(d0))
+        {
+            d0 = 1.0D;
+        }
+
+        d0 = d0 * 64.0D * 10.0;
+        return distance < d0 * d0;
     }
 
     @Override
@@ -95,9 +109,9 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    public void setThrowableHeading(double x, double y, double z, float velocity, float inaccuracy)
+    public void shoot(double x, double y, double z, float velocity, float inaccuracy)
     {
-        float f = MathHelper.sqrt_double(x * x + y * y + z * z);
+        float f = MathHelper.sqrt(x * x + y * y + z * z);
         x = x / (double)f;
         y = y / (double)f;
         z = z / (double)f;
@@ -110,14 +124,14 @@ public class EntityWebShot extends Entity implements IProjectile
         this.motionX = x;
         this.motionY = y;
         this.motionZ = z;
-        float f1 = MathHelper.sqrt_double(x * x + z * z);
+        float f1 = MathHelper.sqrt(x * x + z * z);
         this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(x, z) * Constants.RADIANS_TO_DEGREES;
         this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(y, (double)f1) * Constants.RADIANS_TO_DEGREES;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_)
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_)
     {
         this.setPosition(x, y, z);
         this.setRotation(yaw, pitch);
@@ -133,7 +147,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float f = MathHelper.sqrt_double(x * x + z * z);
+            float f = MathHelper.sqrt(x * x + z * z);
             this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(x, z) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(y, (double)f) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch;
@@ -149,7 +163,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
-            float f = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+            float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
             this.prevRotationYaw = this.rotationYaw = (float) MathHelper.atan2(this.motionX, this.motionZ) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch = (float) MathHelper.atan2(this.motionY, (double)f) * Constants.RADIANS_TO_DEGREES;
         }
@@ -165,20 +179,21 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
         ++this.ticksInAir;
-        Vec3 vec31 = new Vec3(this.posX, this.posY, this.posZ);
-        Vec3 vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        MovingObjectPosition movingobjectposition = this.worldObj.rayTraceBlocks(vec31, vec3, false, true, false);
-        vec31 = new Vec3(this.posX, this.posY, this.posZ);
-        vec3 = new Vec3(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        RayTraceResult movingobjectposition = this.world.rayTraceBlocks(vec31, vec3, false, true, false);
+        vec31 = new Vec3d(this.posX, this.posY, this.posZ);
+        vec3 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
         if (movingobjectposition != null)
         {
-            vec3 = new Vec3(movingobjectposition.hitVec.xCoord, movingobjectposition.hitVec.yCoord, movingobjectposition.hitVec.zCoord);
+            vec3 = new Vec3d(movingobjectposition.hitVec.x, movingobjectposition.hitVec.y, movingobjectposition.hitVec.z);
         }
 
         Entity entity = null;
-        List<Entity> list = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
+        final double border = 0.3D;
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -186,9 +201,8 @@ public class EntityWebShot extends Entity implements IProjectile
 
             if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
             {
-                float f1 = 0.3F;
-                AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().expand((double)f1, (double)f1, (double)f1);
-                MovingObjectPosition movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
+                AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(border, border, border);
+                RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                 if (movingobjectposition1 != null)
                 {
@@ -205,7 +219,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (entity != null)
         {
-            movingobjectposition = new MovingObjectPosition(entity);
+            movingobjectposition = new RayTraceResult(entity);
         }
 
         if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
@@ -222,11 +236,11 @@ public class EntityWebShot extends Entity implements IProjectile
         {
             if (movingobjectposition.entityHit != null)
             {
-                if (movingobjectposition.entityHit != this.shootingEntity && !this.worldObj.isRemote)
+                if (movingobjectposition.entityHit != this.shootingEntity && !this.world.isRemote)
                 {
                     if (movingobjectposition.entityHit instanceof EntityLivingBase)
                     {
-                        ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 180, 2, true, true));
+                        ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 180, 2, true, true));
                         this.setDead();
                     }
                     else
@@ -242,10 +256,10 @@ public class EntityWebShot extends Entity implements IProjectile
             }
             else
             {
-                this.motionX = (double)((float)(movingobjectposition.hitVec.xCoord - this.posX));
-                this.motionY = (double)((float)(movingobjectposition.hitVec.yCoord - this.posY));
-                this.motionZ = (double)((float)(movingobjectposition.hitVec.zCoord - this.posZ));
-                float f5 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+                this.motionX = (double)((float)(movingobjectposition.hitVec.x - this.posX));
+                this.motionY = (double)((float)(movingobjectposition.hitVec.y - this.posY));
+                this.motionZ = (double)((float)(movingobjectposition.hitVec.z - this.posZ));
+                float f5 = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
                 this.posX -= this.motionX / (double)f5 * 0.05000000074505806D;
                 this.posY -= this.motionY / (double)f5 * 0.05000000074505806D;
                 this.posZ -= this.motionZ / (double)f5 * 0.05000000074505806D;
@@ -257,7 +271,7 @@ public class EntityWebShot extends Entity implements IProjectile
         this.posX += this.motionX;
         this.posY += this.motionY;
         this.posZ += this.motionZ;
-        float f3 = MathHelper.sqrt_double(this.motionX * this.motionX + this.motionZ * this.motionZ);
+        float f3 = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
         this.rotationYaw = (float) MathHelper.atan2(this.motionX, this.motionZ) * Constants.RADIANS_TO_DEGREES;
 
         for (this.rotationPitch = (float) MathHelper.atan2(this.motionY, (double)f3) * Constants.RADIANS_TO_DEGREES; this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
@@ -287,7 +301,7 @@ public class EntityWebShot extends Entity implements IProjectile
             for (int i1 = 0; i1 < 4; ++i1)
             {
                 float f8 = 0.25F;
-                this.worldObj.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f8, this.posY - this.motionY * (double)f8, this.posZ - this.motionZ * (double)f8, this.motionX, this.motionY, this.motionZ);
+                this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double)f8, this.posY - this.motionY * (double)f8, this.posZ - this.motionZ * (double)f8, this.motionX, this.motionY, this.motionZ);
             }
         }
 
@@ -325,7 +339,7 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    public boolean canAttackWithItem()
+    public boolean canBeAttackedWithItem()
     {
         return false;
     }

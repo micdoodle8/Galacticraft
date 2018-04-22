@@ -8,10 +8,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class ItemIC2Compat extends Item implements ISortableItem
 {
@@ -48,14 +47,17 @@ public class ItemIC2Compat extends Item implements ISortableItem
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> par3List)
     {
-        par3List.add(new ItemStack(par1, 1, 0));
-        if (CompatibilityManager.isIc2Loaded())
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, 1));
-            par3List.add(new ItemStack(par1, 1, 2));
-            par3List.add(new ItemStack(par1, 1, 7));
+            par3List.add(new ItemStack(this, 1, 0));
+            if (CompatibilityManager.isIc2Loaded())
+            {
+                par3List.add(new ItemStack(this, 1, 1));
+                par3List.add(new ItemStack(this, 1, 2));
+                par3List.add(new ItemStack(this, 1, 7));
+            }
         }
     }
 

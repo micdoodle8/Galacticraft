@@ -10,8 +10,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,8 +55,9 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
     {
+        ItemStack itemStack = player.getHeldItem(hand);
         if (player instanceof EntityPlayerMP)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
@@ -59,19 +65,20 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
             for (int i = 0; i < SIZE; i++)
             {
                 ItemStack newGear = getContents(i);
-                if (newGear.getItem() instanceof ISortableItem && ((ISortableItem)newGear.getItem()).getCategory(newGear.getItemDamage()) == EnumSortCategoryItem.GEAR)
+                if (newGear.getItem() instanceof IClickableItem)
                 {
-                    newGear = newGear.getItem().onItemRightClick(newGear, world, player);
+                    newGear = ((IClickableItem)newGear.getItem()).onItemRightClick(newGear, worldIn, player);
                 }
-                if (newGear.stackSize >= 1)
+                if (newGear.getCount() >= 1)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, newGear, 0);
                 }
             }
 
-            itemStack.stackSize = 0;
+            itemStack.setCount(0);
+            return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
         }
-        return itemStack;
+        return new ActionResult<>(EnumActionResult.PASS, itemStack);
     }
     
     public static ItemStack getContents(int slot)
@@ -84,8 +91,8 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
         case 3: return new ItemStack(GCItems.oxTankLight);
         case 4: return new ItemStack(GCItems.steelPickaxe);
         case 5: return new ItemStack(GCItems.foodItem, 1, 3);
-        case 6: return new ItemStack(Items.potionitem, 1, 8197);
-        case 7: return new ItemStack(Items.potionitem, 1, 8262);
+        case 6: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING);
+        case 7: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_NIGHT_VISION);
         case 8: return new ItemStack(GCItems.parachute, 1, 13);
         default: return null;
         }

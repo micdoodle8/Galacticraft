@@ -11,7 +11,7 @@ public class CircuitFabricatorRecipeMaker
         List<CircuitFabricatorRecipeWrapper> recipes = new ArrayList<>();
 
         int count = 0;
-        for (Object[] entry : CircuitFabricatorRecipes.getRecipes())
+        for (List<Object> entry : CircuitFabricatorRecipes.getRecipes())
         {
             CircuitFabricatorRecipeWrapper wrapper = new CircuitFabricatorRecipeWrapper(entry, CircuitFabricatorRecipes.getOutput(count));
             recipes.add(wrapper);

@@ -24,11 +24,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class StatsCapability extends GCPlayerStats
 
     // temporary data while player is in planet selection GUI
     public int spaceshipTier = 1;
-    public ItemStack[] rocketStacks = new ItemStack[2];
+    public NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public int rocketType;
     public int fuelLevel;
     public Item rocketItem;
@@ -58,38 +60,38 @@ public class StatsCapability extends GCPlayerStats
 
     public boolean usingParachute;
 
-    public ItemStack parachuteInSlot;
-    public ItemStack lastParachuteInSlot;
+    public ItemStack parachuteInSlot = ItemStack.EMPTY;
+    public ItemStack lastParachuteInSlot = ItemStack.EMPTY;
 
-    public ItemStack frequencyModuleInSlot;
-    public ItemStack lastFrequencyModuleInSlot;
+    public ItemStack frequencyModuleInSlot = ItemStack.EMPTY;
+    public ItemStack lastFrequencyModuleInSlot = ItemStack.EMPTY;
 
-    public ItemStack maskInSlot;
-    public ItemStack lastMaskInSlot;
+    public ItemStack maskInSlot = ItemStack.EMPTY;
+    public ItemStack lastMaskInSlot = ItemStack.EMPTY;
 
-    public ItemStack gearInSlot;
-    public ItemStack lastGearInSlot;
+    public ItemStack gearInSlot = ItemStack.EMPTY;
+    public ItemStack lastGearInSlot = ItemStack.EMPTY;
 
-    public ItemStack tankInSlot1;
-    public ItemStack lastTankInSlot1;
+    public ItemStack tankInSlot1 = ItemStack.EMPTY;
+    public ItemStack lastTankInSlot1 = ItemStack.EMPTY;
 
-    public ItemStack tankInSlot2;
-    public ItemStack lastTankInSlot2;
+    public ItemStack tankInSlot2 = ItemStack.EMPTY;
+    public ItemStack lastTankInSlot2 = ItemStack.EMPTY;
 
-    public ItemStack thermalHelmetInSlot;
-    public ItemStack lastThermalHelmetInSlot;
+    public ItemStack thermalHelmetInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalHelmetInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalChestplateInSlot;
-    public ItemStack lastThermalChestplateInSlot;
+    public ItemStack thermalChestplateInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalChestplateInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalLeggingsInSlot;
-    public ItemStack lastThermalLeggingsInSlot;
+    public ItemStack thermalLeggingsInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalLeggingsInSlot = ItemStack.EMPTY;
 
-    public ItemStack thermalBootsInSlot;
-    public ItemStack lastThermalBootsInSlot;
+    public ItemStack thermalBootsInSlot = ItemStack.EMPTY;
+    public ItemStack lastThermalBootsInSlot = ItemStack.EMPTY;
 
-    public ItemStack shieldControllerInSlot;
-    public ItemStack lastShieldControllerInSlot;
+    public ItemStack shieldControllerInSlot = ItemStack.EMPTY;
+    public ItemStack lastShieldControllerInSlot = ItemStack.EMPTY;
 
     public int launchAttempts = 0;
 
@@ -244,15 +246,15 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public ItemStack[] getRocketStacks()
+    public NonNullList<ItemStack> getRocketStacks()
     {
-        return rocketStacks;
+        return stacks;
     }
 
     @Override
-    public void setRocketStacks(ItemStack[] rocketStacks)
+    public void setRocketStacks(NonNullList<ItemStack> rocketStacks)
     {
-        this.rocketStacks = rocketStacks;
+        this.stacks = rocketStacks;
     }
 
     @Override
@@ -292,6 +294,7 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
+    @Nullable
     public ItemStack getLaunchpadStack()
     {
         return launchpadStack;
@@ -1025,7 +1028,7 @@ public class StatsCapability extends GCPlayerStats
 
         nbt.setTag("Schematics", tagList);
 
-        nbt.setInteger("rocketStacksLength", this.rocketStacks.length);
+        nbt.setInteger("rocketStacksLength", this.stacks.size());
         nbt.setInteger("SpaceshipTier", this.spaceshipTier);
         nbt.setInteger("FuelLevel", this.fuelLevel);
         if (this.rocketItem != null)
@@ -1034,20 +1037,26 @@ public class StatsCapability extends GCPlayerStats
             nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new NBTTagCompound()));
         }
 
-        final NBTTagList var2 = new NBTTagList();
+        NBTTagList nbttaglist = new NBTTagList();
 
-        for (int var3 = 0; var3 < this.rocketStacks.length; ++var3)
+        for (int i = 0; i < this.stacks.size(); ++i)
         {
-            if (this.rocketStacks[var3] != null)
+            ItemStack itemstack = (ItemStack)this.stacks.get(i);
+
+            if (!itemstack.isEmpty())
             {
-                final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                this.rocketStacks[var3].writeToNBT(var4);
-                var2.appendTag(var4);
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                nbttagcompound.setByte("Slot", (byte)i);
+                itemstack.writeToNBT(nbttagcompound);
+                nbttaglist.appendTag(nbttagcompound);
             }
         }
 
-        nbt.setTag("RocketItems", var2);
+        if (!nbttaglist.hasNoTags())
+        {
+            nbt.setTag("RocketItems", nbttaglist);
+        }
+
         final NBTTagCompound var4 = new NBTTagCompound();
         if (this.launchpadStack != null)
         {
@@ -1139,12 +1148,9 @@ public class StatsCapability extends GCPlayerStats
             }
             if (nbt.hasKey("ReturnRocket"))
             {
-                ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
-                if (returnRocket != null)
-                {
-                    this.rocketItem = returnRocket.getItem();
-                    this.rocketType = returnRocket.getItemDamage();
-                }
+                ItemStack returnRocket = new ItemStack(nbt.getCompoundTag("ReturnRocket"));
+                this.rocketItem = returnRocket.getItem();
+                this.rocketType = returnRocket.getItemDamage();
             }
 
             this.usingParachute = nbt.getBoolean("usingParachute2");
@@ -1170,19 +1176,20 @@ public class StatsCapability extends GCPlayerStats
 
             if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
             {
-                final NBTTagList var23 = nbt.getTagList("RocketItems", 10);
                 int length = nbt.getInteger("rocketStacksLength");
 
-                this.rocketStacks = new ItemStack[length];
+                this.stacks = NonNullList.withSize(length, ItemStack.EMPTY);
 
-                for (int var3 = 0; var3 < var23.tagCount(); ++var3)
+                NBTTagList nbttaglist1 = nbt.getTagList("RocketItems", 10);
+
+                for (int i = 0; i < nbttaglist1.tagCount(); ++i)
                 {
-                    final NBTTagCompound var4 = var23.getCompoundTagAt(var3);
-                    final int var5 = var4.getByte("Slot") & 255;
+                    NBTTagCompound nbttagcompound = nbttaglist1.getCompoundTagAt(i);
+                    int j = nbttagcompound.getByte("Slot") & 255;
 
-                    if (var5 < this.rocketStacks.length)
+                    if (j >= 0 && j < this.stacks.size())
                     {
-                        this.rocketStacks[var5] = ItemStack.loadItemStackFromNBT(var4);
+                        this.stacks.set(j, new ItemStack(nbttagcompound));
                     }
                 }
             }
@@ -1216,11 +1223,7 @@ public class StatsCapability extends GCPlayerStats
 
             if (nbt.hasKey("LaunchpadStack"))
             {
-                this.launchpadStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("LaunchpadStack"));
-                if (this.launchpadStack != null && this.launchpadStack.stackSize == 0)
-                {
-                    this.launchpadStack = null;
-                }
+                this.launchpadStack = new ItemStack(nbt.getCompoundTag("LaunchpadStack"));
             }
             else
             {
@@ -1273,7 +1276,7 @@ public class StatsCapability extends GCPlayerStats
                     if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
                     final NBTTagCompound stateNBT = panels.getCompoundTagAt(i);
                     IBlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
-                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.air) ? null : bs;
+                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
                 }
             }
 

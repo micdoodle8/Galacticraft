@@ -34,9 +34,9 @@ public class GenLayerVenusSurround extends GenLayer
                 int up = input[dx + 1 + (dz + 0) * nwidth];
                 int down = input[dx + 1 + (dz + 2) * nwidth];
                 int center = input[dx + 1 + (dz + 1) * nwidth];
-//                if (surrounded(BiomeGenBaseVenus.venusMountain.biomeID, center, right, left, up, down) && nextInt(25) == 0)
+//                if (surrounded(BiomeVenus.venusMountain.biomeID, center, right, left, up, down) && nextInt(25) == 0)
 //                {
-//                    output[dx + dz * width] = BiomeGenBaseVenus.venusVolcano.biomeID;
+//                    output[dx + dz * width] = BiomeVenus.venusVolcano.biomeID;
 //                }
 //                else
                 {

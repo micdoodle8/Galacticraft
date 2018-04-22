@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.dimension;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
@@ -87,8 +88,11 @@ public class TeleportTypeVenus implements ITeleportType
                 if (!newWorld.isRemote)
                 {
                     EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
+
+                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                     entryPod.forceSpawn = true;
-                    newWorld.spawnEntityInWorld(entryPod);
+                    newWorld.spawnEntity(entryPod);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
                 }
 
                 stats.setTeleportCooldown(10);

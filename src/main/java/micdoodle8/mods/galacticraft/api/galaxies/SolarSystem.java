@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 import java.util.Locale;
 
@@ -33,7 +33,7 @@ public class SolarSystem
     public String getLocalizedName()
     {
         String s = this.getUnlocalizedName();
-        return s == null ? "" : StatCollector.translateToLocal(s);
+        return s == null ? "" : I18n.translateToLocal(s);
     }
 
     public String getUnlocalizedName()
@@ -67,7 +67,7 @@ public class SolarSystem
     public String getLocalizedParentGalaxyName()
     {
         String s = this.getUnlocalizedParentGalaxyName();
-        return s == null ? "" : StatCollector.translateToLocal(s);
+        return s == null ? "" : I18n.translateToLocal(s);
     }
 
     public String getUnlocalizedParentGalaxyName()

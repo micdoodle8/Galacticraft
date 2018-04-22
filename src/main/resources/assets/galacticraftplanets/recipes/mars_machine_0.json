@@ -1,0 +1,29 @@
+{
+  "result": {
+    "item": "galacticraftplanets:mars_machine",
+    "data": 0
+  },
+  "pattern": [
+    "XWX",
+    "XZX",
+    "WVW"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    },
+    "W": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_plate"
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Z": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    }
+  }
+}

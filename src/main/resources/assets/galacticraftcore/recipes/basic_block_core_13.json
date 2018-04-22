@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_block_core",
+    "data": 13
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:item_silicon"
+    }
+  }
+}

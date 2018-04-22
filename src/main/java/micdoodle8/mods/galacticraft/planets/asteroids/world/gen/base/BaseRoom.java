@@ -22,14 +22,17 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.LinkedList;
@@ -50,7 +53,7 @@ public class BaseRoom extends SizedPiece
     public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir, EnumRoomType roomType, boolean near, boolean far, int deckTier)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = this.direction;
+        this.setCoordBaseMode(this.direction);
         this.type = roomType;
         this.nearEnd = near;
         this.farEnd = far;
@@ -70,9 +73,9 @@ public class BaseRoom extends SizedPiece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(tagCompound, manager);
         try
         {
             int typeNo = tagCompound.getInteger("brT");
@@ -98,7 +101,7 @@ public class BaseRoom extends SizedPiece
     @Override
     public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBoundary)
     {
-        IBlockState blockAir = Blocks.air.getDefaultState();
+        IBlockState blockAir = Blocks.AIR.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
         
         boolean axisEW = getDirection().getAxis() == EnumFacing.Axis.X;
@@ -198,7 +201,7 @@ public class BaseRoom extends SizedPiece
      */
     private void buildRoomContents(World worldIn, int x, int y, int z, int maxX, int maxZ, BlockPos blockpos, int randomInt)
     {
-        IBlockState state = Blocks.air.getDefaultState();
+        IBlockState state = Blocks.AIR.getDefaultState();
         int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
         
         int facing = 0; 
@@ -239,7 +242,7 @@ public class BaseRoom extends SizedPiece
         //Offset from centre - used for some rooms
         int ox = maxX / 2 - 3;
         int xx = x - ox;
-        
+
         switch (this.type)
         {
         case EMPTY:
@@ -367,7 +370,7 @@ public class BaseRoom extends SizedPiece
                 }
                 else
                     //Tiled floor
-                    state = Blocks.iron_trapdoor.getDefaultState();
+                    state = Blocks.IRON_TRAPDOOR.getDefaultState();
             }
             else if (y == 2 || y == 3)
             {
@@ -406,7 +409,7 @@ public class BaseRoom extends SizedPiece
                 }
                 else
                 {
-                    state = Blocks.carpet.getStateFromMeta(7);
+                    state = Blocks.CARPET.getStateFromMeta(7);
                 }
             } else if (y == 2)
             {
@@ -414,7 +417,7 @@ public class BaseRoom extends SizedPiece
                 {
                     if (z == 1)
                     {
-                        state = Blocks.brewing_stand.getDefaultState();
+                        state = Blocks.BREWING_STAND.getDefaultState();
                     }
                     else if (z > 2 && z < maxZ)
                     {
@@ -530,11 +533,11 @@ public class BaseRoom extends SizedPiece
                 TileEntityCargoLoader loader = (TileEntityCargoLoader) tile;
                 loader.locked = true;
                 //Looks like the food supplies have gone off!
-                loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
-                loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
-                loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
-                loader.addCargo(new ItemStack(Items.poisonous_potato, 64, 0), true);
-                loader.addCargo(new ItemStack(Items.rotten_flesh, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.POISONOUS_POTATO, 64, 0), true);
+                loader.addCargo(new ItemStack(Items.ROTTEN_FLESH, 64, 0), true);
                 loader.addCargo(new ItemStack(GCItems.flagPole, semirand % 31 + 2, 0), true);
                 loader.addCargo(new ItemStack(MarsItems.marsItemBasic, semirand % 2 + 1, 4), true);  //Slimeling Inventory Bag
                 loader.addCargo(new ItemStack(AsteroidsItems.basicItem, semirand % 23 + 41, 7), true); //Thermal cloth
@@ -552,30 +555,30 @@ public class BaseRoom extends SizedPiece
                 case 0:
                     break;
                 case 1:
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.iron_ingot));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.iron_ingot));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
                     break;
                 case 2:
                     //Creeper or Zombie head
                     int slot = semirand % 9;
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(slot,new ItemStack(Items.skull, 1, (semirand % 13 < 6) ? 4 : 2));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(slot,new ItemStack(Items.SKULL, 1, (semirand % 13 < 6) ? 4 : 2));
                     break;
                 case 3:
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(0, new ItemStack(Items.iron_ingot));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.iron_ingot));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.iron_ingot));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(4, new ItemStack(Items.stick));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(7, new ItemStack(Items.stick));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(4, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(7, new ItemStack(Items.STICK));
                     break;
                 }
             }
             else if (tile instanceof TileEntityBrewingStand)
             {
                 TileEntityBrewingStand stand = (TileEntityBrewingStand) tile;
-                stand.setInventorySlotContents(0, new ItemStack(Items.potionitem, 1, 8196));  //Poison
-                stand.setInventorySlotContents(1, new ItemStack(Items.potionitem, 1, 8200));  //Weakness
-                stand.setInventorySlotContents(2, new ItemStack(Items.potionitem, 1, 8204)); //Harming
-            }
+                stand.setInventorySlotContents(0, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.POISON));
+                stand.setInventorySlotContents(1, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WEAKNESS));
+                stand.setInventorySlotContents(2, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING));
+                        }
             else if (tile instanceof TileEntityEnergyStorageModule)
             {
                 TileEntityEnergyStorageModule store = (TileEntityEnergyStorageModule) tile;
@@ -597,7 +600,7 @@ public class BaseRoom extends SizedPiece
             EntityHangingSchematic entityhanging = new EntityHangingSchematic(worldIn, blockpos, hangingDirection, x / 3 - 1);
             if (entityhanging != null)
             {
-                worldIn.spawnEntityInWorld(entityhanging);
+                worldIn.spawnEntity(entityhanging);
                 entityhanging.setSendToClient();
             }
         }
@@ -610,11 +613,11 @@ public class BaseRoom extends SizedPiece
         POWER(null, null, false),
         STORE(null, null, false),
         EMPTY(null, null, false),
-        MEDICAL(Blocks.iron_trapdoor.getDefaultState(), Blocks.iron_trapdoor.getStateFromMeta(8), false),
+        MEDICAL(Blocks.IRON_TRAPDOOR.getDefaultState(), Blocks.IRON_TRAPDOOR.getStateFromMeta(8), false),
         CREW(null, null, false),
         CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true),
         CONTROL(GCBlocks.slabGCHalf.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false);
-                
+
         public final IBlockState blockFloor;
         public final IBlockState blockEntrance;
         public final boolean doEntryWallsToo;

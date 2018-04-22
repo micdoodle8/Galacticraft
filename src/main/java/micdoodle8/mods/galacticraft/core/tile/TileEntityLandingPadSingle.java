@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 
@@ -16,7 +16,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (!this.worldObj.isRemote && this.corner == 0)
+        if (!this.world.isRemote && this.corner == 0)
         {
             final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<>();
 
@@ -24,7 +24,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
             {
                 for (int z = this.getPos().getZ() - 1; z < this.getPos().getZ() + 2; z++)
                 {
-                    final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
+                    final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
                     if (tile instanceof TileEntityLandingPadSingle && !tile.isInvalid() && ((TileEntityLandingPadSingle)tile).corner == 0)
                     {
@@ -37,11 +37,11 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
             {
                 for (final TileEntity tile : attachedLaunchPads)
                 {
-                    this.worldObj.markTileEntityForRemoval(tile);
+                    this.world.markTileEntityForRemoval(tile);
                     ((TileEntityLandingPadSingle)tile).corner = 1;
                 }
 
-                this.worldObj.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 2);
+                this.world.setBlockState(this.getPos(), GCBlocks.landingPadFull.getDefaultState(), 2);
             }
         }
     }

@@ -1,0 +1,25 @@
+{
+  "result": {
+    "item": "galacticraftcore:air_fan"
+  },
+  "pattern": [
+    "Z Z",
+    " Y ",
+    "ZXZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferBasic"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

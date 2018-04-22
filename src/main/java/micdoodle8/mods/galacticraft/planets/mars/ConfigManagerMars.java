@@ -54,7 +54,7 @@ public class ConfigManagerMars
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDMars", -29);
-            prop.comment = "Dimension ID for Mars";
+            prop.setComment("Dimension ID for Mars");
             prop.setLanguageKey("gc.configgui.dimension_id_mars").setRequiresMcRestart(true);
             dimensionIDMars = prop.getInt();
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_DIMENSIONS);
@@ -62,13 +62,13 @@ public class ConfigManagerMars
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT2", 2);
-            prop.comment = "Schematic ID for Tier 2 Rocket, must be unique.";
+            prop.setComment("Schematic ID for Tier 2 Rocket, must be unique.");
             prop.setLanguageKey("gc.configgui.id_schematic_rocket_t2");
             idSchematicRocketT2 = prop.getInt(2);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_SCHEMATIC);
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicCargoRocket", 3);
-            prop.comment = "Schematic ID for Cargo Rocket, must be unique.";
+            prop.setComment("Schematic ID for Cargo Rocket, must be unique.");
             prop.setLanguageKey("gc.configgui.id_schematic_cargo_rocket");
             idSchematicCargoRocket = prop.getInt(3);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_SCHEMATIC);
@@ -76,23 +76,23 @@ public class ConfigManagerMars
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "launchControllerChunkLoad", true);
-            prop.comment = "Whether or not the launch controller acts as a chunk loader. Will cause issues if disabled!";
+            prop.setComment("Whether or not the launch controller acts as a chunk loader. Will cause issues if disabled!");
             prop.setLanguageKey("gc.configgui.launch_controller_chunk_load");
             launchControllerChunkLoad = prop.getBoolean(true);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "launchControllerAllDims", false);
-            prop.comment = "May rarely cause issues if enabled, depends on how the other mod's dimensions are.";
+            prop.setComment("May rarely cause issues if enabled, depends on how the other mod's dimensions are.");
             prop.setLanguageKey("gc.configgui.launch_controller_all_dims");
             launchControllerAllDims = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Mars", false);
-            prop.comment = "Disable Iron Ore Gen on Mars.";
+            prop.setComment("Disable Iron Ore Gen on Mars.");
             prop.setLanguageKey("gc.configgui.disable_iron_gen_mars");
             if (update)
             {
-                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 prop.setLanguageKey(prop.getLanguageKey());
                 config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
@@ -100,11 +100,11 @@ public class ConfigManagerMars
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Copper Ore Gen on Mars", false);
-            prop.comment = "Disable Copper Ore Gen on Mars.";
+            prop.setComment("Disable Copper Ore Gen on Mars.");
             prop.setLanguageKey("gc.configgui.disable_copper_gen_mars");
             if (update)
             {
-                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 prop.setLanguageKey(prop.getLanguageKey());
                 config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
@@ -112,11 +112,11 @@ public class ConfigManagerMars
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Tin Ore Gen on Mars", false);
-            prop.comment = "Disable Tin Ore Gen on Mars.";
+            prop.setComment("Disable Tin Ore Gen on Mars.");
             prop.setLanguageKey("gc.configgui.disable_tin_gen_mars");
             if (update)
             {
-                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 prop.setLanguageKey(prop.getLanguageKey());
                 config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }
@@ -124,11 +124,11 @@ public class ConfigManagerMars
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Desh Ore Gen on Mars", false);
-            prop.comment = "Disable Desh Ore Gen on Mars.";
+            prop.setComment("Disable Desh Ore Gen on Mars.");
             prop.setLanguageKey("gc.configgui.disable_desh_gen_mars");
             if (update)
             {
-                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.comment);
+                prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, prop.getName(), prop.getBoolean(), prop.getComment());
                 prop.setLanguageKey(prop.getLanguageKey());
                 config.getCategory(Constants.CONFIG_CATEGORY_GENERAL).remove(prop.getName());
             }

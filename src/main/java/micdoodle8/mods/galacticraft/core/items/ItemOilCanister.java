@@ -1,18 +1,21 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemOilCanister extends ItemCanisterGeneric implements ISortableItem
 {
@@ -67,7 +70,7 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List<String> tooltip, boolean par4)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)
         {
@@ -77,10 +80,13 @@ public class ItemOilCanister extends ItemCanisterGeneric implements ISortableIte
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(new ItemStack(par1, 1, this.getMaxDamage()));
-        par3List.add(new ItemStack(par1, 1, 1));
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        {
+            list.add(new ItemStack(this, 1, this.getMaxDamage()));
+            list.add(new ItemStack(this, 1, 1));
+        }
     }
 
     @Override

@@ -8,18 +8,22 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,13 +48,20 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft)
     {
-        final int useTime = this.getMaxItemUseDuration(par1ItemStack) - par4;
+        final int useTime = this.getMaxItemUseDuration(stack) - timeLeft;
 
         boolean placed = false;
 
-        final MovingObjectPosition var12 = this.getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+        if (!(entity instanceof EntityPlayer))
+        {
+            return;
+        }
+
+        EntityPlayer player = (EntityPlayer) entity;
+
+        final RayTraceResult var12 = this.rayTrace(worldIn, player, true);
 
         float var7 = useTime / 20.0F;
         var7 = (var7 * var7 + var7 * 2.0F) / 3.0F;
@@ -60,38 +71,35 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
             var7 = 1.0F;
         }
 
-        if (var7 == 1.0F && var12 != null && var12.typeOfHit == MovingObjectType.BLOCK)
+        if (var7 == 1.0F && var12 != null && var12.typeOfHit == RayTraceResult.Type.BLOCK)
         {
             final BlockPos pos = var12.getBlockPos();
 
-            if (!par2World.isRemote)
+            if (!worldIn.isRemote)
             {
-                final EntityFlag flag = new EntityFlag(par2World, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F, (int) (par3EntityPlayer.rotationYaw - 90));
+                final EntityFlag flag = new EntityFlag(worldIn, pos.getX() + 0.5F, pos.getY() + 1.0F, pos.getZ() + 0.5F, (int) (entity.rotationYaw - 90));
 
-                if (par2World.getEntitiesWithinAABB(EntityFlag.class, AxisAlignedBB.fromBounds(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
+                if (worldIn.getEntitiesWithinAABB(EntityFlag.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
                 {
-                    par2World.spawnEntityInWorld(flag);
-                    flag.setType(par1ItemStack.getItemDamage());
-                    flag.setOwner(PlayerUtil.getName(par3EntityPlayer));
-                    par2World.playSoundEffect(pos.getX(), pos.getY(), pos.getZ(), Block.soundTypeMetal.getBreakSound(), Block.soundTypeMetal.getVolume(), Block.soundTypeMetal.getFrequency() + 2.0F);
+                    worldIn.spawnEntity(flag);
+                    flag.setType(stack.getItemDamage());
+                    flag.setOwner(PlayerUtil.getName(player));
+                    worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 2.0F);
                     placed = true;
                 }
                 else
                 {
-                    par3EntityPlayer.addChatMessage(new ChatComponentText(GCCoreUtil.translate("gui.flag.already_placed")));
+                    entity.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 
             if (placed)
             {
-                final int var2 = this.getInventorySlotContainItem(par3EntityPlayer, par1ItemStack);
+                final int var2 = this.getInventorySlotContainItem(player, stack);
 
-                if (var2 >= 0 && !par3EntityPlayer.capabilities.isCreativeMode)
+                if (var2 >= 0 && !player.capabilities.isCreativeMode)
                 {
-                    if (--par3EntityPlayer.inventory.mainInventory[var2].stackSize <= 0)
-                    {
-                        par3EntityPlayer.inventory.mainInventory[var2] = null;
-                    }
+                    player.inventory.mainInventory.get(var2).shrink(1);
                 }
             }
         }
@@ -99,21 +107,15 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
     private int getInventorySlotContainItem(EntityPlayer player, ItemStack stack)
     {
-        for (int var2 = 0; var2 < player.inventory.mainInventory.length; ++var2)
+        for (int var2 = 0; var2 < player.inventory.mainInventory.size(); ++var2)
         {
-            if (player.inventory.mainInventory[var2] != null && player.inventory.mainInventory[var2].isItemEqual(stack))
+            if (!player.inventory.mainInventory.get(var2).isEmpty() && player.inventory.mainInventory.get(var2).isItemEqual(stack))
             {
                 return var2;
             }
         }
 
         return -1;
-    }
-
-    @Override
-    public ItemStack onItemUseFinish(ItemStack stack, World worldIn, EntityPlayer playerIn)
-    {
-        return stack;
     }
 
     @Override
@@ -129,11 +131,10 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
     {
-        par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-
-        return par1ItemStack;
+        playerIn.setActiveHand(hand);
+        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
     }
 
     @Override

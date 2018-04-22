@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.ItemInWorldManager;
+import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.WorldServer;
 
@@ -18,13 +18,13 @@ import net.minecraft.world.WorldServer;
  */
 public class GCEntityPlayerMP extends EntityPlayerMP
 {
-    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, ItemInWorldManager itemInWorldManager)
+    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager interactionManager)
     {
-        super(server, world, profile, itemInWorldManager);
-        if (this.worldObj != world)
-        {
-            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.worldObj.provider));
-        }
+        super(server, world, profile, interactionManager);
+//        if (this.world != world)
+//        {
+//            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.world.provider));
+//        }
     }
 
     @Override
@@ -36,29 +36,29 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     }
 
     @Override
-    public void mountEntity(Entity par1Entity)
+    public void dismountRidingEntity()
     {
-        if (!GalacticraftCore.proxy.player.mountEntity(this, par1Entity))
+        if (!GalacticraftCore.proxy.player.dismountEntity(this, this.getRidingEntity()))
         {
-            super.mountEntity(par1Entity);
+            super.dismountRidingEntity();
         }
     }
 
     @Override
-    public void moveEntity(double par1, double par3, double par5)
+    public void move(MoverType type, double x, double y, double z)
     {
-        super.moveEntity(par1, par3, par5);
-        GalacticraftCore.proxy.player.moveEntity(this, par1, par3, par5);
+        super.move(type, x, y, z);
+        GalacticraftCore.proxy.player.move(this, type, x, y, z);
     }
 
     @Override
-    public void wakeUpPlayer(boolean par1, boolean par2, boolean par3)
+    public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, par1, par2, par3))
+        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
         {
             return;
         }
-        super.wakeUpPlayer(par1, par2, par3);
+        super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     /*@Override
     public void setInPortal()
     {
-    	if (!(this.worldObj.provider instanceof IGalacticraftWorldProvider))
+    	if (!(this.world.provider instanceof IGalacticraftWorldProvider))
     	{
     		super.setInPortal();
     	}

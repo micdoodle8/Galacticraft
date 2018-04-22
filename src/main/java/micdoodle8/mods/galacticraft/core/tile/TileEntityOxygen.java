@@ -8,23 +8,28 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
+import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.NetworkHelper;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
+import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
+import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
 
-public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandler
+public abstract class TileEntityOxygen extends TileBaseElectricBlock implements IOxygenReceiver, IOxygenStorage, IFluidHandlerWrapper
 {
     public int oxygenPerTick;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -36,6 +41,34 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         this.tank = new FluidTankGC(maxOxygen, this);
         this.oxygenPerTick = oxygenPerTick;
+    }
+
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    		return true;
+
+    	if (EnergyUtil.checkMekGasHandler(capability))
+    		return true;
+
+    	return super.hasCapability(capability, facing);  
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+    	if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+    	{
+    		return (T) new FluidHandlerWrapper(this, facing);
+    	}
+
+    	if (EnergyUtil.checkMekGasHandler(capability))
+    	{
+    		return (T) this;
+    	}
+
+    	return super.getCapability(capability, facing);
     }
 
     public int getScaledOxygenLevel(int scale)
@@ -55,7 +88,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         super.update();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (TileEntityOxygen.timeSinceOxygenRequest > 0)
             {
@@ -98,12 +131,19 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         this.tank.writeToNBT(nbt);
+        return nbt;
     }
 
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
+    }
+    
     @Override
     public void setOxygenStored(int oxygen)
     {
@@ -218,7 +258,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
     public void produceOxygen()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (EnumFacing direction : this.getOxygenOutputDirections())
             {
@@ -236,7 +276,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
         if (provide > 0)
         {
-            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.worldObj, outputDirection);
+            TileEntity outputTile = new BlockVec3(this).getTileEntityOnSide(this.world, outputDirection);
             FluidNetwork outputNetwork = NetworkHelper.getFluidNetworkFromTile(outputTile, outputDirection);
 
             if (outputNetwork != null)
@@ -314,7 +354,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return 0;
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
     {
         if (!stack.getGas().getName().equals("oxygen"))
@@ -324,37 +364,37 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
         return (int) Math.floor(this.receiveOxygen(stack.amount, doTransfer));
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public int receiveGas(EnumFacing side, GasStack stack)
     {
         return this.receiveGas(side, stack, true);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
     {
         return new GasStack((Gas) EnergyConfigHandler.gasOxygen, (int) Math.floor(this.drawOxygen(amount, doTransfer)));
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public GasStack drawGas(EnumFacing side, int amount)
     {
         return this.drawGas(side, amount, true);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canReceiveGas(EnumFacing side, Gas type)
     {
         return type.getName().equals("oxygen") && this.getOxygenInputDirections().contains(side);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
     public boolean canDrawGas(EnumFacing side, Gas type)
     {
         return type.getName().equals("oxygen") && this.getOxygenOutputDirections().contains(side);
     }
 
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
+    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
     public boolean canTubeConnect(EnumFacing side)
     {
         return this.canConnect(side, NetworkType.FLUID);

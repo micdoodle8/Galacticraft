@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftcore:wall_gc",
+    "data": 4,
+    "count": 6
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:mars",
+      "data": 4
+    }
+  }
+}

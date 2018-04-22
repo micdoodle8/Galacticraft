@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:standard_wrench"
+  },
+  "pattern": [
+    "  Y",
+    " X ",
+    "X  "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedBronze"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

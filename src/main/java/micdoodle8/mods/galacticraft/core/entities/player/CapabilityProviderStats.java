@@ -31,7 +31,7 @@ public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCo
     {
         if (GCCapabilities.GC_STATS_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CAPABILITY)
         {
-            return (T)(statsCapability);
+            return GCCapabilities.GC_STATS_CAPABILITY.cast(statsCapability);
         }
 
         return null;

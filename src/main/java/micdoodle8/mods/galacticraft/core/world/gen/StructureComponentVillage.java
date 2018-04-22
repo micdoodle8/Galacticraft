@@ -2,11 +2,12 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -45,14 +46,14 @@ public abstract class StructureComponentVillage extends StructureComponent
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbttagcompound)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        this.villagersSpawned = nbttagcompound.getInteger("VCount");
+        this.villagersSpawned = nbt.getInteger("VCount");
     }
 
     protected StructureComponent getNextComponentNN(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructureComponent> par2List, Random par3Random, int par4, int par5)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(1), this.getComponentType());
@@ -69,7 +70,7 @@ public abstract class StructureComponentVillage extends StructureComponent
 
     protected StructureComponent getNextComponentPP(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructureComponent> par2List, Random par3Random, int par4, int par5)
     {
-        switch (this.coordBaseMode.getHorizontalIndex())
+        switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
             return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(3), this.getComponentType());
@@ -88,17 +89,17 @@ public abstract class StructureComponentVillage extends StructureComponent
     {
         int i = 0;
         int j = 0;
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 
         for (int k = this.boundingBox.minZ; k <= this.boundingBox.maxZ; ++k)
         {
             for (int l = this.boundingBox.minX; l <= this.boundingBox.maxX; ++l)
             {
-                blockpos$mutableblockpos.set(l, 64, k);
+                mutableBlockPos.setPos(l, 64, k);
 
-                if (boundingBox.isVecInside(blockpos$mutableblockpos))
+                if (boundingBox.isVecInside(mutableBlockPos))
                 {
-                    i += world.getTopSolidOrLiquidBlock(blockpos$mutableblockpos).getY();
+                    i += world.getTopSolidOrLiquidBlock(mutableBlockPos).getY();
                     ++j;
                 }
             }
@@ -140,7 +141,7 @@ public abstract class StructureComponentVillage extends StructureComponent
                 ++this.villagersSpawned;
                 final EntityAlienVillager var11 = new EntityAlienVillager(par1World);
                 var11.setLocationAndAngles(var8 + 0.5D, var9, var10 + 0.5D, 0.0F, 0.0F);
-                par1World.spawnEntityInWorld(var11);
+                par1World.spawnEntity(var11);
             }
         }
     }

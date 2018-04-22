@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftplanets:titanium_pickaxe"
+  },
+  "pattern": [
+    "YYY",
+    " X ",
+    " X "
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "item": "minecraft:iron_ingot"
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_asteroids",
+    "data": 2
+  },
+  "pattern": [
+    " Y ",
+    "XYX",
+    "X X"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 5
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    }
+  }
+}

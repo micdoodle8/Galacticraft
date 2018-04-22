@@ -8,14 +8,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkProviderServer;
+
+import javax.annotation.Nullable;
 
 /* BlockVec3 is similar to galacticraft.api.vector.Vector3?
  * 
@@ -94,7 +96,7 @@ public class BlockVec3 implements Cloneable
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
      */
-    public Block getBlockID(World world)
+    public IBlockState getBlockState(World world)
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -103,40 +105,42 @@ public class BlockVec3 implements Cloneable
 
         int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
-        return this.getBlockInternalCatch(world, chunkx, chunkz, false);
-    }
-
-    /**
-     * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
-     *
-     * @param world
-     * @return the block ID, or null if the y-coordinate is less than 0 or
-     * greater than 256 or the x or z is outside the Minecraft worldmap.
-     * Returns Blocks.bedrock if the coordinates being checked are in an
-     * unloaded chunk
-     */
-    public Block getBlockID_noChunkLoad(World world)
-    {
-        if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
-        {
-            return null;
-        }
-
-        int chunkx = this.x >> 4;
-        int chunkz = this.z >> 4;
-        return this.getBlockInternalCatch(world, chunkx, chunkz, true);
-    }
-
-    private Block getBlockInternalCatch(World world, int chunkx, int chunkz, boolean checkLoaded)
-    {
         try
         {
-            if (!checkLoaded || world.getChunkProvider().chunkExists(chunkx, chunkz))
+            if (world.isRemote)
             {
-                return this.getBlockInternal(world, chunkx, chunkz);
+                if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                {
+                    return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
+                else
+                {
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    BlockVec3.chunkCached_Client = chunk;
+                    BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                    BlockVec3.chunkCacheX_Client = chunkx;
+                    BlockVec3.chunkCacheZ_Client = chunkz;
+                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
             }
-            //Chunk doesn't exist - meaning, it is not loaded
-            return Blocks.bedrock;
+            else
+            {
+                // In a typical inner loop, 80% of the time consecutive calls to
+                // this will be within the same chunk
+                if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                {
+                    return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
+                else
+                {
+                    final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                    BlockVec3.chunkCached = chunk;
+                    BlockVec3.chunkCacheDim = world.provider.getDimension();
+                    BlockVec3.chunkCacheX = chunkx;
+                    BlockVec3.chunkCacheZ = chunkz;
+                    return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                }
+            }
         }
         catch (Throwable throwable)
         {
@@ -147,47 +151,78 @@ public class BlockVec3 implements Cloneable
         }
     }
 
-    private Block getBlockInternal(World world, int chunkx, int chunkz)
+    /**
+     * Get block ID at the BlockVec3 coordinates without forcing a chunk load.
+     *
+     * @param world
+     * @return the block ID, or null if the y-coordinate is less than 0 or
+     * greater than 256 or the x or z is outside the Minecraft worldmap.
+     * Returns Blocks.BEDROCK if the coordinates being checked are in an
+     * unloaded chunk
+     */
+    public IBlockState getBlockState_noChunkLoad(World world)
     {
-        if (world.isRemote)
+        if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
-            if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimensionId() && BlockVec3.chunkCached_Client.isLoaded())
-            {
-                return BlockVec3.chunkCached_Client.getBlock(this.x & 15, this.y, this.z & 15);
-            }
-            else
-            {
-                final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-                BlockVec3.chunkCached_Client = chunk;
-                BlockVec3.chunkCacheDim_Client = world.provider.getDimensionId();
-                BlockVec3.chunkCacheX_Client = chunkx;
-                BlockVec3.chunkCacheZ_Client = chunkz;
-                return chunk.getBlock(this.x & 15, this.y, this.z & 15);
-            }
+            return null;
         }
-        else
+
+        int chunkx = this.x >> 4;
+        int chunkz = this.z >> 4;
+        try
         {
-            // In a typical inner loop, 80% of the time consecutive calls to
-            // this will be within the same chunk
-            if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimensionId() && BlockVec3.chunkCached.isLoaded())
+            if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             {
-                return BlockVec3.chunkCached.getBlock(this.x & 15, this.y, this.z & 15);
+                if (world.isRemote)
+                {
+                    if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                    {
+                        return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached_Client = chunk;
+                        BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                        BlockVec3.chunkCacheX_Client = chunkx;
+                        BlockVec3.chunkCacheZ_Client = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                }
+                else
+                {
+                    // In a typical inner loop, 80% of the time consecutive calls to
+                    // this will be within the same chunk
+                    if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                    {
+                        return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached = chunk;
+                        BlockVec3.chunkCacheDim = world.provider.getDimension();
+                        BlockVec3.chunkCacheX = chunkx;
+                        BlockVec3.chunkCacheZ = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                }
             }
-            else
-            {
-                final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
-                BlockVec3.chunkCached = chunk;
-                BlockVec3.chunkCacheDim = world.provider.getDimensionId();
-                BlockVec3.chunkCacheX = chunkx;
-                BlockVec3.chunkCacheZ = chunkz;
-                return chunk.getBlock(this.x & 15, this.y, this.z & 15);
-            }
+            //Chunk doesn't exist - meaning, it is not loaded
+            return Blocks.BEDROCK.getDefaultState();
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+            crashreportcategory.addCrashSection("Location", CrashReportCategory.getCoordinateInfo(new BlockPos(this.x, this.y, this.z)));
+            throw new ReportedException(crashreport);
         }
     }
 
-    public Block getBlock(IBlockAccess par1iBlockAccess)
+    public IBlockState getBlockState(IBlockAccess par1iBlockAccess)
     {
-        return par1iBlockAccess.getBlockState(new BlockPos(this.x, this.y, this.z)).getBlock();
+        return par1iBlockAccess.getBlockState(new BlockPos(this.x, this.y, this.z));
     }
 
     /**
@@ -197,10 +232,11 @@ public class BlockVec3 implements Cloneable
      *
      * @param world
      * @return the block ID, or null if the y-coordinate is less than 0 or
-     * greater than 256. Returns Blocks.bedrock if the coordinates being
+     * greater than 256. Returns Blocks.BEDROCK if the coordinates being
      * checked are in an unloaded chunk
      */
-    public Block getBlockIDsafe_noChunkLoad(World world)
+    @Nullable
+    public IBlockState getBlockStateSafe_noChunkLoad(World world)
     {
         if (this.y < 0 || this.y >= 256)
         {
@@ -209,7 +245,55 @@ public class BlockVec3 implements Cloneable
 
         int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
-        return this.getBlockInternalCatch(world, chunkx, chunkz, true);
+        try
+        {
+            if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
+            {
+                if (world.isRemote)
+                {
+                    if (BlockVec3.chunkCacheX_Client == chunkx && BlockVec3.chunkCacheZ_Client == chunkz && BlockVec3.chunkCacheDim_Client == world.provider.getDimension() && BlockVec3.chunkCached_Client.isLoaded())
+                    {
+                        return BlockVec3.chunkCached_Client.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached_Client = chunk;
+                        BlockVec3.chunkCacheDim_Client = world.provider.getDimension();
+                        BlockVec3.chunkCacheX_Client = chunkx;
+                        BlockVec3.chunkCacheZ_Client = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                }
+                else
+                {
+                    // In a typical inner loop, 80% of the time consecutive calls to
+                    // this will be within the same chunk
+                    if (BlockVec3.chunkCacheX == chunkx && BlockVec3.chunkCacheZ == chunkz && BlockVec3.chunkCacheDim == world.provider.getDimension() && BlockVec3.chunkCached.isLoaded())
+                    {
+                        return BlockVec3.chunkCached.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                    else
+                    {
+                        final Chunk chunk = world.getChunkFromChunkCoords(chunkx, chunkz);
+                        BlockVec3.chunkCached = chunk;
+                        BlockVec3.chunkCacheDim = world.provider.getDimension();
+                        BlockVec3.chunkCacheX = chunkx;
+                        BlockVec3.chunkCacheZ = chunkz;
+                        return chunk.getBlockState(this.x & 15, this.y, this.z & 15);
+                    }
+                }
+            }
+            //Chunk doesn't exist - meaning, it is not loaded
+            return Blocks.BEDROCK.getDefaultState();
+        }
+        catch (Throwable throwable)
+        {
+            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Oxygen Sealer thread: Exception getting block type in world");
+            CrashReportCategory crashreportcategory = crashreport.makeCategory("Requested block coordinates");
+            crashreportcategory.addCrashSection("Location", CrashReportCategory.getCoordinateInfo(new BlockPos(this.x, this.y, this.z)));
+            throw new ReportedException(crashreport);
+        }
     }
 
     public BlockVec3 translate(BlockVec3 par1)
@@ -446,7 +530,7 @@ public class BlockVec3 implements Cloneable
             return false;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.getBlockState(pos).getBlock().isSideSolid(world, pos, EnumFacing.getFront(side ^ 1));
+        return world.getBlockState(pos).getBlock().isSideSolid(world.getBlockState(pos), world, pos, EnumFacing.getFront(side ^ 1));
     }
 
     /**
@@ -504,7 +588,7 @@ public class BlockVec3 implements Cloneable
         int var2 = vector.x - this.x;
         int var4 = vector.y - this.y;
         int var6 = vector.z - this.z;
-        return MathHelper.floor_double(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
+        return MathHelper.floor(Math.sqrt(var2 * var2 + var4 * var4 + var6 * var6));
     }
 
     public int distanceSquared(BlockVec3 vector)
@@ -540,9 +624,12 @@ public class BlockVec3 implements Cloneable
 
     public static BlockVec3 readFromNBT(NBTTagCompound par1NBTTagCompound, String prefix)
     {
-        int readX = par1NBTTagCompound.getInteger(prefix + "_x");
-        int readY = par1NBTTagCompound.getInteger(prefix + "_y");
-        int readZ = par1NBTTagCompound.getInteger(prefix + "_z");
+        Integer readX = par1NBTTagCompound.getInteger(prefix + "_x");
+        if (readX == null) return null;
+        Integer readY = par1NBTTagCompound.getInteger(prefix + "_y");
+        if (readY == null) return null;
+        Integer readZ = par1NBTTagCompound.getInteger(prefix + "_z");
+        if (readZ == null) return null;
         return new BlockVec3(readX, readY, readZ);
     }
 
@@ -576,10 +663,10 @@ public class BlockVec3 implements Cloneable
         int chunkx = this.x >> 4;
         int chunkz = this.z >> 4;
         
-        if (world.getChunkProvider().chunkExists(chunkx, chunkz))
+        if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             return world.getTileEntity(this.toBlockPos());
         
-        Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).originalLoadChunk(chunkx, chunkz);
+        Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).loadChunk(chunkx, chunkz);
         return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
     }
 

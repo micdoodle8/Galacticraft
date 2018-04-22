@@ -29,11 +29,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -61,9 +61,9 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
 
     private HashSet<BlockVec3> airToRestore = new HashSet<>();
     private boolean activated = false;
-    Vec3 vec3Centre;
-    Vec3 thisVec3;
-    AxisAlignedBB mobsAABB;
+    private Vec3d vec3Centre;
+    private Vec3d thisVec3;
+    private AxisAlignedBB mobsAABB;
     
     @Override
     public void update()
@@ -72,12 +72,12 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         {
             this.activated = true;
             this.setLightBlocks();
-            this.thisVec3 = new Vec3(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
-            this.vec3Centre = new Vec3(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D);
-            this.mobsAABB = AxisAlignedBB.fromBounds(this.pos.getX() - 14, this.pos.getY() - 7, this.pos.getZ() - 14, this.pos.getX() + 14, this.pos.getY() + 7, this.pos.getZ() + 14);
+            this.thisVec3 = new Vec3d(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+            this.vec3Centre = new Vec3d(this.pos.getX() + 0.5D, this.pos.getY() + 0.5D, this.pos.getZ() + 0.5D);
+            this.mobsAABB = new AxisAlignedBB(this.pos.getX() - 14, this.pos.getY() - 7, this.pos.getZ() - 14, this.pos.getX() + 14, this.pos.getY() + 7, this.pos.getZ() + 14);
         }
         
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             if (this.openN && this.angleA < 90F)
             {
@@ -141,20 +141,20 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.north(1);
-                IBlockState bs = this.worldObj.getBlockState(testPos);
+                IBlockState bs = this.world.getBlockState(testPos);
                 if (!(bs.getBlock() instanceof BlockAir))
                 {
-                    if (bs.getBlock().isOpaqueCube())
+                    if (bs.isFullBlock())
                     {
                         clash = true;
                     }
                     else
                     {
-                        AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() - 5/16D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ());
-                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs);
+                        AxisAlignedBB check = new AxisAlignedBB(0.125D, 0.125D, 11/16D, 0.875D, 0.875D, 1D);
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
                         if (neighbour != null)
                         {
-                            clash = check.intersectsWith(neighbour);
+                            clash = check.intersects(neighbour);
                         }
                     }
                 }
@@ -168,20 +168,20 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.south(1);
-                IBlockState bs = this.worldObj.getBlockState(testPos);
+                IBlockState bs = this.world.getBlockState(testPos);
                 if (!(bs.getBlock() instanceof BlockAir))
                 {
-                    if (bs.getBlock().isOpaqueCube())
+                    if (bs.isFullBlock())
                     {
                         clash = true;
                     }
                     else
                     {
-                        AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 0.125D, this.pos.getY() + 0.125D, this.pos.getZ() + 1D, this.pos.getX() + 0.875D, this.pos.getY() + 0.875D, this.pos.getZ() + 21/16D);
-                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs);
+                        AxisAlignedBB check = new AxisAlignedBB(0.125D, 0.125D, 0D, 0.875D, 0.875D, 5/16D);
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
                         if (neighbour != null)
                         {
-                            clash = check.intersectsWith(neighbour);
+                            clash = check.intersects(neighbour);
                         }
                     }
                 }
@@ -195,20 +195,20 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.west(1);
-                IBlockState bs = this.worldObj.getBlockState(testPos);
+                IBlockState bs = this.world.getBlockState(testPos);
                 if (!(bs.getBlock() instanceof BlockAir))
                 {
-                    if (bs.getBlock().isOpaqueCube())
+                    if (bs.isFullBlock())
                     {
                         clash = true;
                     }
                     else
                     {
-                        AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() - 5/16D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX(), this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs);
+                        AxisAlignedBB check = new AxisAlignedBB(11/16D, 0.125D, 0.125D, 1D, 0.875D, 0.875D);
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
                         if (neighbour != null)
                         {
-                            clash = check.intersectsWith(neighbour);
+                            clash = check.intersects(neighbour);
                         }
                     }
                 }
@@ -222,20 +222,20 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.east(1);
-                IBlockState bs = this.worldObj.getBlockState(testPos);
+                IBlockState bs = this.world.getBlockState(testPos);
                 if (!(bs.getBlock() instanceof BlockAir))
                 {
-                    if (bs.getBlock().isOpaqueCube())
+                    if (bs.isFullBlock())
                     {
                         clash = true;
                     }
                     else
                     {
-                        AxisAlignedBB check = AxisAlignedBB.fromBounds(this.pos.getX() + 1D, this.pos.getY() + 0.125D, this.pos.getZ() + 0.125D, this.pos.getX() + 21/16D, this.pos.getY() + 0.875D, this.pos.getZ() + 0.875D);
-                        AxisAlignedBB neighbour = bs.getBlock().getCollisionBoundingBox(this.worldObj, testPos, bs);
+                        AxisAlignedBB check = new AxisAlignedBB(0D, 0.125D, 0.125D, 5/16D, 0.875D, 0.875D);
+                        AxisAlignedBB neighbour = bs.getCollisionBoundingBox(this.world, testPos);
                         if (neighbour != null)
                         {
-                            clash = check.intersectsWith(neighbour);
+                            clash = check.intersects(neighbour);
                         }
                     }
                 }
@@ -250,9 +250,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 this.updateClients();
             }
-
             
-            if (this.worldObj.rand.nextInt(15) == 0)
+            if (this.world.rand.nextInt(15) == 0)
             {
                 this.scareMobs();
             }
@@ -261,7 +260,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
 
     private void scareMobs()
     {
-        List<Entity> moblist = this.worldObj.getEntitiesInAABBexcluding(null, mobsAABB, IMob.mobSelector);
+        List<Entity> moblist = this.world.getEntitiesInAABBexcluding(null, mobsAABB, IMob.MOB_SELECTOR);
         if (!moblist.isEmpty())
         {
             for (Entity entry : moblist)
@@ -277,24 +276,24 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                     continue;
                 }
                 
-                Vec3 vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 12, 5, vec3Centre);
+                Vec3d vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 12, 5, vec3Centre);
                 if (vecNewTarget == null)
                 {
                     vecNewTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(mob, 14, 7, vec3Centre);
                     if (vecNewTarget == null) continue;
                 }
                 double distanceNew = vecNewTarget.squareDistanceTo(thisVec3);
-                double distanceCurrent = thisVec3.squareDistanceTo(new Vec3(mob.posX, mob.posY, mob.posZ));
+                double distanceCurrent = thisVec3.squareDistanceTo(new Vec3d(mob.posX, mob.posY, mob.posZ));
                 if (distanceNew > distanceCurrent)
                 {
-                    Vec3 vecOldTarget = null;
+                    Vec3d vecOldTarget = null;
                     if (nav.getPath() != null && !nav.getPath().isFinished())
                     {
                         vecOldTarget = nav.getPath().getPosition(mob);
                     }
                     if (vecOldTarget == null || distanceCurrent > vecOldTarget.squareDistanceTo(thisVec3))
                     {
-                        nav.tryMoveToXYZ(vecNewTarget.xCoord, vecNewTarget.yCoord, vecNewTarget.zCoord, 1.3D);
+                        nav.tryMoveToXYZ(vecNewTarget.x, vecNewTarget.y, vecNewTarget.z, 1.1D);
                     }
                 }
             }
@@ -343,16 +342,16 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 if (kitted)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
                     break;
                 }
                 else
                 {
                     ItemStack stack = player.inventory.getCurrentItem();
-                    if (stack != null && stack.getItem() instanceof ItemEmergencyKit)
+                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
                         this.openW = false;
                         this.openS = false;
                         this.openE = false;
@@ -369,16 +368,16 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 if (kitted)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
                     break;
                 }
                 else
                 {
                     ItemStack stack = player.inventory.getCurrentItem();
-                    if (stack != null && stack.getItem() instanceof ItemEmergencyKit)
+                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
                         this.openN = false;
                         this.openS = false;
                         this.openE = false;
@@ -395,16 +394,16 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 if (kitted)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
                     break;
                 }
                 else
                 {
                     ItemStack stack = player.inventory.getCurrentItem();
-                    if (stack != null && stack.getItem() instanceof ItemEmergencyKit)
+                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
                         this.openN = false;
                         this.openW = false;
                         this.openE = false;
@@ -421,16 +420,16 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
                 if (kitted)
                 {
                     ItemHandlerHelper.giveItemToPlayer(player, new ItemStack(GCItems.emergencyKit), 0);
-                    this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
+                    this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getDefaultState(), 3);
                     break;
                 }
                 else
                 {
                     ItemStack stack = player.inventory.getCurrentItem();
-                    if (stack != null && stack.getItem() instanceof ItemEmergencyKit)
+                    if (!stack.isEmpty() && stack.getItem() instanceof ItemEmergencyKit)
                     {
-                        player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
-                        this.worldObj.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+                        this.world.setBlockState(this.pos, GCBlocks.emergencyBox.getStateFromMeta(1), 3);
                         this.openN = false;
                         this.openW = false;
                         this.openS = false;
@@ -473,7 +472,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         int data = (this.openN ? 1 : 0) + (this.openW ? 2 : 0) + (this.openS ? 4 : 0) + (this.openE ? 8 : 0);
@@ -487,12 +486,13 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             airBlocks.appendTag(tag);
         }
         nbt.setTag("air", airBlocks);
+        return nbt;
     }
 
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
@@ -508,7 +508,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             try
             {
@@ -535,7 +535,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     @Override
     public void onLoad()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             //Request any networked information from server on first client update
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
@@ -544,7 +544,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     
     private void updateClients()
     {
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.worldObj), getPos().getX(), getPos().getY(), getPos().getZ(), 128));
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), 128));
     }
 
     @Override
@@ -555,26 +555,26 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     
     private void brightenAir(BlockPos blockpos, IBlockState newState)
     {
-        Chunk chunk = this.worldObj.getChunkFromBlockCoords(blockpos);
+        Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
         IBlockState oldState = chunk.setBlockState(blockpos, newState);
-        if (this.worldObj.isRemote && oldState != null)
+        if (this.world.isRemote && oldState != null)
         {
-            this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+            this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         }
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
         this.airToRestore.add(new BlockVec3(blockpos));
-        this.worldObj.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
+        this.world.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
         this.markDirty();
     }
     
     private void setDarkerAir(BlockVec3 vec)
     {
         BlockPos blockpos = vec.toBlockPos();
-        Block b = this.worldObj.getBlockState(blockpos).getBlock();
+        Block b = this.world.getBlockState(blockpos).getBlock();
         IBlockState newState;
         if (b == GCBlocks.brightAir)
         {
-            newState = Blocks.air.getDefaultState();
+            newState = Blocks.AIR.getDefaultState();
         }
         else if (b == GCBlocks.brightBreatheableAir)
         {
@@ -585,10 +585,10 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             return;
         }
             
-        Chunk chunk = this.worldObj.getChunkFromBlockCoords(blockpos);
+        Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
         IBlockState oldState = chunk.setBlockState(blockpos, newState);
-        if (this.worldObj.isRemote && oldState != null) this.worldObj.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
-        this.worldObj.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
+        if (this.world.isRemote && oldState != null) this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
+        this.world.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
     }
 
     private void revertAir()
@@ -626,8 +626,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
 
     private boolean setLightBlock(BlockPos blockPos)
     {
-        IBlockState bs = this.worldObj.getBlockState(blockPos);
-        if (bs.getBlock() == Blocks.air)
+        IBlockState bs = this.world.getBlockState(blockPos);
+        if (bs.getBlock() == Blocks.AIR)
         {
             this.brightenAir(blockPos, GCBlocks.brightAir.getDefaultState());
             return true;
@@ -639,8 +639,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         }
 
         blockPos = blockPos.up(1);
-        bs = this.worldObj.getBlockState(blockPos);
-        if (bs.getBlock() == Blocks.air)
+        bs = this.world.getBlockState(blockPos);
+        if (bs.getBlock() == Blocks.AIR)
         {
             this.brightenAir(blockPos, GCBlocks.brightAir.getDefaultState());
             return true;

@@ -1,0 +1,34 @@
+{
+  "result": {
+    "item": "galacticraftcore:rocket_workbench"
+  },
+  "pattern": [
+    "XZX",
+    "UWU",
+    "YVY"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:lever"
+    },
+    "V": {
+      "item": "minecraft:redstone_torch"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Z": {
+      "item": "minecraft:crafting_table"
+    }
+  }
+}

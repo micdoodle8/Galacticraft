@@ -6,8 +6,8 @@ package buildcraft.api.power;
 
 import net.minecraft.util.EnumFacing;
 
-/** Engines should implement this interface if they want to support BuildCraft's behaviour of passing energy between
- * engines without using receiveEnergy() (which has other issues). */
+/** Engines should implement this interface if they want to support BuildCraft's behaviour of passing power between
+ * engines without using receivePower() (which has other issues). */
 public interface IEngine {
     /** Returns true if the engine wants to receive power from another engine on this side.
      * 
@@ -15,12 +15,12 @@ public interface IEngine {
      * @return */
     boolean canReceiveFromEngine(EnumFacing side);
 
-    /** Receives energy from an engine. See
-     * {@link cofh.api.energy.IEnergyHandler#receiveEnergy(EnumFacing, int, boolean)}
+    /** Receives power from an engine.
+     *
+     * @param microJoules The number of micro joules to add.
+     * @param simulate If true then just pretend you received power- don't actually change any of your internal state.
+     * @return True if all the power was accepted, false if not.
      * 
-     * @param side The side the engine is receiving energy from.
-     * @param energy The amount of energy given to the engine.
-     * @param simulate True if the energy should not actually be added.
-     * @return The amount of energy used by the engine. */
-    int receiveEnergyFromEngine(EnumFacing side, int energy, boolean simulate);
+     * @see buildcraft.api.mj.IMjReceiver#receivePower(long, boolean) */
+    boolean receivePower(long microJoules, boolean simulate);
 }

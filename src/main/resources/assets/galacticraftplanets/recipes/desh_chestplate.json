@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_chestplate"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

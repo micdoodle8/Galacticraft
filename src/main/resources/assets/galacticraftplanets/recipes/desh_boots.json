@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_boots"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

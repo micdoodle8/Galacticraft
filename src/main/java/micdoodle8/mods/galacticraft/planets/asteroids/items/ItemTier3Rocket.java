@@ -14,14 +14,18 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -29,6 +33,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableItem
 {
@@ -57,14 +63,15 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
         boolean padFound = false;
         TileEntity tile = null;
+        ItemStack stack = playerIn.getHeldItem(hand);
 
         if (worldIn.isRemote)
         {
-            return false;
+            return EnumActionResult.PASS;
         }
         else
         {
@@ -104,39 +111,37 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
             {
                 if (!placeRocketOnPad(stack, worldIn, tile, centerX, centerY, centerZ))
                 {
-                    return false;
+                    return EnumActionResult.FAIL;
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
                 {
-                    stack.stackSize--;
-
-                    if (stack.stackSize <= 0)
-                    {
-                        stack = null;
-                    }
+                    stack.shrink(1);
                 }
+                return EnumActionResult.SUCCESS;
             }
             else
             {
-                return false;
+                return EnumActionResult.PASS;
             }
         }
-        return true;
     }
 
     @Override
-    public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        for (int i = 0; i < EnumRocketType.values().length; i++)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
         {
-            par3List.add(new ItemStack(par1, 1, i));
+            for (int i = 0; i < EnumRocketType.values().length; i++)
+            {
+                list.add(new ItemStack(this, 1, i));
+            }
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer player, List<String> tooltip, boolean b)
+    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         EnumRocketType type;
 
@@ -215,7 +220,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
 
         rocket.rotationYaw += 45;
         rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-        worldIn.spawnEntityInWorld(rocket);
+        worldIn.spawnEntity(rocket);
 
         if (rocket.getType().getPreFueled())
         {

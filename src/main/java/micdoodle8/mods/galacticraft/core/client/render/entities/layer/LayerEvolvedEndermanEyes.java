@@ -36,20 +36,14 @@ public class LayerEvolvedEndermanEyes implements LayerRenderer<EntityEvolvedEnde
         GlStateManager.disableAlpha();
         GlStateManager.blendFunc(1, 1);
         GlStateManager.disableLighting();
+        GlStateManager.depthMask(!entity.isInvisible());
 
-        if (entity.isInvisible())
-        {
-            GlStateManager.depthMask(false);
-        }
-        else
-        {
-            GlStateManager.depthMask(true);
-        }
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240.0F, 240.0F);
         GlStateManager.enableLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.render.getMainModel().render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.render.func_177105_a(entity, partialTicks);
+        this.render.setLightmap(entity);
+        GlStateManager.depthMask(true);
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
     }

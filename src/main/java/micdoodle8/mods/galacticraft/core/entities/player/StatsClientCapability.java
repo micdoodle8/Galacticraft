@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 
 import java.util.ArrayList;
 

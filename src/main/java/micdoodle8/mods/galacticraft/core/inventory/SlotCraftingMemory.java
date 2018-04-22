@@ -16,11 +16,11 @@ public class SlotCraftingMemory extends SlotCrafting
         super(player, craftingInventory, p_i45790_3_, slotIndex, xPosition, yPosition);
         this.tileEntity = tile;
     }
-    
+
     @Override
-    public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack)
+    public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack)
     {
-        if (stack != null) this.tileEntity.updateMemory();
-        super.onPickupFromSlot(playerIn, stack);
+        if (!stack.isEmpty()) this.tileEntity.updateMemory();
+        return super.onTake(thePlayer, stack);
     }
 }

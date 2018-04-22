@@ -4,10 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -28,7 +29,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     public StructureComponentVillageField2(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.coordBaseMode = par5;
+        this.setCoordBaseMode(par5);
         this.boundingBox = par4StructureBoundingBox;
         this.cropTypeA = this.getRandomCrop(par3Random);
         this.cropTypeB = this.getRandomCrop(par3Random);
@@ -49,9 +50,9 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt)
+    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
     {
-        super.readStructureFromNBT(nbt);
+        super.readStructureFromNBT(nbt, manager);
 
         this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
         this.cropTypeA = Block.getBlockById(nbt.getInteger("CropTypeA"));
@@ -65,11 +66,11 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
         switch (par1Random.nextInt(5))
         {
         case 0:
-            return Blocks.carrots;
+            return Blocks.CARROTS;
         case 1:
-            return Blocks.potatoes;
+            return Blocks.POTATOES;
         default:
-            return Blocks.wheat;
+            return Blocks.WHEAT;
         }
     }
 
@@ -98,30 +99,30 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
             this.boundingBox.offset(0, this.averageGroundLevel - this.boundingBox.maxY + 4 - 1, 0);
         }
 
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, Blocks.air.getDefaultState(), Blocks.air.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 7, 0, 1, 8, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 10, 0, 1, 11, 0, 7, Blocks.farmland.getDefaultState(), Blocks.farmland.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Blocks.log.getDefaultState(), Blocks.log.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 0, 1, 3, 0, 7, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
-        this.fillWithBlocks(par1World, par3StructureBoundingBox, 9, 0, 1, 9, 0, 7, Blocks.flowing_water.getDefaultState(), Blocks.flowing_water.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 1, 0, 12, 4, 8, Blocks.AIR.getDefaultState(), Blocks.AIR.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 1, 2, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 4, 0, 1, 5, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 7, 0, 1, 8, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 10, 0, 1, 11, 0, 7, Blocks.FARMLAND.getDefaultState(), Blocks.FARMLAND.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 0, 0, 0, 0, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 6, 0, 0, 6, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 12, 0, 0, 12, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 0, 11, 0, 0, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 1, 0, 8, 11, 0, 8, Blocks.LOG.getDefaultState(), Blocks.LOG.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 3, 0, 1, 3, 0, 7, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
+        this.fillWithBlocks(par1World, par3StructureBoundingBox, 9, 0, 1, 9, 0, 7, Blocks.FLOWING_WATER.getDefaultState(), Blocks.FLOWING_WATER.getDefaultState(), false);
         int i;
 
         for (i = 1; i <= 7; ++i)
         {
-            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 1, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 2, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 4, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 5, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 7, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 8, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 10, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getRandomIntegerInRange(par2Random, 2, 7)), 11, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 1, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 2, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 4, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 5, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 7, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 8, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 10, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 11, 1, i, par3StructureBoundingBox);
         }
 
         for (i = 0; i < 9; ++i)
@@ -129,7 +130,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
             for (int j = 0; j < 13; ++j)
             {
                 this.clearCurrentPositionBlocksUpwards(par1World, j, 4, i, par3StructureBoundingBox);
-                this.replaceAirAndLiquidDownwards(par1World, Blocks.dirt.getDefaultState(), j, -1, i, par3StructureBoundingBox);
+                this.replaceAirAndLiquidDownwards(par1World, Blocks.DIRT.getDefaultState(), j, -1, i, par3StructureBoundingBox);
             }
         }
 

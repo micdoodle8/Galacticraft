@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:air_lock_frame",
+    "data": 1
+  },
+  "pattern": [
+    "YYY",
+    "WZW",
+    "YYY"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "W": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_plate"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Z": {
+      "item": "galacticraftcore:basic_item",
+      "data": 13
+    }
+  }
+}

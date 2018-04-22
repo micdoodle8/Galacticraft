@@ -1,4 +1,5 @@
 {
+	"parent": "block/block",
     "ambientocclusion": false,
     "textures": {
         "particle": "galacticraftplanets:blocks/creeper_egg",

@@ -8,8 +8,8 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Constructor;
@@ -52,14 +52,14 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             return;
         }
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (this.range15 == null)
             {
                 final Vector3 thisVec = new Vector3(this);
-                this.range15 = AxisAlignedBB.fromBounds(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15);
-                this.rangeBounds = AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
-                this.rangeBoundsPlus3 = this.rangeBounds.expand(3, 3, 3);
+                this.range15 = new AxisAlignedBB(thisVec.x - 15, thisVec.y - 15, thisVec.z - 15, thisVec.x + 15, thisVec.y + 15, thisVec.z + 15);
+                this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
+                this.rangeBoundsPlus3 = this.rangeBounds.grow(3, 3, 3);
             }
 
             if (this.lastKillTime > 0 && MinecraftServer.getCurrentTimeMillis() - lastKillTime > 900000) // 15 minutes
@@ -69,7 +69,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 //After 15 minutes a new boss is able to be spawned 
             }
 
-            final List<E> l = this.worldObj.getEntitiesWithinAABB(bossClass, this.range15);
+            final List<E> l = this.world.getEntitiesWithinAABB(bossClass, this.range15);
 
             for (final Entity e : l)
             {
@@ -82,7 +82,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityMob> entitiesWithin = this.worldObj.getEntitiesWithinAABB(EntityMob.class, this.rangeBoundsPlus3);
+            List<EntityMob> entitiesWithin = this.world.getEntitiesWithinAABB(EntityMob.class, this.rangeBoundsPlus3);
 
             for (Entity mob : entitiesWithin)
             {
@@ -92,7 +92,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityPlayer> playersWithin = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, this.rangeBounds);
+            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.rangeBounds);
 
             this.playerInRange = !playersWithin.isEmpty();
 
@@ -105,8 +105,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     {
                         try
                         {
-                            Constructor<?> c = this.bossClass.getConstructor(new Class[] { World.class });
-                            this.boss = (IBoss) c.newInstance(new Object[] { this.worldObj });
+                            Constructor<?> c = this.bossClass.getConstructor(World.class);
+                            this.boss = (IBoss) c.newInstance(this.world);
                             ((Entity) this.boss).setPosition(this.getPos().getX() + 0.5, this.getPos().getY() + 1.0, this.getPos().getZ() + 0.5);
                         }
                         catch (Exception e)
@@ -121,8 +121,8 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                         if (this.boss instanceof EntityLiving)
                         {
                             EntityLiving bossLiving = (EntityLiving) this.boss;
-                            bossLiving.onInitialSpawn(this.worldObj.getDifficultyForLocation(new BlockPos(bossLiving)), null);
-                            this.worldObj.spawnEntityInWorld(bossLiving);
+                            bossLiving.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(bossLiving)), null);
+                            this.world.spawnEntity(bossLiving);
                             this.playSpawnSound(bossLiving);
                             this.spawned = true;
                         }
@@ -169,7 +169,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            // This exception will be thrown when read is called from TileEntity.handleUpdateTag
+            // but we only care if an exception is thrown on server side read
+            if (!this.world.isRemote)
+            {
+                e.printStackTrace();
+            }
         }
 
         this.roomCoords = new Vector3();
@@ -199,7 +204,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -226,6 +231,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             nbt.setInteger("chestY", this.chestPos.getY());
             nbt.setInteger("chestZ", this.chestPos.getZ());
         }
+        return nbt;
     }
 
     @Override
@@ -259,7 +265,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public AxisAlignedBB getRangeBounds()
     {
         if (this.rangeBounds == null)
-            this.rangeBounds = AxisAlignedBB.fromBounds(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
+            this.rangeBounds = new AxisAlignedBB(this.roomCoords.intX(), this.roomCoords.intY(), this.roomCoords.intZ(), this.roomCoords.intX() + this.roomSize.intX(), this.roomCoords.intY() + this.roomSize.intY(), this.roomCoords.intZ() + this.roomSize.intZ());
 
         return this.rangeBounds;
     }
@@ -267,7 +273,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     public AxisAlignedBB getRangeBoundsPlus11()
     {
         if (this.rangeBoundsPlus11 == null)
-            this.rangeBoundsPlus11 = this.getRangeBounds().expand(11, 11, 11);
+            this.rangeBoundsPlus11 = this.getRangeBounds().grow(11, 11, 11);
 
         return this.rangeBoundsPlus11;
     }

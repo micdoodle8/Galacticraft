@@ -1,0 +1,211 @@
+{
+    "pools": [
+        {
+			"name": "dungeon_tier_2",
+            "rolls": {
+                "min": 6,
+                "max": 9
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:carbon_fragments",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_apple",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 0
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_carrot",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_melon",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 2
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_potato",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 3
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:oil_canister_partial",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1001
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_boots",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_chestplate",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_helmet",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftplanets:desh_leggings",
+                    "weight": 2
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:redstone",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_mall",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_mellohi",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "entryName": "raw_desh",
+                    "name": "galacticraftplanets:item_basic_mars",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "desh_stick",
+                    "name": "galacticraftplanets:item_basic_mars",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book22",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": 22,
+                            "treasure": true
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book24",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_with_levels",
+                            "levels": 24,
+                            "treasure": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

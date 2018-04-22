@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "minecraft:lit_pumpkin"
+  },
+  "pattern": [
+    "P  ",
+    "T  ",
+    "   "
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "minecraft:pumpkin"
+    },
+    "T": {
+      "item": "galacticraftcore:unlit_torch"
+    }
+  }
+}

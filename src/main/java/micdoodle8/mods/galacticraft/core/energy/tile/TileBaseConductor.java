@@ -11,9 +11,9 @@ import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,7 +34,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     public void validate()
     {
         super.validate();
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             TickHandlerServer.energyTransmitterUpdates.add(this);
         }
@@ -43,7 +43,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.getNetwork().split(this);
         }
@@ -80,7 +80,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     @Override
     public void refresh()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             this.adjacentConnections = null;
 
@@ -89,7 +89,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             BlockVec3 thisVec = new BlockVec3(this);
             for (EnumFacing side : EnumFacing.VALUES)
             {
-            	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+            	TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
             	if (tileEntity instanceof TileBaseConductor && ((TileBaseConductor)tileEntity).canConnect(side.getOpposite(), NetworkType.POWER))
             	{
@@ -120,7 +120,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             for (int i = 0; i < 6; i++)
             {
                 EnumFacing side = EnumFacing.getFront(i);
-                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.worldObj, side);
+                TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
                 if (tileEntity instanceof IConnector)
                 {
@@ -151,7 +151,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     @SideOnly(Side.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
-        return AxisAlignedBB.fromBounds(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1);
+        return new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1);
     }
 
     @Override

@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftplanets:asteroids_block",
+    "data": 7
+  },
+  "pattern": [
+    "XXX",
+    "XXX",
+    "XXX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_ingot"
+    }
+  }
+}

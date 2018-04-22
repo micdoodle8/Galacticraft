@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -53,8 +53,8 @@ public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements I
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRendererObj.drawString(GCCoreUtil.translate("schematic.rocket_t1.name"), 7, -20 + 27, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("schematic.rocket_t1.name"), 7, -20 + 27, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 202 - 104 + 2 + 27, 4210752);
     }
 
     @Override

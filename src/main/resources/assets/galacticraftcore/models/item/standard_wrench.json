@@ -1,23 +1,6 @@
 {
-    "parent": "builtin/generated",
+    "parent": "item/handheld",
     "textures": {
         "layer0": "galacticraftcore:items/standard_wrench"
-    },
-    "display": {
-        "thirdperson": {
-			"rotation": [ 0, 86, 304 ],
-			"translation": [ 0.00, 0.00, -4.25 ],
-			"scale": [ 1.00, 1.00, 1.00 ]
-		},
-		"firstperson": {
-			"rotation": [ 0, 224, 42 ],
-			"translation": [ 0.00, 4.50, 0.00 ],
-			"scale": [ 1.00, 1.00, 1.00 ]
-		},
-		"gui": {
-			"rotation": [ 0, 0, 0 ],
-			"translation": [ 0.00, 0.00, 0.00 ],
-			"scale": [ 1.00, 1.00, 1.00 ]
-		}
     }
 }

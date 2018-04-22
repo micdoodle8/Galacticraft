@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.core.client.jei.oxygencompressor;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
@@ -56,14 +58,14 @@ public class OxygenCompressorRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         this.oxygenLabel.draw(minecraft, 97, 15);
         this.oxygenBar.draw(minecraft, 110, 16);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -71,9 +73,13 @@ public class OxygenCompressorRecipeCategory extends BlankRecipeCategory
 
         if (recipeWrapper instanceof OxygenCompressorRecipeWrapper)
         {
-            OxygenCompressorRecipeWrapper recipeWrapperOC = (OxygenCompressorRecipeWrapper) recipeWrapper;
-
-            itemstacks.setFromRecipe(0, recipeWrapperOC.getOutputs());
+            itemstacks.set(ingredients);
         }
+    }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

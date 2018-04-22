@@ -1,52 +1,26 @@
 package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
-import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.world.storage.loot.LootTableList;
 
-import java.util.List;
 import java.util.Random;
-
-import com.google.common.collect.Lists;
 
 public class RoomTreasureMars extends RoomTreasure
 {
-    public static String MARSCHEST = "moonchest";
-
-    static
-    {
-        List<WeightedRandomChestContent> list = Lists.newArrayList(new WeightedRandomChestContent[] {
-                new WeightedRandomChestContent(MarsItems.carbonFragments, 0, 18, 64, 10),
-                new WeightedRandomChestContent(GCItems.foodItem, 0, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.foodItem, 1, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.foodItem, 2, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.foodItem, 3, 1, 2, 6),
-                new WeightedRandomChestContent(GCItems.oilCanister, ItemCanisterGeneric.EMPTY, 1, 1, 5),
-                new WeightedRandomChestContent(MarsItems.deshBoots, 0, 1, 1, 2),
-                new WeightedRandomChestContent(MarsItems.deshChestplate, 0, 1, 1, 2),
-                new WeightedRandomChestContent(MarsItems.deshHelmet, 0, 1, 1, 2),
-                new WeightedRandomChestContent(MarsItems.deshLeggings, 0, 1, 1, 2),
-                new WeightedRandomChestContent(Items.redstone, 0, 4, 21, 10),
-                new WeightedRandomChestContent(Items.record_mall, 0, 1, 1, 4),
-                new WeightedRandomChestContent(Items.record_mellohi, 0, 1, 1, 4),
-                new WeightedRandomChestContent(MarsItems.marsItemBasic, 0, 1, 2, 5),
-                new WeightedRandomChestContent(MarsItems.marsItemBasic, 1, 1, 1, 5)
-                });;
-        ChestGenHooks.init(MARSCHEST, list, 6, 9);
-        ChestGenHooks.addItem(MARSCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
-        ChestGenHooks.addItem(MARSCHEST, new WeightedRandomChestContent(new net.minecraft.item.ItemStack(Items.enchanted_book, 1, 0), 1, 1, 8));
-    }
+    public static ResourceLocation MARSCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_2");
+    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTableList.register(MARSCHEST);
 
     public RoomTreasureMars()
     {
@@ -112,20 +86,34 @@ public class RoomTreasureMars extends RoomTreasure
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                     else if ((i == 1 && k == 1) || (i == 1 && k == this.sizeZ - 1) || (i == this.sizeX - 1 && k == 1) || (i == this.sizeX - 1 && k == this.sizeZ - 1))
                     {
-                        this.setBlockState(worldIn, Blocks.glowstone.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.GLOWSTONE.getDefaultState(), i, j, k, boundingBox);
                     }
                     else if (i == this.sizeX / 2 && j == 1 && k == this.sizeZ / 2)
                     {
-                        this.setBlockState(worldIn, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), i, j, k, boundingBox);
+                        BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
+                        if (boundingBox.isVecInside(blockpos))
+                        {
+                            worldIn.setBlockState(blockpos, MarsBlocks.treasureChestTier2.getDefaultState().withProperty(BlockTier2TreasureChest.FACING, this.getDirection().getOpposite()), 2);
+                            TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
+                            if (treasureChest != null)
+                            {
+                                ResourceLocation chesttype = TABLE_TIER_2_DUNGEON;
+                                if (worldIn.provider instanceof IGalacticraftWorldProvider)
+                                {
+                                    chesttype = ((IGalacticraftWorldProvider)worldIn.provider).getDungeonChestType();
+                                }
+                                treasureChest.setLootTable(chesttype, random.nextLong());
+                            }
+                        }
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }

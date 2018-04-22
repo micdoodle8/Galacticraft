@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftcore:emergency_box",
+    "data": 1
+  },
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "galacticraftcore:emergency_box",
+      "data": 0
+    },
+    {
+      "item": "galacticraftcore:emergency_kit"
+    }
+  ]
+}

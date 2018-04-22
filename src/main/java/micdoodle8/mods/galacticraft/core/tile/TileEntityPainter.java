@@ -19,15 +19,16 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import ic2.api.item.IC2Items;
@@ -48,7 +49,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     
     public int[] glassColor = new int[]{ -1, -1, -1 };  //Size of this array must match GlassType enum
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
-    private ItemStack[] containingItems = new ItemStack[2];
+    private NonNullList<ItemStack> containingItems = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     
     public int guiColor = 0xffffff;
 
@@ -62,16 +63,20 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
 
         Item item = itemStack.getItem();
         int color = -1;
-        if (item == Items.dye)
+        if (item == Items.DYE)
         {
-            color = ItemDye.dyeColors[itemStack.getItemDamage()];
+            color = ItemDye.DYE_COLORS[itemStack.getItemDamage()];
         }
         else if (item instanceof ItemBlock)
         {
             Block b = ((ItemBlock)item).getBlock();
             IBlockState bs = b.getStateFromMeta(itemStack.getItemDamage());
-            MapColor mc = b.getMapColor(bs);
-            color = mc.colorValue;
+            try
+            {
+                MapColor mc = b.getMapColor(bs, null, null);
+                color = mc.colorValue;
+            }
+            catch (Exception e) { }
         }
         else
         {
@@ -101,7 +106,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         else if (item instanceof ItemBlock)
         {
             color = ColorUtil.lighten(color, 0.03F);
-            Block b = ((ItemBlock)item).block;
+            Block b = ((ItemBlock)item).getBlock();
             int result = 0;
             if (b instanceof IPaintable)
             {
@@ -139,7 +144,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         }
 
 //        if (changes)
-//            ColorUtil.updateColorsForArea(this.worldObj), this.pos, this.range, this.glassColor[0], this.glassColor[1], this.glassColor[2]);;
+//            ColorUtil.updateColorsForArea(this.world), this.pos, this.range, this.glassColor[0], this.glassColor[1], this.glassColor[2]);;
     }
     
     @Override
@@ -155,21 +160,11 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             this.guiColor = nbt.getInteger("guic");
         }
         
-        final NBTTagList tagList = nbt.getTagList("Items", 10);
-        this.containingItems = new ItemStack[this.getSizeInventory()];
-        for (int i = 0; i < tagList.tagCount(); ++i)
-        {
-            final NBTTagCompound tag = tagList.getCompoundTagAt(i);
-            final int slot = tag.getByte("Slot") & 255;
-            if (slot < this.containingItems.length)
-            {
-                this.containingItems[slot] = ItemStack.loadItemStackFromNBT(tag);
-            }
-        }
+        ItemStackHelper.loadAllItems(nbt, this.containingItems);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("G1", this.glassColor[0]);
@@ -178,18 +173,14 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         nbt.setInteger("guic", this.guiColor);
         nbt.setInteger("rge", this.range);
 
-        final NBTTagList tagList = new NBTTagList();
-        for (int i = 0; i < this.containingItems.length; ++i)
-        {
-            if (this.containingItems[i] != null)
-            {
-                final NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("Slot", (byte) i);
-                this.containingItems[i].writeToNBT(tag);
-                tagList.appendTag(tag);
-            }
-        }
-        nbt.setTag("Items", tagList);
+        ItemStackHelper.saveAllItems(nbt, this.containingItems);
+        return nbt;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag()
+    {
+        return this.writeToNBT(new NBTTagCompound());
     }
 
     private static Set<BlockVec3> getLoadedTiles(World world)
@@ -209,29 +200,29 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     @Override
     public void onLoad()
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             //Request any networked information from server on first client update
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
         else
         {
-            this.getLoadedTiles(this.worldObj).add(new BlockVec3(this.pos));
+            this.getLoadedTiles(this.world).add(new BlockVec3(this.pos));
         }
     }
 
     @Override
     public void onChunkUnload()
     {
-        this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
         super.onChunkUnload();
     }
 
     @Override
     public void invalidate()
     {
-        if (!this.worldObj.isRemote)
-            this.getLoadedTiles(this.worldObj).remove(new BlockVec3(this.pos));
+        if (!this.world.isRemote)
+            this.getLoadedTiles(this.world).remove(new BlockVec3(this.pos));
         super.invalidate();
     }
 
@@ -290,9 +281,9 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
     {
-        return this.worldObj.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
+        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -342,66 +333,41 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        return this.containingItems[par1];
+        return this.containingItems.get(par1);
     }
 
     @Override
-    public ItemStack decrStackSize(int par1, int par2)
+    public ItemStack decrStackSize(int index, int count)
     {
-        if (containingItems[par1] != null)
+        ItemStack itemstack = ItemStackHelper.getAndSplit(this.containingItems, index, count);
+
+        if (!itemstack.isEmpty())
         {
-            ItemStack var3;
-
-            if (containingItems[par1].stackSize <= par2)
-            {
-                var3 = containingItems[par1];
-                containingItems[par1] = null;
-                this.markDirty();
-                return var3;
-            }
-            else
-            {
-                var3 = containingItems[par1].splitStack(par2);
-
-                if (containingItems[par1].stackSize == 0)
-                {
-                    containingItems[par1] = null;
-                }
-
-                this.markDirty();
-                return var3;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (containingItems[par1] != null)
-        {
-            final ItemStack var2 = containingItems[par1];
-            containingItems[par1] = null;
             this.markDirty();
-            return var2;
         }
-        else
-        {
-            return null;
-        }
+
+        return itemstack;
     }
 
     @Override
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+    public ItemStack removeStackFromSlot(int index)
     {
-        containingItems[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+        ItemStack oldstack = ItemStackHelper.getAndRemove(this.containingItems, index);
+        if (!oldstack.isEmpty())
         {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        	this.markDirty();
+        }
+    	return oldstack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int index, ItemStack stack)
+    {
+        this.containingItems.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit())
+        {
+            stack.setCount(this.getInventoryStackLimit());
         }
 
         this.markDirty();
@@ -413,11 +379,25 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         return 64;
     }
 
+    @Override
+    public boolean isEmpty()
+    {
+        for (ItemStack itemstack : this.containingItems)
+        {
+            if (!itemstack.isEmpty())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             return;
         }
@@ -428,7 +408,7 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
-        if (this.worldObj.isRemote)
+        if (this.world.isRemote)
         {
             try
             {
@@ -451,17 +431,17 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             ItemStack ic2paintbrush = IC2Items.getItem("painter");
             if (ic2paintbrush != null && item == ic2paintbrush.getItem())
             {
-                return ItemDye.dyeColors[itemStack.getItemDamage()];
+                return ItemDye.DYE_COLORS[itemStack.getItemDamage()];
             }
         }
 
         if (CompatibilityManager.isBOPLoaded())
         {
-            if (item == BOPItems.black_dye) return ItemDye.dyeColors[EnumDyeColor.BLACK.getDyeDamage()];
-            if (item == BOPItems.blue_dye) return ItemDye.dyeColors[EnumDyeColor.BLUE.getDyeDamage()];
-            if (item == BOPItems.brown_dye) return ItemDye.dyeColors[EnumDyeColor.BROWN.getDyeDamage()];
-            if (item == BOPItems.green_dye) return ItemDye.dyeColors[EnumDyeColor.GREEN.getDyeDamage()];
-            if (item == BOPItems.white_dye) return ItemDye.dyeColors[EnumDyeColor.WHITE.getDyeDamage()];
+            if (item == BOPItems.black_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BLACK.getDyeDamage()];
+            if (item == BOPItems.blue_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BLUE.getDyeDamage()];
+            if (item == BOPItems.brown_dye) return ItemDye.DYE_COLORS[EnumDyeColor.BROWN.getDyeDamage()];
+            if (item == BOPItems.green_dye) return ItemDye.DYE_COLORS[EnumDyeColor.GREEN.getDyeDamage()];
+            if (item == BOPItems.white_dye) return ItemDye.DYE_COLORS[EnumDyeColor.WHITE.getDyeDamage()];
         }
 
         return -1;

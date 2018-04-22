@@ -8,25 +8,27 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidActionResult;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 public class BlockFluidTank extends Block implements IShiftDescription, ISortableBlock, ITileEntityProvider
 {
@@ -36,11 +38,17 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 
     public BlockFluidTank(String assetName)
     {
-        super(Material.glass);
+        super(Material.GLASS);
         this.setHardness(3.0F);
         this.setResistance(8.0F);
-        this.setStepSound(soundTypeGlass);
+        this.setSoundType(SoundType.GLASS);
         this.setUnlocalizedName(assetName);
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        return BOUNDS;
     }
 
     @Override
@@ -63,21 +71,27 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 
     @SideOnly(Side.CLIENT)
     @Override
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.CUTOUT;
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -99,9 +113,9 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, UP, DOWN);
+        return new BlockStateContainer(this, UP, DOWN);
     }
 
     @Override
@@ -130,44 +144,50 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
         return new TileEntityFluidTank();
     }
 
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        this.setBlockBounds((float) BOUNDS.minX, (float) BOUNDS.minY, (float) BOUNDS.minZ, (float) BOUNDS.maxX, (float) BOUNDS.maxY, (float) BOUNDS.maxZ);
-    }
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    {
+//        this.setBlockBounds((float) BOUNDS.minX, (float) BOUNDS.minY, (float) BOUNDS.minZ, (float) BOUNDS.maxX, (float) BOUNDS.maxY, (float) BOUNDS.maxZ);
+//    }
+//
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getCollisionBoundingBox(worldIn, pos, state);
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getSelectedBoundingBox(worldIn, pos);
+//    }
 
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
-
-    @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ))
+        if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ))
         {
             return true;
         }
 
-        ItemStack current = playerIn.inventory.getCurrentItem();
+        if (hand == EnumHand.OFF_HAND)
+        {
+        	return false;
+        }
 
-        if (current != null)
+        ItemStack current = playerIn.inventory.getCurrentItem();
+        int slot = playerIn.inventory.currentItem;
+
+        if (!current.isEmpty())
         {
             TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -175,9 +195,15 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
             {
                 TileEntityFluidTank tank = (TileEntityFluidTank) tile;
 
-                if (FluidUtil.interactWithTank(current, playerIn, tank, side))
+                FluidActionResult forgeResult = FluidUtil.interactWithFluidHandler(current, tank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), playerIn);
+                if (forgeResult.isSuccess())
                 {
-                    return true;
+                	playerIn.inventory.setInventorySlotContents(slot, forgeResult.result);
+            		if (playerIn.inventoryContainer != null)
+            		{
+            			playerIn.inventoryContainer.detectAndSendChanges();
+            		}
+            		return true;
                 }
 
                 return false;
@@ -188,7 +214,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     }
 
     @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos)
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         TileEntity tile = world.getTileEntity(pos);
 

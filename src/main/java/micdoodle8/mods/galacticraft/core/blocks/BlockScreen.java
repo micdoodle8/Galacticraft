@@ -8,17 +8,23 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -30,18 +36,27 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public static final PropertyBool UP = PropertyBool.create("up");
     public static final PropertyBool DOWN = PropertyBool.create("down");
 
+    protected static final float boundsFront = 0.094F;
+    protected static final float boundsBack = 1.0F - boundsFront;
+    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
+    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
+    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
+    
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
     public BlockScreen(String assetName)
     {
-        super(Material.circuits);
+        super(Material.CIRCUITS);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
         this.setHardness(0.1F);
-        this.setStepSound(Block.soundTypeGlass);
+        this.setSoundType(SoundType.GLASS);
         this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing direction)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing direction)
     {
         return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
     }
@@ -54,27 +69,33 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return face.ordinal() == getMetaFromState(state) ? BlockFaceShape.UNDEFINED : BlockFaceShape.BOWL;
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getIndex();
         worldIn.setBlockState(pos, getStateFromMeta(change), 3);
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getIndex();
         world.setBlockState(pos, this.getStateFromMeta(change), 3);
@@ -94,7 +115,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
@@ -106,7 +127,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public void onNeighborBlockChange(World worldIn, BlockPos pos, IBlockState state, Block neighborBlock)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
@@ -134,35 +155,24 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public MovingObjectPosition collisionRayTrace(World worldIn, BlockPos pos, Vec3 start, Vec3 end)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        final int metadata = getMetaFromState(worldIn.getBlockState(pos)) & 7;
-        float boundsFront = 0.094F;
-        float boundsBack = 1.0F - boundsFront;
-
-        switch (metadata)
+        switch (state.getValue(FACING))
         {
-        case 0:
-            this.setBlockBounds(0F, 0F, 0F, 1.0F, boundsBack, 1.0F);
-            break;
-        case 1:
-            this.setBlockBounds(0F, boundsFront, 0F, 1.0F, 1.0F, 1.0F);
-            break;
-        case 2:
-            this.setBlockBounds(0F, 0F, boundsFront, 1.0F, 1.0F, 1.0F);
-            break;
-        case 3:
-            this.setBlockBounds(0F, 0F, 0F, 1.0F, 1.0F, boundsBack);
-            break;
-        case 4:
-            this.setBlockBounds(boundsFront, 0F, 0F, 1.0F, 1.0F, 1.0F);
-            break;
-        case 5:
-            this.setBlockBounds(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
-            break;
+        case EAST:
+            return EAST_AABB;
+        case WEST:
+            return WEST_AABB;
+        case SOUTH:
+            return SOUTH_AABB;
+        case NORTH:
+            return NORTH_AABB;
+        case DOWN:
+            return DOWN_AABB;
+        case UP:
+        default:
+            return UP_AABB;
         }
-
-        return super.collisionRayTrace(worldIn, pos, start, end);
     }
 
     @Override
@@ -179,9 +189,9 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, LEFT, RIGHT, UP, DOWN);
+        return new BlockStateContainer(this, FACING, LEFT, RIGHT, UP, DOWN);
     }
 
     @Override

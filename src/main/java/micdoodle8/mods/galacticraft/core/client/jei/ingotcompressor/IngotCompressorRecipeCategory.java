@@ -1,32 +1,44 @@
 package micdoodle8.mods.galacticraft.core.client.jei.ingotcompressor;
 
+import java.util.List;
+
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.jei.GalacticraftJEI;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
+import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class IngotCompressorRecipeCategory extends BlankRecipeCategory
+public class IngotCompressorRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation compressorTex = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
+    private static final ResourceLocation compressorTexBlank = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor_blank.png");
 
     @Nonnull
     private final IDrawable background;
     @Nonnull
+    private final IDrawable backgroundBlank;
+    @Nonnull
     private final String localizedName;
     @Nonnull
     private final IDrawableAnimated progressBar;
+    
+    private boolean drawNothing = false; 
 
     public IngotCompressorRecipeCategory(IGuiHelper guiHelper)
     {
         this.background = guiHelper.createDrawable(compressorTex, 18, 17, 137, 78);
+        this.backgroundBlank = guiHelper.createDrawable(compressorTexBlank, 18, 17, 137, 78);
         this.localizedName = GCCoreUtil.translate("tile.machine.3.name");
 
         IDrawableStatic progressBarDrawable = guiHelper.createDrawable(compressorTex, 176, 13, 52, 17);
@@ -51,18 +63,25 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
     @Override
     public IDrawable getBackground()
     {
+        if (this.drawNothing)
+        {
+            return this.backgroundBlank;
+        }
         return this.background;
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
-        this.progressBar.draw(minecraft, 59, 20);
+        if (!this.drawNothing) this.progressBar.draw(minecraft, 59, 19);
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
+        this.drawNothing = GalacticraftJEI.hidden.contains(recipeWrapper);
+        if (this.drawNothing) return;
+
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
         for (int j = 0; j < 9; j++)
@@ -72,35 +91,24 @@ public class IngotCompressorRecipeCategory extends BlankRecipeCategory
 
         itemstacks.init(9, false, 119, 20);
 
-        if (recipeWrapper instanceof IngotCompressorShapedRecipeWrapper)
+        if (ConfigManagerCore.quickMode)
         {
-            IngotCompressorShapedRecipeWrapper ingotCompressorRecipeWrapper = (IngotCompressorShapedRecipeWrapper) recipeWrapper;
-            List inputs = ingotCompressorRecipeWrapper.getInputs();
-
-            for (int i = 0; i < inputs.size(); ++i)
+            List<ItemStack> output = ingredients.getOutputs(ItemStack.class).get(0);
+            ItemStack stackOutput = output.get(0);
+            if (stackOutput.getItem().getUnlocalizedName(stackOutput).contains("compressed"))
             {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
+                ItemStack stackDoubled = stackOutput.copy();
+                stackDoubled.setCount(stackOutput.getCount() * 2);
+                output.set(0, stackDoubled);
             }
-            itemstacks.setFromRecipe(9, ingotCompressorRecipeWrapper.getOutputs());
         }
-        else if (recipeWrapper instanceof IngotCompressorShapelessRecipeWrapper)
-        {
-            IngotCompressorShapelessRecipeWrapper ingotCompressorRecipeWrapper = (IngotCompressorShapelessRecipeWrapper) recipeWrapper;
-            List inputs = ingotCompressorRecipeWrapper.getInputs();
 
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(9, ingotCompressorRecipeWrapper.getOutputs());
-        }
+        itemstacks.set(ingredients);
+    }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

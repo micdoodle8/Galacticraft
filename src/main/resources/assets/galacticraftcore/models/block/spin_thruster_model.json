@@ -1,4 +1,5 @@
 {
+"parent": "block/block",
 "textures": {
     "texture": "galacticraftcore:blocks/thruster",
     "particle": "galacticraftcore:blocks/thruster"

@@ -1,0 +1,21 @@
+{
+  "result": {
+    "item": "galacticraftcore:canvas"
+  },
+  "pattern": [
+    " XY",
+    "XXX",
+    "YX "
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "string"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    }
+  }
+}

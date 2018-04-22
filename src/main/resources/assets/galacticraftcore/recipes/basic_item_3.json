@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:basic_item",
+    "data": 3,
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 9
+    }
+  }
+}

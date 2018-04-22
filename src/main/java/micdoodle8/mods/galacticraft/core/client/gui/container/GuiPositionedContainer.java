@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
 import net.minecraft.inventory.Container;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 public abstract class GuiPositionedContainer extends GuiContainerGC
 {

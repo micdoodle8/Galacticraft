@@ -11,31 +11,37 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
-import net.minecraft.entity.boss.IBossDisplayData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.BossInfo;
 import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathable, IBoss, IBossDisplayData, IRangedAttackMob
+public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathable, IBoss, IRangedAttackMob
 {
+    private static final DataParameter<Byte> BURROWED_COUNT = EntityDataManager.createKey(EntitySpiderQueen.class, DataSerializers.BYTE);
     public boolean shouldEvade;
     private List<EntityJuicer> juicersSpawned = Lists.newArrayList();
     private List<UUID> spawnedPreload;
@@ -48,7 +54,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         super(worldIn);
         this.setSize(1.4F, 0.9F);
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0, true));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -72,7 +78,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected PathNavigate getNewNavigator(World worldIn)
+    protected PathNavigate createNavigator(World worldIn)
     {
         return new PathNavigateGround(this, worldIn);
     }
@@ -81,17 +87,17 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, (byte)-1);
+        this.dataManager.register(BURROWED_COUNT, (byte)-1);
     }
 
     public byte getBurrowedCount()
     {
-        return this.dataWatcher.getWatchableObjectByte(16);
+        return this.dataManager.get(BURROWED_COUNT);
     }
 
     public void setBurrowedCount(byte count)
     {
-        this.dataWatcher.updateObject(16, count);
+        this.dataManager.set(BURROWED_COUNT, count);
     }
 
     @Override
@@ -99,7 +105,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         super.onUpdate();
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             if (!this.shouldEvade && this.deathTicks <= 0)
             {
@@ -120,15 +126,15 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                     {
                         if (dX * dX + dY * dY + dZ * dZ > distance * distance)
                         {
-                            float f = MathHelper.sqrt_double(d0) / distance;
+                            float f = MathHelper.sqrt(d0) / distance;
                             this.attackEntityWithRangedAttack(attackTarget, 0.0F);
-                            this.rangedAttackTime = MathHelper.floor_float(f * (float) (this.maxRangedAttackTime - this.minRangedAttackTime) + (float) this.minRangedAttackTime);
+                            this.rangedAttackTime = MathHelper.floor(f * (float) (this.maxRangedAttackTime - this.minRangedAttackTime) + (float) this.minRangedAttackTime);
                         }
                     }
                     else if (this.rangedAttackTime < 0)
                     {
-                        float f2 = MathHelper.sqrt_double(d0) / distance;
-                        this.rangedAttackTime = MathHelper.floor_float(f2 * (float)(this.maxRangedAttackTime - this.minRangedAttackTime) + (float)this.minRangedAttackTime);
+                        float f2 = MathHelper.sqrt(d0) / distance;
+                        this.rangedAttackTime = MathHelper.floor(f2 * (float)(this.maxRangedAttackTime - this.minRangedAttackTime) + (float)this.minRangedAttackTime);
                     }
                 }
             }
@@ -139,7 +145,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
             for (UUID id : this.spawnedPreload)
             {
                 Entity entity = null;
-                for (Entity e : this.worldObj.getLoadedEntityList())
+                for (Entity e : this.world.getLoadedEntityList())
                 {
                     if (e.getUniqueID().equals(id))
                     {
@@ -159,7 +165,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
             }
         }
 
-        if (!this.worldObj.isRemote && this.shouldEvade)
+        if (!this.world.isRemote && this.shouldEvade)
         {
             if (this.spawner != null)
             {
@@ -170,7 +176,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                 double dY = roomBounds.maxY - this.posY;
                 double dZ = tarZ - this.posZ;
 
-                double movespeed = 1.0 * this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).getAttributeValue();
+                double movespeed = 1.0 * this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
                 this.motionX = Math.min(Math.max(dX / 2.0F, -movespeed), movespeed);
                 this.motionZ = Math.min(Math.max(dZ / 2.0F, -movespeed), movespeed);
                 this.navigator.tryMoveToXYZ(tarX, this.posY, tarZ, movespeed);
@@ -187,12 +193,12 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                             {
                                 if (this.juicersSpawned.size() < 6)
                                 {
-                                    EntityJuicer juicer = new EntityJuicer(this.worldObj);
+                                    EntityJuicer juicer = new EntityJuicer(this.world);
                                     double angle = Math.random() * 2 * Math.PI;
                                     double dist = 3.0F;
                                     juicer.setPosition(this.posX + dist * Math.sin(angle), this.posY + 0.2F, this.posZ + dist * Math.cos(angle));
                                     juicer.setHanging(true);
-                                    this.worldObj.spawnEntityInWorld(juicer);
+                                    this.world.spawnEntity(juicer);
                                     this.juicersSpawned.add(juicer);
                                 }
                             }
@@ -246,8 +252,8 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.250000001192092896D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0F * ConfigManagerCore.dungeonBossHealthMod);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.250000001192092896D);
     }
 
     @Override
@@ -263,33 +269,33 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return "mob.spider.say";
+        return SoundEvents.ENTITY_SPIDER_AMBIENT;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return "mob.spider.say";
+        return SoundEvents.ENTITY_SPIDER_HURT;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return "mob.spider.death";
+        return SoundEvents.ENTITY_SPIDER_DEATH;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, Block blockIn)
     {
-        this.playSound("mob.spider.step", 0.5F, 0.5F);
+        this.playSound(SoundEvents.ENTITY_SPIDER_STEP, 0.5F, 0.5F);
     }
 
     @Override
     protected Item getDropItem()
     {
-        return Items.string;
+        return Items.STRING;
     }
 
     @Override
@@ -299,7 +305,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
 
         if (par1 && (this.rand.nextInt(3) == 0 || this.rand.nextInt(1 + par2) > 0))
         {
-            this.dropItem(Items.spider_eye, 1);
+            this.dropItem(Items.SPIDER_EYE, 1);
         }
     }
 
@@ -317,7 +323,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public boolean isPotionApplicable(PotionEffect potioneffectIn)
     {
-        return potioneffectIn.getPotionID() != Potion.poison.id && super.isPotionApplicable(potioneffectIn);
+        return potioneffectIn.getPotion() != MobEffects.POISON && super.isPotionApplicable(potioneffectIn);
     }
 
     @Override
@@ -365,9 +371,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float damage)
     {
-        EntityWebShot entityarrow = new EntityWebShot(this.worldObj, this, target, 0.8F, (float)(14 - this.worldObj.getDifficulty().getDifficultyId() * 4));
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
+        EntityWebShot entityarrow = new EntityWebShot(this.world, this, target, 0.8F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+        this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
+        this.world.spawnEntity(entityarrow);
     }
 
     @Override
@@ -415,7 +421,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     @Override
     public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final EntityItem entityitem = new EntityItem(this.worldObj, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops)
@@ -424,7 +430,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         }
         else
         {
-            this.worldObj.spawnEntityInWorld(entityitem);
+            this.world.spawnEntity(entityitem);
         }
         return entityitem;
     }
@@ -433,5 +439,18 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     public void dropKey()
     {
         this.entityDropItem(new ItemStack(VenusItems.key, 1, 0), 0.5F);
+    }
+
+    @Override
+    public BossInfo.Color getHealthBarColor()
+    {
+        return BossInfo.Color.PURPLE;
+    }
+
+    @Override
+    public void setSwingingArms(boolean swingingArms)
+    {
+        // TODO Auto-generated method stub
+        //TODO for 1.12.2
     }
 }

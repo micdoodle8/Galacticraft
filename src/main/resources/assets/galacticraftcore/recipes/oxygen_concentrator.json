@@ -1,0 +1,28 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_concentrator"
+  },
+  "pattern": [
+    "ZWZ",
+    "WYW",
+    "ZXZ"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedTin"
+    },
+    "X": {
+      "item": "galacticraftcore:air_vent"
+    },
+    "Y": {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

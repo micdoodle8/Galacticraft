@@ -25,16 +25,14 @@ public class PlayerUtil
 
     public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
-        return server.getConfigurationManager().getPlayerByUsername(username);
-//        return VersionUtil.getPlayerForUsername(server, username);
+        return server.getPlayerList().getPlayerByUsername(username);
     }
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
     {
-        MinecraftServer server = MinecraftServer.getServer();
+        MinecraftServer server = GCCoreUtil.getServer();
         return getPlayerBaseServerFromPlayerUsername(server, username, ignoreCase);
     }
-
 
     public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(MinecraftServer server, String username, boolean ignoreCase)
     {
@@ -46,7 +44,7 @@ public class PlayerUtil
             }
             else
             {
-                Iterator iterator = server.getConfigurationManager().playerEntityList.iterator();
+                Iterator iterator = server.getPlayerList().getPlayers().iterator();
                 EntityPlayerMP entityplayermp;
 
                 do
@@ -147,7 +145,6 @@ public class PlayerUtil
         }
         return profile;
     }
-
     
     public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
     {
@@ -168,13 +165,13 @@ public class PlayerUtil
     
     public static List<EntityPlayerMP> getPlayersOnline()
     {
-        return MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+        return GCCoreUtil.getServer().getPlayerList().getPlayers();
     }
 
 
     public static boolean isPlayerOnline(EntityPlayerMP player)
     {
-        return getPlayersOnline().contains(player);
+        return player.mcServer.getPlayerList().getPlayers().contains(player);
     }
     
     public static String getName(EntityPlayer player)

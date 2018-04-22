@@ -4,17 +4,18 @@ import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 
-public class BuggyRecipeCategory extends BlankRecipeCategory
+public class BuggyRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation buggyGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/buggybench.png");
 
@@ -52,7 +53,7 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -76,22 +77,14 @@ public class BuggyRecipeCategory extends BlankRecipeCategory
         itemstacks.init(16, true, 89, 7);
         itemstacks.init(17, true, 115, 7);
         itemstacks.init(18, true, 141, 7);
-        itemstacks.init(19, false, 138, 100);
+        itemstacks.init(19, false, 138, 102);
 
-        if (recipeWrapper instanceof BuggyRecipeWrapper)
-        {
-            BuggyRecipeWrapper buggyRecipeWrapper = (BuggyRecipeWrapper) recipeWrapper;
-            List inputs = buggyRecipeWrapper.getInputs();
+        itemstacks.set(ingredients);
+    }
 
-            for (int i = 0; i < inputs.size(); ++i)
-            {
-                Object o = inputs.get(i);
-                if (o != null)
-                {
-                    itemstacks.setFromRecipe(i, o);
-                }
-            }
-            itemstacks.setFromRecipe(19, buggyRecipeWrapper.getOutputs());
-        }
+    @Override
+    public String getModName()
+    {
+        return GalacticraftCore.NAME;
     }
 }

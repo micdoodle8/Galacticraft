@@ -1,12 +1,8 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -15,15 +11,17 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.NonNullList;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ContainerCrafting extends Container
 {
     public TileEntityCrafting tileEntity;
     public PersistantInventoryCrafting craftMatrix;
     public IInventory craftResult = new InventoryCraftResult();
-    private ItemStack[] memory = new ItemStack[9];
+    private NonNullList<ItemStack> memory = NonNullList.withSize(9, ItemStack.EMPTY);
 
     public ContainerCrafting(InventoryPlayer playerInventory, IInventory tile)
     {
@@ -57,33 +55,32 @@ public class ContainerCrafting extends Container
     }
     
     @Override
-    public List<ItemStack> getInventory()
+    public NonNullList<ItemStack> getInventory()
     {
-        List<ItemStack> list = Lists.<ItemStack>newArrayList();
+        NonNullList<ItemStack> list = NonNullList.create();
 
         for (int i = 0; i < this.inventorySlots.size(); ++i)
         {
-            list.add(((Slot)this.inventorySlots.get(i)).getStack());
+            list.add(this.inventorySlots.get(i).getStack());
         }
         
         //Override this method to trick vanilla networking into carrying our memory at end of its packets 
         for (int i = 0; i < 9; i++)
-            list.add(this.tileEntity.memory[i]);
+            list.add(this.tileEntity.memory.get(i));
 
         return list;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void putStacksInSlots(ItemStack[] stacks)
+    public void setAll(List<ItemStack> list)
     {
-        for (int i = 0; i < stacks.length; ++i)
+        for (int i = 0; i < list.size(); ++i)
         {
             if (i < 46)
-                this.getSlot(i).putStack(stacks[i]);
+                this.getSlot(i).putStack(list.get(i));
             else if (i < 55)
-                //Read memory clientside from the end of the vanilla packet, see getInventory() 
-                this.tileEntity.memory[i - 46] = stacks[i];
+            	//Read memory clientside from the end of the vanilla packet, see getInventory() 
+                this.tileEntity.memory.set(i - 46, list.get(i));
         }
     }
 
@@ -93,7 +90,7 @@ public class ContainerCrafting extends Container
     @Override
     public void onCraftMatrixChanged(IInventory inventoryIn)
     {
-        this.craftResult.setInventorySlotContents(0, CraftingManager.getInstance().findMatchingRecipe(this.craftMatrix, this.tileEntity.getWorld()));
+        this.craftResult.setInventorySlotContents(0, CraftingManager.findMatchingResult(this.craftMatrix, this.tileEntity.getWorld()));
     }
 
     /**
@@ -103,13 +100,16 @@ public class ContainerCrafting extends Container
     public void onContainerClosed(EntityPlayer playerIn)
     {
         super.onContainerClosed(playerIn);
-        craftMatrix.eventHandler = null;
+        if (!playerIn.world.isRemote)
+        {
+            craftMatrix.eventHandler = null;
+        }
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer playerIn)
     {
-        return this.tileEntity.isUseableByPlayer(playerIn);
+        return this.tileEntity.isUsableByPlayer(playerIn);
     }
 
     /**
@@ -118,10 +118,10 @@ public class ContainerCrafting extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
     {
-        ItemStack itemstack = null;
-        Slot slot = (Slot)this.inventorySlots.get(index);
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
 
-        if (slot != null && slot.getHasStack() && slot.getStack().stackSize > 0)
+        if (slot != null && slot.getHasStack() && !slot.getStack().isEmpty())
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
@@ -130,7 +130,7 @@ public class ContainerCrafting extends Container
             {
                 if (!this.mergeItemStack(itemstack1, 10, 46, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 slot.onSlotChange(itemstack1, itemstack);
@@ -139,46 +139,46 @@ public class ContainerCrafting extends Container
             {
                 if (!this.mergeItemStack(itemstack1, 10, 46, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (this.matchesCrafting(itemstack1))
             {
                 if (!this.mergeToCrafting(itemstack1, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (index >= 10 && index < 37)
             {
                 if (!this.mergeItemStack(itemstack1, 37, 46, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             else if (index >= 37 && index < 46)
             {
                 if (!this.mergeItemStack(itemstack1, 10, 37, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
-            if (itemstack1.stackSize == 0)
+            if (itemstack1.isEmpty())
             {
-                slot.putStack((ItemStack)null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (itemstack1.stackSize == itemstack.stackSize)
+            if (itemstack1.getCount() == itemstack.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(playerIn, itemstack1);
+            slot.onTake(playerIn, itemstack1);
         }
 
         return itemstack;
@@ -186,27 +186,31 @@ public class ContainerCrafting extends Container
 
     private boolean mergeToCrafting(ItemStack stack, boolean b)
     {
+        if (stack.isEmpty())
+        {
+            return false;
+        }
         List<Slot> acceptSlots = new LinkedList<>();
         List<Integer> acceptQuantity = new LinkedList<>();
         int minQuantity = 64;
         int acceptTotal = 0;
         for (int i = 1; i < 10; i++)
         {
-            Slot slot = (Slot)this.inventorySlots.get(i);
+            Slot slot = this.inventorySlots.get(i);
 
             if (slot != null)
             {
                 ItemStack target = slot.getStack();
-                ItemStack target2 = this.memory[i - 1];
-                if (target2 == null) continue;
-                if (target == null)
+                ItemStack target2 = this.memory.get(i - 1);
+                if (target2.isEmpty()) continue;
+                if (target.isEmpty())
                 {
-                    target = target2;
+                    target = target2.copy();
                 }
                 if (matchingStacks(stack, target))
                 {
                     acceptSlots.add(slot);
-                    int availSpace = target.getMaxStackSize() - target.stackSize;
+                    int availSpace = target.getMaxStackSize() - target.getCount();
                     acceptQuantity.add(availSpace);
                     acceptTotal += availSpace;
                     if (availSpace < minQuantity) minQuantity = availSpace;
@@ -214,8 +218,24 @@ public class ContainerCrafting extends Container
             }
         }
         
+        //First fill any empty slots
+        for (Slot slot : acceptSlots)
+        {
+            ItemStack target = slot.getStack();
+            if (target.isEmpty())
+            {
+                ItemStack target2 = this.memory.get(slot.slotNumber - 1);
+                this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target2.copy());
+                stack.shrink(1);
+                if (stack.isEmpty())
+                {
+                    return false;
+                }
+            }
+        }        
+        
         //The stack more than exceeds what the crafting inventory requires
-        if (stack.stackSize >= acceptTotal)
+        if (stack.getCount() >= acceptTotal)
         {
             if (acceptTotal == 0)
                 return false;
@@ -223,15 +243,8 @@ public class ContainerCrafting extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target == null)
-                {
-                    ItemStack target2 = this.memory[slot.slotNumber - 1];
-                    if (target2 == null) continue;
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
-                stack.stackSize -= target.getMaxStackSize() - target.stackSize;
-                target.stackSize = target.getMaxStackSize();
+                stack.shrink(target.getMaxStackSize() - target.getCount());
+                target.setCount(target.getMaxStackSize());
                 slot.onSlotChanged();
             }
             return true;
@@ -244,7 +257,7 @@ public class ContainerCrafting extends Container
         }
         
         //Use the whole stack to try to even up the neediest slots
-        if (stack.stackSize < uneven)
+        if (stack.getCount() <= uneven)
         {
             do
             {
@@ -253,22 +266,16 @@ public class ContainerCrafting extends Container
                 for (Slot slot : acceptSlots)
                 {
                     ItemStack target = slot.getStack();
-                    if (target == null)
+                    if (target.getCount() < smallestStack)
                     {
-                        ItemStack target2 = this.memory[slot.slotNumber - 1];
-                        if (target2 == null) continue;
-                        target = target2.copy();
-                        this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                    }
-                    if (target.stackSize < smallestStack)
-                    {
-                        smallestStack = target.stackSize;
+                        smallestStack = target.getCount();
                         neediest = slot;
                     }
                 }
-                neediest.getStack().stackSize++;
+                neediest.getStack().grow(1);
+                stack.shrink(1);
             }
-            while (--stack.stackSize > 0);
+            while (!stack.isEmpty());
             for (Slot slot : acceptSlots)
             {
                 slot.onSlotChanged();
@@ -283,56 +290,38 @@ public class ContainerCrafting extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target == null)
-                {
-                    ItemStack target2 = this.memory[slot.slotNumber - 1];
-                    if (target2 == null) continue;
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
-                stack.stackSize -= targetSize - target.stackSize;
-                acceptTotal -= targetSize - target.stackSize;
-                target.stackSize = targetSize;
+                stack.shrink(targetSize - target.getCount());
+                acceptTotal -= targetSize - target.getCount();
+                target.setCount(targetSize);
                 slot.onSlotChanged();
             }
         }
         
         //Spread the remaining stack over all slots evenly
-        int average = stack.stackSize / acceptSlots.size();
-        int modulus = stack.stackSize - average * acceptSlots.size();
+        int average = stack.getCount() / acceptSlots.size();
+        int modulus = stack.getCount() - average * acceptSlots.size();
         for (Slot slot : acceptSlots)
         {
             if (slot != null)
             {
                 ItemStack target = slot.getStack();
-                ItemStack target2 = this.memory[slot.slotNumber - 1];
-                if (target2 == null) continue;
-                if (target == null)
-                {
-                    target = target2.copy();
-                    this.craftMatrix.setInventorySlotContents(slot.slotNumber - 1, target);
-                }
                 int transfer = average;
                 if (modulus > 0)
                 {
                     transfer++;
                     modulus--;
                 }
-                stack.stackSize -= transfer;
-                target.stackSize += transfer;
-                if (target.stackSize > target.getMaxStackSize())
+                if (transfer > stack.getCount()) transfer = stack.getCount();
+                stack.shrink(transfer);
+                target.grow(transfer);
+                if (target.getCount() > target.getMaxStackSize())
                 {
-                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.stackSize);
-                    stack.stackSize += target.stackSize - target.getMaxStackSize();
-                    target.stackSize = target.getMaxStackSize();
-                }
-                if (stack.stackSize < 0)
-                {
-                    target.stackSize += stack.stackSize;
-                    stack.stackSize = 0;
+                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.getCount());
+                    stack.grow(target.getCount() - target.getMaxStackSize());
+                    target.setCount(target.getMaxStackSize());
                 }
                 slot.onSlotChanged();
-                if (stack.stackSize == 0)
+                if (stack.isEmpty())
                     break;
             }
         }
@@ -343,15 +332,17 @@ public class ContainerCrafting extends Container
     private boolean matchesCrafting(ItemStack itemstack1)
     {
         if (this.tileEntity.overrideMemory(itemstack1, this.memory))
+        {
             return true;
+        }
 
         for (int i = 0; i < 9; i++)
         {
-           if (matchingStacks(itemstack1, this.tileEntity.getMemory(i)) && (this.craftMatrix.getStackInSlot(i) == null || this.craftMatrix.getStackInSlot(i).stackSize < itemstack1.getMaxStackSize()))
+           if (matchingStacks(itemstack1, this.tileEntity.getMemory(i)) && (this.craftMatrix.getStackInSlot(i).isEmpty() || this.craftMatrix.getStackInSlot(i).getCount() < itemstack1.getMaxStackSize()))
            {
                for (int j = 0; j < 9; j++)
                {
-                   this.memory[j] = this.tileEntity.getMemory(j);
+                   this.memory.set(j, this.tileEntity.getMemory(j));
                }
                return true;
            }
@@ -361,7 +352,7 @@ public class ContainerCrafting extends Container
     
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return target != null && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.stackSize < target.getMaxStackSize() || target.stackSize == 0);
+        return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && RecipeUtil.areItemStackTagsEqual(stack, target) && (!target.isStackable() || target.getCount() < target.getMaxStackSize());
     }
 
     /**

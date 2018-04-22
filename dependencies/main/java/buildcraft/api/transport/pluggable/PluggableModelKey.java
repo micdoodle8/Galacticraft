@@ -1,30 +1,23 @@
 package buildcraft.api.transport.pluggable;
 
-import java.util.Arrays;
 import java.util.Objects;
 
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-public abstract class PluggableModelKey<K extends PluggableModelKey<K>> {
-    public final EnumWorldBlockLayer layer;
-    public final IPluggableModelBaker<K> baker;
+public abstract class PluggableModelKey {
+    public final BlockRenderLayer layer;
     public final EnumFacing side;
     private final int hash;
 
-    public PluggableModelKey(EnumWorldBlockLayer layer, IPluggableModelBaker<K> baker, EnumFacing side) {
-        this.layer = layer;
-        if (layer != EnumWorldBlockLayer.CUTOUT && layer != EnumWorldBlockLayer.TRANSLUCENT) {
+    public PluggableModelKey(BlockRenderLayer layer, EnumFacing side) {
+        if (layer != BlockRenderLayer.CUTOUT && layer != BlockRenderLayer.TRANSLUCENT) {
             throw new IllegalArgumentException("Can only use CUTOUT or TRANSLUCENT at the moment (was " + layer + ")");
         }
-        if (baker == null) throw new NullPointerException("baker");
-        this.baker = baker;
+        if (side == null) throw new NullPointerException("side");
+        this.layer = layer;
         this.side = side;
-        /* Don't inclue the block layer in the hash code as there are different caches for cutout and translucent */
-        this.hash = Arrays.hashCode(new int[] { System.identityHashCode(baker), Objects.hashCode(side) });
+        this.hash = Objects.hash(layer, side);
     }
 
     @Override
@@ -32,8 +25,8 @@ public abstract class PluggableModelKey<K extends PluggableModelKey<K>> {
         if (obj == this) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
-        PluggableModelKey<?> other = (PluggableModelKey<?>) obj;
-        if (baker != other.baker) return false;
+        PluggableModelKey other = (PluggableModelKey) obj;
+        if (layer != other.layer) return false;
         if (side != other.side) return false;
         return true;
     }

@@ -13,9 +13,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -62,21 +62,22 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("co", this.corner);
+        return nbt;
     }
 
     @Override
     public void update()
     {
-        if (this.firstTickCheck && !this.worldObj.isRemote)
+        if (this.firstTickCheck && !this.world.isRemote)
         {
             this.firstTickCheck = !this.checkIntact();
         }
             
-        if (this.corner == 0 && !this.worldObj.isRemote)
+        if (this.corner == 0 && !this.world.isRemote)
         {
             final List<TileEntityPlatform> adjacentPlatforms = new LinkedList<>();
             final int thisX = this.getPos().getX();
@@ -88,12 +89,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 for (int z = - 1; z < 1; z++)
                 {
                     BlockPos pos = new BlockPos(x + thisX, thisY, z + thisZ);
-                    final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;
+                    final TileEntity tile = this.world.isBlockLoaded(pos, false) ? this.world.getTileEntity(pos) : null;
 
                     if (tile instanceof TileEntityPlatform && !tile.isInvalid() && ((TileEntityPlatform)tile).corner == 0)
                     {
-                        final TileEntity tileUp = this.worldObj.getTileEntity(pos.up());
-                        final TileEntity tileDown = this.worldObj.getTileEntity(pos.down());
+                        final TileEntity tileUp = this.world.getTileEntity(pos.up());
+                        final TileEntity tileDown = this.world.getTileEntity(pos.down());
                         if (!(tileUp instanceof TileEntityPlatform) && !(tileDown instanceof TileEntityPlatform))
                         {
                            adjacentPlatforms.add((TileEntityPlatform) tile);
@@ -111,12 +112,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 }
             }
         }
-        else if (this.worldObj.isRemote)
+        else if (this.world.isRemote)
         {
             this.updateClient();
         }
     }
-    
+
     @SideOnly(Side.CLIENT)
     private void updateClient()
     {
@@ -129,15 +130,15 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             }
         }
 
-        IBlockState b = this.worldObj.getBlockState(this.getPos());
+        IBlockState b = this.world.getBlockState(this.getPos());
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             //Scan area for player entities and light up
             if (this.detection == null)
             {
-                this.detection = AxisAlignedBB.fromBounds(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
+                this.detection = new AxisAlignedBB(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
             }
-            final List<Entity> list = this.worldObj.getEntitiesWithinAABB(EntityPlayer.class, detection);
+            final List<Entity> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, detection);
 
             if (list.size() > 0)
             {
@@ -147,9 +148,8 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 // If this player is within the box
                 EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
                 GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
-                if (list.contains(p) && !stats.getPlatformControlled() && p.ridingEntity == null)
+                if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
                 {
-                    //TODO: PlayerAPI version of this
                     if (p.movementInput.sneak)
                     {
                         int canDescend = this.checkNextPlatform(-1);
@@ -160,11 +160,11 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                         }
                         else if (canDescend > 0)
                         {
-                            TileEntity te = this.worldObj.getTileEntity(this.pos.down(canDescend));
+                            TileEntity te = this.world.getTileEntity(this.pos.down(canDescend));
                             if (te instanceof TileEntityPlatform)
                             {
                                 TileEntityPlatform tep = (TileEntityPlatform) te;
-                                stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.worldObj.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
+                                stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.world.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
                                 this.startMove(tep);
                                 tep.startMove(this);
                             }
@@ -180,12 +180,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                         }
                         else if (canAscend > 0)
                         {
-                            TileEntity te = this.worldObj.getTileEntity(this.pos.up(canAscend));
+                            TileEntity te = this.world.getTileEntity(this.pos.up(canAscend));
                             if (te instanceof TileEntityPlatform)
                             {
                                 p.motionY = 0D;
                                 TileEntityPlatform tep = (TileEntityPlatform) te;
-                                stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend + BlockPlatform.HEIGHT);
+                                stats.startPlatformAscent(tep, this, this.pos.getY() + canAscend + BlockPlatform.HEIGHT + 0.01D);
                                 this.startMove(tep);
                                 tep.startMove(this);
                             }
@@ -200,8 +200,8 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private void startMove(TileEntityPlatform te)
     {
         this.moving = true;
-        this.lightA = this.worldObj.getCombinedLight(this.getPos(), 0);
-        this.lightB = this.worldObj.getCombinedLight(te.getPos(), 0);
+        this.lightA = this.getBlendedLight();
+        this.lightB = te.getBlendedLight();
         this.deltaY = te.getPos().getY() - this.getPos().getY();
     }
 
@@ -243,16 +243,16 @@ public class TileEntityPlatform extends TileEntity implements ITickable
      */
     private int checkCorner(BlockPos blockPos, EnumCorner corner)
     {
-        IBlockState b = this.worldObj.getBlockState(blockPos);
+        IBlockState b = this.world.getBlockState(blockPos);
         if (b.getBlock() instanceof BlockAir)
         {
             return 0;
         }
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == corner)
         {
-            return (this.worldObj.getBlockState(blockPos.up(1)).getBlock().isVisuallyOpaque() || this.worldObj.getBlockState(blockPos.up(2)).getBlock().isVisuallyOpaque()) ? 2 : 1;
+            return (this.world.getBlockState(blockPos.up(1)).causesSuffocation() || this.world.getBlockState(blockPos.up(2)).causesSuffocation()) ? 2 : 1;
         }
-        if (b.getBlock().isVisuallyOpaque() || b.getBlock().isFullBlock())
+        if (b.causesSuffocation() || b.getBlock().isFullBlock(b))
         {
             return 3;
         }
@@ -262,7 +262,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private void setWhole(int index)
     {
         this.corner = index;
-        this.worldObj.setBlockState(this.getPos(), GCBlocks.platform.getStateFromMeta(index));
+        this.world.setBlockState(this.getPos(), GCBlocks.platform.getStateFromMeta(index));
     }
 
     public void onDestroy(TileEntity callingBlock)
@@ -271,7 +271,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         {
             resetBlocks();
         }
-        this.worldObj.destroyBlock(this.pos, true);
+        this.world.destroyBlock(this.pos, true);
     }
     
     private void resetBlocks()
@@ -281,9 +281,9 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
         for (BlockPos pos : positions)
         {
-            if (this.worldObj.isBlockLoaded(pos, false) && this.worldObj.getBlockState(pos).getBlock() == GCBlocks.platform)
+            if (this.world.isBlockLoaded(pos, false) && this.world.getBlockState(pos).getBlock() == GCBlocks.platform)
             {
-                final TileEntity tile = this.worldObj.getTileEntity(pos);
+                final TileEntity tile = this.world.getTileEntity(pos);
                 if (tile instanceof TileEntityPlatform)
                 {
                     ((TileEntityPlatform) tile).setWhole(0);
@@ -326,7 +326,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
     private boolean checkIntact()
     {
-        IBlockState bs = this.worldObj.getBlockState(this.pos); 
+        IBlockState bs = this.world.getBlockState(this.pos); 
         if (bs.getBlock() != GCBlocks.platform || ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() != this.corner)
         {
             this.resetBlocks();
@@ -374,13 +374,13 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
     private int checkState(BlockPos blockPos, int meta)
     {
-        if (!this.worldObj.isBlockLoaded(blockPos, false))
+        if (!this.world.isBlockLoaded(blockPos, false))
             return 4;
 
-        IBlockState bs = this.worldObj.getBlockState(blockPos); 
+        IBlockState bs = this.world.getBlockState(blockPos); 
         if (bs.getBlock() == GCBlocks.platform && ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() == meta)
         {
-            final TileEntity tile = this.worldObj.getTileEntity(blockPos);
+            final TileEntity tile = this.world.getTileEntity(blockPos);
             if (tile instanceof TileEntityPlatform)
             {
                 ((TileEntityPlatform) tile).corner = meta;
@@ -409,22 +409,22 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         final int x = this.getPos().getX();
         final int z = this.getPos().getZ();
         y += this.getPos().getY();
-        te = this.worldObj.getTileEntity(new BlockPos(x, y, z));
+        te = this.world.getTileEntity(new BlockPos(x, y, z));
         if (te instanceof TileEntityPlatform)
         {
             ((TileEntityPlatform) te).noCollide = b;
         }
-        te = this.worldObj.getTileEntity(new BlockPos(x + 1, y, z));
+        te = this.world.getTileEntity(new BlockPos(x + 1, y, z));
         if (te instanceof TileEntityPlatform)
         {
             ((TileEntityPlatform) te).noCollide = b;
         }
-        te = this.worldObj.getTileEntity(new BlockPos(x, y, z + 1));
+        te = this.world.getTileEntity(new BlockPos(x, y, z + 1));
         if (te instanceof TileEntityPlatform)
         {
             ((TileEntityPlatform) te).noCollide = b;
         }
-        te = this.worldObj.getTileEntity(new BlockPos(x + 1, y, z + 1));
+        te = this.world.getTileEntity(new BlockPos(x + 1, y, z + 1));
         if (te instanceof TileEntityPlatform)
         {
             ((TileEntityPlatform) te).noCollide = b;
@@ -476,9 +476,27 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @SideOnly(Side.CLIENT)
+    public int getBlendedLight()
+    {
+        int j = 0, k = 0;
+        int light = this.world.getCombinedLight(this.getPos().up(), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(1, 1, 0), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(0, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        light = this.world.getCombinedLight(this.getPos().add(1, 1, 1), 0);
+        j += light % 65536;
+        k += light / 65536;
+        return j / 4 + k * 16384; 
+    }
+
+    @SideOnly(Side.CLIENT)
     public float getMeanLightX(float yOffset)
     {
-        this.lightA = this.worldObj.getCombinedLight(this.getPos(), 0);
         float a = (float)(this.lightA % 65536);
         float b = (float)(this.lightB % 65536);
         float f = yOffset / deltaY; 
@@ -503,13 +521,13 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         double size = 9/16D;
         double height = p.height + velocityY;
         double depth = velocityY < 0D ? 0.179D : 0D;
-        AxisAlignedBB bb = AxisAlignedBB.fromBounds(x - size, y - depth, z - size, x + size, y + height, z + size);
+        AxisAlignedBB bb = new AxisAlignedBB(x - size, y - depth, z - size, x + size, y + height, z + size);
         BlockPlatform.ignoreCollisionTests = true;
-        boolean obstructed = !this.worldObj.getCollidingBoundingBoxes(p, bb).isEmpty(); 
+        boolean obstructed = !this.world.getCollisionBoxes(p, bb).isEmpty(); 
         BlockPlatform.ignoreCollisionTests = false;
         return obstructed;
     }
-    
+
     @Override
     @SideOnly(Side.CLIENT)
     public double getMaxRenderDistanceSquared()

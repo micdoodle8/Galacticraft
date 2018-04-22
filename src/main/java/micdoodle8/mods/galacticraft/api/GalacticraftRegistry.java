@@ -9,21 +9,25 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.logging.log4j.Level;
 
 public class GalacticraftRegistry
 {
@@ -37,11 +41,12 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> astroMinerRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
-    private static List<Integer> worldProviderIDs = new ArrayList<Integer>();
+    private static List<Integer> dimensionTypeIDs = new ArrayList<Integer>();
     private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
     private static int maxScreenTypes;
     private static Map<Integer, List<Object>> gearMap = new HashMap<>();
     private static Map<Integer, List<EnumExtendedInventorySlot>> gearSlotMap = new HashMap<>();
+    private static Method gratingRegister = null;
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -219,47 +224,36 @@ public class GalacticraftRegistry
     }
     
     /***
-     * Now returns a boolean to indicate whether registration of the WorldProvider type was successful.
-     * (If it failed, you should probably set the CelestialBody as unreachable.)
-     * 
-     * @param id
-     * @param provider
-     * @param keepLoaded
-     * @return <boolean> success
+     * Register a Galacticraft dimension
      */
-    public static boolean registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
+    public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends WorldProvider> provider, boolean keepLoaded) throws IllegalArgumentException
     {
-    	boolean flag = DimensionManager.registerProviderType(id, provider, keepLoaded);
-    	if (flag)
-    	{
-    		GalacticraftRegistry.worldProviderIDs.add(id);
-    		return true;
-    	}
-    	else
-    	{
-    		GalacticraftRegistry.worldProviderIDs.add(defaultID);  //Adding the 0 here preserves the order, important for network compatibility between GC versions
-    		FMLLog.severe("Could not register dimension " + id + " - does it clash with another mod?  Change the ID in config.");
-    		return false;
-    	}
+        for (DimensionType other : DimensionType.values())
+        {
+            if (other.getId() == id)
+            {
+                return null;
+            }
+        }
+
+        DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
+        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
+        if (type == null)
+        {
+            FMLRelaunchLog.log("Galacticraft", Level.ERROR, "Problem registering dimension type " + id + ".  May be fixable by changing config.");
+        }
+        
+        return type;
     }
 
-    /**
-     * You should now use GalacticraftRegistry.registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded, int defaultID)
-     * which returns a boolean indicating if the Provider was registered OK.
-     * 
-     * @param id
-     * @param provider
-     * @param keepLoaded
-     */
-    @Deprecated
-    public static void registerProvider(int id, Class<? extends WorldProvider> provider, boolean keepLoaded)
+    public static int getDimensionTypeID(int index)
     {
-    	GalacticraftRegistry.registerProvider(id, provider, keepLoaded, 0);
+    	return GalacticraftRegistry.dimensionTypeIDs.get(index);
     }
     
-    public static int getProviderID(int index)
+    public static boolean isDimensionTypeIDRegistered(int typeId)
     {
-    	return GalacticraftRegistry.worldProviderIDs.get(index);
+        return GalacticraftRegistry.dimensionTypeIDs.contains(typeId);
     }
     
     /**
@@ -416,5 +410,13 @@ public class GalacticraftRegistry
     public static List<EnumExtendedInventorySlot> getSlotType(int gearID)
     {
         return GalacticraftRegistry.gearSlotMap.get(gearID);
+    }
+    
+    @Deprecated
+    /** Grating will now register fluids automatically if they extend BlockFluidBase
+     * 
+     */
+    public static void registerGratingFluid(Block fluidBlock)
+    {
     }
 }

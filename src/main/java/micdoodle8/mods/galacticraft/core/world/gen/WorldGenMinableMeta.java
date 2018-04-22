@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockHelper;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
+import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 
@@ -26,7 +26,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
 
     public WorldGenMinableMeta(Block placeBlock, int blockCount, int placeMeta, boolean metaActive, Block replaceBlock, int replaceMeta)
     {
-        super(placeBlock.getStateFromMeta(placeMeta), blockCount, BlockHelper.forBlock(replaceBlock));
+        super(placeBlock.getStateFromMeta(placeMeta), blockCount, BlockMatcher.forBlock(replaceBlock));
         this.minableBlockId = placeBlock;
         this.numberOfBlocks = blockCount;
         this.metadata = placeMeta;
@@ -62,12 +62,12 @@ public class WorldGenMinableMeta extends WorldGenMinable
             double centreZ = clumpZa + clumpZb * (double) f1;
             double sizeXZ = ((double) (MathHelper.sin((float) Math.PI * f1) + 1.0F) * size + 1.0D) / 2.0D;
             double sizeY = sizeXZ;
-            int xmin = MathHelper.floor_double(centreX - sizeXZ);
-            int xmax = MathHelper.floor_double(centreX + sizeXZ);
-            int ymin = MathHelper.floor_double(centreY - sizeY);
-            int ymax = MathHelper.floor_double(centreY + sizeY);
-            int zmin = MathHelper.floor_double(centreZ - sizeXZ);
-            int zmax = MathHelper.floor_double(centreZ + sizeXZ);
+            int xmin = MathHelper.floor(centreX - sizeXZ);
+            int xmax = MathHelper.floor(centreX + sizeXZ);
+            int ymin = MathHelper.floor(centreY - sizeY);
+            int ymax = MathHelper.floor(centreY + sizeY);
+            int zmin = MathHelper.floor(centreZ - sizeXZ);
+            int zmax = MathHelper.floor(centreZ + sizeXZ);
             centreX -= 0.5D;
             centreY -= 0.5D;
             centreZ -= 0.5D;

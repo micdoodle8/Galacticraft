@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftplanets:basic_item_venus",
+    "data": 3
+  },
+  "pattern": [
+    "   ",
+    "XYX",
+    "   "
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 7
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

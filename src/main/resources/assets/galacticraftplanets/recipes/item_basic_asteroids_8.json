@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_asteroids",
+    "data": 8
+  },
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:redstone"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedIron"
+    },
+    "Z": {
+      "item": "minecraft:glass_pane"
+    }
+  }
+}

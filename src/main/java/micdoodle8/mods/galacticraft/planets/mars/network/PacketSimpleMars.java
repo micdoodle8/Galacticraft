@@ -21,7 +21,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -141,7 +141,7 @@ public class PacketSimpleMars extends PacketBase
             {
             case 0:
                 entityID = (Integer) this.data.get(2);
-                entity = player.worldObj.getEntityByID(entityID);
+                entity = player.world.getEntityByID(entityID);
 
                 if (entity != null && entity instanceof EntitySlimeling)
                 {
@@ -152,7 +152,7 @@ public class PacketSimpleMars extends PacketBase
                 break;
             case 1:
                 entityID = (Integer) this.data.get(2);
-                entity = player.worldObj.getEntityByID(entityID);
+                entity = player.world.getEntityByID(entityID);
 
                 if (entity != null && entity instanceof EntityCargoRocket)
                 {
@@ -171,7 +171,7 @@ public class PacketSimpleMars extends PacketBase
             {
             case 0:
                 pos = (BlockPos) this.data.get(2);
-                tile = player.worldObj.getTileEntity(pos);
+                tile = player.world.getTileEntity(pos);
 
                 if (tile != null && tile instanceof TileEntityLaunchController)
                 {
@@ -184,7 +184,7 @@ public class PacketSimpleMars extends PacketBase
             break;
         case C_BEGIN_CRYOGENIC_SLEEP:
             pos = (BlockPos) this.data.get(0);
-            tile = player.worldObj.getTileEntity(pos);
+            tile = player.world.getTileEntity(pos);
 
             if (tile instanceof TileEntityCryogenicChamber)
             {
@@ -203,7 +203,7 @@ public class PacketSimpleMars extends PacketBase
         switch (this.type)
         {
         case S_UPDATE_SLIMELING_DATA:
-            Entity entity = player.worldObj.getEntityByID((Integer) this.data.get(0));
+            Entity entity = player.world.getEntityByID((Integer) this.data.get(0));
 
             if (entity instanceof EntitySlimeling)
             {
@@ -214,47 +214,47 @@ public class PacketSimpleMars extends PacketBase
                 switch (subType)
                 {
                 case 0:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.setSittingAI(!slimeling.isSitting());
                         slimeling.setJumping(false);
-                        slimeling.getNavigator().clearPathEntity();
+                        slimeling.getNavigator().clearPath();
                         slimeling.setAttackTarget(null);
                     }
                     break;
                 case 1:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.slimelingName = (String) this.data.get(2);
                         slimeling.setName(slimeling.slimelingName);
                     }
                     break;
                 case 2:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.age += 5000;
                     }
                     break;
                 case 3:
-                    if (!slimeling.isInLove() && player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (!slimeling.isInLove() && player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.setInLove(playerBase);
                     }
                     break;
                 case 4:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.attackDamage = Math.min(slimeling.attackDamage + 0.1F, 1.0F);
                     }
                     break;
                 case 5:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         slimeling.setHealth(slimeling.getHealth() + 5.0F);
                     }
                     break;
                 case 6:
-                    if (player == slimeling.getOwner() && !slimeling.worldObj.isRemote)
+                    if (player == slimeling.getOwner() && !slimeling.world.isRemote)
                     {
                         MarsUtil.openSlimelingInventory(playerBase, slimeling);
                     }
@@ -263,7 +263,7 @@ public class PacketSimpleMars extends PacketBase
             }
             break;
         case S_WAKE_PLAYER:
-            BlockPos c = playerBase.playerLocation;
+            BlockPos c = playerBase.bedLocation;
 
             if (c != null)
             {
@@ -273,7 +273,7 @@ public class PacketSimpleMars extends PacketBase
             }
             break;
         case S_UPDATE_ADVANCED_GUI:
-            TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data.get(1));
+            TileEntity tile = player.world.getTileEntity((BlockPos) this.data.get(1));
 
             switch ((Integer) this.data.get(0))
             {
@@ -324,7 +324,7 @@ public class PacketSimpleMars extends PacketBase
             }
             break;
         case S_UPDATE_CARGO_ROCKET_STATUS:
-            Entity entity2 = player.worldObj.getEntityByID((Integer) this.data.get(0));
+            Entity entity2 = player.world.getEntityByID((Integer) this.data.get(0));
 
             if (entity2 instanceof EntityCargoRocket)
             {
@@ -342,7 +342,7 @@ public class PacketSimpleMars extends PacketBase
             break;
         case S_SWITCH_LAUNCH_CONTROLLER_GUI:
             BlockPos pos = (BlockPos) this.data.get(0);
-            TileEntity tile1 = player.worldObj.getTileEntity(pos);
+            TileEntity tile1 = player.world.getTileEntity(pos);
             if (tile1 instanceof TileEntityLaunchController)
             {
                 TileEntityLaunchController launchController = (TileEntityLaunchController) tile1;
@@ -352,7 +352,7 @@ public class PacketSimpleMars extends PacketBase
                     MarsUtil.openAdvancedLaunchController(playerBase, launchController);
                     break;
                 case 1:
-                    player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, player.worldObj, pos.getX(), pos.getY(), pos.getZ());
+                    player.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, player.world, pos.getX(), pos.getY(), pos.getZ());
                     break;
                 }
             }

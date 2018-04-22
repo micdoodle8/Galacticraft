@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.miccore.IntCache;
-import net.minecraft.util.MathHelper;
+import net.minecraft.init.Biomes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraft.world.biome.WorldChunkManager;
-import net.minecraft.world.gen.ChunkProviderSettings;
-import net.minecraft.world.gen.NoiseGenerator;
+import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.gen.ChunkGeneratorSettings;
 import net.minecraft.world.gen.NoiseGeneratorOctaves;
 import net.minecraft.world.gen.NoiseGeneratorPerlin;
 import net.minecraft.world.gen.layer.GenLayer;
@@ -27,7 +27,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MapGen extends WorldChunkManager implements Runnable
+public class MapGen extends BiomeProvider implements Runnable
 {
     public static boolean disabled;
     private static final float[] parabolicField = new float[25];
@@ -48,7 +48,6 @@ public class MapGen extends WorldChunkManager implements Runnable
     private final int tickLimit;
     private int imagefactor;
 
-    private BiomeGenBase[] biomeList; 
     private BiomeCache biomeCache;
     private GenLayer genBiomes;
     private GenLayer biomeIndexLayer;
@@ -63,11 +62,11 @@ public class MapGen extends WorldChunkManager implements Runnable
     private World world;
     private WorldType worldType;
     private WorldInfo worldInfo;
-    private ChunkProviderSettings settings = null;
+    private ChunkGeneratorSettings settings = null;
     
     private int[] biomesGrid = null;  //Memory efficient to keep re-using the same one.
-    private BiomeGenBase[] biomesGridHeights = null;
-    private int[] biomeCount;
+    private Biome[] biomesGridHeights = null;
+    private int[] biomeCount = null;
     private final int dimID;
 
     static
@@ -76,7 +75,7 @@ public class MapGen extends WorldChunkManager implements Runnable
         {
             for (int k = -2; k <= 2; ++k)
             {
-                float f = 10.0F / MathHelper.sqrt_float((float) (j * j + k * k) + 0.2F);
+                float f = 10.0F / MathHelper.sqrt((float) (j * j + k * k) + 0.2F);
                 parabolicField[j + 2 + (k + 2) * 5] = f;
             }
         }
@@ -124,27 +123,25 @@ public class MapGen extends WorldChunkManager implements Runnable
         this.progressZ = 0;
         this.world = worldIn;
         this.worldInfo = worldIn.getWorldInfo();
-
-        long seed = worldInfo.getSeed();
-        this.biomeList = BiomeGenBase.getBiomeGenArray();
-        this.biomeCache = new BiomeCache(this);
         this.worldType = worldInfo.getTerrainType();
+        long seed = worldInfo.getSeed();
+        this.biomeCache = new BiomeCache(this);
         String options = worldInfo.getGeneratorOptions();
         GenLayer[] agenlayer;
         try {
             if (options != null)
             {
-                this.settings = ChunkProviderSettings.Factory.jsonToFactory(options).func_177864_b();
+                this.settings = ChunkGeneratorSettings.Factory.jsonToFactory(options).build();
             }
             if (CompatibilityManager.isBOPWorld(this.worldType))
             {
                 Object settingsBOP = CompatibilityManager.classBOPws.getConstructor(String.class).newInstance(options);
-                Method bopSetup = CompatibilityManager.classBOPwcm.getMethod("setupBOPGenLayers", long.class, CompatibilityManager.classBOPWorldType, settingsBOP.getClass());
-                agenlayer = (GenLayer[]) bopSetup.invoke(null, seed, this.worldType, settingsBOP);
+                Method bopSetup = CompatibilityManager.classBOPwcm.getMethod("setupBOPGenLayers", long.class, settingsBOP.getClass());
+                agenlayer = (GenLayer[]) bopSetup.invoke(null, seed, settingsBOP);
             }
             else
             {
-                agenlayer = GenLayer.initializeAllBiomeGenerators(seed, worldType, options);
+                agenlayer = GenLayer.initializeAllBiomeGenerators(seed, worldType, this.settings);
             }
             agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayer);
         }
@@ -566,10 +563,10 @@ public class MapGen extends WorldChunkManager implements Runnable
         }
     }
 
-    static double[] noiseField3;
-    static double[] noiseField1;
-    static double[] noiseField2;
-    static double[] noiseField4;
+    static double[] mainNoiseRegion;
+    static double[] minLimitRegion;
+    static double[] maxLimitRegion;
+    static double[] depthRegion;
     private NoiseGeneratorOctaves noiseGen1;
     private NoiseGeneratorOctaves noiseGen2;
     private NoiseGeneratorOctaves noiseGen3;
@@ -585,32 +582,30 @@ public class MapGen extends WorldChunkManager implements Runnable
         NoiseGeneratorOctaves ignore2 = new NoiseGeneratorOctaves(this.rand, 10);
         noiseGen4 = new NoiseGeneratorOctaves(rand, 16);
         NoiseGeneratorOctaves ignore3 = new NoiseGeneratorOctaves(this.rand, 8);
-        NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, ignore1, ignore2, noiseGen4, ignore3};
-        noiseGens = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(this.world, this.rand, noiseGens);
-        noiseGen1 = (NoiseGeneratorOctaves)noiseGens[0];
-        noiseGen2 = (NoiseGeneratorOctaves)noiseGens[1];
-        noiseGen3 = (NoiseGeneratorOctaves)noiseGens[2];
-        noiseGen4 = (NoiseGeneratorOctaves)noiseGens[5];
+        net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld ctx =
+                new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld(noiseGen1, noiseGen2, noiseGen3, ignore1, ignore2, noiseGen4, ignore3);
+        ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(this.world, this.rand, ctx);
+        noiseGen1 = ctx.getLPerlin1();
+        noiseGen2 = ctx.getLPerlin2();
+        noiseGen3 = ctx.getPerlin();
+        noiseGen4 = ctx.getDepth();
     }
 
     private void generateHeightMap(int cx, int cy, int cz)
     {
         float f = this.settings.coordinateScale;
         float f1 = this.settings.heightScale;
-        noiseField4 = noiseGen4.generateNoiseOctaves(noiseField4, cx, cz, 5, 5, (double)this.settings.depthNoiseScaleX, (double)this.settings.depthNoiseScaleZ, (double)this.settings.depthNoiseScaleExponent);
-        noiseField3 = noiseGen3.generateNoiseOctaves(noiseField3, cx, cy, cz, 5, 33, 5, (double)(f / this.settings.mainNoiseScaleX), (double)(f1 / this.settings.mainNoiseScaleY), (double)(f / this.settings.mainNoiseScaleZ));
-        noiseField1 = noiseGen1.generateNoiseOctaves(noiseField1, cx, cy, cz, 5, 33, 5, (double)f, (double)f1, (double)f);
-        noiseField2 = noiseGen2.generateNoiseOctaves(noiseField2, cx, cy, cz, 5, 33, 5, (double)f, (double)f1, (double)f);
-        boolean flag1 = false;
-        boolean flag = false;
-        int l = 2;
-        int i1 = 0;
-        double d4 = 8.5D;
+        depthRegion = noiseGen4.generateNoiseOctaves(depthRegion, cx, cz, 5, 5, (double)this.settings.depthNoiseScaleX, (double)this.settings.depthNoiseScaleZ, (double)this.settings.depthNoiseScaleExponent);
+        mainNoiseRegion = noiseGen3.generateNoiseOctaves(mainNoiseRegion, cx, cy, cz, 5, 33, 5, (double)(f / this.settings.mainNoiseScaleX), (double)(f1 / this.settings.mainNoiseScaleY), (double)(f / this.settings.mainNoiseScaleZ));
+        minLimitRegion = noiseGen1.generateNoiseOctaves(minLimitRegion, cx, cy, cz, 5, 33, 5, (double)f, (double)f1, (double)f);
+        maxLimitRegion = noiseGen2.generateNoiseOctaves(maxLimitRegion, cx, cy, cz, 5, 33, 5, (double)f, (double)f1, (double)f);
         boolean amplified = this.worldType == WorldType.AMPLIFIED;
         double minLimitScale = (double)this.settings.lowerLimitScale;
         double maxLimitScale = (double)this.settings.upperLimitScale;
         double stretchY = (double)this.settings.stretchY * 128.0D / 256.0D;
         double baseSize = (double)this.settings.baseSize;
+        int i = 2;  //start at 2 and later skip 19-33 - because these heightMap entries are never referenced in our code in this class
+        int j = 0;
 
         for (int xx = 0; xx < 5; ++xx)
         {
@@ -619,16 +614,16 @@ public class MapGen extends WorldChunkManager implements Runnable
                 float f2 = 0.0F;
                 float f3 = 0.0F;
                 float f4 = 0.0F;
-                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].minHeight;
+                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].getBaseHeight();
 
                 for (int x = -2; x <= 2; ++x)
                 {
-                    int baseIndex = xx + x + 22 + zz * 10;
+                    int baseIndex = xx + x + 22;
                     for (int z = -2; z <= 2; ++z)
                     {
-                        BiomeGenBase biomegenbase1 = biomesGridHeights[baseIndex + z * 10];
-                        float f5 = this.settings.biomeDepthOffSet + biomegenbase1.minHeight * this.settings.biomeDepthWeight;
-                        float f6 = this.settings.biomeScaleOffset + biomegenbase1.maxHeight * this.settings.biomeScaleWeight;
+                        Biome biomegenbase1 = biomesGridHeights[baseIndex + (zz + z) * 10];
+                        float f5 = this.settings.biomeDepthOffSet + biomegenbase1.getBaseHeight() * this.settings.biomeDepthWeight;
+                        float f6 = this.settings.biomeScaleOffset + biomegenbase1.getHeightVariation() * this.settings.biomeScaleWeight;
 
                         if (amplified && f5 > 0.0F)
                         {
@@ -638,7 +633,7 @@ public class MapGen extends WorldChunkManager implements Runnable
 
                         float f7 = parabolicField[x + 12 + z * 5] / (f5 + 2.0F);
 
-                        if (biomegenbase1.minHeight > theMinHeight)
+                        if (biomegenbase1.getBaseHeight() > theMinHeight)
                         {
                             f7 /= 2.0F;
                         }
@@ -649,63 +644,64 @@ public class MapGen extends WorldChunkManager implements Runnable
                     }
                 }
 
-                f2 /= f4;
-                f3 /= f4;
+                f2 = f2 / f4;
+                f3 = f3 / f4;
                 f2 = f2 * 0.9F + 0.1F;
-                f3 = f3 / 2.0F - 0.125F;
-                double d12 = noiseField4[i1] / 8000.0D;
+                f3 = (f3 * 4.0F - 1.0F) / 8.0F;
+                double d7 = this.depthRegion[j] / 8000.0D;
 
-                if (d12 < 0.0D)
+                if (d7 < 0.0D)
                 {
-                    d12 = -d12 * 0.3D;
+                    d7 = -d7 * 0.3D;
                 }
 
-                d12 = d12 * 3.0D - 2.0D;
+                d7 = d7 * 3.0D - 2.0D;
 
-                if (d12 < 0.0D)
+                if (d7 < 0.0D)
                 {
-                    d12 /= 2.0D;
+                    d7 = d7 / 2.0D;
 
-                    if (d12 < -1.0D)
+                    if (d7 < -1.0D)
                     {
-                        d12 = -1.0D;
+                        d7 = -1.0D;
                     }
 
-                    d12 /= 1.4D;
-                    d12 /= 2.0D;
+                    d7 = d7 / 1.4D;
+                    d7 = d7 / 2.0D;
                 }
                 else
                 {
-                    if (d12 > 1.0D)
+                    if (d7 > 1.0D)
                     {
-                        d12 = 1.0D;
+                        d7 = 1.0D;
                     }
 
-                    d12 /= 8.0D;
+                    d7 = d7 / 8.0D;
                 }
 
-                ++i1;
-                double d13 = (double) f3;
-                final double d14 = (double) f2 / 6.0D;
-                d13 += d12 * 0.2D;
-                d13 = d13 * baseSize / 8.0D;
-                double d5 = baseSize + d13 * 4.0D;
+                ++j;
+                double d8 = (double)f3;
+                double d9 = (double)f2;
+                d8 = d8 + d7 * 0.2D;
+                d8 = d8 * baseSize / 8.0D;
+                double d0 = baseSize + d8 * 4.0D;
 
                 for (int j2 = 2; j2 < 19; ++j2)
                 {
-                    double d6 = ((double) j2 - d5) * stretchY / d14;
-                    if (d6 < 0.0D)
+                    double d1 = ((double)j2 - d0) * stretchY / d9;
+                    if (d1 < 0.0D)
                     {
-                        d6 *= 4.0D;
+                        d1 *= 4.0D;
                     }
 
-                    double d7 = noiseField1[l] / minLimitScale;
-                    double d8 = noiseField2[l] / maxLimitScale;
-                    double d9 = (noiseField3[l] / 10.0D + 1.0D) / 2.0D;
-                    heighttemp[l] = MathHelper.denormalizeClamp(d7, d8, d9) - d6;
-                    ++l;
+                    double d2 = this.minLimitRegion[i] / minLimitScale;
+                    double d3 = this.maxLimitRegion[i] / maxLimitScale;
+                    double d4 = (this.mainNoiseRegion[i] / 10.0D + 1.0D) / 2.0D;
+                    double d5 = MathHelper.clampedLerp(d2, d3, d4) - d1;
+                    heighttemp[i] = d5;
+                    ++i;
                 }
-                l += 16;
+                i += 16;  //We skip j2 = 0-1 and 19-32
             }
         }
     }
@@ -715,7 +711,7 @@ public class MapGen extends WorldChunkManager implements Runnable
      * Returns an array of biomes for the location input, used for generating the height map
      */
     @Override
-    public BiomeGenBase[] getBiomesForGeneration(BiomeGenBase[] biomes, int x, int z, int width, int height)
+    public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height)
     {
         IntCache.resetIntCacheGC();
         int[] aint = this.genBiomes.getInts(x, z, width, height);
@@ -723,19 +719,15 @@ public class MapGen extends WorldChunkManager implements Runnable
         int size = width * height;
         if (biomes == null || biomes.length < size)
         {
-            biomes = new BiomeGenBase[size];
+            biomes = new Biome[size];
         }
         for (int i = 0; i < size; ++i)
         {
         	int biomeId = aint[i];
-        	BiomeGenBase biomegenbase = null;
-        	if (biomeId >= 0 && biomeId <= biomeList.length)
-        	{
-        		biomegenbase = biomeList[biomeId];
-        	}
+        	Biome biomegenbase = Biome.getBiome(biomeId, Biomes.DEFAULT);
 //        	else
 //        		System.err.println("MapGen: Biome ID is out of bounds: " + biomeId + ", defaulting to 0 (Ocean)");
-        	biomes[i] = biomegenbase == null ? BiomeGenBase.ocean : biomegenbase;
+        	biomes[i] = biomegenbase == null ? Biomes.OCEAN : biomegenbase;
         }
 
         return biomes;

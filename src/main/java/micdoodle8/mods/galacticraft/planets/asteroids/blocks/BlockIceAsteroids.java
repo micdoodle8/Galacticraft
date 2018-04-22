@@ -7,18 +7,22 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -33,19 +37,19 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
 {
     public BlockIceAsteroids(String assetName)
     {
-        super(Material.ice, false);
+        super(Material.ICE, false);
         this.slipperiness = 0.98F;
         this.setTickRandomly(true);
         this.setHardness(0.5F);
         this.setUnlocalizedName(assetName);
-        this.setStepSound(soundTypeGlass);
+        this.setSoundType(SoundType.GLASS);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-        return EnumWorldBlockLayer.TRANSLUCENT;
+        return BlockRenderLayer.TRANSLUCENT;
     }
 
     @SideOnly(Side.CLIENT)
@@ -56,22 +60,15 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, BlockPos pos, EnumFacing side)
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack tool)
     {
-        return super.shouldSideBeRendered(world, pos, EnumFacing.getFront(1 - side.getIndex()));
-    }
-
-    @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te)
-    {
-        player.addStat(StatList.mineBlockStatArray[Block.getIdFromBlock(this)], 1);
+        player.addStat(StatList.getBlockStats(this));
         player.addExhaustion(0.025F);
 
-        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getSilkTouchModifier(player))
+        if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0)
         {
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-            ItemStack itemstack = this.createStackedBlock(state);
+            ItemStack itemstack = this.getSilkTouchDrop(state);
 
             if (itemstack != null)
             {
@@ -86,21 +83,22 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
         }
         else
         {
-            if (GCCoreUtil.getDimensionID(worldIn) == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
+            if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
                 worldIn.setBlockToAir(pos);
                 return;
             }
 
-            int i1 = EnchantmentHelper.getFortuneModifier(player);
+            int i1 = EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, tool);
             harvesters.set(player);
             this.dropBlockAsItem(worldIn, pos, state, i1);
             harvesters.set(null);
-            Material material = worldIn.getBlockState(pos.down()).getBlock().getMaterial();
+            IBlockState state1 = worldIn.getBlockState(pos.down());
+            Material material = state1.getMaterial();
 
             if (material.blocksMovement() || material.isLiquid())
             {
-                worldIn.setBlockState(pos, Blocks.flowing_water.getDefaultState());
+                worldIn.setBlockState(pos, Blocks.FLOWING_WATER.getDefaultState());
             }
         }
     }
@@ -114,7 +112,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 13 - this.getLightOpacity())
+        if (worldIn.getLightFor(EnumSkyBlock.BLOCK, pos) > 13 - this.getLightOpacity(state))
         {
             if (GCCoreUtil.getDimensionID(worldIn) == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
@@ -123,19 +121,25 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
             }
 
             this.dropBlockAsItem(worldIn, pos, worldIn.getBlockState(pos), 0);
-            worldIn.setBlockState(pos, Blocks.water.getDefaultState());
+            worldIn.setBlockState(pos, Blocks.WATER.getDefaultState());
         }
     }
 
     @Override
-    public int getMobilityFlag()
+    public EnumPushReaction getMobilityFlag(IBlockState state)
     {
-        return 0;
+        return EnumPushReaction.NORMAL;
     }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.GENERAL;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 }

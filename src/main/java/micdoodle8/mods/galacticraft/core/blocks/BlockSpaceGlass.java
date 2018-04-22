@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -13,10 +9,12 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -26,15 +24,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
 
 public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
 {
@@ -45,41 +50,41 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     public final GlassType type;
     private final GlassFrame frame; //frameValue corresponds to the damage of the placing item
-    private int color = 0xFFFFFF;
+    public int color = 0xFFFFFF;
     private final Block baseBlock;
     private boolean isClient; 
-    private static Class clazz = Blocks.water.getClass().getSuperclass();
+    private static Class clazz = Blocks.WATER.getClass().getSuperclass();
     
     public BlockSpaceGlass(String assetName, GlassType newType, GlassFrame newFrame, Block base)
     {
-        super(Material.glass);
+        super(Material.GLASS);
         this.isClient = GalacticraftCore.proxy.getClass().getName().equals("micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore");
         this.type = newType;
         this.frame = newFrame;
         this.baseBlock = base == null ? this : base;
         this.color = frame.getDefaultColor();
         this.setUnlocalizedName(assetName);
-        this.setStepSound(Block.soundTypeGlass);
-        this.isBlockContainer = true;
+        this.setSoundType(SoundType.GLASS);
+        this.hasTileEntity = true;
         this.setDefaultState(this.blockState.getBaseState().withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, new IProperty[] {MODEL, ROTATION});
+        return new BlockStateContainer(this, new IProperty[] {MODEL, ROTATION});
     }
-    
-    @Override
+
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
         //The plain block variety produces items carrying all variants as damage values
         //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
         if (this.frame == GlassFrame.PLAIN)
         {
             for (int i = 0; i < GlassFrame.values().length; i++)
-                list.add(new ItemStack(itemIn, 1, i));
+                list.add(new ItemStack(this, 1, i));
         }
     }
 
@@ -88,7 +93,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
-    
+
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
     {
@@ -96,11 +101,11 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int damage, EntityLivingBase placer)
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
     {
         //This allows the different item damage values to place different instances of the block - the instances of the block are constructed in GCBlocks
-        if (damage >= GlassFrame.values().length) damage = 0;
-        switch (GlassFrame.values()[damage])
+        if (meta >= GlassFrame.values().length) meta = 0;
+        switch (GlassFrame.values()[meta])
         {
         case TIN_DECO:
         {
@@ -149,15 +154,21 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -167,44 +178,37 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public Material getMaterial()
+    public Material getMaterial(IBlockState state)
     {
         if (this.isClient && JavaUtil.instance.isCalledBySpecific(clazz))
         {
-            return Material.water;
+            return Material.WATER;
         }
         return this.blockMaterial;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumWorldBlockLayer getBlockLayer()
+    public BlockRenderLayer getBlockLayer()
     {
-         return EnumWorldBlockLayer.TRANSLUCENT;
+         return BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override
-    public boolean canRenderInLayer(EnumWorldBlockLayer layer)
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
     {
-        return layer == EnumWorldBlockLayer.TRANSLUCENT || layer == EnumWorldBlockLayer.SOLID;
+        return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
     }
-
+    
     @Override
-    @SideOnly(Side.CLIENT)
-    public int colorMultiplier(IBlockAccess worldIn, BlockPos pos, int renderPasss)
-    {
-        return this.color;
-    }
-
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
     {
         IBlockState above = worldIn.getBlockState(pos.up());
         IBlockState below = worldIn.getBlockState(pos.down());
@@ -212,7 +216,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         IBlockState south = worldIn.getBlockState(pos.south());
         IBlockState west = worldIn.getBlockState(pos.west());
         IBlockState east = worldIn.getBlockState(pos.east());
-        
+
         boolean connectN = this.canPaneConnectToBlock(north, state);
         boolean connectS = this.canPaneConnectToBlock(south, state);
         boolean connectW = this.canPaneConnectToBlock(west, state);
@@ -224,7 +228,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         boolean plateS = this.buildSolidSide(south, state);
         boolean plateW = this.buildSolidSide(west, state);
         boolean plateE = this.buildSolidSide(east, state);
-        
+
         //No plate on the sides which glass is facing
         if (connectN || connectS)
         {
@@ -234,7 +238,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         {
             plateN = plateS = false;
         }
-        
+
         //Singleton
         if (!connectE && !connectW && !connectN && !connectS)
         {
@@ -260,85 +264,90 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
                 plateW = plateE = false;
             }
         }
-             
-        float posGlass = 0.375F;
-        float posBase = 0.225F;
-        float xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
-        float xMax = plateU || plateD || plateN || plateS ? 1F - posBase : 1F - posGlass;
-        float yMin = 0F; //plateE || plateW || plateN || plateS ? posBase : 0.375F;
-        float yMax = 1F; //plateE || plateW || plateN || plateS ? 0.775F : 0.625F;
-        float zMin = plateU || plateD || plateE || plateW ? posBase : posGlass;
-        float zMax = plateU || plateD || plateE || plateW ? 1F - posBase : 1F - posGlass;
 
-        if (plateW || connectW) xMin = 0F;
-        if (plateE || connectE) xMax = 1F;
-        if (plateN || connectN) zMin = 0F;
-        if (plateS || connectS) zMax = 1F;           
+        final double posGlass = 0.375D;
+        final double posBase = 0.225D;
+        double xMin = plateU || plateD || plateN || plateS ? posBase : posGlass;
+        double xMax = plateU || plateD || plateN || plateS ? 1D - posBase : 1D - posGlass;
+        double yMin = 0D; //plateE || plateW || plateN || plateS ? posBase : 0.375D;
+        double yMax = 1D; //plateE || plateW || plateN || plateS ? 0.775D : 0.625D;
+        double zMin = plateU || plateD || plateE || plateW ? posBase : posGlass;
+        double zMax = plateU || plateD || plateE || plateW ? 1D - posBase : 1D - posGlass;
+
+        if (plateW || connectW) xMin = 0D;
+        if (plateE || connectE) xMax = 1D;
+        if (plateN || connectN) zMin = 0D;
+        if (plateS || connectS) zMax = 1D;
 
         //Special for corner diagonals
         if ((connectW ^ connectE) && (connectN ^ connectS) && !(plateU && plateD))
         {
-            float diag = 0.25F;
+            double diag = 0.25D;
             if (connectW)
             {
-                xMin = diag - 0.01F;
+                xMin = diag - 0.01D;
                 xMax = diag;
             }
             else
             {
-                xMin = 1F - diag;
-                xMax = 1.01F - diag;
+                xMin = 1D - diag;
+                xMax = 1.01D - diag;
             }
             if (connectN)
             {
-                zMin = diag - 0.01F;
+                zMin = diag - 0.01D;
                 zMax = diag;
             }
             else
             {
-                zMin = 1F - diag;
-                zMax = 1.01F - diag;
+                zMin = 1D - diag;
+                zMax = 1.01D - diag;
             }
         }
-        
-        this.setBlockBounds(xMin, yMin, zMin, xMax, yMax, zMax);
-        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-    }
 
+        xMin += pos.getX();
+        xMax += pos.getX();
+        yMin += pos.getY();
+        yMax += pos.getY();
+        zMin += pos.getZ();
+        zMax += pos.getZ();
+        AxisAlignedBB axisalignedbb = new AxisAlignedBB(xMin, yMin, zMin, xMax, yMax, zMax);
+        if (axisalignedbb != null && mask.intersects(axisalignedbb))
+        {
+            list.add(axisalignedbb);
+        }
+    }
+    
     @Override
-    public void setBlockBoundsForItemRender()
+    @SideOnly(Side.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos)
     {
-        this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
+        return this.getBoundingBox(bs, worldIn, pos).offset(pos);
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState bs, IBlockAccess worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
-        if (!(state.getBlock() instanceof BlockSpaceGlass))
-        {
-            return;
-        }
-        
         IBlockState above = worldIn.getBlockState(pos.up());
         IBlockState below = worldIn.getBlockState(pos.down());
         IBlockState north = worldIn.getBlockState(pos.north());
         IBlockState south = worldIn.getBlockState(pos.south());
         IBlockState west = worldIn.getBlockState(pos.west());
         IBlockState east = worldIn.getBlockState(pos.east());
-        
+
         boolean connectedN = this.canPaneConnectToBlock(north, state);
         boolean connectedS = this.canPaneConnectToBlock(south, state);
         boolean connectedW = this.canPaneConnectToBlock(west, state);
         boolean connectedE = this.canPaneConnectToBlock(east, state);
-        
+
         boolean plateD = this.buildSolidSide(below, state);
         boolean plateU = this.buildSolidSide(above, state);
         boolean plateN = this.buildSolidSide(north, state);
         boolean plateS = this.buildSolidSide(south, state);
         boolean plateW = this.buildSolidSide(west, state);
         boolean plateE = this.buildSolidSide(east, state);
-        
+
         //No plate on the sides which glass is facing
         if (connectedN || connectedS)
         {
@@ -348,7 +357,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         {
             plateN = plateS = false;
         }
-        
+
         //Singleton
         if (!connectedE && !connectedW && !connectedN && !connectedS)
         {
@@ -374,47 +383,73 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
                 plateW = plateE = false;
             }
         }
-             
-        float f, f1, f2, f3;
+
+        int offset = 0;
+        int base = 1;
         int solids = (plateD ? 1 : 0) + (plateU ? 1 : 0) + (plateN ? 1 : 0) + (plateS ? 1 : 0) + (plateW ? 1 : 0) + (plateE ? 1 : 0);
         if (solids > 2 || (plateU && plateD) || (plateW && plateE) || (plateN && plateS))
         {
-            //Widen to the frame width, if frames on opposite sides
-            f = 0.25F;
-            f1 = 0.75F;
-            f2 = 0.25F;
-            f3 = 0.75F;
-        }
-        else {
-            //The glass width
-            f = 0.375F;
-            f1 = 0.625F;
-            f2 = 0.375F;
-            f3 = 0.625F;
+            base = 0;
         }
 
         if (connectedW || plateW)
         {
-            f = 0.0F;
-        }
-        if (connectedE || plateE)
-        {
-            f1 = 1.0F;
+            offset = 2;
         }
         if (connectedN || plateN)
         {
-            f2 = 0.0F;
+            offset += 4;
+        }
+        if (connectedE || plateE)
+        {
+            offset += 8;
         }
         if (connectedS || plateS)
         {
-            f3 = 1.0F;
+            offset += 16;
         }
         
-        this.setBlockBounds(f, 0.0F, f2, f1, 1.0F, f3);
+        // See 1.10 version for the logic
+        return BOUNDING_BOXES[offset + base];
     }
 
+    protected static final AxisAlignedBB[] BOUNDING_BOXES = {
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D), //Widen to the frame width, if frames on opposite sides
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D), //The glass width
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),     //0001
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 0.625D),   //0001
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0010
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0010
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),     //0011
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 0.625D),   //0011
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),   //0100
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D), //0100
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),     //0101
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 0.625D),   //0101
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0110
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0110
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),     //0111
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.625D),   //0111
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1000
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D), //1000
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),     //1001
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 0.625D, 1.0D, 1.0D),   //1001
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1010
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1010
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),     //1011
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.625D, 1.0D, 1.0D),   //1011
+        new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),   //1100
+        new AxisAlignedBB(0.375D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D), //1100
+        new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),     //1101
+        new AxisAlignedBB(0.0D, 0.0D, 0.375D, 1.0D, 1.0D, 1.0D),   //1101
+        new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1110
+        new AxisAlignedBB(0.375D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),   //1110
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),     //1111
+        new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)   //1111
+    };
+
     @Override
-    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing dir)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing dir)
     {
         IBlockState thisBlock = world.getBlockState(pos);
         if ((dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH) && this.isConnectedEW(thisBlock, world, pos)) return false;
@@ -481,8 +516,8 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         IBlockState south = worldIn.getBlockState(pos.south());
         IBlockState west = worldIn.getBlockState(pos.west());
         IBlockState east = worldIn.getBlockState(pos.east());
-        int solidsEW = (west.getBlock().isSideSolid(worldIn, pos.west(), EnumFacing.EAST) ? 1 : 0) + (east.getBlock().isSideSolid(worldIn, pos.east(), EnumFacing.WEST) ? 1 : 0); 
-        int solidsNS = (north.getBlock().isSideSolid(worldIn, pos.north(), EnumFacing.SOUTH) ? 1 : 0) + (south.getBlock().isSideSolid(worldIn, pos.south(), EnumFacing.NORTH) ? 1 : 0);
+        int solidsEW = (west.getBlock().isSideSolid(worldIn.getBlockState(pos.west()), worldIn, pos.west(), EnumFacing.EAST) ? 1 : 0) + (east.getBlock().isSideSolid(worldIn.getBlockState(pos.east()), worldIn, pos.east(), EnumFacing.WEST) ? 1 : 0);
+        int solidsNS = (north.getBlock().isSideSolid(worldIn.getBlockState(pos.north()), worldIn, pos.north(), EnumFacing.SOUTH) ? 1 : 0) + (south.getBlock().isSideSolid(worldIn.getBlockState(pos.south()), worldIn, pos.south(), EnumFacing.NORTH) ? 1 : 0);
         return solidsEW > solidsNS;
     }
     

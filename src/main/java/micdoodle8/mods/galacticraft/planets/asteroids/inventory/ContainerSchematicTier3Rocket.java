@@ -11,19 +11,19 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ContainerSchematicTier3Rocket extends Container
 {
     public InventorySchematicTier3Rocket craftMatrix = new InventorySchematicTier3Rocket(this);
     public IInventory craftResult = new InventoryCraftResult();
-    private final World worldObj;
+    private final World world;
 
     public ContainerSchematicTier3Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
     {
         final int change = 27;
-        this.worldObj = par1InventoryPlayer.player.worldObj;
+        this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotRocketBenchResult(par1InventoryPlayer.player, this.craftMatrix, this.craftResult, 0, 142, 18 + 69 + change));
         int var6;
         int var7;
@@ -85,13 +85,13 @@ public class ContainerSchematicTier3Rocket extends Container
     {
         super.onContainerClosed(par1EntityPlayer);
 
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
             for (int var2 = 1; var2 < this.craftMatrix.getSizeInventory(); ++var2)
             {
                 final ItemStack var3 = this.craftMatrix.removeStackFromSlot(var2);
 
-                if (var3 != null)
+                if (!var3.isEmpty())
                 {
                     par1EntityPlayer.entityDropItem(var3, 0.0F);
                 }
@@ -114,8 +114,8 @@ public class ContainerSchematicTier3Rocket extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot var3 = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot var3 = this.inventorySlots.get(par1);
 
         if (var3 != null && var3.getHasStack())
         {
@@ -127,7 +127,7 @@ public class ContainerSchematicTier3Rocket extends Container
             {
                 if (!this.mergeItemStack(var4, 22, 58, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 var3.onSlotChange(var4, var2);
@@ -137,7 +137,7 @@ public class ContainerSchematicTier3Rocket extends Container
                 boolean valid = false;
                 for (int i = 1; i < 19; i++)
                 {
-                    Slot testSlot = (Slot) this.inventorySlots.get(i);
+                    Slot testSlot = this.inventorySlots.get(i);
                     if (!testSlot.getHasStack() && testSlot.isItemValid(var2))
                     {
                         valid = true;
@@ -148,54 +148,54 @@ public class ContainerSchematicTier3Rocket extends Container
                 {
                     if (!this.mergeOneItemTestValid(var4, 1, 19, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.chest))
+                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 22 && par1 < 49)
                     {
                         if (!this.mergeItemStack(var4, 49, 58, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 >= 49 && par1 < 58)
                     {
                         if (!this.mergeItemStack(var4, 22, 49, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 22, 58, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.isEmpty())
             {
-                var3.putStack((ItemStack) null);
+                var3.putStack(ItemStack.EMPTY);
             }
             else
             {
                 var3.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            var3.onPickupFromSlot(par1EntityPlayer, var4);
+            var3.onTake(par1EntityPlayer, var4);
         }
 
         return var2;
@@ -204,21 +204,21 @@ public class ContainerSchematicTier3Rocket extends Container
     protected boolean mergeOneItemTestValid(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (!par1ItemStack.isEmpty())
         {
             Slot slot;
             ItemStack slotStack;
 
             for (int k = par2; k < par3; k++)
             {
-                slot = (Slot) this.inventorySlots.get(k);
+                slot = this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null && slot.isItemValid(par1ItemStack))
+                if (slotStack.isEmpty() && slot.isItemValid(par1ItemStack))
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

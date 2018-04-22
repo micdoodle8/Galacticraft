@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftcore:item_basic_moon",
+    "data": 0,
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 12
+    }
+  }
+}

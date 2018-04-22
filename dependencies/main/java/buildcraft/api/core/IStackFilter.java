@@ -4,11 +4,30 @@
  * of the license located in http://www.mod-buildcraft.com/MMPL-1.0.txt */
 package buildcraft.api.core;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 
 /** This interface provides a convenient means of dealing with entire classes of items without having to specify each
  * item individually. */
 public interface IStackFilter {
 
-    boolean matches(ItemStack stack);
+    /** Check to see if a given stack matches this filter.
+     * 
+     * @param stack The stack to test. stack.isEmpty will always return false.
+     * @return True if it does match, false otherwise. */
+    boolean matches(@Nonnull ItemStack stack);
+
+    default IStackFilter and(IStackFilter filter) {
+        IStackFilter before = this;
+        return (stack) -> before.matches(stack) && filter.matches(stack);
+    }
+
+    /**
+     * Returns example stack to match this filter
+     */
+    default NonNullList<ItemStack> getExamples() {
+        return NonNullList.withSize(0, ItemStack.EMPTY);
+    }
 }

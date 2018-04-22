@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:basic_item_venus",
+    "data": 1,
+    "count": 9
+  },
+  "pattern": [
+    "X"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:venus",
+      "data": 12
+    }
+  }
+}

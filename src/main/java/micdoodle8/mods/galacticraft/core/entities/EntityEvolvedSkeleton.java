@@ -6,91 +6,44 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
 public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBreathable, ITumblable
 {
+    private static final DataParameter<Float> SPIN_PITCH = EntityDataManager.createKey(EntityEvolvedSkeleton.class, DataSerializers.FLOAT);
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
 
     public EntityEvolvedSkeleton(World worldIn)
     {
         super(worldIn);
-        this.tasks.taskEntries.clear();
-        this.targetTasks.taskEntries.clear();
-        this.tasks.addTask(1, new EntityAISwimming(this));
-        this.tasks.addTask(2, new EntityAIRestrictSun(this));
-        this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityWolf.class, 6.0F, 1.0D, 1.2D));
-        this.tasks.addTask(4, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntityIronGolem.class, true));
-
-        if (worldIn != null && !worldIn.isRemote)
-        {
-            this.setCombatTask();
-        }
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.35F);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35F);
     }
 
     @Override
     public boolean canBreath()
     {
         return true;
-    }
-
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2)
-    {
-        EntityArrow entityarrow = new EntityArrow(this.worldObj, this, par1EntityLivingBase, 0.4F, 17 - this.worldObj.getDifficulty().getDifficultyId() * 4);
-        int i = EnchantmentHelper.getEnchantmentLevel(Enchantment.power.effectId, this.getHeldItem());
-        int j = EnchantmentHelper.getEnchantmentLevel(Enchantment.punch.effectId, this.getHeldItem());
-        entityarrow.setDamage(par2 * 2.0F + this.rand.nextGaussian() * 0.25D + this.worldObj.getDifficulty().getDifficultyId() * 0.11F);
-
-        if (i > 0)
-        {
-            entityarrow.setDamage(entityarrow.getDamage() + i * 0.5D + 0.5D);
-        }
-
-        if (j > 0)
-        {
-            entityarrow.setKnockbackStrength(j);
-        }
-
-        if (EnchantmentHelper.getEnchantmentLevel(Enchantment.flame.effectId, this.getHeldItem()) > 0 || this.getSkeletonType() == 1)
-        {
-            entityarrow.setFire(100);
-        }
-
-        this.playSound("random.bow", 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.worldObj.spawnEntityInWorld(entityarrow);
     }
 
     @Override
@@ -102,9 +55,9 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             this.motionY = 0.24D;
         }
 
-        if (this.isPotionActive(Potion.jump))
+        if (this.isPotionActive(MobEffects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
@@ -118,7 +71,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         ForgeHooks.onLivingJump(this);
     }
 
-    @Override
     protected void addRandomDrop()
     {
         int r = this.rand.nextInt(12);
@@ -141,23 +93,31 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             this.dropItem(GCItems.canister, 1);
             break;
         default:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.pumpkin_seeds, 1);
+            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.PUMPKIN_SEEDS, 1);
             break;
         }
     }
 
     @Override
-    protected void dropFewItems(boolean p_70628_1_, int p_70628_2_)
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
     {
-        Item item = this.getDropItem();
+        // No loot table
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+        this.dropEquipment(wasRecentlyHit, lootingModifier);
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        Item item = Items.BONE;
 
         int j = this.rand.nextInt(3);
 
         if (item != null)
         {
-            if (p_70628_2_ > 0)
+            if (lootingModifier > 0)
             {
-                j += this.rand.nextInt(p_70628_2_ + 1);
+                j += this.rand.nextInt(lootingModifier + 1);
             }
 
             for (int k = 1; k < j; ++k)
@@ -166,13 +126,18 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
             }
         }
 
-        j = this.rand.nextInt(3 + p_70628_2_);
+        j = this.rand.nextInt(3 + lootingModifier);
         if (j > 1)
-            this.dropItem(Items.bone, 1);
+            this.dropItem(Items.BONE, 1);
 
         //Drop lapis as semi-rare drop if player hit and if dropping bones
-        if (p_70628_1_ && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) == 0)
-            this.entityDropItem(new ItemStack(Items.dye, 1, 4), 0.0F);
+        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) <= lootingModifier)
+            this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
+
+        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
+        {
+            this.addRandomDrop();
+        }
     }
 
     @Override
@@ -181,7 +146,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
         if (value !=0F)
         {
             if (this.tumbling == 0F)
-                this.tumbling = (this.worldObj.rand.nextFloat() + 0.5F) * value;
+                this.tumbling = (this.world.rand.nextFloat() + 0.5F) * value;
         }
         else
             this.tumbling = 0F;
@@ -201,7 +166,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
                 }
             }
 
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.setSpinPitch(this.tumbling);
             }
@@ -223,7 +188,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     protected void entityInit()
     {
         super.entityInit();
-        this.dataWatcher.addObject(16, 0.0F);
+        this.getDataManager().register(SPIN_PITCH, 0.0F);
     }
 
     @Override
@@ -242,12 +207,12 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
 
     public float getSpinPitch()
     {
-        return this.dataWatcher.getWatchableObjectFloat(16);
+        return this.getDataManager().get(SPIN_PITCH);
     }
 
     public void setSpinPitch(float pitch)
     {
-        this.dataWatcher.updateObject(16, pitch);
+        this.getDataManager().set(SPIN_PITCH, pitch);
     }
 
     @Override
@@ -272,7 +237,7 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 1F;
-        return (float) (this.motionZ / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionZ / MathHelper.sqrt(velocity2));
     }
 
     @Override
@@ -280,6 +245,6 @@ public class EntityEvolvedSkeleton extends EntitySkeleton implements IEntityBrea
     {
         double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
         if (velocity2 == 0D) return 0F;
-        return (float) (this.motionX / MathHelper.sqrt_double(velocity2));
+        return (float) (this.motionX / MathHelper.sqrt(velocity2));
     }
 }

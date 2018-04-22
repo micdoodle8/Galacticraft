@@ -1,0 +1,20 @@
+{
+  "result": {
+    "item": "galacticraftcore:rocket_fins"
+  },
+  "pattern": [
+    " Y ",
+    "XYX",
+    "X X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:heavy_plating"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

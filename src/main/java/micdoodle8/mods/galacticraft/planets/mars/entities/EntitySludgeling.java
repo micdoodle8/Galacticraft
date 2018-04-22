@@ -8,13 +8,16 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntitySludgeling extends EntityMob implements IEntityBreathable
@@ -25,8 +28,8 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         this.setSize(0.3F, 0.2F);
         this.tasks.taskEntries.clear();
         this.targetTasks.taskEntries.clear();
-        this.tasks.addTask(1, new EntityAIAttackOnCollide(this, 0.25F, true));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, EntityPlayer.class, 1.0D, false));
+        this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.25F, true));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
         this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, true, null));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedZombie.class, 0, false, true, null));
         this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedSkeleton.class, 0, false, true, null));
@@ -45,8 +48,8 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(7.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(1.0F);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(7.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1.0F);
     }
 
     @Override
@@ -56,21 +59,21 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    protected String getLivingSound()
+    protected SoundEvent getAmbientSound()
     {
-        return "mob.silverfish.say";
+        return SoundEvents.ENTITY_SILVERFISH_AMBIENT;
     }
 
     @Override
-    protected String getHurtSound()
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
     {
-        return "mob.silverfish.hit";
+        return SoundEvents.ENTITY_SILVERFISH_HURT;
     }
 
     @Override
-    protected String getDeathSound()
+    protected SoundEvent getDeathSound()
     {
-        return "mob.silverfish.kill";
+        return SoundEvents.ENTITY_SILVERFISH_DEATH;
     }
 
     public EntityPlayer getClosestEntityToAttack(double par1, double par3, double par5, double par7)
@@ -78,9 +81,9 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         double var9 = -1.0D;
         EntityPlayer var11 = null;
 
-        for (int var12 = 0; var12 < this.worldObj.loadedEntityList.size(); ++var12)
+        for (int var12 = 0; var12 < this.world.loadedEntityList.size(); ++var12)
         {
-            EntityPlayer var13 = (EntityPlayer) this.worldObj.loadedEntityList.get(var12);
+            EntityPlayer var13 = (EntityPlayer) this.world.loadedEntityList.get(var12);
             double var14 = var13.getDistanceSq(par1, par3, par5);
 
             if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
@@ -96,13 +99,13 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     @Override
     protected void playStepSound(BlockPos pos, Block block)
     {
-        this.worldObj.playSoundAtEntity(this, "mob.silverfish.step", 1.0F, 1.0F);
+        this.playSound(SoundEvents.ENTITY_SILVERFISH_STEP, 0.15F, 1.0F);
     }
 
     @Override
     protected Item getDropItem()
     {
-        return Item.getItemFromBlock(Blocks.air);
+        return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
@@ -123,7 +126,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.worldObj.getClosestPlayerToEntity(this, 5.0D);
+            EntityPlayer var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else

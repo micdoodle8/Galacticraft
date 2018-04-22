@@ -1,0 +1,15 @@
+{
+  "result": {
+    "item": "galacticraftcore:magnetic_table"
+  },
+  "ingredients": [
+    {
+      "item": "minecraft:crafting_table"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "compressedIron"
+    }
+  ],
+  "type": "forge:ore_shapeless"
+}

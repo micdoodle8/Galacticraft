@@ -11,7 +11,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
@@ -36,9 +37,9 @@ public class TileEntityMulti extends TileEntity
 //    {
 //        this.mainBlockPosition = mainBlock;
 //
-//        if (!this.worldObj.isRemote)
+//        if (!this.world.isRemote)
 //        {
-//            this.worldObj.markBlockForUpdate(this.getPos());
+//            this.world.notifyBlockUpdate(this.getPos());
 //        }
 //    }
 
@@ -46,7 +47,7 @@ public class TileEntityMulti extends TileEntity
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
+            TileEntity tileEntity = this.world.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity instanceof IMultiBlock)
             {
@@ -60,7 +61,7 @@ public class TileEntityMulti extends TileEntity
     {
         if (this.mainBlockPosition != null)
         {
-            TileEntity tileEntity = this.worldObj.getTileEntity(this.mainBlockPosition);
+            TileEntity tileEntity = this.world.getTileEntity(this.mainBlockPosition);
 
             if (tileEntity instanceof IMultiBlock)
             {
@@ -71,15 +72,15 @@ public class TileEntityMulti extends TileEntity
         return false;
     }
 
-    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (this.mainBlockPosition != null)
         {
-            IBlockState state = this.worldObj.getBlockState(this.mainBlockPosition);
+            IBlockState state = this.world.getBlockState(this.mainBlockPosition);
 
             if (state.getBlock() instanceof BlockAdvanced)
             {
-                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, side, hitX, hitY, hitZ);
+                return ((BlockAdvanced) state.getBlock()).onBlockActivated(world, this.mainBlockPosition, state, entityPlayer, hand, side, hitX, hitY, hitZ);
             }
         }
 
@@ -90,7 +91,7 @@ public class TileEntityMulti extends TileEntity
     {
         if (this.mainBlockPosition != null)
         {
-            return this.worldObj.getTileEntity(this.mainBlockPosition);
+            return this.world.getTileEntity(this.mainBlockPosition);
         }
 
         return null;
@@ -111,7 +112,7 @@ public class TileEntityMulti extends TileEntity
      * Writes a tile entity to NBT.
      */
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
 
@@ -123,6 +124,8 @@ public class TileEntityMulti extends TileEntity
             tag.setInteger("z", this.mainBlockPosition.getZ());
             nbt.setTag("mainBlockPosition", tag);
         }
+
+        return nbt;
     }
 
     protected boolean initialiseMultiTiles(BlockPos pos, World world)

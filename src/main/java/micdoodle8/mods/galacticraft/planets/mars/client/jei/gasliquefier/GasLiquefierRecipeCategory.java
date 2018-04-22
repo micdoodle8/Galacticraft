@@ -2,7 +2,8 @@ package micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
-import mezz.jei.api.recipe.BlankRecipeCategory;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.client.jei.RecipeCategories;
@@ -16,7 +17,9 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class GasLiquefierRecipeCategory extends BlankRecipeCategory
+import java.util.List;
+
+public class GasLiquefierRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation refineryGuiTex = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gas_liquefier_recipe.png");
     private static final ResourceLocation gasesTex = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
@@ -81,7 +84,7 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void drawAnimations(@Nonnull Minecraft minecraft)
+    public void drawExtras(@Nonnull Minecraft minecraft)
     {
         IDrawableAnimated input;
         IDrawableAnimated output;
@@ -117,7 +120,7 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
     }
 
     @Override
-    public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper)
+    public void setRecipe(IRecipeLayout recipeLayout, IRecipeWrapper recipeWrapper, IIngredients ingredients)
     {
         IGuiItemStackGroup itemstacks = recipeLayout.getItemStacks();
 
@@ -128,10 +131,11 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
         if (recipeWrapper instanceof GasLiquefierRecipeWrapper)
         {
             GasLiquefierRecipeWrapper gasLiquefierRecipeWrapper = (GasLiquefierRecipeWrapper) recipeWrapper;
-            ItemStack input = ((ItemStack) gasLiquefierRecipeWrapper.getInputs().get(0));
-            itemstacks.setFromRecipe(0, input);
+            List<ItemStack> input = ingredients.getInputs(ItemStack.class).get(0);
+            List<ItemStack> output = ingredients.getOutputs(ItemStack.class).get(0);
+            itemstacks.set(0, input);
 
-            Item inputItem = input.getItem();
+            Item inputItem = input.get(0).getItem();
             if (inputItem == AsteroidsItems.methaneCanister)
             {
                 this.inputGas = 0;
@@ -141,7 +145,7 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
                 this.inputGas = 1;
             }
 
-            Item outputItem = gasLiquefierRecipeWrapper.getOutputs().get(0).getItem();
+            Item outputItem = output.get(0).getItem();
             if (outputItem == GCItems.fuelCanister)
             {
                 this.outputGas = 0;
@@ -155,7 +159,13 @@ public class GasLiquefierRecipeCategory extends BlankRecipeCategory
                 this.outputGas = 4;
             }
 
-            itemstacks.setFromRecipe(this.outputGas == 0 || this.outputGas == 3 ? 2 : 1, gasLiquefierRecipeWrapper.getOutputs());
+            itemstacks.set(this.outputGas == 0 || this.outputGas == 3 ? 2 : 1, output);
         }
+    }
+
+    @Override
+    public String getModName()
+    {
+        return GalacticraftPlanets.NAME;
     }
 }

@@ -5,15 +5,16 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.item.Item;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -24,6 +25,9 @@ import java.util.Random;
 public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock, ISortableBlock
 {
     public static final PropertyEnum<EnumAirLockSealConnection> CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
+    protected static final AxisAlignedBB AABB_X = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
+    protected static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
+    protected static final AxisAlignedBB AABB_FLAT = new AxisAlignedBB(0.0, 0.25, 0.0, 1.0, 0.75, 1.0);
 
     public enum EnumAirLockSealConnection implements IStringSerializable
     {
@@ -47,59 +51,81 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 
     public BlockAirLockWall(String assetName)
     {
-        super(Material.iron, false);
+        super(Material.IRON, false);
         this.setTickRandomly(true);
         this.setHardness(1000.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
-    {
-        switch (getConnection(worldIn, pos))
+        switch (getConnection(source, pos))
         {
-        case FLAT:
-            this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 0.75F, 1.0F);
-            break;
         case X:
-            this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
-            break;
+            return AABB_X;
         case Z:
-            this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
-            break;
+            return AABB_Z;
+        default:
+        case FLAT:
+            return AABB_FLAT;
         }
     }
 
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getCollisionBoundingBox(worldIn, pos, state);
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getSelectedBoundingBox(worldIn, pos);
+//    }
+//
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    {
+//        switch (getConnection(worldIn, pos))
+//        {
+//        case FLAT:
+//            this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 0.75F, 1.0F);
+//            break;
+//        case X:
+//            this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+//            break;
+//        case Z:
+//            this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
+//            break;
+//        }
+//    }
+
+
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
     {
         return true;
     }
@@ -116,11 +142,11 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
         return true;
     }
 
-    @Override
-    public Item getItem(World world, BlockPos pos)
-    {
-        return null;
-    }
+//    @Override
+//    public Item getItem(World world, BlockPos pos)
+//    {
+//        return null;
+//    }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
@@ -129,9 +155,9 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, CONNECTION_TYPE);
+        return new BlockStateContainer(this, CONNECTION_TYPE);
     }
 
     @Override

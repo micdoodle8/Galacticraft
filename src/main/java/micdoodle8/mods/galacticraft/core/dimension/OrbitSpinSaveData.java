@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class OrbitSpinSaveData extends WorldSavedData
 {
@@ -23,26 +23,28 @@ public class OrbitSpinSaveData extends WorldSavedData
     public void readFromNBT(NBTTagCompound nbt)
     {
         this.alldata = nbt;
-        //world.loadItemData calls this but can't extract from alldata until we know the dimension ID
+        //world.loadData calls this but can't extract from alldata until we know the dimension ID
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbt)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         if (this.dim != 0)
         {
             nbt.setTag("" + this.dim, this.datacompound);
         }
+
+        return nbt;
     }
 
     public static OrbitSpinSaveData initWorldData(World world)
     {
-        OrbitSpinSaveData worldData = (OrbitSpinSaveData) world.loadItemData(OrbitSpinSaveData.class, OrbitSpinSaveData.saveDataID);
+        OrbitSpinSaveData worldData = (OrbitSpinSaveData) world.loadData(OrbitSpinSaveData.class, OrbitSpinSaveData.saveDataID);
 
         if (worldData == null)
         {
             worldData = new OrbitSpinSaveData("");
-            world.setItemData(OrbitSpinSaveData.saveDataID, worldData);
+            world.setData(OrbitSpinSaveData.saveDataID, worldData);
             if (world.provider instanceof WorldProviderSpaceStation)
             {
                 worldData.dim = GCCoreUtil.getDimensionID(world);

@@ -71,7 +71,7 @@ public class ContainerCircuitFabricator extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
@@ -87,8 +87,8 @@ public class ContainerCircuitFabricator extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(par1);
         final int b = this.inventorySlots.size();
 
         if (slot != null && slot.getHasStack())
@@ -100,7 +100,7 @@ public class ContainerCircuitFabricator extends Container
             {
                 if (!this.mergeItemStack(var4, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 6)
@@ -115,65 +115,65 @@ public class ContainerCircuitFabricator extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.diamond)
+                else if (i == Items.DIAMOND)
                 {
                     if (!this.mergeItemStack(var4, 1, 2, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (this.isSilicon(var4))
                 {
                     if (!this.mergeEven(var4, 2, 4))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.redstone)
+                else if (i == Items.REDSTONE)
                 {
                     if (!this.mergeItemStack(var4, 4, 5, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
-                else if (i == Items.repeater || i == new ItemStack(Blocks.redstone_torch).getItem() || i == Items.dye && i.getDamage(var4) == 4)
+                else if (i == Items.REPEATER || i == new ItemStack(Blocks.REDSTONE_TORCH).getItem() || i == Items.DYE && i.getDamage(var4) == 4)
                 {
                     if (!this.mergeItemStack(var4, 5, 6, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (par1 < b - 9)
                 {
                     if (!this.mergeItemStack(var4, b - 9, b, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(var4, b - 36, b - 9, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;
@@ -195,16 +195,32 @@ public class ContainerCircuitFabricator extends Container
                 if (matchingStacks(stack, target))
                 {
                     acceptSlots.add(slot);
-                    int availSpace = target.getMaxStackSize() - target.stackSize;
+                    int availSpace = target.getMaxStackSize() - target.getCount();
                     acceptQuantity.add(availSpace);
                     acceptTotal += availSpace;
                     if (availSpace < minQuantity) minQuantity = availSpace;
                 }
             }
         }
-        
+
+        for (Slot slot : acceptSlots)
+        {
+            ItemStack target = slot.getStack();
+            if (target.isEmpty())
+            {
+                target = stack.copy();
+                target.setCount(1);
+                slot.putStack(target);
+                stack.shrink(1);
+                if (stack.isEmpty())
+                {
+                    return false;
+                }
+            }
+        }        
+
         //The stack more than exceeds what the crafting inventory requires
-        if (stack.stackSize >= acceptTotal)
+        if (stack.getCount() >= acceptTotal)
         {
             if (acceptTotal == 0)
                 return false;
@@ -212,17 +228,8 @@ public class ContainerCircuitFabricator extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target == null)
-                {
-                    target = stack.copy();
-                    slot.putStack(target);
-                }
-                else
-                {
-                    stack.stackSize += target.stackSize;
-                }
-                target.stackSize = target.getMaxStackSize();
-                stack.stackSize -= target.getMaxStackSize();
+                stack.shrink(target.getMaxStackSize() - target.getCount());
+                target.setCount(target.getMaxStackSize());
                 slot.onSlotChanged();
             }
             return true;
@@ -235,7 +242,7 @@ public class ContainerCircuitFabricator extends Container
         }
         
         //Use the whole stack to try to even up the neediest slots
-        if (stack.stackSize < uneven)
+        if (stack.getCount() <= uneven)
         {
             do
             {
@@ -244,23 +251,16 @@ public class ContainerCircuitFabricator extends Container
                 for (Slot slot : acceptSlots)
                 {
                     ItemStack target = slot.getStack();
-                    if (target == null)
+                    if (target.getCount() < smallestStack)
                     {
-                        target = stack.copy();
-                        target.stackSize = 0;
-                        slot.putStack(target);
-                        neediest = slot;
-                        break;
-                    }
-                    if (target.stackSize < smallestStack)
-                    {
-                        smallestStack = target.stackSize;
+                        smallestStack = target.getCount();
                         neediest = slot;
                     }
                 }
-                neediest.getStack().stackSize++;
+                neediest.getStack().grow(1);
+                stack.shrink(1);
             }
-            while (--stack.stackSize > 0);
+            while (!stack.isEmpty());
             for (Slot slot : acceptSlots)
             {
                 slot.onSlotChanged();
@@ -275,58 +275,38 @@ public class ContainerCircuitFabricator extends Container
             for (Slot slot : acceptSlots)
             {
                 ItemStack target = slot.getStack();
-                if (target == null)
-                {
-                    target = stack.copy();
-                    slot.putStack(target);
-                }
-                else
-                {
-                    stack.stackSize += target.stackSize;
-                    acceptTotal += target.stackSize;
-                }
-                stack.stackSize -= targetSize;
-                acceptTotal -= targetSize;
-                target.stackSize = targetSize;
+                stack.shrink(targetSize - target.getCount());
+                acceptTotal -= targetSize - target.getCount();
+                target.setCount(targetSize);
                 slot.onSlotChanged();
             }
         }
         
         //Spread the remaining stack over all slots evenly
-        int average = stack.stackSize / acceptSlots.size();
-        int modulus = stack.stackSize - average * acceptSlots.size();
+        int average = stack.getCount() / acceptSlots.size();
+        int modulus = stack.getCount() - average * acceptSlots.size();
         for (Slot slot : acceptSlots)
         {
             if (slot != null)
             {
                 ItemStack target = slot.getStack();
-                if (target == null)
-                {
-                    target = stack.copy();
-                    target.stackSize = 0;
-                    slot.putStack(target);
-                }
                 int transfer = average;
                 if (modulus > 0)
                 {
                     transfer++;
                     modulus--;
                 }
-                stack.stackSize -= transfer;
-                target.stackSize += transfer;
-                if (target.stackSize > target.getMaxStackSize())
+                if (transfer > stack.getCount()) transfer = stack.getCount();
+                stack.shrink(transfer);
+                target.grow(transfer);
+                if (target.getCount() > target.getMaxStackSize())
                 {
-                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.stackSize);
-                    stack.stackSize += target.stackSize - target.getMaxStackSize();
-                    target.stackSize = target.getMaxStackSize();
-                }
-                if (stack.stackSize < 0)
-                {
-                    target.stackSize += stack.stackSize;
-                    stack.stackSize = 0;
+                    GCLog.info("Shift clicking - slot " + slot.slotNumber + " wanted more than it could accept:" + target.getCount());
+                    stack.grow(target.getCount() - target.getMaxStackSize());
+                    target.setCount(target.getMaxStackSize());
                 }
                 slot.onSlotChanged();
-                if (stack.stackSize == 0)
+                if (stack.isEmpty())
                     break;
             }
         }
@@ -345,6 +325,6 @@ public class ContainerCircuitFabricator extends Container
 
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
-        return target == null || target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.stackSize < target.getMaxStackSize() || target.stackSize == 0);
+        return target.isEmpty() || target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && ItemStack.areItemStackTagsEqual(stack, target) && (target.isStackable() && target.getCount() < target.getMaxStackSize());
     }
 }

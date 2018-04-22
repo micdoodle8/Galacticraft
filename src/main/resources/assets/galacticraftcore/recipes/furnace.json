@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "minecraft:furnace"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:basic_block_moon",
+      "data": 4
+    }
+  }
+}

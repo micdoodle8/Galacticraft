@@ -42,7 +42,7 @@ public class GuiGeothermal extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { this.geothermalGenerator.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.geothermalGenerator.getPos(), 0 }));
             break;
         }
     }
@@ -78,19 +78,19 @@ public class GuiGeothermal extends GuiContainerGC
         this.buttonEnableSolar.enabled = this.geothermalGenerator.disableCooldown == 0;
         this.buttonEnableSolar.displayString = !this.geothermalGenerator.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name");
         String displayString = this.geothermalGenerator.getName();
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 7, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 7, 4210752);
         displayString = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 45 + 23 - 46 + offsetY, 4210752);
         displayString = this.getStatus2();
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
         displayString = GCCoreUtil.translate("gui.message.generating.name") + ": " + (this.geothermalGenerator.generateWatts > 0 ? EnergyDisplayHelper.getEnergyDisplayS(this.geothermalGenerator.generateWatts) + "/t" : GCCoreUtil.translate("gui.status.not_generating.name"));
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 34 + 23 - 46 + offsetY, 4210752);
 //        float boost = Math.round((this.geothermalGenerator.getSolarBoost() - 1) * 1000) / 10.0F;
 //        displayString = GCCoreUtil.translate("gui.message.environment.name") + ": " + boost + "%";
-//        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
+//        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 56 + 23 - 46 + offsetY, 4210752);
         //		displayString = ElectricityDisplay.getDisplay(this.geothermalGenerator.getVoltage(), ElectricUnit.VOLTAGE);
-        //		this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 94, 4210752);
+        //		this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 68 + 23 - 46 + offsetY, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 94, 4210752);
     }
 
     private String getStatus()

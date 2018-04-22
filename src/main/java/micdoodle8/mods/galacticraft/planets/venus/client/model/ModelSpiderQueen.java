@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.client.model;
 import micdoodle8.mods.galacticraft.core.client.model.ModelRendererGC;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class ModelSpiderQueen extends ModelBase
 {

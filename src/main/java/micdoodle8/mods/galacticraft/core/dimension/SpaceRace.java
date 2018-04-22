@@ -92,7 +92,7 @@ public class SpaceRace
                 final NBTTagList itemList = tagAt.getTagList("Sch", 10);
                 for (int j = 0; j < itemList.tagCount(); ++j)
                 {
-                    addNewSchematic(name, ItemStack.loadItemStackFromNBT(itemList.getCompoundTagAt(j)));
+                    addNewSchematic(name, new ItemStack(itemList.getCompoundTagAt(j)));
                 }
             }
         }

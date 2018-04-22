@@ -4,23 +4,40 @@
  * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.statements;
 
-import java.util.Collection;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
-import buildcraft.api.core.BCLog;
-
 public final class StatementManager {
 
-    public static Map<String, IStatement> statements = new HashMap<String, IStatement>();
-    public static Map<String, Class<? extends IStatementParameter>> parameters = new HashMap<String, Class<? extends IStatementParameter>>();
-    private static List<ITriggerProvider> triggerProviders = new LinkedList<ITriggerProvider>();
-    private static List<IActionProvider> actionProviders = new LinkedList<IActionProvider>();
+    public static Map<String, IStatement> statements = new HashMap<>();
+    public static Map<String, IParameterReader> parameters = new HashMap<>();
+    public static Map<String, IParamReaderBuf> paramsBuf = new HashMap<>();
+    private static List<ITriggerProvider> triggerProviders = new LinkedList<>();
+    private static List<IActionProvider> actionProviders = new LinkedList<>();
+
+    static {
+        registerParameter(StatementParameterItemStack::new);
+    }
+
+    @FunctionalInterface
+    public interface IParameterReader {
+        IStatementParameter readFromNbt(NBTTagCompound nbt);
+    }
+
+    @FunctionalInterface
+    public interface IParamReaderBuf {
+        IStatementParameter readFromBuf(PacketBuffer buffer) throws IOException;
+    }
 
     /** Deactivate constructor */
     private StatementManager() {}
@@ -41,141 +58,99 @@ public final class StatementManager {
         statements.put(statement.getUniqueTag(), statement);
     }
 
-    public static void registerParameterClass(Class<? extends IStatementParameter> param) {
-        parameters.put(createParameter(param).getUniqueTag(), param);
+    public static void registerParameter(IParameterReader reader) {
+        registerParameter(reader, buf -> reader.readFromNbt(buf.readCompoundTag()));
     }
 
-    @Deprecated
-    public static void registerParameterClass(String name, Class<? extends IStatementParameter> param) {
-        parameters.put(name, param);
+    public static void registerParameter(IParameterReader reader, IParamReaderBuf bufReader) {
+        String name = reader.readFromNbt(new NBTTagCompound()).getUniqueTag();
+        registerParameter(name, reader);
+        registerParameter(name, bufReader);
+    }
+
+    public static void registerParameter(String name, IParameterReader reader) {
+        parameters.put(name, reader);
+    }
+
+    public static void registerParameter(String name, IParamReaderBuf reader) {
+        paramsBuf.put(name, reader);
     }
 
     public static List<ITriggerExternal> getExternalTriggers(EnumFacing side, TileEntity entity) {
-        List<ITriggerExternal> result;
-
         if (entity instanceof IOverrideDefaultStatements) {
-            result = ((IOverrideDefaultStatements) entity).overrideTriggers();
+            List<ITriggerExternal> result = ((IOverrideDefaultStatements) entity).overrideTriggers();
             if (result != null) {
                 return result;
             }
         }
 
-        result = new LinkedList<ITriggerExternal>();
+        LinkedHashSet<ITriggerExternal> triggers = new LinkedHashSet<>();
 
         for (ITriggerProvider provider : triggerProviders) {
-            Collection<ITriggerExternal> toAdd = provider.getExternalTriggers(side, entity);
-
-            if (toAdd != null) {
-                for (ITriggerExternal t : toAdd) {
-                    if (!result.contains(t)) {
-                        result.add(t);
-                    }
-                }
-            }
+            provider.addExternalTriggers(triggers, side, entity);
         }
 
-        return result;
+        return new ArrayList<>(triggers);
     }
 
     public static List<IActionExternal> getExternalActions(EnumFacing side, TileEntity entity) {
-        List<IActionExternal> result = new LinkedList<IActionExternal>();
-
         if (entity instanceof IOverrideDefaultStatements) {
-            result = ((IOverrideDefaultStatements) entity).overrideActions();
+            List<IActionExternal> result = ((IOverrideDefaultStatements) entity).overrideActions();
             if (result != null) {
                 return result;
             }
         }
 
-        result = new LinkedList<IActionExternal>();
+        LinkedHashSet<IActionExternal> actions = new LinkedHashSet<>();
 
         for (IActionProvider provider : actionProviders) {
-            Collection<IActionExternal> toAdd = provider.getExternalActions(side, entity);
-
-            if (toAdd != null) {
-                for (IActionExternal t : toAdd) {
-                    if (!result.contains(t)) {
-                        result.add(t);
-                    }
-                }
-            }
+            provider.addExternalActions(actions, side, entity);
         }
 
-        return result;
+        return new ArrayList<>(actions);
     }
 
     public static List<ITriggerInternal> getInternalTriggers(IStatementContainer container) {
-        List<ITriggerInternal> result = new LinkedList<ITriggerInternal>();
+        LinkedHashSet<ITriggerInternal> triggers = new LinkedHashSet<>();
 
         for (ITriggerProvider provider : triggerProviders) {
-            Collection<ITriggerInternal> toAdd = provider.getInternalTriggers(container);
-
-            if (toAdd != null) {
-                for (ITriggerInternal t : toAdd) {
-                    if (!result.contains(t)) {
-                        result.add(t);
-                    }
-                }
-            }
+            provider.addInternalTriggers(triggers, container);
         }
 
-        return result;
+        return new ArrayList<>(triggers);
     }
 
     public static List<IActionInternal> getInternalActions(IStatementContainer container) {
-        List<IActionInternal> result = new LinkedList<IActionInternal>();
+        LinkedHashSet<IActionInternal> actions = new LinkedHashSet<>();
 
         for (IActionProvider provider : actionProviders) {
-            Collection<IActionInternal> toAdd = provider.getInternalActions(container);
-
-            if (toAdd != null) {
-                for (IActionInternal t : toAdd) {
-                    if (!result.contains(t)) {
-                        result.add(t);
-                    }
-                }
-            }
+            provider.addInternalActions(actions, container);
         }
 
-        return result;
+        return new ArrayList<>(actions);
     }
 
-    public static IStatementParameter createParameter(String kind) {
-        return createParameter(parameters.get(kind));
-    }
+    public static List<ITriggerInternalSided> getInternalSidedTriggers(IStatementContainer container, EnumFacing side) {
+        LinkedHashSet<ITriggerInternalSided> triggers = new LinkedHashSet<>();
 
-    private static IStatementParameter createParameter(Class<? extends IStatementParameter> param) {
-        if (param == null) {
-            return null;
+        for (ITriggerProvider provider : triggerProviders) {
+            provider.addInternalSidedTriggers(triggers, container, side);
         }
 
-        try {
-            return param.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (Error error) {
-            BCLog.logErrorAPI(error, IStatementParameter.class);
-            throw error;
-        }
-
-        return null;
+        return new ArrayList<>(triggers);
     }
 
-    // /**
-    // * Generally, this function should be called by every mod implementing
-    // * the Statements API ***as a container*** (that is, adding its own gates)
-    // * on the client side from a given Item of choice.
-    // */
-    // @SideOnly(Side.CLIENT)
-    // public static void registerIcons(TextureAtlasSpriteRegister register) {
-    // for (IStatement statement : statements.values()) {
-    // statement.registerIcons(register);
-    // }
-    //
-    // for (Class<? extends IStatementParameter> parameter : parameters.values()) {
-    // createParameter(parameter).registerIcons(register);
-    // }
-    // }
+    public static List<IActionInternalSided> getInternalSidedActions(IStatementContainer container, EnumFacing side) {
+        LinkedHashSet<IActionInternalSided> actions = new LinkedHashSet<>();
+
+        for (IActionProvider provider : actionProviders) {
+            provider.addInternalSidedActions(actions, container, side);
+        }
+
+        return new ArrayList<>(actions);
+    }
+
+    public static IParameterReader getParameterReader(String kind) {
+        return parameters.get(kind);
+    }
 }

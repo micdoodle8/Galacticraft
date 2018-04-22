@@ -9,12 +9,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkProvider;
 
 import java.util.List;
 import java.util.Random;
@@ -34,9 +33,9 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
     private final Gradient noiseGen6;
     private final Gradient noiseGen7;
 
-    protected final World worldObj;
+    protected final World world;
 
-    private BiomeGenBase[] biomesForGeneration = this.getBiomesForGeneration();
+    private Biome[] biomesForGeneration = this.getBiomesForGeneration();
 
     private final double TERRAIN_HEIGHT_MOD = this.getHeightModifier();
     private final double SMALL_FEATURE_HEIGHT_MOD = this.getSmallFeatureHeightModifier();
@@ -57,7 +56,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
 
     public ChunkProviderSpace(World par1World, long seed, boolean mapFeaturesEnabled)
     {
-        this.worldObj = par1World;
+        this.world = par1World;
         this.rand = new Random(seed);
 
         this.noiseGen1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
@@ -101,7 +100,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                 {
                     if (y < this.MID_HEIGHT + yDev)
                     {
-                        primer.setBlockState(this.getIndex(x, y, z), this.getStoneBlock().getBlock().getStateFromMeta(this.getStoneBlock().getMetadata()));
+                        primer.setBlockState(x, y, z, this.getStoneBlock().getBlock().getStateFromMeta(this.getStoneBlock().getMetadata()));
 //                        idArray[this.getIndex(x, y, z)] = this.getStoneBlock().getBlock();
 //                        metaArray[this.getIndex(x, y, z)] = this.getStoneBlock().getMetadata();
                     }
@@ -144,7 +143,8 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
         return x;
     }
 
-    public void replaceBlocksForBiome(int par1, int par2, ChunkPrimer primer, BiomeGenBase[] par4ArrayOfBiomeGenBase)
+//    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
+    public void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn)
     {
         final int var5 = 20;
         final float var6 = 0.03125F;
@@ -153,7 +153,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
         {
             for (int var9 = 0; var9 < 16; ++var9)
             {
-                final int var12 = (int) (this.noiseGen4.getNoise(par1 * 16 + var8, par2 * 16 + var9) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
+                final int var12 = (int) (this.noiseGen4.getNoise(x * 16 + var8, z * 16 + var9) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int var13 = -1;
                 Block var14 = this.getGrassBlock().getBlock();
                 byte var14m = this.getGrassBlock().getMetadata();
@@ -166,15 +166,15 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
 
                     if (var16 <= 0 + this.rand.nextInt(5))
                     {
-                        primer.setBlockState(index, Blocks.bedrock.getDefaultState());
-//                        arrayOfIDs[index] = Blocks.bedrock;
+                        primer.setBlockState(var8, var16, var9, Blocks.BEDROCK.getDefaultState());
+//                        arrayOfIDs[index] = Blocks.BEDROCK;
                     }
                     else
                     {
 //                        final Block var18 = arrayOfIDs[index];
-                        Block var18 = primer.getBlockState(index).getBlock();
+                        Block var18 = primer.getBlockState(var8, var16, var9).getBlock();
 
-                        if (Blocks.air == var18)
+                        if (Blocks.AIR == var18)
                         {
                             var13 = -1;
                         }
@@ -186,7 +186,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                             {
                                 if (var12 <= 0)
                                 {
-                                    var14 = Blocks.air;
+                                    var14 = Blocks.AIR;
                                     var14m = 0;
                                     var15 = this.getStoneBlock().getBlock();
                                     var15m = this.getStoneBlock().getMetadata();
@@ -205,13 +205,13 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                                 {
 //                                    arrayOfIDs[index] = var14;
 //                                    arrayOfMeta[index] = var14m;
-                                    primer.setBlockState(index, var14.getStateFromMeta(var14m));
+                                    primer.setBlockState(var8, var16, var9, var14.getStateFromMeta(var14m));
                                 }
                                 else
                                 {
 //                                    arrayOfIDs[index] = var15;
 //                                    arrayOfMeta[index] = var15m;
-                                    primer.setBlockState(index, var15.getStateFromMeta(var15m));
+                                    primer.setBlockState(var8, var16, var9, var15.getStateFromMeta(var15m));
                                 }
                             }
                             else if (var13 > 0)
@@ -219,7 +219,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                                 --var13;
 //                                arrayOfIDs[index] = var15;
 //                                arrayOfMeta[index] = var15m;
-                                primer.setBlockState(index, var15.getStateFromMeta(var15m));
+                                primer.setBlockState(var8, var16, var9, var15.getStateFromMeta(var15m));
                             }
                         }
                     }
@@ -229,42 +229,40 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
     }
 
     @Override
-    public Chunk provideChunk(int par1, int par2)
+    public Chunk generateChunk(int x, int z)
     {
-            ChunkPrimer primer = new ChunkPrimer();
+        ChunkPrimer primer = new ChunkPrimer();
         try {
-            this.rand.setSeed(par1 * 341873128712L + par2 * 132897987541L);
-    //        final Block[] ids = new Block[32768 * 2];
-    //        final byte[] meta = new byte[32768 * 2];
-            this.generateTerrain(par1, par2, primer);
-            this.createCraters(par1, par2, primer);
-            this.biomesForGeneration = this.worldObj.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
-            this.replaceBlocksForBiome(par1, par2, primer, this.biomesForGeneration);
-    
+            this.rand.setSeed(x * 341873128712L + z * 132897987541L);
+            this.generateTerrain(x, z, primer);
+            this.createCraters(x, z, primer);
+            this.biomesForGeneration = this.world.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
+            this.replaceBiomeBlocks(x, z, primer, this.biomesForGeneration);
+
             if (this.worldGenerators == null)
             {
                 this.worldGenerators = this.getWorldGenerators();
             }
-    
+
             for (MapGenBaseMeta generator : this.worldGenerators)
             {
-                generator.generate(this, this.worldObj, par1, par2, primer);
+                generator.generate(this.world, x, z, primer);
             }
-    
-                this.onChunkProvide(par1, par2, primer);
+
+            this.onChunkProvide(x, z, primer);
         }
         catch (Exception e)
         {
-            GCLog.severe("Error caught in planetary worldgen at coords " + par1 + "," + par2 + ".  If the next 2 lines are showing an Add-On mod name, please report to that mod's author!");
+            GCLog.severe("Error caught in planetary worldgen at coords " + x + "," + z + ".  If the next 2 lines are showing an Add-On mod name, please report to that mod's author!");
             e.printStackTrace();
         }
         
-        final Chunk var4 = new Chunk(this.worldObj, primer, par1, par2);
+        final Chunk var4 = new Chunk(this.world, primer, x, z);
         final byte[] var5 = var4.getBiomeArray();
 
         for (int var6 = 0; var6 < var5.length; ++var6)
         {
-            var5[var6] = (byte) this.biomesForGeneration[var6].biomeID;
+            var5[var6] = (byte) Biome.getIdForBiome(this.biomesForGeneration[var6]);
         }
 
         var4.generateSkylightMap();
@@ -313,10 +311,10 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
                     int helper = 0;
                     for (int y = 127; y > 0; y--)
                     {
-                        if (Blocks.air != primer.getBlockState(this.getIndex(x, y, z)).getBlock() && helper <= yDev)
+                        if (Blocks.AIR != primer.getBlockState(x, y, z).getBlock() && helper <= yDev)
                         {
-                            primer.setBlockState(getIndex(x, y, z), Blocks.air.getDefaultState());
-//                            chunkArray[this.getIndex(x, y, z)] = Blocks.air;
+                            primer.setBlockState(x, y, z, Blocks.AIR.getDefaultState());
+//                            chunkArray[this.getIndex(x, y, z)] = Blocks.AIR;
 //                            metaArray[this.getIndex(x, y, z)] = 0;
                             helper++;
                         }
@@ -350,32 +348,26 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
     }
 
     @Override
-    public void populate(IChunkProvider par1IChunkProvider, int par2, int par3)
+    public void populate(int x, int z)
     {
         BlockFalling.fallInstantly = true;
-        int var4 = par2 * 16;
-        int var5 = par3 * 16;
-        this.worldObj.getBiomeGenForCoords(new BlockPos(var4 + 16, 0, var5 + 16));
-        this.rand.setSeed(this.worldObj.getSeed());
+        int var4 = x * 16;
+        int var5 = z * 16;
+        this.world.getBiome(new BlockPos(var4 + 16, 0, var5 + 16));
+        this.rand.setSeed(this.world.getSeed());
         final long var7 = this.rand.nextLong() / 2L * 2L + 1L;
         final long var9 = this.rand.nextLong() / 2L * 2L + 1L;
-        this.rand.setSeed(par2 * var7 + par3 * var9 ^ this.worldObj.getSeed());
-        this.decoratePlanet(this.worldObj, this.rand, var4, var5);
-        this.onPopulate(par1IChunkProvider, par2, par3);
+        this.rand.setSeed(x * var7 + z * var9 ^ this.world.getSeed());
+        this.decoratePlanet(this.world, this.rand, var4, var5);
+        this.onPopulate(x, z);
 
         BlockFalling.fallInstantly = false;
     }
 
     @Override
-    public String makeString()
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
     {
-        return "RandomLevelSource";
-    }
-
-    @Override
-    public List<BiomeGenBase.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
-    {
-        BiomeGenBase biomegenbase = this.worldObj.getBiomeGenForCoords(pos);
+        Biome biomegenbase = this.world.getBiome(pos);
         return biomegenbase.getSpawnableList(creatureType);
     }
 
@@ -392,7 +384,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
      *
      * @return Biome instance for generation
      */
-    protected abstract BiomeGenBase[] getBiomesForGeneration();
+    protected abstract Biome[] getBiomesForGeneration();
 
     /**
      * @return The average terrain level. Default is 64.
@@ -458,5 +450,5 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
 
     public abstract void onChunkProvide(int cX, int cZ, ChunkPrimer primer);
 
-    public abstract void onPopulate(IChunkProvider provider, int cX, int cZ);
+    public abstract void onPopulate(int cX, int cZ);
 }

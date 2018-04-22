@@ -1,8 +1,16 @@
 {
+"parent": "block/block",
 "textures": {
     "texture": "galacticraftcore:blocks/cryo_0",
     "particle": "galacticraftcore:blocks/cryo_0",
     "cryo_1": "galacticraftcore:blocks/cryo_1"
+},
+"display": {
+	"gui": {
+		"rotation": [ 30, 45, 0 ],
+		"translation": [ 0, 0, 0],
+		"scale":[ 0.625, 0.625, 0.625 ]
+	}
 },
 "elements": [ 
 {

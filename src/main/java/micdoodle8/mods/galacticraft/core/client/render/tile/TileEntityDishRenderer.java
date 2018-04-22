@@ -3,25 +3,25 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDish;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.minecraftforge.client.model.IFlexibleBakedModel;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntityDish>
 {
     private static final ResourceLocation textureSupport = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telesupport.png");
     private static final ResourceLocation textureFork = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/telefork.png");
     private static final ResourceLocation textureDish = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/teledish.png");
-    private static IFlexibleBakedModel modelSupport;
-    private static IFlexibleBakedModel modelFork;
-    private static IFlexibleBakedModel modelDish;
+    private static IBakedModel modelSupport;
+    private static IBakedModel modelFork;
+    private static IBakedModel modelDish;
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
     private void updateModels()
@@ -42,14 +42,14 @@ public class TileEntityDishRenderer extends TileEntitySpecialRenderer<TileEntity
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9)
+    public void render(TileEntityDish tile, double par2, double par4, double par6, float partialTickTime, int par9, float alpha)
     {
         this.updateModels();
         TileEntityDish dish = (TileEntityDish) tile;
         float hour = dish.rotation(partialTickTime) % 360F;
         float declination = dish.elevation(partialTickTime) % 360F;
         
-        final EntityPlayer player = FMLClientHandler.instance().getClient().thePlayer;
+        final EntityPlayer player = FMLClientHandler.instance().getClient().player;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

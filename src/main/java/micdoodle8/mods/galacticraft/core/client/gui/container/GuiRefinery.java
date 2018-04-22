@@ -36,7 +36,7 @@ public class GuiRefinery extends GuiContainerGC
 
     public GuiRefinery(InventoryPlayer par1InventoryPlayer, TileEntityRefinery tileEntity)
     {
-        super(new ContainerRefinery(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerRefinery(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -95,7 +95,7 @@ public class GuiRefinery extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { this.tileEntity.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tileEntity.getPos(), 0 }));
             break;
         }
     }
@@ -103,7 +103,7 @@ public class GuiRefinery extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        GCCoreUtil.drawStringCentered(this.tileEntity.getName(), this.xSize / 2, 5, 4210752, this.fontRendererObj);
+        GCCoreUtil.drawStringCentered(this.tileEntity.getName(), this.xSize / 2, 5, 4210752, this.fontRenderer);
         String displayText = "";
         int yOffset = -18;
 
@@ -117,11 +117,11 @@ public class GuiRefinery extends GuiContainerGC
 
         this.buttonDisable.enabled = this.tileEntity.disableCooldown == 0;
         this.buttonDisable.displayString = this.tileEntity.processTicks == 0 ? GCCoreUtil.translate("gui.button.refine.name") : GCCoreUtil.translate("gui.button.stoprefine.name");
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 60, 45 + 23 + yOffset, 4210752);
-        this.fontRendererObj.drawString(displayText, 60, 45 + 34 + yOffset, 4210752);
-        //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
-        //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 60, 45 + 23 + yOffset, 4210752);
+        this.fontRenderer.drawString(displayText, 60, 45 + 34 + yOffset, 4210752);
+        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.ueWattsPerTick * 20, ElectricUnit.WATT), 72, 56 + 23 + yOffset, 4210752);
+        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE), 72, 68 + 23 + yOffset, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 118 + 2 + 23, 4210752);
     }
 
     @Override

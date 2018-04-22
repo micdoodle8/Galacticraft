@@ -5,13 +5,13 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -30,7 +30,7 @@ public class GuiSlimelingInventory extends GuiContainer
 
     public GuiSlimelingInventory(EntityPlayer player, EntitySlimeling slimeling)
     {
-        super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().player));
         this.slimeling = slimeling;
         this.xSize = 176;
         this.ySize = 210;
@@ -71,7 +71,7 @@ public class GuiSlimelingInventory extends GuiContainer
     {
         if (px >= this.invX && px < this.invX + this.invWidth && py >= this.invY && py < this.invY + this.invHeight)
         {
-            Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+            this.mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
             this.mc.displayGuiScreen(new GuiSlimeling(this.slimeling));
         }
 
@@ -107,11 +107,11 @@ public class GuiSlimelingInventory extends GuiContainer
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 35, 194, 0, 9, 9);
         String str = "" + Math.round(this.slimeling.getColorRed() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
+        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 10, ColorUtil.to32BitColor(255, 255, 0, 0));
         str = "" + Math.round(this.slimeling.getColorGreen() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
+        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 23, ColorUtil.to32BitColor(255, 0, 255, 0));
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
-        this.drawString(this.fontRendererObj, str, var5 + this.xSize - 15 - this.fontRendererObj.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
+        this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
         this.mc.renderEngine.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
@@ -119,7 +119,7 @@ public class GuiSlimelingInventory extends GuiContainer
         this.drawTexturedModalRect(var5 + 8, var6 + 8, 176, 9, 18, 18);
         this.drawTexturedModalRect(var5 + 8, var6 + 29, 176, 9, 18, 18);
 
-        ItemStack stack = this.slimeling.getCargoSlot();
+        ItemStack stack = this.slimeling.slimelingInventory.getStackInSlot(1);
 
         if (stack != null && stack.getItem() == MarsItems.marsItemBasic && stack.getItemDamage() == 4)
         {

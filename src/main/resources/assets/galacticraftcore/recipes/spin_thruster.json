@@ -1,0 +1,33 @@
+{
+  "result": {
+    "item": "galacticraftcore:spin_thruster"
+  },
+  "pattern": [
+    "   ",
+    "YWZ",
+    "PXP"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "P": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    },
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_ingot"
+    },
+    "Y": {
+      "item": "galacticraftcore:fuel_canister_partial",
+      "data": 1
+    },
+    "Z": {
+      "item": "galacticraftcore:engine",
+      "data": 0
+    }
+  }
+}

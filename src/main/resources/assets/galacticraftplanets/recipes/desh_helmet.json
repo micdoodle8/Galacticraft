@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "galacticraftplanets:desh_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

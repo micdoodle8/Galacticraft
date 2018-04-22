@@ -6,37 +6,40 @@ import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityTelepadFake
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.particle.EffectRenderer;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityProvider
 {
     public static final PropertyBool TOP = PropertyBool.create("top");
     public static final PropertyBool CONNECTABLE = PropertyBool.create("connectable");
+    protected static final AxisAlignedBB AABB_TOP = new AxisAlignedBB(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final AxisAlignedBB AABB_BOTTOM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
     public BlockTelepadFake(String assetName)
     {
         super(GCBlocks.machine);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
 //        this.setBlockTextureName(Constants.TEXTURE_PREFIX + assetName);
         this.setUnlocalizedName(assetName);
 //        this.setBlockTextureName(Constants.TEXTURE_PREFIX + "launch_pad");
@@ -44,58 +47,64 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
     {
-        IBlockState state = world.getBlockState(pos);
-        boolean top = state.getValue(TOP);
-
-        if (top)
-        {
-            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
-        }
-        else
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-        }
+        return state.getValue(TOP) ? AABB_TOP : AABB_BOTTOM;
     }
 
-    @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
-    {
-        boolean top = state.getValue(TOP);
+//    @Override
+//    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
+//    {
+//        IBlockState state = world.getBlockState(pos);
+//        boolean top = state.getValue(TOP);
+//
+//        if (top)
+//        {
+//            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+//        }
+//        else
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+//        }
+//    }
 
-        if (top)
-        {
-            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
-        else
-        {
-            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
-            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
-        }
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getCollisionBoundingBox(worldIn, pos, state);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
-    {
-        this.setBlockBoundsBasedOnState(worldIn, pos);
-        return super.getSelectedBoundingBox(worldIn, pos);
-    }
+//    @Override
+//    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+//    {
+//        boolean top = state.getValue(TOP);
+//
+//        if (top)
+//        {
+//            this.setBlockBounds(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+//            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//        }
+//        else
+//        {
+//            this.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+//            super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
+//        }
+//    }
+//
+//    @Override
+//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getCollisionBoundingBox(worldIn, pos, state);
+//    }
+//
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+//    {
+//        this.setBlockBoundsBasedOnState(worldIn, pos);
+//        return super.getSelectedBoundingBox(worldIn, pos);
+//    }
 
     @Override
     public boolean canDropFromExplosion(Explosion par1Explosion)
@@ -110,7 +119,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public float getBlockHardness(World worldIn, BlockPos pos)
+    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -120,7 +129,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 
             if (mainBlockPosition != null)
             {
-                return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(worldIn, mainBlockPosition);
+                return worldIn.getBlockState(mainBlockPosition).getBlock().getBlockHardness(worldIn.getBlockState(mainBlockPosition), worldIn, mainBlockPosition);
             }
         }
 
@@ -141,7 +150,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntityTelepadFake tileEntity = (TileEntityTelepadFake) worldIn.getTileEntity(pos);
         return tileEntity.onActivated(playerIn);
@@ -154,15 +163,21 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public int getRenderType()
+    public EnumBlockRenderType getRenderType(IBlockState state)
     {
-        return -1;
+        return EnumBlockRenderType.INVISIBLE;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return false;
+    }
+
+    @Override
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
     }
 
     @Override
@@ -172,12 +187,12 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
@@ -186,41 +201,41 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         {
             Block mainBlockID = world.getBlockState(mainBlockPosition).getBlock();
 
-            if (Blocks.air != mainBlockID)
+            if (Blocks.AIR != mainBlockID)
             {
-                return mainBlockID.getPickBlock(target, world, mainBlockPosition, player);
+                return mainBlockID.getPickBlock(world.getBlockState(mainBlockPosition), target, world, mainBlockPosition, player);
             }
         }
 
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public EnumFacing getBedDirection(IBlockAccess world, BlockPos pos)
+    public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
 
         if (mainBlockPosition != null)
         {
-            return world.getBlockState(pos).getBlock().getBedDirection(world, mainBlockPosition);
+            return world.getBlockState(pos).getBlock().getBedDirection(world.getBlockState(mainBlockPosition), world, mainBlockPosition);
         }
 
-        return (EnumFacing) getActualState(world.getBlockState(pos), world, pos).getValue(BlockDirectional.FACING);
+        return getActualState(world.getBlockState(pos), world, pos).getValue(BlockDirectional.FACING);
     }
 
     @Override
-    public boolean isBed(IBlockAccess world, BlockPos pos, Entity player)
+    public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, Entity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityTelepadFake) tileEntity).mainBlockPosition;
 
         if (mainBlockPosition != null)
         {
-            return world.getBlockState(pos).getBlock().isBed(world, mainBlockPosition, player);
+            return world.getBlockState(pos).getBlock().isBed(world.getBlockState(mainBlockPosition), world, mainBlockPosition, player);
         }
 
-        return super.isBed(world, pos, player);
+        return super.isBed(state, world, pos, player);
     }
 
     @Override
@@ -240,8 +255,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addHitEffects(World worldObj, MovingObjectPosition target, EffectRenderer effectRenderer)
+    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
         TileEntity tileEntity = worldObj.getTileEntity(target.getBlockPos());
 
@@ -251,24 +265,17 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 
             if (mainBlockPosition != null)
             {
-                effectRenderer.addBlockHitEffects(mainBlockPosition, target);
+                manager.addBlockHitEffects(mainBlockPosition, target);
             }
         }
 
-        return super.addHitEffects(worldObj, target, effectRenderer);
+        return super.addHitEffects(state, worldObj, target, manager);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean addDestroyEffects(World world, BlockPos pos, EffectRenderer effectRenderer)
+    protected BlockStateContainer createBlockState()
     {
-        return super.addDestroyEffects(world, pos, effectRenderer);
-    }
-
-    @Override
-    protected BlockState createBlockState()
-    {
-        return new BlockState(this, TOP, CONNECTABLE);
+        return new BlockStateContainer(this, TOP, CONNECTABLE);
     }
 
     @Override

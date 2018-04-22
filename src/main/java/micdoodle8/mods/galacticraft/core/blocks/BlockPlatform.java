@@ -2,6 +2,8 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -11,17 +13,22 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -30,6 +37,8 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 {
     public static final PropertyEnum<EnumCorner> CORNER = PropertyEnum.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
+    protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
+    protected static final AxisAlignedBB BOUNDING_BOX_ZEROG = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);;
     public static boolean ignoreCollisionTests;
 
     public enum EnumCorner implements IStringSerializable
@@ -69,11 +78,10 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 
     public BlockPlatform(String assetName)
     {
-        super(Material.iron);
-        this.setBlockBounds(0.0F, 6 / 16.0F, 0.0F, 1.0F, HEIGHT, 1.0F);
+        super(Material.IRON);
         this.setHardness(1.0F);
         this.setResistance(10.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(CORNER, EnumCorner.NONE));
     }
@@ -123,13 +131,45 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube()
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    {
+        return BlockFaceShape.UNDEFINED;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    {
+        return true;
+    }
+
+    @Override
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
+    {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public BlockRenderLayer getBlockLayer()
+    {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state)
+    {
+        return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state)
     {
         return false;
     }
@@ -190,9 +230,9 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, CORNER);
+        return new BlockStateContainer(this, CORNER);
     }
 
     @Override
@@ -202,7 +242,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
     
     @Override
-    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
+    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
     {
         if (ignoreCollisionTests) return;
         TileEntity te = worldIn.getTileEntity(pos);
@@ -210,37 +250,37 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         {
             if (((TileEntityPlatform) te).noCollide()) return;
         }
-        AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
+        AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(state, worldIn, pos).offset(pos);
 
-        if (axisalignedbb != null && mask.intersectsWith(axisalignedbb))
+        if (axisalignedbb != null && mask.intersects(axisalignedbb))
         {
             list.add(axisalignedbb);
         }
     }
     
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(World worldIn, BlockPos pos, IBlockState state)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
-        double top = (double)pos.getY() + (worldIn.provider instanceof IZeroGDimension ? 1.0D : this.maxY); 
-        return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, top, (double)pos.getZ() + this.maxZ);
+        if (world instanceof World && ((World) world).provider instanceof IZeroGDimension)
+            return BOUNDING_BOX_ZEROG;
+        return BOUNDING_BOX;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityPlatform)
         {
             if (((TileEntityPlatform) te).noCollide())
             {
-                IBlockState bs = worldIn.getBlockState(pos);
                 if (bs.getBlock() == this && bs.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.SE)
-                    return new AxisAlignedBB((double)pos.getX() + 9/16D, (double)pos.getY() + this.minY, (double)pos.getZ() + 9/16D, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY, (double)pos.getZ() + this.maxZ);
+                    return new AxisAlignedBB((double)pos.getX() + 9/16D, (double)pos.getY(), (double)pos.getZ() + 9/16D, (double)pos.getX() + 1.0D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 1.0D);
                 else
-                    return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + 7/16D, (double)pos.getY() + this.maxY, (double)pos.getZ() + 7/16D);
+                    return new AxisAlignedBB((double)pos.getX(), (double)pos.getY(), (double)pos.getZ(), (double)pos.getX() + 7/16D, (double)pos.getY() + HEIGHT, (double)pos.getZ() + 7/16D);
             }
         }
-        return new AxisAlignedBB((double)pos.getX() + this.minX, (double)pos.getY() + this.minY, (double)pos.getZ() + this.minZ, (double)pos.getX() + this.maxX, (double)pos.getY() + this.maxY, (double)pos.getZ() + this.maxZ);
+        return super.getSelectedBoundingBox(bs, worldIn, pos);
     }
 }

@@ -19,8 +19,8 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 
@@ -70,7 +70,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GlStateManager.rotate(-var25, 0.0F, 1.0F, 0.0F);
 
         this.updateModels();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GlStateManager.scale(0.65F, 0.6F, 0.65F);
@@ -83,7 +83,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             GlStateManager.disableLighting();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            GlStateManager.cullFace(GL11.GL_FRONT);
+            GlStateManager.cullFace(GlStateManager.CullFace.FRONT);
 
             int color = ColorUtil.to32BitColor(entityEntryPod.posY >= 790.0F ? 255 : (int) Math.max(Math.min(255, -(entityEntryPod.motionY + 0.6F) * 100.0F), 0), 255, 255, 255);
 
@@ -98,7 +98,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
             GlStateManager.rotate(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModelColored(modelFlame, color);
 
-            GlStateManager.cullFace(GL11.GL_BACK);
+            GlStateManager.cullFace(GlStateManager.CullFace.BACK);
             GlStateManager.enableCull();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             RenderHelper.enableStandardItemLighting();
@@ -124,7 +124,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
     @Override
     public boolean shouldRender(EntityEntryPodVenus lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().expand(1D, 2D, 1D);
+        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(1D, 2D, 1D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

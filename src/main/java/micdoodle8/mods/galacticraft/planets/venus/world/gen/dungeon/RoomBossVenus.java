@@ -7,10 +7,11 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.world.gen.structure.template.TemplateManager;
 
 import java.util.Random;
 
@@ -31,7 +32,7 @@ public class RoomBossVenus extends SizedPieceVenus
     public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
         this.sizeY = sizeY;
@@ -61,9 +62,9 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound)
+    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
     {
-        super.readStructureFromNBT(tagCompound);
+        super.readStructureFromNBT(tagCompound, manager);
 
         if (tagCompound.hasKey("direction_exit"))
         {
@@ -103,7 +104,7 @@ public class RoomBossVenus extends SizedPieceVenus
                     }
                     else if (j < f)
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, chunkBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
 
                         if (j + 1 >= f && (dXZ > 5) && random.nextInt(12) == 0)
                         {
@@ -186,7 +187,7 @@ public class RoomBossVenus extends SizedPieceVenus
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, chunkBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, chunkBox);
                         }
                     }
                 }

@@ -46,7 +46,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 
     public GuiShortRangeTelepad(InventoryPlayer playerInventory, TileEntityShortRangeTelepad telepad)
     {
-        super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
         this.telepad = telepad;
     }
@@ -132,7 +132,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.telepad.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.telepad.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -144,15 +144,15 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String displayString = this.telepad.getName();
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, 4210752);
 
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.address.name") + ":", 7, 22, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("gui.message.dest_address.name") + ":", 7, 44, 4210752);
-        this.fontRendererObj.drawString(this.telepad.getReceivingStatus(), 7, 66, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 115, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.address.name") + ":", 7, 22, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.dest_address.name") + ":", 7, 44, 4210752);
+        this.fontRenderer.drawString(this.telepad.getReceivingStatus(), 7, 66, 4210752);
         if (!this.telepad.getReceivingStatus().equals(this.telepad.getSendingStatus()))
         {
-            this.fontRendererObj.drawString(this.telepad.getSendingStatus(), 7, 88, 4210752);
+            this.fontRenderer.drawString(this.telepad.getSendingStatus(), 7, 88, 4210752);
         }
     }
 
@@ -194,12 +194,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         if (textBox.equals(this.address))
         {
             this.telepad.address = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
         }
         else if (textBox.equals(this.targetAddress))
         {
             this.telepad.targetAddress = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.theWorld), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
         }
     }
 

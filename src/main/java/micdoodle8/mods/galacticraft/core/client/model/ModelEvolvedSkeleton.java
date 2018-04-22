@@ -34,7 +34,8 @@ public class ModelEvolvedSkeleton extends ModelBiped
         this.textureWidth = 128;
         this.textureHeight = 64;
         final int par2 = 0;
-        this.aimedBow = true;
+        this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+        this.leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
         this.leftOxygenTank = new ModelRenderer(this, 48, 20);
         this.leftOxygenTank.addBox(-1.5F, 0F, -1.5F, 3, 7, 3, par1);
         this.leftOxygenTank.setRotationPoint(2F, 2F, 3.8F);
@@ -245,7 +246,7 @@ public class ModelEvolvedSkeleton extends ModelBiped
 //        if (this.onGround > -9990.0F)
 //        {
 //            var7 = this.onGround;
-//            this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt_float(var7) * Constants.twoPI) * 0.2F;
+//            this.bipedBody.rotateAngleY = MathHelper.sin(MathHelper.sqrt(var7) * (float) Math.PI * 2.0F) * 0.2F;
 //            this.bipedRightArm.rotationPointZ = MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;
 //            this.bipedRightArm.rotationPointX = -MathHelper.cos(this.bipedBody.rotateAngleY) * 5.0F;
 //            this.bipedLeftArm.rotationPointZ = -MathHelper.sin(this.bipedBody.rotateAngleY) * 5.0F;

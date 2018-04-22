@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "galacticraftcore:landing_pad",
+    "data": 1,
+    "count": 9
+  },
+  "pattern": [
+    "YYY",
+    "XXX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "blockIron"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    }
+  }
+}

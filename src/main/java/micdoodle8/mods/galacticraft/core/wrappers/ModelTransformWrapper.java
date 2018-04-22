@@ -1,110 +1,74 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemTransformVec3f;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.vertex.VertexFormat;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.common.model.TRSRTransformation;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.List;
 
-@SuppressWarnings({ "deprecation" })
-public abstract class ModelTransformWrapper implements IFlexibleBakedModel, ISmartItemModel, ISmartBlockModel, IPerspectiveAwareModel
+abstract public class ModelTransformWrapper implements IBakedModel
 {
-    private final IBakedModel iBakedModel;
+    private final IBakedModel parent;
 
-    public ModelTransformWrapper(IBakedModel i_modelToWrap)
-    {
-        this.iBakedModel = i_modelToWrap;
-    }
+	public ModelTransformWrapper(IBakedModel parent)
+	{
+	    this.parent = parent;
+	}
 
-    protected abstract Matrix4f getTransformForPerspective(TransformType cameraTransformType);
-
-    @Override
-    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
-    {
-        Matrix4f matrix4f = getTransformForPerspective(cameraTransformType);
-
-        if (matrix4f == null)
-        {
-            return Pair.of(this, TRSRTransformation.blockCornerToCenter(new TRSRTransformation(ItemTransformVec3f.DEFAULT)).getMatrix());
-        }
-
-        return Pair.of(this, matrix4f);
-    }
-
-    @Override
-    public List<BakedQuad> getFaceQuads(EnumFacing enumFacing)
-    {
-        return iBakedModel.getFaceQuads(enumFacing);
-    }
-
-    @Override
-    public List<BakedQuad> getGeneralQuads()
-    {
-        return iBakedModel.getGeneralQuads();
-    }
-
-    @Override
-    public VertexFormat getFormat()
-    {
-        if (iBakedModel instanceof IFlexibleBakedModel)
-        {
-            return ((IFlexibleBakedModel) iBakedModel).getFormat();
-        }
-        else
-        {
-            return Attributes.DEFAULT_BAKED_FORMAT;
-        }
-    }
-
-    @Override
     public boolean isAmbientOcclusion()
     {
-        return iBakedModel.isAmbientOcclusion();
+        return parent.isAmbientOcclusion();
     }
 
-    @Override
     public boolean isGui3d()
     {
-        return iBakedModel.isGui3d();
+        return parent.isGui3d();
     }
 
-    @Override
     public boolean isBuiltInRenderer()
     {
-        return iBakedModel.isBuiltInRenderer();
+        return parent.isBuiltInRenderer();
     }
 
-    @Override
     public TextureAtlasSprite getParticleTexture()
     {
-        return iBakedModel.getParticleTexture();
+        return parent.getParticleTexture();
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
     public ItemCameraTransforms getItemCameraTransforms()
     {
-        return ItemCameraTransforms.DEFAULT;
+        return parent.getItemCameraTransforms();
     }
 
-    @Override
-    public IBakedModel handleItemState(ItemStack stack)
+    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand)
     {
-        return this;
+        return parent.getQuads(state, side, rand);
     }
 
-    @Override
-    public IBakedModel handleBlockState(IBlockState state)
+    public ItemOverrideList getOverrides()
     {
-        return this;
+        return parent.getOverrides();
     }
+
+	@Override
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType)
+	{
+		Matrix4f matrix4f = getTransformForPerspective(cameraTransformType);
+
+		if (matrix4f == null)
+		{
+			return Pair.of(this, TRSRTransformation.blockCornerToCenter(TRSRTransformation.identity()).getMatrix());
+		}
+
+		return Pair.of(this, matrix4f);
+	}
+
+    abstract protected Matrix4f getTransformForPerspective(TransformType cameraTransformType);
 }

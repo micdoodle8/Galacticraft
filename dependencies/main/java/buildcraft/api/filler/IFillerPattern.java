@@ -4,8 +4,32 @@
  * should be located as "LICENSE.API" in the BuildCraft source code distribution. */
 package buildcraft.api.filler;
 
-import buildcraft.api.statements.IStatement;
+import javax.annotation.Nullable;
 
+import net.minecraft.util.math.BlockPos;
+
+import buildcraft.api.core.render.ISprite;
+import buildcraft.api.statements.IStatement;
+import buildcraft.api.statements.IStatementParameter;
+import buildcraft.api.statements.containers.IFillerStatementContainer;
+
+/** A type of statement that is used for filler patterns. */
 public interface IFillerPattern extends IStatement {
-    // Object getBlockOverlay();
+    /** @param filler The filler to create the pattern for.
+     *            <br>
+     *            NOTE: This method should never be called when {@link IFillerStatementContainer#hasBox()} returns
+     *            false
+     * @return The template to fill (should be created with
+     * {@link IFillerRegistry#createFilledTemplate(BlockPos, BlockPos)}),
+     * or {@code null} if this shouldn't make a template for the given filer. */
+    @Nullable
+    IFilledTemplate createTemplate(IFillerStatementContainer filler, IStatementParameter[] params);
+
+    @Override
+    IFillerPattern[] getPossible();
+
+    /** Note that this sprite *must* be stitched to the texture atlas, as it is drawn on the side of the filler
+     * block. */
+    @Override
+    ISprite getSprite();
 }

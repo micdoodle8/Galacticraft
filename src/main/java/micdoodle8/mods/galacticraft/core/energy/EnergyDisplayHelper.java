@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextFormatting;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ public class EnergyDisplayHelper
 {
     public static void getEnergyDisplayTooltip(float energyVal, float maxEnergy, List<String> strList)
     {
-        strList.add(EnumChatFormatting.GREEN + GCCoreUtil.translate("gui.message.energy") + ": " + getEnergyDisplayS(energyVal));
-        strList.add(EnumChatFormatting.RED + GCCoreUtil.translate("gui.message.max_energy") + ": " + getEnergyDisplayS(maxEnergy));
+        strList.add(TextFormatting.GREEN + GCCoreUtil.translate("gui.message.energy") + ": " + getEnergyDisplayS(energyVal));
+        strList.add(TextFormatting.RED + GCCoreUtil.translate("gui.message.max_energy") + ": " + getEnergyDisplayS(maxEnergy));
     }
 
     public static String getEnergyDisplayS(float energyVal)
@@ -99,11 +99,11 @@ public class EnergyDisplayHelper
 
     public static int getEnergyDisplayI(float energyVal)
     {
-        return MathHelper.floor_float(energyVal);
+        return MathHelper.floor(energyVal);
     }
 
     public static String getEnergyDisplay1DP(float energyVal)
     {
-        return "" + MathHelper.floor_float(energyVal) + "." + (MathHelper.floor_float(energyVal * 10) % 10) + (MathHelper.floor_float(energyVal * 100) % 10);
+        return "" + MathHelper.floor(energyVal) + "." + (MathHelper.floor(energyVal * 10) % 10) + (MathHelper.floor(energyVal * 100) % 10);
     }
 }

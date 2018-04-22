@@ -1,4 +1,5 @@
 {
+	"parent": "block/block",
     "textures": {
         "particle": "galacticraftcore:blocks/cheese_2",
         "bottom": "galacticraftcore:blocks/cheese_1",

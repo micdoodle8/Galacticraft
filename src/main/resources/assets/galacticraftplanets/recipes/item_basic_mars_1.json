@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:item_basic_mars",
+    "data": 1
+  },
+  "pattern": [
+    "X",
+    "X"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    }
+  }
+}

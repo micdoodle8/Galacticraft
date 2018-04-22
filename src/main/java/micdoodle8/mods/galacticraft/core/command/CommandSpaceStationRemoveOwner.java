@@ -11,17 +11,17 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
 import java.util.*;
 
 public class CommandSpaceStationRemoveOwner extends CommandBase
 {
     @Override
-    public String getCommandUsage(ICommandSender var1)
+    public String getUsage(ICommandSender var1)
     {
-        return "/" + this.getCommandName() + " <player>";
+        return "/" + this.getName() + " <player>";
     }
 
     @Override
@@ -31,19 +31,19 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender)
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender)
     {
         return true;
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "ssuninvite";
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
         String var3 = null;
         EntityPlayerMP playerBase = null;
@@ -68,7 +68,7 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
                     {
                         for (Map.Entry<Integer, Integer> e : stats.getSpaceStationDimensionData().entrySet())
                         {
-                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+                            final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.world, e.getValue(), playerBase);
 
                             String str = null;
                             for (String name : data.getAllowedPlayers())
@@ -101,23 +101,23 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
         }
         else
         {
-            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getCommandUsage(sender)), new Object[0]);
+            throw new WrongUsageException(GCCoreUtil.translateWithFormat("commands.ssinvite.wrong_usage", this.getUsage(sender)), new Object[0]);
         }
 
         if (playerBase != null)
         {
-            playerBase.addChatMessage(new ChatComponentText(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
+            playerBase.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.removesuccess", var3)));
         }
     }
 
 
     @Override
-    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos)
     {
-        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(sender)) : null;
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers(server, sender)) : null;
     }
 
-    protected String[] getPlayers(ICommandSender sender)
+    protected String[] getPlayers(MinecraftServer server, ICommandSender sender)
     {
         EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), false);
 
@@ -126,14 +126,14 @@ public class CommandSpaceStationRemoveOwner extends CommandBase
             GCPlayerStats stats = GCPlayerStats.get(playerBase);
             if (!stats.getSpaceStationDimensionData().isEmpty())
             {
-                String[] allNames = MinecraftServer.getServer().getAllUsernames();
+                String[] allNames = server.getOnlinePlayerNames();
                 //data.getAllowedPlayers may include some in lowercase
                 //Convert to correct case at least for those players who are online
                 HashSet<String> allowedNames = Sets.newHashSet();
 
                 for (Map.Entry<Integer, Integer> e : stats.getSpaceStationDimensionData().entrySet())
                 {
-                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.worldObj, e.getValue(), playerBase);
+                    final SpaceStationWorldData data = SpaceStationWorldData.getStationData(playerBase.world, e.getValue(), playerBase);
                     allowedNames.addAll(data.getAllowedPlayers());
                 }
 

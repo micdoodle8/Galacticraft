@@ -6,11 +6,11 @@ import net.minecraft.util.EnumFacing;
  *
  * Please use wisely. */
 public interface ITriggerExternalOverride {
-    public enum Result {
+    enum Result {
         TRUE,
         FALSE,
         IGNORE
     }
 
-    Result override(EnumFacing side, IStatementContainer source, IStatementParameter[] parameters);
+    Result override(EnumFacing side, IStatementContainer source, ITriggerExternal trigger, IStatementParameter[] parameters);
 }

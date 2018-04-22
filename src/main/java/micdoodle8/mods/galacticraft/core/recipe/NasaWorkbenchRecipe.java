@@ -37,11 +37,11 @@ public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
 
     private boolean checkItemEquals(ItemStack target, ItemStack input)
     {
-        if (input == null && target != null || input != null && target == null)
+        if (input.isEmpty() && !target.isEmpty() || !input.isEmpty() && target.isEmpty())
         {
             return false;
         }
-        return target == null && input == null || target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
+        return target.isEmpty() && input.isEmpty() || target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
     }
 
     @Override

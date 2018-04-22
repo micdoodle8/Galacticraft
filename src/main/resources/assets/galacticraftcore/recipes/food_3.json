@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "galacticraftcore:food",
+    "data": 3
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftcore:canister",
+      "data": 0
+    },
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "minecraft:potato"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}

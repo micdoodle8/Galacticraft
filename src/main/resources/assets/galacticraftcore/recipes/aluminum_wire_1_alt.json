@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftcore:aluminum_wire",
+    "data": 1
+  },
+  "pattern": [
+    "Z",
+    "Y",
+    "X"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "X": {
+      "item": "minecraft:wool",
+      "data": 32767
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "ingotAluminum"
+    }
+  }
+}

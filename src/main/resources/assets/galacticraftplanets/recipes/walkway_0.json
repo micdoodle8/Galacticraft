@@ -1,0 +1,18 @@
+{
+  "result": {
+    "item": "galacticraftplanets:walkway",
+    "data": 0,
+    "count": 5
+  },
+  "pattern": [
+    "XXX",
+    " X "
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "titanium_plate"
+    }
+  }
+}

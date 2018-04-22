@@ -12,22 +12,22 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.Random;
 
 public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISortableBlock
@@ -79,7 +79,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);
-        this.setStepSound(Block.soundTypeMetal);
+        this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
     }
 
@@ -90,19 +90,19 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public boolean isOpaqueCube()
+    public boolean isOpaqueCube(IBlockState state)
     {
         return true;
     }
 
     @Override
-    public boolean isFullCube()
+    public boolean isFullCube(IBlockState state)
     {
         return true;
     }
 
     @Override
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -113,13 +113,13 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         int metadata = getMetaFromState(state);
 
-        final int angle = MathHelper.floor_double(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
         worldIn.setBlockState(pos, getStateFromMeta((metadata & 0x0c) + change), 3);
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         IBlockState state = world.getBlockState(pos);
         TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
@@ -127,7 +127,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
@@ -185,12 +185,12 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        par3List.add(this.getElectricCompressor());
-        par3List.add(this.getCircuitFabricator());
-        par3List.add(this.getOxygenStorageModule());
-        par3List.add(this.getDeconstructor());
+        list.add(this.getElectricCompressor());
+        list.add(this.getCircuitFabricator());
+        list.add(this.getOxygenStorageModule());
+        list.add(this.getDeconstructor());
     }
 
     @Override
@@ -198,14 +198,6 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     {
         int metadata = getMetaFromState(state);
         return metadata & 0x0c;
-    }
-
-    @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player)
-    {
-        int metadata = this.getDamageValue(world, pos);
-
-        return new ItemStack(this, 1, metadata);
     }
 
     @Override
@@ -246,9 +238,9 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
-    protected BlockState createBlockState()
+    protected BlockStateContainer createBlockState()
     {
-        return new BlockState(this, FACING, TYPE, SIDES);
+        return new BlockStateContainer(this, FACING, TYPE, SIDES);
     }
 
     @Override
@@ -265,7 +257,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
     
     @Override
-    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)

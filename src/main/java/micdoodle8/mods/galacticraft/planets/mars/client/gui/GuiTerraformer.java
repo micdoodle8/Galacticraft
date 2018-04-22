@@ -36,7 +36,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
     public GuiTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer terraformer)
     {
-        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().thePlayer));
+        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().player));
         this.ySize = 237;
         this.terraformer = terraformer;
     }
@@ -103,10 +103,10 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.terraformer.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.terraformer.getPos(), 0 }));
                 break;
             case 1:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { this.terraformer.getPos(), 1 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.terraformer.getPos(), 1 }));
                 break;
             case 2:
                 break;
@@ -120,11 +120,11 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String displayString = terraformer.getName();
-        this.fontRendererObj.drawString(displayString, this.xSize / 2 - this.fontRendererObj.getStringWidth(displayString) / 2, 5, 4210752);
-        this.fontRendererObj.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
-        this.fontRendererObj.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
-        //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
-        //		this.fontRendererObj.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
+        this.fontRenderer.drawString(displayString, this.xSize / 2 - this.fontRenderer.getStringWidth(displayString) / 2, 5, 4210752);
+        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, 144, 4210752);
+        this.fontRenderer.drawSplitString(this.getStatus(), 105, 24, this.xSize - 105, 4210752);
+        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.ueWattsPerTick * 20, ElectricUnit.WATT), 105, 56, 4210752);
+        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.terraformer.getVoltage(), ElectricUnit.VOLTAGE), 105, 68, 4210752);
     }
 
     private String getStatus()
@@ -149,17 +149,17 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_water.name");
         }
 
-        if (this.terraformer.getFirstBonemealStack() == null)
+        if (this.terraformer.getFirstBonemealStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_bonemeal.name");
         }
 
-        if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack() == null)
+        if (!this.terraformer.grassDisabled && this.terraformer.getFirstSeedStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_seeds.name");
         }
 
-        if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack() == null)
+        if (!this.terraformer.treesDisabled && this.terraformer.getFirstSaplingStack().isEmpty())
         {
             return EnumColor.RED + GCCoreUtil.translate("gui.message.no_saplings.name");
         }
@@ -215,7 +215,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.terraformer.shouldRenderBubble = newSelected;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

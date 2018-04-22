@@ -1,0 +1,31 @@
+{
+  "result": {
+    "item": "galacticraftcore:oxygen_compressor",
+    "data": 4
+  },
+  "pattern": [
+    "XVX",
+    "WZW",
+    "XYX"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "V": {
+      "item": "galacticraftcore:air_fan"
+    },
+    "W": {
+      "type": "forge:ore_dict",
+      "ore": "compressedAluminum"
+    },
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "minecraft:redstone_torch"
+    },
+    "Z": {
+      "item": "galacticraftcore:oxygen_concentrator"
+    }
+  }
+}

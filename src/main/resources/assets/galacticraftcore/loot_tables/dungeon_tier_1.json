@@ -1,0 +1,240 @@
+{
+    "pools": [
+        {
+			"name": "dungeon_tier_1",
+            "rolls": {
+                "min": 5,
+                "max": 8
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:cheese_curd",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_apple",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 0
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_carrot",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_melon",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 2
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "canned_potato",
+                    "name": "galacticraftcore:food",
+                    "weight": 6,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 3
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:oil_canister_partial",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 1001
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:golden_apple",
+                    "weight": 15
+                },
+                {
+                    "type": "item",
+                    "entryName": "glowing_golden_apple",
+                    "name": "minecraft:golden_apple",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "set_data",
+                            "data": 1
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:redstone",
+                    "weight": 10,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 2,
+                                "max": 7
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_blocks",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "minecraft:record_far",
+                    "weight": 4
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:steel_shovel",
+                    "weight": 10
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:item_basic_moon",
+                    "weight": 2,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 2
+                        },
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "name": "galacticraftcore:meteoric_iron_raw",
+                    "weight": 5,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "frequency_module",
+                    "name": "galacticraftcore:basic_item",
+                    "weight": 1,
+                    "functions": [
+                        {
+                            "function": "minecraft:set_data",
+                            "data": 19
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book1",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_randomly"
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "entryName": "book2",
+                    "name": "minecraft:book",
+                    "weight": 8,
+                    "functions": [
+                        {
+                            "function": "enchant_randomly"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

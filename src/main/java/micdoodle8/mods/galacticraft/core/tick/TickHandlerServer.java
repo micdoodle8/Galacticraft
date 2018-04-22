@@ -37,8 +37,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldServer;
@@ -98,7 +98,7 @@ public class TickHandlerServer
     {
         for (GalacticraftPacketHandler packetHandler : packetHandlers)
         {
-            packetHandler.unload(event.world);
+            packetHandler.unload(event.getWorld());
         }
     }
 
@@ -272,11 +272,11 @@ public class TickHandlerServer
                     {
                         final Integer dim = GCCoreUtil.getDimensionID(provider);
                         GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
-    
-                        if (change.getPlayer().worldObj instanceof WorldServer)
+
+                        if (change.getPlayer().world instanceof WorldServer)
                         {
-                            final WorldServer world = (WorldServer) change.getPlayer().worldObj;
-    
+                            final WorldServer world = (WorldServer) change.getPlayer().world;
+
                             WorldUtil.transferEntityToDimension(change.getPlayer(), dim, world);
                         }
                     }
@@ -286,7 +286,7 @@ public class TickHandlerServer
                     }
 
                     stats.setTeleportCooldown(10);
-                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().worldObj), new Object[] {}), change.getPlayer());
+                    GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_CLOSE_GUI, GCCoreUtil.getDimensionID(change.getPlayer().world), new Object[] {}), change.getPlayer());
                 }
                 catch (Exception e)
                 {
@@ -308,8 +308,8 @@ public class TickHandlerServer
 
             if (TickHandlerServer.spaceRaceData == null)
             {
-                World world = server.worldServerForDimension(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().loadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+                World world = server.getWorld(0);
+                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
 
                 if (TickHandlerServer.spaceRaceData == null)
                 {
@@ -324,7 +324,7 @@ public class TickHandlerServer
 
             if (TickHandlerServer.tickCount % 33 == 0)
             {
-                WorldServer[] worlds = server.worldServers;
+                WorldServer[] worlds = server.worlds;
 
                 for (int i = worlds.length - 1; i >= 0; i--)
                 {
@@ -334,12 +334,12 @@ public class TickHandlerServer
             }
             if (TickHandlerServer.tickCount % 100 == 0)
             {
-                WorldServer[] worlds = server.worldServers;
+                WorldServer[] worlds = server.worlds;
 
                 for (int i = 0; i < worlds.length; i++)
                 {
                     WorldServer world = worlds[i];
-                    ChunkProviderServer chunkProviderServer = world.theChunkProviderServer;
+                    ChunkProviderServer chunkProviderServer = world.getChunkProvider();
 
                     Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionID(world));
 
@@ -349,12 +349,12 @@ public class TickHandlerServer
 
                         if (chunkProviderServer != null)
                         {
-                            Iterator iterator = chunkProviderServer.loadedChunks.iterator();
+                            Iterator iterator = chunkProviderServer.getLoadedChunks().iterator();
 
                             while (iterator.hasNext())
                             {
                                 Chunk chunk = (Chunk) iterator.next();
-                                long chunkKey = ChunkCoordIntPair.chunkXZ2Int(chunk.xPosition, chunk.zPosition);
+                                long chunkKey = ChunkPos.asLong(chunk.x, chunk.z);
 
                                 List<Footprint> footprints = footprintMap.get(chunkKey);
 
@@ -380,7 +380,7 @@ public class TickHandlerServer
                                     footprintMap.put(chunkKey, footprints);
                                     mapChanged = true;
 
-                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, GCCoreUtil.getDimensionID(worlds[i]), new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), GCCoreUtil.getDimensionID(worlds[i]));
+                                    GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, worlds[i].provider.getDimension(), new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), worlds[i].provider.getDimension());
                                 }
                             }
                         }
@@ -397,7 +397,7 @@ public class TickHandlerServer
             {
                 for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
-                    WorldServer[] worlds = server.worldServers;
+                    WorldServer[] worlds = server.worlds;
 
                     for (int i = 0; i < worlds.length; i++)
                     {
@@ -405,7 +405,7 @@ public class TickHandlerServer
 
                         if (GCCoreUtil.getDimensionID(world) == targetPoint.dim)
                         {
-                            long chunkKey = ChunkCoordIntPair.chunkXZ2Int((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
+                            long chunkKey = ChunkPos.asLong((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
                             GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 
 
@@ -560,9 +560,9 @@ public class TickHandlerServer
                             BlockPos changePosition = change.getChangePosition();
                             Block block = world.getBlockState(changePosition).getBlock();
                             //Only replace blocks of type BlockAir or fire - this is to prevent accidents where other mods have moved blocks
-                            if (changePosition != null && (block instanceof BlockAir || block == Blocks.fire))
+                            if (changePosition != null && (block instanceof BlockAir || block == Blocks.FIRE))
                             {
-                                world.setBlockState(changePosition, change.getChangeID().getStateFromMeta(change.getChangeMeta()), change.getChangeUpdateFlag());
+                                world.setBlockState(changePosition, change.getChangeState(), change.getChangeUpdateFlag());
                             }
                         }
                     }
@@ -607,7 +607,7 @@ public class TickHandlerServer
                     final Entity[] entityList = world.loadedEntityList.toArray(new Entity[world.loadedEntityList.size()]);
                     for (final Entity e : entityList)
                     {
-                        if (e.posY <= minY && e.worldObj == world)
+                        if (e.posY <= minY && e.world == world)
                         {
                             WorldUtil.transferEntityToDimension(e, dim, world, false, null);
                         }

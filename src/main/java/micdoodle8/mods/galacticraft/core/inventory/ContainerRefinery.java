@@ -55,7 +55,7 @@ public class ContainerRefinery extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -65,8 +65,8 @@ public class ContainerRefinery extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
     {
-        ItemStack var2 = null;
-        final Slot slot = (Slot) this.inventorySlots.get(par1);
+        ItemStack var2 = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(par1);
 
         if (slot != null && slot.getHasStack())
         {
@@ -77,7 +77,7 @@ public class ContainerRefinery extends Container
             {
                 if (!this.mergeItemStack(var4, 3, 39, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
 
                 if (par1 == 2)
@@ -91,7 +91,7 @@ public class ContainerRefinery extends Container
                 {
                     if (!this.mergeItemStack(var4, 0, 1, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else
@@ -100,45 +100,45 @@ public class ContainerRefinery extends Container
                     {
                         if (!this.mergeItemStack(var4, 1, 2, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
-                    else if (FluidUtil.isEmptyContainer(var4, GCItems.fuelCanister))
+                    else if (FluidUtil.isPartialContainer(var4, GCItems.fuelCanister))
                     {
                         if (!this.mergeItemStack(var4, 2, 3, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (par1 < 30)
                     {
                         if (!this.mergeItemStack(var4, 30, 39, false))
                         {
-                            return null;
+                            return ItemStack.EMPTY;
                         }
                     }
                     else if (!this.mergeItemStack(var4, 3, 30, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
             }
 
-            if (var4.stackSize == 0)
+            if (var4.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (var4.stackSize == var2.stackSize)
+            if (var4.getCount() == var2.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, var4);
+            slot.onTake(par1EntityPlayer, var4);
         }
 
         return var2;

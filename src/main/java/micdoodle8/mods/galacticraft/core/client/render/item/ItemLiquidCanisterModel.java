@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import com.google.common.collect.ImmutableList;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.resources.model.IBakedModel;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.ISmartItemModel;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.List;
 
-@SuppressWarnings({ "deprecation" })
-public class ItemLiquidCanisterModel implements ISmartItemModel
+public class ItemLiquidCanisterModel implements IBakedModel
 {
     private final IBakedModel iBakedModel;
 
@@ -23,15 +23,15 @@ public class ItemLiquidCanisterModel implements ISmartItemModel
     }
 
     @Override
-    public List<BakedQuad> getFaceQuads(EnumFacing enumFacing)
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
     {
-        return iBakedModel.getFaceQuads(enumFacing);
+        return iBakedModel.getQuads(state, side, rand);
     }
 
     @Override
-    public List<BakedQuad> getGeneralQuads()
+    public ItemOverrideList getOverrides()
     {
-        return iBakedModel.getGeneralQuads();
+        return BakedLiquidCanisterOverrideHandler.INSTANCE;
     }
 
     @Override
@@ -64,16 +64,26 @@ public class ItemLiquidCanisterModel implements ISmartItemModel
         return ItemCameraTransforms.DEFAULT;
     }
 
-    @Override
-    public IBakedModel handleItemState(ItemStack stack)
+    private static final class BakedLiquidCanisterOverrideHandler extends ItemOverrideList
     {
-        if (stack.getTagCompound() == null)
+        public static final BakedLiquidCanisterOverrideHandler INSTANCE = new BakedLiquidCanisterOverrideHandler();
+
+        private BakedLiquidCanisterOverrideHandler()
         {
-            ItemStack copy = stack.copy();
-            copy.setTagCompound(new NBTTagCompound());
-            copy.getTagCompound().setBoolean("Unbreakable", true);
-            return FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getItemModel(copy);
+            super(ImmutableList.of());
         }
-        return iBakedModel;
+
+        @Override
+        public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity)
+        {
+            if (stack.getTagCompound() == null)
+            {
+                ItemStack copy = stack.copy();
+                copy.setTagCompound(new NBTTagCompound());
+                copy.getTagCompound().setBoolean("Unbreakable", true);
+                return FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getItemModel(copy);
+            }
+            return originalModel;
+        }
     }
 }

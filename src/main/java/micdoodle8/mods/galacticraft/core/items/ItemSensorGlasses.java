@@ -10,6 +10,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -20,13 +21,13 @@ public class ItemSensorGlasses extends ItemArmor implements ISortableItem
 {
     public ItemSensorGlasses(String assetName)
     {
-        super(GCItems.ARMOR_SENSOR_GLASSES, 0, 0);
+        super(GCItems.ARMOR_SENSOR_GLASSES, 0, EntityEquipmentSlot.HEAD);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
     @Override
-    public boolean isItemTool(ItemStack stack)
+    public boolean isEnchantable(ItemStack stack)
     {
         return false;
     }
@@ -38,7 +39,7 @@ public class ItemSensorGlasses extends ItemArmor implements ISortableItem
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
     {
         return Constants.TEXTURE_PREFIX + "textures/model/armor/sensor_1.png";
     }

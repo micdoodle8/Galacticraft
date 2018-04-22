@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:arclamp"
+  },
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "X": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "desh_ingot"
+    },
+    "Y": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "Z": {
+      "item": "galacticraftcore:battery"
+    }
+  }
+}

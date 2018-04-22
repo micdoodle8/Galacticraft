@@ -16,7 +16,7 @@ public class RoomEmptyVenus extends SizedPieceVenus
     public RoomEmptyVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.coordBaseMode = EnumFacing.SOUTH;
+        this.setCoordBaseMode(EnumFacing.SOUTH);
         this.sizeX = sizeX;
         this.sizeY = sizeY;
         this.sizeZ = sizeZ;
@@ -76,12 +76,12 @@ public class RoomEmptyVenus extends SizedPieceVenus
                         }
                         else
                         {
-                            this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                            this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                         }
                     }
                     else
                     {
-                        this.setBlockState(worldIn, Blocks.air.getDefaultState(), i, j, k, boundingBox);
+                        this.setBlockState(worldIn, Blocks.AIR.getDefaultState(), i, j, k, boundingBox);
                     }
                 }
             }

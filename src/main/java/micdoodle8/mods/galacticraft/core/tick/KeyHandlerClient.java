@@ -69,9 +69,9 @@ public class KeyHandlerClient extends KeyHandler
     @Override
     public void keyDown(Type types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
     {
-        if (KeyHandlerClient.mc.thePlayer != null && tickEnd)
+        if (KeyHandlerClient.mc.player != null && tickEnd)
         {
-            EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.thePlayer, false);
+            EntityPlayerSP playerBase = PlayerUtil.getPlayerBaseClientFromPlayer(KeyHandlerClient.mc.player, false);
 
             if (playerBase == null)
             {
@@ -84,14 +84,14 @@ public class KeyHandlerClient extends KeyHandler
             {
                 if (KeyHandlerClient.mc.currentScreen == null)
                 {
-                    KeyHandlerClient.mc.thePlayer.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.theWorld, (int) KeyHandlerClient.mc.thePlayer.posX, (int) KeyHandlerClient.mc.thePlayer.posY, (int) KeyHandlerClient.mc.thePlayer.posZ);
+                    KeyHandlerClient.mc.player.openGui(GalacticraftCore.instance, GuiIdsCore.GALAXY_MAP, KeyHandlerClient.mc.world, (int) KeyHandlerClient.mc.player.posX, (int) KeyHandlerClient.mc.player.posY, (int) KeyHandlerClient.mc.player.posZ);
                 }
             }
             else if (kb.getKeyCode() == KeyHandlerClient.openFuelGui.getKeyCode())
             {
-                if (playerBase.ridingEntity instanceof EntitySpaceshipBase || playerBase.ridingEntity instanceof EntityBuggy)
+                if (playerBase.getRidingEntity() instanceof EntitySpaceshipBase || playerBase.getRidingEntity() instanceof EntityBuggy)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { PlayerUtil.getName(playerBase) }));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_OPEN_FUEL_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { PlayerUtil.getName(playerBase) }));
                 }
             }
             else if (kb.getKeyCode() == KeyHandlerClient.toggleAdvGoggles.getKeyCode())
@@ -103,7 +103,7 @@ public class KeyHandlerClient extends KeyHandler
             }
         }
 
-        if (KeyHandlerClient.mc.thePlayer != null && KeyHandlerClient.mc.currentScreen == null)
+        if (KeyHandlerClient.mc.player != null && KeyHandlerClient.mc.currentScreen == null)
         {
             int keyNum = -1;
 
@@ -132,7 +132,7 @@ public class KeyHandlerClient extends KeyHandler
                 keyNum = 5;
             }
 
-            Entity entityTest = KeyHandlerClient.mc.thePlayer.ridingEntity;
+            Entity entityTest = KeyHandlerClient.mc.player.getRidingEntity();
             if (entityTest != null && entityTest instanceof IControllableEntity && keyNum != -1)
             {
                 IControllableEntity entity = (IControllableEntity) entityTest;
@@ -153,13 +153,13 @@ public class KeyHandlerClient extends KeyHandler
                     if (kb == KeyHandlerClient.leftShiftKey)
                     {
                         autoRocket.motionY -= 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { autoRocket.getEntityId(), false }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[] { autoRocket.getEntityId(), false }));
                     }
 
                     if (kb == KeyHandlerClient.spaceKey)
                     {
                         autoRocket.motionY += 0.02D;
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.theWorld), new Object[] { autoRocket.getEntityId(), true }));
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_SHIP_MOTION_Y, GCCoreUtil.getDimensionID(mc.world), new Object[] { autoRocket.getEntityId(), true }));
                     }
                 }
             }

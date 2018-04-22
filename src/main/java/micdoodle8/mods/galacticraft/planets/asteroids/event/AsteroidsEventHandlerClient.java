@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -30,7 +30,7 @@ public class AsteroidsEventHandlerClient
     public void onClientTick(ClientTickEvent event)
     {
         Minecraft minecraft = Minecraft.getMinecraft();
-        WorldClient world = minecraft.theWorld;
+        WorldClient world = minecraft.world;
 
         if (world != null)
         {
@@ -147,6 +147,6 @@ public class AsteroidsEventHandlerClient
     @SubscribeEvent
     public void onSpecialRender(EventSpecialRender event)
     {
-        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().theWorld, event.partialTicks);
+        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().world, event.partialTicks);
     }
 }

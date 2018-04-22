@@ -1,0 +1,24 @@
+{
+  "result": {
+    "item": "galacticraftcore:sensor_lens"
+  },
+  "pattern": [
+    "ZXZ",
+    "XYX",
+    "ZXZ"
+  ],
+  "type": "galacticraftcore:replacable",
+  "key": {
+    "X": {
+      "item": "minecraft:glass_pane"
+    },
+    "Y": {
+      "type": "galacticraftcore:advanced_metal",
+      "metal": "meteoric_iron_plate"
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "dustRedstone"
+    }
+  }
+}

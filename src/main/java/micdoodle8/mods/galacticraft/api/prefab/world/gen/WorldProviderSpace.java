@@ -9,15 +9,15 @@ import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.command.CommandTime;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.VillageCollection;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.WorldChunkManager;
+import net.minecraft.world.biome.BiomeProvider;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -76,36 +76,39 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public abstract long getDayLength();
 
-    public abstract Class<? extends IChunkProvider> getChunkProviderClass();
+    public abstract Class<? extends IChunkGenerator> getChunkProviderClass();
 
-    public abstract Class<? extends WorldChunkManager> getWorldChunkManagerClass();
+    @Deprecated
+    /**
+     * If possible you should not override this so that BiomeProviderDefault is used (see Moon, Mars and Asteroids for examples)
+     * 
+     * But this can be used for planets where you have multiple biomes
+     * In that case if using BiomeAdaptive (see Venus for example) this will need a BiomeAdaptive.setBodyMultiBiome() call;
+     */
+    public Class<? extends BiomeProvider> getBiomeProviderClass()
+    {
+        return null;
+    }
 
     @Override
     public void setDimension(int var1)
     {
-        this.dimensionId = var1;
         super.setDimension(var1);
-    }
-
-    @Override
-    public String getDimensionName()
-    {
-        return this.getCelestialBody().getLocalizedName();
     }
 
     @Override
     public void updateWeather()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            long newTime = worldObj.getWorldInfo().getWorldTime();
+            long newTime = world.getWorldInfo().getWorldTime();
             if (this.preTickTime == Long.MIN_VALUE)
             {
                 //First tick: get the timeCurrentOffset from saved ticks in villages.dat :)
                 int savedTick = 0;
                 try {
                     tickCounter.setAccessible(true);
-                    savedTick = tickCounter.getInt(this.worldObj.villageCollectionObj);
+                    savedTick = tickCounter.getInt(this.world.villageCollection);
                     if (savedTick < 0) savedTick = 0;
                 } catch (Exception ignore) { }
                 this.timeCurrentOffset = savedTick - newTime;
@@ -126,12 +129,12 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         
         if (this.shouldDisablePrecipitation())
         {
-            this.worldObj.getWorldInfo().setRainTime(0);
-            this.worldObj.getWorldInfo().setRaining(false);
-            this.worldObj.getWorldInfo().setThunderTime(0);
-            this.worldObj.getWorldInfo().setThundering(false);
-            this.worldObj.rainingStrength = 0.0F;
-            this.worldObj.thunderingStrength = 0.0F;
+            this.world.getWorldInfo().setRainTime(0);
+            this.world.getWorldInfo().setRaining(false);
+            this.world.getWorldInfo().setThunderTime(0);
+            this.world.getWorldInfo().setThundering(false);
+            this.world.rainingStrength = 0.0F;
+            this.world.thunderingStrength = 0.0F;
         }
         else
         {
@@ -151,18 +154,6 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     public String getSaveFolder()
     {
         return "DIM" + this.getCelestialBody().getDimensionID();
-    }
-
-    @Override
-    public String getWelcomeMessage()
-    {
-        return "Entering " + this.getCelestialBody().getLocalizedName();
-    }
-
-    @Override
-    public String getDepartMessage()
-    {
-        return "Leaving " + this.getCelestialBody().getLocalizedName();
     }
 
     @Override
@@ -288,17 +279,17 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
 
     @SideOnly(Side.CLIENT)
     @Override
-    public Vec3 getFogColor(float var1, float var2)
+    public Vec3d getFogColor(float var1, float var2)
     {
         Vector3 fogColor = this.getFogColor();
-        return new Vec3(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
+        return new Vec3d(fogColor.floatX(), fogColor.floatY(), fogColor.floatZ());
     }
 
     @Override
-    public Vec3 getSkyColor(Entity cameraEntity, float partialTicks)
+    public Vec3d getSkyColor(Entity cameraEntity, float partialTicks)
     {
         Vector3 skyColor = this.getSkyColor();
-        return new Vec3(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
+        return new Vec3d(skyColor.floatX(), skyColor.floatY(), skyColor.floatZ());
     }
 
     @Override
@@ -316,7 +307,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public boolean isSurfaceWorld()
     {
-        return (this.worldObj == null) ? false : this.worldObj.isRemote;
+        return (this.world == null) ? false : this.world.isRemote;
     }
 
     /**
@@ -343,7 +334,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public int getRespawnDimension(EntityPlayerMP player)
     {
-        return this.shouldForceRespawn() ? this.dimensionId : 0;
+        return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
 
     /**
@@ -378,11 +369,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
     
     @Override
-    public IChunkProvider createChunkGenerator()
+    public IChunkGenerator createChunkGenerator()
     {
         try
         {
-            Class<? extends IChunkProvider> chunkProviderClass = this.getChunkProviderClass();
+            Class<? extends IChunkGenerator> chunkProviderClass = this.getChunkProviderClass();
 
             Constructor<?>[] constructors = chunkProviderClass.getConstructors();
             for (int i = 0; i < constructors.length; i++)
@@ -390,11 +381,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkProvider) constr.newInstance(this.worldObj, this.worldObj.getSeed(), this.worldObj.getWorldInfo().isMapFeaturesEnabled());
+                    return (IChunkGenerator) constr.newInstance(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
-                    return (IChunkProvider) constr.newInstance();
+                    return (IChunkGenerator) constr.newInstance();
                 }
             }
         }
@@ -407,28 +398,26 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
 
     @Override
-    public void registerWorldChunkManager()
+    protected void init()
     {
-        if (this.getWorldChunkManagerClass() == null)
-        {
-            super.registerWorldChunkManager();
-        }
-        else
+        this.hasSkyLight = true;
+
+        if (this.getBiomeProviderClass() != null)
         {
             try
             {
-                Class<? extends WorldChunkManager> chunkManagerClass = this.getWorldChunkManagerClass();
+                Class<? extends BiomeProvider> biomeProviderClass = this.getBiomeProviderClass();
 
-                Constructor<?>[] constructors = chunkManagerClass.getConstructors();
+                Constructor<?>[] constructors = biomeProviderClass.getConstructors();
                 for (Constructor<?> constr : constructors)
                 {
                     if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class }))
                     {
-                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance(this.worldObj);
+                        this.biomeProvider = (BiomeProvider) constr.newInstance(this.world);
                     }
                     else if (constr.getParameterTypes().length == 0)
                     {
-                        this.worldChunkMgr = (WorldChunkManager) constr.newInstance();
+                        this.biomeProvider = (BiomeProvider) constr.newInstance();
                     }
                 }
             }
@@ -437,6 +426,20 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 e.printStackTrace();
             }
         }
+        else
+        {
+            this.biomeProvider = new BiomeProviderDefault(this.getCelestialBody());
+        }
+    }
+
+    @Override
+    public BiomeProvider getBiomeProvider()
+    {
+        if (this.getBiomeProviderClass() == null)
+        {
+            BiomeAdaptive.setBody(this.getCelestialBody());
+        }
+        return biomeProvider;
     }
 
     @Override
@@ -450,8 +453,8 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     @Override
     public void setWorldTime(long time)
     {
-        worldObj.getWorldInfo().setWorldTime(time);
-        if (!worldObj.isRemote)
+        world.getWorldInfo().setWorldTime(time);
+        if (!world.isRemote)
         {
             if (JavaUtil.instance.isCalledBy(CommandTime.class))
             {
@@ -461,7 +464,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
             }
             else
             {
-                long newTCO = time - worldObj.getWorldInfo().getWorldTime();
+                long newTCO = time - world.getWorldInfo().getWorldTime();
                 long diff = newTCO - this.timeCurrentOffset;
                 if (diff > 1L || diff < -1L)
                 {
@@ -481,7 +484,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
         {
             this.saveTCO  = this.timeCurrentOffset;
         }
-        return worldObj.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
+        return world.getWorldInfo().getWorldTime() + this.timeCurrentOffset;
     }
     
     /**
@@ -515,7 +518,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     private void saveTime()
     {
         try {
-            VillageCollection vc = this.worldObj.villageCollectionObj;
+            VillageCollection vc = this.world.villageCollection;
             tickCounter.setAccessible(true);
             tickCounter.setInt(vc, (int) (this.getWorldTime()));
             vc.markDirty();

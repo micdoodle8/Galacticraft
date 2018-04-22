@@ -51,7 +51,7 @@ public class ContainerPainter extends Container
     @Override
     public boolean canInteractWith(EntityPlayer par1EntityPlayer)
     {
-        return this.tileEntity.isUseableByPlayer(par1EntityPlayer);
+        return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ContainerPainter extends Container
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index)
     {
-        ItemStack stackOrig = null;
+        ItemStack stackOrig = ItemStack.EMPTY;
         Slot slot = (Slot) this.inventorySlots.get(index);
         final int b = this.inventorySlots.size();
 
@@ -74,48 +74,48 @@ public class ContainerPainter extends Container
             {
                 if (!this.mergeItemStack(stack, b - 36, b, true))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
                 slot.onSlotChange(stack, stackOrig);
             }
             else if (index != 1 && index != 0)
             {
                 Item item = stack.getItem();
-                if (item instanceof IPaintable || (item instanceof ItemBlock && ((ItemBlock)item).block instanceof IPaintable))
+                if (item instanceof IPaintable || (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof IPaintable))
                 {
                     if (!this.mergeOneItem(stack, 1, 2, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (index < b - 9)
                 {
                     if (!this.mergeItemStack(stack, b - 9, b, false))
                     {
-                        return null;
+                        return ItemStack.EMPTY;
                     }
                 }
                 else if (!this.mergeItemStack(stack, b - 36, b - 9, false))
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
 
-            if (stack.stackSize == 0)
+            if (stack.getCount() == 0)
             {
-                slot.putStack((ItemStack) null);
+                slot.putStack(ItemStack.EMPTY);
             }
             else
             {
                 slot.onSlotChanged();
             }
 
-            if (stack.stackSize == stackOrig.stackSize)
+            if (stack.getCount() == stackOrig.getCount())
             {
-                return null;
+                return ItemStack.EMPTY;
             }
 
-            slot.onPickupFromSlot(par1EntityPlayer, stack);
+            slot.onTake(par1EntityPlayer, stack);
         }
 
         return stackOrig;
@@ -124,7 +124,7 @@ public class ContainerPainter extends Container
     protected boolean mergeOneItem(ItemStack par1ItemStack, int par2, int par3, boolean par4)
     {
         boolean flag1 = false;
-        if (par1ItemStack.stackSize > 0)
+        if (par1ItemStack.getCount() > 0)
         {
             Slot slot;
             ItemStack slotStack;
@@ -134,11 +134,11 @@ public class ContainerPainter extends Container
                 slot = (Slot) this.inventorySlots.get(k);
                 slotStack = slot.getStack();
 
-                if (slotStack == null)
+                if (slotStack.isEmpty())
                 {
                     ItemStack stackOneItem = par1ItemStack.copy();
-                    stackOneItem.stackSize = 1;
-                    par1ItemStack.stackSize--;
+                    stackOneItem.setCount(1);
+                    par1ItemStack.shrink(1);
                     slot.putStack(stackOneItem);
                     slot.onSlotChanged();
                     flag1 = true;

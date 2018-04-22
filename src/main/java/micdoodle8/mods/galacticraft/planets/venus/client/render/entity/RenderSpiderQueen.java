@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.client.model.ModelSpiderQueen;
@@ -8,12 +9,11 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,11 +23,11 @@ import org.lwjgl.opengl.GL11;
 public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
 {
     private static final ResourceLocation spiderTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/spider_queen.png");
-    public static IFlexibleBakedModel webModel;
+    public static IBakedModel webModel;
 
     public RenderSpiderQueen(RenderManager renderManager)
     {
-        super(renderManager, new ModelSpiderQueen(), 0.5F);
+        super(renderManager, new ModelSpiderQueen(), 1.0F);
     }
 
     private void updateModels()
@@ -61,7 +61,6 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
     @Override
     public void doRender(EntitySpiderQueen entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        BossStatus.setBossStatus(entity, false);
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
 
         GL11.glPushMatrix();
@@ -73,7 +72,7 @@ public class RenderSpiderQueen extends RenderLiving<EntitySpiderQueen>
         this.updateModels();
 
         RenderHelper.disableStandardItemLighting();
-        this.bindTexture(TextureMap.locationBlocksTexture);
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

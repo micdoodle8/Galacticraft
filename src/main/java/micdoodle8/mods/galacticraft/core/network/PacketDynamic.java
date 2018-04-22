@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +30,7 @@ public class PacketDynamic extends PacketBase
 
     public PacketDynamic(Entity entity)
     {
-        super(GCCoreUtil.getDimensionID(entity.worldObj));
+        super(GCCoreUtil.getDimensionID(entity.world));
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
         this.data = new Object[] { entity.getEntityId() };
@@ -138,7 +138,7 @@ public class PacketDynamic extends PacketBase
         switch (this.type)
         {
         case 0:
-            Entity entity = player.worldObj.getEntityByID((Integer) this.data[0]);
+            Entity entity = player.world.getEntityByID((Integer) this.data[0]);
 
             if (entity instanceof IPacketReceiver)
             {
@@ -156,9 +156,9 @@ public class PacketDynamic extends PacketBase
             break;
 
         case 1:
-            if (player.worldObj.isBlockLoaded((BlockPos) this.data[0], false))
+            if (player.world.isBlockLoaded((BlockPos) this.data[0], false))
             {
-                TileEntity tile = player.worldObj.getTileEntity((BlockPos) this.data[0]);
+                TileEntity tile = player.world.getTileEntity((BlockPos) this.data[0]);
 
                 if (tile instanceof IPacketReceiver)
                 {

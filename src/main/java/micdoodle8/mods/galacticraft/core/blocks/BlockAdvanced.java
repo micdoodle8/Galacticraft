@@ -8,8 +8,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -29,46 +30,53 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        if (this.useWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+        if (hand != EnumHand.MAIN_HAND)
+        {
+            return false;
+        }
+
+        ItemStack heldItem = playerIn.getHeldItem(hand);
+
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
         {
             return true;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
             {
                 return true;
             }
         }
 
-        return this.onMachineActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
+        return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
-    protected boolean useWrench(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    protected boolean useWrench(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         /**
          * Check if the player is holding a wrench or an electric item. If so,
          * call the wrench event.
          */
-        if (this.isUsableWrench(playerIn, playerIn.inventory.getCurrentItem(), pos))
+        if (this.isUsableWrench(playerIn, heldItem, pos))
         {
-            this.damageWrench(playerIn, playerIn.inventory.getCurrentItem(), pos);
+            this.damageWrench(playerIn, heldItem, pos);
 
             if (playerIn.isSneaking())
             {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
                 {
-                    playerIn.swingItem();
+                    playerIn.swingArm(hand);
                     return true;
                 }
             }
 
-            if (this.onUseWrench(worldIn, pos, playerIn, side, hitX, hitY, hitZ))
+            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
             {
-                playerIn.swingItem();
+                playerIn.swingArm(hand);
                 return true;
             }
         }
@@ -172,7 +180,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -182,7 +190,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onSneakMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -192,7 +200,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -203,9 +211,9 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        return this.onUseWrench(world, pos, entityPlayer, side, hitX, hitY, hitZ);
+        return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
     }
     
     public void rotate6Ways(World world, BlockPos pos)
@@ -231,8 +239,8 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
-        return this.isNormalCube(world, pos);
+        return this.isNormalCube(base_state, world, pos);
     }
 }

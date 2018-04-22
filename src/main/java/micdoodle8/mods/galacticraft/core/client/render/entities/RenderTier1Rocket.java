@@ -6,8 +6,8 @@ import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -52,15 +52,16 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
         final float var25 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * par9;
 
-        GL11.glTranslatef((float) par2, (float) par4 + entity.getRenderOffsetY(), (float) par6);
+        GL11.glTranslatef((float) par2, (float) par4, (float) par6);
         GL11.glRotatef(180.0F - par8, 0.0F, 1.0F, 0.0F);
         GL11.glRotatef(-var24, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(-var25, 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(0.0F, entity.getRenderOffsetY(), 0.0F);
         final float var28 = entity.rollAmplitude - par9;
 
         if (var28 > 0.0F)
         {
-            final float i = entity.getLaunched() ? (5 - MathHelper.floor_double(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
+            final float i = entity.getLaunched() ? (5 - MathHelper.floor(entity.timeUntilLaunch / 85)) / 10F : 0.3F;
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 0.0F);
             GL11.glRotatef(MathHelper.sin(var28) * var28 * i * par9, 1.0F, 0.0F, 1.0F);
         }
@@ -75,7 +76,7 @@ public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
     @Override
     public boolean shouldRender(EntitySpaceshipBase rocket, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().expand(0.6D, 1D, 0.6D);
+        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().grow(0.6D, 1D, 0.6D);
 
         return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }

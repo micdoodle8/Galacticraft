@@ -51,53 +51,52 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
     }
 
     @Override
-    public void renderTileEntityAt(TileEntityBeamReceiver tile, double x, double y, double z, float partialTicks, int destroyStage)
+    public void render(TileEntityBeamReceiver tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
         if (tile.facing == null)
         {
             return;
         }
 
-        GL11.glPushMatrix();
-
-        GL11.glTranslatef((float) x + 0.5F, (float) y, (float) z + 0.5F);
-        GL11.glScalef(0.85F, 0.85F, 0.85F);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x + 0.5F, (float) y, (float) z + 0.5F);
+        GlStateManager.scale(0.85F, 0.85F, 0.85F);
 
         switch (tile.facing)
         {
         case DOWN:
-            GL11.glTranslatef(0.7F, -0.15F, 0.0F);
-            GL11.glRotatef(90, 0, 0, 1);
+            GlStateManager.translate(0.7F, -0.15F, 0.0F);
+            GlStateManager.rotate(90, 0, 0, 1);
             break;
         case UP:
-            GL11.glTranslatef(-0.7F, 1.3F, 0.0F);
-            GL11.glRotatef(-90, 0, 0, 1);
+            GlStateManager.translate(-0.7F, 1.3F, 0.0F);
+            GlStateManager.rotate(-90, 0, 0, 1);
             break;
         case EAST:
-            GL11.glTranslatef(0.7F, -0.15F, 0.0F);
-            GL11.glRotatef(180, 0, 1, 0);
+            GlStateManager.translate(0.7F, -0.15F, 0.0F);
+            GlStateManager.rotate(180, 0, 1, 0);
             break;
         case SOUTH:
-            GL11.glTranslatef(0.0F, -0.15F, 0.7F);
-            GL11.glRotatef(90, 0, 1, 0);
+            GlStateManager.translate(0.0F, -0.15F, 0.7F);
+            GlStateManager.rotate(90, 0, 1, 0);
             break;
         case WEST:
-            GL11.glTranslatef(-0.7F, -0.15F, 0.0F);
-            GL11.glRotatef(0, 0, 1, 0);
+            GlStateManager.translate(-0.7F, -0.15F, 0.0F);
+            GlStateManager.rotate(0, 0, 1, 0);
             break;
         case NORTH:
-            GL11.glTranslatef(0.0F, -0.15F, -0.7F);
-            GL11.glRotatef(270, 0, 1, 0);
+            GlStateManager.translate(0.0F, -0.15F, -0.7F);
+            GlStateManager.rotate(270, 0, 1, 0);
             break;
         default:
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
             return;
         }
 
-        updateModels();
+        this.updateModels();
+        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
-        RenderHelper.disableStandardItemLighting();
-        this.bindTexture(TextureMap.locationBlocksTexture);
         if (Minecraft.isAmbientOcclusionEnabled())
         {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -107,7 +106,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         ClientUtil.drawBakedModel(reflectorModelMain);
 
         int color;
@@ -125,24 +124,25 @@ public class TileEntityBeamReceiverRenderer extends TileEntitySpecialRenderer<Ti
             color = ColorUtil.to32BitColor(255, 25, 25, 25);
         }
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_CULL_FACE);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableCull();
         ClientUtil.drawBakedModelColored(reflectorModelReceiver, color);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_CULL_FACE);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableCull();
         float dX = 0.34772F;
         float dY = 0.75097F;
         float dZ = 0.0F;
-        GL11.glTranslatef(dX, dY, dZ);
+        GlStateManager.translate(dX, dY, dZ);
+
         if (tile.modeReceive != ReceiverMode.UNDEFINED.ordinal())
         {
-            GL11.glRotatef(-tile.ticks * 50, 1, 0, 0);
+            GlStateManager.rotate(-tile.ticks * 50, 1, 0, 0);
         }
-        GL11.glTranslatef(-dX, -dY, -dZ);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        ClientUtil.drawBakedModel(reflectorModelRing);
 
+        GlStateManager.translate(-dX, -dY, -dZ);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        ClientUtil.drawBakedModel(reflectorModelRing);
+        GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
-        GL11.glPopMatrix();
     }
 }

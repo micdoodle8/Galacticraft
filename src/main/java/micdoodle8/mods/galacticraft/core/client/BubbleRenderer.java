@@ -11,18 +11,18 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IFlexibleBakedModel;
 
 import org.lwjgl.opengl.GL11;
 import java.util.List;
 
 public class BubbleRenderer
 {
-    private static IFlexibleBakedModel sphere;
+    private static IBakedModel sphere;
     private static List<IBubbleProviderColored> bubbleProviders = Lists.newArrayList();
 
     public static void clearBubbles()
@@ -63,7 +63,7 @@ public class BubbleRenderer
             updateModels();
         }
 
-        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.pushMatrix();
         

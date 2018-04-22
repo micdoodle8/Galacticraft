@@ -1,0 +1,23 @@
+{
+  "result": {
+    "item": "galacticraftcore:space_glass_strong",
+    "data": 1,
+    "count": 5
+  },
+  "pattern": [
+    "YXY",
+    "XXX",
+    "YXY"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "X": {
+      "item": "galacticraftcore:space_glass_strong",
+      "data": 0
+    },
+    "Y": {
+      "item": "galacticraftcore:basic_block_core",
+      "data": 4
+    }
+  }
+}

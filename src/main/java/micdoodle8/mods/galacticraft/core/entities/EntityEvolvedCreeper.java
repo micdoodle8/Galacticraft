@@ -14,11 +14,15 @@ import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.Potion;
-import net.minecraft.util.MathHelper;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -28,6 +32,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 {
     private float sizeXBase = -1.0F;
     private float sizeYBase;
+    private static final DataParameter<Boolean> IS_CHILD = EntityDataManager.<Boolean>createKey(EntityEvolvedCreeper.class, DataSerializers.BOOLEAN);
     private static final UUID babySpeedBoostUUID = UUID.fromString("ef67a435-32a4-4efd-b218-e7431438b109");
     private static final AttributeModifier babySpeedBoostModifier = new AttributeModifier(babySpeedBoostUUID, "Baby speed boost evolved creeper", 0.5D, 1);
 
@@ -38,7 +43,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         this.tasks.addTask(1, new EntityAISwimming(this));
         this.tasks.addTask(2, new EntityAICreeperSwell(this));
         this.tasks.addTask(3, new EntityAIAvoidEntity<>(this, EntityOcelot.class, 6.0F, 1.0D, 1.2D));
-        this.tasks.addTask(4, new EntityAIAttackOnCollide(this, 1.0D, false));
+        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
         this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
         this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
         this.tasks.addTask(6, new EntityAILookIdle(this));
@@ -51,14 +56,14 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     protected void entityInit()
     {
         super.entityInit();
-        this.getDataWatcher().addObject(12, Byte.valueOf((byte) 0));
+        this.dataManager.register(IS_CHILD, false);
     }
 
     @Override
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(25.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25.0D);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     @Override
     public boolean isChild()
     {
-        return this.getDataWatcher().getWatchableObjectByte(12) == 1;
+        return this.dataManager.get(IS_CHILD);
     }
 
     @Override
@@ -132,11 +137,11 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
 
     public void setChild(boolean isChild)
     {
-        this.getDataWatcher().updateObject(12, Byte.valueOf((byte) (isChild ? 1 : 0)));
+        this.dataManager.set(IS_CHILD, isChild);
 
-        if (this.worldObj != null && !this.worldObj.isRemote)
+        if (this.world != null && !this.world.isRemote)
         {
-            IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.movementSpeed);
+            IAttributeInstance iattributeinstance = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
             iattributeinstance.removeModifier(babySpeedBoostModifier);
 
             if (isChild)
@@ -157,9 +162,9 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
             this.motionY = 0.22D;
         }
 
-        if (this.isPotionActive(Potion.jump))
+        if (this.isPotionActive(MobEffects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())
@@ -178,12 +183,11 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
     {
         if (this.isBurning())
         {
-            return Items.blaze_rod;
+            return Items.BLAZE_ROD;
         }
-        return Items.redstone;
+        return Items.REDSTONE;
     }
 
-    @Override
     protected void addRandomDrop()
     {
         switch (this.rand.nextInt(12))
@@ -192,7 +196,7 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
         case 1:
         case 2:
         case 3:
-            this.entityDropItem(new ItemStack(Blocks.sand), 0.0F);
+            this.entityDropItem(new ItemStack(Blocks.SAND), 0.0F);
             break;
         case 4:
         case 5:
@@ -204,11 +208,30 @@ public class EntityEvolvedCreeper extends EntityCreeper implements IEntityBreath
             break;
         case 7:
         case 8:
-            this.entityDropItem(new ItemStack(Blocks.ice), 0.0F);
+            this.entityDropItem(new ItemStack(Blocks.ICE), 0.0F);
             break;
         default:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.reeds, 1);
+            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.REEDS, 1);
             break;
+        }
+    }
+
+    @Override
+    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+    {
+        // No loot table
+        this.dropFewItems(wasRecentlyHit, lootingModifier);
+        this.dropEquipment(wasRecentlyHit, lootingModifier);
+    }
+
+    @Override
+    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+    {
+        super.dropFewItems(wasRecentlyHit, lootingModifier);
+
+        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
+        {
+            this.addRandomDrop();
         }
     }
 }

@@ -1,0 +1,49 @@
+{
+  "result": {
+    "item": "galacticraftplanets:orion_drive"
+  },
+  "pattern": [
+    "ABC",
+    "DOE",
+    "FGH"
+  ],
+  "type": "forge:ore_shaped",
+  "key": {
+    "A": {
+      "type": "forge:ore_dict",
+      "ore": "oreDiamond"
+    },
+    "B": {
+      "type": "forge:ore_dict",
+      "ore": "oreLapis"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "oreGold"
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "oreRedstone"
+    },
+    "E": {
+      "type": "forge:ore_dict",
+      "ore": "oreCoal"
+    },
+    "F": {
+      "type": "forge:ore_dict",
+      "ore": "oreCheese"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "oreDesh"
+    },
+    "H": {
+      "type": "forge:ore_dict",
+      "ore": "oreIlmenite"
+    },
+    "O": {
+      "item": "galacticraftplanets:item_basic_asteroids",
+      "data": 8
+    }
+  }
+}

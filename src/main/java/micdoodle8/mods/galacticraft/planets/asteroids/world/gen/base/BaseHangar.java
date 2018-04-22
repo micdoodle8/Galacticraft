@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -11,6 +9,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.structure.StructureBoundingBox;
+
+import java.util.Random;
 
 public class BaseHangar extends SizedPiece
 {
@@ -30,10 +30,10 @@ public class BaseHangar extends SizedPiece
             int w = this.sizeX;
             this.sizeX = this.sizeZ;
             this.sizeZ = w;
-            this.coordBaseMode = direction.getOpposite();  //Maybe a bug in vanilla here?
+            this.setCoordBaseMode(direction.getOpposite()); //Maybe a bug in vanilla here?
         }
         else
-            this.coordBaseMode = direction;
+            this.setCoordBaseMode(direction);
         int yPos = configuration.getYPosition();
         this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
         //TODO check save nbt
@@ -42,7 +42,7 @@ public class BaseHangar extends SizedPiece
     @Override
     public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
     {
-        IBlockState blockAir = Blocks.air.getDefaultState();
+        IBlockState blockAir = Blocks.AIR.getDefaultState();
         IBlockState blockPlain = GCBlocks.basicBlock.getStateFromMeta(4);
         IBlockState blockPattern = GCBlocks.basicBlock.getStateFromMeta(3);
         IBlockState blockGrid = AsteroidBlocks.blockWalkway.getDefaultState();
@@ -51,7 +51,7 @@ public class BaseHangar extends SizedPiece
         IBlockState blockWall = GCBlocks.wallGC.getStateFromMeta(1);
         IBlockState decoWall = GCBlocks.wallGC.getStateFromMeta(0);
         IBlockState moonWall = GCBlocks.wallGC.getStateFromMeta(2);
-        IBlockState blockBars = Blocks.iron_bars.getDefaultState();
+        IBlockState blockBars = Blocks.IRON_BARS.getDefaultState();
         IBlockState blockDesh = MarsBlocks.marsBlock.getStateFromMeta(8);
         IBlockState blockRedstone = GCBlocks.concealedRedstone.getDefaultState();
         Block blockStair = GCBlocks.tinStairs2;
@@ -288,7 +288,7 @@ public class BaseHangar extends SizedPiece
                 this.setBlockState(worldIn, blockGrid, 17, maxY, zz, structureBoundingBoxIn);
                 if (zz == HANGARLENGTH - 12)
                 {
-                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(this.direction.getOpposite().getHorizontalIndex());
+                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(direction.getAxis() == EnumFacing.Axis.Z ? 0 : 2);  //Rotation will be taken care of by getRotation() but seems to be bugged in vanilla
                     this.setBlockState(worldIn, repeater, 11, maxY, zz, structureBoundingBoxIn);
                     this.setBlockState(worldIn, repeater, 15, maxY, zz, structureBoundingBoxIn);
                 }

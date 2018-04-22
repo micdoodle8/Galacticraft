@@ -1,0 +1,17 @@
+{
+  "result": {
+    "item": "galacticraftplanets:walkway",
+    "data": 1
+  },
+  "ingredients": [
+    {
+      "item": "galacticraftplanets:walkway",
+      "data": 0
+    },
+    {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    }
+  ],
+  "type": "minecraft:crafting_shapeless"
+}
