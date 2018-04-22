@@ -8,16 +8,19 @@ import net.minecraft.block.Block;
 public class DeepSpaceBlocks
 {
     public static Block deepStructure;
+    public static Block deepWall;
 
 
     public static void initBlocks()
     {
-        DeepSpaceBlocks.deepStructure = new BlockDeepStructure("deep");
+        DeepSpaceBlocks.deepStructure = new BlockDeepStructure("deep", false);
+        DeepSpaceBlocks.deepWall = new BlockDeepStructure("deep_wall", true);
     }
 
     public static void registerBlocks()
     {
         GCBlocks.registerBlock(DeepSpaceBlocks.deepStructure, ItemBlockGC.class);
+        GCBlocks.registerBlock(DeepSpaceBlocks.deepWall, ItemBlockGC.class);
     }
 
     public static void setHarvestLevels()

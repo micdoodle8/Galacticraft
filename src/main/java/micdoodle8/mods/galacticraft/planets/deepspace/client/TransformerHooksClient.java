@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class TransformerHooksClient
@@ -20,11 +21,11 @@ public class TransformerHooksClient
     private static Minecraft mc = FMLClientHandler.instance().getClient();
 
     
-    public static void preRenderChunk(RenderChunk chunk, BlockPos pos, double dX, double dY, double dZ)
+    public static void preRenderChunk(RenderChunk chunk, BlockPos pos, double playerX, double playerY, double playerZ)
     {
         if (chunk.getWorld().provider instanceof WorldProviderDeepSpace)
         {
-            int offsetZ = (MathHelper.floor_double(dZ) - pos.getZ()) >> 4;
+            int offsetZ = (MathHelper.floor_double(playerZ) - pos.getZ()) >> 4;
             float ddY = heightBaseline - 128F;
             float theta = (float) MathHelper.atan2(8D, -ddY) * Constants.RADIANS_TO_DEGREES * 2F;
             theta *= offsetZ;
@@ -149,6 +150,51 @@ public class TransformerHooksClient
                 z += zz * (1F - MathHelper.cos(theta / Constants.RADIANS_TO_DEGREES));
             }
             GL11.glTranslatef((float) -dX, y - (float) dY, z - (float)dZ);
+        }
+    }
+    
+    public static void preSelectionBox(World world, BlockPos pos, double playerX, double playerY, double playerZ)
+    {
+        GL11.glPushMatrix();
+        if (world.provider instanceof WorldProviderDeepSpace)
+        {
+            int offsetZ = (MathHelper.floor_double(playerZ) >> 4) - (pos.getZ() >> 4);
+            if (offsetZ != 0)
+            {
+                float dY = (float) (playerY - pos.getY());
+                float dZ = (float) (playerZ - pos.getZ());
+                float ddY = heightBaseline - 128F;
+                float theta = (float) MathHelper.atan2(8D, -ddY) * Constants.RADIANS_TO_DEGREES * 2F;
+                theta *= offsetZ;
+                GL11.glTranslatef(0F, -ddY - dY, offsetZ * 16F + 8F - dZ);
+                if (theta > 0F)
+                {
+                    GL11.glRotatef(theta, 1, 0, 0);
+                }
+                else if (theta < 0F)
+                {
+                    GL11.glRotatef(-theta, -1, 0, 0);
+                }
+                GL11.glTranslatef(0F, ddY + dY, -8F + dZ);
+                int h = (pos.getY() - heightBaseline);
+                float y = 0F;
+                float z = 0F;
+                if (h != 0)
+                {
+                    y += h * (1F - MathHelper.cos(theta / Constants.RADIANS_TO_DEGREES));
+                    z += h * MathHelper.sin(theta / Constants.RADIANS_TO_DEGREES);
+                }
+                int zz = pos.getZ() & 0x0f;
+                if (zz > 0)
+                {
+                    y -= zz * MathHelper.sin(theta / Constants.RADIANS_TO_DEGREES);
+                    z += zz * (1F - MathHelper.cos(theta / Constants.RADIANS_TO_DEGREES));
+                }
+                if (y != 0F)
+                {
+                    GL11.glTranslatef(0F, y, z);
+                }
+            }
         }
     }
     
