@@ -31,11 +31,12 @@ public class TransformerHooksClient
     {
         if (chunk.getWorld().provider instanceof WorldProviderDeepSpace)
         {
-            int offsetZ = (MathHelper.floor_double(playerZ) - pos.getZ()) >> 4;
+            int cz = pos.getZ() >> 4;
+            int org = MathHelper.floor_double(playerZ) >> 4;
             int h = (pos.getY() - heightBaseline);
             if (h < 0) h -= 15;
             h = (h / 16) * 16;
-            adjust(offsetZ, h, 0F, 0F, 0F, 0F, false);
+            adjust(org, org - cz, h, 0F, 0F, 0F, 0F);
         }
     }
 
@@ -50,10 +51,11 @@ public class TransformerHooksClient
                 //TileEntity renders in inventory or other GUIs
                 return;
             }
-            int offsetZ = ((MathHelper.floor_double(pZ)) >> 4) - (tile.getPos().getZ() >> 4);
+            int cz = tile.getPos().getZ() >> 4;
+            int org = MathHelper.floor_double(pZ) >> 4;
             int h = (tile.getPos().getY() - heightBaseline);
             int zz = tile.getPos().getZ() & 0x0f;
-            adjust(offsetZ, h, zz, (float) dX, (float) dY, (float) dZ, false);
+            adjust(org, org - cz, h, zz, (float) dX, (float) dY, (float) dZ);
         }
     }
 
@@ -70,11 +72,12 @@ public class TransformerHooksClient
             double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)partialTicks;
             double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)partialTicks;
             double pZ = posZ - dZ;
-            int offsetZ = ((MathHelper.floor_double(pZ)) >> 4) - (MathHelper.floor_double(posZ) >> 4);
+            int cz = MathHelper.floor_double(posZ) >> 4;
+            int org = MathHelper.floor_double(pZ) >> 4;
             float h = (float) posY - heightBaseline;
             double zz = posZ % 16D;
             if (zz < 0D) zz += 16D;
-            adjust(offsetZ, h, zz, (float) dX, (float) dY, (float) dZ, false);
+            adjust(org, org - cz, h, zz, (float) dX, (float) dY, (float) dZ);
         }
     }
 
@@ -83,135 +86,116 @@ public class TransformerHooksClient
         GL11.glPushMatrix();
         if (world.provider instanceof WorldProviderDeepSpace)
         {
-            int offsetZ = (MathHelper.floor_double(playerZ) >> 4) - (pos.getZ() >> 4);
+            int cZ = pos.getZ() >> 4;
+            int org = MathHelper.floor_double(playerZ) >> 4;
+            int offsetZ = org - cZ;
             if (offsetZ != 0)
             {
                 float dY = pos.getY() - (float) (playerY);
                 float dZ = pos.getZ() - (float) (playerZ);
                 int h = (pos.getY() - heightBaseline);
                 int zz = pos.getZ() & 0x0f;
-                adjust(offsetZ, h, zz, 0F, dY, dZ, true);
+                adjust(org, offsetZ, h, zz, 0F, dY, dZ);
             }
         }
     }
 
-    private static void adjust(int offsetZ, float h, double zz, float dX, float dY, float dZ, boolean selBox)
+    private static void adjust(int pz, int offsetZ, float h, double zz, float dX, float dY, float dZ)
     {
         float theta = TransformerHooksClient.theta;
         float thetaAdjust = TransformerHooksClient.phi;
+
+        // Bring the chunk / entity to the origin with offset because it will be rotated around pivot (0, ddY, 0)
+        GL11.glTranslatef(dX, -ddY + dY, offsetZ * 16F + 8F + dZ);
+
+        // To make a joined up circle, the angle needs to be slightly different (thetaAdjust) for some chunks - org is the offset of that special chunk from origin
+        int org = pz % 6;
+        if (org < 0) org += 6;
+        offsetZ -= org;
+        theta *= offsetZ;
+
+        // (#1) Reverse the effect of thetaAdjust and org on the offsetZ == 0 chunk (where the player is) - and apply the same to all chunks
+        int offsetAdjust = (org + 5) / 6;
+        offsetAdjust += offsetAdjust - (org % 6 == 0 ? 0 : 1);
+        if (org > 0)
+        {
+            float ar = MathHelper.sqrt_float(a * a + b * b);
+            float deltaTheta = (TransformerHooksClient.theta * org + thetaAdjust) / Constants.RADIANS_TO_DEGREES - (float) MathHelper.atan2(a, b);
+            GL11.glTranslatef(0F, ar * MathHelper.sin(deltaTheta), -ar * MathHelper.cos(deltaTheta) );
+            GL11.glRotatef(TransformerHooksClient.theta * org + thetaAdjust, 1F, 0F, 0F);
+        }
+
+        // Rotate the chunk and move it around the circle, with adjustments for thetaAdjust
         if (offsetZ > 0)
         {
-            int offsetAdjust = (offsetZ + 5) / 6;
-            offsetAdjust += offsetAdjust - (offsetZ % 6 == 0 ? 0 : 1);
-            switch (offsetAdjust % 8)
-            {
-            case 1:
-                GL11.glTranslatef(0F, a, -b);
-                break;
-            case 2:
-                GL11.glTranslatef(0F, c, -c);
-                break;
-            case 3:
-                GL11.glTranslatef(0F, c + c, -b);
-                break;
-            case 4:
-                GL11.glTranslatef(0F, c + c + a, 0);
-                break;
-            case 5:
-                GL11.glTranslatef(0F, c + c, b);
-                break;
-            case 6:
-                GL11.glTranslatef(0F, c, c);
-                break;
-            case 7:
-                GL11.glTranslatef(0F, a, b);
-                break;
-            default:
-            }
-            theta *= offsetZ;
-            thetaAdjust *= offsetAdjust;
-            GL11.glTranslatef(dX, -ddY + dY, offsetZ * 16F + 8F + dZ);
-            GL11.glRotatef(theta + thetaAdjust, 1, 0, 0);
-            if (selBox)
-            {
-                GL11.glTranslatef(0F, ddY - dY, -8F - dZ);
-            }
-            else
-            {
-                GL11.glTranslatef(0F, ddY, -8F);
-            }
+            thetaAdjust *= getOffsetAdjust(-1, offsetZ);
+            GL11.glRotatef(theta + thetaAdjust, 1F, 0F, 0F);
         }
         else if (offsetZ < 0)
         {
-            int offsetAdjust = (-offsetZ + 5) / 6;
-            offsetAdjust += offsetAdjust - (-offsetZ % 6 == 0 ? 0 : 1);
-            switch (offsetAdjust % 8)
-            {
-            case 1:
-                GL11.glTranslatef(0F, a, b);
-                break;
-            case 2:
-                GL11.glTranslatef(0F, c, c);
-                break;
-            case 3:
-                GL11.glTranslatef(0F, c + c, b);
-                break;
-            case 4:
-                GL11.glTranslatef(0F, c + c + a, 0);
-                break;
-            case 5:
-                GL11.glTranslatef(0F, c + c, -b);
-                break;
-            case 6:
-                GL11.glTranslatef(0F, c, -c);
-                break;
-            case 7:
-                GL11.glTranslatef(0F, a, -b);
-                break;
-            default:
-            }
-            thetaAdjust *= -offsetAdjust;
-            theta *= offsetZ;
-            GL11.glTranslatef(dX, -ddY + dY, offsetZ * 16F + 8F + dZ);
-            GL11.glRotatef(-theta - thetaAdjust, -1, 0, 0);
-            if (selBox)
-            {
-                GL11.glTranslatef(0F, ddY - dY, -8F - dZ);
-            }
-            else
-            {
-                GL11.glTranslatef(0F, ddY, -8F);
-            }
+            thetaAdjust *= -getOffsetAdjust(1, -offsetZ);
+            GL11.glRotatef(-theta - thetaAdjust, -1F, 0F, 0F);
         }
         else
         {
-            theta = 0F;
             thetaAdjust = 0F;
-            if (!selBox) GL11.glTranslatef(dX, dY, dZ);
         }
+
+        // Finally, stabilise the offsetZ == 0 chunk by undoing the reversal at #1 above (and again apply the same to all chunks)
+        GL11.glRotatef(TransformerHooksClient.phi * (offsetAdjust - (org > 0 ? 1 : 0)), 1F, 0F, 0F);
+
+        // Set up theta correctly for the intra-chunk adjustments for h and zz below 
+        theta += thetaAdjust + TransformerHooksClient.theta * org + TransformerHooksClient.phi * offsetAdjust;
+
+        // Intra-chunk adjustments because the chunk is now being rendered at an angle
         float y = 0F;
         float z = 0F;
         if (h != 0F)
         {
-            y = h * (1F - MathHelper.cos((theta + thetaAdjust) / Constants.RADIANS_TO_DEGREES));
-            z = h * MathHelper.sin((theta + thetaAdjust) / Constants.RADIANS_TO_DEGREES);
+            y = h * (1F - MathHelper.cos(theta  / Constants.RADIANS_TO_DEGREES));
+            z = h * MathHelper.sin(theta / Constants.RADIANS_TO_DEGREES);
         }
         if (zz > 0D)
         {
-            y -= zz * MathHelper.sin((theta + thetaAdjust) / Constants.RADIANS_TO_DEGREES);
-            z += zz * (1F - MathHelper.cos((theta + thetaAdjust) / Constants.RADIANS_TO_DEGREES));
+            y -= zz * MathHelper.sin(theta / Constants.RADIANS_TO_DEGREES);
+            z += zz * (1F - MathHelper.cos(theta / Constants.RADIANS_TO_DEGREES));
         }
-        if (selBox)
+
+        // Restore the chunk to its true position with intra-chunk offset (y, z)
+        // and also cancel the effect of the (dx, dy, dz) translation which the vanilla chunk / entity renderer will now make
+        GL11.glTranslatef(-dX, ddY + y - dY, z - dZ - 8F);
+    }
+
+    private static int getOffsetAdjust(int cz, int offsetZ)
+    {
+        int offsetAdjust = (offsetZ + 5) / 6;
+        offsetAdjust += offsetAdjust - (offsetZ % 6 == 0 ? 0 : 1);
+        switch (offsetAdjust % 8)
         {
-            if (y != 0F)
-            {
-                GL11.glTranslatef(0F, y, z);
-            }
+        case 1:
+            GL11.glTranslatef(0F, a, b * cz);
+            break;
+        case 2:
+            GL11.glTranslatef(0F, c, c * cz);
+            break;
+        case 3:
+            GL11.glTranslatef(0F, c + c, b * cz);
+            break;
+        case 4:
+            GL11.glTranslatef(0F, c + c + a, 0F);
+            break;
+        case 5:
+            GL11.glTranslatef(0F, c + c, -b * cz);
+            break;
+        case 6:
+            GL11.glTranslatef(0F, c, -c * cz);
+            break;
+        case 7:
+            GL11.glTranslatef(0F, a, -b * cz);
+            break;
+        default:
         }
-        else
-        {
-            GL11.glTranslatef(-dX, y - dY, z - dZ);
-        }
+        return offsetAdjust;
     }
 
     public static AxisAlignedBB renderChunkAABB(AxisAlignedBB aabb, RenderChunk chunk)

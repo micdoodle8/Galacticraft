@@ -42,6 +42,7 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     public static final PropertyInteger H = PropertyInteger.create("h", 0, 15);
     public static final PropertyObject<IBlockState> BASE_STATE = new PropertyObject<>("held", IBlockState.class);
     protected static final AxisAlignedBB BOUNDING_BOX[] = new AxisAlignedBB[16];
+    protected static final AxisAlignedBB BBWHOLE = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
     private final boolean inv;
 
     static {
@@ -268,5 +269,11 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return BOUNDING_BOX[this.getMetaFromState(state)];
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return this.inv ? BBWHOLE : BOUNDING_BOX[this.getMetaFromState(state)];
     }
 }

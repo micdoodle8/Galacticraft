@@ -31,11 +31,71 @@ public class WorldGenDeepSpace extends WorldGenerator
             slice(world, pos, z);
         }
         
+        if ((pos.getZ() >> 4) % 6 == 0)
+        {
+            // Axial strut
+            for (int y = 7; y < 57; y++)
+            {
+                this.placeBlock(world, pos.add(6, y, 5), tinDeco, 2);
+                this.placeBlock(world, pos.add(6, y, 6), tinDeco, 2);
+                this.placeBlock(world, pos.add(6, y, 7), tinDeco, 2);
+                this.placeBlock(world, pos.add(6, y, 8), tinDeco, 2);
+                this.placeBlock(world, pos.add(6, y, 9), tinDeco, 2);
+                this.placeBlock(world, pos.add(6, y, 10), tinDeco, 2);
+                
+                this.placeBlock(world, pos.add(7, y, 4), tinDeco, 2);
+                this.placeBlock(world, pos.add(8, y, 4), tinDeco, 2);
+                this.placeBlock(world, pos.add(9, y, 4), tinDeco, 2);
+
+                this.placeBlock(world, pos.add(7, y, 11), tinDeco, 2);
+                this.placeBlock(world, pos.add(8, y, 11), tinDeco, 2);
+                this.placeBlock(world, pos.add(9, y, 11), tinDeco, 2);
+
+                this.placeBlock(world, pos.add(10, y, 5), tinDeco, 2);
+                this.placeBlock(world, pos.add(10, y, 6), tinDeco, 2);
+                this.placeBlock(world, pos.add(10, y, 7), tinDeco, 2);
+                this.placeBlock(world, pos.add(10, y, 8), tinDeco, 2);
+                this.placeBlock(world, pos.add(10, y, 9), tinDeco, 2);
+                this.placeBlock(world, pos.add(10, y, 10), tinDeco, 2);
+            }
+            
+            // Base of axial strut
+            int y = 7;
+            this.placeBlock(world, pos.add(5, y, 5), tinDeco, 2);
+            this.placeBlock(world, pos.add(5, y, 6), tinDeco, 2);
+            this.placeBlock(world, pos.add(5, y, 7), tinDeco, 2);
+            this.placeBlock(world, pos.add(5, y, 8), tinDeco, 2);
+            this.placeBlock(world, pos.add(5, y, 9), tinDeco, 2);
+            this.placeBlock(world, pos.add(5, y, 10), tinDeco, 2);
+
+            this.placeBlock(world, pos.add(6, y, 4), tinDeco, 2);
+            this.placeBlock(world, pos.add(6, y, 11), tinDeco, 2);
+            this.placeBlock(world, pos.add(10, y, 4), tinDeco, 2);
+            this.placeBlock(world, pos.add(10, y, 11), tinDeco, 2);
+            
+            this.placeBlock(world, pos.add(7, y, 3), tinDeco, 2);
+            this.placeBlock(world, pos.add(8, y, 3), tinDeco, 2);
+            this.placeBlock(world, pos.add(9, y, 3), tinDeco, 2);
+
+            this.placeBlock(world, pos.add(7, y, 12), tinDeco, 2);
+            this.placeBlock(world, pos.add(8, y, 12), tinDeco, 2);
+            this.placeBlock(world, pos.add(9, y, 12), tinDeco, 2);
+
+            this.placeBlock(world, pos.add(11, y, 5), tinDeco, 2);
+            this.placeBlock(world, pos.add(11, y, 6), tinDeco, 2);
+            this.placeBlock(world, pos.add(11, y, 7), tinDeco, 2);
+            this.placeBlock(world, pos.add(11, y, 8), tinDeco, 2);
+            this.placeBlock(world, pos.add(11, y, 9), tinDeco, 2);
+            this.placeBlock(world, pos.add(11, y, 10), tinDeco, 2);
+        }
+        
         return true;
     }
     
     private void slice(World world, BlockPos pos, int z)
     {
+        IBlockState glass = (pos.getZ() >> 4) % 6 == 0 ? tinDeco : Blocks.GLASS.getDefaultState();
+
         //External platform
         this.placeBlock(world, pos.add(1, 1, z), walkway, 2);
         this.placeBlock(world, pos.add(14, 1, z), walkway, 2);
@@ -68,24 +128,24 @@ public class WorldGenDeepSpace extends WorldGenerator
         this.placeBlock(world, pos.add(5, 6, z), tinDeco, 2);
         //
         this.placeBlock(world, pos.add(6, 1, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(6, 5, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(6, 6, z), tinDeco, 2);
+        this.placeBlock(world, pos.add(6, 5, z), glass, 2);
+        this.placeBlock(world, pos.add(6, 6, z), glass, 2);
         //
         this.placeBlock(world, pos.add(7, 1, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(7, 5, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(7, 6, z), tinDeco, 2);
+        this.placeBlock(world, pos.add(7, 5, z), glass, 2);
+        this.placeBlock(world, pos.add(7, 6, z), glass, 2);
         //
         this.placeBlock(world, pos.add(8, 1, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(8, 5, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(8, 6, z), tinDeco, 2);
+        this.placeBlock(world, pos.add(8, 5, z), glass, 2);
+        this.placeBlock(world, pos.add(8, 6, z), glass, 2);
         //
         this.placeBlock(world, pos.add(9, 1, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(9, 5, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(9, 6, z), tinDeco, 2);
+        this.placeBlock(world, pos.add(9, 5, z), glass, 2);
+        this.placeBlock(world, pos.add(9, 6, z), glass, 2);
         //
         this.placeBlock(world, pos.add(10, 1, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(10, 5, z), tinDeco, 2);
-        this.placeBlock(world, pos.add(10, 6, z), tinDeco, 2);
+        this.placeBlock(world, pos.add(10, 5, z), glass, 2);
+        this.placeBlock(world, pos.add(10, 6, z), glass, 2);
         //
         this.placeBlock(world, pos.add(11, 0, z), tinDeco, 2);
         this.placeBlock(world, pos.add(11, 1, z), grating, 2);
