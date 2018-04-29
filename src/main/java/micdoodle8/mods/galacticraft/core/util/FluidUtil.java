@@ -265,7 +265,7 @@ public class FluidUtil
         else if (slotItem.getCount() == 1)
         {
         	ItemBucketGC bucketGC;
-        	if (slotItem.getItem() == Items.BUCKET && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
+        	if (slotItem.getItem() == Items.BUCKET && liquid.amount >= Fluid.BUCKET_VOLUME && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
         	{
         		inventory.set(slot, new ItemStack(bucketGC));
         		tank.drain(Fluid.BUCKET_VOLUME, true);
