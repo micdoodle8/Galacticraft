@@ -76,19 +76,6 @@ public class CompatibilityManager
         if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("gregtech_addon"))
         {
             CompatibilityManager.modGTLoaded = true;
-            try
-            {
-                Class<?> clazz = Class.forName("gregtech.common.blocks.GT_Block_Ores");
-                if (clazz != null)
-                {
-                    classGTOre = clazz;
-                }
-                GCLog.info("Galacticraft: activating GregTech compatibility feature.");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
         }
 
         if (CompatibilityManager.modMekLoaded)
