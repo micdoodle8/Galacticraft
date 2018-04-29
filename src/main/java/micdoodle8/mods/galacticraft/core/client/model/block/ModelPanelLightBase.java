@@ -33,19 +33,19 @@ public class ModelPanelLightBase implements IBakedModel
         if (state.getBlock() instanceof BlockPanelLighting)
         {
             IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockPanelLighting.BASE_STATE);
+            BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
             if (baseState == null)
             {
-                if (MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.SOLID)
+                if (layer == null || layer == BlockRenderLayer.SOLID)
                 {
                     return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, side, rand);
                 }
             }
-            else if (baseState.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer()))
+            else if (layer == null || baseState.getBlock().canRenderInLayer(layer))
             {
                 return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(baseState, side, rand);
             }
         }
-        
         return ImmutableList.of();
     }
 

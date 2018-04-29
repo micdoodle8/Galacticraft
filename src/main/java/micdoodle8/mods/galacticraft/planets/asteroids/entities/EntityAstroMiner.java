@@ -1651,7 +1651,13 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         int i = 0;
         Item item = Item.getItemFromBlock(b);
 
-        if (item != null && item.getHasSubtypes())
+        if (item == null)
+        {
+            GCLog.info("AstroMiner was unable to mine anything from: " + b.getUnlocalizedName());
+            return null;
+        }
+            
+        if (item.getHasSubtypes())
         {
             i = b.getMetaFromState(world.getBlockState(pos));
         }
