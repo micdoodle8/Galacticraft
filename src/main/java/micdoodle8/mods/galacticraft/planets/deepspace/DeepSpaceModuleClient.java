@@ -87,6 +87,7 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     {
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepStructure);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepWall);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.glassProtective);
     }
 
     private void addPlanetVariants(String name, String... variants)

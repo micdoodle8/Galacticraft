@@ -94,7 +94,7 @@ public class WorldGenDeepSpace extends WorldGenerator
     
     private void slice(World world, BlockPos pos, int z)
     {
-        IBlockState glass = (pos.getZ() >> 4) % 6 == 0 ? tinDeco : Blocks.GLASS.getDefaultState();
+        IBlockState glass = (pos.getZ() >> 4) % 6 == 0 ? tinDeco : DeepSpaceBlocks.glassProtective.getDefaultState();
 
         //External platform
         this.placeBlock(world, pos.add(1, 1, z), walkway, 2);

@@ -250,7 +250,10 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
-        return false;
+        int z = pos.getZ() % 16;
+        if (z < 0) z += 16;
+        if (z < 8) return this.inv ? side == EnumFacing.SOUTH : side == EnumFacing.NORTH;
+        return this.inv ? side == EnumFacing.NORTH : side == EnumFacing.SOUTH;
     }
 
     @Override

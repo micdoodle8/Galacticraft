@@ -26,6 +26,8 @@ public class TransformerHooksClient
     private static float a = ddY * (1 - cosPhi) + 8F * sinPhi;
     private static float b = ddY * (float) Math.sin(phi / Constants.RADIANS_TO_DEGREES);
     private static float c = a + b;
+    private static float ar = MathHelper.sqrt_float(a * a + b * b);
+    private static float atan = (float) Math.atan2(a, b);
     
     public static void preRenderChunk(RenderChunk chunk, BlockPos pos, double playerX, double playerY, double playerZ)
     {
@@ -119,8 +121,7 @@ public class TransformerHooksClient
         offsetAdjust += offsetAdjust - (org % 6 == 0 ? 0 : 1);
         if (org > 0)
         {
-            float ar = MathHelper.sqrt_float(a * a + b * b);
-            float deltaTheta = (TransformerHooksClient.theta * org + thetaAdjust) / Constants.RADIANS_TO_DEGREES - (float) MathHelper.atan2(a, b);
+            float deltaTheta = (TransformerHooksClient.theta * org + thetaAdjust) / Constants.RADIANS_TO_DEGREES - atan;
             GL11.glTranslatef(0F, ar * MathHelper.sin(deltaTheta), -ar * MathHelper.cos(deltaTheta) );
             GL11.glRotatef(TransformerHooksClient.theta * org + thetaAdjust, 1F, 0F, 0F);
         }
