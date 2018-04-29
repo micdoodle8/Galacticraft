@@ -43,9 +43,13 @@ public class ModelPanelLightBase implements ISmartBlockModel
                 return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock);
             }
         }
-        else if (baseState.getBlock().canRenderInLayer(MinecraftForgeClient.getRenderLayer()))
+        else
         {
-            return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState);
+            EnumWorldBlockLayer layer = MinecraftForgeClient.getRenderLayer();
+            if (layer == null || baseState.getBlock().canRenderInLayer(layer))
+            {
+                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState);
+            }
         }
         return this;
     }
