@@ -109,9 +109,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             return false;
         }
-        int result = this.stacks.get(1).isEmpty() ? 0 : this.stacks.get(1).getCount() + itemstack.getCount();
-        int result2 = this.stacks.get(2).isEmpty() ? 0 : this.stacks.get(2).getCount() + itemstack.getCount();
-        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize() && result2 <= this.getInventoryStackLimit() && result2 <= itemstack.getMaxStackSize();
+        int contents1 = this.stacks.get(1).getCount();
+        int contents2 = this.stacks.get(2).getCount();
+        int result = itemstack.getCount();
+        if (ConfigManagerCore.quickMode && itemstack.getItem().getUnlocalizedName(itemstack).contains("compressed"))
+        {
+            result += result;
+        }
+        result += (contents2 < contents1) ? contents2 : contents1;
+        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
     }
 
     public void updateInput()
@@ -155,11 +161,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             else if (this.stacks.get(slot).isItemEqual(resultItemStack))
             {
-                if (this.stacks.get(slot).getCount() + resultItemStack.getCount() > 64)
+                if (this.stacks.get(slot).getCount() + resultItemStack.getCount() > resultItemStack.getMaxStackSize())
                 {
-					resultItemStack.grow(this.stacks.get(slot).getCount() - 64);
+					resultItemStack.grow(this.stacks.get(slot).getCount() - resultItemStack.getMaxStackSize());
                     GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
-                    this.stacks.get(slot).setCount(64);
+                    this.stacks.get(slot).setCount(resultItemStack.getMaxStackSize());
                 }
                 else
                 {
