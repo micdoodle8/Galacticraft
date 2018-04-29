@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
-import java.util.Iterator;
-
 import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.Constants;
@@ -26,6 +24,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
+
+import java.util.Iterator;
 
 @SideOnly(Side.CLIENT)
 public class OverlaySensorGlasses extends Overlay
