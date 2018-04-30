@@ -2,9 +2,11 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -30,6 +32,9 @@ public class FootprintRenderer
 
     public static void renderFootprints(EntityPlayer player, float partialTicks)
     {
+        //No footprints in Deep Space dimension, it's just too finicky to get the render correct
+        if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderDeepSpace) return;
+
         int dimActive = GCCoreUtil.getDimensionID(player.worldObj);
         List<Footprint> footprintsToDraw = new LinkedList<>();
 

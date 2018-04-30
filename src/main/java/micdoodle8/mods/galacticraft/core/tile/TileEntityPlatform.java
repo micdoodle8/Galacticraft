@@ -3,9 +3,11 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -84,9 +86,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             final int thisY = this.getPos().getY();
             final int thisZ = this.getPos().getZ();
 
-            for (int x = - 1; x < 1; x++)
+            for (int z = -1; z < 1; z++)
             {
-                for (int z = - 1; z < 1; z++)
+                // Prevent formation across z-chunk boundaries in Deep Space
+                if (z != 0 && GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace && (thisZ & 0x0f) == 0) continue;
+
+                for (int x = -1; x < 1; x++)
                 {
                     BlockPos pos = new BlockPos(x + thisX, thisY, z + thisZ);
                     final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;

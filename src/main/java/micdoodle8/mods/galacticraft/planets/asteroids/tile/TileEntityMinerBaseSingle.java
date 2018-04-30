@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -26,11 +27,14 @@ public class TileEntityMinerBaseSingle extends TileEntity implements ITickable
 
             boolean success = true;
             SEARCH:
-            for (int x = 0; x < 2; x++)
+            for (int z = 0; z < 2; z++)
             {
-                for (int y = 0; y < 2; y++)
+                // Prevent formation across z-chunk boundaries in Deep Space
+                if (z != 0 && this.worldObj.provider instanceof WorldProviderDeepSpace && (thisZ & 0x0f) == 15) continue;
+
+                for (int x = 0; x < 2; x++)
                 {
-                    for (int z = 0; z < 2; z++)
+                    for (int y = 0; y < 2; y++)
                     {
                         BlockPos pos = new BlockPos(x + thisX, y + thisY, z + thisZ);
                         final TileEntity tile = this.worldObj.isBlockLoaded(pos, false) ? this.worldObj.getTileEntity(pos) : null;

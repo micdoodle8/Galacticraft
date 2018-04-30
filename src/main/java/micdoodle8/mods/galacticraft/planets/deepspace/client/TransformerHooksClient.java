@@ -16,7 +16,7 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class TransformerHooksClient
 {
-    private final static int heightBaseline = 64;
+    public final static int heightBaseline = 64;
     private static Minecraft mc = FMLClientHandler.instance().getClient();
     private static float ddY = heightBaseline - 128F;
     private static float theta = (float) Math.atan2(8D, -ddY) * Constants.RADIANS_TO_DEGREES * 2F;
@@ -102,7 +102,7 @@ public class TransformerHooksClient
         }
     }
 
-    private static void adjust(int pz, int offsetZ, float h, double zz, float dX, float dY, float dZ)
+    public static void adjust(int pz, int offsetZ, float h, double zz, float dX, float dY, float dZ)
     {
         float theta = TransformerHooksClient.theta;
         float thetaAdjust = TransformerHooksClient.phi;
