@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -18,9 +19,8 @@ import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
+import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
@@ -97,7 +97,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         WorldRenderer worldRenderer = var23.getWorldRenderer();
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.disableRescaleNormal();
         GL11.glColor3f(1F, 1F, 1F);
         GL11.glDepthMask(false);
         GL11.glEnable(GL11.GL_FOG);
@@ -210,6 +210,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         //		GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
         //		GL11.glCallList(this.glSkyList2);
         //		GL11.glPopMatrix();
+        GlStateManager.enableRescaleNormal();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDepthMask(true);
 
