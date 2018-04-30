@@ -126,7 +126,7 @@ public class WorldProviderDeepSpace extends WorldProviderSpaceStation implements
     @Override
     public String getSaveFolder()
     {
-        return "DIM-32";
+        return "DIM-GCDEEPSPACE";
     }
 
     @Override

@@ -1,0 +1,77 @@
+{
+    "textures": {
+        "all": "galacticraftplanets:blocks/glass_octo",
+        "particle": "blocks/glass"
+    },
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "north": { "texture": "all", "uv": [ 16.0, 16.0, 0.0, 0.0 ], "cullface": "north" },
+                "east": { "texture": "all", "uv": [ 0.0, 16.0, 16.0, 0.0 ], "cullface": "east" },
+                "south": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "south" },
+                "west": { "texture": "all", "uv": [ 16.0, 0.0, 0.0, 16.0 ], "cullface": "west" },
+                "up": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "up" },
+                "down": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "down" }
+            }
+        },
+        {
+            "name": "up",
+            "from": [ 0.0, 15.9999, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "down": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "up" }
+            }
+        },
+        {
+            "name": "down",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 0.0001, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "up": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "down" }
+            }
+        },
+        {
+            "name": "east",
+            "from": [ 15.9999, 0.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "west": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "east" }
+            }
+        },
+        {
+            "name": "west",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 0.0001, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "east": { "texture": "all", "uv": [ 0.0, 16.0, 16.0, 0.0 ], "cullface": "west" }
+            }
+        },
+        {
+            "name": "south",
+            "from": [ 0.0, 0.0, 15.9999 ], 
+            "to": [ 16.0, 16.0, 16.0 ], 
+            "shade": false,
+            "faces": {
+                "north": { "texture": "all", "uv": [ 0.0, 16.0, 16.0, 0.0 ], "cullface": "south" }
+            }
+        },
+        {
+            "name": "north",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 0.0001 ], 
+            "shade": false,
+            "faces": {
+                "south": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ], "cullface": "north" }
+            }
+        }
+        
+    ]
+}

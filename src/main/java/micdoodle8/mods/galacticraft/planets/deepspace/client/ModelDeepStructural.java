@@ -26,12 +26,13 @@ import java.util.List;
 public class ModelDeepStructural implements IBakedModel
 {
     private final EnumMap<EnumFacing, List<BakedQuad>[]> faceQuads;
-    private static final float eps = 1e-3f;
     private static final float x[] = { 0, 0, 1, 1 };
     private static final float z[] = { 0, 1, 1, 0 };
+    private final boolean inv; 
 
-    public ModelDeepStructural ()
+    public ModelDeepStructural (boolean invert)
     {
+        this.inv = invert;
         this.faceQuads = Maps.newEnumMap(EnumFacing.class);
         this.setupAllQuads(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "blocks/grey"));
     }
@@ -68,6 +69,15 @@ public class ModelDeepStructural implements IBakedModel
         float zb = za + 0.125F;
         float zc = y < 8 ? 0F : 1F - zb;
         float zd = y < 8 ? 0F : 1F - za;
+        if (this.inv)
+        {
+            float zza = za;
+            za = zb;
+            zb = zza;
+            zza = zc;
+            zc = zd;
+            zd = zza;
+        }
         float xx, yy, zz;
         for (int i = 0; i < 4; i++)
         {

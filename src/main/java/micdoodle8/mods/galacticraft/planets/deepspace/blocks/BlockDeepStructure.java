@@ -42,6 +42,8 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     public static final PropertyInteger H = PropertyInteger.create("h", 0, 15);
     public static final PropertyObject<IBlockState> BASE_STATE = new PropertyObject<>("held", IBlockState.class);
     protected static final AxisAlignedBB BOUNDING_BOX[] = new AxisAlignedBB[16];
+    protected static final AxisAlignedBB BBWHOLE = new AxisAlignedBB(0D, 0D, 0D, 1D, 1D, 1D);
+    private final boolean inv;
 
     static {
         for (int y = 0; y < 8; y++)
@@ -74,9 +76,10 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
         }
     }
     
-    public BlockDeepStructure(String assetName)
+    public BlockDeepStructure(String assetName, boolean invert)
     {
         super(Material.IRON);
+        this.inv = invert;
         this.setHardness(1.0F);
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
@@ -118,8 +121,10 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int damage, EntityLivingBase placer)
     {
         int meta = (pos.getY() % 8);
-        if (pos.getZ() % 16 >= 8) meta += 8;
-        return this.getStateFromMeta(meta);
+        int z = pos.getZ() % 16;
+        if (z < 0) z += 16;
+        if (z >= 8) meta += 8;
+        return this.getStateFromMeta(this.inv ? 15 - meta : meta);
     }
 
     @Override
@@ -210,8 +215,10 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
         }
         
         int meta = (pos.getY() % 8);
-        if (pos.getZ() % 16 >= 8) meta += 8;
-        return state.withProperty(H, meta);
+        int z = pos.getZ() % 16;
+        if (z < 0) z += 16;
+        if (z >= 8) meta += 8;
+        return state.withProperty(H, this.inv ? 15 - meta : meta);
     }
     
     @SideOnly(value=Side.CLIENT)
@@ -243,7 +250,10 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
     {
-        return false;
+        int z = pos.getZ() % 16;
+        if (z < 0) z += 16;
+        if (z < 8) return this.inv ? side == EnumFacing.SOUTH : side == EnumFacing.NORTH;
+        return this.inv ? side == EnumFacing.NORTH : side == EnumFacing.SOUTH;
     }
 
     @Override
@@ -262,5 +272,11 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
     {
         return BOUNDING_BOX[this.getMetaFromState(state)];
+    }
+    
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+    {
+        return this.inv ? BBWHOLE : BOUNDING_BOX[this.getMetaFromState(state)];
     }
 }

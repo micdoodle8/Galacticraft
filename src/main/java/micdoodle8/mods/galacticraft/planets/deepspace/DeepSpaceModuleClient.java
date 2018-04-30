@@ -41,6 +41,7 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     public void registerVariants()
     {
         ModelLoader.setCustomStateMapper(DeepSpaceBlocks.deepStructure, new StateMap.Builder().ignore(BlockDeepStructure.H).build());
+        ModelLoader.setCustomStateMapper(DeepSpaceBlocks.deepWall, new StateMap.Builder().ignore(BlockDeepStructure.H).build());
     }
 
     @SubscribeEvent
@@ -48,7 +49,9 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         ModelResourceLocation defaultLoc = new ModelResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":deep", "normal");
-        event.getModelRegistry().putObject(defaultLoc, new ModelDeepStructural());
+        event.getModelRegistry().putObject(defaultLoc, new ModelDeepStructural(false));
+        defaultLoc = new ModelResourceLocation(GalacticraftPlanets.ASSET_PREFIX + ":deep_wall", "normal");
+        event.getModelRegistry().putObject(defaultLoc, new ModelDeepStructural(true));
     }
 
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
@@ -83,6 +86,8 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     public static void registerBlockRenderers()
     {
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepStructure);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepWall);
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.glassProtective);
     }
 
     private void addPlanetVariants(String name, String... variants)
