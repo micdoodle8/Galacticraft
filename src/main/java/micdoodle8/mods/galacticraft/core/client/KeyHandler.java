@@ -62,6 +62,7 @@ public abstract class KeyHandler
         {
             KeyBinding keyBinding = this.keyBindings[i];
             int keyCode = keyBinding.getKeyCode();
+            if (keyCode == Keyboard.CHAR_NONE) continue;
             boolean state = inChat ? false : (keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode));
             if (state != this.keyDown[i] || state && this.repeatings[i])
             {
@@ -83,6 +84,7 @@ public abstract class KeyHandler
         {
             KeyBinding keyBinding = this.vKeyBindings[i];
             int keyCode = keyBinding.getKeyCode();
+            if (keyCode == Keyboard.CHAR_NONE) continue;
             boolean state = keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
             if (state != this.keyDown[i + this.keyBindings.length] || state && this.vRepeatings[i])
             {
