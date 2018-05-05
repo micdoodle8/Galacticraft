@@ -43,7 +43,6 @@ public class ChunkProviderOrbit extends ChunkProviderBase
             biomesArray[i] = b;
         }
 
-
         var4.generateSkylightMap();
         return var4;
     }

@@ -548,12 +548,12 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
 
 //        long time2 = System.nanoTime();
         final Chunk var4 = new Chunk(this.world, primer, par1, par2);
-        final byte[] var5 = var4.getBiomeArray();
+        final byte[] biomesArray = var4.getBiomeArray();
 
         final byte b = (byte) Biome.getIdForBiome( BiomeAdaptive.biomeDefault );
-        for (int var6 = 0; var6 < var5.length; ++var6)
+        for (int i = 0; i < biomesArray.length; ++i)
         {
-            var5[var6] = b;
+            biomesArray[i] = b;
         }
 
 //        long time3 = System.nanoTime();
