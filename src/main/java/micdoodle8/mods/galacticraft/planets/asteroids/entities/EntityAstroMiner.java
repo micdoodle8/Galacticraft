@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -1646,6 +1647,10 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
         if (b == GCBlocks.fallenMeteor)
         {
             return new ItemStack(GCItems.meteoricIronRaw);
+        }
+        if (b instanceof BlockSpaceGlass)
+        {
+            return b.getDrops(world, pos, b.getDefaultState(), 0).get(0);
         }
 
         int i = 0;
