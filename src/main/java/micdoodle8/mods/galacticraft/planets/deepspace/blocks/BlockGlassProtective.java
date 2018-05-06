@@ -22,7 +22,7 @@ public class BlockGlassProtective extends BlockBreakable implements ISortableBlo
     public BlockGlassProtective(String assetName)
     {
         super(Material.GLASS, false);
-        this.setHardness(3.0F);
+        this.setHardness(1.5F);
         this.blockResistance = 15F;
         this.setUnlocalizedName(assetName);
     }

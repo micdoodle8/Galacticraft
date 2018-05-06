@@ -1,6 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.deepspace.client;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceModule;
 import net.minecraft.client.Minecraft;
@@ -10,8 +12,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -94,6 +96,7 @@ public class SkyProviderDeepSpace extends IRenderHandler
     public void render(float partialTicks, WorldClient world, Minecraft mc)
     {
         final float var20 = 400.0F + (float) this.minecraft.thePlayer.posY / 2F;
+        float ticks = partialTicks + world.getWorldTime();
 
         // if (this.minecraft.thePlayer.getRidingEntity() != null)
         {
@@ -129,55 +132,14 @@ public class SkyProviderDeepSpace extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] var24 = this.minecraft.theWorld.provider.calcSunriseSunsetColors(this.minecraft.theWorld.getCelestialAngle(partialTicks), partialTicks);
         float var9;
         float var10;
         float var11;
         float var12;
 
-        if (var24 != null)
-        {
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glShadeModel(GL11.GL_SMOOTH);
-            GL11.glPushMatrix();
-            GL11.glRotatef(90.0F, 1.0F, 0.0F, 0.0F);
-            GL11.glRotatef(MathHelper.sin(this.minecraft.theWorld.getCelestialAngleRadians(partialTicks)) < 0.0F ? 180.0F : 0.0F, 0.0F, 0.0F, 1.0F);
-            GL11.glRotatef(90.0F, 0.0F, 0.0F, 1.0F);
-            var8 = var24[0];
-            var9 = var24[1];
-            var10 = var24[2];
-            float var13;
-
-            if (this.minecraft.gameSettings.anaglyph)
-            {
-                var11 = (var8 * 30.0F + var9 * 59.0F + var10 * 11.0F) / 100.0F;
-                var12 = (var8 * 30.0F + var9 * 70.0F) / 100.0F;
-                var13 = (var8 * 30.0F + var10 * 70.0F) / 100.0F;
-                var8 = var11;
-                var9 = var12;
-                var10 = var13;
-            }
-
-            VertexBuffer worldRenderer = var23.getBuffer();
-            worldRenderer.begin(GL11.GL_TRIANGLE_FAN, DefaultVertexFormats.POSITION_COLOR);
-            worldRenderer.pos(0.0D, 100.0D, 0.0D).color(var8, var9, var10, var24[3]).endVertex();
-            final byte var26 = 16;
-
-            for (int var27 = 0; var27 <= var26; ++var27)
-            {
-                var13 = var27 * Constants.twoPI / var26;
-                final float var14 = MathHelper.sin(var13);
-                final float var15 = MathHelper.cos(var13);
-                worldRenderer.pos(var14 * 120.0F, var15 * 120.0F, -var15 * 40.0F * var24[3]).color(var24[0], var24[1], var24[2], 0.0F).endVertex();
-            }
-
-            var23.draw();
-            GL11.glPopMatrix();
-            GL11.glShadeModel(GL11.GL_FLAT);
-        }
-
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
+        TransformerHooksClient.preViewRender((EntityLivingBase) ClientProxyCore.mc.getRenderViewEntity(), partialTicks, -1F);
         var8 = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
         var9 = 0.0F;
         var10 = 0.0F;
@@ -206,7 +168,7 @@ public class SkyProviderDeepSpace extends IRenderHandler
 
         //At 0.8, these will look bright against a black sky - allows some headroom for them to
         //look even brighter in outer dimensions (further from the sun)
-        GL11.glColor4f(0.8F, 0.8F, 0.8F, 0.8F);
+        GL11.glColor4f(0.9F, 0.9F, 0.9F, 0.9F);
         GL11.glCallList(this.starGLCallList);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -246,24 +208,19 @@ public class SkyProviderDeepSpace extends IRenderHandler
         if (this.planetToRender != null)
         {
             GL11.glPushMatrix();
+            GL11.glTranslatef(0.0F, 30F, 0.0F);
+            GL11.glRotatef(109F, 1.0F, 0.0F, 0.0F);
             GL11.glTranslatef(0.0F, -var20 / 10, 0.0F);
             float scale = 100 * (0.3F - var20 / 10000.0F);
             scale = Math.max(scale, 0.2F);
             GL11.glScalef(scale, 0.0F, scale);
             GL11.glTranslatef(0.0F, -var20, 0.0F);
-            GL11.glRotatef(90F, 0.0F, 1.0F, 0.0F);
-            this.minecraft.renderEngine.bindTexture(this.planetToRender);
+            GL11.glRotatef(90F, 1.0F, 0.0F, 0.0F);
 
-            var10 = 1.0F;
-            final float alpha = 0.5F;
+            final float alpha = 0.6F;
             GL11.glColor4f(Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F), Math.min(alpha, 1.0F));
-            VertexBuffer worldRenderer = var23.getBuffer();
-            worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            worldRenderer.pos(-var10, 0, var10).tex(0D, 1.0).endVertex();
-            worldRenderer.pos(var10, 0, var10).tex(1.0, 1.0).endVertex();
-            worldRenderer.pos(var10, 0, -var10).tex(1.0, 0D).endVertex();
-            worldRenderer.pos(-var10, 0, -var10).tex(0D, 0D).endVertex();
-            var23.draw();
+            RenderPlanet.renderID(3, 4.0F, ticks / 8F);
+
             GL11.glPopMatrix();
         }
 

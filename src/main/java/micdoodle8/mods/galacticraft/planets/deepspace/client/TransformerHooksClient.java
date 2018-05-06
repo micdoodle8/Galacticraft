@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDee
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.chunk.RenderChunk;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -197,6 +198,72 @@ public class TransformerHooksClient
         default:
         }
         return offsetAdjust;
+    }
+
+    public static void preViewRender(EntityLivingBase viewEntity, float partialTicks, float reverse)
+    {
+        float z = (float) (viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
+        int cz = ((int) z / 16) % 6;
+        if (cz < 0) cz += 6; else cz = (cz + 1) % 6;
+        z = z % 16F;
+        if (z < 0F) z += 16F;
+        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - 64F;
+        z -= 8F;
+        float theta = TransformerHooksClient.theta / 2F;
+        z /= 8F;
+        boolean strut = false;
+        if (z < 0F)
+        {
+            strut = (cz == 2);
+        }
+        else
+        {
+            strut = (cz == 0);
+        }
+        if (strut)
+        {
+            theta += TransformerHooksClient.phi;
+            y *= Math.tan(theta / Constants.RADIANS_TO_DEGREES);
+        }
+        else
+        {
+            y /= 8F;
+        }
+        GL11.glRotatef(theta * z, reverse, 0.0F, 0.0F);
+        GL11.glTranslatef(0.0F, 0.0F, y * z * reverse);
+    }
+
+    public static void preViewRender2(EntityLivingBase viewEntity, float partialTicks)
+    {
+        float z = (float) (viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
+        int cz = ((int) z / 16) % 6;
+        if (cz < 0) cz += 6; else cz = (cz + 1) % 6;
+        float zz = z % 16F;
+        if (zz < 0F) zz += 16F;
+        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - 64F;
+        zz -= 8F;
+        float theta = TransformerHooksClient.theta / 2F;
+        zz /= 8F;
+        boolean strut = false;
+        if (zz < 0F)
+        {
+            strut = (cz == 2);
+        }
+        else
+        {
+            strut = (cz == 0);
+        }
+        if (strut)
+        {
+            theta += TransformerHooksClient.phi;
+            y *= Math.tan(theta / Constants.RADIANS_TO_DEGREES);
+        }
+        else
+        {
+            y /= 8F;
+        }
+        GL11.glRotatef(theta * zz, -1.0F, 0.0F, 0.0F);
+        GL11.glTranslatef(0.0F, 0.0F, - y * zz);
     }
 
     public static AxisAlignedBB renderChunkAABB(AxisAlignedBB aabb, RenderChunk chunk)

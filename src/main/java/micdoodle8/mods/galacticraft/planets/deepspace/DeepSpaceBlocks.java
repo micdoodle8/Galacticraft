@@ -29,6 +29,7 @@ public class DeepSpaceBlocks
 
     public static void setHarvestLevels()
     {
+        glassProtective.setHarvestLevel("axe", 2);
     }
 
 }
