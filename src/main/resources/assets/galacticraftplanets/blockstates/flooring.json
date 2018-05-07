@@ -1,0 +1,16 @@
+{
+    "forge_marker": 1,
+    "defaults": { "model": "galacticraftplanets:flooring" },
+    "variants": { "type": {
+        "flooring":   { "textures": { "all": "galacticraftplanets:blocks/interior_0" }},
+        "flooring_1": { "textures": { "all": "galacticraftplanets:blocks/interior_1" }},
+        "flooring_2": { "textures": { "all": "galacticraftplanets:blocks/interior_2" }},
+        "flooring_3": { "textures": { "all": "galacticraftplanets:blocks/interior_3" }},
+        "flooring_4": { "textures": { "all": "galacticraftplanets:blocks/interior_4" }},
+        "flooring_5": { "textures": { "all": "galacticraftplanets:blocks/interior_5" }},
+        "flooring_6": { "textures": { "all": "galacticraftplanets:blocks/interior_6" }},
+        "flooring_7": { "textures": { "all": "galacticraftplanets:blocks/interior_7" }},
+        "flooring_8": { "textures": { "all": "galacticraftcore:blocks/deco_block" }}
+        }
+    }
+}

@@ -7,6 +7,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiCelestialSelection
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.deepspace.client.TransformerHooksClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
@@ -50,6 +52,11 @@ public class EventHandlerClient
         if (player instanceof EntityPlayerSP)
         {
             sneakRenderOverride = true;
+
+            if (player.worldObj.provider instanceof WorldProviderDeepSpace)
+            {
+                TransformerHooksClient.preViewRender2(player, event.getPartialRenderTick());
+            }
         }
 
         //Gravity - freefall - jetpack changes in player model orientation can go here
