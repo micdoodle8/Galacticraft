@@ -31,11 +31,11 @@ public class BlockFlooring extends Block implements ISortableBlock, IPartialSeal
 
     public enum EnumBlockFlooring implements IStringSerializable
     {
-        GREY(0, "flooring"),
+        WHITE(0, "flooring"),
         VARIANT_1(1, "flooring_1"),
-        VARIANT_2(2, "flooring_2"),
-        VARIANT_3(3, "flooring_3"),
-        VARIANT_4(4, "flooring_4"),
+        OFF_WHITE(2, "flooring_2"),
+        GREY_HANDLE(3, "flooring_3"),
+        GREY(4, "flooring_4"),
         VARIANT_5(5, "flooring_5"),
         VARIANT_6(6, "flooring_6"),
         VARIANT_7(7, "flooring_7"),
@@ -68,7 +68,12 @@ public class BlockFlooring extends Block implements ISortableBlock, IPartialSeal
 
         public ItemStack getItemStack()
         {
-            return new ItemStack(DeepSpaceBlocks.spaceBasic, 1, this.meta);
+            return new ItemStack(DeepSpaceBlocks.flooring, 1, this.meta);
+        }
+
+        public IBlockState getBlock()
+        {
+            return DeepSpaceBlocks.flooring.getDefaultState().withProperty(TYPE, this);
         }
     }
 
@@ -77,7 +82,7 @@ public class BlockFlooring extends Block implements ISortableBlock, IPartialSeal
         super(Material.ROCK);
         this.blockHardness = 2.2F;
         this.blockResistance = 2.5F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockFlooring.GREY));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockFlooring.WHITE));
         this.setUnlocalizedName(assetName);
     }
 

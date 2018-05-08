@@ -31,12 +31,13 @@ public class BlockInterior extends Block implements ISortableBlock, IPartialSeal
 
     public enum EnumBlockInterior implements IStringSerializable
     {
-        GREY(0, "interior"),
+        WHITE(0, "interior"),
         VARIANT_1(1, "interior_1"),
-        VARIANT_2(2, "interior_2"),
-        VARIANT_3(3, "interior_3"),
-        VARIANT_4(4, "interior_4"),
-        VARIANT_5(5, "interior_5");
+        OFF_WHITE(2, "interior_2"),
+        GREY_HANDLE(3, "interior_3"),
+        GREY(4, "interior_4"),
+        VARIANT_5(5, "interior_5"),
+        DARK_GREY(6, "interior_6");
 
         private final int meta;
         private final String name;
@@ -65,7 +66,12 @@ public class BlockInterior extends Block implements ISortableBlock, IPartialSeal
 
         public ItemStack getItemStack()
         {
-            return new ItemStack(DeepSpaceBlocks.spaceBasic, 1, this.meta);
+            return new ItemStack(DeepSpaceBlocks.interior, 1, this.meta);
+        }
+
+        public IBlockState getBlock()
+        {
+            return DeepSpaceBlocks.interior.getDefaultState().withProperty(TYPE, this);
         }
     }
 
@@ -74,7 +80,7 @@ public class BlockInterior extends Block implements ISortableBlock, IPartialSeal
         super(Material.ROCK);
         this.blockHardness = 2.2F;
         this.blockResistance = 2.5F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockInterior.GREY));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockInterior.WHITE));
         this.setUnlocalizedName(assetName);
     }
 

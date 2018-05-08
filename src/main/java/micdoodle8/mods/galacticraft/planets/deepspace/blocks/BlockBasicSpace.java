@@ -31,8 +31,8 @@ public class BlockBasicSpace extends Block implements ISortableBlock, IPartialSe
 
     public enum EnumBlockSpace implements IStringSerializable
     {
-        GREY(0, "deep_space"),
-        VARIANT_WW(1, "deep_space_1"),
+        BASE_METAL(0, "deep_space"),
+        DECO_1(1, "deep_space_1"),
         VARIANT_2(2, "deep_space_2"),
         VARIANT_3(3, "deep_space_3"),
         VARIANT_4(4, "deep_space_4"),
@@ -69,6 +69,11 @@ public class BlockBasicSpace extends Block implements ISortableBlock, IPartialSe
         {
             return new ItemStack(DeepSpaceBlocks.spaceBasic, 1, this.meta);
         }
+
+        public IBlockState getBlock()
+        {
+            return DeepSpaceBlocks.spaceBasic.getDefaultState().withProperty(TYPE, this);
+        }
     }
 
     public BlockBasicSpace(String assetName)
@@ -76,7 +81,7 @@ public class BlockBasicSpace extends Block implements ISortableBlock, IPartialSe
         super(Material.ROCK);
         this.blockHardness = 2.2F;
         this.blockResistance = 2.5F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockSpace.GREY));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, EnumBlockSpace.BASE_METAL));
         this.setUnlocalizedName(assetName);
     }
 

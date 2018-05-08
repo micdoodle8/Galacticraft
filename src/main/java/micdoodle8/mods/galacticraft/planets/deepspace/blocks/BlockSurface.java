@@ -66,6 +66,11 @@ public class BlockSurface extends Block implements ISortableBlock, IPartialSeala
         {
             return new ItemStack(DeepSpaceBlocks.surface, 1, this.meta);
         }
+
+        public IBlockState getBlock()
+        {
+            return DeepSpaceBlocks.surface.getDefaultState().withProperty(TYPE, this);
+        }
     }
 
     public BlockSurface(String assetName)
