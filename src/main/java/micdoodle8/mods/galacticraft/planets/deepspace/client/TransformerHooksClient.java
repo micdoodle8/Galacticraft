@@ -3,13 +3,26 @@ package micdoodle8.mods.galacticraft.planets.deepspace.client;
 import org.lwjgl.opengl.GL11;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceBlocks;
+import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockDeepStructure;
 import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BlockRendererDispatcher;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.chunk.ChunkCompileTaskGenerator;
+import net.minecraft.client.renderer.chunk.CompiledChunk;
 import net.minecraft.client.renderer.chunk.RenderChunk;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -26,6 +39,7 @@ public class TransformerHooksClient
     private static float cosPhi = (float) Math.cos((theta + eta) / Constants.RADIANS_TO_DEGREES);
     private static float sinPhi = (float) Math.sin((theta + eta) / Constants.RADIANS_TO_DEGREES);
     private static float tanHalfPhi = (float) Math.tan((theta / 2F + eta) / Constants.RADIANS_TO_DEGREES);
+    public static float midslope = (float) Math.tan((theta / 2F + eta / 2F) / Constants.RADIANS_TO_DEGREES);
     private static float a = ddY * (1 - cosPhi) + 8F * sinPhi;
     private static float b = ddY * (float) Math.sin(eta / Constants.RADIANS_TO_DEGREES);
     private static float c = a + b;
@@ -38,13 +52,61 @@ public class TransformerHooksClient
         {
             int cz = pos.getZ() >> 4;
             int org = MathHelper.floor_double(playerZ) >> 4;
-            int h = (pos.getY() - heightBaseline);
+            int h = pos.getY() - heightBaseline;
             if (h < 0)
             {
                 h -= 15;
             }
             h = (h / 16) * 16;
             adjust(org, org - cz, h, 0F, 0F, 0F, 0F);
+        }
+    }
+    
+    public static void edgeBlocks(BlockPos pos, IBlockState bs, ChunkCompileTaskGenerator generator, World world, CompiledChunk compiledchunk)
+    {
+        if (GalacticraftCore.isPlanetsLoaded && world.provider instanceof WorldProviderDeepSpace && bs.getBlock().getDefaultState().getRenderType() != EnumBlockRenderType.INVISIBLE)
+        {
+            int z = pos.getZ() % 16;
+            if (z < 0) z += 16;
+            int py = pos.getY();
+            if ((z == 0 || z == 15) && py < heightBaseline && py >= heightBaseline - 8)
+            {
+                VertexBuffer buffer = generator.getRegionRenderCacheBuilder().getWorldRendererByLayerId(BlockRenderLayer.CUTOUT.ordinal());
+                if (buffer != null)
+                {
+                    Block wall;
+                    BlockRendererDispatcher brd = Minecraft.getMinecraft().getBlockRendererDispatcher();
+                    int pz = pos.getZ();
+                    if (pz < 0) pz -= 15;
+                    int cz = (pz / 16) % 6;
+                    if (cz < 0) cz += 6;
+                    if (cz == 0 || cz == (z == 0 ? 1 : 5))
+                    {
+                        wall = DeepSpaceBlocks.deepStructure; 
+                    }
+                    else
+                    {
+                        wall = DeepSpaceBlocks.deepWall;
+                    }
+                    int meta = py % 8;
+                    if (z >= 8) meta += 8;
+                    IBlockState state = wall.getDefaultState().withProperty(BlockDeepStructure.H, 15 - meta);
+                    IBakedModel model = brd.getModelForState(state);
+                    state = state.getBlock().getExtendedState(state, world, pos);
+                    net.minecraftforge.client.ForgeHooksClient.setRenderLayer(BlockRenderLayer.CUTOUT);
+                    if (!compiledchunk.isLayerStarted(BlockRenderLayer.CUTOUT))
+                    {
+                        compiledchunk.setLayerStarted(BlockRenderLayer.CUTOUT);
+                        buffer.begin(7, DefaultVertexFormats.BLOCK);
+                        int mask = 0xfffffff0;
+                        int xx = pos.getX() & mask;
+                        int yy = py & mask;
+                        int zz = pos.getZ() & mask;
+                        buffer.setTranslation(-xx, -yy, -zz);
+                    }
+                    brd.getBlockModelRenderer().renderModel(world, model, state, pos.add(0, 0, z == 0 ? -1 : 1), buffer, false);
+                }
+            }
         }
     }
 
@@ -89,7 +151,7 @@ public class TransformerHooksClient
             float z = (float) zz;
             int ccz = ((int) z / 16) % 6;
             if (ccz < 0) ccz += 6; else ccz = (ccz + 1) % 6;
-            float y = (float) posY - 64F;
+            float y = (float) posY - heightBaseline;
             z -= 8F;
             z /= 8F;
             boolean strut = false;
@@ -149,8 +211,8 @@ public class TransformerHooksClient
         theta *= offsetZ;
 
         // (#1) Reverse the effect of thetaAdjust and org on the offsetZ == 0 chunk (where the player is) - and apply the same to all chunks
-        int offsetAdjust = (org + 5) / 6;
-        offsetAdjust += offsetAdjust - (org % 6 == 0 ? 0 : 1);
+        int offsetAdjust = (org + 5) / 6;   //1  cf  0
+        offsetAdjust += offsetAdjust - (org % 6 == 0 ? 0 : 1);  //1 cf 0
         if (org > 0)
         {
             float deltaTheta = (TransformerHooksClient.theta * org + thetaAdjust) / Constants.RADIANS_TO_DEGREES - atan;
@@ -203,6 +265,13 @@ public class TransformerHooksClient
     {
         int offsetAdjust = (offsetZ + 5) / 6;
         offsetAdjust += offsetAdjust - (offsetZ % 6 == 0 ? 0 : 1);
+        
+        // How far around the circle from player position?
+        // 0 = playerpos
+        // 1 = 1 strut-circle interface angle (eta) clockwise
+        // 2 = 2 strut-circle interface angles clockwise (the segment quarter of the way around)
+        // etc
+        // 7 = 1 strut-circle interface angle (eta) anti-clockwise
         switch (offsetAdjust % 8)
         {
         case 1:
@@ -212,13 +281,13 @@ public class TransformerHooksClient
             GL11.glTranslatef(0F, c, c * cz);
             break;
         case 3:
-            GL11.glTranslatef(0F, c + c, b * cz);
+            GL11.glTranslatef(0F, c + c - a, b * cz);
             break;
         case 4:
-            GL11.glTranslatef(0F, c + c + a, 0F);
+            GL11.glTranslatef(0F, c + c, 0F);
             break;
         case 5:
-            GL11.glTranslatef(0F, c + c, -b * cz);
+            GL11.glTranslatef(0F, c + c - a, -b * cz);
             break;
         case 6:
             GL11.glTranslatef(0F, c, -c * cz);
@@ -231,27 +300,22 @@ public class TransformerHooksClient
         return offsetAdjust;
     }
 
-    public static void preViewRender(EntityLivingBase viewEntity, float partialTicks, float reverse)
+    public static float preViewRender(EntityLivingBase viewEntity, float partialTicks, float reverse)
     {
-        float z = (float) (viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
-        int cz = ((int) z / 16) % 6;
-        cz = (cz + (z < 0F ? 6 : 1)) % 6;
+        double zzz = viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * partialTicks;
+        double yy = viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * partialTicks;
+        float y = (float) yy  - heightBaseline;
+        float z = (float) zzz;
+        float skyAngle = z;
+        int pz = (int) z;
+        if (pz < 0) pz -= 15;
+        int cz = (pz / 16) % 6;
+        if (cz < 0) cz += 6;
         z = z % 16F;
         if (z < 0F) z += 16F;
-        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - 64F;
         z -= 8F;
         float theta = TransformerHooksClient.theta / 2F;
-        z /= 8F;
-        boolean strut = false;
-        if (z < 0F)
-        {
-            strut = (cz == 2);
-        }
-        else
-        {
-            strut = (cz == 0);
-        }
-        if (strut)
+        if (cz == 0)
         {
             theta += TransformerHooksClient.eta;
             y *= tanHalfPhi;
@@ -260,8 +324,10 @@ public class TransformerHooksClient
         {
             y /= 8F;
         }
-        GL11.glRotatef(theta * z, reverse, 0.0F, 0.0F);
-        GL11.glTranslatef(0.0F, 0.0F, y * z * reverse);
+        float size = y < 0F ? 8F : 8F * (1F - y / 8F);
+        GL11.glRotatef(theta * z / size, reverse, 0.0F, 0.0F);
+        if (y < 0F) GL11.glTranslatef(0.0F, 0.0F, y * z / 8F * reverse);
+        return skyAngle - z + z * 8F / size;
     }
 
     /*
@@ -269,25 +335,17 @@ public class TransformerHooksClient
      */
     public static void preViewRender2(EntityLivingBase viewEntity, float partialTicks)
     {
+        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - heightBaseline;
         float z = (float) (viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
-        int cz = ((int) z / 16) % 6;
-        cz = (cz + (z < 0F ? 6 : 1)) % 6;
+        int pz = (int) z;
+        if (pz < 0) pz -= 15;
+        int cz = (pz / 16) % 6;
+        if (cz < 0) cz += 6;
         z = z % 16F;
         if (z < 0F) z += 16F;
-        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - 64F;
         z -= 8F;
         float theta = TransformerHooksClient.theta / 2F;
-        z /= 8F;
-        boolean strut = false;
-        if (z < 0F)
-        {
-            strut = (cz == 2);
-        }
-        else
-        {
-            strut = (cz == 0);
-        }
-        if (strut)
+        if (cz == ((z < 0F) ? 2 : 0))
         {
             theta += TransformerHooksClient.eta;
             y *= tanHalfPhi;
@@ -296,17 +354,96 @@ public class TransformerHooksClient
         {
             y /= 8F;
         }
+        float size = y < 0F ? 8F : 8F * (1F - y / 8F);
+        z /= size;
         GL11.glRotatef(theta * z, -1.0F, 0.0F, 0.0F);
+        if (y < 0F)
+        {
+            float ffOffset = 0F;
+            float zzOffset = 0F;
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(viewEntity);
+            if (stats != null && stats.isInFreefall())
+            {
+                float angle = (theta * z) / Constants.RADIANS_TO_DEGREES;
+                ffOffset = y * z * (float) Math.sin(angle);
+                zzOffset = y * z * (1F - (float) Math.cos(angle));
+            }
+            zzOffset -= y * z * size / 8F;
+            GL11.glTranslatef(0.0F, ffOffset, zzOffset);  // - y * z +
+        }
+    }
+
+    public static AxisAlignedBB adjustEntityBB(Entity entity, float y, float z, AxisAlignedBB base)
+    {
+        int cz = ((int) z / 16) % 6;
+        cz = (cz + (z < 0F ? 6 : 1)) % 6;
+        z = z % 16F;
+        if (z < 0F) z += 16F;
+        y -= heightBaseline;
+        z -= 8F;
+        float theta = TransformerHooksClient.theta / 2F;
+        if (cz == ((z < 0F) ? 2 : 0))
+        {
+            theta += TransformerHooksClient.eta;
+            y *= tanHalfPhi;
+        }
+        else
+        {
+            y /= 8F;
+        }
+        float size = y < 0F ? 8F : 8F * (1F - y / 8F);
+        z /= size;
+//        GL11.glRotatef(theta * z, -1.0F, 0.0F, 0.0F);
         float ffOffset = 0F;
         float zzOffset = 0F;
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(viewEntity);
-        if (stats != null && stats.isInFreefall())
+        if (entity != null)
         {
-            float angle = (theta * z) / Constants.RADIANS_TO_DEGREES;
-            ffOffset = y * z * (float) Math.sin(angle);
-            zzOffset = y * z * (1F - (float) Math.cos(angle));
+            GCPlayerStatsClient stats = GCPlayerStatsClient.get(entity);
+            if (stats != null && stats.isInFreefall())
+            {
+                float angle = (theta * z) / Constants.RADIANS_TO_DEGREES;
+                ffOffset = y * z * (float) Math.sin(angle);
+                zzOffset = y * z * (1F - (float) Math.cos(angle));
+            }
         }
-        GL11.glTranslatef(0.0F, ffOffset, - y * z + zzOffset);
+        return base.offset(0D, -ffOffset, - y * z + zzOffset);
+    }
+
+    public static float adjustEntityMoveZ(Entity entity, float y, float z)
+    {
+        int pz = (int) z;
+        if (pz < 0) pz -= 15;
+        int cz = (pz / 16) % 6;
+        if (cz < 0) cz += 6;
+        z = z % 16F;
+        if (z < 0F) z += 16F;
+        y -= heightBaseline;
+        z -= 8F;
+        float theta = TransformerHooksClient.theta / 2F;
+        if (cz == 0 || cz == (z < 0F ? 1 : 5))
+        {
+            theta += TransformerHooksClient.eta;
+            y *= midslope;
+        }
+        else
+        {
+            y /= 8F;
+        }
+        float size = y < 0F ? 8F : 8F * (1F - y / 8F);
+        z /= size;
+        float ffOffset = 0F;
+        float zzOffset = 0F;
+//        if (entity != null)
+//        {
+//            GCPlayerStatsClient stats = GCPlayerStatsClient.get(entity);
+//            if (stats != null && stats.isInFreefall())
+//            {
+//                float angle = (theta * z) / Constants.RADIANS_TO_DEGREES;
+//                ffOffset = y * z * (float) Math.sin(angle);
+//                zzOffset = y * z * (1F - (float) Math.cos(angle));
+//            }
+//        }
+        return y * z - zzOffset;
     }
 
     public static AxisAlignedBB renderChunkAABB(AxisAlignedBB aabb, RenderChunk chunk)

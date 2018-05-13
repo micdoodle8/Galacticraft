@@ -144,7 +144,7 @@ public class GuiCelestialSelection extends GuiScreen
         {
             this.celestialBodyTicks.put(satellite, 0);
         }
-        DeepSpaceModule.stationDeepSpace.setParentPlanet(GalacticraftCore.planetJupiter);
+        if (GalacticraftCore.isPlanetsLoaded) DeepSpaceModule.stationDeepSpace.setParentPlanet(GalacticraftCore.planetJupiter);
 
         GuiCelestialSelection.BORDER_SIZE = this.width / 65;
         GuiCelestialSelection.BORDER_EDGE_SIZE = GuiCelestialSelection.BORDER_SIZE / 4;

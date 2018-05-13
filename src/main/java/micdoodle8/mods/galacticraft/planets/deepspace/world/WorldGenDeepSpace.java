@@ -35,15 +35,16 @@ public class WorldGenDeepSpace extends WorldGenerator
     public boolean generate(World world, Random rand, BlockPos pos)
     {
         this.random = rand;
+        BlockPos floor = pos.add(0, -5, 0);
         for (int z = 0; z < 16; z++)
         {
-            slice(world, pos, z);
+            slice(world, floor, z);
         }
         
         if ((pos.getZ() >> 4) % 6 == 0)
         {
             // Axial strut
-            for (int y = 7; y < 57; y++)
+            for (int y = 2; y < 57; y++)
             {
                 this.placeBlock(world, pos.add(6, y, 5), exteriorBasic, 2);
                 this.placeBlock(world, pos.add(6, y, 6), exteriorBasic, 2);
@@ -69,7 +70,7 @@ public class WorldGenDeepSpace extends WorldGenerator
             }
             
             // Base of axial strut
-            int y = 7;
+            int y = 0;
             this.placeBlock(world, pos.add(5, y, 5), exteriorBasic, 2);
             this.placeBlock(world, pos.add(5, y, 6), exteriorBasic, 2);
             this.placeBlock(world, pos.add(5, y, 7), exteriorBasic, 2);
@@ -123,62 +124,71 @@ public class WorldGenDeepSpace extends WorldGenerator
         this.placeBlock(world, pos.add(3, 5, z), solid, 2);
         this.placeExteriorBlock(world, pos.add(3, 6, z));
         //
+        this.placeExteriorBlock(world, pos.add(4, 0, z));
         this.placeExteriorBlock(world, pos.add(4, 1, z));
         this.placeBlock(world, pos.add(4, 2, z), interiorWall, 2);
-        if (z % 2 == 0)
+        if (z % 2 == 0 || z % 16 == 15 || z % 16 == -1)
             this.placeBlock(world, pos.add(4, 3, z), glassPane, 3);
         this.placeBlock(world, pos.add(4, 4, z), interiorWall, 2);
         this.placeBlock(world, pos.add(4, 5, z), solid, 2);
         this.placeExteriorBlock(world, pos.add(4, 6, z));
         //
-        this.placeExteriorBlock(world, pos.add(5, 0, z));
+        this.placeExteriorBlock(world, pos.add(5, -1, z));
         this.placeBlock(world, pos.add(5, 1, z), grating, 2);
         this.placeBlock(world, pos.add(5, 5, z), solid, 2);
         this.placeExteriorBlock(world, pos.add(5, 6, z));
         //
-        this.placeExteriorBlock(world, pos.add(6, 0, z));
+        this.placeExteriorBlock(world, pos.add(6, -1, z));
         this.placeBlock(world, pos.add(6, 1, z), interiorFloor, 2);
         this.placeBlock(world, pos.add(6, 5, z), glass, 2);
         this.placeBlock(world, pos.add(6, 6, z), glass, 2);
         //
-        this.placeExteriorBlock(world, pos.add(7, 0, z));
+        this.placeExteriorBlock(world, pos.add(7, -1, z));
         this.placeBlock(world, pos.add(7, 1, z), interiorFloor, 2);
         this.placeBlock(world, pos.add(7, 5, z), glass, 2);
         this.placeBlock(world, pos.add(7, 6, z), glass, 2);
         //
-        this.placeExteriorBlock(world, pos.add(8, 0, z));
+        this.placeExteriorBlock(world, pos.add(8, -1, z));
         this.placeBlock(world, pos.add(8, 1, z), interiorFloor2, 2);
         this.placeBlock(world, pos.add(8, 5, z), glass, 2);
         this.placeBlock(world, pos.add(8, 6, z), glass, 2);
         //
-        this.placeExteriorBlock(world, pos.add(9, 0, z));
+        this.placeExteriorBlock(world, pos.add(9, -1, z));
         this.placeBlock(world, pos.add(9, 1, z), interiorFloor, 2);
         this.placeBlock(world, pos.add(9, 5, z), glass, 2);
         this.placeBlock(world, pos.add(9, 6, z), glass, 2);
         //
-        this.placeExteriorBlock(world, pos.add(10, 0, z));
+        this.placeExteriorBlock(world, pos.add(10, -1, z));
         this.placeBlock(world, pos.add(10, 1, z), interiorFloor, 2);
         this.placeBlock(world, pos.add(10, 5, z), glass, 2);
         this.placeBlock(world, pos.add(10, 6, z), glass, 2);
         //
-        this.placeExteriorBlock(world, pos.add(11, 0, z));
+        this.placeExteriorBlock(world, pos.add(11, -1, z));
         this.placeBlock(world, pos.add(11, 1, z), grating, 2);
         this.placeBlock(world, pos.add(11, 5, z), solid, 2);
         this.placeExteriorBlock(world, pos.add(11, 6, z));
         //
+        this.placeExteriorBlock(world, pos.add(12, 0, z));
         this.placeExteriorBlock(world, pos.add(12, 1, z));
         this.placeBlock(world, pos.add(12, 2, z), interiorWall, 2);
-        if (z % 2 == 0)
+        if (z % 2 == 0 || z % 16 == 15 || z % 16 == -1)
             this.placeBlock(world, pos.add(12, 3, z), glassPane, 3);
         this.placeBlock(world, pos.add(12, 4, z), interiorWall, 2);
         this.placeBlock(world, pos.add(12, 5, z), solid, 2);
         this.placeExteriorBlock(world, pos.add(12, 6, z));
         //
         this.placeExteriorBlock(world, pos.add(13, 1, z));
-        this.placeExteriorBlock(world, pos.add(13, 2, z));
-        this.placeExteriorBlock(world, pos.add(13, 3, z));
-        this.placeExteriorBlock(world, pos.add(13, 4, z));
-        this.placeExteriorBlock(world, pos.add(13, 5, z));
+        this.placeBlock(world, pos.add(13, 2, z), solid, 2);
+        this.placeBlock(world, pos.add(13, 3, z), solid, 2);
+        this.placeBlock(world, pos.add(13, 4, z), solid, 2);
+        this.placeBlock(world, pos.add(13, 5, z), solid, 2);
+        this.placeExteriorBlock(world, pos.add(13, 6, z));
+        //
+        this.placeExteriorBlock(world, pos.add(14, 1, z));
+        this.placeExteriorBlock(world, pos.add(14, 2, z));
+        this.placeExteriorBlock(world, pos.add(14, 3, z));
+        this.placeExteriorBlock(world, pos.add(14, 4, z));
+        this.placeExteriorBlock(world, pos.add(14, 5, z));
     }
     
     private void placeExteriorBlock(World world, BlockPos pos)
@@ -195,9 +205,10 @@ public class WorldGenDeepSpace extends WorldGenerator
         int z = pos.getZ() % 16;
         if (z < 0) z += 16;
         
-        if ((z == 0 || z == 15) && pos.getY() % 8 < 7)
+        int y = pos.getY();
+        if ((z == 0 || z == 15) && y % 8 < 7 && y >= 64)
         {
-            int meta = (pos.getY() % 8);
+            int meta = (y % 8);
             if (z >= 8) meta += 8;
             bs = DeepSpaceBlocks.deepWall.getDefaultState().withProperty(BlockDeepStructure.H, 15 - meta);
         }

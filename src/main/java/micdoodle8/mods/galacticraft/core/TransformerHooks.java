@@ -495,7 +495,7 @@ public class TransformerHooks
 
         if (viewEntity instanceof EntityLivingBase && viewEntity.worldObj.provider instanceof IZeroGDimension && !((EntityLivingBase)viewEntity).isPlayerSleeping())
         {
-            if (viewEntity.worldObj.provider instanceof WorldProviderDeepSpace)
+            if (GalacticraftCore.isPlanetsLoaded && viewEntity.worldObj.provider instanceof WorldProviderDeepSpace)
             {
                 TransformerHooksClient.preViewRender((EntityLivingBase) viewEntity, partialTicks, 1F);
             }

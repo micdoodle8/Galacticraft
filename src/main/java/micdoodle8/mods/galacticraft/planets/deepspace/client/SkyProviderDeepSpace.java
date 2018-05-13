@@ -139,7 +139,11 @@ public class SkyProviderDeepSpace extends IRenderHandler
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glPushMatrix();
-        TransformerHooksClient.preViewRender((EntityLivingBase) ClientProxyCore.mc.getRenderViewEntity(), partialTicks, -1F);
+        float skyAngle = 15F / 16F * TransformerHooksClient.preViewRender((EntityLivingBase) ClientProxyCore.mc.getRenderViewEntity(), partialTicks, -1F);
+        while (skyAngle < 0F) skyAngle += 360F;
+        while (skyAngle > 360F) skyAngle -= 360F;
+        GL11.glRotatef(skyAngle, 1F, 0.0F, 0.0F);
+
         var8 = 1.0F - this.minecraft.theWorld.getRainStrength(partialTicks);
         var9 = 0.0F;
         var10 = 0.0F;

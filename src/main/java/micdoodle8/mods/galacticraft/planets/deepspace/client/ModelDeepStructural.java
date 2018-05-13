@@ -28,11 +28,12 @@ public class ModelDeepStructural implements IBakedModel
     private final EnumMap<EnumFacing, List<BakedQuad>[]> faceQuads;
     private static final float x[] = { 0, 0, 1, 1 };
     private static final float z[] = { 0, 1, 1, 0 };
-    private final boolean inv; 
+    private final boolean inv = true;
+    private final boolean regular;
 
     public ModelDeepStructural (boolean invert)
     {
-        this.inv = invert;
+        this.regular = invert;
         this.faceQuads = Maps.newEnumMap(EnumFacing.class);
         this.setupAllQuads(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "blocks/grey"));
     }
@@ -65,8 +66,8 @@ public class ModelDeepStructural implements IBakedModel
         builder.setTexture(topSprite);
 
         // angle = 45/8 degrees ie. 5.6125 degrees and 1z for 8y
-        float za = (y % 8) / 8F;
-        float zb = za + 0.125F;
+        float za = this.regular ? (y % 8) / 8F : (y % 8) * TransformerHooksClient.midslope;
+        float zb = za + (this.regular ? 0.125F : TransformerHooksClient.midslope);
         float zc = y < 8 ? 0F : 1F - zb;
         float zd = y < 8 ? 0F : 1F - za;
         if (this.inv)

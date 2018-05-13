@@ -53,7 +53,7 @@ public class EventHandlerClient
         {
             sneakRenderOverride = true;
 
-            if (player.worldObj.provider instanceof WorldProviderDeepSpace)
+            if (GalacticraftCore.isPlanetsLoaded && player.worldObj.provider instanceof WorldProviderDeepSpace)
             {
                 TransformerHooksClient.preViewRender2(player, event.getPartialRenderTick());
             }

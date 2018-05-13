@@ -124,7 +124,7 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
         int z = pos.getZ() % 16;
         if (z < 0) z += 16;
         if (z >= 8) meta += 8;
-        return this.getStateFromMeta(this.inv ? 15 - meta : meta);
+        return this.getStateFromMeta(15 - meta);  //this.inv ? 15 - meta : meta);
     }
 
     @Override
@@ -218,7 +218,7 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
         int z = pos.getZ() % 16;
         if (z < 0) z += 16;
         if (z >= 8) meta += 8;
-        return state.withProperty(H, this.inv ? 15 - meta : meta);
+        return state.withProperty(H, 15 - meta); //this.inv ? 15 - meta : meta);
     }
     
     @SideOnly(value=Side.CLIENT)
@@ -252,8 +252,8 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     {
         int z = pos.getZ() % 16;
         if (z < 0) z += 16;
-        if (z < 8) return this.inv ? side == EnumFacing.SOUTH : side == EnumFacing.NORTH;
-        return this.inv ? side == EnumFacing.NORTH : side == EnumFacing.SOUTH;
+        if (z < 8) return side == EnumFacing.SOUTH; //this.inv ? side == EnumFacing.SOUTH : side == EnumFacing.NORTH;
+        return side == EnumFacing.NORTH; //this.inv ? side == EnumFacing.NORTH : side == EnumFacing.SOUTH;
     }
 
     @Override
@@ -277,6 +277,6 @@ public class BlockDeepStructure extends Block implements ISortableBlock, ITileEn
     @Override
     public AxisAlignedBB getCollisionBoundingBox(IBlockState state, World worldIn, BlockPos pos)
     {
-        return this.inv ? BBWHOLE : BOUNDING_BOX[this.getMetaFromState(state)];
+        return BBWHOLE;  //this.inv ? BBWHOLE : BOUNDING_BOX[this.getMetaFromState(state)];
     }
 }
