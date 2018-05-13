@@ -101,7 +101,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected int lastMovePosX = -1;
     protected int lastMovePosY = -1;
     protected boolean errorLogged = false;
-    protected boolean canCreateStations = false;
+    public boolean canCreateStations = false;
     List<CelestialBody> bodiesToRender = Lists.newArrayList();
 
     // String colours
