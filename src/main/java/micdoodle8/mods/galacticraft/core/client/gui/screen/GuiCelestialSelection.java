@@ -535,6 +535,7 @@ public class GuiCelestialSelection extends GuiScreen
         this.selectedBody = null;
         this.doneZooming = false;
         this.selectedStationOwner = "";
+        this.animateGrandchildren = 0;
     }
 
     @Override
@@ -1014,6 +1015,7 @@ public class GuiCelestialSelection extends GuiScreen
                         if (bodyClicked != this.selectedBody)
                         {
                             this.lastSelectedBody = this.selectedBody;
+                            this.animateGrandchildren = 0;
                         }
 
                         this.selectedBody = bodyClicked;
