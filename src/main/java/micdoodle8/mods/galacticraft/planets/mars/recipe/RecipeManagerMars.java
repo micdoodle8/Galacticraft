@@ -43,11 +43,11 @@ public class RecipeManagerMars
         //Water Electrolyzer
         RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 8), new Object[] { "TVT", "FWF", "BXB", 'T', new ItemStack(GCItems.oxTankHeavy, 1, GCItems.oxTankHeavy.getMaxDamage()), 'V', GCItems.oxygenVent, 'F', new ItemStack(GCBlocks.oxygenPipe, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 10), 'W', new ItemStack(MarsItems.marsItemBasic, 1, 6), 'B', new ItemStack(GCItems.basicItem, 1, 6) });
         //Fluid Manipulator - crafting item
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', Items.SLIME_BALL, 'X', GCItems.oxygenFan, 'M', meteoricIronIngot, 'W', new ItemStack(GCItems.basicItem, 1, 14) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', "slimeball", 'X', GCItems.oxygenFan, 'M', meteoricIronIngot, 'W', new ItemStack(GCItems.basicItem, 1, 14) });
 
         RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', deshIngot });
 
-        RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Items.DIAMOND, 'X', Items.LEATHER, 'Y', Items.SLIME_BALL, 'Z', Blocks.CHEST });
+        RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Items.DIAMOND, 'X', Items.LEATHER, 'Y', "slimeball", 'Z', Blocks.CHEST });
 
         RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshSword), new Object[] { "X", "X", "Y", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
