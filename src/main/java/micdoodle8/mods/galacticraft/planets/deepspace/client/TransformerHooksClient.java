@@ -149,7 +149,7 @@ public class TransformerHooksClient
             if (zz < 0D) zz += 16D;
             
             float z = (float) zz;
-            int ccz = ((int) z / 16) % 6;
+            int ccz = (MathHelper.floor_float(z) / 16) % 6;
             if (ccz < 0) ccz += 6; else ccz = (ccz + 1) % 6;
             float y = (float) posY - heightBaseline;
             z -= 8F;
@@ -307,7 +307,7 @@ public class TransformerHooksClient
         float y = (float) yy  - heightBaseline;
         float z = (float) zzz;
         float skyAngle = z;
-        int pz = (int) z;
+        int pz = MathHelper.floor_float(z);
         if (pz < 0) pz -= 15;
         int cz = (pz / 16) % 6;
         if (cz < 0) cz += 6;
@@ -315,6 +315,7 @@ public class TransformerHooksClient
         if (z < 0F) z += 16F;
         z -= 8F;
         float theta = TransformerHooksClient.theta / 2F;
+//        float ya = y;
         if (cz == 0)
         {
             theta += TransformerHooksClient.eta;
@@ -327,6 +328,15 @@ public class TransformerHooksClient
         float size = y < 0F ? 8F : 8F * (1F - y / 8F);
         GL11.glRotatef(theta * z / size, reverse, 0.0F, 0.0F);
         if (y < 0F) GL11.glTranslatef(0.0F, 0.0F, y * z / 8F * reverse);
+//        else
+//        {
+//            GCPlayerStatsClient stats = GCPlayerStatsClient.get(viewEntity);
+//            float angle = (theta * z / 8F) / Constants.RADIANS_TO_DEGREES;
+//            if (stats != null && stats.isInFreefall())
+//            {
+//                GL11.glTranslatef(0.0F, -ya / 64F * z * (float) Math.sin(angle) * reverse, 0.0F);  // - y * z +
+//            }
+//        }
         return skyAngle - z + z * 8F / size;
     }
 
@@ -335,9 +345,9 @@ public class TransformerHooksClient
      */
     public static void preViewRender2(EntityLivingBase viewEntity, float partialTicks)
     {
-        float y = (float) (viewEntity.prevPosY + (viewEntity.posY - viewEntity.prevPosY) * partialTicks) - heightBaseline;
-        float z = (float) (viewEntity.prevPosZ + (viewEntity.posZ - viewEntity.prevPosZ) * partialTicks);
-        int pz = (int) z;
+        float y = (float) (viewEntity.lastTickPosY + (viewEntity.posY - viewEntity.lastTickPosY) * partialTicks) - heightBaseline;
+        float z = (float) (viewEntity.lastTickPosZ + (viewEntity.posZ - viewEntity.lastTickPosZ) * partialTicks);
+        int pz = MathHelper.floor_float(z);
         if (pz < 0) pz -= 15;
         int cz = (pz / 16) % 6;
         if (cz < 0) cz += 6;
@@ -345,7 +355,7 @@ public class TransformerHooksClient
         if (z < 0F) z += 16F;
         z -= 8F;
         float theta = TransformerHooksClient.theta / 2F;
-        if (cz == ((z < 0F) ? 2 : 0))
+        if (cz == 0)
         {
             theta += TransformerHooksClient.eta;
             y *= tanHalfPhi;
@@ -371,11 +381,20 @@ public class TransformerHooksClient
             zzOffset -= y * z * size / 8F;
             GL11.glTranslatef(0.0F, ffOffset, zzOffset);  // - y * z +
         }
+//        else
+//        {
+//            GCPlayerStatsClient stats = GCPlayerStatsClient.get(viewEntity);
+//            if (stats != null && stats.isInFreefall())
+//            {
+//                float angle = (theta * z) / Constants.RADIANS_TO_DEGREES;
+//                GL11.glTranslatef(0.0F, -y * z * (float) Math.sin(angle) / 8F, 0.0F);  // - y * z +
+//            }
+//        }
     }
 
     public static AxisAlignedBB adjustEntityBB(Entity entity, float y, float z, AxisAlignedBB base)
     {
-        int cz = ((int) z / 16) % 6;
+        int cz = (MathHelper.floor_float(z) / 16) % 6;
         cz = (cz + (z < 0F ? 6 : 1)) % 6;
         z = z % 16F;
         if (z < 0F) z += 16F;
@@ -393,7 +412,7 @@ public class TransformerHooksClient
         }
         float size = y < 0F ? 8F : 8F * (1F - y / 8F);
         z /= size;
-//        GL11.glRotatef(theta * z, -1.0F, 0.0F, 0.0F);
+        GL11.glRotatef(theta * z, -1.0F, 0.0F, 0.0F);
         float ffOffset = 0F;
         float zzOffset = 0F;
         if (entity != null)
@@ -411,7 +430,7 @@ public class TransformerHooksClient
 
     public static float adjustEntityMoveZ(Entity entity, float y, float z)
     {
-        int pz = (int) z;
+        int pz = MathHelper.floor_float(z);
         if (pz < 0) pz -= 15;
         int cz = (pz / 16) % 6;
         if (cz < 0) cz += 6;
