@@ -101,8 +101,8 @@ public class GuiCelestialSelection extends GuiScreen
     protected int lastMovePosX = -1;
     protected int lastMovePosY = -1;
     protected boolean errorLogged = false;
-    protected boolean canCreateStations = false;
-    List<CelestialBody> bodiesToRender = Lists.newArrayList();
+    public boolean canCreateStations = false;
+    protected List<CelestialBody> bodiesToRender = Lists.newArrayList();
 
     // String colours
     protected static final int WHITE = ColorUtil.to32BitColor(255, 255, 255, 255);
@@ -537,6 +537,7 @@ public class GuiCelestialSelection extends GuiScreen
         this.selectedBody = null;
         this.doneZooming = false;
         this.selectedStationOwner = "";
+        this.animateGrandchildren = 0;
     }
 
     @Override
@@ -1016,6 +1017,7 @@ public class GuiCelestialSelection extends GuiScreen
                         if (bodyClicked != this.selectedBody)
                         {
                             this.lastSelectedBody = this.selectedBody;
+                            this.animateGrandchildren = 0;
                         }
 
                         this.selectedBody = bodyClicked;
@@ -1083,7 +1085,7 @@ public class GuiCelestialSelection extends GuiScreen
         int xPos = GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE + 2 + xOffset;
         if (x >= xPos && x <= xPos + 93 && y >= yPos && y <= yPos + 12)
         {
-            if (this.selectedBody != body/* || !this.isZoomed()*/)
+            if (this.selectedBody != body || !this.isZoomed())
             {
                 if (this.selectedBody == null)
                 {
@@ -1092,11 +1094,6 @@ public class GuiCelestialSelection extends GuiScreen
                 }
 
                 EnumSelection selectionCountOld = this.selectionState;
-
-//                if (this.isSelected() && this.selectedBody != body)
-//                {
-//                    this.unselectCelestialBody();
-//                }
 
                 if (selectionCountOld == EnumSelection.ZOOMED)
                 {
@@ -1108,12 +1105,18 @@ public class GuiCelestialSelection extends GuiScreen
 
                 if (body != this.selectedBody)
                 {
+                    // Selecting a different body
                     this.lastSelectedBody = this.selectedBody;
+                    this.selectionState = EnumSelection.SELECTED;
+                }
+                else
+                {
+                    // Selecting the same body e.g. double-clicking
+                    this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
                 }
 
                 this.selectedBody = body;
                 this.ticksSinceSelection = 0;
-                this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
                 if (grandchild) this.selectionState = EnumSelection.ZOOMED;
                 if (this.isZoomed())
                 {

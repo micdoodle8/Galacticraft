@@ -37,6 +37,13 @@ public abstract class EntityFXLaunchParticle extends Particle
             y = blocker.calculateYOffset(axisalignedbb, y);
         }
         axisalignedbb = axisalignedbb.offset(0.0D, y, 0.0D);
+        if (y != d0)
+        {
+            this.motionY += (y - d0) * 1.15D;
+            this.motionX *= 0.7D;
+            this.motionZ *= 0.7D;
+        }
+        this.motionY -= 0.005D;
 
         for (AxisAlignedBB blocker : list)
         {

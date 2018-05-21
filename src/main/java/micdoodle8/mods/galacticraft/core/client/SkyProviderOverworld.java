@@ -168,7 +168,6 @@ public class SkyProviderOverworld extends IRenderHandler
         float theta = MathHelper.sqrt(((float) (mc.player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F);
         final float var21 = Math.max(1.0F - theta * 4.0F, 0.0F);
 
-        GlStateManager.pushMatrix();
         GL11.glDisable(GL11.GL_TEXTURE_2D);
         GlStateManager.disableRescaleNormal();
         final Vec3d var2 = this.minecraft.world.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
