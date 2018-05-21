@@ -28,14 +28,12 @@ public class RecipeManagerMars
         OreDictionary.registerOre("ingotDesh", new ItemStack(MarsItems.marsItemBasic, 1, 2));
         OreDictionary.registerOre("compressedDesh", new ItemStack(MarsItems.marsItemBasic, 1, 5));
     	ItemStack meteoricIronIngot = new ItemStack(GCItems.itemBasicMoon, 1, 0);
-    	ItemStack deshIngot = new ItemStack(MarsItems.marsItemBasic, 1, 2);
-    	ItemStack deshPlate = new ItemStack(MarsItems.marsItemBasic, 1, 5);
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.marsBlock, 1, 8), new Object[] { "XXX", "XXX", "XXX", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.marsBlock, 1, 8), new Object[] { "XXX", "XXX", "XXX", 'X', "ingotDesh" });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, 0), new Object[] { "XWX", "XZX", "WVW", 'V', GCItems.oxygenConcentrator, 'W', deshPlate, 'X', deshIngot, 'Z', new ItemStack(GCItems.canister) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, 0), new Object[] { "XWX", "XZX", "WVW", 'V', GCItems.oxygenConcentrator, 'W', "compressedDesh", 'X', "ingotDesh", 'Z', new ItemStack(GCItems.canister) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', deshPlate, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 3), 'Z', Items.bed });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, 4), new Object[] { "XYX", "XZX", "XYX", 'X', "compressedDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 3), 'Z', Items.bed });
         //Gas liquefier
         RecipeUtil.addRecipe(new ItemStack(MarsBlocks.machineT2, 1, 0), new Object[] { "TVS", "FWS", "PXO", 'T', new ItemStack(GCItems.oxTankHeavy, 1, GCItems.oxTankHeavy.getMaxDamage()), 'V', GCItems.oxygenVent, 'F', new ItemStack(GCBlocks.oxygenPipe, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 10), 'W', new ItemStack(MarsItems.marsItemBasic, 1, 6), 'O', new ItemStack(GCBlocks.oxygenCompressor, 1, 0), 'P', new ItemStack(GCBlocks.oxygenCompressor, 1, 4), 'S', new ItemStack(GCItems.oxTankMedium, 1, GCItems.oxTankMedium.getMaxDamage()) });
         //Methane Synthesizer
@@ -45,31 +43,31 @@ public class RecipeManagerMars
         //Fluid Manipulator - crafting item
         RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 6), new Object[] { "MXM", "SWS", "MXM", 'S', "slimeball", 'X', GCItems.oxygenFan, 'M', meteoricIronIngot, 'W', new ItemStack(GCItems.basicItem, 1, 14) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.marsItemBasic, 1, 1), new Object[] { "X", "X", 'X', "ingotDesh" });
 
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 4), new Object[] { "XWX", "XYX", " Z ", 'W', Items.diamond, 'X', Items.leather, 'Y', "slimeball", 'Z', Blocks.chest });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshSword), new Object[] { "X", "X", "Y", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshSword), new Object[] { "X", "X", "Y", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshPickaxe), new Object[] { "XXX", " Y ", " Y ", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshPickaxe), new Object[] { "XXX", " Y ", " Y ", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshSpade), new Object[] { "X", "Y", "Y", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshSpade), new Object[] { "X", "Y", "Y", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHoe), new Object[] { "XX", "Y ", "Y ", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHoe), new Object[] { "XX", "Y ", "Y ", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHoe), new Object[] { "XX", " Y", " Y", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHoe), new Object[] { "XX", " Y", " Y", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshAxe), new Object[] { "XX", "XY", " Y", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshAxe), new Object[] { "XX", "XY", " Y", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshAxe), new Object[] { "XX", "YX", "Y ", 'X', deshIngot, 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshAxe), new Object[] { "XX", "YX", "Y ", 'X', "ingotDesh", 'Y', new ItemStack(MarsItems.marsItemBasic, 1, 1) });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHelmet), new Object[] { "XXX", "X X", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshHelmet), new Object[] { "XXX", "X X", 'X', "ingotDesh" });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshChestplate), new Object[] { "X X", "XXX", "XXX", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshChestplate), new Object[] { "X X", "XXX", "XXX", 'X', "ingotDesh" });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshLeggings), new Object[] { "XXX", "X X", "X X", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshLeggings), new Object[] { "XXX", "X X", "X X", 'X', "ingotDesh" });
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshBoots), new Object[] { "X X", "X X", 'X', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsItems.deshBoots), new Object[] { "X X", "X X", 'X', "ingotDesh" });
 
         RecipeUtil.addRecipe(new ItemStack(MarsItems.marsItemBasic, 9, 2), new Object[] { "X", 'X', new ItemStack(MarsBlocks.marsBlock, 1, 8) });
 
@@ -229,6 +227,6 @@ public class RecipeManagerMars
         input2.put(16, new ItemStack(Blocks.chest));
         MarsUtil.adCargoRocketRecipe(new ItemStack(MarsItems.rocketMars, 1, 13), input2);
 
-        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCItems.basicItem, 1, 19), 'W', new ItemStack(GCBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 14), 'Y', deshPlate, 'Z', deshIngot });
+        RecipeUtil.addRecipeUpdatable(new ItemStack(MarsBlocks.machine, 1, BlockMachineMars.LAUNCH_CONTROLLER_METADATA), new Object[] { "ZVZ", "YXY", "ZWZ", 'V', new ItemStack(GCItems.basicItem, 1, 19), 'W', new ItemStack(GCBlocks.aluminumWire, 1, 0), 'X', new ItemStack(GCItems.basicItem, 1, 14), 'Y', "compressedDesh", 'Z', "ingotDesh" });
     }
 }
