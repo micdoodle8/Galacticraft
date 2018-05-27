@@ -19,6 +19,8 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
+import micdoodle8.mods.galacticraft.planets.deepspace.client.TransformerHooksClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -493,6 +495,12 @@ public class TransformerHooks
 
         if (viewEntity instanceof EntityLivingBase && viewEntity.worldObj.provider instanceof IZeroGDimension && !((EntityLivingBase)viewEntity).isPlayerSleeping())
         {
+            if (GalacticraftCore.isPlanetsLoaded && viewEntity.worldObj.provider instanceof WorldProviderDeepSpace)
+            {
+                TransformerHooksClient.preViewRender((EntityLivingBase) viewEntity, partialTicks, 1F);
+            }
+            else
+            {
             float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
             float eyeHeightChange = viewEntity.width / 2.0F;
@@ -519,6 +527,7 @@ public class TransformerHooks
             {
                 GL11.glRotatef(90.0F * (stats.getGravityTurnRatePrev() + (stats.getGravityTurnRate() - stats.getGravityTurnRatePrev()) * partialTicks), stats.getGravityTurnVecX(), stats.getGravityTurnVecY(), stats.getGravityTurnVecZ());
             }
+        }
         }
 
         //omit this for interesting 3P views

@@ -16,6 +16,7 @@ import micdoodle8.mods.galacticraft.planets.deepspace.tile.TileEntityDeepStructu
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -30,6 +31,8 @@ public class DeepSpaceModule implements IPlanetsModule
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
+        MinecraftForge.EVENT_BUS.register(new EventHandlerDeepSpace());
+
         DeepSpaceBlocks.initBlocks();
         DeepSpaceBlocks.registerBlocks();
         DeepSpaceBlocks.setHarvestLevels();

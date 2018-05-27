@@ -1,0 +1,18 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "galacticraftplanets:deep_space",
+        "transform": "forge:default-block"
+    },
+    "variants": { "type": {
+        "deep_space":   { "textures": { "all": "galacticraftplanets:blocks/deep_space_0" }},
+        "deep_space_1": { "textures": { "all": "galacticraftplanets:blocks/deep_space_1" }},
+        "deep_space_2": { "textures": { "all": "galacticraftplanets:blocks/deep_space_2" }},
+        "deep_space_3": { "textures": { "all": "galacticraftplanets:blocks/deep_space_3" }},
+        "deep_space_4": { "textures": { "all": "galacticraftplanets:blocks/deep_space_4" }},
+        "deep_space_5": { "textures": { "all": "galacticraftplanets:blocks/deep_space_5" }},
+        "deep_space_6": { "textures": { "all": "galacticraftplanets:blocks/deep_space_6" }},
+        "deep_space_7": { "textures": { "all": "galacticraftplanets:blocks/deep_space_7" }}
+        }
+    }
+}

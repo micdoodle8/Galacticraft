@@ -1,7 +1,9 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -21,9 +23,15 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
         {
             final ArrayList<TileEntity> attachedLaunchPads = new ArrayList<TileEntity>();
 
-            for (int x = this.getPos().getX() - 1; x < this.getPos().getX() + 2; x++)
+            int thisX = this.getPos().getX();
+            int thisZ = this.getPos().getZ();
+            int thisZ_lsb = thisZ & 0x0f; 
+            for (int z = thisZ - 1; z < thisZ + 2; z++)
             {
-                for (int z = this.getPos().getZ() - 1; z < this.getPos().getZ() + 2; z++)
+                // Prevent formation across z-chunk boundaries in Deep Space
+                if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace && (z == -1 && thisZ_lsb == 0 || z == 1 && thisZ_lsb == 15)) continue;
+
+                for (int x = thisX - 1; x < thisX + 2; x++)
                 {
                     final TileEntity tile = this.worldObj.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 

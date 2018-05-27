@@ -5,9 +5,12 @@ import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import micdoodle8.mods.galacticraft.planets.deepspace.client.TransformerHooksClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -16,8 +19,10 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
+
 import java.util.List;
 
 public class BubbleRenderer
@@ -95,6 +100,16 @@ public class BubbleRenderer
             float x = (float) (tile.getPos().getX() - interpPosX);
             float y = (float) (tile.getPos().getY() - interpPosY);
             float z = (float) (tile.getPos().getZ() - interpPosZ);
+            
+            // Adjustment for Deep Space dimension
+            if (GalacticraftCore.isPlanetsLoaded && tile.getWorld().provider instanceof WorldProviderDeepSpace)
+            {
+                int cz = tile.getPos().getZ() >> 4;
+                int org = MathHelper.floor_double(interpPosZ) >> 4;
+                int h = (tile.getPos().getY() - TransformerHooksClient.heightBaseline);
+                int zz = tile.getPos().getZ() & 0x0f;
+                TransformerHooksClient.adjust(org, org - cz, h, zz, 0F, y, z);
+            }
 
             GL11.glTranslatef(x + 0.5F, y + 1.0F, z + 0.5F);
             GL11.glScalef(provider.getBubbleSize(), provider.getBubbleSize(), provider.getBubbleSize());

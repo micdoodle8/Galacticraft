@@ -1,0 +1,30 @@
+{
+    "parent": "block/cube_all",
+    "elements": [
+        {
+            "name": "Cube",
+            "from": [ 0.0, 0.0, 0.0 ], 
+            "to": [ 16.0, 15.5, 16.0 ], 
+            "faces": {
+                "north": { "texture": "all", "cullface": "north", "uv": [ 0.0, 0.5, 16.0, 16.0 ] },
+                "east": { "texture": "all", "cullface": "east", "uv": [ 0.0, 0.5, 16.0, 16.0 ] },
+                "south": { "texture": "all", "cullface": "south", "uv": [ 0.0, 0.5, 16.0, 16.0 ] },
+                "west": { "texture": "all", "cullface": "west", "uv": [ 0.0, 0.5, 16.0, 16.0 ] },
+                "up": { "texture": "all", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "all", "cullface": "down", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
+            }
+        },
+        {
+            "name": "Cube",
+            "from": [ 0.5, 15.5, 0.5 ], 
+            "to": [ 15.5, 16.0, 15.5 ], 
+            "faces": {
+                "north": { "texture": "all", "uv": [ 0.5, 0.0, 15.5, 0.5 ] },
+                "east": { "texture": "all", "uv": [ 0.5, 0.0, 15.5, 0.5 ] },
+                "south": { "texture": "all", "uv": [ 0.5, 0.0, 15.5, 0.5 ] },
+                "west": { "texture": "all", "uv": [ 0.5, 0.0, 15.5, 0.5 ] },
+                "up": { "texture": "all", "cullface": "up", "uv": [ 0.5, 0.5, 15.5, 15.5 ] }
+            }
+        }
+    ]
+}

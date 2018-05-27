@@ -5,9 +5,12 @@ import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.event.ZeroGravityEvent;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.deepspace.client.TransformerHooksClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.dimension.WorldProviderDeepSpace;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -38,6 +41,8 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     private int lastLandingTicks;
     private boolean checkedCape = false;
     private ResourceLocation galacticraftCape = null;
+    private double bbAdjustY = 0D;
+    private double bbAdjustZ = 0D;
 
     public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter)
     {
@@ -159,11 +164,19 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     this.movementInput.moveForward *= 0.5F;
                 }
                 //-----------END CUSTOM
-                    
-                this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
-                this.pushOutOfBlocks(this.posX - (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ - (double)this.width * 0.35D);
-                this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
+                
+                double yy = this.getEntityBoundingBox().minY + 0.5D;
+                double zz = this.posZ;
+                double ww = (double)this.width * 0.35D;
+//                if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace)
+//                {
+//                    zz += TransformerHooksClient.adjustEntityMoveZ(this, (float) yy, (float) zz);
+//                }
+                this.pushOutOfBlocks(this.posX - ww, yy, zz + ww);
+                this.pushOutOfBlocks(this.posX - ww, yy, zz - ww);
+                this.pushOutOfBlocks(this.posX + ww, yy, zz - ww);
+                this.pushOutOfBlocks(this.posX + ww, yy, zz + ww);
+
                 boolean flag4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
                 if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(MobEffects.BLINDNESS))
@@ -374,6 +387,24 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     {
         super.moveEntity(par1, par3, par5);
         ClientProxyCore.playerClientHandler.moveEntity(this, par1, par3, par5);
+        
+        // TODO:  Above y==104 
+        if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace && this.posY <= 104D)
+        {
+            double z = this.posZ;
+            double newZ = TransformerHooksClient.adjustEntityMoveZ(this, (float) this.posY, (float) z);
+            double zz = z % 16D;
+            if (zz < 0D) zz += 16D;
+            zz += newZ;
+            if (zz > 16D || zz < 0D)
+            {
+                newZ += newZ;
+                this.posZ += newZ;
+                this.prevPosZ += newZ;
+                this.lastTickPosZ += newZ;
+                super.setEntityBoundingBox(this.getEntityBoundingBox().offset(0D, 0D, newZ));
+            }
+        }
     }
 
     @Override
@@ -543,5 +574,88 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         if (height > 255D) height = 255D;
         BlockPos blockpos = new BlockPos(this.posX, height, this.posZ);
         return this.worldObj.isBlockLoaded(blockpos) ? this.worldObj.getCombinedLight(blockpos, 0) : 0;
+    }
+    
+    @Override
+    public void setEntityBoundingBox(AxisAlignedBB bb)
+    {
+//        if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace)
+//        {
+//            AxisAlignedBB bbMod = TransformerHooksClient.adjustEntityBB(this, (float) this.posY, (float) this.posZ, bb.offset(0D, -bbAdjustY, -bbAdjustZ));
+//            bbAdjustY = bbMod.minY - bb.minY;
+//            bbAdjustZ = bbMod.minZ - bb.minZ;
+//            bb = bbMod;
+////            System.out.println(bbAdjustZ);
+////            if (bbAdjustZ > 0) Thread.dumpStack();
+//        }
+//        else
+//        {
+//            bbAdjustY = 0D;
+//            bbAdjustZ = 0D;
+//        }
+        super.setEntityBoundingBox(bb);
+    }
+    
+    @Override
+    protected void updateSize()
+    {
+        float f;
+        float f1;
+
+        if (this.isElytraFlying())
+        {
+            f = 0.6F;
+            f1 = 0.6F;
+        }
+        else if (this.isPlayerSleeping())
+        {
+            f = 0.2F;
+            f1 = 0.2F;
+        }
+        else if (this.isSneaking())
+        {
+            f = 0.6F;
+            f1 = 1.65F;
+        }
+        else
+        {
+            f = 0.6F;
+            f1 = 1.8F;
+        }
+
+        if (f != this.width || f1 != this.height)
+        {
+            double halfWidth = f / 2F;
+            AxisAlignedBB bb = new AxisAlignedBB(this.posX - halfWidth, this.posY, this.posZ - halfWidth, this.posX + halfWidth, this.posY + f1, this.posZ + halfWidth);
+//            if (GalacticraftCore.isPlanetsLoaded && this.worldObj.provider instanceof WorldProviderDeepSpace)
+//            {
+//                bb = TransformerHooksClient.adjustEntityBB(this, (float) this.posY, (float) this.posZ, bb); 
+//                bbAdjustY = bb.minY - this.posY;
+//                bbAdjustZ = (bb.maxZ + bb.minZ) / 2D - this.posZ;
+//            }
+//            else
+//            {
+//                bbAdjustY = 0D;
+//                bbAdjustZ = 0D;
+//            }
+
+            if (!this.worldObj.collidesWithAnyBlock(bb))
+            {
+                float widthOld = this.width;
+                this.width = f;
+                this.height = f1;
+                super.setEntityBoundingBox(bb);
+            }
+        }
+        net.minecraftforge.fml.common.FMLCommonHandler.instance().onPlayerPostTick(this);
+    }
+    
+    @Override
+    public void resetPositionToBB()
+    {
+        AxisAlignedBB axisalignedbb = this.getEntityBoundingBox();
+        this.posX = (axisalignedbb.minX + axisalignedbb.maxX) / 2.0D;
+        this.posY = axisalignedbb.minY - bbAdjustY;
+        this.posZ = (axisalignedbb.minZ + axisalignedbb.maxZ) / 2.0D - bbAdjustZ;
     }
 }

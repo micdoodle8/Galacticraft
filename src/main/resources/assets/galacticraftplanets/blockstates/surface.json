@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "defaults": { "model": "galacticraftplanets:surface" },
+    "variants": { "type": {
+        "surface": { "textures": { "0": "galacticraftplanets:blocks/grey" }},
+        "surface_1": { "textures": { "0": "galacticraftplanets:blocks/deep_space_1" }},
+        "surface_2": { "textures": { "0": "galacticraftplanets:blocks/deep_space_2" }},
+        "surface_3": { "textures": { "0": "galacticraftplanets:blocks/deep_space_3" }},
+        "surface_4": { "textures": { "0": "galacticraftplanets:blocks/deep_space_4" }}
+        }
+    }
+}

@@ -66,7 +66,7 @@ public class RenderPlanet
             float size = relSize / 70 * scale;
             RenderPlanet.renderEngine.bindTexture(texture);
             RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(0, 0, -0.001F);
             RenderPlanet.renderEngine.bindTexture(textureJupiterUpper);
             size *= 1.001F;

@@ -6,13 +6,19 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockBasicSpace.EnumBlockSpace;
 import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockDeepStructure;
+import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockFlooring.EnumBlockFlooring;
+import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockInterior.EnumBlockInterior;
+import micdoodle8.mods.galacticraft.planets.deepspace.blocks.BlockSurface.EnumBlockSurface;
 import micdoodle8.mods.galacticraft.planets.deepspace.client.ModelDeepStructural;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelBakeEvent;
@@ -63,7 +69,6 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     @SideOnly(Side.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
-//        registerTexture(event, "minerbase");
     }
 
     private void registerTexture(TextureStitchEvent.Pre event, String texture)
@@ -81,6 +86,10 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
+        addPlanetVariants(DeepSpaceBlocks.spaceBasic, EnumBlockSpace.values());
+        addPlanetVariants(DeepSpaceBlocks.surface, EnumBlockSurface.values());
+        addPlanetVariants(DeepSpaceBlocks.interior, EnumBlockInterior.values());
+        addPlanetVariants(DeepSpaceBlocks.flooring, EnumBlockFlooring.values());
     }
 
     public static void registerBlockRenderers()
@@ -88,6 +97,19 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepStructure);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.deepWall);
         ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, DeepSpaceBlocks.glassProtective);
+        DeepSpaceModuleClient.registerSubBlocks(DeepSpaceBlocks.spaceBasic, EnumBlockSpace.values());
+        DeepSpaceModuleClient.registerSubBlocks(DeepSpaceBlocks.surface, EnumBlockSurface.values());
+        DeepSpaceModuleClient.registerSubBlocks(DeepSpaceBlocks.interior, EnumBlockInterior.values());
+        DeepSpaceModuleClient.registerSubBlocks(DeepSpaceBlocks.flooring, EnumBlockFlooring.values());
+    }
+    
+    private static void registerSubBlocks(Block b, IStringSerializable[] subBlocks)
+    {
+        ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, b, 0, b.getUnlocalizedName().substring(5));
+        for (int i = 1; i < subBlocks.length; i++)
+        {
+            ClientUtil.registerBlockJson(GalacticraftPlanets.TEXTURE_PREFIX, b, i, subBlocks[i].getName());
+        }
     }
 
     private void addPlanetVariants(String name, String... variants)
@@ -99,6 +121,19 @@ public class DeepSpaceModuleClient implements IPlanetsModuleClient
             variants0[i] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + variants[i]);
         }
         ModelBakery.registerItemVariants(itemBlockVariants, variants0);
+    }
+
+    private void addPlanetVariants(Block b, IStringSerializable[] variants)
+    {
+        String name = b.getUnlocalizedName().substring(5);
+        Item itemBlockVariants = GameRegistry.findItem(Constants.MOD_ID_PLANETS, name);
+        ResourceLocation[] resources = new ResourceLocation[variants.length];
+        resources[0] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + name);
+        for (int i = 1; i < variants.length; ++i)
+        {
+            resources[i] = new ResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + variants[i].getName());
+        }
+        ModelBakery.registerItemVariants(itemBlockVariants, resources);
     }
 
     @Override

@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.planets.deepspace.DeepSpaceBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBreakable;
 import net.minecraft.block.material.Material;
@@ -22,7 +23,7 @@ public class BlockGlassProtective extends BlockBreakable implements ISortableBlo
     public BlockGlassProtective(String assetName)
     {
         super(Material.GLASS, false);
-        this.setHardness(3.0F);
+        this.setHardness(1.5F);
         this.blockResistance = 15F;
         this.setUnlocalizedName(assetName);
     }
@@ -65,14 +66,14 @@ public class BlockGlassProtective extends BlockBreakable implements ISortableBlo
         IBlockState iblockstate = blockAccess.getBlockState(pos.offset(side));
         Block block = iblockstate.getBlock();
 
+        if (block == this || block == DeepSpaceBlocks.surface)
+        {
+            return false;
+        }
+
         if (blockState != iblockstate)
         {
             return !iblockstate.isSideSolid(blockAccess, pos.offset(side), side.getOpposite());
-        }
-
-        if (block == this)
-        {
-            return false;
         }
 
         return !iblockstate.doesSideBlockRendering(blockAccess, pos.offset(side), side.getOpposite());
