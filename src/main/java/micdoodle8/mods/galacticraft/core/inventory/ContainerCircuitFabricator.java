@@ -195,7 +195,7 @@ public class ContainerCircuitFabricator extends Container
                 if (matchingStacks(stack, target))
                 {
                     acceptSlots.add(slot);
-                    int availSpace = target.getMaxStackSize() - target.stackSize;
+                    int availSpace = stack.getMaxStackSize() - (target == null ? 0 : target.stackSize);
                     acceptQuantity.add(availSpace);
                     acceptTotal += availSpace;
                     if (availSpace < minQuantity) minQuantity = availSpace;

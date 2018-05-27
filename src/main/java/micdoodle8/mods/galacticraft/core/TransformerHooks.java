@@ -77,6 +77,7 @@ public class TransformerHooks
     private static boolean generatorsInitialised = false;
     public static List<Block> spawnListAE2_GC = new LinkedList<>();
     private static int rainSoundCounter = 0;
+    private static Random random = new Random();
 
     public static double getGravityForEntity(Entity entity)
     {
@@ -588,12 +589,19 @@ public class TransformerHooks
     }
 
     @SideOnly(Side.CLIENT)
-    public static void addRainParticles(Random random, int rendererUpdateCount, float f)
+    public static int addRainParticles(int result, int rendererUpdateCount, float f)
     {
         Minecraft mc = Minecraft.getMinecraft();
+        World world = mc.theWorld;
+        if (result == 0 || !(world.provider instanceof IWeatherProvider))
+        {
+            // Either no rain or it's a vanilla dimension
+            return result;
+        }
+        IWeatherProvider moddedProvider = ((IWeatherProvider) world.provider);
+        
         random.setSeed((long)rendererUpdateCount * 312987231L);
         Entity entity = mc.getRenderViewEntity();
-        World world = mc.theWorld;
         BlockPos blockpos = new BlockPos(entity);
         int i = 10;
         double x = 0.0D;
@@ -619,10 +627,7 @@ public class TransformerHooks
             BlockPos blockpos1 = world.getPrecipitationHeight(blockpos.add(random.nextInt(i) - random.nextInt(i), 0, random.nextInt(i) - random.nextInt(i)));
             BiomeGenBase biome = world.getBiomeGenForCoords(blockpos1);
 
-            boolean canRain = biome.canSpawnLightningBolt() && biome.getFloatTemperature(blockpos1) >= 0.15F;
-            if (world.provider instanceof IWeatherProvider) canRain = true;
-
-            if (canRain && blockpos1.getY() <= blockpos.getY() + i && blockpos1.getY() >= blockpos.getY() - i)
+            if (blockpos1.getY() <= blockpos.getY() + i && blockpos1.getY() >= blockpos.getY() - i)
             {
                 double xd = random.nextDouble();
                 double zd = random.nextDouble();
@@ -648,37 +653,19 @@ public class TransformerHooks
                         zz = z;
                     }
 
-                    if (world.provider instanceof IWeatherProvider)
-                    {
-                        mc.effectRenderer.addEffect(((IWeatherProvider) world.provider).getParticle(mc.theWorld, x, y, z));
-                    }
-                    else
-                    {
-                        mc.theWorld.spawnParticle(EnumParticleTypes.WATER_DROP, x, y, z, 0.0D, 0.0D, 0.0D, new int[0]);
-                    }
+                    mc.effectRenderer.addEffect(moddedProvider.getParticle(mc.theWorld, x, y, z));
                 }
             }
         }
 
-        if (j > 0 && random.nextInt((world.provider instanceof IWeatherProvider) ? ((IWeatherProvider) world.provider).getSoundInterval(f) : 3) < rainSoundCounter++)
+        if (j > 0 && random.nextInt(moddedProvider.getSoundInterval(f)) < rainSoundCounter++)
         {
             rainSoundCounter = 0;
 
-            if (world.provider instanceof IWeatherProvider)
-            {
-                ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
-            }
-            else
-            {
-                if ((int)yy >= blockpos.getY() + 1 && world.getPrecipitationHeight(blockpos).getY() > blockpos.getY())
-                {
-                    mc.theWorld.playSound(xx, yy, zz, "ambient.weather.rain", 0.1F, 0.5F, false);
-                }
-                else
-                {
-                    mc.theWorld.playSound(xx, yy, zz, "ambient.weather.rain", 0.2F, 1.0F, false);
-                }
-            }
+            ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
         }
+        
+        // Bypass vanilla code after returning from this
+        return 0;
     }
 }

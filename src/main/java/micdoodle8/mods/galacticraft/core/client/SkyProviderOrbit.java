@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -14,9 +15,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.IRenderHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
+import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
 public class SkyProviderOrbit extends IRenderHandler
@@ -100,7 +100,7 @@ public class SkyProviderOrbit extends IRenderHandler
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.disableRescaleNormal();
         final Vec3 var2 = this.minecraft.theWorld.getSkyColor(this.minecraft.getRenderViewEntity(), partialTicks);
         float var3 = (float) var2.xCoord;
         float var4 = (float) var2.yCoord;
@@ -363,6 +363,7 @@ public class SkyProviderOrbit extends IRenderHandler
 		GL11.glTranslatef(0.0F, -((float) (var25 - 16.0D)), 0.0F);
 		GL11.glPopMatrix();
 		*/
+        GlStateManager.enableRescaleNormal();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glEnable(GL11.GL_COLOR_MATERIAL);
         GL11.glDepthMask(true);

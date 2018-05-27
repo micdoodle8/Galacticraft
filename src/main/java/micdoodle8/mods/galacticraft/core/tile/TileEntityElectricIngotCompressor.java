@@ -106,9 +106,15 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             return false;
         }
-        int result = this.containingItems[1] == null ? 0 : this.containingItems[1].stackSize + itemstack.stackSize;
-        int result2 = this.containingItems[2] == null ? 0 : this.containingItems[2].stackSize + itemstack.stackSize;
-        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize() && result2 <= this.getInventoryStackLimit() && result2 <= itemstack.getMaxStackSize();
+        int contents1 = this.containingItems[1] == null ? 0 : this.containingItems[1].stackSize;
+        int contents2 = this.containingItems[2] == null ? 0 : this.containingItems[2].stackSize;
+        int result = itemstack.stackSize;
+        if (ConfigManagerCore.quickMode && itemstack.getItem().getUnlocalizedName(itemstack).contains("compressed"))
+        {
+            result += result;
+        }
+        result += (contents2 < contents1) ? contents2 : contents1;
+        return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
     }
 
     public void updateInput()
@@ -152,11 +158,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
             }
             else if (this.containingItems[slot].isItemEqual(resultItemStack))
             {
-                if (this.containingItems[slot].stackSize + resultItemStack.stackSize > 64)
+                if (this.containingItems[slot].stackSize + resultItemStack.stackSize > resultItemStack.getMaxStackSize())
                 {
-                    resultItemStack.stackSize = this.containingItems[slot].stackSize + resultItemStack.stackSize - 64;
+                    resultItemStack.stackSize = this.containingItems[slot].stackSize + resultItemStack.stackSize - resultItemStack.getMaxStackSize();
                     GCCoreUtil.spawnItem(this.worldObj, this.getPos(), resultItemStack);
-                    this.containingItems[slot].stackSize = 64;
+                    this.containingItems[slot].stackSize = resultItemStack.getMaxStackSize();
                 }
                 else
                 {
