@@ -120,10 +120,10 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
         GlStateManager.disableTexture2D();
 
         Vector3 teamColor = ClientUtil.updateTeamColor(FMLClientHandler.instance().getClient().thePlayer.getName(), true);
+        ClientUtil.drawBakedModel(coneModel);
         if (teamColor != null)
         {
             int color = ColorUtil.to32BitColor(255, (int)(teamColor.floatZ() * 255), (int)(teamColor.floatY() * 255), (int)(teamColor.floatX() * 255));
-            ClientUtil.drawBakedModelColored(coneModel, color);
         }
         else
         {
