@@ -21,7 +21,9 @@ import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.PotionTypes;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -369,7 +371,7 @@ public class TeleportTypeAsteroids implements ITeleportType
         ResourceLocation name = EntityList.getKey(EntityCow.class);
         net.minecraft.item.ItemMonsterPlacer.applyEntityIdToItemStack(spawnEgg, name);
         rocketStacks.add(spawnEgg);
-        rocketStacks.add(new ItemStack(Items.POTIONITEM, 4, 8262)); //Night Vision Potion
+        rocketStacks.add(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_NIGHT_VISION)); //Night Vision Potion
         rocketStacks.add(new ItemStack(MarsBlocks.machine, 1, 4)); //Cryogenic Chamber
         rocketStacks.add(new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal()));
         //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
