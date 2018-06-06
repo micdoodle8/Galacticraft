@@ -91,7 +91,7 @@ public class CanisterRecipes extends ShapelessRecipes
         {
             ItemStack itemstack1 = inv.getStackInSlot(i);
 
-            if (itemstack1 != null && !itemstack1.isEmpty())
+            if (!itemstack1.isEmpty())
             {
                 Item testItem = itemstack1.getItem();
                 if (testItem instanceof ItemCanisterLiquidOxygen || testItem == GCItems.oxygenCanisterInfinite)

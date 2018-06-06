@@ -171,7 +171,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         ItemStack itemstack = player.inventory.getCurrentItem();
-        boolean flag = itemstack != null && itemstack.getItem() == Items.SPAWN_EGG;
+        boolean flag = !itemstack.isEmpty() && itemstack.getItem() == Items.SPAWN_EGG;
 
         if (!flag && this.isEntityAlive() && !this.isTrading() && !this.isChild() && !player.isSneaking())
         {
@@ -225,7 +225,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             ItemStack itemstack = this.villagerInventory.getStackInSlot(i);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
             }
@@ -252,7 +252,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             ItemStack itemstack = new ItemStack(nbttaglist.getCompoundTagAt(i));
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 this.villagerInventory.addItem(itemstack);
             }
@@ -431,7 +431,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             this.livingSoundTime = -this.getTalkInterval();
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 this.playSound(SoundEvents.ENTITY_VILLAGER_YES, this.getSoundVolume(), this.getSoundPitch());
             }
@@ -625,7 +625,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             ItemStack itemstack = this.villagerInventory.getStackInSlot(i);
 
-            if (itemstack != null)
+            if (itemstack.isEmpty())
             {
                 if (itemstack.getItem() == Items.BREAD && itemstack.getCount() >= 3 * multiplier || itemstack.getItem() == Items.POTATO && itemstack.getCount() >= 12 * multiplier || itemstack.getItem() == Items.CARROT && itemstack.getCount() >= 12 * multiplier)
                 {

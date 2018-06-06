@@ -1407,7 +1407,7 @@ public class GCPlayerHandler
             {
                 boolean doneDungeon = false;
                 ItemStack current = player.inventory.getCurrentItem();
-                if (current != null && current.getItem() == GCItems.dungeonFinder)
+                if (!current.isEmpty() && current.getItem() == GCItems.dungeonFinder)
                 {
                     this.sendDungeonDirectionPacket(player, stats);
                     doneDungeon = true;

@@ -78,7 +78,7 @@ public class SpaceStationRecipe
             {
                 final ItemStack slot = player.inventory.getStackInSlot(x);
 
-                if (slot != null)
+                if (!slot.isEmpty())
                 {
                     if (next instanceof ItemStack)
                     {
@@ -133,7 +133,7 @@ public class SpaceStationRecipe
             {
                 final ItemStack slot = player.inventory.getStackInSlot(x);
 
-                if (slot != null)
+                if (!slot.isEmpty())
                 {
                     final int amountRemaining = amountRequired - amountRemoved;
 

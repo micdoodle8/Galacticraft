@@ -678,7 +678,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (stackAt != null && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
+            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
                 if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
@@ -718,7 +718,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (stackAt == null)
+            if (stackAt.isEmpty())
             {
                 if (doAdd)
                 {

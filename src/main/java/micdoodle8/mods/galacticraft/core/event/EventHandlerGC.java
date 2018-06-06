@@ -225,7 +225,7 @@ public class EventHandlerGC
         final ItemStack heldStack = event.getEntityPlayer().inventory.getCurrentItem();
         final TileEntity tileClicked = worldObj.getTileEntity(event.getPos());
 
-        if (heldStack != null)
+        if (!heldStack.isEmpty())
         {
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
@@ -293,7 +293,7 @@ public class EventHandlerGC
         final ItemStack heldStack = event.getEntityPlayer().inventory.getCurrentItem();
         final TileEntity tileClicked = worldObj.getTileEntity(event.getPos());
 
-        if (heldStack != null)
+        if (!heldStack.isEmpty())
         {
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
@@ -409,7 +409,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        if (event.getEmptyBucket() == null || !(event.getEmptyBucket().getItem() instanceof ItemBucket))
+        if (event.getEmptyBucket().isEmpty() || !(event.getEmptyBucket().getItem() instanceof ItemBucket))
         {
             return;
         }

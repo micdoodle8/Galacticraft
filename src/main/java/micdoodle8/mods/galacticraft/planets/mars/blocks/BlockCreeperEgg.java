@@ -121,7 +121,7 @@ public class BlockCreeperEgg extends BlockDragonEgg implements IShiftDescription
     public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World worldIn, BlockPos pos)
     {
         ItemStack stack = player.inventory.getCurrentItem();
-        if (stack != null && stack.getItem() == MarsItems.deshPickSlime)
+        if (!stack.isEmpty() && stack.getItem() == MarsItems.deshPickSlime)
         {
             return 0.2F;
         }

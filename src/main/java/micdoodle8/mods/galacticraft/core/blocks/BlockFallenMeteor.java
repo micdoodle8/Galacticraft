@@ -259,7 +259,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
     {
         ItemStack stack = player.inventory.getCurrentItem();
         String tool = block.getHarvestTool(state);
-        if (stack == null || tool == null)
+        if (stack.isEmpty() || tool == null)
         {
             return player.canHarvestBlock(state) ? 1 : 0;
         }

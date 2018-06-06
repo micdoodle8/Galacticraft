@@ -42,7 +42,7 @@ public class LayerHeldItemEvolvedSkeletonBoss implements LayerRenderer<EntitySke
     {
         ItemStack bow = new ItemStack(Items.BOW);
 
-        if (bow != null)
+        if (!bow.isEmpty())
         {
             GlStateManager.pushMatrix();
             ((ModelEvolvedSkeletonBoss)this.renderer.getMainModel()).postRenderArm(0.0625F, type);

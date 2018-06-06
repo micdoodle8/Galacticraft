@@ -811,7 +811,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                     {
                         ItemStack stack2 = stats.getExtendedInventory().getStackInSlot(4);
 
-                        if (stack2 != null && stack2.getItem() instanceof ItemParaChute || stats.getLaunchAttempts() > 0)
+                        if (!stack2.isEmpty() && stack2.getItem() instanceof ItemParaChute || stats.getLaunchAttempts() > 0)
                         {
                             ship.igniteCheckingCooldown();
                             stats.setLaunchAttempts(0);
@@ -1289,7 +1289,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             for (EnumHand enumhand : EnumHand.values())
             {
                 ItemStack stack = player.getHeldItem(enumhand);
-                if (stack != null && stack.getItem() == GCItems.prelaunchChecklist)
+                if (!stack.isEmpty() && stack.getItem() == GCItems.prelaunchChecklist)
                 {
                     NBTTagCompound tagCompound = stack.getTagCompound();
                     if (tagCompound == null)

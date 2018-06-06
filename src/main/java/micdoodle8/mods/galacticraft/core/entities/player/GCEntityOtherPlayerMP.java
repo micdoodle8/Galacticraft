@@ -68,7 +68,7 @@ public class GCEntityOtherPlayerMP extends EntityOtherPlayerMP
     {
         if (EventHandlerClient.sneakRenderOverride && !(this.world.provider instanceof IZeroGDimension))
         {
-            if (this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
+            if (this.onGround && !this.inventory.getCurrentItem().isEmpty() && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
             {
                 IHoldableItem holdableItem = (IHoldableItem) this.inventory.getCurrentItem().getItem();
 
