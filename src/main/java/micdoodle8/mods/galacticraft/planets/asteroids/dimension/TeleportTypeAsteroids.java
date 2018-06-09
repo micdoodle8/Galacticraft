@@ -22,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.PotionTypes;
+import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.NonNullList;
@@ -31,7 +32,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
-import net.minecraftforge.fml.common.FMLLog;
 
 import java.util.Random;
 
@@ -138,12 +138,12 @@ public class TeleportTypeAsteroids implements ITeleportType
             }
             while (attemptCount < 5);
 
-            FMLLog.info("Failed to find good large asteroid landing spot! Falling back to making a small one.");
+            GCLog.info("Failed to find good large asteroid landing spot! Falling back to making a small one.");
             this.makeSmallLandingSpot(world, x, z);
             return new Vector3(x, 310, z);
         }
 
-        FMLLog.severe("Null player when teleporting to Asteroids!");
+        GCLog.severe("Null player when teleporting to Asteroids!");
         return new Vector3(0, 310, 0);
     }
 
@@ -369,13 +369,11 @@ public class TeleportTypeAsteroids implements ITeleportType
 
         ItemStack spawnEgg = new ItemStack(Items.SPAWN_EGG, 2);
         ResourceLocation name = EntityList.getKey(EntityCow.class);
-        net.minecraft.item.ItemMonsterPlacer.applyEntityIdToItemStack(spawnEgg, name);
+        ItemMonsterPlacer.applyEntityIdToItemStack(spawnEgg, name);
         rocketStacks.add(spawnEgg);
         rocketStacks.add(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM, 4), PotionTypes.LONG_NIGHT_VISION)); //Night Vision Potion
         rocketStacks.add(new ItemStack(MarsBlocks.machine, 1, 4)); //Cryogenic Chamber
         rocketStacks.add(new ItemStack(MarsItems.rocketMars, 1, IRocketType.EnumRocketType.INVENTORY36.ordinal()));
-        //rocketStacks[15] = new ItemStack(GCBlocks.brightLamp, 4);
-        //rocketStacks[16] = new ItemStack(GCBlocks.aluminumWire, 32);
         stats.setRocketStacks(rocketStacks);
     }
 }
