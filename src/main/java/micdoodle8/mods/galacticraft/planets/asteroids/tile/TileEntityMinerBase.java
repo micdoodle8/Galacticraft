@@ -597,7 +597,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         if (this.isMaster)
         {
             ItemStack holding = entityPlayer.getActiveItemStack();
-            if (holding != null && holding.getItem() == AsteroidsItems.astroMiner)
+            if (!holding.isEmpty() && holding.getItem() == AsteroidsItems.astroMiner)
             {
                 return false;
             }

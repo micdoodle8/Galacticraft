@@ -70,7 +70,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             ItemStack itemstack = this.getSilkTouchDrop(state);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 items.add(itemstack);
             }

@@ -428,7 +428,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
+                if (!player.inventory.armorItemInSlot(3).isEmpty() && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
                 {
                     ClientProxyCore.valueableBlocks.clear();
 

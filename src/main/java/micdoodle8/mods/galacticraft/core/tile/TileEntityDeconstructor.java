@@ -600,7 +600,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         if (slotID == 0)
         {
-            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
         
         return slotID == 1;

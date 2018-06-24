@@ -28,7 +28,7 @@ public class LayerHeldItemEvolvedWitch implements LayerRenderer<EntityEvolvedWit
     {
         ItemStack itemstack = entity.getHeldItemMainhand();
 
-        if (itemstack != null)
+        if (!itemstack.isEmpty())
         {
             GlStateManager.color(1.0F, 1.0F, 1.0F);
             GlStateManager.pushMatrix();

@@ -248,7 +248,7 @@ public class CompressorRecipes
             for (IRecipe recipe : result)
             {
                 ItemStack output = recipe.getRecipeOutput();
-                if (output == null) continue;
+                if (output.isEmpty()) continue;
                 if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
                 {
                     if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))
@@ -275,7 +275,7 @@ public class CompressorRecipes
             for (IRecipe recipe : CompressorRecipes.recipes)
             {
                 ItemStack output = recipe.getRecipeOutput();
-                if (output == null) continue;
+                if (output.isEmpty()) continue;
                 if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
                 {
                     if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))

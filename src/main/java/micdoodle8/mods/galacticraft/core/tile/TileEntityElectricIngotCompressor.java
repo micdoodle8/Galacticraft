@@ -397,7 +397,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     {
         if (slotID == 0)
         {
-            return itemStack != null && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return !itemStack.isEmpty() && !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
         else if (slotID >= 3)
         {

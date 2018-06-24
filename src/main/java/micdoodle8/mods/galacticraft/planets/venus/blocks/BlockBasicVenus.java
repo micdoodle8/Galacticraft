@@ -120,7 +120,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             ItemStack itemstack = this.getSilkTouchDrop(state);
 
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 items.add(itemstack);
             }

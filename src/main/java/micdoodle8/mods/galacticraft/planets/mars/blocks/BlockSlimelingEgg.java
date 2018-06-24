@@ -144,7 +144,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest)
     {
         ItemStack currentStack = player.getHeldItemMainhand();
-        if (currentStack != null && currentStack.getItem() instanceof ItemPickaxe)
+        if (!currentStack.isEmpty() && currentStack.getItem() instanceof ItemPickaxe)
         {
             return world.setBlockToAir(pos);
         }

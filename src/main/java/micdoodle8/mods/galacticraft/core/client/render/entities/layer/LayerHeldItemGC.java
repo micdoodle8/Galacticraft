@@ -35,7 +35,7 @@ public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
         ItemStack itemstack = flag ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
         ItemStack itemstack1 = flag ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
 
-        if (itemstack != null || itemstack1 != null)
+        if (!itemstack.isEmpty() || !itemstack1.isEmpty())
         {
             GlStateManager.pushMatrix();
 

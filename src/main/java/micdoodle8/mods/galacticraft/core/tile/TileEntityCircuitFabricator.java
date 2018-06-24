@@ -200,7 +200,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         if (slotID == 0)
         {
-            return itemStack != null && ItemElectricBase.isElectricItem(itemStack.getItem());
+            return !itemStack.isEmpty() && ItemElectricBase.isElectricItem(itemStack.getItem());
         }
 
         if (slotID > 5)
