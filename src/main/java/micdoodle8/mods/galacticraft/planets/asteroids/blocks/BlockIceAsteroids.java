@@ -65,12 +65,7 @@ public class BlockIceAsteroids extends BlockBreakable implements ISortableBlock
         if (this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0)
         {
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
-            ItemStack itemstack = this.getSilkTouchDrop(state);
-
-            if (itemstack != null)
-            {
-                items.add(itemstack);
-            }
+            items.add(this.getSilkTouchDrop(state));
 
             ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, state, 0, 1.0f, true, player);
             for (ItemStack is : items)

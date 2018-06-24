@@ -173,7 +173,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (slotID == 1 && itemstack != null)
+        if (slotID == 1 && !itemstack.isEmpty())
         {
             return FluidUtil.isEmptyContainer(itemstack);
         }

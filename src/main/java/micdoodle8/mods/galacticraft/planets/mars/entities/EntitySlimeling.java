@@ -406,7 +406,7 @@ public class EntitySlimeling extends EntityTameable implements IEntityBreathable
 
         if (this.isTamed())
         {
-            if (itemstack != null)
+            if (!itemstack.isEmpty())
             {
                 if (itemstack.getItem() == this.getFavoriteFood())
                 {

@@ -238,7 +238,7 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
         {
             final ItemStack stack = playerIn.inventory.getCurrentItem();
 
-            if (stack != null)
+            if (!stack.isEmpty())
             {
                 if (stack.getItem() instanceof ItemDye)
                 {

@@ -200,7 +200,7 @@ public class GuiSlimeling extends GuiScreen
         GlStateManager.popMatrix();
         ItemStack foodStack = new ItemStack(this.slimeling.getFavoriteFood());
 
-        if (foodStack != null && mouseX >= this.invX - 66 && mouseX < this.invX + this.invWidth - 68 && mouseY >= this.invY + 44 && mouseY < this.invY + this.invHeight + 42)
+        if (!foodStack.isEmpty() && mouseX >= this.invX - 66 && mouseX < this.invX + this.invWidth - 68 && mouseY >= this.invY + 44 && mouseY < this.invY + this.invHeight + 42)
         {
             this.renderToolTip(foodStack, mouseX, mouseY);
         }

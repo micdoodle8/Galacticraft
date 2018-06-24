@@ -209,7 +209,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (itemstack != null && this.isItemValidForSlot(slotID, itemstack))
+        if (!itemstack.isEmpty() && this.isItemValidForSlot(slotID, itemstack))
         {
             switch (slotID)
             {
@@ -229,7 +229,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (itemstack != null && this.isItemValidForSlot(slotID, itemstack))
+        if (!itemstack.isEmpty() && this.isItemValidForSlot(slotID, itemstack))
         {
             switch (slotID)
             {
@@ -252,7 +252,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         switch (slotID)
         {
         case 0:
-            return itemstack != null && ItemElectricBase.isElectricItem(itemstack.getItem());
+            return !itemstack.isEmpty() && ItemElectricBase.isElectricItem(itemstack.getItem());
         case 1:
         case 2:
             return FluidUtil.isValidContainer(itemstack);
