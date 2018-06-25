@@ -157,11 +157,6 @@ public class EnergyUtil
             {
                 if (isRF2Loaded && (tileEntity instanceof IEnergyProvider || tileEntity instanceof IEnergyReceiver) || isRF1Loaded && tileEntity instanceof IEnergyHandler || clazzRailcraftEngine != null && clazzRailcraftEngine.isInstance(tileEntity))
                 {
-                    //Do not connect GC wires directly to power conduits
-                    if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
-                    {
-                        continue;
-                    }
                     if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
                     {
                         continue;
@@ -262,8 +257,14 @@ public class EnergyUtil
             
             if (hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite()))
             {
+                //Do not connect GC wires directly to power conduits
+                if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+
                 net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, direction.getOpposite());
-                if (forgeEnergy.canReceive() && !EnergyConfigHandler.disableFEOutput || forgeEnergy.canExtract() && !EnergyConfigHandler.disableFEInput)
+                if (forgeEnergy != null && (forgeEnergy.canReceive() && !EnergyConfigHandler.disableFEOutput || forgeEnergy.canExtract() && !EnergyConfigHandler.disableFEInput))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -363,10 +364,6 @@ public class EnergyUtil
 
             if ((isRF2Loaded && tileEntity instanceof IEnergyReceiver) || (isRF1Loaded && tileEntity instanceof IEnergyHandler))
             {
-                if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
-                {
-                    continue;
-                }
                 if (clazzMFRRednetEnergyCable != null && clazzMFRRednetEnergyCable.isInstance(tileEntity))
                 {
                     continue;
@@ -382,8 +379,13 @@ public class EnergyUtil
             
             if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom))
             {
+                if (clazzEnderIOCable != null && clazzEnderIOCable.isInstance(tileEntity))
+                {
+                    continue;
+                }
+
                 net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileEntity, net.minecraftforge.energy.CapabilityEnergy.ENERGY, sideFrom); 
-                if (forgeEnergy.canReceive())
+                if (forgeEnergy != null && forgeEnergy.canReceive())
                 {
                     connectedAcceptors.add(forgeEnergy);
                     directions.add(sideFrom);
@@ -484,7 +486,7 @@ public class EnergyUtil
         else if (!EnergyConfigHandler.disableFEOutput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
         {
             net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
-            if (forgeEnergy.canReceive())
+            if (forgeEnergy != null && forgeEnergy.canReceive())
             {
                 float sent = forgeEnergy.receiveEnergy((int) Math.floor(toSend * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
                 return sent;
@@ -553,7 +555,7 @@ public class EnergyUtil
         else if (!EnergyConfigHandler.disableFEInput && hasCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj))
         {
             net.minecraftforge.energy.IEnergyStorage forgeEnergy = getCapability(tileAdj, net.minecraftforge.energy.CapabilityEnergy.ENERGY, inputAdj);
-            if (forgeEnergy.canExtract())
+            if (forgeEnergy != null && forgeEnergy.canExtract())
             {
                 float sent = forgeEnergy.extractEnergy((int) Math.floor(toPull * EnergyConfigHandler.TO_RF_RATIO), simulate) / EnergyConfigHandler.TO_RF_RATIO;
                 return sent;
@@ -650,7 +652,7 @@ public class EnergyUtil
         }
         try
         {
-            clazzEnderIOCable = Class.forName("crazypants.enderio.conduit.TileConduitBundle");
+            clazzEnderIOCable = Class.forName("crazypants.enderio.conduits.conduit.TileConduitBundle");
         }
         catch (Exception e)
         {
