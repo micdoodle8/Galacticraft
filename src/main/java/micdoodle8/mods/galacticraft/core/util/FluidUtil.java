@@ -242,7 +242,7 @@ public class FluidUtil
     public static void tryFillContainer(FluidTank tank, FluidStack liquid, NonNullList<ItemStack> inventory, int slot, Item canisterType)
     {
         ItemStack slotItem = inventory.get(slot);
-        if (liquid.amount <= 0 || slotItem == null)
+        if (liquid.amount <= 0 || slotItem.isEmpty())
         {
             return;
         }

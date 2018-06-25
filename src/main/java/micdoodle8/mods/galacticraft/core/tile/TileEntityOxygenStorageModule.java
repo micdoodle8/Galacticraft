@@ -302,7 +302,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
     {
-        if (slotID == 0 && itemstack != null)
+        if (slotID == 0 && !itemstack.isEmpty())
         {
             return FluidUtil.isEmptyContainer(itemstack);
         }

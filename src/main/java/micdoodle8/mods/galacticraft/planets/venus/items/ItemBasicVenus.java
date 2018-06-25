@@ -99,7 +99,7 @@ public class ItemBasicVenus extends ItemDesc implements ISortableItem
             GCPlayerStats stats = GCPlayerStats.get(player);
             ItemStack gear = stats.getExtendedInventory().getStackInSlot(10);
 
-            if (gear == null)
+            if (gear.isEmpty())
             {
                 stats.getExtendedInventory().setInventorySlotContents(10, itemStack.copy());
                 itemStack.setCount(0);

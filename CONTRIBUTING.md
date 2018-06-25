@@ -11,18 +11,18 @@ Issues means:
 
 Posting new issues - guidelines
 -------------------------------
-1. IS IT GALACTICRAFT?
-If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
+1. CHECK THE LATEST!
+You should download the __latest__ GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
 2. SEARCH FIRST!
 Do not duplicate known issues: do a search first. __Check the closed issues also: maybe somebody already posted your issue and a fix was found.__
 3. WHICH VERSION?
 When posting, always tell us your exact Galacticraft version.  If it's a conflict with another mod, also tell us the other mod's version.
-4. CHECK THE LATEST!
-You should download the __latest__ GC version from http://micdoodle8.com/mods/galacticraft/downloads and test if your issue still occurs in that, before posting.
-5. GIVE US THE LOGS!
+4. GIVE US THE LOGS!
 If reporting a crash, please always post your full crash report or log, use Pastebin or http://paste.ubuntu.com/ or https://gist.github.com/ or similar to post it.
+5. IS IT GALACTICRAFT?
+If you have a crash report with ```micdoodle8.mods.galacticraft.core.entities.player.GCEntityPlayerMP``` or ```GCEntityClientPlayerMP``` or ```GCPlayerBaseSP``` somewhere in the _middle_ of it (and that's the _only_ link with Galacticraft) then it's probably __not__ a Galacticraft issue, instead it's being caused by something else nearer to the top of the crash report - see further guidance below - so please don't take up Galacticraft mod developers' time by posting these.
 6. IS IT AN ADD-ON?
-Issues in add-on mods like [GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace),[MorePlanets](https://github.com/SteveKunG/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[4Space](https://github.com/4Space/4Space-5) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
+Issues in add-on mods like [ExtraPlanets](https://github.com/MJRLegends/ExtraPlanets),[MorePlanets](https://github.com/SteveKunG/MorePlanets),[AmunRa](https://github.com/katzenpapst/amunra),[GalaxySpace](https://github.com/BlesseNtumble/GalaxySpace) should not be reported here.  Issues here are only for standard Galacticraft!  Instead report those issues to the authors of those add-on mods.  They have their own pages on Github for reporting issues.
 
 Issue reports not meeting these guidelines will be flagged as __Invalid__ and closed.
 

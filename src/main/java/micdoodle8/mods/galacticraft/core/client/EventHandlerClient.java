@@ -86,19 +86,19 @@ public class EventHandlerClient
     @SubscribeEvent
     public void onRenderPlanetPost(CelestialBodyRenderEvent.Post event)
     {
-        if (this.mc.currentScreen instanceof GuiCelestialSelection)
+        if (mc.currentScreen instanceof GuiCelestialSelection)
         {
             if (event.celestialBody == GalacticraftCore.planetSaturn)
             {
-                this.mc.renderEngine.bindTexture(ClientProxyCore.saturnRingTexture);
-                float size = GuiCelestialSelection.getWidthForCelestialBodyStatic(event.celestialBody) / 6.0F;
-                ((GuiCelestialSelection) this.mc.currentScreen).drawTexturedModalRect(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 32, 32);
+                mc.renderEngine.bindTexture(ClientProxyCore.saturnRingTexture);
+                float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
+                ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 32, 32);
             }
             else if (event.celestialBody == GalacticraftCore.planetUranus)
             {
-                this.mc.renderEngine.bindTexture(ClientProxyCore.uranusRingTexture);
-                float size = GuiCelestialSelection.getWidthForCelestialBodyStatic(event.celestialBody) / 6.0F;
-                ((GuiCelestialSelection) this.mc.currentScreen).drawTexturedModalRect(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
+                mc.renderEngine.bindTexture(ClientProxyCore.uranusRingTexture);
+                float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
+                ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
             }
         }
     }
