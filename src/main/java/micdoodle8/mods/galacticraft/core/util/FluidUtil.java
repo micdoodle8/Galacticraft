@@ -61,17 +61,17 @@ public class FluidUtil
             return true;
         }
 
-        if (name.contains("rocket") && name.contains("fuel"))
+        if (name.contains("rocket") && name.contains("fuel"))    //from EnderIO
         {
             return true;
         }
 
-        if (name.equals("rc jet fuel"))
+        if (name.equals("rc jet fuel"))    //from RotaryCraft
         {
             return true;
         }
 
-        return false;
+        return name.equals("refined_fuel");    //from Thermal Expansion
     }
     
     public static boolean testOil(String name)
