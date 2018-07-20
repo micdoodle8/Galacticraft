@@ -741,7 +741,7 @@ public class GCPlayerHandler
                 {
                     for (ItemStack armor : playerMP.getArmorInventoryList())
                     {
-                        if (!armor.isEmpty() && armor.getItem() instanceof ItemArmor)
+                        if (!armor.isEmpty() && armor.getItem() instanceof ItemArmor && !(armor.getItem() instanceof IArmorUnbreake))
                         {
                             armor.damageItem(1, playerMP);
                         }
