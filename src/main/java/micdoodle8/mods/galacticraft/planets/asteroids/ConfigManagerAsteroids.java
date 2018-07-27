@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import net.minecraftforge.common.config.Configuration;
@@ -68,7 +69,7 @@ public class ConfigManagerAsteroids
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDAsteroids", -30);
-            prop.setComment("Dimension ID for Asteroids");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.dimension_id_asteroids.description"));
             prop.setLanguageKey("gc.configgui.dimension_id_asteroids").setRequiresMcRestart(true);
             if (update)
             {
@@ -82,7 +83,7 @@ public class ConfigManagerAsteroids
             //
 
             prop = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "idSchematicRocketT3", 4);
-            prop.setComment("Schematic ID for Tier 3 Rocket, must be unique.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.id_schematic_rocket_t3.description"));
             prop.setLanguageKey("gc.configgui.id_schematic_rocket_t3");
             if (update)
             {
@@ -93,7 +94,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_SCHEMATIC);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableGalacticraftHelium", false);
-            prop.setComment("Option to disable Helium gas in Galacticraft (because it will be registered by another mod eg GregTech).");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_galacticraft_helium.description"));
             prop.setLanguageKey("gc.configgui.disable_galacticraft_helium");
             if (update)
             {
@@ -104,7 +105,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "maximumAstroMiners", 6);
-            prop.setComment("Maximum number of Astro Miners each player is allowed to have active (default 6).");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.astro_miners_max.description"));
             prop.setLanguageKey("gc.configgui.astro_miners_max");
             if (update)
             {
@@ -115,7 +116,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Asteroids", false);
-            prop.setComment("Disable Iron Ore Gen on Asteroids.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_iron_gen_asteroids.description"));
             prop.setLanguageKey("gc.configgui.disable_iron_gen_asteroids");
             if (update)
             {
@@ -126,7 +127,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Aluminum Ore Gen on Asteroids", false);
-            prop.setComment("Disable Aluminum Ore Gen on Asteroids.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_aluminum_gen_asteroids.description"));
             prop.setLanguageKey("gc.configgui.disable_aluminum_gen_asteroids");
             if (update)
             {
@@ -137,7 +138,7 @@ public class ConfigManagerAsteroids
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Ilmenite Ore Gen on Asteroids", false);
-            prop.setComment("Disable Ilmenite Ore Gen on Asteroids.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_ilmenite_gen_asteroids.description"));
             prop.setLanguageKey("gc.configgui.disable_ilmenite_gen_asteroids");
             if (update)
             {

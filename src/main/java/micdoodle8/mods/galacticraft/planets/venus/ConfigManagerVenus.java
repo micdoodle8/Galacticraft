@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import net.minecraftforge.common.config.Configuration;
@@ -64,7 +65,7 @@ public class ConfigManagerVenus
             }
 
             prop = config.get(Constants.CONFIG_CATEGORY_DIMENSIONS, "dimensionIDVenus", -31);
-            prop.setComment("Dimension ID for Venus");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.dimension_id_venus.description"));
             prop.setLanguageKey("gc.configgui.dimension_id_venus").setRequiresMcRestart(true);
             if (update)
             {
@@ -81,43 +82,43 @@ public class ConfigManagerVenus
                 oldLightning = config.get(Constants.CONFIG_CATEGORY_SCHEMATIC, "disableAmbientLightning", false).getBoolean(false);
             }
             prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableAmbientLightning", oldLightning);
-            prop.setComment("Disables background thunder and lightning.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_ambient_lightning.description"));
             prop.setLanguageKey("gc.configgui.disable_ambient_lightning");
             disableAmbientLightning = prop.getBoolean(oldLightning);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Aluminum Ore Gen on Venus", false);
-            prop.setComment("Disable Aluminum Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_aluminum_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_aluminum_gen");
             disableAluminumGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Copper Ore Gen on Venus", false);
-            prop.setComment("Disable Copper Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_copper_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_copper_gen");
             disableCopperGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Galena Ore Gen on Venus", false);
-            prop.setComment("Disable Galena Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_galena_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_galena_gen");
             disableGalenaGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Quartz Ore Gen on Venus", false);
-            prop.setComment("Disable Quartz Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_quartz_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_quartz_gen");
             disableQuartzGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Silicon Ore Gen on Venus", false);
-            prop.setComment("Disable Silicon Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_silicon_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_silicon_gen");
             disableSiliconGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
             prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Tin Ore Gen on Venus", false);
-            prop.setComment("Disable Tin Ore Gen on Venus.");
+            prop.setComment(GCCoreUtil.translate("gc.configgui.disable_venus_tin_gen.description"));
             prop.setLanguageKey("gc.configgui.disable_venus_tin_gen");
             disableTinGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
