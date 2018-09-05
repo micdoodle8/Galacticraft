@@ -1094,7 +1094,12 @@ public class GuiCelestialSelection extends GuiScreen
                     this.preSelectZoom = this.zoom;
                     this.preSelectPosition = this.position;
                 }
-
+                
+                if(this.selectionState == EnumSelection.SELECTED && this.selectedBody != body)
+                {
+                	this.unselectCelestialBody();
+                }
+                
                 EnumSelection selectionCountOld = this.selectionState;
 
                 if (selectionCountOld == EnumSelection.ZOOMED)
