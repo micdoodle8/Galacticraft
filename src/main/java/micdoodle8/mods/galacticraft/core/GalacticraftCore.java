@@ -43,11 +43,13 @@ import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.biome.BiomeGenBase.SpawnListEntry;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -109,6 +111,8 @@ public class GalacticraftCore
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
+    
+    public static Achievement moon;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -397,6 +401,11 @@ public class GalacticraftCore
         	GCLog.severe("Error initialising JPEG compressor - this is likely caused by OpenJDK - see https://wiki.micdoodle8.com/wiki/Compatibility#For_clients_running_OpenJDK");
         	e.printStackTrace();
         }
+        
+        moon = new Achievement("moon", "moon", 0, 0, GCItems.rocketTier1, null).registerStat();
+        AchievementPage.registerAchievementPage(
+                new AchievementPage("Galacticraft", 
+                      new Achievement[] {GalacticraftCore.moon}));
     }
 
     @EventHandler

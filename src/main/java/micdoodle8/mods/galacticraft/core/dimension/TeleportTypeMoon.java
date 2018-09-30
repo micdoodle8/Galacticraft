@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -98,6 +99,7 @@ public class TeleportTypeMoon implements ITeleportType
             }
 
             stats.setTeleportCooldown(10);
+            player.addStat(GalacticraftCore.moon, 1);
         }
     }
 
