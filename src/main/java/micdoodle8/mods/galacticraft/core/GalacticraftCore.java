@@ -402,10 +402,8 @@ public class GalacticraftCore
         	e.printStackTrace();
         }
         
-        moon = new Achievement("moon", "moon", 0, 0, GCItems.rocketTier1, null).registerStat();
-        AchievementPage.registerAchievementPage(
-                new AchievementPage("Galacticraft", 
-                      new Achievement[] {GalacticraftCore.moon}));
+        moon = new Achievement("achievement.moon", "moon", 0, 0, GCItems.rocketTier1, null).registerStat();
+        AchievementPage.registerAchievementPage(new AchievementPage("Galacticraft", new Achievement[] {GalacticraftCore.moon}));
     }
 
     @EventHandler
