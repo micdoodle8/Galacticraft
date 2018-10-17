@@ -24,6 +24,12 @@ public class GuiEnergyStorageModule extends GuiContainer
         super(new ContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;
     }
+    
+    @Override
+    public void initGui()
+    {
+        super.initGui();
+    }
 
     /**
      * Draw the foreground layer for the GuiContainer (everything in front of
