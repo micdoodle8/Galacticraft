@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
@@ -330,6 +331,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                 }
 
                 stats.setTeleportCooldown(10);
+                player.addStat(GalacticraftPlanets.asteroids, 1);
             }
         }
     }
