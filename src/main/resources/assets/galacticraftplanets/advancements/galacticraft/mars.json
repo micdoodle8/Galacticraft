@@ -4,10 +4,10 @@
          "item":"galacticraftplanets:rocket_t2"
       },
       "description":{  
-         "translate":"advancement.mars.description"
+         "translate":"achievement.mars.desc"
       },
       "title":{  
-         "translate":"advancement.mars"
+         "translate":"achievement.mars"
       },
       "frame":"goal"
    },

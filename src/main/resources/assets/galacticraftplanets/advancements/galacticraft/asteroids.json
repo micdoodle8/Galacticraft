@@ -4,10 +4,10 @@
          "item":"galacticraftplanets:rocket_t3"
       },
       "description":{  
-         "translate":"advancement.asteroids.description"
+         "translate":"achievement.asteroids.desc"
       },
       "title":{  
-         "translate":"advancement.asteroids"
+         "translate":"achievement.asteroids"
       },
       "frame":"goal"
    },

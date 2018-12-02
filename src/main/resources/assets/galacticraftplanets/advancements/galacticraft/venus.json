@@ -4,10 +4,10 @@
          "item":"galacticraftplanets:rocket_t3"
       },
       "description":{  
-         "translate":"advancement.venus.description"
+         "translate":"achievement.venus.desc"
       },
       "title":{  
-         "translate":"advancement.venus"
+         "translate":"achievement.venus"
       },
       "frame":"goal"
    },

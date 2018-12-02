@@ -4,7 +4,7 @@
          "item":"galacticraftcore:rocket_t1"
       },
       "description":{  
-         "translate":"advancement.moon.description"
+         "translate":"achievement.moon.desc"
       },
       "title":{  
          "translate":"advancement.moon"
