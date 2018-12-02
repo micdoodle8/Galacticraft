@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.event.oxygen.GCCoreOxygenSuffocationEvent;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
+import micdoodle8.mods.galacticraft.api.item.IArmorCorrosionResistant;
 import micdoodle8.mods.galacticraft.api.item.IItemThermal;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
@@ -733,7 +734,7 @@ public class GCPlayerHandler
                 if (!valid)
                 {
                     ItemStack armor = playerMP.getCurrentArmor((int) (Math.random() * 4));
-                    if (armor != null)
+                    if (armor != null && !(armor.getItem() instanceof IArmorCorrosionResistant))
                     {
                         armor.damageItem(1, playerMP);
                     }
