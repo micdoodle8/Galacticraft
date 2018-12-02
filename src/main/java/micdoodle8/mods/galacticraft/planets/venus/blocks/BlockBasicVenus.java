@@ -70,9 +70,10 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             return this.meta;
         }
 
+        private final static EnumBlockBasicVenus[] values = values();
         public static EnumBlockBasicVenus byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override
