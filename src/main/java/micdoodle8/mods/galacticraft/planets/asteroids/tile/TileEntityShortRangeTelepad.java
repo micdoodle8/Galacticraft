@@ -158,7 +158,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                             {
                                 for (EntityLivingBase e : containedEntities)
                                 {
-                                    e.setPosition(finalPos.x + 0.5F, finalPos.y + 1.0F, finalPos.z + 0.5F);
+                                    e.setPosition(finalPos.x + 0.5F, finalPos.y + 0.08F, finalPos.z + 0.5F);
                                     this.worldObj.updateEntityWithOptionalForce(e, true);
                                     if (e instanceof EntityPlayerMP)
                                     {
