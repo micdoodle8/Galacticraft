@@ -131,7 +131,7 @@ public class GalacticraftCore
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
-
+    
     static
     {
         FluidRegistry.enableUniversalBucket();

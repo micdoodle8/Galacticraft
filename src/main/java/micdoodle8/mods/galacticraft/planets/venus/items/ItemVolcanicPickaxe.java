@@ -131,7 +131,7 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
 
                 //:Replicate logic of PlayerInteractionManager.tryHarvestBlock(pos1)
                 IBlockState state1 = worldIn.getBlockState(pos1);
-                float f = state1.getBlockHardness(worldIn, pos);
+                float f = state1.getBlockHardness(worldIn, pos1);
                 if (f >= 0F)
                 {
                     BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(worldIn, pos1, state1, player);

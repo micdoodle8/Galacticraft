@@ -56,7 +56,7 @@ public class GalacticraftPlanets
     public static PlanetsProxy proxy;
 
     public static Map<String, List<String>> propOrder = new TreeMap<>();
-
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {

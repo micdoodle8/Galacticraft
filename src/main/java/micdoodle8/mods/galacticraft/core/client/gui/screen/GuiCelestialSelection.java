@@ -1305,6 +1305,7 @@ public class GuiCelestialSelection extends GuiScreen
 
     protected Vector3f getCelestialBodyPosition(CelestialBody cBody)
     {
+        if (cBody == null) return new Vector3f(0.0F, 0.0F, 0.0F);
         if (cBody instanceof Star)
         {
             if (cBody.getUnlocalizedName().equalsIgnoreCase("star.sol"))
