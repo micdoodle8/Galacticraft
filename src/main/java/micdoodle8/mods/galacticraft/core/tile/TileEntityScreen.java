@@ -63,6 +63,36 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         this.connectedRight = connectedRightL;
     }
 
+    public void setVerifiedConnectedUp(BlockVec3 vec)
+    {
+        int meta = this.getBlockMetadata() & 7;
+        TileEntity tileUp = vec.getTileEntityOnSide(this.world, 1);
+        this.setConnectedUp(tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid());
+    }
+
+    public void setVerifiedConnectedDown(BlockVec3 vec)
+    {
+        int meta = this.getBlockMetadata() & 7;
+        TileEntity tileDown = vec.getTileEntityOnSide(this.world, 0);
+        this.setConnectedDown(tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid());
+    }
+
+    public void setVerifiedConnectedLeft(BlockVec3 vec)
+    {
+        int meta = this.getBlockMetadata() & 7;
+        int side = this.getLeft(meta);
+        TileEntity tileLeft = vec.getTileEntityOnSide(this.world, side);
+        this.setConnectedLeft(tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid());
+    }
+
+    public void setVerifiedConnectedRight(BlockVec3 vec)
+    {
+        int meta = this.getBlockMetadata() & 7;
+        int side = this.getRight(meta);
+        TileEntity tileRight = vec.getTileEntityOnSide(this.world, side);
+        this.setConnectedRight(tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid());
+    }
+
     @Override
     public void onLoad()
     {
@@ -267,58 +297,29 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         BlockVec3 vec = new BlockVec3(this);
 
         //First, basic check that a neighbour is there and in the same orientation
-        if (this.connectedUp)
-        {
-            tileUp = vec.getTileEntityOnSide(this.world, 1);
-//			this.connectedUp = tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid();
-            this.setConnectedUp(tileUp instanceof TileEntityScreen && tileUp.getBlockMetadata() == meta && !tileUp.isInvalid());
-        }
-
-        if (this.connectedDown)
-        {
-            tileDown = vec.getTileEntityOnSide(this.world, 0);
-//			this.connectedDown = tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid();
-            this.setConnectedDown(tileDown instanceof TileEntityScreen && tileDown.getBlockMetadata() == meta && !tileDown.isInvalid());
-        }
-
-        if (this.connectedLeft)
-        {
-            int side = this.getLeft(meta);
-            tileLeft = vec.getTileEntityOnSide(this.world, side);
-//			this.connectedLeft = tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid();
-            this.setConnectedLeft(tileLeft instanceof TileEntityScreen && tileLeft.getBlockMetadata() == meta && !tileLeft.isInvalid());
-        }
-
-        if (this.connectedRight)
-        {
-            int side = this.getRight(meta);
-            tileRight = vec.getTileEntityOnSide(this.world, side);
-//			this.connectedRight = tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid();
-            this.setConnectedRight(tileRight instanceof TileEntityScreen && tileRight.getBlockMetadata() == meta && !tileRight.isInvalid());
-        }
+        if (this.connectedUp) this.setVerifiedConnectedUp(vec);
+        if (this.connectedDown) this.setVerifiedConnectedDown(vec);
+        if (this.connectedLeft) this.setVerifiedConnectedLeft(vec);
+        if (this.connectedRight) this.setVerifiedConnectedRight(vec);
 
         //Now test whether a connection can be sustained with that other tile
         if (this.connectedUp)
         {
-//			this.connectedUp = this.tryConnectUp((TileEntityScreen)tileUp);
             this.setConnectedUp(this.tryConnectUp((TileEntityScreen) tileUp));
         }
 
         if (this.connectedDown)
         {
-//			this.connectedDown = this.tryConnectDown((TileEntityScreen)tileDown);
             this.setConnectedDown(this.tryConnectDown((TileEntityScreen) tileDown));
         }
 
         if (this.connectedLeft)
         {
-//			this.connectedLeft = this.tryConnectLeft((TileEntityScreen)tileLeft);
             this.setConnectedLeft(this.tryConnectLeft((TileEntityScreen) tileLeft));
         }
 
         if (this.connectedRight)
         {
-//			this.connectedRight = this.tryConnectRight((TileEntityScreen)tileRight);
             this.setConnectedRight(this.tryConnectRight((TileEntityScreen) tileRight));
         }
         this.log("Ending connection check");
@@ -1148,13 +1149,16 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 //		if (this.connectedLeft) screenTile.connectedLeft = true;
 //		if (this.connectedRight) screenTile.connectedRight = true;
         screenTile.setConnectedDown(true);
+        BlockVec3 vec = null;
         if (this.connectedLeft)
         {
-            screenTile.setConnectedLeft(true);
+            vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedLeft(vec);
         }
         if (this.connectedRight)
         {
-            screenTile.setConnectedRight(true);
+            if (vec == null) vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedRight(vec);
         }
         screenTile.refreshConnections(false);
         //Undo if the neighbour could not maintain the same left-right connections
@@ -1179,13 +1183,16 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 //		if (this.connectedLeft) screenTile.connectedLeft = true;
 //		if (this.connectedRight) screenTile.connectedRight = true;
         screenTile.setConnectedUp(true);
+        BlockVec3 vec = null;
         if (this.connectedLeft)
         {
-            screenTile.setConnectedLeft(true);
+            vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedLeft(vec);
         }
         if (this.connectedRight)
         {
-            screenTile.setConnectedRight(true);
+            if (vec == null) vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedRight(vec);
         }
         screenTile.refreshConnections(false);
         //Undo if the neighbour could not maintain the same left-right connections
@@ -1215,13 +1222,16 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 //		if (this.connectedUp) screenTile.connectedUp = true;
 //		if (this.connectedDown) screenTile.connectedDown = true;
         screenTile.setConnectedRight(true);
+        BlockVec3 vec = null;
         if (this.connectedUp)
         {
-            screenTile.setConnectedUp(true);
+            vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedUp(vec);
         }
         if (this.connectedDown)
         {
-            screenTile.setConnectedDown(true);
+            if (vec == null) vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedDown(vec);
         }
         screenTile.refreshConnections(false);
         //Undo if the neighbour could not maintain the same up-down connections
@@ -1251,13 +1261,16 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 //		if (this.connectedUp) screenTile.connectedUp = true;
 //		if (this.connectedDown) screenTile.connectedDown = true;
         screenTile.setConnectedLeft(true);
+        BlockVec3 vec = null;
         if (this.connectedUp)
         {
-            screenTile.setConnectedUp(true);
+            vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedUp(vec);
         }
         if (this.connectedDown)
         {
-            screenTile.setConnectedDown(true);
+            if (vec == null) vec = new BlockVec3(screenTile);
+            screenTile.setVerifiedConnectedDown(vec);
         }
         screenTile.refreshConnections(false);
         //Undo if the neighbour could not maintain the same up-down connections

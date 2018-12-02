@@ -495,10 +495,11 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             int dx = vec.x - this.pos.getX() + 128;
             int dz = vec.z - this.pos.getZ() + 128;
             int dy = vec.y;
-            if (dx < 0 || dx > 255 || dz < 0 || dz > 255)
-                continue;
-            
-            int composite = dz + ((dy + (dx << 8)) << 8);
+            int composite;
+            if (dx < 0 || dx > 255 || dz < 0 || dz > 255 || dy < 0)
+                composite = -1;
+            else
+                composite = dz + ((dy + (dx << 8)) << 8);
             data[index++] = composite;
         }
         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_LEAK_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { this.getPos(), data }), player);
@@ -519,10 +520,13 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
             for (int i = 1; i < data.size(); i ++)
             {
                 int comp = (Integer) data.get(i);
-                int dx = (comp >> 16) - 128;
-                int dy = (comp >> 8) & 255;
-                int dz = (comp & 255) - 128;
-                this.leaksClient.add(new BlockVec3(this.pos.getX() + dx, dy, this.pos.getZ() + dz));
+                if (comp >= 0)
+                {
+                    int dx = (comp >> 16) - 128;
+                    int dy = (comp >> 8) & 255;
+                    int dz = (comp & 255) - 128;
+                    this.leaksClient.add(new BlockVec3(this.pos.getX() + dx, dy, this.pos.getZ() + dz));
+                }
             }
         }
     }
