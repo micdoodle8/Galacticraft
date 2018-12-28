@@ -46,6 +46,9 @@ import micdoodle8.mods.galacticraft.core.world.gen.BiomeOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
+import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
+import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
+import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -737,6 +740,12 @@ public class GalacticraftCore
         {
             RecipeManagerGC.addUniversalRecipes();
             RecipeManagerGC.setConfigurableRecipes();
+            if (isPlanetsLoaded)
+            {
+            	RecipeManagerAsteroids.addUniversalRecipes();
+            	RecipeManagerMars.addUniversalRecipes();
+            	RecipeManagerVenus.addUniversalRecipes();
+            }
         }
 
         @SubscribeEvent

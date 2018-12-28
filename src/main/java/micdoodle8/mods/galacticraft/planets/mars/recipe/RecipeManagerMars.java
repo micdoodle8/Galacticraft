@@ -14,12 +14,11 @@ import java.util.HashMap;
 
 public class RecipeManagerMars
 {
-    public static void loadRecipes()
+	public static void loadCompatibilityRecipes()
     {
-        RecipeManagerMars.addUniversalRecipes();
     }
 
-    private static void addUniversalRecipes()
+    public static void addUniversalRecipes()
     {
         OreDictionary.registerOre("ingotDesh", new ItemStack(MarsItems.marsItemBasic, 1, 2));
         OreDictionary.registerOre("compressedDesh", new ItemStack(MarsItems.marsItemBasic, 1, 5));

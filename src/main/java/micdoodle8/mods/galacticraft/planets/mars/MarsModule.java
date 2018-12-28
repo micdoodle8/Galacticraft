@@ -158,7 +158,7 @@ public class MarsModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        RecipeManagerMars.loadRecipes();
+        RecipeManagerMars.loadCompatibilityRecipes();
         GCPlanetDimensions.MARS = WorldUtil.getDimensionTypeById(ConfigManagerMars.dimensionIDMars);
         ItemSchematicTier2.registerSchematicItems();
     }
