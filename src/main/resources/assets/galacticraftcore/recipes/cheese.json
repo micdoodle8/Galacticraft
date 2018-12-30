@@ -13,7 +13,8 @@
       "item": "minecraft:milk_bucket"
     },
     "Y": {
-      "item": "galacticraftcore:cheese_curd"
+      "type": "forge:ore_dict",
+      "ore": "foodCheese"
     }
   }
 }
