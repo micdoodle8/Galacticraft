@@ -271,6 +271,7 @@ item.volcanic_pickaxe.description=Mines a 3x3 area depending on which direction 
 item.volcanic_pickaxe.name=Volcanic Pickaxe
 planet.asteroids=Asteroids
 planet.mars=Mars
+planet.venus=Venus
 schematic.astro_miner.name=Astro Miner
 schematic.cargo_rocket.name=Automatic Cargo Rocket
 schematic.rocket_t3.name=Tier 3 Rocket
