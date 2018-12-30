@@ -43,6 +43,7 @@ public class CompatibilityManager
     public static boolean isSmartMovingLoaded = Loader.isModLoaded("SmartMoving");
     public static boolean isTConstructLoaded = Loader.isModLoaded("tconstruct");
     public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
+    public static boolean isCubicChunksLoaded;
 //    public static int isBG2Loaded = 0;
 
 	public static Class classBCBlockGenericPipe = null;
@@ -245,6 +246,11 @@ public class CompatibilityManager
         {
             CompatibilityManager.wailaLoaded = true;
             GCLog.info("Galacticraft: activating WAILA compatibility features.");
+        }
+
+        if (Loader.isModLoaded("cubicchunks"))
+        {
+            CompatibilityManager.isCubicChunksLoaded = true;
         }
 
 //TODO      

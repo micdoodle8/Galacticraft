@@ -289,7 +289,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         //this entity from the WorldClient.loadedEntityList - this entity stays in the world loadedEntityList.
         //That's why an onUpdate() tick is active for it, still!
         //Weird, huh?
-        if (this.worldObj.isRemote && this.addedToChunk)
+        if (this.worldObj.isRemote && this.addedToChunk && !CompatibilityManager.isCubicChunksLoaded)
         {
             Chunk chunk = this.worldObj.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ);
             int cx = MathHelper.floor_double(this.posX) >> 4;
