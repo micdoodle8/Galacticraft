@@ -16,14 +16,7 @@ import net.minecraft.util.NonNullList;
 
 public class RecipeManagerAsteroids
 {
-    public static void loadRecipes()
-    {
-        // Add compatibility stuffz here
-
-        addUniversalRecipes();
-    }
-
-    private static void addUniversalRecipes()
+    public static void addUniversalRecipes()
     {
         ItemStack titaniumIngot = new ItemStack(AsteroidsItems.basicItem, 1, 0);
     	ItemStack platingTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
@@ -64,7 +57,11 @@ public class RecipeManagerAsteroids
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankHeavy, 1, 0), list1));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankMedium, 1, 0), list2));
         RecipeUtil.addCustomRecipe(new CanisterRecipes(new ItemStack(GCItems.oxTankLight, 1, 0), list3));
-        
+    }
+    
+    public static void loadCompatibilityRecipes()
+    {
+        ItemStack titaniumIngot = new ItemStack(AsteroidsItems.basicItem, 1, 0);
         if (CompatibilityManager.isIc2Loaded())
         {
             CompatModuleIC2Asteroids.addIC2Recipes(titaniumIngot, new ItemStack(AsteroidsItems.basicItem, 1, 9));

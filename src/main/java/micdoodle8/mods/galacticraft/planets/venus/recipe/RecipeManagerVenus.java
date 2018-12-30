@@ -10,12 +10,11 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class RecipeManagerVenus
 {
-    public static void loadRecipes()
+	public static void loadCompatibilityRecipes()
     {
-        RecipeManagerVenus.addUniversalRecipes();
     }
 
-    private static void addUniversalRecipes()
+    public static void addUniversalRecipes()
     {
         OreDictionary.registerOre("ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
 

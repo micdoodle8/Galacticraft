@@ -154,7 +154,7 @@ public class AsteroidsModule implements IPlanetsModule
 
         this.registerEntities();
 
-        RecipeManagerAsteroids.loadRecipes();
+        RecipeManagerAsteroids.loadCompatibilityRecipes();
 
         AsteroidsModule.planetAsteroids.setDimensionInfo(ConfigManagerAsteroids.dimensionIDAsteroids, WorldProviderAsteroids.class).setTierRequired(3);
         AsteroidsModule.planetAsteroids.setRelativeDistanceFromCenter(new CelestialBody.ScalableDistance(1.375F, 1.375F)).setRelativeOrbitTime(45.0F).setPhaseShift((float) (Math.random() * (2 * Math.PI)));

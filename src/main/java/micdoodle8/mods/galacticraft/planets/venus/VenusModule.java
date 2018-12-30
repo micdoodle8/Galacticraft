@@ -151,7 +151,7 @@ public class VenusModule implements IPlanetsModule
     @Override
     public void postInit(FMLPostInitializationEvent event)
     {
-        RecipeManagerVenus.loadRecipes();
+        RecipeManagerVenus.loadCompatibilityRecipes();
 
         GCPlanetDimensions.VENUS = WorldUtil.getDimensionTypeById(ConfigManagerVenus.dimensionIDVenus);
     }
