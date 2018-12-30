@@ -7,6 +7,7 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import micdoodle8.mods.galacticraft.api.block.IDetectableResource;
 import micdoodle8.mods.galacticraft.api.entity.IEntityNoisy;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
+import micdoodle8.mods.galacticraft.api.item.ISensorGlassesArmor;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
@@ -428,7 +429,7 @@ public class TickHandlerClient
                     }
                 }
 
-                if (player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ItemSensorGlasses)
+                if (!player.inventory.armorItemInSlot(3).isEmpty() && player.inventory.armorItemInSlot(3).getItem() instanceof ISensorGlassesArmor)
                 {
                     ClientProxyCore.valueableBlocks.clear();
 
