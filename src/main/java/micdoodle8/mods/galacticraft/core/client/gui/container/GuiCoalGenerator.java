@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiCoalGenerator extends GuiContainer
+public class GuiCoalGenerator extends GuiContainerGC
 {
     private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/coal_generator.png");
 
