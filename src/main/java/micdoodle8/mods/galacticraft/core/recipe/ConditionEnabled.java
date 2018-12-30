@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.recipe;
 
 import com.google.gson.JsonObject;
 
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.util.JsonUtils;
@@ -26,6 +27,10 @@ public class ConditionEnabled implements IConditionFactory
             if (data.equals("can_alt"))
             {
                 return () -> ConfigManagerCore.alternateCanisterRecipe;
+            }
+            if (data.equals("aa_loaded"))
+            {
+                return () -> !CompatibilityManager.modAALoaded;
             }
             GCLog.severe("Unrecognised condition data: " + data);
         }

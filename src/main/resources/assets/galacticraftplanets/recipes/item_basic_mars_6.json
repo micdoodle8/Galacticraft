@@ -11,7 +11,8 @@
   "type": "galacticraftplanets:replacable",
   "key": {
     "S": {
-      "item": "minecraft:slime_ball"
+      "type": "forge:ore_dict",
+      "ore": "slimeball"
     },
     "W": {
       "item": "galacticraftcore:basic_item",

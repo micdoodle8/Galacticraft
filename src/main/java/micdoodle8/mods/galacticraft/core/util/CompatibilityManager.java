@@ -8,11 +8,14 @@ import net.minecraft.world.WorldServer;
 import net.minecraft.world.gen.ChunkProviderServer;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 
+
+import net.minecraft.entity.Entity;
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,19 +79,6 @@ public class CompatibilityManager
         if (Loader.isModLoaded("gregtech") || Loader.isModLoaded("gregtech_addon"))
         {
             CompatibilityManager.modGTLoaded = true;
-            try
-            {
-                Class<?> clazz = Class.forName("gregtech.common.blocks.GT_Block_Ores");
-                if (clazz != null)
-                {
-                    classGTOre = clazz;
-                }
-                GCLog.info("Galacticraft: activating GregTech compatibility feature.");
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
         }
 
         if (CompatibilityManager.modMekLoaded)
@@ -251,11 +241,12 @@ public class CompatibilityManager
 //        {
 //        }
 
-        if (Loader.isModLoaded("mo"))
+        if (Loader.isModLoaded("matteroverdrive"))
         {
             try {
-                Class<?> androidPlayer = Class.forName("matteroverdrive.entity.player.AndroidPlayer");
-                CompatibilityManager.androidPlayerGet = androidPlayer.getMethod("get", EntityPlayer.class);
+                Class<?> androidPlayer = Class.forName("matteroverdrive.entity.android_player.AndroidPlayer");
+                Class<?> androidCapability = Class.forName("matteroverdrive.entity.player.MOPlayerCapabilityProvider");
+                CompatibilityManager.androidPlayerGet = androidCapability.getMethod("GetAndroidCapability", Entity.class);
                 CompatibilityManager.androidPlayerIsAndroid = androidPlayer.getMethod("isAndroid");
                 CompatibilityManager.modMatterOverdriveLoaded = true;
             }

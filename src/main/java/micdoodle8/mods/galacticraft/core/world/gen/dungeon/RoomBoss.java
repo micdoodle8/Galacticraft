@@ -140,9 +140,12 @@ public class RoomBoss extends SizedPiece
     {
         super.writeStructureToNBT(tagCompound);
 
-        tagCompound.setInteger("chestX", this.chestPos.getX());
-        tagCompound.setInteger("chestY", this.chestPos.getY());
-        tagCompound.setInteger("chestZ", this.chestPos.getZ());
+        if(this.chestPos != null)
+        {
+            tagCompound.setInteger("chestX", this.chestPos.getX());
+            tagCompound.setInteger("chestY", this.chestPos.getY());
+            tagCompound.setInteger("chestZ", this.chestPos.getZ());
+        }
     }
 
     @Override

@@ -328,10 +328,6 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, from);
         try
         {
-            if (EnergyUtil.clazzEnderIOCable != null && EnergyUtil.clazzEnderIOCable.isInstance(tile))
-            {
-                return false;
-            }
             if (EnergyUtil.clazzMekCable != null && EnergyUtil.clazzMekCable.isInstance(tile))
             {
                 return false;

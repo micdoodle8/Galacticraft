@@ -35,15 +35,14 @@ public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
         ItemStack itemstack = flag ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
         ItemStack itemstack1 = flag ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
 
-        if (itemstack != null || itemstack1 != null)
+        if (!itemstack.isEmpty() || !itemstack1.isEmpty())
         {
             GlStateManager.pushMatrix();
 
             if (this.livingEntityRenderer.getMainModel().isChild)
             {
                 float f = 0.5F;
-                GlStateManager.translate(0.0F, 0.625F, 0.0F);
-                GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
+                GlStateManager.translate(0.0F, 0.75F, 0.0F);
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
 
@@ -55,7 +54,7 @@ public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
 
     private void renderHeldItem(EntityLivingBase p_188358_1_, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
     {
-        if (p_188358_2_ != null)
+        if (!p_188358_2_.isEmpty())
         {
             GlStateManager.pushMatrix();
 

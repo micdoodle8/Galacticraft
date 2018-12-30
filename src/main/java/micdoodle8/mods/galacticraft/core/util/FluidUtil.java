@@ -73,12 +73,12 @@ public class FluidUtil
             return true;
         }
 
-        if (name.contains("rocket") && name.contains("fuel"))
+        if (name.contains("rocket") && name.contains("fuel"))    //from EnderIO
         {
             return true;
         }
 
-        if (name.equals("rc jet fuel"))
+        if (name.equals("rc jet fuel"))    //from RotaryCraft
         {
             return true;
         }
@@ -88,7 +88,7 @@ public class FluidUtil
             return !name.contains("dense") && !name.contains("heavy") && !name.contains("mixed") && !name.contains("gaseous");
         }
 
-        return false;
+        return name.equals("refined_fuel");    //from Thermal Expansion
     }
     
     public static boolean testOil(String name)
@@ -242,7 +242,7 @@ public class FluidUtil
     public static void tryFillContainer(FluidTank tank, FluidStack liquid, NonNullList<ItemStack> inventory, int slot, Item canisterType)
     {
         ItemStack slotItem = inventory.get(slot);
-        if (liquid.amount <= 0 || slotItem == null)
+        if (liquid.amount <= 0 || slotItem.isEmpty())
         {
             return;
         }
@@ -265,7 +265,7 @@ public class FluidUtil
         else if (slotItem.getCount() == 1)
         {
         	ItemBucketGC bucketGC;
-        	if (slotItem.getItem() == Items.BUCKET && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
+        	if (slotItem.getItem() == Items.BUCKET && liquid.amount >= Fluid.BUCKET_VOLUME && (bucketGC = ItemBucketGC.getBucketForFluid(liquid.getFluid())) != null)
         	{
         		inventory.set(slot, new ItemStack(bucketGC));
         		tank.drain(Fluid.BUCKET_VOLUME, true);

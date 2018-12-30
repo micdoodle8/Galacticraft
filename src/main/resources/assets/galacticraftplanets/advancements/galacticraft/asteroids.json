@@ -1,0 +1,23 @@
+{  
+   "display":{  
+      "icon":{  
+         "item":"galacticraftplanets:rocket_t3"
+      },
+      "description":{  
+         "translate":"achievement.asteroids.desc"
+      },
+      "title":{  
+         "translate":"achievement.asteroids"
+      },
+      "frame":"goal"
+   },
+   "parent": "galacticraftplanets:galacticraft/mars",
+   "criteria":{  
+      "traveled_to_moon":{  
+         "trigger":"minecraft:changed_dimension",
+         "conditions":{  
+            "to":"Asteroids"
+         }
+      }
+   }
+}

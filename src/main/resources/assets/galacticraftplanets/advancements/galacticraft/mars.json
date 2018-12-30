@@ -1,0 +1,23 @@
+{  
+   "display":{  
+      "icon":{  
+         "item":"galacticraftplanets:rocket_t2"
+      },
+      "description":{  
+         "translate":"achievement.mars.desc"
+      },
+      "title":{  
+         "translate":"achievement.mars"
+      },
+      "frame":"goal"
+   },
+   "parent": "galacticraftcore:galacticraft/root",
+   "criteria":{  
+      "traveled_to_moon":{  
+         "trigger":"minecraft:changed_dimension",
+         "conditions":{  
+            "to":"Mars"
+         }
+      }
+   }
+}

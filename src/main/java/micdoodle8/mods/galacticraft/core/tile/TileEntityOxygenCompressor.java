@@ -58,7 +58,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
             {
                 ItemStack tank0 = this.stacks.get(0);
 
-                if (tank0 != null)
+                if (!tank0.isEmpty())
                 {
                     if (tank0.getItem() instanceof ItemOxygenTank && tank0.getItemDamage() > 0)
                     {

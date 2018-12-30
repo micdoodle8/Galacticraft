@@ -1,0 +1,23 @@
+{  
+   "display":{  
+      "icon":{  
+         "item":"galacticraftcore:rocket_t1"
+      },
+      "description":{  
+         "translate":"achievement.moon.desc"
+      },
+      "title":{  
+         "translate":"advancement.moon"
+      },
+      "background": "galacticraftcore:textures/gui/galacticraft_background.png",
+      "frame":"goal"
+   },
+   "criteria":{  
+      "traveled_to_moon":{  
+         "trigger":"minecraft:changed_dimension",
+         "conditions":{  
+            "to":"Moon"
+         }
+      }
+   }
+}

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
+import powercrystals.minefactoryreloaded.api.handler.IMobSpawnHandler;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.InventorySlimeling;
 import net.minecraft.entity.EntityLivingBase;
-import powercrystals.minefactoryreloaded.api.IMobSpawnHandler;
 
 public class MFRSpawnHandlerSlimeling implements IMobSpawnHandler
 {

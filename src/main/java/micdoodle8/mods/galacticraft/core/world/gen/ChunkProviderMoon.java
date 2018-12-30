@@ -178,9 +178,8 @@ public class ChunkProviderMoon extends ChunkProviderBase
         this.rand.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
         ChunkPrimer chunkprimer = new ChunkPrimer();
         this.setBlocksInChunk(x, z, chunkprimer);
-        this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 16, z * 16, 16, 16);
         this.createCraters(x, z, chunkprimer);
-        this.replaceBlocksForBiome(x, z, chunkprimer, this.biomesForGeneration);
+        this.replaceBlocksForBiome(x, z, chunkprimer, null);
 
         this.caveGenerator.generate(this.world, x, z, chunkprimer);
 
@@ -189,10 +188,10 @@ public class ChunkProviderMoon extends ChunkProviderBase
 
         Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
         byte[] abyte = chunk.getBiomeArray();
-
+        final byte b = (byte) Biome.getIdForBiome( BiomeAdaptive.biomeDefault );
         for (int i = 0; i < abyte.length; ++i)
         {
-            abyte[i] = (byte) Biome.getIdForBiome(this.biomesForGeneration[i]);
+            abyte[i] = b;
         }
 
         chunk.generateSkylightMap();

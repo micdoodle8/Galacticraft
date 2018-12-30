@@ -225,7 +225,7 @@ public class EventHandlerGC
         final ItemStack heldStack = event.getEntityPlayer().inventory.getCurrentItem();
         final TileEntity tileClicked = worldObj.getTileEntity(event.getPos());
 
-        if (heldStack != null)
+        if (!heldStack.isEmpty())
         {
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
@@ -293,7 +293,7 @@ public class EventHandlerGC
         final ItemStack heldStack = event.getEntityPlayer().inventory.getCurrentItem();
         final TileEntity tileClicked = worldObj.getTileEntity(event.getPos());
 
-        if (heldStack != null)
+        if (!heldStack.isEmpty())
         {
             if (tileClicked != null && tileClicked instanceof IKeyable)
             {
@@ -421,7 +421,7 @@ public class EventHandlerGC
 
         ItemStack ret = fillBucket(event.getWorld(), pos);
 
-        if (ret == null)
+        if (ret == null) //Intentional null check - see fillBucket()
         {
             return;
         }

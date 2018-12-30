@@ -718,7 +718,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (stackAt == null)
+            if (!stackAt.isEmpty())
             {
                 if (doAdd)
                 {

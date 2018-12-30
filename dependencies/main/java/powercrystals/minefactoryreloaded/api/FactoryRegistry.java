@@ -6,6 +6,8 @@ import net.minecraftforge.fml.common.event.FMLInterModComms;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
+import static net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+
 /**
  * @author PowerCrystals
  *
@@ -20,7 +22,7 @@ public class FactoryRegistry
 	 * Possible messages:
 	 *
 	 * // Registration:
-	 * addLaserPreferredOre             | NBTTag with an ItemStack saved on it, with the color on the "value" attribute,
+	 * addLaserPreferredOre             | NBTTag with an @Nonnull ItemStack saved on it, with the color on the "value" attribute,
 	 *                                  | A ValuedItem with item and value set.
 	 * registerAutoSpawnerBlacklist     | The String identifier of an entity,
 	 *                                  | A subclass of EntityLivingBase.
@@ -30,7 +32,7 @@ public class FactoryRegistry
 	 * registerGrindable                | An instance of IFactoryGrindable.
 	 * registerGrinderBlacklist         | A subclass of EntityLivingBase.
 	 * registerHarvestable              | An instance of IFactoryHarvestable.
-	 * registerLaserOre                 | NBTTag with an ItemStack saved on it, with the weight on the "value" attribute,
+	 * registerLaserOre                 | NBTTag with an @Nonnull ItemStack saved on it, with the weight on the "value" attribute,
 	 *                                  | A ValuedItem with item and value set.
 	 * registerLiquidDrinkHandler       | A ValuedItem with key and object set; ILiquidDrinkHandler expected.
 	 * registerMobEggHandler            | An instance of IMobEggHandler.
@@ -41,7 +43,7 @@ public class FactoryRegistry
 	 * registerRubberTreeBiome          | The biomeName field of a biome to white list for rubber trees to spawn in.
 	 * registerSafariNetBlacklist       | A subclass of EntityLivingBase.
 	 * registerSafariNetHandler         | An instance of ISafariNetHandler.
-	 * registerSludgeDrop               | NBTTag with an ItemStack saved on it, with the weight on the "value" attribute,
+	 * registerSludgeDrop               | NBTTag with an @Nonnull ItemStack saved on it, with the weight on the "value" attribute,
 	 *                                  | A ValuedItem with item and value set.
 	 * registerSpawnHandler             | An instance of IMobSpawnHandler.
 	 * registerVillagerTradeMob         | An instance of IRandomMobProvider.
@@ -54,7 +56,7 @@ public class FactoryRegistry
 	 * registerHarvestable_Vine         | The String identifier of a block.
 	 * registerHarvestable_Shrub        | The String identifier of a block.
 	 * registerHarvestable_Mushroom     | The String identifier of a block.
-	 * registerHarvestable_Crop         | An ItemStack of a block, with a damage value indicating the meta value to harvest at.
+	 * registerHarvestable_Crop         | An @Nonnull ItemStack of a block, with a damage value indicating the meta value to harvest at.
 	 *                                  | A ValuedItem with value and object set; Block expected.
 	 * registerHarvestable_Gourd        | An NBTTag with the stem and fruit attributes, both String identifiers of blocks.
 	 * }
@@ -93,16 +95,16 @@ public class FactoryRegistry
 	 */
 	public static void sendMessage(String message, Object value)
 	{
-		if (!Loader.isModLoaded("MineFactoryReloaded") ||
+		if (!Loader.isModLoaded("minefactoryreloaded") ||
 				Loader.instance().activeModContainer() == null)
 			return;
 		try
 		{
-			Method m = FMLInterModComms.class.getDeclaredMethod("enqueueMessage", Object.class, String.class, FMLInterModComms.IMCMessage.class);
+			Method m = FMLInterModComms.class.getDeclaredMethod("enqueueMessage", Object.class, String.class, IMCMessage.class);
 			m.setAccessible(true);
-			Constructor<FMLInterModComms.IMCMessage> c = FMLInterModComms.IMCMessage.class.getDeclaredConstructor(String.class, Object.class);
+			Constructor<IMCMessage> c = IMCMessage.class.getDeclaredConstructor(String.class, Object.class);
 			c.setAccessible(true);
-			m.invoke(null, Loader.instance().activeModContainer(), "MineFactoryReloaded", c.newInstance(message, value));
+			m.invoke(null, Loader.instance().activeModContainer(), "minefactoryreloaded", c.newInstance(message, value));
 		}
 		catch(Exception e)
 		{

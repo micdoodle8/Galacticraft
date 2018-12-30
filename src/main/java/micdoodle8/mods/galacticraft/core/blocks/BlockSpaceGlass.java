@@ -137,12 +137,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     {
         return Item.getItemFromBlock(this.baseBlock);
         //TODO: override getItemDropped() to return null if we make a broken Space Glass variant...
+        // (if doing that, also update EntityAstroMiner.getPickBlock()
     }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
     {
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> ret = new ArrayList<>(1);
         ret.add(new ItemStack(this.getItemDropped(state, null, fortune), 1, this.frame.ordinal()));
         return ret;
     }
