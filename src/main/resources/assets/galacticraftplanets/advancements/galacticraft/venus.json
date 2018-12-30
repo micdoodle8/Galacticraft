@@ -16,7 +16,7 @@
       "traveled_to_moon":{  
          "trigger":"minecraft:changed_dimension",
          "conditions":{  
-            "to":"Venus"
+            "to":"planet.venus"
          }
       }
    }

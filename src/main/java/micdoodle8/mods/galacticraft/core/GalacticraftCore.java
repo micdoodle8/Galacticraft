@@ -394,7 +394,7 @@ public class GalacticraftCore
             {
                 int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, body.getDimensionID());
                 //It's important this is done in the same order as planets will be registered by WorldUtil.registerPlanet();
-                DimensionType type = GalacticraftRegistry.registerDimension(body.getLocalizedName(), body.getDimensionSuffix(), body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
+                DimensionType type = GalacticraftRegistry.registerDimension(body.getUnlocalizedName(), body.getDimensionSuffix(), body.getDimensionID(), body.getWorldProvider(), body.getForceStaticLoad() || id < 0);
                 if (type != null)
                 {
                     body.initialiseMobSpawns();
@@ -402,7 +402,7 @@ public class GalacticraftCore
                 else
                 {
                     body.setUnreachable();
-                    GCLog.severe("Tried to register dimension for body: " + body.getLocalizedName() + " hit conflict with ID " + body.getDimensionID());
+                    GCLog.severe("Tried to register dimension for body: " + body.getUnlocalizedName() + " hit conflict with ID " + body.getDimensionID());
                 }
             }
             
