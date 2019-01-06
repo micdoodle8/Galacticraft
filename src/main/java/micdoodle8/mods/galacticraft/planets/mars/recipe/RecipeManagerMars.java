@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.mars.recipe;
 
+import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
@@ -30,6 +31,9 @@ public class RecipeManagerMars
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 2), new ItemStack(MarsItems.marsItemBasic, 1, 2), 0.2F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 3), new ItemStack(Items.IRON_INGOT), 0.2F);
+
+        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(GCItems.heavyPlatingTier1), new ItemStack(GCItems.itemBasicMoon, 1, 1));
+        CompressorRecipes.addShapelessRecipe(new ItemStack(MarsItems.marsItemBasic, 1, 5), new ItemStack(MarsItems.marsItemBasic, 1, 2));
 
         // Schematic
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();
