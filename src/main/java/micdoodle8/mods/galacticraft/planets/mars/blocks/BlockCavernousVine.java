@@ -60,9 +60,10 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
             return this.meta;
         }
 
+        private final static EnumVineType[] values = values();
         public static EnumVineType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

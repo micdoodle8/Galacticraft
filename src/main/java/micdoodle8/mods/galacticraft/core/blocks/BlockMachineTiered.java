@@ -62,9 +62,10 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
             return this.meta;
         }
 
+        private final static EnumTieredMachineType[] values = values();
         public static EnumTieredMachineType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

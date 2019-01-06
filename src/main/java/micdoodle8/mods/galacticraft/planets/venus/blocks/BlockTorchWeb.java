@@ -56,9 +56,10 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
             return this.meta;
         }
 
+        private final static EnumWebType[] values = values();
         public static EnumWebType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

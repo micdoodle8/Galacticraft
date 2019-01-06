@@ -56,9 +56,10 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
             return this.meta;
         }
 
+        private final static EnumSolarType[] values = values();
         public static EnumSolarType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

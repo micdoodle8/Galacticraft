@@ -54,6 +54,7 @@ public class CompatibilityManager
     public static boolean isSmartMovingLoaded = Loader.isModLoaded("smartmoving");
     public static boolean isTConstructLoaded = Loader.isModLoaded("tconstruct");
     public static boolean isWitcheryLoaded = Loader.isModLoaded("witchery");
+    public static boolean isCubicChunksLoaded;
 //    public static int isBG2Loaded = 0;
 
     public static Class<?> classGTOre = null;
@@ -220,12 +221,18 @@ public class CompatibilityManager
             GCLog.info("Galacticraft: activating WAILA compatibility features.");
         }
 
-        if (Loader.isModLoaded("sponge"))
-        {
+        if (Loader.isModLoaded("sponge")) {
             try {
                 spongeOverride = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer").getMethod("setForceChunkRequests", boolean.class);
                 spongeLoaded = true;
-            } catch (Exception e) { e.printStackTrace(); }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (Loader.isModLoaded("cubicchunks"))
+        {
+            CompatibilityManager.isCubicChunksLoaded = true;
         }
 
 //TODO      

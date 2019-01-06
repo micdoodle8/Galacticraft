@@ -52,9 +52,10 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
             return this.meta;
         }
 
+        private final static EnumLandingPadFullType[] values = values();
         public static EnumLandingPadFullType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

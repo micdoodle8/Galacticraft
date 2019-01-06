@@ -78,7 +78,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
 
         public static EnumMachineType byMetadata(int meta)
         {
-            return values()[meta];
+            return values()[meta % 3];
         }
 
         @Override

@@ -79,9 +79,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             return this.meta;
         }
 
+        private final static EnumBlockMultiType[] values = values();
         public static EnumBlockMultiType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

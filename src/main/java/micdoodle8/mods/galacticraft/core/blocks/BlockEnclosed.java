@@ -125,9 +125,10 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             return bcPipeType;
         }
 
+        private final static EnumEnclosedBlockType[] values = values();
         public static EnumEnclosedBlockType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

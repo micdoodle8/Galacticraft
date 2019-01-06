@@ -240,7 +240,7 @@ public class BlockWallGC extends Block /* Do not extend BlockWall */ implements 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(VARIANT, BlockType.values()[meta]);
+        return this.getDefaultState().withProperty(VARIANT, BlockType.values()[meta % 6]);
     }
 
     @Override

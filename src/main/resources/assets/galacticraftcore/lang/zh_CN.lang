@@ -760,3 +760,5 @@ tile.view_screen.name=显示屏
 tile.wall_gc.moon.name=月岩墙
 tile.wall_gc.moon_bricks.name=月球地牢砖墙
 tile.wall_gc.tin.name=锡饰墙
+achievement.moon=登月之路！
+achievement.moon.desc=乘坐一阶火箭前往月球！
