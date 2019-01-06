@@ -50,9 +50,10 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
             return this.meta;
         }
 
+        private final static EnumAirLockType[] values = values();
         public static EnumAirLockType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

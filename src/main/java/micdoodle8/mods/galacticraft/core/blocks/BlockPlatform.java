@@ -62,9 +62,10 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
             return this.meta;
         }
 
+        private final static EnumCorner[] values = values();
         public static EnumCorner byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

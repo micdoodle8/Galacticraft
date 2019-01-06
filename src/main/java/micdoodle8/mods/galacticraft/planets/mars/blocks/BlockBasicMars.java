@@ -70,9 +70,10 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
             return this.meta;
         }
 
+        private final static EnumBlockBasic[] values = values();
         public static EnumBlockBasic byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

@@ -63,9 +63,10 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             return this.meta;
         }
 
+        private final static EnumWalkwayType[] values = values();
         public static EnumWalkwayType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override
