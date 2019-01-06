@@ -193,9 +193,10 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
             return this.meta;
         }
 
+        private final static EnumWireType[] values = values();
         public static EnumWireType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

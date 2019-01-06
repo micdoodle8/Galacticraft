@@ -64,9 +64,10 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
             return this.meta;
         }
 
+        private final static EnumMachineExtendedType[] values = values();
         public static EnumMachineExtendedType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

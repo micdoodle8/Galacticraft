@@ -52,9 +52,10 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
             return this.meta;
         }
 
+        private final static EnumLandingPadType[] values = values();
         public static EnumLandingPadType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

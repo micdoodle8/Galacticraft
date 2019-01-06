@@ -61,9 +61,10 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
             return this.meta;
         }
 
+        private final static EnumBlockBasic[] values = values();
         public static EnumBlockBasic byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

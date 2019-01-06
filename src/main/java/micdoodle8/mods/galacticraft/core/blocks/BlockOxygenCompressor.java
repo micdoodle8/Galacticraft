@@ -54,9 +54,10 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
             return this.meta;
         }
 
+        private final static EnumCompressorType[] values = values();
         public static EnumCompressorType byMetadata(int meta)
         {
-            return values()[meta];
+            return values[meta % values.length];
         }
 
         @Override

@@ -134,6 +134,66 @@ public class GalacticraftRegistry
     {
         GalacticraftRegistry.astroMinerRecipes.add(recipe);
     }
+    
+    public static void removeT1RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT1Recipes.remove(recipe);
+    }
+
+    public static void removeT2RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT2Recipes.remove(recipe);
+    }
+
+    public static void removeT3RocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.rocketBenchT3Recipes.remove(recipe);
+    }
+
+    public static void removeCargoRocketRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.cargoRocketRecipes.remove(recipe);
+    }
+
+    public static void removeMoonBuggyRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.buggyBenchRecipes.remove(recipe);
+    }
+
+    public static void removeAstroMinerRecipe(INasaWorkbenchRecipe recipe)
+    {
+        GalacticraftRegistry.astroMinerRecipes.remove(recipe);
+    }
+    
+    public static void removeAllT1RocketRecipes()
+    {
+        GalacticraftRegistry.rocketBenchT1Recipes.clear();
+    }
+
+    public static void removeAllT2RocketRecipes()
+    {
+        GalacticraftRegistry.rocketBenchT2Recipes.clear();
+    }
+
+    public static void removeAllT3RocketRecipes()
+    {
+        GalacticraftRegistry.rocketBenchT3Recipes.clear();
+    }
+
+    public static void removeAllCargoRocketRecipes()
+    {
+        GalacticraftRegistry.cargoRocketRecipes.clear();
+    }
+
+    public static void removeAllMoonBuggyRecipes()
+    {
+        GalacticraftRegistry.buggyBenchRecipes.clear();
+    }
+
+    public static void removeAllAstroMinerRecipes()
+    {
+        GalacticraftRegistry.astroMinerRecipes.clear();
+    }
 
     public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
     {
