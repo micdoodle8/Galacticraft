@@ -38,7 +38,7 @@ public class TabRegistry
 	        {
 	            clazzNEIConfig = Class.forName("codechicken.nei.NEIClientConfig");
 	        }
-	        catch (Exception ignore)
+	        catch (Throwable ignore)
 	        {
 	            //no log spam
 	        }

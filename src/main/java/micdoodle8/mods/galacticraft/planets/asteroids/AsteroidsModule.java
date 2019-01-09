@@ -12,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.command.CommandGCAstroMiner;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
-import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.CreativeTabGC;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
@@ -41,7 +40,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAst
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -61,7 +59,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.List;
 
 public class AsteroidsModule implements IPlanetsModule
@@ -161,91 +158,6 @@ public class AsteroidsModule implements IPlanetsModule
 
         GalaxyRegistry.registerPlanet(AsteroidsModule.planetAsteroids);
         GalacticraftRegistry.registerTeleportType(WorldProviderAsteroids.class, new TeleportTypeAsteroids());
-
-        HashMap<Integer, ItemStack> input = new HashMap<>();
-        ItemStack plateTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
-        ItemStack rocketFinsTier2 = new ItemStack(AsteroidsItems.basicItem, 1, 2);
-        input.put(1, new ItemStack(AsteroidsItems.heavyNoseCone));
-        input.put(2, plateTier3);
-        input.put(3, plateTier3);
-        input.put(4, plateTier3);
-        input.put(5, plateTier3);
-        input.put(6, plateTier3);
-        input.put(7, plateTier3);
-        input.put(8, plateTier3);
-        input.put(9, plateTier3);
-        input.put(10, plateTier3);
-        input.put(11, plateTier3);
-        input.put(12, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(13, rocketFinsTier2);
-        input.put(14, rocketFinsTier2);
-        input.put(15, new ItemStack(AsteroidsItems.basicItem, 1, 1));
-        input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(17, rocketFinsTier2);
-        input.put(18, rocketFinsTier2);
-        input.put(19, null);
-        input.put(20, null);
-        input.put(21, null);
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), input));
-
-        HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
-        input2.put(21, null);
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
-        input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.CHEST));
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
-        input2.put(21, new ItemStack(Blocks.CHEST));
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, new ItemStack(Blocks.CHEST));
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, new ItemStack(Blocks.CHEST));
-        GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
-
-        input = new HashMap<Integer, ItemStack>();
-        input.put(1, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(11, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(2, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(4, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(9, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(10, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(12, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(6, new ItemStack(GCItems.basicItem, 1, 14));
-        input.put(7, new ItemStack(Blocks.CHEST));
-        input.put(8, new ItemStack(Blocks.CHEST));
-        input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
-        input.put(14, new ItemStack(GCItems.flagPole));
-        GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));
 
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_HELMET, EnumExtendedInventorySlot.THERMAL_HELMET, new ItemStack(AsteroidsItems.thermalPadding, 1, 0));
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE, EnumExtendedInventorySlot.THERMAL_CHESTPLATE, new ItemStack(AsteroidsItems.thermalPadding, 1, 1));
