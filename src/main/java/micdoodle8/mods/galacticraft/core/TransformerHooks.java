@@ -626,6 +626,11 @@ public class TransformerHooks
         return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
     }
 
+    public static float armorDamageHookF(EntityLivingBase entity)
+    {
+        return (float) armorDamageHook(entity);
+    }
+
     @SideOnly(Side.CLIENT)
     public static int addRainParticles(int result, int rendererUpdateCount, float f)
     {

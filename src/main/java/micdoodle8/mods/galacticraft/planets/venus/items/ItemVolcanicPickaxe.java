@@ -86,7 +86,7 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
     {
         boolean ret = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
 
-        if (!(entityLiving instanceof EntityPlayer))
+        if (!(entityLiving instanceof EntityPlayer) || worldIn.isRemote)
         {
             return ret;
         }
