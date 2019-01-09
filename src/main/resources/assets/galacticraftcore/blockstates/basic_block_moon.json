@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": [{ "model": "galacticraftcore:ore_copper_moon_model" }],
+        "inventory": [{ "model": "galacticraftcore:basic_block_moon_model" }],
         "basictypemoon=ore_copper_moon": { "model": "galacticraftcore:ore_copper_moon_model" },
         "basictypemoon=ore_tin_moon": { "model": "galacticraftcore:ore_tin_moon_model" },
         "basictypemoon=ore_cheese_moon": { "model": "galacticraftcore:ore_cheese_moon_model" },

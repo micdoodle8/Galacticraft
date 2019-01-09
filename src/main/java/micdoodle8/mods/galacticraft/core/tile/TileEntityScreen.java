@@ -297,10 +297,28 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         BlockVec3 vec = new BlockVec3(this);
 
         //First, basic check that a neighbour is there and in the same orientation
-        if (this.connectedUp) this.setVerifiedConnectedUp(vec);
-        if (this.connectedDown) this.setVerifiedConnectedDown(vec);
-        if (this.connectedLeft) this.setVerifiedConnectedLeft(vec);
-        if (this.connectedRight) this.setVerifiedConnectedRight(vec);
+        if (this.connectedUp)
+        {
+            this.setVerifiedConnectedUp(vec);
+            tileUp = vec.getTileEntityOnSide(this.world, 1);
+        }
+        if (this.connectedDown)
+        {
+            this.setVerifiedConnectedDown(vec);
+            tileDown = vec.getTileEntityOnSide(this.world, 0);
+        }
+        if (this.connectedLeft)
+        {
+            int side = this.getLeft(meta);
+            tileLeft = vec.getTileEntityOnSide(this.world, side);
+            this.setVerifiedConnectedLeft(vec);
+        }
+        if (this.connectedRight)
+        {
+            int side = this.getRight(meta);
+            tileRight = vec.getTileEntityOnSide(this.world, side);
+            this.setVerifiedConnectedRight(vec);
+        }
 
         //Now test whether a connection can be sustained with that other tile
         if (this.connectedUp)
