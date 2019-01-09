@@ -588,6 +588,11 @@ public class TransformerHooks
         return 1D;
     }
 
+    public static float armorDamageHookF(EntityLivingBase entity)
+    {
+        return (float) armorDamageHook(entity);
+    }
+
     @SideOnly(Side.CLIENT)
     public static int addRainParticles(int result, int rendererUpdateCount, float f)
     {
