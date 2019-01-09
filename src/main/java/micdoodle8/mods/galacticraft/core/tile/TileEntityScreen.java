@@ -300,23 +300,23 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         if (this.connectedUp)
         {
             this.setVerifiedConnectedUp(vec);
-            tileUp = vec.getTileEntityOnSide(this.worldObj, 1);
+            tileUp = vec.getTileEntityOnSide(this.world, 1);
         }
         if (this.connectedDown)
         {
             this.setVerifiedConnectedDown(vec);
-            tileDown = vec.getTileEntityOnSide(this.worldObj, 0);
+            tileDown = vec.getTileEntityOnSide(this.world, 0);
         }
         if (this.connectedLeft)
         {
             int side = this.getLeft(meta);
-            tileLeft = vec.getTileEntityOnSide(this.worldObj, side);
+            tileLeft = vec.getTileEntityOnSide(this.world, side);
             this.setVerifiedConnectedLeft(vec);
         }
         if (this.connectedRight)
         {
             int side = this.getRight(meta);
-            tileRight = vec.getTileEntityOnSide(this.worldObj, side);
+            tileRight = vec.getTileEntityOnSide(this.world, side);
             this.setVerifiedConnectedRight(vec);
         }
 

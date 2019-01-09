@@ -59,7 +59,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
     @Override
     public void onChunkUnload()
     {
-        if (!this.worldObj.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
+        if (!this.world.isRemote) TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
         super.onChunkUnload();
     }
 
