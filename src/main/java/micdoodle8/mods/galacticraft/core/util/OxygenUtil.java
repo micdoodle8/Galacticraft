@@ -333,8 +333,8 @@ public class OxygenUtil
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
     {
-        boolean tank1Valid = tank != null && tank.getItem() instanceof ItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0;
-        boolean tank2Valid = tank2 != null && tank2.getItem() instanceof ItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0;
+        boolean tank1Valid = !tank.isEmpty() && tank.getItem() instanceof ItemOxygenTank && tank.getMaxDamage() - tank.getItemDamage() > 0;
+        boolean tank2Valid = !tank2.isEmpty() && tank2.getItem() instanceof ItemOxygenTank && tank2.getMaxDamage() - tank2.getItemDamage() > 0;
 
         if (!tank1Valid && !tank2Valid)
         {
@@ -356,7 +356,7 @@ public class OxygenUtil
 
             for (final ItemStack armorStack : player.inventory.armorInventory)
             {
-                if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+                if (!armorStack.isEmpty() && armorStack.getItem() instanceof IBreathableArmor)
                 {
                     final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
@@ -382,7 +382,7 @@ public class OxygenUtil
 
             for (final ItemStack armorStack : player.inventory.armorInventory)
             {
-                if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+                if (!armorStack.isEmpty() && armorStack.getItem() instanceof IBreathableArmor)
                 {
                     final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
@@ -408,7 +408,7 @@ public class OxygenUtil
 
             for (final ItemStack armorStack : player.inventory.armorInventory)
             {
-                if (armorStack != null && armorStack.getItem() instanceof IBreathableArmor)
+                if (!armorStack.isEmpty() && armorStack.getItem() instanceof IBreathableArmor)
                 {
                     final IBreathableArmor breathableArmor = (IBreathableArmor) armorStack.getItem();
 
