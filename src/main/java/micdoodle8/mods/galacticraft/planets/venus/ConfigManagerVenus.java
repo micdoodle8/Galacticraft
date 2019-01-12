@@ -47,6 +47,7 @@ public class ConfigManagerVenus
     public static boolean disableQuartzGen;
     public static boolean disableSiliconGen;
     public static boolean disableTinGen;
+    public static boolean disableSolarGen;
 
     public static void syncConfig(boolean load, boolean update)
     {
@@ -120,6 +121,12 @@ public class ConfigManagerVenus
             prop.setComment("Disable Tin Ore Gen on Venus.");
             prop.setLanguageKey("gc.configgui.disable_venus_tin_gen");
             disableTinGen = prop.getBoolean(false);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Solar Ore Gen on Venus", false);
+            prop.setComment("Disable Solar Ore Gen on Venus.");
+            prop.setLanguageKey("gc.configgui.disable_venus_solar_gen");
+            disableSolarGen = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_WORLDGEN);
 
         }
