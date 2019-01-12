@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemBasicVenus extends ItemDesc implements ISortableItem
 {
-    public static String[] names = { "shield_controller", "ingot_lead", "radioisotope_core", "thermal_fabric" };
+    public static String[] names = { "shield_controller", "ingot_lead", "radioisotope_core", "thermal_fabric", "solar_dust", "solar_module_2", "thin_solar_wafer" };
 
     public ItemBasicVenus(String name)
     {

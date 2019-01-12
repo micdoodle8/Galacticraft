@@ -27,6 +27,7 @@
         "basictypevenus=venus_ore_quartz": { "model": "galacticraftplanets:venus_ore_quartz" },
         "basictypevenus=venus_ore_silicon": { "model": "galacticraftplanets:venus_ore_silicon" },
         "basictypevenus=venus_ore_tin": { "model": "galacticraftplanets:venus_ore_tin" },
-	"basictypevenus=lead_block": { "model": "galacticraftplanets:lead_block" }
+        "basictypevenus=lead_block": { "model": "galacticraftplanets:lead_block" },
+        "basictypevenus=venus_ore_solar": { "model": "galacticraftplanets:venus_ore_solar" }
     }
 }
