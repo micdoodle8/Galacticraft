@@ -24,6 +24,8 @@ public class VenusBlocks
     public static Block geothermalGenerator;
     public static Block crashedProbe;
     public static Block scorchedRock;
+    public static Block solarArrayModule;
+    public static Block solarArrayController;
 
     public static void initBlocks()
     {
@@ -35,6 +37,8 @@ public class VenusBlocks
         VenusBlocks.geothermalGenerator = new BlockGeothermalGenerator("geothermal_generator");
         VenusBlocks.crashedProbe = new BlockCrashedProbe("crashed_probe");
         VenusBlocks.scorchedRock = new BlockScorchedRock("venus_rock_scorched");
+        VenusBlocks.solarArrayModule = new BlockSolarArrayModule("solar_array_module");
+        VenusBlocks.solarArrayController = new BlockSolarArrayController("solar_array_controller");
 
         GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
@@ -83,6 +87,8 @@ public class VenusBlocks
         registerBlock(VenusBlocks.geothermalGenerator, ItemBlockDesc.class);
         registerBlock(VenusBlocks.crashedProbe, ItemBlockDesc.class);
         registerBlock(VenusBlocks.scorchedRock, ItemBlockGC.class);
+        registerBlock(VenusBlocks.solarArrayModule, ItemBlockDesc.class);
+        registerBlock(VenusBlocks.solarArrayController, ItemBlockDesc.class);
     }
 
     public static void oreDictRegistration()
@@ -95,6 +101,7 @@ public class VenusBlocks
         OreDictionary.registerOre("oreQuartz", BlockBasicVenus.EnumBlockBasicVenus.ORE_QUARTZ.getItemStack());
         OreDictionary.registerOre("oreLead", BlockBasicVenus.EnumBlockBasicVenus.ORE_GALENA.getItemStack());
         OreDictionary.registerOre("oreSilicon", BlockBasicVenus.EnumBlockBasicVenus.ORE_SILICON.getItemStack());
+        OreDictionary.registerOre("oreSolar", BlockBasicVenus.EnumBlockBasicVenus.ORE_SOLAR_DUST.getItemStack());
 
         OreDictionary.registerOre("blockLead", BlockBasicVenus.EnumBlockBasicVenus.LEAD_BLOCK.getItemStack());
     }

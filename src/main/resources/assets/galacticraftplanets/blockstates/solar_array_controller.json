@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=east":  { "model": "galacticraftplanets:solar_array_controller" },
+        "facing=west":  { "model": "galacticraftplanets:solar_array_controller", "y": 180, "uvlock": true },
+        "facing=south": { "model": "galacticraftplanets:solar_array_controller", "y": 90, "uvlock": true },
+        "facing=north": { "model": "galacticraftplanets:solar_array_controller", "y": 270, "uvlock": true }
+    }
+}

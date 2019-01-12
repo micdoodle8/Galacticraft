@@ -1,0 +1,25 @@
+{
+    "parent": "block/cube_all",
+    "elements": [
+        {   "from": [ 0, 6, 0 ],
+            "to": [ 16, 10, 16 ],
+            "faces": {
+                "down":  { "texture": "#down", "cullface": "down" },
+                "up":    { "texture": "#up", "cullface": "up" },
+                "north": { "texture": "#north", "cullface": "north" },
+                "south": { "texture": "#south", "cullface": "south" },
+                "west":  { "texture": "#west", "cullface": "west" },
+                "east":  { "texture": "#east", "cullface": "east" }
+            }
+        }
+    ],
+    "textures": {
+        "particle": "galacticraftplanets:blocks/solar_top",
+        "down": "galacticraftplanets:blocks/solar_top",
+        "up": "galacticraftplanets:blocks/solar_top",
+        "north": "galacticraftplanets:blocks/solar_side",
+        "east": "galacticraftplanets:blocks/solar_side",
+        "south": "galacticraftplanets:blocks/solar_side",
+        "west": "galacticraftplanets:blocks/solar_side"
+    }
+}

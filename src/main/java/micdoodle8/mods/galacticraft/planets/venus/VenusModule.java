@@ -32,7 +32,9 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeVenus;
 import net.minecraft.block.material.MapColor;
@@ -154,6 +156,8 @@ public class VenusModule implements IPlanetsModule
         Biome.registerBiome(ConfigManagerCore.biomeIDbase + 4, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusFlat.getBiomeName(), BiomeVenus.venusFlat);
         Biome.registerBiome(ConfigManagerCore.biomeIDbase + 5, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusMountain.getBiomeName(), BiomeVenus.venusMountain);
         Biome.registerBiome(ConfigManagerCore.biomeIDbase + 6, GalacticraftPlanets.TEXTURE_PREFIX + BiomeVenus.venusValley.getBiomeName(), BiomeVenus.venusValley);
+
+        MinecraftForge.EVENT_BUS.register(new VenusTickHandlerServer());
     }
 
     @Override
@@ -186,6 +190,8 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityTreasureChestVenus.class, "GC Tier 3 Treasure Chest");
         GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "GC Geothermal Generator");
         GameRegistry.registerTileEntity(TileEntityCrashedProbe.class, "GC Crashed Probe");
+        GameRegistry.registerTileEntity(TileEntitySolarArrayModule.class, "GC Solar Array Module");
+        GameRegistry.registerTileEntity(TileEntitySolarArrayController.class, "GC Solar Array Controller");
     }
 
     public void registerCreatures()
@@ -221,6 +227,10 @@ public class VenusModule implements IPlanetsModule
             else if (tile instanceof TileEntityCrashedProbe)
             {
                 return new ContainerCrashedProbe(player.inventory, (TileEntityCrashedProbe) tile);
+            }
+            else if (tile instanceof TileEntitySolarArrayController)
+            {
+                return new ContainerSolarArrayController(player.inventory, (TileEntitySolarArrayController) tile);
             }
         }
 

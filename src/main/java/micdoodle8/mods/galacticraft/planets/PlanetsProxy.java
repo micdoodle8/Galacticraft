@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.planets;
 
+import micdoodle8.mods.galacticraft.planets.venus.tile.SolarModuleNetwork;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
@@ -91,5 +94,21 @@ public class PlanetsProxy implements IGuiHandler
 
     public void postRegisterItem(Item item)
     {
+    }
+
+    public void unregisterNetwork(SolarModuleNetwork solarNetwork)
+    {
+        if (GCCoreUtil.getEffectiveSide().isServer())
+        {
+            VenusTickHandlerServer.removeSolarNetwork(solarNetwork);
+        }
+    }
+
+    public void registerNetwork(SolarModuleNetwork solarNetwork)
+    {
+        if (GCCoreUtil.getEffectiveSide().isServer())
+        {
+            VenusTickHandlerServer.addSolarNetwork(solarNetwork);
+        }
     }
 }
