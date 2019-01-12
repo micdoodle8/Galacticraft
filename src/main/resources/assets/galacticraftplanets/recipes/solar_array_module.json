@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:solar_array_module",
+    "data": 0
+  },
+  "pattern": [
+    "XXX",
+    "YZY"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "item": "galacticraftplanets:basic_item_venus",
+      "data": 5,
+      "count": 3
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    }
+  }
+}

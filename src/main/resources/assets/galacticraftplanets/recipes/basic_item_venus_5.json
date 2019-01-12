@@ -1,0 +1,26 @@
+{
+"result": {
+    "item": "galacticraftplanets:basic_item_venus",
+    "data": 5,
+    "count": 3
+  },
+  "pattern": [
+    "XXX",
+    "YYY",
+    "ZZZ"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "item": "minecraft:glass"
+    },
+    "Y": {
+      "type": "forge:ore_dict",
+      "ore": "waferSolarThin"
+    },
+    "Z": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 0
+    }
+  }
+}

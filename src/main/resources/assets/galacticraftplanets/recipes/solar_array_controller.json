@@ -1,0 +1,26 @@
+{
+  "result": {
+    "item": "galacticraftplanets:solar_array_controller",
+    "data": 0
+  },
+  "pattern": [
+    "X X",
+    "YZY",
+    "XYX"
+  ],
+  "type": "galacticraftplanets:replacable",
+  "key": {
+    "X": {
+      "type": "forge:ore_dict",
+      "ore": "compressedSteel"
+    },
+    "Y": {
+      "item": "galacticraftcore:aluminum_wire",
+      "data": 1
+    },
+    "Z": {
+      "type": "forge:ore_dict",
+      "ore": "waferAdvanced"
+    }
+  }
+}
