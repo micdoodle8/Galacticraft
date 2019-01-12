@@ -60,7 +60,7 @@ public class RecipeManagerVenus
         RecipeUtil.addRecipe(new ItemStack(VenusBlocks.solarArrayModule, 1, 0), new Object[] { "XXX", "YZY", 'X', new ItemStack(VenusItems.basicItem, 3, 5), 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'Z', "waferAdvanced" });
         RecipeUtil.addRecipe(new ItemStack(VenusBlocks.solarArrayController, 1, 0), new Object[] { "X X", "YZY", "XYX", 'X', "compressedSteel", 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'Z', "waferAdvanced" });
 
-        ItemStack solarPanels = new ItemStack(VenusItems.basicItem, 6, 6);
+        ItemStack solarPanels = new ItemStack(VenusItems.basicItem, 3, 6);
         ItemStack silicon =  new ItemStack(GCItems.basicItem, 1, 2);
         CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(VenusItems.basicItem, 1, 4) });
     }
