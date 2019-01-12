@@ -31,7 +31,7 @@ public class RecipeManagerVenus
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 9), new ItemStack(Items.QUARTZ), 0.2F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 11), new ItemStack(GCItems.basicItem, 1, 4), 0.5F);
 
-        ItemStack solarPanels = new ItemStack(VenusItems.basicItem, 6, 6);
+        ItemStack solarPanels = new ItemStack(VenusItems.basicItem, 3, 6);
         ItemStack silicon =  new ItemStack(GCItems.basicItem, 1, 2);
         CircuitFabricatorRecipes.addRecipe(solarPanels, Arrays.asList(new ItemStack(Items.DIAMOND), silicon, silicon, new ItemStack(Items.REDSTONE), new ItemStack(VenusItems.basicItem, 1, 4)));
     }

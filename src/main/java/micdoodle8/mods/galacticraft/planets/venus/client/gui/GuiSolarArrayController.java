@@ -66,7 +66,6 @@ public class GuiSolarArrayController extends GuiContainerGC
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 151, (this.height - this.ySize) / 2 + 90, 18, 18, batterySlotDesc, this.width, this.height, this));
         List<String> sunGenDesc = new ArrayList<String>();
         float sunVisible = Math.round((this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize()) * 1000) / 10.0F;
-        System.out.println((this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize()) * 1000);
         sunGenDesc.add(sunVisible > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
         this.buttonList.add(this.buttonEnableSolar = new GuiButton(0, this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name")));
