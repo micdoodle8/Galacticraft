@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -54,7 +55,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         ORE_QUARTZ(9, "venus_ore_quartz"),
         ORE_SILICON(10, "venus_ore_silicon"),
         ORE_TIN(11, "venus_ore_tin"),
-        LEAD_BLOCK(12, "lead_block");
+        LEAD_BLOCK(12, "lead_block"),
+        ORE_SOLAR_DUST(13, "venus_ore_solar");
 
         private final int meta;
         private final String name;
@@ -155,7 +157,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         }
         else if (type == EnumBlockBasicVenus.ORE_ALUMINUM || type == EnumBlockBasicVenus.ORE_COPPER ||
                 type == EnumBlockBasicVenus.ORE_GALENA || type == EnumBlockBasicVenus.ORE_QUARTZ ||
-                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN)
+                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN ||
+                type == EnumBlockBasicVenus.ORE_SOLAR_DUST)
         {
             return 3.0F;
         }
@@ -185,7 +188,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
 
         if (type == EnumBlockBasicVenus.ORE_ALUMINUM || type == EnumBlockBasicVenus.ORE_COPPER ||
                 type == EnumBlockBasicVenus.ORE_GALENA || type == EnumBlockBasicVenus.ORE_QUARTZ ||
-                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN)
+                type == EnumBlockBasicVenus.ORE_SILICON || type == EnumBlockBasicVenus.ORE_TIN ||
+                type == EnumBlockBasicVenus.ORE_SOLAR_DUST)
         {
             return 5.0F;
         }
@@ -209,6 +213,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             return GCItems.basicItem;
         case ORE_QUARTZ:
             return Items.quartz;
+        case ORE_SOLAR_DUST:
+            return VenusItems.basicItem;
         default:
             return Item.getItemFromBlock(this);
         }
@@ -224,6 +230,8 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             return 2;
         case ORE_QUARTZ:
             return 0;
+        case ORE_SOLAR_DUST:
+            return 4;
         default:
             return getMetaFromState(state);
         }
@@ -300,6 +308,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         case ORE_QUARTZ:
         case ORE_SILICON:
         case ORE_TIN:
+        case ORE_SOLAR_DUST:
             return true;
         default:
             return false;
@@ -374,6 +383,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         case ORE_QUARTZ:
         case ORE_SILICON:
         case ORE_TIN:
+        case ORE_SOLAR_DUST:
             return EnumSortCategoryBlock.ORE;
         case DUNGEON_BRICK_1:
         case DUNGEON_BRICK_2:

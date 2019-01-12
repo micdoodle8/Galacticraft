@@ -29,7 +29,9 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
+import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.BiomeGenBaseVenus;
 import net.minecraft.block.material.MapColor;
@@ -146,6 +148,8 @@ public class VenusModule implements IPlanetsModule
         GalacticraftRegistry.registerGear(Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS, EnumExtendedInventorySlot.THERMAL_BOOTS, new ItemStack(VenusItems.thermalPaddingTier2, 1, 3));
 
         GalacticraftCore.proxy.registerFluidTexture(VenusModule.sulphuricAcid, new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/underacid.png"));
+
+        MinecraftForge.EVENT_BUS.register(new VenusTickHandlerServer());
     }
 
     @Override
@@ -176,6 +180,8 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityTreasureChestVenus.class, "GC Tier 3 Treasure Chest");
         GameRegistry.registerTileEntity(TileEntityGeothermalGenerator.class, "GC Geothermal Generator");
         GameRegistry.registerTileEntity(TileEntityCrashedProbe.class, "GC Crashed Probe");
+        GameRegistry.registerTileEntity(TileEntitySolarArrayModule.class, "GC Solar Array Module");
+        GameRegistry.registerTileEntity(TileEntitySolarArrayController.class, "GC Solar Array Controller");
     }
 
     public void registerCreatures()
@@ -211,6 +217,10 @@ public class VenusModule implements IPlanetsModule
             else if (tile instanceof TileEntityCrashedProbe)
             {
                 return new ContainerCrashedProbe(player.inventory, (TileEntityCrashedProbe) tile);
+            }
+            else if (tile instanceof TileEntitySolarArrayController)
+            {
+                return new ContainerSolarArrayController(player.inventory, (TileEntitySolarArrayController) tile);
             }
         }
 

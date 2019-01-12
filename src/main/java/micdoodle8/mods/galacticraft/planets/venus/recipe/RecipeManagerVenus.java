@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.recipe;
 
+import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
@@ -8,6 +9,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -23,13 +25,14 @@ public class RecipeManagerVenus
     private static void addUniversalRecipes()
     {
         OreDictionary.registerOre("ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
+        OreDictionary.registerOre("waferSolarThin", new ItemStack(VenusItems.basicItem, 1, 6));
         ItemStack deshIngot = new ItemStack(MarsItems.marsItemBasic, 1, 2);
         ItemStack leadIngot = new ItemStack(VenusItems.basicItem, 1, 1);
         
         // Lead block
         RecipeUtil.addBlockRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 12), "ingotLead", new ItemStack(VenusItems.basicItem, 1, 1));
         RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 9, 1), new Object[] {"X", 'X', new ItemStack(VenusBlocks.venusBlock, 1, 12)});
-        
+
         // Smelting
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.basicItem, 1, 5), 0.5F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 7), new ItemStack(GCItems.basicItem, 1, 3), 0.5F);
@@ -49,5 +52,16 @@ public class RecipeManagerVenus
         RecipeUtil.addRecipe(new ItemStack(VenusItems.thermalPaddingTier2, 1, 3), new Object[] { "X X", "X X", 'X', new ItemStack(VenusItems.basicItem, 1, 3) });
 
         RecipeUtil.addRecipe(new ItemStack(VenusBlocks.geothermalGenerator, 1, 0), new Object[] { "XVX", "WGW", "XYX", 'X', "compressedBronze", 'Y', new ItemStack(VenusItems.basicItem, 1, 1), 'W', new ItemStack(GCBlocks.aluminumWire), 'V', new ItemStack(AsteroidsItems.atmosphericValve), 'G', new ItemStack(GCBlocks.machineBase, 1, BlockMachine.COAL_GENERATOR_METADATA)  } );
+
+        // Venus solar module
+        RecipeUtil.addRecipe(new ItemStack(VenusItems.basicItem, 3, 5), new Object[] { "XXX", "YYY", "ZZZ", 'X', Blocks.glass, 'Y', "waferSolarThin", 'Z', new ItemStack(GCBlocks.aluminumWire, 1, 0) });
+
+        // Solar Blocks
+        RecipeUtil.addRecipe(new ItemStack(VenusBlocks.solarArrayModule, 1, 0), new Object[] { "XXX", "YZY", 'X', new ItemStack(VenusItems.basicItem, 3, 5), 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'Z', "waferAdvanced" });
+        RecipeUtil.addRecipe(new ItemStack(VenusBlocks.solarArrayController, 1, 0), new Object[] { "X X", "YZY", "XYX", 'X', "compressedSteel", 'Y', new ItemStack(GCBlocks.aluminumWire, 1, 1), 'Z', "waferAdvanced" });
+
+        ItemStack solarPanels = new ItemStack(VenusItems.basicItem, 6, 6);
+        ItemStack silicon =  new ItemStack(GCItems.basicItem, 1, 2);
+        CircuitFabricatorRecipes.addRecipe(solarPanels, new ItemStack[] { new ItemStack(Items.diamond), silicon, silicon, new ItemStack(Items.redstone), new ItemStack(VenusItems.basicItem, 1, 4) });
     }
 }

@@ -3,5 +3,6 @@ package micdoodle8.mods.galacticraft.api.transmission;
 public enum NetworkType
 {
     POWER,
-    FLUID
+    FLUID,
+    SOLAR_MODULE
 }
