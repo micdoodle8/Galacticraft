@@ -21,6 +21,7 @@ public class BiomeDecoratorVenus extends BiomeDecorator
     private WorldGenerator quartzGen;
     private WorldGenerator siliconGen;
     private WorldGenerator tinGen;
+    private WorldGenerator solarGen;
     private World worldObj;
 
     public BiomeDecoratorVenus()
@@ -31,6 +32,7 @@ public class BiomeDecoratorVenus extends BiomeDecorator
         this.quartzGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 9, true, VenusBlocks.venusBlock, 1);
         this.siliconGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 10, true, VenusBlocks.venusBlock, 1);
         this.tinGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 6, 11, true, VenusBlocks.venusBlock, 1);
+        this.solarGen = new WorldGenMinableMeta(VenusBlocks.venusBlock, 5, 13, true, VenusBlocks.venusBlock, 1);
     }
 
     @Override
@@ -67,6 +69,7 @@ public class BiomeDecoratorVenus extends BiomeDecorator
         if (!ConfigManagerVenus.disableQuartzGen) this.genStandardOre(26, this.quartzGen, 0, 60, random);
         if (!ConfigManagerVenus.disableSiliconGen) this.genStandardOre(4, this.siliconGen, 0, 60, random);
         if (!ConfigManagerVenus.disableTinGen) this.genStandardOre(22, this.tinGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableSolarGen) this.genStandardOre(6, this.solarGen, 0, 50, random);
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.worldObj, random, chunkPos));
     }
 }

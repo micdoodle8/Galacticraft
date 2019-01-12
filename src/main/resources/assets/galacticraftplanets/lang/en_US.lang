@@ -65,6 +65,7 @@ gc.configgui.disable_venus_copper_gen=Disable Copper Ore Gen (Venus)
 gc.configgui.disable_venus_galena_gen=Disable Galena Ore Gen (Venus)
 gc.configgui.disable_venus_quartz_gen=Disable Quartz Ore Gen (Venus)
 gc.configgui.disable_venus_silicon_gen=Disable Silicon Ore Gen (Venus)
+gc.configgui.disable_venus_solar_gen=Disable Solar Ore Gen (Venus)
 gc.configgui.disable_venus_tin_gen=Disable Tin Ore Gen (Venus)
 gc.configgui.id_schematic_cargo_rocket=Cargo Rocket Schematic ID
 gc.configgui.id_schematic_rocket_t2=Tier 2 Rocket Schematic ID
