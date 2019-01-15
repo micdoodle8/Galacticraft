@@ -141,43 +141,43 @@ public class RecipeManagerAsteroids
         input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
         input.put(17, rocketFinsTier2);
         input.put(18, rocketFinsTier2);
-        input.put(19, null);
-        input.put(20, null);
-        input.put(21, null);
+        input.put(19, ItemStack.EMPTY);
+        input.put(20, ItemStack.EMPTY);
+        input.put(21, ItemStack.EMPTY);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), input));
 
         HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
-        input2.put(21, null);
+        input2.put(20, ItemStack.EMPTY);
+        input2.put(21, ItemStack.EMPTY);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
+        input2.put(19, ItemStack.EMPTY);
         input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
+        input2.put(21, ItemStack.EMPTY);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
-        input2.put(20, null);
+        input2.put(19, ItemStack.EMPTY);
+        input2.put(20, ItemStack.EMPTY);
         input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
         input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, null);
+        input2.put(21, ItemStack.EMPTY);
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
         input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, null);
+        input2.put(20, ItemStack.EMPTY);
         input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
         input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, null);
+        input2.put(19, ItemStack.EMPTY);
         input2.put(20, new ItemStack(Blocks.CHEST));
         input2.put(21, new ItemStack(Blocks.CHEST));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
