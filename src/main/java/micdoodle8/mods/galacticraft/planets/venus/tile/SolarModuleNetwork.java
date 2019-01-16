@@ -5,18 +5,18 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
 import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
+import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
+import micdoodle8.mods.galacticraft.core.energy.grid.NetworkFinder;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A universal network that works with multiple energy systems.
@@ -168,80 +168,101 @@ public class SolarModuleNetwork implements IGridNetwork<SolarModuleNetwork, ITra
     {
         if (splitPoint instanceof TileEntity)
         {
-            this.transmitters.remove(splitPoint);
+            this.getTransmitters().remove(splitPoint);
+            splitPoint.setNetwork(null);
 
-            /**
-             * Loop through the connected blocks and attempt to see if there are
-             * connections between the two points elsewhere.
-             */
-            TileEntity[] connectedBlocks = splitPoint.getAdjacentConnections();
-
-            for (TileEntity connectedBlockA : connectedBlocks)
+            //If the size of the residual network is 1, it should simply be preserved
+            if (this.getTransmitters().size() > 1)
             {
-                if (connectedBlockA instanceof INetworkConnection)
+                World world = ((TileEntity) splitPoint).getWorld();
+
+                if (this.getTransmitters().size() > 0)
                 {
-                    for (final TileEntity connectedBlockB : connectedBlocks)
+                    ITransmitter[] nextToSplit = new ITransmitter[6];
+                    boolean[] toDo = { true, true, true, true, true, true };
+                    TileEntity tileEntity;
+
+                    for (int j = 0; j < 6; j++)
                     {
-                        if (connectedBlockA != connectedBlockB && connectedBlockB instanceof INetworkConnection)
+                        switch (j)
                         {
-                            Pathfinder finder = new PathfinderChecker(((TileEntity) splitPoint).getWorld(), (INetworkConnection) connectedBlockB, NetworkType.SOLAR_MODULE, splitPoint);
-                            finder.init(new BlockVec3(connectedBlockA));
+                            case 0:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().down());
+                                break;
+                            case 1:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().up());
+                                break;
+                            case 2:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().north());
+                                break;
+                            case 3:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().south());
+                                break;
+                            case 4:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().west());
+                                break;
+                            case 5:
+                                tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().east());
+                                break;
+                            default:
+                                //Not reachable, only to prevent uninitiated compile errors
+                                tileEntity = null;
+                                break;
+                        }
 
-                            if (finder.results.size() > 0)
-                            {
-                                /**
-                                 * The connections A and B are still intact
-                                 * elsewhere. Set all references of wire
-                                 * connection into one network.
-                                 */
-
-                                for (BlockVec3 node : finder.closedSet)
-                                {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorld());
-
-                                    if (nodeTile instanceof INetworkProvider)
-                                    {
-                                        if (nodeTile != splitPoint)
-                                        {
-                                            ((INetworkProvider) nodeTile).setNetwork(this);
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                /**
-                                 * The connections A and B are not connected
-                                 * anymore. Give both of them a new network.
-                                 */
-                                SolarModuleNetwork newNetwork = new SolarModuleNetwork();
-
-                                for (BlockVec3 node : finder.closedSet)
-                                {
-                                    TileEntity nodeTile = node.getTileEntity(((TileEntity) splitPoint).getWorld());
-
-                                    if (nodeTile instanceof TileEntitySolarArrayModule)
-                                    {
-                                        if (nodeTile != splitPoint)
-                                        {
-                                            newNetwork.transmitters.add((TileEntitySolarArrayModule) nodeTile);
-                                            this.transmitters.remove(nodeTile);
-                                        }
-                                    }
-                                }
-
-                                newNetwork.refresh();
-                                newNetwork.register();
-                            }
+                        if (tileEntity instanceof ITransmitter)
+                        {
+                            nextToSplit[j] = (ITransmitter) tileEntity;
+                        }
+                        else
+                        {
+                            toDo[j] = false;
                         }
                     }
+
+                    for (int i1 = 0; i1 < 6; i1++)
+                    {
+                        if (toDo[i1])
+                        {
+                            ITransmitter connectedBlockA = nextToSplit[i1];
+                            NetworkFinderSolar finder = new NetworkFinderSolar(world, new BlockVec3((TileEntity) connectedBlockA), new BlockVec3((TileEntity) splitPoint));
+                            List<ITransmitter> partNetwork = finder.exploreNetwork();
+
+                            //Mark any others still to do in the nextToSplit array which are connected to this, as dealt with
+                            for (int i2 = i1 + 1; i2 < 6; i2++)
+                            {
+                                ITransmitter connectedBlockB = nextToSplit[i2];
+
+                                if (toDo[i2])
+                                {
+                                    if (partNetwork.contains(connectedBlockB))
+                                    {
+                                        toDo[i2] = false;
+                                    }
+                                }
+                            }
+
+                            //Now make the new network from partNetwork
+                            SolarModuleNetwork newNetwork = new SolarModuleNetwork();
+                            newNetwork.getTransmitters().addAll(partNetwork);
+                            newNetwork.refreshWithChecks();
+                            newNetwork.register();
+                        }
+                    }
+
+                    this.destroy();
                 }
             }
-
-            if (this.transmitters.isEmpty())
+            //Splitting a 1-block network leaves nothing
+            else if (this.getTransmitters().size() == 0)
             {
-                this.unregister();
+                this.destroy();
             }
+        }
+
+        if (this.transmitters.isEmpty())
+        {
+            this.unregister();
         }
     }
 

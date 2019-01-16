@@ -1,7 +1,7 @@
 def mcVersion = "1.10.2"
 def versionMajor = 4
 def versionMinor = 0
-def versionRev = 1
+def versionRev = 2
 
 // For those who want the bleeding edge
 buildscript {
