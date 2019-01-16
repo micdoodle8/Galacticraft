@@ -17,6 +17,14 @@ public class NasaWorkbenchRecipe implements INasaWorkbenchRecipe
     {
         this.output = output;
         this.input = input;
+
+        for (Entry<Integer, ItemStack> entry : this.input.entrySet())
+        {
+            if (entry.getValue() == null)
+            {
+                throw new IllegalArgumentException("Recipe contains null ingredient!");
+            }
+        }
     }
 
     @Override
