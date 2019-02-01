@@ -36,6 +36,12 @@ public class ItemOxygenTank extends Item implements ISortableItem
     }
 
     @Override
+    public boolean isBookEnchantable(ItemStack item, ItemStack book)
+    {
+        return false;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List<ItemStack> par3List)
     {
