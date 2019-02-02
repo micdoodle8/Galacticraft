@@ -70,4 +70,7 @@ public class ItemFuelCanister extends ItemCanisterGeneric implements ISortableIt
     {
         return EnumSortCategoryItem.CANISTER;
     }
+
+    @Override
+    public boolean isBookEnchantable(ItemStack item, ItemStack book) { return false; }
 }
