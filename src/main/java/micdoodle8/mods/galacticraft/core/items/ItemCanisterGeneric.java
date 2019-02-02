@@ -192,7 +192,6 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
     private void replaceEmptyCanisterItem(ItemStack container, Item newItem)
     {
         //This is a neat trick to change the item ID in an ItemStack
-        //This is a neat trick to change the item ID in an ItemStack
         final int stackSize = container.stackSize;
         NBTTagCompound tag = new NBTTagCompound();
         container.writeToNBT(tag);
@@ -219,4 +218,7 @@ public abstract class ItemCanisterGeneric extends ItemFluidContainer
 
         return new FluidStack(fluid, ItemCanisterGeneric.EMPTY - container.getItemDamage());
     }
+    
+    @Override
+    public boolean isBookEnchantable(ItemStack item, ItemStack book) { return false; }
 }
