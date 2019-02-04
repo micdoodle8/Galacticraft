@@ -39,31 +39,37 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
-    version = "1.12.2-14.23.1.2555"
-    runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20171003"
+	version = "1.12.2-14.23.5.2768"
+	runDir = "run"
+
+	// the mappings can be changed at any time, and must be in the following format.
+	// snapshot_YYYYMMDD   snapshot are built nightly.
+	// stable_#            stables are built at the discretion of the MCP team.
+	// Use non-default mappings at your own risk. they may not always work.
+	// simply re-run your setup task after changing the mappings to update your workspace.
+	mappings = "snapshot_20171003"
     makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
-// Keep a list of dependencies files/directories for easy jar packing
-ext.dependencies = ['codechicken/**',
-					'**/nei_at.cfg',
-					'api/**',
-					'appeng/**',
-					'biomesoplenty/**',
-					'buildcraft/**',
-					'cofh/**',
-                                        'de/**',
-					'ic2/**',
-					'mekanism/**',
-					'mezz/**',
-					'powercrystals/**']
+repositories {
+	maven {
+		name = 'curseforge'
+		url = 'https://minecraft.curseforge.com/api/maven/'
+	}
+}
+
+dependencies {
+    compileOnly  "jei:jei_1.12.2:4.13.1.225"
+	compileOnly  "mekanism:Mekanism-1.12.2:9.4.13.349:api"
+	compileOnly  "applied-energistics-2:appliedenergistics2-rv6:stable:6"
+	compileOnly  "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
+	compileOnly  "buildcraft-lib:buildcraft:lib:7.99.21"
+	compileOnly  "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
+	compileOnly  "actually-additions:ActuallyAdditions:1.12.2:r144"
+	compileOnly  "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
+	compileOnly  "player-api:PlayerAPI:1.12.1:1.0"
+
+}
 					
 // Keep a list of core files/directories for easy jar packing
 ext.apiFiles = ['micdoodle8/mods/galacticraft/api/**']
@@ -94,7 +100,6 @@ jar
 	includes.addAll('mcmod.info')
 	includes.addAll('LICENSE.txt')
 	includes.addAll('api/player/**')
-	includes.addAll(project.ext.dependencies)
 	includes.addAll(project.ext.planetsFiles)
 	includes.addAll(project.ext.micdoodleCoreFiles)
 }
@@ -132,7 +137,6 @@ task packCoreJar(type: Jar, dependsOn: "rePackAllJarCore") {
 		includes.addAll('mcmod.info')
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 	}
 }
@@ -150,7 +154,6 @@ task packPlanetsJar(type: Jar, dependsOn: "rePackAllJarPlanets") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 	}
 }
@@ -168,7 +171,6 @@ task packMicCoreJar(type: Jar, dependsOn: "reobfJar") {
 		include('micdoodle8/mods/galacticraft/api/entity/IEntityBreathable.class')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 	}
 	
 	// Configure manifest attributes
@@ -187,7 +189,6 @@ task packCoreJarDev(type: Jar, dependsOn: "classes") {
 		includes.addAll('mcmod.info')
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 	}
 	
@@ -197,7 +198,6 @@ task packCoreJarDev(type: Jar, dependsOn: "classes") {
 		includes.addAll('mcmod.info')
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll('assets')
 		into 'src'
@@ -222,7 +222,6 @@ task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 	}
 	
@@ -233,7 +232,6 @@ task packPlanetsJarDev(type: Jar, dependsOn: "classes") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll('assets')
 		into 'src'
@@ -253,7 +251,6 @@ task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll('**/*.info')
 	}
 	
@@ -264,7 +261,6 @@ task packMicCoreJarDev(type: Jar, dependsOn: "classes") {
 		excludes.addAll(project.ext.planetsFiles)
 		excludes.addAll(project.ext.coreFiles)
 		excludes.addAll(project.ext.apiFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll('**/*.info')
 		excludes.addAll('assets')
 		into 'src'
@@ -291,7 +287,6 @@ task packApi(type: Jar, dependsOn: "classes") {
 		includes.addAll('LICENSE.txt')
 		excludes.addAll(project.ext.micdoodleCoreFiles)
 		excludes.addAll(project.ext.planetsFiles)
-		excludes.addAll(project.ext.dependencies)
 		excludes.addAll('**/*.info')
 		excludes.addAll('assets')
 	}
