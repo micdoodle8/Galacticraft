@@ -545,7 +545,6 @@ item_group.galacticraft_blocks=Galacticraft Blocks
 item_group.galacticraft_items=Galacticraft Items
 jei.arc_lamp.info=Very bright light in the facing direction. Place high up for best effect! Rotate using Standard Wrench. 
 jei.electric_compressor.info=Electric version of the Ingot Compressor, twice as fast! Even faster with Tier 2 power. A Hopper can fill or empty this machine.
-jei.electric_compressor.appeng.info=For automation with AE2, set up your recipes with ingots from 2 different mods. See https:goo.gl/BwY15G for full info.
 jei.fluid_pipe.info=Pipe for transporting any liquid or gas. To pump fluid out of a tank, click with a Standard Wrench to convert to 'pull mode'. \nPipe in pull mode cannot fill a tank or machine - so make your pipe runs at least 2 blocks long!
 jei.fuel_loader.info=Place next to a Rocket Launch Pad. Refuels any rocket positioned on the pad. Essential for any journey into space - including your journey home again!
 jei.magnetic_crafting.info=A Crafting Table which holds its items. Can accept items from a Hopper to auto-craft the last recipe successfully crafted.

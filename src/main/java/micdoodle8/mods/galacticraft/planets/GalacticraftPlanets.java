@@ -14,7 +14,6 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.BiomeAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
-import micdoodle8.mods.galacticraft.planets.mars.entities.MFRSpawnHandlerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.BiomeMars;
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
@@ -37,7 +36,6 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -118,16 +116,6 @@ public class GalacticraftPlanets
     {
         GalacticraftPlanets.proxy.postInit(event);
         TileEntityDeconstructor.initialiseRecipeListPlanets();
-        try {
-        	if (CompatibilityManager.isMFRLoaded)
-        	{
-        		FactoryRegistry.sendMessage("registerSpawnHandler", new MFRSpawnHandlerSlimeling());
-        	}
-        } catch (Exception e)
-        {
-        	GCLog.severe("Error when attempting to register Slimeling auto-spawnhandler in MFR");
-        	GCLog.exception(e);
-        }
 
         achieveMars = new Achievement("achievement.mars", "mars", 3, 0, MarsItems.rocketMars, GalacticraftCore.achieveMoon).registerStat();
         achieveAsteroids = new Achievement("achievement.astroids", "asteroids", 6, -2, AsteroidsItems.tier3Rocket, GalacticraftPlanets.achieveMars).registerStat();

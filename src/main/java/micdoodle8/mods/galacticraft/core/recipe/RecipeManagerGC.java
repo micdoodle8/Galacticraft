@@ -44,14 +44,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
-
-import appeng.api.AEApi;
-import appeng.api.features.IGrinderRegistry;
-import appeng.api.util.AEColor;
-
-//import appeng.api.AEApi;
-//import appeng.api.util.AEColor;
 
 public class RecipeManagerGC
 {
@@ -70,11 +62,6 @@ public class RecipeManagerGC
         if (CompatibilityManager.isIc2Loaded())
         {
             CompatModuleIC2.addIndustrialCraft2Recipes();
-        }
-
-        if (CompatibilityManager.isAppEngLoaded())
-        {
-            RecipeManagerGC.addAppEngRecipes();
         }
 
         if (CompatibilityManager.modAALoaded)
@@ -813,21 +800,6 @@ public class RecipeManagerGC
         {
             e.printStackTrace();
         }
-    }
-
-    private static void addAppEngRecipes()
-    {
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         IGrinderRegistry a = AEApi.instance().registries().grinder();
-         a.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 7), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.8F, 8);
-         if (GalacticraftCore.isPlanetsLoaded)
-         {
-             a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.9F, 8);
-             a.addRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 1.0F, 8);
-             // Grind Ilmenite Ore for 1 Titanium Dust, 1 Iron Dust
-             Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
-             a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 9), ironDust.get(), 1.0F, 8);
-         }
     }
 
     private static void addExNihiloRecipes()
