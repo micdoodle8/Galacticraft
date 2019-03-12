@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -16,7 +17,6 @@ public class NetworkFinderSolar
 {
     public World worldObj;
     public BlockVec3 start;
-    private int theDim;
     private BlockVec3 toIgnore;
 
     private Set<BlockVec3> iterated = new HashSet<>();
@@ -67,7 +67,7 @@ public class NetworkFinderSolar
 
                 TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(obj.x, obj.y, obj.z));
 
-                if (tileEntity instanceof ITransmitter)
+                if (tileEntity instanceof ITransmitter && ((ITransmitter) tileEntity).getNetworkType() == NetworkType.SOLAR_MODULE)
                 {
                     found.add((ITransmitter) tileEntity);
                     loopAll(obj.x, obj.y, obj.z, dir ^ 1);
@@ -78,11 +78,12 @@ public class NetworkFinderSolar
 
     public List<ITransmitter> exploreNetwork()
     {
-        if (start.getTileEntity(worldObj) instanceof ITransmitter)
+        TileEntity tile = start.getTileEntity(worldObj);
+        if (tile instanceof ITransmitter && ((ITransmitter) tile).getNetworkType() == NetworkType.SOLAR_MODULE)
         {
             iterated.add(start);
             iterated.add(toIgnore);
-            found.add((ITransmitter) start.getTileEntity(worldObj));
+            found.add((ITransmitter) tile);
             loopAll(start.x, start.y, start.z, 6);
         }
 
