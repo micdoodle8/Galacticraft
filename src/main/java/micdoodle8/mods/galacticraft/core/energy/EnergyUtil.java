@@ -9,7 +9,6 @@ import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.*;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import mekanism.api.energy.ICableOutputter;
 import mekanism.api.energy.IEnergizedItem;
 import mekanism.api.energy.IStrictEnergyAcceptor;
 import mekanism.api.energy.IStrictEnergyOutputter;
@@ -43,7 +42,6 @@ import java.util.Set;
 public class EnergyUtil
 {
     private static boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
-    public static boolean isMekanismLegacy = true;
     private static boolean isRFLoaded = EnergyConfigHandler.isRFAPILoaded();
     private static boolean isRF1Loaded = EnergyConfigHandler.isRFAPIv1Loaded();
     private static boolean isRF2Loaded = EnergyConfigHandler.isRFAPIv2Loaded();
@@ -103,7 +101,7 @@ public class EnergyUtil
                 continue;
             }
 
-            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || (isMekanismLegacy && tileEntity instanceof ICableOutputter) || (!isMekanismLegacy && tileEntity instanceof IStrictEnergyOutputter)))
+            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor))
             {
                 //Do not connect GC wires directly to Mek Universal Cables
                 try
@@ -119,14 +117,6 @@ public class EnergyUtil
                 }
 
                 if (tileEntity instanceof IStrictEnergyAcceptor && ((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
-                else if (isMekanismLegacy && tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
-                else if (!isMekanismLegacy && tileEntity instanceof IStrictEnergyOutputter && ((IStrictEnergyOutputter) tileEntity).canOutputEnergy(direction.getOpposite()))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -399,23 +389,7 @@ public class EnergyUtil
             {
                 if (tileMek.canReceiveEnergy(inputAdj))
                 {
-                    float transferredMek;
-                    if (EnergyUtil.isMekanismLegacy)
-                    {
-                        if (simulate)
-                        {
-                            transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
-                        }
-                        else
-                        {
-                            transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                        }
-                    }
-                    else
-                    {
-                        transferredMek = (float) tileMek.acceptEnergy(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO, simulate);
-                    }
-                    return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
+                        return (float) tileMek.acceptEnergy(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO, simulate) / EnergyConfigHandler.TO_MEKANISM_RATIO;
                 }
             }
         }
@@ -670,14 +644,6 @@ public class EnergyUtil
             catch (Exception ignore)
             {
             }
-            try
-            {
-                Class temp = Class.forName("mekanism.api.energy.IStrictEnergyOutputter");
-                EnergyUtil.isMekanismLegacy = false;
-            }
-            catch (Exception ignore)
-            {
-            }
         }
 
         if (isIC2Loaded)
@@ -889,24 +855,6 @@ public class EnergyUtil
             if (EnergyUtil.fieldEnergyStorage != null)
             {
                 EnergyUtil.mekEnergyStorage = (Capability) fieldEnergyStorage.get(null);
-            }
-            if (!EnergyUtil.isMekanismLegacy)
-            {
-                Field gasHandlerCapability = mekCapabilities.getField("GAS_HANDLER_CAPABILITY");
-                if (gasHandlerCapability != null)
-                {
-                    EnergyUtil.mekGasHandler = (Capability) gasHandlerCapability.get(null);
-                }
-                Field gasTubeConnection = mekCapabilities.getField("TUBE_CONNECTION_CAPABILITY");
-                if (gasTubeConnection != null)
-                {
-                    EnergyUtil.mekTubeConnection = (Capability) gasTubeConnection.get(null);
-                }
-                EnergyUtil.fieldCableOutput = mekCapabilities.getField("ENERGY_OUTPUTTER_CAPABILITY");
-                if (EnergyUtil.fieldCableOutput != null)
-                {
-                    EnergyUtil.mekCableOutput = (Capability) fieldCableOutput.get(null);
-                }
             }
         }
         catch (Exception e)
