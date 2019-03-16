@@ -103,3 +103,4 @@ Timsuper2:capeOrange
 Sonic_Blender:capeLightGray
 xX_CreeperMr_Xx:capeRainbow
 Santiv:capePurple
+SebaSphere:capeRainbow
