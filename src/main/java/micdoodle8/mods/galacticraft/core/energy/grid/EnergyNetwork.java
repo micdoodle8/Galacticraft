@@ -699,7 +699,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         if (toDo[i1])
                         {
                             TileEntity connectedBlockA = nextToSplit[i1];
-                            NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3((TileEntity) splitPoint));
+                            NetworkFinder finder = new NetworkFinder(world, connectedBlockA.getPos(), ((TileEntity) splitPoint).getPos());
                             List<IConductor> partNetwork = finder.exploreNetwork();
 
                             //Mark any others still to do in the nextToSplit array which are connected to this, as dealt with

@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -14,62 +16,44 @@ import java.util.Set;
 public class NetworkFinder
 {
     public World worldObj;
-    public BlockVec3 start;
-    private int theDim;
-    private BlockVec3 toIgnore;
+    public BlockPos start;
+    private BlockPos toIgnore;
 
-    private Set<BlockVec3> iterated = new HashSet<BlockVec3>();
-    public List<IConductor> found = new LinkedList<IConductor>();
+    private Set<BlockPos> iterated = new HashSet<>();
+    public List<IConductor> found = new LinkedList<>();
 
-    public NetworkFinder(World world, BlockVec3 location, BlockVec3 ignore)
+    public NetworkFinder(World world, BlockPos location, BlockPos ignore)
     {
         worldObj = world;
         start = location;
-
         toIgnore = ignore;
     }
 
-    private void loopAll(int x, int y, int z, int dirIn)
+    private void loopAll(BlockPos pos, EnumFacing dirIn)
     {
-        BlockVec3 obj = null;
-        for (int dir = 0; dir < 6; dir++)
+        TileEntity tileLast = worldObj.getTileEntity(pos);
+        BlockPos obj;
+        for (EnumFacing facing : EnumFacing.VALUES)
         {
-            if (dir == dirIn)
+            if (facing != dirIn && ((IConductor) tileLast).canConnect(facing, NetworkType.POWER))
             {
-                continue;
-            }
-            switch (dir)
-            {
-            case 0:
-                obj = new BlockVec3(x, y - 1, z);
-                break;
-            case 1:
-                obj = new BlockVec3(x, y + 1, z);
-                break;
-            case 2:
-                obj = new BlockVec3(x, y, z - 1);
-                break;
-            case 3:
-                obj = new BlockVec3(x, y, z + 1);
-                break;
-            case 4:
-                obj = new BlockVec3(x - 1, y, z);
-                break;
-            case 5:
-                obj = new BlockVec3(x + 1, y, z);
-                break;
-            }
+                obj = pos.offset(facing);
 
-            if (!iterated.contains(obj))
-            {
-                iterated.add(obj);
-
-                TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(obj.x, obj.y, obj.z));
-
-                if (tileEntity instanceof IConductor)
+                if (!iterated.contains(obj))
                 {
-                    found.add((IConductor) tileEntity);
-                    loopAll(obj.x, obj.y, obj.z, dir ^ 1);
+                    iterated.add(obj);
+
+                    TileEntity tile = worldObj.getTileEntity(obj);
+
+                    if (tile instanceof IConductor)
+                    {
+                        // dirIn will be null if pos is the start block
+                        if (dirIn == null || ((IConductor) tile).canConnect(dirIn, NetworkType.POWER))
+                        {
+                            found.add((IConductor) tile);
+                            loopAll(obj, facing.getOpposite());
+                        }
+                    }
                 }
             }
         }
@@ -77,12 +61,13 @@ public class NetworkFinder
 
     public List<IConductor> exploreNetwork()
     {
-        if (start.getTileEntity(worldObj) instanceof IConductor)
+        TileEntity startTile = worldObj.getTileEntity(start);
+        if (startTile instanceof IConductor)
         {
             iterated.add(start);
             iterated.add(toIgnore);
-            found.add((IConductor) start.getTileEntity(worldObj));
-            loopAll(start.x, start.y, start.z, 6);
+            found.add((IConductor) startTile);
+            loopAll(start, null);
         }
 
         return found;
