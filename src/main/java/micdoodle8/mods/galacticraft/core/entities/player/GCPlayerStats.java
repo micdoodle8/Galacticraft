@@ -63,17 +63,25 @@ public abstract class GCPlayerStats
 
     public abstract void setRocketStacks(ItemStack[] rocketStacks);
 
+    @Deprecated
     public abstract int getRocketType();
 
+    @Deprecated
     public abstract void setRocketType(int rocketType);
 
     public abstract int getFuelLevel();
 
     public abstract void setFuelLevel(int fuelLevel);
 
+    @Deprecated
     public abstract Item getRocketItem();
 
+    @Deprecated
     public abstract void setRocketItem(Item rocketItem);
+
+    public abstract ItemStack getRocketItemstack();
+
+    public abstract void setRocketItemstack(ItemStack rocketItem);
 
     public abstract ItemStack getLaunchpadStack();
 

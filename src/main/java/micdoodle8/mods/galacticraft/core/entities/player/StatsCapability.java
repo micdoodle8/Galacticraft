@@ -51,7 +51,7 @@ public class StatsCapability extends GCPlayerStats
     public ItemStack[] rocketStacks = new ItemStack[2];
     public int rocketType;
     public int fuelLevel;
-    public Item rocketItem;
+    public ItemStack rocketItem;
     public ItemStack launchpadStack;
     public int astroMinerCount = 0;
     private List<BlockVec3> activeAstroMinerChunks = new LinkedList<>();
@@ -279,14 +279,35 @@ public class StatsCapability extends GCPlayerStats
         this.fuelLevel = fuelLevel;
     }
 
+    @Deprecated
     @Override
     public Item getRocketItem()
     {
-        return rocketItem;
+        return rocketItem.getItem();
+    }
+
+    @Deprecated
+    @Override
+    public void setRocketItem(Item rocketItem)
+    {
+        if (rocketItem == null)
+        {
+            this.rocketItem = null;
+        }
+        else
+        {
+            this.rocketItem = new ItemStack(rocketItem, 1, 0);
+        }
     }
 
     @Override
-    public void setRocketItem(Item rocketItem)
+    public ItemStack getRocketItemstack()
+    {
+        return this.rocketItem;
+    }
+
+    @Override
+    public void setRocketItemstack(ItemStack rocketItem)
     {
         this.rocketItem = rocketItem;
     }
@@ -1030,7 +1051,7 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("FuelLevel", this.fuelLevel);
         if (this.rocketItem != null)
         {
-            ItemStack returnRocket = new ItemStack(this.rocketItem, 1, this.rocketType);
+            ItemStack returnRocket = this.rocketItem; // new ItemStack(this.rocketItem, 1, this.rocketType);
             nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new NBTTagCompound()));
         }
 
@@ -1142,8 +1163,8 @@ public class StatsCapability extends GCPlayerStats
                 ItemStack returnRocket = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("ReturnRocket"));
                 if (returnRocket != null)
                 {
-                    this.rocketItem = returnRocket.getItem();
-                    this.rocketType = returnRocket.getItemDamage();
+                    this.rocketItem = returnRocket;
+//                    this.rocketType = returnRocket.getItemDamage();
                 }
             }
 

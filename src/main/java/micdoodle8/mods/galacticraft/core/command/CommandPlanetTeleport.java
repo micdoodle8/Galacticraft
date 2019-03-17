@@ -62,8 +62,9 @@ public class CommandPlanetTeleport extends CommandBase
                     BlockPos spawnPoint = worldserver.getSpawnPoint();
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.setRocketStacks(new ItemStack[2]);
-                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
-                    stats.setRocketItem(GCItems.rocketTier1);
+                    stats.setRocketItemstack(new ItemStack(GCItems.rocketTier1, 1, IRocketType.EnumRocketType.DEFAULT.ordinal()));
+//                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
+//                    stats.setRocketItem(GCItems.rocketTier1);
                     stats.setFuelLevel(1000);
                     stats.setCoordsTeleportedFromX(spawnPoint.getX());
                     stats.setCoordsTeleportedFromZ(spawnPoint.getZ());

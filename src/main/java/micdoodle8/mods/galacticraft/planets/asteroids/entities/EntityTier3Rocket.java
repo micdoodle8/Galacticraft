@@ -173,8 +173,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
                 stats.setRocketStacks(this.cargoItems);
             }
 
-            stats.setRocketType(this.rocketType.getIndex());
-            stats.setRocketItem(AsteroidsItems.tier3Rocket);
+            stats.setRocketItemstack(new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex()));
+//            stats.setRocketType(this.rocketType.getIndex());
+//            stats.setRocketItem(AsteroidsItems.tier3Rocket);
             stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }

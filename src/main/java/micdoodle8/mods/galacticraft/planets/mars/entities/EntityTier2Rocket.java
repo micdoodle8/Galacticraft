@@ -177,8 +177,9 @@ public class EntityTier2Rocket extends EntityTieredRocket
                 stats.setRocketStacks(this.cargoItems);
             }
 
-            stats.setRocketType(this.rocketType.getIndex());
-            stats.setRocketItem(MarsItems.rocketMars);
+            stats.setRocketItemstack(new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex()));
+//            stats.setRocketType(this.rocketType.getIndex());
+//            stats.setRocketItem(MarsItems.rocketMars);
             stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }

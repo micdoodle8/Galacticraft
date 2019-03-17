@@ -930,9 +930,11 @@ public class WorldUtil
                         {
                             if (stack == stats.getRocketStacks().length - 1)
                             {
-                                if (stats.getRocketItem() != null)
+//                                if (stats.getRocketItem() != null)
+                                if (stats.getRocketItemstack() != null)
                                 {
-                                    stats.getRocketStacks()[stack] = new ItemStack(stats.getRocketItem(), 1, stats.getRocketType());
+//                                    stats.getRocketStacks()[stack] = new ItemStack(stats.getRocketItem(), 1, stats.getRocketType());
+                                    stats.getRocketStacks()[stack] = stats.getRocketItemstack();
                                 }
                             }
                             else if (stack == stats.getRocketStacks().length - 2)

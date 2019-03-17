@@ -157,8 +157,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 stats.setRocketStacks(this.cargoItems);
             }
 
-            stats.setRocketType(this.rocketType.getIndex());
-            stats.setRocketItem(GCItems.rocketTier1);
+            stats.setRocketItemstack(new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex()));
+//            stats.setRocketType(this.rocketType.getIndex());
+//            stats.setRocketItem(GCItems.rocketTier1);
             stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }

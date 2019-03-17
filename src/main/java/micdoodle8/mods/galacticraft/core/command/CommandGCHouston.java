@@ -142,8 +142,9 @@ public class CommandGCHouston extends CommandBase
                     }
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.setRocketStacks(new ItemStack[0]);
-                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
-                    stats.setRocketItem(null);
+//                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
+//                    stats.setRocketItem(null);
+                    stats.setRocketItemstack(null);
                     stats.setFuelLevel(0);
                     stats.setCoordsTeleportedFromX(spawnPoint.getX());
                     stats.setCoordsTeleportedFromZ(spawnPoint.getZ());
