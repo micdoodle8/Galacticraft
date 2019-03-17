@@ -1,17 +1,10 @@
 package micdoodle8.mods.galacticraft.core.energy;
 
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
+import cofh.api.energy.*;
 import ic2.api.energy.EnergyNet;
 import ic2.api.energy.tile.*;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import mekanism.api.energy.ICableOutputter;
-import mekanism.api.energy.IEnergizedItem;
-import mekanism.api.energy.IStrictEnergyAcceptor;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -60,7 +53,6 @@ public class EnergyUtil
     private static Class<?> clazzPipeTile = null;
     private static Class<?> clazzPipeWood = null;
     public static boolean initialisedIC2Methods = EnergyUtil.initialiseIC2Methods();
-    private static Capability<IStrictEnergyAcceptor> mekCableAcceptor = null;
 
     public static TileEntity[] getAdjacentPowerConnections(TileEntity tile)
     {
@@ -84,32 +76,6 @@ public class EnergyUtil
             if (tileEntity instanceof IConnector)
             {
                 if (((IConnector) tileEntity).canConnect(direction.getOpposite(), NetworkType.POWER))
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
-                continue;
-            }
-
-            if (isMekLoaded && (tileEntity instanceof IStrictEnergyAcceptor || tileEntity instanceof ICableOutputter))
-            {
-                //Do not connect GC wires directly to Mek Universal Cables
-                try
-                {
-                    if (clazzMekCable != null && clazzMekCable.isInstance(tileEntity))
-                    {
-                        continue;
-                    }
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                if (tileEntity instanceof IStrictEnergyAcceptor && ((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(direction.getOpposite()))
-                {
-                    adjacentConnections[direction.ordinal()] = tileEntity;
-                }
-                else if (tileEntity instanceof ICableOutputter && ((ICableOutputter) tileEntity).canOutputTo(direction.getOpposite()))
                 {
                     adjacentConnections[direction.ordinal()] = tileEntity;
                 }
@@ -277,20 +243,6 @@ public class EnergyUtil
                 continue;
             }
             
-            if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
-            {
-                if (clazzMekCable != null && clazzMekCable.isInstance(tileEntity))
-                {
-                    continue;
-                }
-                if (((IStrictEnergyAcceptor) tileEntity).canReceiveEnergy(sideFrom))
-                {
-                    connectedAcceptors.add(tileEntity);
-                    directions.add(sideFrom);
-                }
-                continue;
-            }
-            
             if (isBCReallyLoaded && clazzPipeTile.isInstance(tileEntity))
             {
             	continue;
@@ -340,33 +292,7 @@ public class EnergyUtil
     
     public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
     {
-        if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
-        {
-            IStrictEnergyAcceptor tileMek = null;
-            if (tileAdj instanceof IStrictEnergyAcceptor)
-            {
-                tileMek = (IStrictEnergyAcceptor) tileAdj;
-            }
-            else if (mekCableAcceptor != null && hasCapability(tileAdj, mekCableAcceptor, inputAdj))
-            {
-                tileMek = getCapability(tileAdj, mekCableAcceptor, inputAdj);
-            }
-
-            if (tileMek != null && tileMek.canReceiveEnergy(inputAdj))
-            {
-                float transferredMek;
-                if (simulate)
-                {
-                    transferredMek = tileMek.canReceiveEnergy(inputAdj) ? (float) (tileMek.getMaxEnergy() - tileMek.getEnergy()) : 0F;
-                }
-                else
-                {
-                    transferredMek = (float) tileMek.transferEnergyToAcceptor(inputAdj, toSend * EnergyConfigHandler.TO_MEKANISM_RATIO);
-                }
-                return transferredMek / EnergyConfigHandler.TO_MEKANISM_RATIO;
-            }
-        }
-        else if (isIC2Loaded && !EnergyConfigHandler.disableIC2Output && tileAdj instanceof IEnergySink)
+        if (isIC2Loaded && !EnergyConfigHandler.disableIC2Output && tileAdj instanceof IEnergySink)
         {
             //TODO: need to use new subTile system
             double demanded = 0;
@@ -494,12 +420,7 @@ public class EnergyUtil
         {
             return false;  //Do not try using other mods' methods to connect to GC's own tiles
         }
-
-        if (isMekLoaded && tileAdj instanceof IStrictEnergyAcceptor)
-        {
-            return ((IStrictEnergyAcceptor) tileAdj).canReceiveEnergy(inputAdj);
-        }
-        else if (isIC2Loaded && tileAdj instanceof IEnergyAcceptor)
+        if (isIC2Loaded && tileAdj instanceof IEnergyAcceptor)
         {
             return ((IEnergyAcceptor) tileAdj).acceptsEnergyFrom(null, inputAdj);
         }
@@ -579,18 +500,6 @@ public class EnergyUtil
         }
         catch (Exception e)
         {
-        }
-
-        if (isMekLoaded)
-        {
-            try
-            {
-                Class mekCap = Class.forName("mekanism.common.capabilities.Capabilities");
-                EnergyUtil.mekCableAcceptor = (Capability) mekCap.getField("ENERGY_ACCEPTOR_CAPABILITY").get(null);
-            }
-            catch (Exception e)
-            {
-            }
         }
 
         if (isIC2Loaded)
@@ -683,11 +592,6 @@ public class EnergyUtil
             if (item instanceof ISpecialElectricItem)
                 return true;
         }
-        if (EnergyConfigHandler.isMekanismLoaded())
-        {
-            if (item instanceof IEnergizedItem)
-                return true;
-        }
                     
         return false;
     }
@@ -729,12 +633,6 @@ public class EnergyUtil
             }
         }
 
-        if (EnergyConfigHandler.isMekanismLoaded())
-        {
-            if (item instanceof IEnergizedItem)
-                return ((IEnergizedItem)item).getEnergy(stack) > 0;
-        }
-                    
         return false;
     }
 
@@ -772,12 +670,6 @@ public class EnergyUtil
                 return electricItem.canProvideEnergy(stack);
 //TODO                return ElectricItem.manager.charge(stack, Double.POSITIVE_INFINITY, this.tier, true, true) > 0.0D;
             }
-        }
-
-        if (EnergyConfigHandler.isMekanismLoaded())
-        {
-            if (item instanceof IEnergizedItem)
-                return ((IEnergizedItem)item).getEnergy(stack) < ((IEnergizedItem)item).getMaxEnergy(stack);
         }
                     
         return false;

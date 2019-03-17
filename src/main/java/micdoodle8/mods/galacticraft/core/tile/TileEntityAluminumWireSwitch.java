@@ -208,11 +208,4 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     {
     	return this.disableConnections() ? false : super.canConnectEnergy(from);
     }
-
-    //Mekanism
-    @Override
-    public boolean canReceiveEnergy(EnumFacing side)
-    {
-    	return this.disableConnections() ? false : super.canReceiveEnergy(side);
-    }
 }

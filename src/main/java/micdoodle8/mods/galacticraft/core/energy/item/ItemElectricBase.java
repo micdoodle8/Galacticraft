@@ -290,38 +290,6 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         return (int) (this.getMaxElectricityStored(container) * EnergyConfigHandler.TO_RF_RATIO);
     }
 
-    // The following seven methods are for Mekanism compatibility
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-    public double getEnergy(ItemStack itemStack)
-    {
-        return this.getElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-    public void setEnergy(ItemStack itemStack, double amount)
-    {
-        this.setElectricity(itemStack, (float) amount * EnergyConfigHandler.MEKANISM_RATIO);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-    public double getMaxEnergy(ItemStack itemStack)
-    {
-        return this.getMaxElectricityStored(itemStack) * EnergyConfigHandler.TO_MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-    public double getMaxTransfer(ItemStack itemStack)
-    {
-        return this.transferMax * EnergyConfigHandler.TO_MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IEnergizedItem", modID = "Mekanism")
-    public boolean canReceive(ItemStack itemStack)
-    {
-        return (itemStack != null && !(itemStack.getItem() instanceof ItemBatteryInfinite));
-    }
-
     public boolean canSend(ItemStack itemStack)
     {
         return true;

@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
-import mekanism.api.gas.Gas;
-import mekanism.api.gas.GasStack;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCFluids;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
@@ -20,7 +17,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemAtmosphericValve;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
-import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Items;
@@ -415,76 +411,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public int getBlockMetadata()
     {
         return getBlockType().getMetaFromState(this.worldObj.getBlockState(getPos()));
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
-    {
-        return 0;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public int receiveGas(EnumFacing side, GasStack stack)
-    {
-        return 0;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(EnumFacing from, int amount, boolean doTransfer)
-    {
-        if (from == this.getHydrogenOutputDirection() && this.liquidTank2.getFluid() != null)
-        {
-            int amountH = Math.min(8, this.liquidTank2.getFluidAmount());
-            amountH = this.liquidTank2.drain(amountH, doTransfer).amount;
-            return new GasStack((Gas) EnergyConfigHandler.gasHydrogen, amountH);
-        }
-        else if (from == this.getOxygenOutputDirection() && this.liquidTank.getFluid() != null)
-        {
-            int amountO = Math.min(8, this.liquidTank.getFluidAmount());
-            amountO = this.liquidTank.drain(amountO, doTransfer).amount;
-            return new GasStack((Gas) EnergyConfigHandler.gasOxygen, amountO);
-        }
-        return null;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public GasStack drawGas(EnumFacing from, int amount)
-    {
-        return this.drawGas(from, amount, true);
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canReceiveGas(EnumFacing side, Gas type)
-    {
-        return false;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = "Mekanism")
-    public boolean canDrawGas(EnumFacing from, Gas type)
-    {
-        if (from == this.getHydrogenOutputDirection())
-        {
-            return type.getName().equals("hydrogen");
-        }
-        else if (from == this.getOxygenOutputDirection())
-        {
-            return type.getName().equals("oxygen");
-        }
-        return false;
-    }
-
-    @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = "Mekanism")
-    public boolean canTubeConnect(EnumFacing from)
-    {
-        if (from == this.getHydrogenOutputDirection())
-        {
-            return true;
-        }
-        else if (from == this.getOxygenOutputDirection())
-        {
-            return true;
-        }
-        return false;
     }
 
     @Override
