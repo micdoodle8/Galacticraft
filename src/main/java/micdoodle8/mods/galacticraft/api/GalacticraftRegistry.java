@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
@@ -9,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.recipe.SpaceStationRecipe;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import micdoodle8.mods.galacticraft.api.world.SpaceStationType;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -16,14 +18,11 @@ import net.minecraft.world.WorldProvider;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.registry.VillagerRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GalacticraftRegistry
 {
@@ -42,6 +41,7 @@ public class GalacticraftRegistry
     private static int maxScreenTypes;
     private static Map<Integer, List<Object>> gearMap = new HashMap<>();
     private static Map<Integer, List<EnumExtendedInventorySlot>> gearSlotMap = new HashMap<>();
+    private static List<EntityVillager.ITradeList> moonVillagerTrades = new ArrayList<>();
 
     /**
      * Register a new Teleport type for the world provider passed
@@ -476,5 +476,15 @@ public class GalacticraftRegistry
     public static List<EnumExtendedInventorySlot> getSlotType(int gearID)
     {
         return GalacticraftRegistry.gearSlotMap.get(gearID);
+    }
+
+    public static void addMoonVillagerTrade(EntityVillager.ITradeList... trades)
+    {
+        moonVillagerTrades.addAll(Arrays.asList(trades));
+    }
+
+    public static ImmutableList<EntityVillager.ITradeList> getMoonVillagerTrades()
+    {
+        return ImmutableList.copyOf(moonVillagerTrades);
     }
 }

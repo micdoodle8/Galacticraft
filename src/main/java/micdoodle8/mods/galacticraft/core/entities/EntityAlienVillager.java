@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -20,6 +21,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityWitch;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.monster.IMob;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
@@ -58,21 +60,6 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     private String lastBuyingPlayer;
     private boolean isLookingForHome;
     private InventoryBasic villagerInventory;
-    private static final EntityAlienVillager.ITradeList[] DEFAULT_TRADE_LIST_MAP = new EntityAlienVillager.ITradeList[] {
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxMask, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxTankLight, 1, 235), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxygenGear, 1, 0), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.fuelCanister, 1, 317), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.parachute, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.battery, 1, 58), new EntityAlienVillager.PriceInfo(2, 4)),
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.foodItem, 1, 1)), //carrots = also yields a tin!
-            new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_BASIC), new EntityAlienVillager.PriceInfo(3, 4)),
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.schematic, 1, 0), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 1)), //Exchange buggy and rocket schematics
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.schematic, 1, 1), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 0)), //Exchange buggy and rocket schematics
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 2, 3), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 6)), //Compressed Tin - needed to craft a Fuel Loader
-            new EntityAlienVillager.ItemAndEmeraldToItem(new ItemStack(GCItems.basicItem, 2, 4), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 7)), //Compressed Copper - needed to craft a Fuel Loader
-            new EntityAlienVillager.EmeraldForItems(new ItemStack(Blocks.sapling, 1, 3), new EntityAlienVillager.PriceInfo(11, 39)) //The one thing Alien Villagers don't have and can't get is jungle trees...
-            };
 
     public EntityAlienVillager(World worldIn)
     {
@@ -414,7 +401,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             i += 5;
         }
 
-        if (recipe.getItemToBuy().getItem() == Items.emerald)
+        if (recipe.getItemToBuy().getItem() == GCItems.itemBasicMoon && recipe.getItemToBuy().getItemDamage() == 2)
         {
             this.wealth += recipe.getItemToBuy().stackSize;
         }
@@ -461,7 +448,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             this.buyingList = new MerchantRecipeList();
         }
 
-        for (EntityAlienVillager.ITradeList tradeList : DEFAULT_TRADE_LIST_MAP)
+        for (EntityVillager.ITradeList tradeList : GalacticraftRegistry.getMoonVillagerTrades())
         {
             tradeList.modifyMerchantRecipeList(this.buyingList, this.rand);
         }
@@ -660,12 +647,12 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public static class EmeraldForItems implements EntityAlienVillager.ITradeList
+    public static class SapphireForItems implements EntityVillager.ITradeList
     {
         public ItemStack sellItem;
         public EntityAlienVillager.PriceInfo price;
 
-        public EmeraldForItems(ItemStack itemStack, EntityAlienVillager.PriceInfo priceIn)
+        public SapphireForItems(ItemStack itemStack, EntityAlienVillager.PriceInfo priceIn)
         {
             this.sellItem = itemStack;
             this.price = priceIn;
@@ -688,25 +675,20 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public interface ITradeList
-    {
-        void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random);
-    }
-
-    public static class ItemAndEmeraldToItem implements EntityAlienVillager.ITradeList
+    public static class ItemAndSapphireToItem implements EntityVillager.ITradeList
     {
         public ItemStack field_179411_a;
         public EntityAlienVillager.PriceInfo field_179409_b;
         public ItemStack field_179410_c;
 
-        public ItemAndEmeraldToItem(Item p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, Item p_i45813_3_)
+        public ItemAndSapphireToItem(Item p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, Item p_i45813_3_)
         {
             this.field_179411_a = new ItemStack(p_i45813_1_);
             this.field_179409_b = p_i45813_2_;
             this.field_179410_c = new ItemStack(p_i45813_3_);
         }
 
-        public ItemAndEmeraldToItem(ItemStack p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, ItemStack p_i45813_3_)
+        public ItemAndSapphireToItem(ItemStack p_i45813_1_, EntityAlienVillager.PriceInfo p_i45813_2_, ItemStack p_i45813_3_)
         {
             this.field_179411_a = p_i45813_1_;
             this.field_179409_b = p_i45813_2_;
@@ -728,7 +710,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public static class ListEnchantedBookForEmeralds implements EntityAlienVillager.ITradeList
+    public static class ListEnchantedBookForSapphires implements EntityVillager.ITradeList
     {
         @Override
         public void modifyMerchantRecipeList(MerchantRecipeList recipeList, Random random)
@@ -747,12 +729,12 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public static class ListEnchantedItemForEmeralds implements EntityAlienVillager.ITradeList
+    public static class ListEnchantedItemForSapphires implements EntityVillager.ITradeList
     {
         public ItemStack field_179407_a;
         public EntityAlienVillager.PriceInfo field_179406_b;
 
-        public ListEnchantedItemForEmeralds(Item p_i45814_1_, EntityAlienVillager.PriceInfo p_i45814_2_)
+        public ListEnchantedItemForSapphires(Item p_i45814_1_, EntityAlienVillager.PriceInfo p_i45814_2_)
         {
             this.field_179407_a = new ItemStack(p_i45814_1_);
             this.field_179406_b = p_i45814_2_;
@@ -775,18 +757,18 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public static class ListItemForEmeralds implements EntityAlienVillager.ITradeList
+    public static class ListItemForSapphires implements EntityVillager.ITradeList
     {
         public ItemStack field_179403_a;
         public EntityAlienVillager.PriceInfo field_179402_b;
 
-        public ListItemForEmeralds(Item par1Item, EntityAlienVillager.PriceInfo priceInfo)
+        public ListItemForSapphires(Item par1Item, EntityAlienVillager.PriceInfo priceInfo)
         {
             this.field_179403_a = new ItemStack(par1Item);
             this.field_179402_b = priceInfo;
         }
 
-        public ListItemForEmeralds(ItemStack stack, EntityAlienVillager.PriceInfo priceInfo)
+        public ListItemForSapphires(ItemStack stack, EntityAlienVillager.PriceInfo priceInfo)
         {
             this.field_179403_a = stack;
             this.field_179402_b = priceInfo;

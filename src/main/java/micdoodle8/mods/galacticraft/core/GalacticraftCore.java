@@ -23,6 +23,8 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
+import micdoodle8.mods.galacticraft.core.items.ItemBasic;
+import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
@@ -41,6 +43,7 @@ import micdoodle8.mods.galacticraft.core.world.gen.BiomeGenBaseOrbit;
 import micdoodle8.mods.galacticraft.core.world.gen.OreGenOtherMods;
 import micdoodle8.mods.galacticraft.core.world.gen.OverworldGenerator;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
@@ -280,6 +283,22 @@ public class GalacticraftCore
 
         GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidOil, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underoil.png"));
 		GalacticraftCore.proxy.registerFluidTexture(GCFluids.fluidFuel, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/underfuel.png"));
+
+		GalacticraftRegistry.addMoonVillagerTrade(
+		        new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.oxMask, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.oxTankLight, 1, 235), new EntityAlienVillager.PriceInfo(3, 4)),
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.oxygenGear, 1, 0), new EntityAlienVillager.PriceInfo(3, 4)),
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.fuelCanister, 1, 317), new EntityAlienVillager.PriceInfo(3, 4)),
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.parachute, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.battery, 1, 58), new EntityAlienVillager.PriceInfo(2, 4)),
+                new EntityAlienVillager.ItemAndSapphireToItem(new ItemStack(GCItems.oilCanister, 1, ItemCanisterGeneric.EMPTY), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.foodItem, 1, 1)), //carrots = also yields a tin!
+                new EntityAlienVillager.ListItemForSapphires(new ItemStack(GCItems.basicItem, 1, ItemBasic.WAFER_BASIC), new EntityAlienVillager.PriceInfo(3, 4)),
+                new EntityAlienVillager.ItemAndSapphireToItem(new ItemStack(GCItems.schematic, 1, 0), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 1)), //Exchange buggy and rocket schematics
+                new EntityAlienVillager.ItemAndSapphireToItem(new ItemStack(GCItems.schematic, 1, 1), new EntityAlienVillager.PriceInfo(3, 5), new ItemStack(GCItems.schematic, 1, 0)), //Exchange buggy and rocket schematics
+                new EntityAlienVillager.ItemAndSapphireToItem(new ItemStack(GCItems.basicItem, 2, 3), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 6)), //Compressed Tin - needed to craft a Fuel Loader
+                new EntityAlienVillager.ItemAndSapphireToItem(new ItemStack(GCItems.basicItem, 2, 4), new EntityAlienVillager.PriceInfo(1, 1), new ItemStack(GCItems.basicItem, 1, 7)), //Compressed Copper - needed to craft a Fuel Loader
+                new EntityAlienVillager.SapphireForItems(new ItemStack(Blocks.sapling, 1, 3), new EntityAlienVillager.PriceInfo(11, 39)) //The one thing Alien Villagers don't have and can't get is jungle trees...
+        );
 
 //        switch (this.getSlotIndex())
 //        {
