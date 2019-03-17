@@ -261,14 +261,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     }
                     else if (isMekLoaded && acceptor instanceof IStrictEnergyAcceptor)
                     {
-                        if (EnergyUtil.isMekanismLegacy)
-                        {
-                            e = (float) ((((IStrictEnergyAcceptor) acceptor).getMaxEnergy() - ((IStrictEnergyAcceptor) acceptor).getEnergy()) / EnergyConfigHandler.TO_MEKANISM_RATIO);
-                        }
-                        else
-                        {
-                            e = (float) (((IStrictEnergyAcceptor) acceptor).acceptEnergy(sideFrom, 1000000D, true) / EnergyConfigHandler.TO_MEKANISM_RATIO);
-                        }
+                        e = (float) (((IStrictEnergyAcceptor) acceptor).acceptEnergy(sideFrom, 1000000D, true) / EnergyConfigHandler.TO_MEKANISM_RATIO);
                     }
                     else if (isIC2Loaded && acceptor instanceof IEnergySink)
                     {
@@ -393,14 +386,7 @@ public class EnergyNetwork implements IElectricityNetwork
                     }
                     else if (isMekLoaded && tileEntity instanceof IStrictEnergyAcceptor)
                     {
-                        if (EnergyUtil.isMekanismLegacy)
-                        {
-                            sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).transferEnergyToAcceptor(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO) / EnergyConfigHandler.TO_MEKANISM_RATIO;
-                        }
-                        else
-                        {
-                            sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).acceptEnergy(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO, false) / EnergyConfigHandler.TO_MEKANISM_RATIO;
-                        }
+                        sentToAcceptor = (float) ((IStrictEnergyAcceptor) tileEntity).acceptEnergy(sideFrom, currentSending * EnergyConfigHandler.TO_MEKANISM_RATIO, false) / EnergyConfigHandler.TO_MEKANISM_RATIO;
                     }
                     else if (isIC2Loaded && tileEntity instanceof IEnergySink)
                     {
