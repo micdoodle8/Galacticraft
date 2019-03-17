@@ -27,6 +27,9 @@ public class ItemBattery extends ItemElectricBase implements ISortableItem
     }
 
     @Override
+    public boolean isBookEnchantable(ItemStack item, ItemStack book) { return false; }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public EnumRarity getRarity(ItemStack par1ItemStack)
     {
