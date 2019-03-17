@@ -5,8 +5,6 @@ import ic2.api.energy.tile.IEnergyTile;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import ic2.api.item.ISpecialElectricItem;
-import mekanism.api.energy.EnergizedItemManager;
-import mekanism.api.energy.IEnergizedItem;
 import micdoodle8.mods.galacticraft.api.item.ElectricItemHelper;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
@@ -188,10 +186,6 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 //            {
 //                this.storage.receiveEnergyGC(((IEnergyContainerItem)item).extractEnergy(itemStack, (int) (energyToDischarge / EnergyConfigHandler.RF_RATIO), false) * EnergyConfigHandler.RF_RATIO);
 //            }
-            else if (EnergyConfigHandler.isMekanismLoaded() && item instanceof IEnergizedItem && ((IEnergizedItem) item).canSend(itemStack))
-            {
-                this.storage.receiveEnergyGC((float) EnergizedItemManager.discharge(itemStack, energyToDischarge / EnergyConfigHandler.MEKANISM_RATIO) * EnergyConfigHandler.MEKANISM_RATIO);
-            }
             else if (EnergyConfigHandler.isIndustrialCraft2Loaded())
             {
                 if (item instanceof ISpecialElectricItem)
@@ -452,67 +446,6 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     public int getMaxEnergyStored(EnumFacing from)
     {
         return MathHelper.floor_float(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double transferEnergyToAcceptor(EnumFacing from, double amount)
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return 0;
-        }
-
-        if (!this.getElectricalInputDirections().contains(from))
-        {
-            return 0;
-        }
-
-        return this.receiveElectricity(from, (float) amount * EnergyConfigHandler.MEKANISM_RATIO, 1, true) / EnergyConfigHandler.MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public boolean canReceiveEnergy(EnumFacing side)
-    {
-        return this.getElectricalInputDirections().contains(side);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double getEnergy()
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return 0.0;
-        }
-
-        return this.getEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public void setEnergy(double energy)
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return;
-        }
-
-        this.storage.setEnergyStored((float) energy * EnergyConfigHandler.MEKANISM_RATIO);
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = "Mekanism")
-    public double getMaxEnergy()
-    {
-        if (EnergyConfigHandler.disableMekanismInput)
-        {
-            return 0.0;
-        }
-
-        return this.getMaxEnergyStoredGC() / EnergyConfigHandler.MEKANISM_RATIO;
-    }
-
-    @RuntimeInterface(clazz = "mekanism.api.energy.ICableOutputter", modID = "Mekanism")
-    public boolean canOutputTo(EnumFacing side)
-    {
-        return false;
     }
 
     @Override

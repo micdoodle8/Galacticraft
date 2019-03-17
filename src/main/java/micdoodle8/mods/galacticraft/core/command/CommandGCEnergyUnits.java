@@ -23,10 +23,6 @@ public class CommandGCEnergyUnits extends CommandBase
         {
             options = options + "|EU";
         }
-        if (EnergyConfigHandler.isMekanismLoaded())
-        {
-            options = options + "|J";
-        }
         options = options + "|RF";
         return "/" + this.getCommandName() + options + "]";
     }
@@ -72,10 +68,6 @@ public class CommandGCEnergyUnits extends CommandBase
                 {
                     paramvalue = 3;
                 }
-                else if ("j".equals(param) && EnergyConfigHandler.isMekanismLoaded())
-                {
-                    paramvalue = 4;
-                }
                 else if ("rf".equals(param))
                 {
                     paramvalue = 5;
@@ -112,15 +104,6 @@ public class CommandGCEnergyUnits extends CommandBase
             EnergyConfigHandler.displayEnergyUnitsBC = false;
             EnergyConfigHandler.displayEnergyUnitsIC2 = true;
             EnergyConfigHandler.displayEnergyUnitsMek = false;
-            EnergyConfigHandler.displayEnergyUnitsRF = false;
-            return;
-        }
-
-        if (param == 4 && EnergyConfigHandler.isMekanismLoaded())
-        {
-            EnergyConfigHandler.displayEnergyUnitsBC = false;
-            EnergyConfigHandler.displayEnergyUnitsIC2 = false;
-            EnergyConfigHandler.displayEnergyUnitsMek = true;
             EnergyConfigHandler.displayEnergyUnitsRF = false;
             return;
         }

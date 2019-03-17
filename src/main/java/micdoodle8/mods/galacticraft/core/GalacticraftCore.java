@@ -220,7 +220,6 @@ public class GalacticraftCore
         SchematicRegistry.registerSchematicRecipe(new SchematicMoonBuggy());
         SchematicRegistry.registerSchematicRecipe(new SchematicAdd());
         ChunkPowerHandler.initiate();
-        EnergyConfigHandler.initGas();
 
         CompatibilityManager.registerMicroBlocks();
         this.registerCreatures();
