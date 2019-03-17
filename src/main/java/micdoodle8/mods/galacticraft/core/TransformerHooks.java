@@ -662,14 +662,18 @@ public class TransformerHooks
                 }
             }
         }
+        if (moddedProvider.getSoundInterval(f) > 0) {
+            if (j > 0 && random.nextInt(moddedProvider.getSoundInterval(f)) < rainSoundCounter++)
+            {
+                rainSoundCounter = 0;
 
-        if (j > 0 && random.nextInt(moddedProvider.getSoundInterval(f)) < rainSoundCounter++)
-        {
-            rainSoundCounter = 0;
+                ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
+            }
+        } else if (j > 0 && 0 < rainSoundCounter++) {
+                rainSoundCounter = 0;
 
-            ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
+                ((IWeatherProvider) world.provider).weatherSounds(j, mc, world, blockpos, xx, yy, zz, random);
         }
-        
         // Bypass vanilla code after returning from this
         return 0;
     }
