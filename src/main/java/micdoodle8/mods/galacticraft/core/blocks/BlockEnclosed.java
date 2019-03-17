@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import appeng.api.AEApi;
-import appeng.api.parts.IPartHelper;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -71,7 +69,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         BC_FLUIDS_COBBLESTONEPIPE(10, "pipeFluidCobble", "enclosed_pipe_fluids_cobblestone"),
         BC_POWER_STONEPIPE(11, "pipePowerStone", "enclosed_pipe_power_stone"),
         BC_POWER_GOLDPIPE(12, "pipePowerGold", "enclosed_pipe_power_gold"),
-        ME_CABLE(13, "enclosed_me_cable"),
         ALUMINUM_WIRE(14, "enclosed_aluminum_wire"),
         ALUMINUM_WIRE_HEAVY(15, "enclosed_heavy_aluminum_wire");
 
@@ -178,11 +175,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_POWER_STONEPIPE.getMeta()));
             list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta()));
         }
-
-        if (CompatibilityManager.isAppEngLoaded() || GCBlocks.registeringSorted)
-        {
-            list.add(new ItemStack(itemIn, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()));
-        }
     }
 
     public static void initialiseBC()
@@ -277,14 +269,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         }
-        else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
-        {
-            super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-            if (CompatibilityManager.isAppEngLoaded())
-            {
-//                worldIn.notifyBlockUpdate(pos); TODO
-            }
-        }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
@@ -352,26 +336,6 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 {
                     e.printStackTrace();
                 }
-            }
-        }
-        else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
-        {
-            if (CompatibilityManager.isAppEngLoaded())
-            {
-            	//Emulate Api.INSTANCE.partHelper().getCombinedInstance( TileCableBus.class )
-                try
-                {
-                    IPartHelper apiPart = AEApi.instance().partHelper();
-                    Class classTileCableBus = Class.forName("appeng.tile.networking.TileCableBus"); 
-                    for (Method m : apiPart.getClass().getMethods())
-                    {
-                        if ("getCombinedInstance".equals(m.getName()))
-                        {
-                            return (TileEntity) ((Class)m.invoke(apiPart, classTileCableBus)).newInstance();
-                        }
-                    }
-                }
-                catch (Exception e) { e.printStackTrace(); }
             }
         }
         else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())

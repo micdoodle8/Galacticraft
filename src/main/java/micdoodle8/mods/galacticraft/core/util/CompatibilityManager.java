@@ -39,7 +39,6 @@ public class CompatibilityManager
     private static boolean modMekLoaded = Loader.isModLoaded(modidMekanism);
     private static boolean modAetherIILoaded;
     private static boolean modBasicComponentsLoaded;
-    private static boolean modAppEngLoaded;
     private static boolean modPneumaticCraftLoaded;
     private static boolean modBOPLoaded = Loader.isModLoaded("biomesoplenty");
     private static boolean modEIOLoaded = Loader.isModLoaded("enderio");
@@ -213,12 +212,6 @@ public class CompatibilityManager
             CompatibilityManager.modBasicComponentsLoaded = true;
         }
 
-        if (Loader.isModLoaded("appliedenergistics2"))
-        {
-            CompatibilityManager.modAppEngLoaded = true;
-            GCLog.info("Galacticraft: activating AppliedEnergistics2 compatibility features.");
-        }
-
         if (Loader.isModLoaded("pneumaticcraft"))
         {
             CompatibilityManager.modPneumaticCraftLoaded = true;
@@ -308,11 +301,6 @@ public class CompatibilityManager
     public static boolean isBCLoaded()
     {
         return CompatibilityManager.modBasicComponentsLoaded;
-    }
-
-    public static boolean isAppEngLoaded()
-    {
-        return CompatibilityManager.modAppEngLoaded;
     }
 
     public static boolean isBOPLoaded()
@@ -430,6 +418,6 @@ public class CompatibilityManager
     
     public static boolean useAluDust()
     {
-        return modIc2Loaded || modAppEngLoaded || modTELoaded || modEIOLoaded || modAALoaded;
+        return modIc2Loaded || modTELoaded || modEIOLoaded || modAALoaded;
     }
 }
