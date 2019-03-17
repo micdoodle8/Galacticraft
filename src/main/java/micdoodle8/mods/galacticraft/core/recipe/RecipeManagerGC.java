@@ -520,37 +520,26 @@ public class RecipeManagerGC
 
     private static void addAppEngRecipes()
     {
-         RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
-         IGrinderRegistry a = AEApi.instance().registries().grinder();
-         boolean officialAE2API = false;
-         try {
-             officialAE2API = a.getClass().getMethod("builder") != null;
-         } catch (Exception ignore) { }
-         if (officialAE2API)
-         {
-             a.addRecipe(a.builder().withInput(new ItemStack(GCBlocks.basicBlock, 1, 7)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 0.8F).withTurns(8).build());
-             if (GalacticraftCore.isPlanetsLoaded)
-             {
-                 a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 3)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 0.9F).withTurns(8).build());
-                 a.addRecipe(a.builder().withInput(new ItemStack(VenusBlocks.venusBlock, 1, 6)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 1.0F).withTurns(8).build());
-                 // Grind Ilmenite Ore for 1 Titanium Dust, 1 Iron Dust
-                 Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
-                 a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 4)).withOutput(new ItemStack(AsteroidsItems.basicItem, 1, 9)).withFirstOptional(ironDust.get(), 1.0F).withTurns(8).build());
-             }
-         }
-         else
-         {
-             try {
-                 a.addRecipe(new ItemStack(GCBlocks.basicBlock, 1, 7), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.8F, 8);
-                 if (GalacticraftCore.isPlanetsLoaded)
-                 {
-                     a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 3), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 0.9F, 8);
-                     a.addRecipe(new ItemStack(VenusBlocks.venusBlock, 1, 6), new ItemStack(GCItems.ic2compat, 1, 0), new ItemStack(GCItems.ic2compat, 1, 0), 1.0F, 8);
-                     Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
-                     a.addRecipe(new ItemStack(AsteroidBlocks.blockBasic, 1, 4), new ItemStack(AsteroidsItems.basicItem, 1, 9), ironDust.get(), 1.0F, 8);
-                 }
-             } catch (Exception ignore) { }
-         }
+        RecipeUtil.addRecipe(new ItemStack(GCBlocks.sealableBlock, 1, EnumEnclosedBlockType.ME_CABLE.getMeta()), new Object[] { "XYX", 'Y', AEApi.instance().definitions().parts().cableGlass().stack(AEColor.TRANSPARENT, 1), 'X', new ItemStack(GCBlocks.basicBlock, 1, 4) });
+        IGrinderRegistry a = AEApi.instance().registries().grinder();
+        boolean officialAE2API = false;
+        try {
+            officialAE2API = a.getClass().getMethod("builder") != null;
+        } catch (Exception ignore) { }
+        if (officialAE2API)
+        {
+            a.addRecipe(a.builder().withInput(new ItemStack(GCBlocks.basicBlock, 1, 7)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 0.8F).withTurns(8).build());
+            if (GalacticraftCore.isPlanetsLoaded)
+            {
+                a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 3)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 0.9F).withTurns(8).build());
+                a.addRecipe(a.builder().withInput(new ItemStack(VenusBlocks.venusBlock, 1, 6)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 1.0F).withTurns(8).build());
+                // Grind Ilmenite Ore for 1 Titanium Dust, 1 Iron Dust
+                Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
+                a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 4)).withOutput(new ItemStack(AsteroidsItems.basicItem, 1, 9)).withFirstOptional(ironDust.get(), 1.0F).withTurns(8).build());
+            }
+        } else {
+            GCLog.debug("Failed to add Applied Energistics 2 Recipes");
+        }
     }
 
     private static void addExNihiloHeatSource()
