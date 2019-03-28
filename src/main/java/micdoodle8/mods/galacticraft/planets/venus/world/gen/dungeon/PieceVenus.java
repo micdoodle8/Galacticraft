@@ -65,7 +65,7 @@ public abstract class PieceVenus extends StructureComponent
             blockZ = this.boundingBox.minZ + (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - sizeZ / 2;
             break;
         }
-        return new StructureBoundingBox(blockX, blockZ, blockX + sizeX, blockZ + sizeZ);
+        return new StructureBoundingBox(blockX, this.configuration.getYPosition(), blockZ, blockX + sizeX, this.configuration.getYPosition() + this.configuration.getHallwayHeight(),blockZ + sizeZ);
     }
 
     public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)

@@ -47,6 +47,7 @@ public class MapGenDungeon extends MapGenStructure
             MapGenStructureIO.registerStructureComponent(RoomTreasure.class, "MoonDungeonTreasureRoom");
             MapGenStructureIO.registerStructureComponent(RoomSpawner.class, "MoonDungeonSpawnerRoom");
             MapGenStructureIO.registerStructureComponent(RoomChest.class, "MoonDungeonChestRoom");
+            MapGenStructureIO.registerStructureComponent(RoomEntrance.class, "MoonDungeonEntranceRoom");
         }
 
         MapGenDungeon.initialized = true;

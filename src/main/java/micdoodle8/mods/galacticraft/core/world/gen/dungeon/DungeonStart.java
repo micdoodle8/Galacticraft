@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import java.util.List;
 import java.util.Random;
 
-public class DungeonStart extends RoomEntrance
+public class DungeonStart extends EntranceCrater
 {
     public List<StructureComponent> attachedComponents = Lists.newArrayList();
     public List<StructureBoundingBox> componentBounds = Lists.newArrayList();

@@ -10,7 +10,7 @@ import net.minecraft.world.gen.structure.StructureComponent;
 import java.util.List;
 import java.util.Random;
 
-public class DungeonStartVenus extends RoomEntranceVenus
+public class DungeonStartVenus extends EntranceCraterVenus
 {
     public List<StructureComponent> attachedComponents = Lists.newArrayList();
     public List<StructureBoundingBox> componentBounds = Lists.newArrayList();
@@ -21,7 +21,7 @@ public class DungeonStartVenus extends RoomEntranceVenus
 
     public DungeonStartVenus(World world, DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(world, configuration, rand, blockPosX, blockPosZ);
+        super(configuration, rand, blockPosX, blockPosZ);
     }
 
     @Override

@@ -46,6 +46,7 @@ public class MapGenDungeonVenus extends MapGenStructure
             MapGenStructureIO.registerStructureComponent(RoomTreasureVenus.class, "VenusDungeonTreasureRoom");
             MapGenStructureIO.registerStructureComponent(RoomSpawnerVenus.class, "VenusDungeonSpawnerRoom");
             MapGenStructureIO.registerStructureComponent(RoomChestVenus.class, "VenusDungeonChestRoom");
+            MapGenStructureIO.registerStructureComponent(RoomEntranceVenus.class, "VenusDungeonEntranceRoom");
         }
 
         MapGenDungeonVenus.initialized = true;
