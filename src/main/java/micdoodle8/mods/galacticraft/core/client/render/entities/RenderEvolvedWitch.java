@@ -40,6 +40,7 @@ public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
             texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
             texSwitch = false;
+            OverlaySensorGlasses.postRenderMobs();
         }
     }
 

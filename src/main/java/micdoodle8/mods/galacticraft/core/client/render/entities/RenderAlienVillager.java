@@ -64,6 +64,7 @@ public class RenderAlienVillager extends RenderLiving<EntityAlienVillager>
             texSwitch = true;
             super.doRender(villager, par2, par4, par6, par8, par9);
             texSwitch = false;
+            OverlaySensorGlasses.postRenderMobs();
         }
     }
 }

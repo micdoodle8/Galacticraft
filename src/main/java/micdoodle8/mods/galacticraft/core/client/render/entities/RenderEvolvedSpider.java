@@ -49,6 +49,7 @@ public class RenderEvolvedSpider extends RenderLiving<EntityEvolvedSpider>
             texSwitch = true;
             super.doRender(entity, par2, par4, par6, par8, par9);
             texSwitch = false;
+            OverlaySensorGlasses.postRenderMobs();
         }
     }
 

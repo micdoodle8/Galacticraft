@@ -147,6 +147,13 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glTranslatef(0.0F, 0.045F, 0.0F);
         GL11.glScalef(1.07F, 1.035F, 1.07F);
     }
+
+    public static void postRenderMobs()
+    {
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+//        GL11.glEnable(GL11.GL_DEPTH_TEST);
+//        GL11.glDepthMask(true);
+    }
     
     public static boolean overrideMobTexture()
     {

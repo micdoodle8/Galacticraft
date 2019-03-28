@@ -43,6 +43,7 @@ public class RenderJuicer extends RenderLiving<EntityJuicer>
             texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
             texSwitch = false;
+            OverlaySensorGlasses.postRenderMobs();
         }
     }
 

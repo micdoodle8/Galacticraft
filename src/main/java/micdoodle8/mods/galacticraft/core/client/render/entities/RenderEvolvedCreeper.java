@@ -77,6 +77,7 @@ public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
             texSwitch = true;
             super.doRender(entity, x, y, z, entityYaw, partialTicks);
             texSwitch = false;
+            OverlaySensorGlasses.postRenderMobs();
         }
     }
 }
