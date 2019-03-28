@@ -85,7 +85,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
                     {
                         IBlockState state = new BlockVec3(x, y, z).getBlockState(this.world);
 
-                        if (state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
+                        if (state != null && state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
                             this.world.scheduleUpdate(new BlockPos(x, y, z), state.getBlock(), 0);
                         }
