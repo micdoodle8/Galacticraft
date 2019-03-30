@@ -114,7 +114,8 @@ public class CorridorVenus extends SizedPieceVenus
     @Override
     public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)
     {
-        if (startPiece.attachedComponents.size() > 2 && startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 2) instanceof RoomBossVenus)
+        int pieceCount = startPiece.attachedComponents.size();
+        if (pieceCount > 10 && startPiece.attachedComponents.get(pieceCount - 2) instanceof RoomBossVenus)
         {
             try
             {
@@ -127,8 +128,8 @@ public class CorridorVenus extends SizedPieceVenus
         }
         else
         {
-            int bossRoomChance = Math.max((int) (1.0 / Math.pow(startPiece.attachedComponents.size() / 55.0, 2)), 5);
-            boolean bossRoom = rand.nextInt(bossRoomChance) == 0;
+            int bossRoomChance = Math.max((int) (20.0 / (pieceCount - 10)), 1);
+            boolean bossRoom = pieceCount > 25 || (pieceCount > 10 && rand.nextInt(bossRoomChance) == 0);
             if (bossRoom)
             {
                 try
@@ -138,6 +139,7 @@ public class CorridorVenus extends SizedPieceVenus
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    return null;
                 }
             }
             else
@@ -165,7 +167,7 @@ public class CorridorVenus extends SizedPieceVenus
                     return null;
                 }
 
-                PieceVenus lastPiece = startPiece.attachedComponents.size() <= 2 ? null : (PieceVenus) startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 2);
+                PieceVenus lastPiece = pieceCount <= 2 ? null : (PieceVenus) startPiece.attachedComponents.get(pieceCount - 2);
 
                 if (!(lastPiece instanceof RoomSpawnerVenus))
                 {

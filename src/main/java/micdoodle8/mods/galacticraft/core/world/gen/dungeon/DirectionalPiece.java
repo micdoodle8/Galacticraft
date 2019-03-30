@@ -63,10 +63,10 @@ public abstract class DirectionalPiece extends Piece
         int sizeZ;
         boolean valid;
         int attempts = maxAttempts;
+        int randDir = rand.nextInt(3);
         do
         {
-            int randDir = rand.nextInt(4);
-            randomDir = EnumFacing.getHorizontal((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
+            randomDir = EnumFacing.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
             StructureBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 3);
             blockX = extension.minX;
             blockZ = extension.minZ;
@@ -74,6 +74,7 @@ public abstract class DirectionalPiece extends Piece
             sizeZ = extension.maxZ - extension.minZ;
             valid = !startPiece.checkIntersection(extension);
             attempts--;
+            randDir++;
         }
         while (!valid && attempts > 0);
 
