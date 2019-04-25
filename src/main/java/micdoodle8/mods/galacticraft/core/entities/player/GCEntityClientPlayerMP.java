@@ -529,13 +529,6 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         {
             NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
             this.galacticraftCape = ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getId().toString().replace("-", ""));
-            this.galacticraftCape = ClientProxyCore.capeMap.get("9af1156e80bf4f4c9496455555a3deb3");
-            ClientProxyCore.capeMap.forEach((s, resourceLocation) -> {
-                System.out.println(s);
-                System.out.println(resourceLocation);
-            });
-            System.out.println(ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getId().toString().replace("-", "")));
-            System.out.println(networkplayerinfo.getGameProfile().getId().toString().replace("-", ""));
             this.checkedCape = true;
         }
 
