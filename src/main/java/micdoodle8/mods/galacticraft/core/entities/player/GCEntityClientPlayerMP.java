@@ -30,8 +30,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class GCEntityClientPlayerMP extends EntityPlayerSP
 {
@@ -526,7 +528,14 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
         if (!this.checkedCape)
         {
             NetworkPlayerInfo networkplayerinfo = this.getPlayerInfo();
-            this.galacticraftCape = ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getName());
+            this.galacticraftCape = ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getId().toString().replace("-", ""));
+            this.galacticraftCape = ClientProxyCore.capeMap.get("9af1156e80bf4f4c9496455555a3deb3");
+            ClientProxyCore.capeMap.forEach((s, resourceLocation) -> {
+                System.out.println(s);
+                System.out.println(resourceLocation);
+            });
+            System.out.println(ClientProxyCore.capeMap.get(networkplayerinfo.getGameProfile().getId().toString().replace("-", "")));
+            System.out.println(networkplayerinfo.getGameProfile().getId().toString().replace("-", ""));
             this.checkedCape = true;
         }
 

@@ -838,11 +838,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         try
         {
-            capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes.txt");
+            capeListUrl = new URL("https://raw.github.com/micdoodle8/Galacticraft/master/capes-uuid.txt");
         }
         catch (IOException e)
         {
-            FMLLog.severe("Error getting capes list URL");
+            GCLog.severe("Error getting capes list URL");
             if (ConfigManagerCore.enableDebug) e.printStackTrace();
             return;
         }
@@ -877,49 +877,37 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         BufferedReader reader = new BufferedReader(streamReader);
 
         String line;
-        try
-        {
-            while ((line = reader.readLine()) != null)
-            {
-                if (line.contains(":"))
-                {
+        try {
+            while ((line = reader.readLine()) != null) {
+                if (line.contains(":")) {
                     int splitLocation = line.indexOf(":");
-                    String username = line.substring(0, splitLocation);
-                    ClientProxyCore.capeMap.put(username, new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/capes/" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
+                    String uuid = line.substring(0, splitLocation);
+                    System.out.println(uuid);
+                    System.out.println(convertCapeString(line.substring(splitLocation + 1)));
+                    capeMap.put(uuid, new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
                 }
             }
-        }
-        catch (IOException e)
-        {
-            if (ConfigManagerCore.enableDebug) e.printStackTrace();
-        }
-        finally
-        {
-            try
-            {
+        } catch (IOException e) {
+            if (ConfigManagerCore.enableDebug)e.printStackTrace();
+        } finally {
+            try {
                 reader.close();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 if (ConfigManagerCore.enableDebug) e.printStackTrace();
             }
         }
     }
 
-    private static String convertCapeString(String capeName)
-    {
-        StringBuilder underscoreCase = new StringBuilder();
-        for (int i = 0; i < capeName.length(); ++i)
-        {
+    private static String convertCapeString(String capeName) {
+        String s = "";
+        for (int i = 0; i < capeName.length(); ++i) {
             char c = capeName.charAt(i);
-            if (!Character.isLowerCase(c))
-            {
-                underscoreCase.append("_");
-                c = Character.toLowerCase(c);
+            if (c == " ".charAt(0)) {
+                break;
             }
-            underscoreCase.append(c);
+            s = String.join("", s, Character.toString(c));
         }
-        return underscoreCase.toString();
+        return s.substring(4).toLowerCase();
     }
 
     public static void registerInventoryTabs()
