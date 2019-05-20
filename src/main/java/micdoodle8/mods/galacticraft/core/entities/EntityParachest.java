@@ -109,16 +109,6 @@ public class EntityParachest extends Entity
                             this.setDead();
                             return;
                         }
-                        else if (this.cargo != null)
-                        {
-                            for (final ItemStack stack : this.cargo)
-                            {
-                                final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
-                                this.worldObj.spawnEntityInWorld(e);
-                            }
-
-                            return;
-                        }
                     }
                 }
 
@@ -126,9 +116,14 @@ public class EntityParachest extends Entity
                 {
                     for (final ItemStack stack : this.cargo)
                     {
-                        final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
-                        this.worldObj.spawnEntityInWorld(e);
+                        if (stack != null)
+                        {
+                            final EntityItem e = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ, stack);
+                            this.worldObj.spawnEntityInWorld(e);
+                        }
                     }
+                    this.setDead();
+                    return;
                 }
             }
             else
