@@ -1,23 +1,30 @@
-{  
-   "display":{  
-      "icon":{  
-         "item":"galacticraftcore:rocket_t1"
-      },
-      "description":{  
-         "translate":"achievement.moon.desc"
-      },
-      "title":{  
-         "translate":"advancement.moon"
-      },
-      "background": "galacticraftcore:textures/gui/galacticraft_background.png",
-      "frame":"goal"
-   },
-   "criteria":{  
-      "traveled_to_moon":{  
-         "trigger":"minecraft:changed_dimension",
-         "conditions":{  
-            "to":"moon.moon"
-         }
-      }
-   }
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.root.title",
+            "bold": true
+        },
+        "description": {
+            "text": ""
+        },
+        "icon": {
+            "item": "galacticraftcore:rocket_t1",
+            "data": 0
+        },
+        "frame": "task",
+        "show_toast": false,
+        "announce_to_chat": false,
+        "hidden": false,
+        "background": "galacticraftcore:textures/gui/galacticraft_background.png"
+    },
+    "criteria": {
+        "tick": {
+            "trigger": "minecraft:tick"
+        }
+    },
+    "requirements": [
+        [
+            "tick"
+        ]
+    ]
 }

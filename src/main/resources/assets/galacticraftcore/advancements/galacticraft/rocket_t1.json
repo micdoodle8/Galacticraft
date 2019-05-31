@@ -1,0 +1,37 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.rocket_t1.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.rocket_t1.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:rocket_t1",
+            "data": 0
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "rocket_workbench": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_t1",
+                        "data": 0
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "rocket_workbench"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/rocket_workbench"
+}

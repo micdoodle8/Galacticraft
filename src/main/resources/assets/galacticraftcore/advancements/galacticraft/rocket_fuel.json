@@ -1,0 +1,37 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.rocket_fuel.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.rocket_fuel.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:bucket_fuel",
+            "data": 0
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "fuel_bucket": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:bucket_fuel",
+                        "data": 0
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "fuel_bucket"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/refinery"
+}
