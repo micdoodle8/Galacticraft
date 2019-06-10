@@ -67,7 +67,12 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
 
         public static EnumBlockBasic byMetadata(int meta)
         {
-            return values()[meta - 3];
+            int val = meta - 3;
+            if (val < 0 || val >= values().length)
+            {
+                return ALUMINUM_DECORATION_BLOCK_0;
+            }
+            return values()[val];
         }
 
         @Override
