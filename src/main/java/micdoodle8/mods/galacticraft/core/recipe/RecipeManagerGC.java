@@ -536,7 +536,7 @@ public class RecipeManagerGC
                 a.addRecipe(a.builder().withInput(new ItemStack(VenusBlocks.venusBlock, 1, 6)).withOutput(new ItemStack(GCItems.ic2compat, 1, 0)).withFirstOptional(new ItemStack(GCItems.ic2compat, 1, 0), 1.0F).withTurns(8).build());
                 // Grind Ilmenite Ore for 1 Titanium Dust, 1 Iron Dust
                 Optional<ItemStack> ironDust = AEApi.instance().definitions().materials().ironDust().maybeStack(1);
-                a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 4)).withOutput(new ItemStack(AsteroidsItems.basicItem, 1, 9)).withFirstOptional(ironDust.get(), 1.0F).withTurns(8).build());
+                ironDust.ifPresent(dustStack -> a.addRecipe(a.builder().withInput(new ItemStack(AsteroidBlocks.blockBasic, 1, 4)).withOutput(new ItemStack(AsteroidsItems.basicItem, 1, 9)).withFirstOptional(dustStack, 1.0F).withTurns(8).build()));
             }
         } else {
             GCLog.debug("Failed to add Applied Energistics 2 Recipes");
