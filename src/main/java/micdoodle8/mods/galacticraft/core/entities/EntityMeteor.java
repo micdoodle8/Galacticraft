@@ -68,53 +68,53 @@ public class EntityMeteor extends Entity
             this.spawnParticles();
         }
 
-        Vec3d var15 = new Vec3d(this.posX, this.posY, this.posZ);
-        Vec3d var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        RayTraceResult var3 = this.world.rayTraceBlocks(var15, var2, true, true, false);
-        var15 = new Vec3d(this.posX, this.posY, this.posZ);
-        var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d nextPosition = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        RayTraceResult collisionIntercept = this.world.rayTraceBlocks(currentPosition, nextPosition, true, true, false);
+        currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
+        nextPosition = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-        if (var3 != null)
+        if (collisionIntercept != null)
         {
-            var2 = new Vec3d(var3.hitVec.x, var3.hitVec.y, var3.hitVec.z);
+            nextPosition = new Vec3d(collisionIntercept.hitVec.x, collisionIntercept.hitVec.y, collisionIntercept.hitVec.z);
         }
 
-        Entity var4 = null;
-        final List<?> var5 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(2.0D, 2.0D, 2.0D));
-        double var6 = 0.0D;
-        final Iterator<?> var8 = var5.iterator();
-        final double var10 = 0.01D;
+        Entity collidingEntity = null;
+        final List<?> nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(2.0D, 2.0D, 2.0D));
+        double distanceToCollidingEntityIntercept = 0.0D;
+        final Iterator<?> nearbyEntitiesIterator = nearbyEntities.iterator();
+        final double entityBBPadding = 0.01D;
 
-        while (var8.hasNext())
+        while (nearbyEntitiesIterator.hasNext())
         {
-            final Entity var9 = (Entity) var8.next();
+            final Entity nearbyEntity = (Entity) nearbyEntitiesIterator.next();
 
-            if (var9.canBeCollidedWith() && !var9.isEntityEqual(this.shootingEntity))
+            if (nearbyEntity.canBeCollidedWith() && !nearbyEntity.isEntityEqual(this.shootingEntity))
             {
-                final AxisAlignedBB var11 = var9.getEntityBoundingBox().grow(var10, var10, var10);
-                final RayTraceResult var12 = var11.calculateIntercept(var15, var2);
+                final AxisAlignedBB nearbyEntityPaddedBB = nearbyEntity.getEntityBoundingBox().grow(entityBBPadding, entityBBPadding, entityBBPadding);
+                final RayTraceResult nearbyEntityIntercept = nearbyEntityPaddedBB.calculateIntercept(currentPosition, nextPosition);
 
-                if (var12 != null)
+                if (nearbyEntityIntercept != null)
                 {
-                    final double var13 = var15.distanceTo(var12.hitVec);
+                    final double distanceToNearbyEntityIntercept = currentPosition.distanceTo(nearbyEntityIntercept.hitVec);
 
-                    if (var13 < var6 || var6 == 0.0D)
+                    if (distanceToNearbyEntityIntercept < distanceToCollidingEntityIntercept || distanceToCollidingEntityIntercept == 0.0D)
                     {
-                        var4 = var9;
-                        var6 = var13;
+                        collidingEntity = nearbyEntity;
+                        distanceToCollidingEntityIntercept = distanceToNearbyEntityIntercept;
                     }
                 }
             }
         }
 
-        if (var4 != null)
+        if (collidingEntity != null)
         {
-            var3 = new RayTraceResult(var4);
+            collisionIntercept = new RayTraceResult(collidingEntity);
         }
 
-        if (var3 != null)
+        if (collisionIntercept != null)
         {
-            this.onImpact(var3);
+            this.onImpact(collisionIntercept);
         }
 
         if (this.posY <= -20 || this.posY >= 400)
