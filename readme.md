@@ -15,7 +15,7 @@ Download recent and latest Galacticraft for Minecraft 1.12.2, Minecraft 1.11.2, 
 
 ------
 
-##Contributing
+## Contributing
 
 ### Reporting issues
 
