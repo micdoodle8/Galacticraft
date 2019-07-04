@@ -511,7 +511,9 @@ public class TickHandlerServer
                 TickHandlerServer.energyTransmitterUpdates.clear();
                 for (TileBaseConductor newTile : pass)
                 {
-                    if (!newTile.isInvalid())
+                    // I'm not sure why this would be null, but apparently it can be
+                    //      See https://github.com/micdoodle8/Galacticraft/issues/3700
+                    if (newTile != null && !newTile.isInvalid())
                     {
                         newTile.refresh();
                     }
