@@ -2,10 +2,11 @@
     "display": {
         "title": {
             "translate": "advancement.galacticraft.root.title",
-            "bold": true
+            "bold": true,
+            "color": "gray"
         },
         "description": {
-            "text": ""
+            "translate": "advancement.galacticraft.root.description"
         },
         "icon": {
             "item": "galacticraftcore:rocket_t1",

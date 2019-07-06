@@ -1,14 +1,14 @@
 {
     "display": {
         "title": {
-            "translate": "advancement.galacticraft.circuit_fabricator.title"
+            "translate": "advancement.galacticraft.fuel_loader.title"
         },
         "description": {
-            "translate": "advancement.galacticraft.circuit_fabricator.description"
+            "translate": "advancement.galacticraft.fuel_loader.description"
         },
         "icon": {
-            "item": "galacticraftcore:machine2",
-            "data": 4
+            "item": "galacticraftcore:fuel_loader",
+            "data": 0
         },
         "frame": "task",
         "show_toast": true,
@@ -16,13 +16,13 @@
         "hidden": false
     },
     "criteria": {
-        "circuit_fabricator": {
+        "fuel_loader": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "galacticraftcore:machine2",
-                        "data": 4
+                        "item": "galacticraftcore:fuel_loader",
+                        "data": 0
                     }
                 ]
             }
@@ -30,8 +30,8 @@
     },
     "requirements": [
         [
-            "circuit_fabricator"
+            "fuel_loader"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/coal_generator"
+    "parent": "galacticraftcore:galacticraft/rocket_t1"
 }

@@ -28,5 +28,5 @@
             "traveled_to_moon"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/rocket_workbench"
+    "parent": "galacticraftcore:galacticraft/launch_rocket"
 }

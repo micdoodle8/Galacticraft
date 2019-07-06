@@ -62,15 +62,15 @@ repositories {
 }
 
 dependencies {
-	provided "jei:jei_1.12.2:4.13.1.225"
-	provided "mekanism:Mekanism-1.12.2:9.4.13.349:api"
-	provided "applied-energistics-2:appliedenergistics2-rv6:stable:6"
-	provided "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
-	provided "com.mod-buildcraft:buildcraft-api:7.99.21"
-	provided "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
-	provided "actually-additions:ActuallyAdditions:1.12.2:r144"
-	provided "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
-	provided "player-api:PlayerAPI:1.12.1:1.0"
+	compile "jei:jei_1.12.2:4.13.1.225"
+	compile "mekanism:Mekanism-1.12.2:9.4.13.349:api"
+	compile "applied-energistics-2:appliedenergistics2-rv6:stable:6"
+	compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
+	compile "com.mod-buildcraft:buildcraft-api:7.99.21"
+	compile "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
+	compile "actually-additions:ActuallyAdditions:1.12.2:r144"
+	compile "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
+	compile "player-api:PlayerAPI:1.12.1:1.0"
 
 }
 					

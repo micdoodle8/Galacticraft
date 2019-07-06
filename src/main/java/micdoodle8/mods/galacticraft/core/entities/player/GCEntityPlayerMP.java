@@ -1,10 +1,14 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.util.DamageSource;
@@ -88,4 +92,17 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     		super.setInPortal();
     	}
     } TODO Fix disable of portal */
+
+    @Override
+    protected void updatePotionEffects()
+    {
+        super.updatePotionEffects();
+        if (getEntityWorld().provider instanceof IGalacticraftWorldProvider) {
+            for (PotionEffect potionEffect : getActivePotionEffects()) {
+                if (potionEffect.getPotion() == PotionTypes.LEAPING.getEffects().get(0).getPotion()) {
+                    GCTriggers.LOW_GRAVITY_JUMP.trigger(this);
+                }
+            }
+        }
+    }
 }

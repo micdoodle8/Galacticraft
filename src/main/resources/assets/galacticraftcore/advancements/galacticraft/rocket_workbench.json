@@ -10,7 +10,7 @@
             "item": "galacticraftcore:rocket_workbench",
             "data": 0
         },
-        "frame": "goal",
+        "frame": "task",
         "show_toast": true,
         "announce_to_chat": true,
         "hidden": false

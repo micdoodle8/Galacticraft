@@ -12,6 +12,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -241,6 +242,14 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             this.lastLastMotionY = this.lastMotionY;
             this.lastMotionY = this.motionY;
+        }
+
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal()) {
+            if (getPassengers().size() >= 1) { //When the screen changes to the map, the player is not riding the rocket anymore.
+                if (getPassengers().get(0) instanceof EntityPlayerMP) {
+                    GCTriggers.LAUNCH_ROCKET.trigger(((EntityPlayerMP) getPassengers().get(0)));
+                }
+            }
         }
     }
 

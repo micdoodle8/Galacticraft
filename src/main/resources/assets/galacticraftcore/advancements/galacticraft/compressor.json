@@ -33,5 +33,5 @@
             "compressor"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/circuit_fabricator"
+    "parent": "galacticraftcore:galacticraft/basic_wafer"
 }

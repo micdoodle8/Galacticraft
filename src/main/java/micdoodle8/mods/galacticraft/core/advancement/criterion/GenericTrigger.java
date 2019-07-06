@@ -1,0 +1,168 @@
+package micdoodle8.mods.galacticraft.core.advancement.criterion;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonObject;
+
+import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.advancements.ICriterionTrigger;
+import net.minecraft.advancements.PlayerAdvancements;
+import net.minecraft.advancements.critereon.AbstractCriterionInstance;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ResourceLocation;
+
+/**
+ * This is a generic advancement trigger that has no checks.
+ */
+public class GenericTrigger implements ICriterionTrigger
+{
+    private final ResourceLocation id;
+    private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
+
+    public GenericTrigger(String id)
+    {
+        super();
+        this.id = new ResourceLocation(Constants.ASSET_PREFIX, id);
+    }
+
+    @Override
+    public ResourceLocation getId()
+    {
+        return id;
+    }
+
+    @Override
+    public void addListener(PlayerAdvancements playerAdvancements, ICriterionTrigger.Listener listener)
+    {
+        Listeners myCustomTrigger$listeners = listeners.get(playerAdvancements);
+
+        if (myCustomTrigger$listeners == null)
+        {
+            myCustomTrigger$listeners = new Listeners(playerAdvancements);
+            listeners.put(playerAdvancements, myCustomTrigger$listeners);
+        }
+
+        myCustomTrigger$listeners.add(listener);
+    }
+
+    @Override
+    public void removeListener(PlayerAdvancements advancements, ICriterionTrigger.Listener listener)
+    {
+        Listeners tameanimaltrigger$listeners = listeners.get(advancements);
+
+        if (tameanimaltrigger$listeners != null)
+        {
+            tameanimaltrigger$listeners.remove(listener);
+
+            if (tameanimaltrigger$listeners.isEmpty())
+            {
+                listeners.remove(advancements);
+            }
+        }
+    }
+
+    @Override
+    public void removeAllListeners(PlayerAdvancements advancements)
+    {
+        listeners.remove(advancements);
+    }
+
+    /**
+     * Deserialize a ICriterionInstance of this trigger from the data in the JSON.
+     *
+     * @param json the json
+     * @param context the context
+     * @return the tame bird trigger. instance
+     */
+    @Override
+    public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context)
+    {
+        return new Instance(getId());
+    }
+
+    /**
+     * Trigger.
+     *
+     * @param playerMP the player
+     */
+    public void trigger(EntityPlayerMP playerMP)
+    {
+        Listeners tameanimaltrigger$listeners = listeners.get(playerMP.getAdvancements());
+
+        if (tameanimaltrigger$listeners != null)
+        {
+            tameanimaltrigger$listeners.trigger(playerMP);
+        }
+    }
+
+    public static class Instance extends AbstractCriterionInstance
+    {
+        public Instance(ResourceLocation resourceLocation)
+        {
+            super(resourceLocation);
+        }
+
+        public boolean test(EntityPlayerMP player)
+        {
+            return true;
+        }
+    }
+
+    static class Listeners
+    {
+        private final PlayerAdvancements playerAdvancements;
+        private final Set<ICriterionTrigger.Listener> listeners = Sets.newHashSet();
+
+        public Listeners(PlayerAdvancements advancements)
+        {
+            playerAdvancements = advancements;
+        }
+
+        public boolean isEmpty()
+        {
+            return listeners.isEmpty();
+        }
+
+        public void add(ICriterionTrigger.Listener listener)
+        {
+            listeners.add(listener);
+        }
+
+        public void remove(ICriterionTrigger.Listener listener)
+        {
+            listeners.remove(listener);
+        }
+
+        public void trigger(EntityPlayerMP player)
+        {
+            ArrayList<ICriterionTrigger.Listener> list = null;
+
+            for (ICriterionTrigger.Listener listener : listeners)
+            {
+                if (listener.getCriterionInstance() instanceof Instance) {
+                    if (((Instance) listener.getCriterionInstance()).test(player)) {
+                        if (list == null) {
+                            list = Lists.newArrayList();
+                        }
+
+                        list.add(listener);
+                    }
+                }
+            }
+
+            if (list != null)
+            {
+                for (ICriterionTrigger.Listener listener1 : list)
+                {
+                    listener1.grantCriterion(playerAdvancements);
+                }
+            }
+        }
+    }
+}

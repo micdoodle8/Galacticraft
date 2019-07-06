@@ -1,13 +1,13 @@
 {
     "display": {
         "title": {
-            "translate": "advancement.galacticraft.solar.title"
+            "translate": "advancement.galacticraft.moon_buggy_schematic.title"
         },
         "description": {
-            "translate": "advancement.galacticraft.solar.description"
+            "translate": "advancement.galacticraft.moon_buggy_schematic.description"
         },
         "icon": {
-            "item": "galacticraftcore:solar",
+            "item": "galacticraftcore:schematic",
             "data": 0
         },
         "frame": "task",
@@ -15,13 +15,13 @@
         "announce_to_chat": true,
         "hidden": false
     },
-    "criteria": {
-        "compressor": {
+    "criteria":{
+        "got_schematic":{
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "galacticraftcore:solar",
+                        "item": "galacticraftcore:schematic",
                         "data": 0
                     }
                 ]
@@ -30,8 +30,8 @@
     },
     "requirements": [
         [
-            "compressor"
+            "got_schematic"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/coal_generator"
+    "parent": "galacticraftcore:galacticraft/key_t1"
 }

@@ -1,27 +1,27 @@
 {
     "display": {
         "title": {
-            "translate": "advancement.galacticraft.advanced_solar.title"
+            "translate": "advancement.galacticraft.moon_buggy.title"
         },
         "description": {
-            "translate": "advancement.galacticraft.advanced_solar.description"
+            "translate": "advancement.galacticraft.moon_buggy.description"
         },
         "icon": {
-            "item": "galacticraftcore:solar",
+            "item": "galacticraftcore:buggy",
             "data": 0
         },
-        "frame": "task",
+        "frame": "goal",
         "show_toast": true,
         "announce_to_chat": true,
         "hidden": false
     },
-    "criteria": {
-        "advanced_solar": {
+    "criteria":{
+        "got_buggy":{
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "galacticraftcore:solar",
+                        "item": "galacticraftcore:buggy",
                         "data": 0
                     }
                 ]
@@ -30,8 +30,8 @@
     },
     "requirements": [
         [
-            "advanced_solar"
+            "got_buggy"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/basic_solar"
+    "parent": "galacticraftcore:galacticraft/moon_buggy_schematic"
 }

@@ -2,9 +2,13 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import api.player.server.ServerPlayerAPI;
 import api.player.server.ServerPlayerBase;
+import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
+import net.minecraft.init.PotionTypes;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 
 public class GCPlayerBaseMP extends ServerPlayerBase
@@ -70,5 +74,18 @@ public class GCPlayerBaseMP extends ServerPlayerBase
     public void knockBack(Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
         this.getClientHandler().knockBack(this.player, p_70653_1_, p_70653_2_, impulseX, impulseZ);
+    }
+
+    @Override
+    public void updatePotionEffects()
+    {
+        super.updatePotionEffects();
+        if (player.getEntityWorld().provider instanceof IGalacticraftWorldProvider) {
+            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
+                if (potionEffect.getPotion() == PotionTypes.LEAPING.getEffects().get(0).getPotion()) {
+                    GCTriggers.LOW_GRAVITY_JUMP.trigger(player);
+                }
+            }
+        }
     }
 }

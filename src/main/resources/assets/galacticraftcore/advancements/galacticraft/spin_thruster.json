@@ -1,28 +1,28 @@
 {
     "display": {
         "title": {
-            "translate": "advancement.galacticraft.circuit_fabricator.title"
+            "translate": "advancement.galacticraft.spin_thruster.title"
         },
         "description": {
-            "translate": "advancement.galacticraft.circuit_fabricator.description"
+            "translate": "advancement.galacticraft.spin_thruster.description"
         },
         "icon": {
-            "item": "galacticraftcore:machine2",
-            "data": 4
+            "item": "galacticraftcore:spin_thruster",
+            "data": 0
         },
         "frame": "task",
         "show_toast": true,
         "announce_to_chat": true,
         "hidden": false
     },
-    "criteria": {
-        "circuit_fabricator": {
+    "criteria":{
+        "spin_thruster":{
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "galacticraftcore:machine2",
-                        "data": 4
+                        "item": "galacticraftcore:spin_thruster",
+                        "data": 0
                     }
                 ]
             }
@@ -30,8 +30,8 @@
     },
     "requirements": [
         [
-            "circuit_fabricator"
+            "spin_thruster"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/coal_generator"
+    "parent": "galacticraftcore:galacticraft/moon"
 }

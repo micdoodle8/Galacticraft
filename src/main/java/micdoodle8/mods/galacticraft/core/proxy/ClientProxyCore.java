@@ -882,8 +882,6 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                 if (line.contains(":")) {
                     int splitLocation = line.indexOf(":");
                     String uuid = line.substring(0, splitLocation);
-                    System.out.println(uuid);
-                    System.out.println(convertCapeString(line.substring(splitLocation + 1)));
                     capeMap.put(uuid, new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
                 }
             }

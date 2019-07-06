@@ -1,0 +1,30 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.low_gravity_jump_boost.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.low_gravity_jump_boost.description"
+        },
+        "icon": {
+            "item": "minecraft:skull",
+            "data": 3,
+            "nbt": "{SkullOwner:\"MHF_Slime\"}"
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": true
+    },
+    "criteria":{
+        "jump_boost_in_low_gravity":{
+            "trigger":"galacticraftcore:low_gravity_jump"
+        }
+    },
+    "requirements": [
+        [
+            "jump_boost_in_low_gravity"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/launch_rocket"
+}

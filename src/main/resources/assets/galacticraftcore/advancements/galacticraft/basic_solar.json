@@ -1,14 +1,14 @@
 {
     "display": {
         "title": {
-            "translate": "advancement.galacticraft.circuit_fabricator.title"
+            "translate": "advancement.galacticraft.solar.title"
         },
         "description": {
-            "translate": "advancement.galacticraft.circuit_fabricator.description"
+            "translate": "advancement.galacticraft.solar.description"
         },
         "icon": {
-            "item": "galacticraftcore:machine2",
-            "data": 4
+            "item": "galacticraftcore:solar",
+            "data": 0
         },
         "frame": "task",
         "show_toast": true,
@@ -16,13 +16,13 @@
         "hidden": false
     },
     "criteria": {
-        "circuit_fabricator": {
+        "solar": {
             "trigger": "minecraft:inventory_changed",
             "conditions": {
                 "items": [
                     {
-                        "item": "galacticraftcore:machine2",
-                        "data": 4
+                        "item": "galacticraftcore:solar",
+                        "data": 0
                     }
                 ]
             }
@@ -30,8 +30,8 @@
     },
     "requirements": [
         [
-            "circuit_fabricator"
+            "solar"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/coal_generator"
+    "parent": "galacticraftcore:galacticraft/basic_wafer"
 }
