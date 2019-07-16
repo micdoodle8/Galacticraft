@@ -36,6 +36,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
     private boolean noAtmosphericOxygen = true;
     private boolean isInitialised = false;
     private boolean producedLastTick = false;
+    public static float oxygenPerPlant = 0.075F * 10F;
 
     public TileEntityOxygenCollector()
     {
@@ -167,7 +168,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                             BlockPos pos = new BlockPos(x, y, z);
                                             if (state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.world, pos) == EnumPlantType.Crop)
                                             {
-                                                nearbyLeaves += 0.075F * 10F;
+                                                nearbyLeaves += oxygenPerPlant;
                                             }
                                         }
                                     }
