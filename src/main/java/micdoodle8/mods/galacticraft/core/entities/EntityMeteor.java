@@ -30,7 +30,7 @@ import java.util.List;
 
 public class EntityMeteor extends Entity
 {
-    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityMeteor.class, DataSerializers.VARINT);
     public EntityLiving shootingEntity;
     public int size;
 
