@@ -30,6 +30,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 {
     public boolean active;
     public static final int OUTPUT_PER_TICK = 100;
+    public static final float OXYGEN_PER_PLANT = 0.75F;
     @NetworkedField(targetSide = Side.CLIENT)
     public float lastOxygenCollected;
     private boolean noAtmosphericOxygen = true;
@@ -167,7 +168,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
                                             BlockPos pos = new BlockPos(x, y, z);
                                             if (state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.world, pos) == EnumPlantType.Crop)
                                             {
-                                                nearbyLeaves += 0.075F * 10F;
+                                                nearbyLeaves += OXYGEN_PER_PLANT;
                                             }
                                         }
                                     }
