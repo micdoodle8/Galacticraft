@@ -1,6 +1,6 @@
 <p align="center"><img src="https://cloud.githubusercontent.com/assets/6842258/25335525/4f21552e-28eb-11e7-91bb-de5e1ef602da.jpg"></p>
 
-Galacticraft
+Galacticraft [![Build Status](https://ci.micdoodle8.com/job/Galacticraft-1.12/badge/icon?style=flat-square)](https://micdoodle8.com/mods/galacticraft/downloads) [![Join our Discord!](https://img.shields.io/discord/449966345665249290.svg?color=blue&label=Discord&logo=discord&style=flat-square)](https://discord.gg/YBVne7R) [![Support the devs!](https://img.shields.io/badge/Patreon-Support-orange.svg?style=flat-square)](https://www.patreon.com/micdoodle8)
 ============
 
 An advanced space exploration mod for Minecraft.
@@ -15,9 +15,18 @@ Download recent and latest Galacticraft for Minecraft 1.12.2, Minecraft 1.11.2, 
 
 ------
 
-## Reporting issues
+## Contributing
+
+### Reporting issues
 
 Before reporting an issue, please read [Notes for Contributors](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md) and follow the six guidelines given.
+
+------
+### Pull Requests
+
+Pull Requests to help with Galacticraft development are extremely welcome. [Guide to making a PR](https://gist.github.com/radfast/7ea7577fe2c0fdae1ac90d4b26d6198c)
+
+For Pull Requests to help with translation, see [Notes for Contributors](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md)
 
 ------
 
@@ -38,11 +47,3 @@ We welcome inclusion of Galacticraft in modpacks.  [Modpack permission and setup
 ## License
 
 Galacticraft is open source and free for everyone for non-commercial use.  (But distribution of Galacticraft in modified form is not permitted.)  Full license can be found [here](https://github.com/micdoodle8/Galacticraft/blob/master/LICENSE.txt)
-
-------
-
-## Pull Requests
-
-Pull Requests to help with Galacticraft development are extremely welcome. [Guide to making a PR](https://gist.github.com/radfast/7ea7577fe2c0fdae1ac90d4b26d6198c)
-
-For Pull Requests to help with translation, see [Notes for Contributors](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md)
