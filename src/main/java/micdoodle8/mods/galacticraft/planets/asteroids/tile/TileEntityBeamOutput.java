@@ -30,6 +30,11 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     private BlockPos preLoadTarget = null;
     private BlockPos lastTargetVec = new BlockPos(-1, -1, -1);
 
+    public TileEntityBeamOutput(String tileName)
+    {
+        super(tileName);
+    }
+
     @Override
     public void update()
     {

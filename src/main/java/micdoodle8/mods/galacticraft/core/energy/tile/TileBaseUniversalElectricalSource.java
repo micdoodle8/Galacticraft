@@ -30,8 +30,13 @@ import java.util.EnumSet;
 
 import buildcraft.api.mj.MjAPI;
 
-public class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
+public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversalElectrical
 {
+    public TileBaseUniversalElectricalSource(String tileName)
+    {
+        super(tileName);
+    }
+
     /*
      * The main function to output energy each tick from a source.
      *

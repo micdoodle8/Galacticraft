@@ -22,6 +22,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,7 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
+public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
     private static final DataParameter<Integer> CURRENT_DAMAGE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
@@ -78,6 +79,8 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     private IFuelDock landingPad;
     private int timeClimbing;
     private boolean shouldClimb;
+
+
 
     public EntityBuggy(World var1)
     {
@@ -576,6 +579,41 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     @Override
     public void markDirty()
     {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
     }
 
     @Override

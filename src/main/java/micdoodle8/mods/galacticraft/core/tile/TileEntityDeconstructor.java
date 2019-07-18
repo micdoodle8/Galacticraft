@@ -49,8 +49,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(11, ItemStack.EMPTY);
-    
     public static List<ItemStack> salvageable = new LinkedList<>();
     public static List<INasaWorkbenchRecipe> knownRecipes = new LinkedList<>();
     private int recursiveCount;
@@ -105,8 +103,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     public TileEntityDeconstructor()
     {
+        super("tile.machine2.10.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
         this.setTierGC(2);
+        this.inventory = NonNullList.withSize(11, ItemStack.EMPTY);
     }
 
     public static void addSalvage(ItemStack itemStack)
@@ -177,13 +177,13 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
 
     private boolean canDeconstruct()
     {
-        return !this.stacks.get(1).isEmpty();
+        return !this.getInventory().get(1).isEmpty();
     }
 
     public void deconstruct()
     {
         List<ItemStack> ingredients = new LinkedList<>();
-        ingredients.add(new ItemStack(this.stacks.get(1).getItem(), 1, this.stacks.get(1).getItemDamage()));
+        ingredients.add(new ItemStack(this.getInventory().get(1).getItem(), 1, this.getInventory().get(1).getItemDamage()));
         this.recursiveCount = 0;
         List<ItemStack> salvaged = this.getSalvageable(ingredients);
         salvaged = this.squashList(salvaged);
@@ -409,22 +409,22 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         for (int i = 2; i < 11; i++)
         {
-            if (this.stacks.get(i).isEmpty())
+            if (this.getInventory().get(i).isEmpty())
             {
-                this.stacks.set(i, stack);
+                this.getInventory().set(i, stack);
                 return;
             }
-            if (!(ItemStack.areItemsEqual(stack, this.stacks.get(i))))
+            if (!(ItemStack.areItemsEqual(stack, this.getInventory().get(i))))
             {
                 continue;
             }
-            int size = this.stacks.get(i).getCount();
+            int size = this.getInventory().get(i).getCount();
             if (size + stack.getCount() < this.getInventoryStackLimit())
             {
-                this.stacks.get(i).grow(stack.getCount());
+                this.getInventory().get(i).grow(stack.getCount());
                 return;
             }
-            this.stacks.get(i).setCount(this.getInventoryStackLimit());
+            this.getInventory().get(i).setCount(this.getInventoryStackLimit());
             stack.shrink(this.getInventoryStackLimit() - size);
         }
         GCCoreUtil.spawnItem(this.world, this.getPos(), stack);
@@ -435,19 +435,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         super.readFromNBT(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
-        NBTTagList var2 = par1NBTTagCompound.getTagList("Items", 10);
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-
-        for (int i = 0; i < var2.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound = var2.getCompoundTagAt(i);
-            int j = nbttagcompound.getByte("Slot") & 255;
-
-            if (j >= 0 && j < this.stacks.size())
-            {
-                this.stacks.set(j, new ItemStack(nbttagcompound));
-            }
-        }
         
         this.readMachineSidesFromNBT(par1NBTTagCompound);  //Needed by IMachineSides
     }
@@ -457,143 +444,10 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        NBTTagList var2 = new NBTTagList();
-        int var3;
-
-        for (var3 = 0; var3 < this.stacks.size(); ++var3)
-        {
-            if (!this.stacks.get(var3).isEmpty())
-            {
-                NBTTagCompound var4 = new NBTTagCompound();
-                var4.setByte("Slot", (byte) var3);
-                this.stacks.get(var3).writeToNBT(var4);
-                var2.appendTag(var4);
-            }
-        }
-        nbt.setTag("Items", var2);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
     }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int par1)
-    {
-    	return this.stacks.get(par1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (!this.stacks.get(par1).isEmpty())
-        {
-            ItemStack var3;
-
-            if (this.stacks.get(par1).getCount() <= par2)
-            {
-                var3 = this.stacks.get(par1);
-                this.stacks.set(par1, ItemStack.EMPTY);
-                this.markDirty();
-                return var3;
-            }
-            else
-            {
-                var3 = this.stacks.get(par1).splitStack(par2);
-
-                if (this.stacks.get(par1).isEmpty())
-                {
-                    this.stacks.set(par1, ItemStack.EMPTY);
-                }
-
-                this.markDirty();
-                return var3;
-            }
-        }
-        else
-        {
-            return ItemStack.EMPTY;
-        }
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int par1)
-    {
-        if (par1 >= this.stacks.size())
-        {
-        	return ItemStack.EMPTY;
-        }
-
-        if (!this.stacks.get(par1).isEmpty())
-        {
-            ItemStack var2 = this.stacks.get(par1);
-            this.stacks.set(par1, ItemStack.EMPTY);
-            this.markDirty();
-            return var2;
-        }
-        else
-        {
-        	return ItemStack.EMPTY;
-        }
-    }
-
-    @Override
-    public void setInventorySlotContents(int par1, ItemStack stack)
-    {
-        if (par1 < this.stacks.size())
-        {
-            this.stacks.set(par1, stack);
-
-            if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
-            {
-                stack.setCount(this.getInventoryStackLimit());
-            }
-        }
-        this.markDirty();
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine2.10.name");
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer entityplayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-//    @Override
-//    public boolean hasCustomName()
-//    {
-//        return true;
-//    }
 
     @Override
     public boolean isItemValidForSlot(int slotID, ItemStack itemStack)
@@ -615,12 +469,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         }
         
         return new int[] { 1 };
-    }
-
-    @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
-    {
-        return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override

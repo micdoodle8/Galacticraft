@@ -70,6 +70,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
      */
     public TileEntitySolar(int tier)
     {
+        super(tier == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
         this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
         if (tier == 2)
@@ -474,12 +475,6 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate(this.tierGC == 1 ? "container.solarbasic.name" : "container.solaradvanced.name");
     }
 
     @Override

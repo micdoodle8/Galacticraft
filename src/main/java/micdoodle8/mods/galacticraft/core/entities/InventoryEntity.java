@@ -2,13 +2,17 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
-public abstract class InventoryEntity extends NetworkedEntity implements IInventoryDefaults
+public abstract class InventoryEntity extends NetworkedEntity implements IInventory
 {
     protected NonNullList<ItemStack> stacks = NonNullList.withSize(0, ItemStack.EMPTY);
 
@@ -97,5 +101,54 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     public boolean isUsableByPlayer(EntityPlayer entityplayer)
     {
         return true;
+    }
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+        for (int i = 0; i < this.stacks.size(); ++i)
+        {
+            this.stacks.set(i, ItemStack.EMPTY);
+        }
+    }
+
+    @Override
+    public boolean hasCustomName()
+    {
+        return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
     }
 }

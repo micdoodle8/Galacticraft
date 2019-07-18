@@ -24,7 +24,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable, ILockable
 {
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(15, ItemStack.EMPTY);
     public boolean outOfItems;
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean targetFull;
@@ -39,7 +38,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
     public TileEntityCargoLoader()
     {
+        super("container.cargoloader.name");
         this.storage.setMaxExtract(45);
+        this.inventory = NonNullList.withSize(15, ItemStack.EMPTY);
     }
 
     @Override
@@ -124,7 +125,6 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.stacks = this.readStandardItemsFromNBT(nbt);
         this.locked = nbt.getBoolean("locked");
     }
 
@@ -132,21 +132,8 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, stacks);
         nbt.setBoolean("locked", this.locked);
         return nbt;
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.cargoloader.name");
     }
 
     @Override
@@ -209,9 +196,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
 
     public RemovalResult removeCargo(boolean doRemove)
     {
-        for (int i = 1; i < this.stacks.size(); i++)
+        for (int i = 1; i < this.getInventory().size(); i++)
         {
-            ItemStack stackAt = this.stacks.get(i);
+            ItemStack stackAt = this.getInventory().get(i);
 
             if (!stackAt.isEmpty())
             {
@@ -223,7 +210,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
                     stackAt.shrink(1);
                     if (stackAt.isEmpty())
                     {
-                        this.stacks.set(i, ItemStack.EMPTY);
+                        this.getInventory().set(i, ItemStack.EMPTY);
                     }
                 }
 
@@ -244,9 +231,9 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         int count = 1;
 
-        for (count = 1; count < this.stacks.size(); count++)
+        for (count = 1; count < this.getInventory().size(); count++)
         {
-            ItemStack stackAt = this.stacks.get(count);
+            ItemStack stackAt = this.getInventory().get(count);
 
             if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
@@ -284,15 +271,15 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
             }
         }
 
-        for (count = 1; count < this.stacks.size(); count++)
+        for (count = 1; count < this.getInventory().size(); count++)
         {
-            ItemStack stackAt = this.stacks.get(count);
+            ItemStack stackAt = this.getInventory().get(count);
 
             if (stackAt.isEmpty())
             {
                 if (doAdd)
                 {
-                    this.stacks.set(count, stack);
+                    this.getInventory().set(count, stack);
                     this.markDirty();
                 }
 
@@ -331,7 +318,7 @@ public class TileEntityCargoLoader extends TileBaseElectricBlockWithInventory im
     {
         for (int i = 1; i < 15; i++)
         {
-            this.stacks.set(i, ItemStack.EMPTY);
+            this.getInventory().set(i, ItemStack.EMPTY);
         }
     }
 

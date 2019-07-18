@@ -77,7 +77,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
     public TileEntityShortRangeTelepad()
     {
-        super();
+        super("container.short_range_telepad.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
     }
 
@@ -350,12 +350,6 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.short_range_telepad.name");
     }
 
     @Override

@@ -33,6 +33,17 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public int modeReceive = ReceiverMode.UNDEFINED.ordinal();
     public Vector3 color = new Vector3(0, 1, 0);
 
+    public TileEntityBeamReceiver()
+    {
+        super("container.beam_receiver.name");
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
     @Override
     public void update()
     {

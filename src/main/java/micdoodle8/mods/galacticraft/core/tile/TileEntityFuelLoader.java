@@ -35,13 +35,14 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     private final int tankCapacity = 12000;
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public IFuelable attachedFuelable;
     private boolean loadedFuelLastTick = false;
 
     public TileEntityFuelLoader()
     {
+        super("container.fuelloader.name");
         this.storage.setMaxExtract(30);
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     public int getScaledFuelLevel(int i)
@@ -60,10 +61,10 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         {
             this.loadedFuelLastTick = false;
 
-            final FluidStack liquidContained = FluidUtil.getFluidContained(this.stacks.get(1));
+            final FluidStack liquidContained = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isFuel(liquidContained))
             {
-                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.stacks, 1, liquidContained.amount);
+                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.getInventory(), 1, liquidContained.amount);
             }
 
             if (this.ticks % 100 == 0)
@@ -112,7 +113,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public void readFromNBT(NBTTagCompound par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
-        this.stacks = this.readStandardItemsFromNBT(par1NBTTagCompound);
 
         if (par1NBTTagCompound.hasKey("fuelTank"))
         {
@@ -126,7 +126,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.fuelTank.getFluid() != null)
         {
@@ -136,18 +135,6 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         return nbt;
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.fuelloader.name");
     }
 
     @Override

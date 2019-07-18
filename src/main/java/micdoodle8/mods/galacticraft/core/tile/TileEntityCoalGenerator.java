@@ -53,6 +53,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     public TileEntityCoalGenerator()
     {
+        super("tile.machine.0.name");
         this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
     }
 
@@ -183,12 +184,6 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         }
 
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine.0.name");
     }
 
     @Override

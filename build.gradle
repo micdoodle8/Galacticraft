@@ -62,7 +62,7 @@ repositories {
 }
 
 dependencies {
-	compile "jei:jei_1.12.2:4.13.1.225"
+	compile "jei:jei_1.12.2:4.15.0.268"
 	compile "mekanism:Mekanism-1.12.2:9.4.13.349:api"
 	compile "applied-energistics-2:appliedenergistics2-rv6:stable:6"
 	compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"

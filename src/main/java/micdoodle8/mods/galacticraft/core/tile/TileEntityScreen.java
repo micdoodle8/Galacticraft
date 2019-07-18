@@ -43,6 +43,17 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     public boolean refreshOnUpdate = false;
     private AxisAlignedBB renderAABB;
 
+    public TileEntityScreen()
+    {
+        super("tile.view_screen.name");
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
     public void setConnectedUp(boolean connectedUpL)
     {
         this.connectedUp = connectedUpL;

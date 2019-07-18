@@ -40,7 +40,6 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
 
     private boolean initialised = false;
@@ -48,6 +47,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     public TileEntityElectricFurnace()
     {
         this(1);
+        this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }
 
     /*
@@ -55,6 +55,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public TileEntityElectricFurnace(int tier)
     {
+        super(tier == 1 ? "tile.machine.2.name" : "tile.machine.7.name");
         this.initialised = true;
         if (tier == 1)
         {
@@ -147,11 +148,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.stacks.get(1).isEmpty())
+        if (this.getInventory().get(1).isEmpty())
         {
             return false;
         }
-        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1));
+        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
         if (result.isEmpty())
         {
             return false;
@@ -160,25 +161,25 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
 
 		if (this.tierGC == 1)
         {
-	        if (!this.stacks.get(2).isEmpty())
+	        if (!this.getInventory().get(2).isEmpty())
             {
-                return (this.stacks.get(2).isItemEqual(result) && this.stacks.get(2).getCount() < 64);
+                return (this.getInventory().get(2).isItemEqual(result) && this.getInventory().get(2).getCount() < 64);
             }
         }
         
         //Electric Arc Furnace
-        if (this.stacks.get(2).isEmpty() || this.stacks.get(3).isEmpty())
+        if (this.getInventory().get(2).isEmpty() || this.getInventory().get(3).isEmpty())
         {
             return true;
         }
         int space = 0;
-        if (this.stacks.get(2).isItemEqual(result))
+        if (this.getInventory().get(2).isItemEqual(result))
         {
-            space = 64 - this.stacks.get(2).getCount();
+            space = 64 - this.getInventory().get(2).getCount();
         }
-        if (this.stacks.get(3).isItemEqual(result))
+        if (this.getInventory().get(3).isItemEqual(result))
         {
-            space += 64 - this.stacks.get(3).getCount();
+            space += 64 - this.getInventory().get(3).getCount();
         }
         return space >= 2;
     }
@@ -191,11 +192,11 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         if (this.canProcess())
         {
-            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.stacks.get(1));
+            ItemStack resultItemStack = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
             boolean doubleResult = false;
             if (this.tierGC > 1)
             {
-                String nameSmelted = this.stacks.get(1).getUnlocalizedName().toLowerCase();
+                String nameSmelted = this.getInventory().get(1).getUnlocalizedName().toLowerCase();
                 if ((resultItemStack.getUnlocalizedName().toLowerCase().contains("ingot") || resultItemStack.getItem() == Items.QUARTZ) && (nameSmelted.contains("ore") || nameSmelted.contains("raw") || nameSmelted.contains("moon") || nameSmelted.contains("mars") || nameSmelted.contains("shard")))
                 {
                     doubleResult = true;
@@ -206,46 +207,46 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             {
                 int space2 = 0;
                 int space3 = 0;
-                if (this.stacks.get(2).isEmpty())
+                if (this.getInventory().get(2).isEmpty())
                 {
-                    this.stacks.set(2, resultItemStack.copy());
-                    this.stacks.get(2).grow(resultItemStack.getCount());
+                    this.getInventory().set(2, resultItemStack.copy());
+                    this.getInventory().get(2).grow(resultItemStack.getCount());
                     space2 = 2;
                 }
-                else if (this.stacks.get(2).isItemEqual(resultItemStack))
+                else if (this.getInventory().get(2).isItemEqual(resultItemStack))
                 {
-                    space2 = (64 - this.stacks.get(2).getCount()) / resultItemStack.getCount();
+                    space2 = (64 - this.getInventory().get(2).getCount()) / resultItemStack.getCount();
                     if (space2 > 2) space2 = 2;
-                    this.stacks.get(2).grow(resultItemStack.getCount() * space2);
+                    this.getInventory().get(2).grow(resultItemStack.getCount() * space2);
                 }
                 if (space2 < 2)
                 {
-                    if (this.stacks.get(3).isEmpty())
+                    if (this.getInventory().get(3).isEmpty())
                     {
-                        this.stacks.set(3, resultItemStack.copy());
+                        this.getInventory().set(3, resultItemStack.copy());
                         if (space2 == 0)
                         {
-                            this.stacks.get(3).grow(resultItemStack.getCount());
+                            this.getInventory().get(3).grow(resultItemStack.getCount());
                         }
                     }
-                    else if (this.stacks.get(3).isItemEqual(resultItemStack))
+                    else if (this.getInventory().get(3).isItemEqual(resultItemStack))
                     {
-                        space3 = (64 - this.stacks.get(3).getCount()) / resultItemStack.getCount();
+                        space3 = (64 - this.getInventory().get(3).getCount()) / resultItemStack.getCount();
                         if (space3 > 2 - space2) space3 = 2 - space2;
-                        this.stacks.get(3).grow(resultItemStack.getCount() * space3);
+                        this.getInventory().get(3).grow(resultItemStack.getCount() * space3);
                     }
                 }
             }
-            else if (this.stacks.get(2).isEmpty())
+            else if (this.getInventory().get(2).isEmpty())
             {
-                this.stacks.set(2, resultItemStack.copy());
+                this.getInventory().set(2, resultItemStack.copy());
             }
-            else if (this.stacks.get(2).isItemEqual(resultItemStack))
+            else if (this.getInventory().get(2).isItemEqual(resultItemStack))
             {
-                this.stacks.get(2).grow(resultItemStack.getCount());
+                this.getInventory().get(2).grow(resultItemStack.getCount());
             }
 
-            this.stacks.get(1).shrink(1);
+            this.getInventory().get(1).shrink(1);
         }
     }
 
@@ -263,8 +264,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             this.initialised = false;
         }
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.stacks = this.readStandardItemsFromNBT(nbt);
-        
+
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
@@ -277,28 +277,15 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         }
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
-        
+
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         return nbt;
     }
 
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
     public int getSizeInventory()
     {
         return this.tierGC == 1 && this.initialised ? 3 : 4;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.2.name" : "tile.machine.7.name");
     }
 
 //    @Override

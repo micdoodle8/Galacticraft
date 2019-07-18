@@ -47,6 +47,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
      */
     public TileEntityEnergyStorageModule(int tier)
     {
+        super(tier == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
         this.initialised = true;
         if (tier == 1)
         {
@@ -218,12 +219,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         }
 
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate(this.tierGC == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
     }
 
     @Override

@@ -8,6 +8,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -35,11 +36,19 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
     public TileEntityDungeonSpawner()
     {
+        this(null);
     }
 
     public TileEntityDungeonSpawner(Class<E> bossClass)
     {
+        super("tile.gcdungeonspawner.name");
         this.bossClass = bossClass;
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
     }
 
     @Override

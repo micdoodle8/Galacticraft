@@ -2,11 +2,15 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
-public class InventoryBuggyBench implements IInventoryDefaults
+public class InventoryBuggyBench implements IInventory
 {
     private final NonNullList<ItemStack> stackList;
     private final int inventoryWidth;
@@ -141,5 +145,34 @@ public class InventoryBuggyBench implements IInventoryDefaults
         }
 
         return true;
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
     }
 }

@@ -42,7 +42,13 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
 
     public TileEntityFluidPipe()
     {
-        super(100);
+        super("tile.fluid_pipe.name", 100);
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
     }
 
     @Override

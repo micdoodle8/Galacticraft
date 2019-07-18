@@ -34,7 +34,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
-public class TileEntityOxygenSealer extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, ITileClientUpdates
+public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileClientUpdates
 {
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean sealed;
@@ -44,7 +44,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean active;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
     public ThreadFindSeal threadSeal;
     @NetworkedField(targetSide = Side.CLIENT)
     public int stopSealThreadCooldown;
@@ -62,11 +61,12 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
 
     public TileEntityOxygenSealer()
     {
-        super(10000, UNSEALED_OXYGENPERTICK);
+        super("container.oxygensealer.name", 10000, UNSEALED_OXYGENPERTICK);
         this.noRedstoneControl = true;
         this.storage.setMaxExtract(5.0F);  //Half of a standard machine's power draw
         this.storage.setMaxReceive(25.0F);
         this.storage.setCapacity(EnergyStorageTile.STANDARD_CAPACITY * 2);  //Large capacity so it can keep working for a while even if chunk unloads affect its power supply
+        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
     @Override
@@ -228,104 +228,6 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements IInvento
         TileEntityOxygenSealer.countEntities = TileEntityOxygenSealer.countTemp;
         TileEntityOxygenSealer.countTemp = 0;
         TileEntityOxygenSealer.sealerCheckedThisTick = false;
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
-        return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.oxygensealer.name");
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     // ISidedInventory Implementation:

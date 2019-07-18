@@ -45,6 +45,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     public TileEntityGeothermalGenerator()
     {
+        super("container.geothermal_generator.name");
         this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
     }
@@ -202,12 +203,6 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.geothermal_generator.name");
     }
 
     @Override

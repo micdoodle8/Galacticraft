@@ -157,10 +157,10 @@ public class EntityParachest extends Entity implements IPacketReceiver
         {
             final TileEntityParaChest chest = (TileEntityParaChest) te;
 
-            chest.stacks = NonNullList.withSize(this.cargo.size() + 1, ItemStack.EMPTY);
+            chest.inventory = NonNullList.withSize(this.cargo.size() + 1, ItemStack.EMPTY);
             chest.color = this.color;
 
-            Collections.copy(chest.stacks, this.cargo);
+            Collections.copy(chest.getInventory(), this.cargo);
 //            System.arraycopy(this.cargo, 0, chest.stacks, 0, this.cargo.size());
 
             chest.fuelTank.fill(FluidRegistry.getFluidStack(GCFluids.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
