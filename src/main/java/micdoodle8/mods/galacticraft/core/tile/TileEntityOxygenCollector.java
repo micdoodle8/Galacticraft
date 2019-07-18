@@ -30,7 +30,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 {
     public boolean active;
     public static final int OUTPUT_PER_TICK = 100;
-    public static final float OXYGEN_PER_PLANT = 0.75F;
+    public static float OXYGEN_PER_PLANT = 0.75F;
     @NetworkedField(targetSide = Side.CLIENT)
     public float lastOxygenCollected;
     private boolean noAtmosphericOxygen = true;
