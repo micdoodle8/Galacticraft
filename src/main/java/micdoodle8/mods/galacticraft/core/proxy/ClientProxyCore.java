@@ -877,37 +877,31 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         BufferedReader reader = new BufferedReader(streamReader);
 
         String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                if (line.contains(":")) {
-                    int splitLocation = line.indexOf(":");
-                    String uuid = line.substring(0, splitLocation);
-                    System.out.println(uuid);
-                    System.out.println(convertCapeString(line.substring(splitLocation + 1)));
-                    capeMap.put(uuid, new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
+        try
+        {
+            while ((line = reader.readLine()) != null)
+            {
+                if (line.contains(":"))
+                {
+                    capeMap.put(line.split(":")[0], new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + line.split(":")[1].split(" ")[0].toLowerCase() + ".png"));
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             if (ConfigManagerCore.enableDebug)e.printStackTrace();
-        } finally {
-            try {
+        }
+        finally
+        {
+            try
+            {
                 reader.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 if (ConfigManagerCore.enableDebug) e.printStackTrace();
             }
         }
-    }
-
-    private static String convertCapeString(String capeName) {
-        String s = "";
-        for (int i = 0; i < capeName.length(); ++i) {
-            char c = capeName.charAt(i);
-            if (c == " ".charAt(0)) {
-                break;
-            }
-            s = String.join("", s, Character.toString(c));
-        }
-        return s.substring(4).toLowerCase();
     }
 
     public static void registerInventoryTabs()
