@@ -34,7 +34,6 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
     private boolean validSpout;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
     public boolean disabled = false;
     @Annotations.NetworkedField(targetSide = Side.CLIENT)
@@ -48,6 +47,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         super("container.geothermal_generator.name");
         this.storage.setMaxExtract(TileEntitySolar.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolar.MAX_GENERATE_WATTS);
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
         if (!this.world.isRemote)
         {
-            this.recharge(this.stacks.get(0));
+            this.recharge(this.getInventory().get(0));
 
             if (this.disableCooldown > 0)
             {
@@ -141,23 +141,6 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
 
         int diff = TileEntityGeothermalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityGeothermalGenerator.MIN_GENERATE_GJ_PER_TICK;
         return (int) Math.floor((Math.sin(this.ticks / 50.0F) * 0.5F + 0.5F) * diff + TileEntityGeothermalGenerator.MIN_GENERATE_GJ_PER_TICK);
-    }
-
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
-        return nbt;
     }
 
     @Override
@@ -234,90 +217,15 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public int getInventoryStackLimit()
     {
         return 1;
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
-    }
-
-    @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
-    {
-        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override

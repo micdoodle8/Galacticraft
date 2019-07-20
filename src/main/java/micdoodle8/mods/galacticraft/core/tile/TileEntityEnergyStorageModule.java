@@ -28,7 +28,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 {
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
 
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     public int scaledEnergyLevel;
@@ -40,6 +39,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     public TileEntityEnergyStorageModule()
     {
         this(1);
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     /*
@@ -109,8 +109,8 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
         if (!this.world.isRemote)
         {
-            this.recharge(this.stacks.get(0));
-            this.discharge(this.stacks.get(1));
+            this.recharge(this.getInventory().get(0));
+            this.discharge(this.getInventory().get(1));
         }
 
         if (!this.world.isRemote)
@@ -134,9 +134,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         {
             this.initialised = false;
         }
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
         
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
@@ -151,74 +148,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 
         super.writeToNBT(nbt);
 
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
-
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     @Override
@@ -226,13 +158,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     {
         return 1;
     }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
 
     @Override
     public int[] getSlotsForFace(EnumFacing side)

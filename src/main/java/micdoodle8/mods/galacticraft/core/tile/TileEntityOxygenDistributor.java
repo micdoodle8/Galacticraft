@@ -38,7 +38,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     public boolean active;
     public boolean lastActive;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public static HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -48,6 +47,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     {
         super("container.oxygendistributor.name", 6000, 8);
 //        this.oxygenBubble = null;
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     @Override
