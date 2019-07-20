@@ -202,7 +202,7 @@ public class MapUtil
 
         //This will make the 'slow map', a map covering a large part of the world around spawn
         //(On a typical modern PC, this should take 20-30 minutes to generate in its own thread)
-        MapUtil.getBiomeMapForCoords(overworld, 0, 0, OVERWORLD_MAP_SCALE, OVERWORLD_LARGEMAP_WIDTH, OVERWORLD_LARGEMAP_HEIGHT, baseFolder);
+        //MapUtil.getBiomeMapForCoords(overworld, 0, 0, OVERWORLD_MAP_SCALE, OVERWORLD_LARGEMAP_WIDTH, OVERWORLD_LARGEMAP_HEIGHT, baseFolder);
     }
 
     public static void sendOverworldToClient(EntityPlayerMP client)
