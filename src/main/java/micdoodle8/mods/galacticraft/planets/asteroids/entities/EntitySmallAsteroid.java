@@ -84,17 +84,16 @@ public class EntitySmallAsteroid extends Entity
     @Override
     protected void readEntityFromNBT(NBTTagCompound nbt)
     {
-        this.spinPitch = nbt.getFloat("spinPitch");
-        this.spinYaw = nbt.getFloat("spinYaw");
-        this.ticksExisted = nbt.getInteger("ageTicks");
+    }
+
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
+        return compound;
     }
 
     @Override
     protected void writeEntityToNBT(NBTTagCompound nbt)
     {
-        nbt.setFloat("spinPitch", this.spinPitch);
-        nbt.setFloat("spinYaw", this.spinYaw);
-        nbt.setInteger("ageTicks", this.ticksExisted);
     }
 
     public float getSpinPitch()
