@@ -183,11 +183,11 @@ public class ChunkProviderVenus extends ChunkProviderBase
         this.setBlocksInChunk(x, z, chunkprimer);
         this.biomesForGeneration = this.world.getBiomeProvider().getBiomes(this.biomesForGeneration, x * 16, z * 16, 16, 16);
 
+        this.caveGenerator.generate(this.world, x, z, chunkprimer);
         this.lavaCaveGenerator.generate(this.world, x, z, chunkprimer);
 
         this.replaceBlocksForBiome(x, z, chunkprimer, this.biomesForGeneration);
 
-        this.caveGenerator.generate(this.world, x, z, chunkprimer);
         this.dungeonGenerator.generate(this.world, x, z, chunkprimer);
 
         Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
