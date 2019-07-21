@@ -39,7 +39,6 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     public TileEntityEnergyStorageModule()
     {
         this(1);
-        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     /*
@@ -49,6 +48,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     {
         super(tier == 1 ? "tile.machine.1.name" : "tile.machine.8.name");
         this.initialised = true;
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
         if (tier == 1)
         {
             //Designed so that Tier 1 Energy Storage can power up to 10 Tier 1 machines
