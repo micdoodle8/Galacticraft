@@ -50,6 +50,12 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         return new int[0];
     }
 
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
     public void onBreak()
     {
         if (fluidTank.getFluidAmount() > 0)

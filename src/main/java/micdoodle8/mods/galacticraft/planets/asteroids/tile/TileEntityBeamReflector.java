@@ -28,12 +28,6 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
-    {
-        return new int[0];
-    }
-
-    @Override
     public Vector3 getInputPoint()
     {
         float distance = 0.15F;

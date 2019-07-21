@@ -39,12 +39,6 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
-    {
-        return new int[0];
-    }
-
-    @Override
     public void update()
     {
         super.update();

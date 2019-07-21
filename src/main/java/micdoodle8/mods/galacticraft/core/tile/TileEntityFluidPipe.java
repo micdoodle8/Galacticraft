@@ -52,6 +52,12 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
 
     @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
     public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
     {
         // Do not re-create tile entity if only the pipe's color changed!

@@ -1366,6 +1366,12 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void updateClient(List<Object> data)
     {

@@ -83,6 +83,12 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     }
 
     @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());

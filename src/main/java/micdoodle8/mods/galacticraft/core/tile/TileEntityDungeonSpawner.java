@@ -244,6 +244,12 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
     public double getPacketRange()
     {
         return 0;

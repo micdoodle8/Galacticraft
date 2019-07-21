@@ -38,4 +38,10 @@ public class TileEntityAirLock extends TileEntityAdvanced
     {
         return new int[0];
     }
+
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
 }
