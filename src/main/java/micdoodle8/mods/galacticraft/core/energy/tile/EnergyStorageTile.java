@@ -22,6 +22,11 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     @NetworkedField(targetSide = Side.CLIENT)
     public int poweredByTierGC = 1;
 
+    public EnergyStorageTile(String tileName)
+    {
+        super(tileName);
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbt)
     {

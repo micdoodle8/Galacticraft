@@ -54,12 +54,13 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(4, ItemStack.EMPTY);
 
     public TileEntityElectrolyzer()
     {
+        super("tile.mars_machine.6.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 150 : 120);
         this.setTierGC(2);
+        this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     }
 
     @Override
@@ -97,10 +98,10 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
         if (!this.world.isRemote)
         {
-            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(1));
+            final FluidStack liquid = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
             {
-                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.stacks, 1, liquid.amount);
+                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.getInventory(), 1, liquid.amount);
             }
 
             //Only drain with atmospheric valve
@@ -174,7 +175,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (!this.stacks.get(slot).isEmpty() && this.stacks.get(slot).getItem() instanceof ItemAtmosphericValve)
+        if (!this.getInventory().get(slot).isEmpty() && this.getInventory().get(slot).getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
         }
@@ -213,7 +214,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("processTicks");
-        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("waterTank"))
         {
@@ -235,7 +235,6 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     {
         super.writeToNBT(nbt);
         nbt.setInteger("processTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.waterTank.getFluid() != null)
         {
@@ -255,21 +254,9 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.mars_machine.6.name");
     }
 
     // ISidedInventory Implementation:

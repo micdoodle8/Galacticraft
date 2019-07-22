@@ -41,7 +41,6 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     public boolean disabled = false;
     @NetworkedField(targetSide = Side.CLIENT)
     public int disableCooldown = 0;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     public static final int MAX_GENERATE_WATTS = 1000;
     @NetworkedField(targetSide = Side.CLIENT)
     public int generateWatts = 0;
@@ -53,10 +52,12 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
     public TileEntitySolarArrayController()
     {
+        super("container.solar_array_controller.name");
         this.storage.setMaxExtract(TileEntitySolarArrayController.MAX_GENERATE_WATTS);
         this.storage.setMaxReceive(TileEntitySolarArrayController.MAX_GENERATE_WATTS);
         this.storage.setCapacity(50000);
         this.initialised = true;
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
@@ -112,7 +113,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
         if (!this.world.isRemote)
         {
-            this.recharge(this.stacks.get(0));
+            this.recharge(this.getInventory().get(0));
 
             if (this.disableCooldown > 0)
             {
@@ -225,9 +226,6 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         this.setDisabled(0, nbt.getBoolean("disabled"));
         this.disableCooldown = nbt.getInteger("disabledCooldown");
 
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
-
         this.initialised = false;
     }
 
@@ -238,8 +236,6 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
         nbt.setInteger("disabledCooldown", this.disableCooldown);
         nbt.setBoolean("disabled", this.getDisabled(0));
-
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         return nbt;
     }
@@ -286,12 +282,6 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.solar_array_controller.name");
-    }
-
-    @Override
     public void setDisabled(int index, boolean disabled)
     {
         if (this.disableCooldown == 0)
@@ -313,90 +303,15 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-            this.markDirty();
-        }
-        return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
     public int getInventoryStackLimit()
     {
         return 1;
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-    @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
-    }
-
-    @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
-    {
-        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override

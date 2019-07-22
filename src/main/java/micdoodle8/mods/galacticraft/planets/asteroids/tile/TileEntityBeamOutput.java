@@ -30,6 +30,11 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     private BlockPos preLoadTarget = null;
     private BlockPos lastTargetVec = new BlockPos(-1, -1, -1);
 
+    public TileEntityBeamOutput(String tileName)
+    {
+        super(tileName);
+    }
+
     @Override
     public void update()
     {
@@ -69,6 +74,18 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
     {
         super.invalidate();
         this.invalidateReflector();
+    }
+
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
     }
 
     @Override

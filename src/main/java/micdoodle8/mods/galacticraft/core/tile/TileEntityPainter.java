@@ -27,6 +27,7 @@ import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -40,7 +41,7 @@ import biomesoplenty.api.item.BOPItems;
 
 //import net.minecraft.item.EnumDyeColor;
 
-public class TileEntityPainter extends TileEntity implements IDisableableMachine, IInventoryDefaults, IPacketReceiver
+public class TileEntityPainter extends TileEntityInventory implements IDisableableMachine, IPacketReceiver
 {
     private static final int RANGE_DEFAULT = 96;
     public static Map<Integer, Set<BlockVec3>> loadedTilesForDim = new HashMap<Integer, Set<BlockVec3>>();
@@ -49,11 +50,21 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     
     public int[] glassColor = new int[]{ -1, -1, -1 };  //Size of this array must match GlassType enum
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
-    private NonNullList<ItemStack> containingItems = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     
     public int guiColor = 0xffffff;
 
-    
+    public TileEntityPainter()
+    {
+        super("tile.machine3.9.name");
+        inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
     public void takeColorFromItem(ItemStack itemStack)
     {
         if (itemStack == null)
@@ -159,8 +170,6 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
             this.range = nbt.getInteger("rge");
             this.guiColor = nbt.getInteger("guic");
         }
-        
-        ItemStackHelper.loadAllItems(nbt, this.containingItems);
     }
 
     @Override
@@ -173,7 +182,6 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
         nbt.setInteger("guic", this.guiColor);
         nbt.setInteger("rge", this.range);
 
-        ItemStackHelper.saveAllItems(nbt, this.containingItems);
         return nbt;
     }
 
@@ -275,18 +283,6 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     }
 
     @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine3.9.name");
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-    @Override
     public void setDisabled(int index, boolean disabled)
     {
         //Used to do the painting!
@@ -317,82 +313,6 @@ public class TileEntityPainter extends TileEntity implements IDisableableMachine
     {
         return false;
     }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return 2;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack)
-    {
-        return false;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int par1)
-    {
-        return this.containingItems.get(par1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.containingItems, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.containingItems, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.containingItems.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.containingItems)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
 
     @Override
     public void getNetworkedData(ArrayList<Object> sendData)

@@ -59,15 +59,16 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public int processTimeRequired = 3;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = -8;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(5, ItemStack.EMPTY);
     private int hasCO2 = -1;
     private boolean noCoal = true;
     private int coalPartial = 0;
 
     public TileEntityMethaneSynthesizer()
     {
+        super("tile.mars_machine.5.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 45);
         this.setTierGC(2);
+        this.inventory = NonNullList.withSize(5, ItemStack.EMPTY);
     }
 
     @Override
@@ -121,7 +122,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             //TODO add support for hydrogen atmospheres
 
             //Now check the CO2 storage
-            ItemStack inputCanister = this.stacks.get(2);
+            ItemStack inputCanister = this.getInventory().get(2);
             if (!inputCanister.isEmpty())
             {
                 if (inputCanister.getItem() instanceof ItemAtmosphericValve && this.hasCO2 > 0)
@@ -192,16 +193,16 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        if (FluidUtil.isValidContainer(this.stacks.get(slot)))
+        if (FluidUtil.isValidContainer(this.getInventory().get(slot)))
         {
             final FluidStack liquid = tank.getFluid();
 
             if (liquid != null)
             {
-                FluidUtil.tryFillContainer(tank, liquid, this.stacks, slot, AsteroidsItems.methaneCanister);
+                FluidUtil.tryFillContainer(tank, liquid, this.getInventory(), slot, AsteroidsItems.methaneCanister);
             }
         }
-        else if (!this.stacks.get(slot).isEmpty() && this.stacks.get(slot).getItem() instanceof ItemAtmosphericValve)
+        else if (!this.getInventory().get(slot).isEmpty() && this.getInventory().get(slot).getItem() instanceof ItemAtmosphericValve)
         {
             tank.drain(4, true);
         }
@@ -229,7 +230,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
             return false;
         }
 
-        this.noCoal = this.stacks.get(3).isEmpty() || this.stacks.get(3).getItem() != MarsItems.carbonFragments;
+        this.noCoal = this.getInventory().get(3).isEmpty() || this.getInventory().get(3).getItem() != MarsItems.carbonFragments;
 
         if (this.noCoal && this.coalPartial == 0 && (this.gasTank2.getFluid() == null || this.gasTank2.getFluidAmount() <= 0))
         {
@@ -322,7 +323,6 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("gasTank"))
         {
@@ -345,7 +345,6 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.gasTank.getFluid() != null)
         {
@@ -366,21 +365,9 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     }
 
     @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
     public boolean hasCustomName()
     {
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.mars_machine.5.name");
     }
 
     // ISidedInventory Implementation:

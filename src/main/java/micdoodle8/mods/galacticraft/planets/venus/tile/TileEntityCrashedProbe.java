@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
+import micdoodle8.mods.galacticraft.core.tile.TileEntityInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -18,12 +20,17 @@ import net.minecraft.world.storage.loot.LootTable;
 
 import java.util.Random;
 
-public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefaults
+public class TileEntityCrashedProbe extends TileEntityInventory
 {
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(6, ItemStack.EMPTY);
     private boolean hasCoreToDrop;
     protected ResourceLocation lootTable;
     protected long lootTableSeed;
+
+    public TileEntityCrashedProbe()
+    {
+        super("container.crashed_probe.name");
+        inventory = NonNullList.withSize(6, ItemStack.EMPTY);
+    }
 
     protected void fillWithLoot(EntityPlayer player)
     {
@@ -54,6 +61,12 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefa
     }
 
     @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
@@ -68,8 +81,8 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefa
 
         if (!this.checkLootAndRead(nbt))
         {
-            this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(nbt, this.stacks);
+            this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+            ItemStackHelper.loadAllItems(nbt, this.getInventory());
         }
     }
 
@@ -81,112 +94,49 @@ public class TileEntityCrashedProbe extends TileEntity implements IInventoryDefa
 
         if (!this.checkLootAndWrite(nbt))
         {
-            ItemStackHelper.saveAllItems(nbt, this.stacks);
+            ItemStackHelper.saveAllItems(nbt, this.getInventory());
         }
         return nbt;
     }
 
     @Override
-    public boolean hasCustomName()
+    public int[] getSlotsForFace(EnumFacing side)
     {
-        return true;
+        return new int[0];
     }
 
     @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.crashed_probe.name");
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
+    public ItemStack getStackInSlot(int slot)
     {
     	this.fillWithLoot(null);
-        return this.stacks.get(var1);
+    	return super.getStackInSlot(slot);
     }
 
     @Override
     public ItemStack decrStackSize(int index, int count)
     {
         this.fillWithLoot(null);
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
+        return super.decrStackSize(index, count);
     }
 
     @Override
     public ItemStack removeStackFromSlot(int index)
     {
         this.fillWithLoot(null);
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
+        return super.removeStackFromSlot(index);
     }
 
     @Override
     public boolean isEmpty()
     {
         this.fillWithLoot(null);
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
+        return super.isEmpty();
     }
 
     @Override
     public void clear()
     {
         this.fillWithLoot(null);
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slotID, ItemStack itemstack)
-    {
-        return true;
     }
 
     @Override

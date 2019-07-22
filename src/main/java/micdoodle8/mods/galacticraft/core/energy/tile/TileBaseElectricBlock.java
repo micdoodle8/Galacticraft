@@ -37,6 +37,11 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public boolean hasEnoughEnergyToRun = false;
     public boolean noRedstoneControl = false;
 
+    public TileBaseElectricBlock(String tileName)
+    {
+        super(tileName);
+    }
+
     public boolean shouldPullEnergy()
     {
         return this.shouldUseEnergy() || this.getEnergyStoredGC(null) < this.getMaxEnergyStoredGC();

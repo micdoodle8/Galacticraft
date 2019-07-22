@@ -33,12 +33,11 @@ import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 
-public class TileEntityOxygenDistributor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IBubbleProviderColored
+public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBubbleProviderColored
 {
     public boolean active;
     public boolean lastActive;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public static HashSet<BlockVec3Dim> loadedTiles = new HashSet<>();
     public float bubbleSize;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -46,8 +45,9 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
 
     public TileEntityOxygenDistributor()
     {
-        super(6000, 8);
+        super("container.oxygendistributor.name", 6000, 8);
 //        this.oxygenBubble = null;
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     }
 
     @Override
@@ -298,9 +298,6 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
             this.bubbleSize = nbt.getFloat("bubbleSize");
         }
 //        this.hasValidBubble = nbt.getBoolean("hasValidBubble");
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
     }
 
     @Override
@@ -311,89 +308,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IIn
         nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
         nbt.setFloat("bubbleSize", this.bubbleSize);
 //        nbt.setBoolean("hasValidBubble", this.hasValidBubble);
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
         return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.oxygendistributor.name");
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     // ISidedInventory Implementation:

@@ -30,11 +30,11 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
 
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(7, ItemStack.EMPTY);
-
     public TileEntityCircuitFabricator()
     {
+        super("tile.machine2.5.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 40 : 20);
+        this.inventory = NonNullList.withSize(7, ItemStack.EMPTY);
     }
 
     @Override
@@ -88,7 +88,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
 
     public void updateInput()
     {
-        this.producingStack = CircuitFabricatorRecipes.getOutputForInput(this.stacks.subList(1, 6));
+        this.producingStack = CircuitFabricatorRecipes.getOutputForInput(this.getInventory().subList(1, 6));
     }
 
     private boolean canCompress()
@@ -97,15 +97,15 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         {
             return false;
         }
-        if (this.stacks.get(6).isEmpty())
+        if (this.getInventory().get(6).isEmpty())
         {
             return true;
         }
-        if (!this.stacks.get(6).isEmpty() && !this.stacks.get(6).isItemEqual(this.producingStack))
+        if (!this.getInventory().get(6).isEmpty() && !this.getInventory().get(6).isItemEqual(this.producingStack))
         {
             return false;
         }
-        int result = this.stacks.get(6).isEmpty() ? 0 : this.stacks.get(6).getCount() + this.producingStack.getCount();
+        int result = this.getInventory().get(6).isEmpty() ? 0 : this.getInventory().get(6).getCount() + this.producingStack.getCount();
         return result <= this.getInventoryStackLimit() && result <= this.producingStack.getMaxStackSize();
     }
 
@@ -133,21 +133,21 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
                 }
             }
 
-            if (this.stacks.get(6).isEmpty())
+            if (this.getInventory().get(6).isEmpty())
             {
-                this.stacks.set(6, resultItemStack);
+                this.getInventory().set(6, resultItemStack);
             }
-            else if (this.stacks.get(6).isItemEqual(resultItemStack))
+            else if (this.getInventory().get(6).isItemEqual(resultItemStack))
             {
-                if (this.stacks.get(6).getCount() + resultItemStack.getCount() > 64)
+                if (this.getInventory().get(6).getCount() + resultItemStack.getCount() > 64)
                 {
-                    resultItemStack.setCount(this.stacks.get(6).getCount() + resultItemStack.getCount() - 64);
+                    resultItemStack.setCount(this.getInventory().get(6).getCount() + resultItemStack.getCount() - 64);
                     GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
-                    this.stacks.get(6).setCount(64);
+                    this.getInventory().get(6).setCount(64);
                 }
                 else
                 {
-                    this.stacks.get(6).grow(resultItemStack.getCount());
+                    this.getInventory().get(6).grow(resultItemStack.getCount());
                 }
             }
         }
@@ -163,7 +163,6 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.stacks = this.readStandardItemsFromNBT(nbt);
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
@@ -172,21 +171,8 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine2.5.name");
     }
 
     @Override
@@ -230,7 +216,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         }
 
         //Offer whichever silicon slot has less silicon
-        boolean siliconFlag = !this.stacks.get(2).isEmpty() && (this.stacks.get(3).isEmpty() || this.stacks.get(3).getCount() < this.stacks.get(2).getCount());
+        boolean siliconFlag = !this.getInventory().get(2).isEmpty() && (this.getInventory().get(3).isEmpty() || this.getInventory().get(3).getCount() < this.getInventory().get(2).getCount());
         return siliconFlag ? new int[] { 0, 1, 3, 4, 5 } : new int[] { 0, 1, 2, 4, 5 };
     }
 

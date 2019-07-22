@@ -36,10 +36,15 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     private long ticks;
 
     private ItemStack producingStack = ItemStack.EMPTY;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
     private static Random random = new Random();
+
+    public TileEntityIngotCompressor()
+    {
+        super("tile.machine.3.name");
+        inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+    }
 
     @Override
     public void update()
@@ -58,7 +63,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
-                ItemStack fuel = this.stacks.get(0);
+                ItemStack fuel = this.getInventory().get(0);
                 this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
 
                 if (this.furnaceBurnTime > 0)
@@ -71,7 +76,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
                         if (fuel.getCount() == 0)
                         {
-                            this.stacks.set(0, fuel.getItem().getContainerItem(fuel));
+                            this.getInventory().set(0, fuel.getItem().getContainerItem(fuel));
                         }
                     }
                 }
@@ -124,15 +129,15 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         {
             return false;
         }
-        if (this.stacks.get(1).isEmpty())
+        if (this.getInventory().get(1).isEmpty())
         {
             return true;
         }
-        if (!this.stacks.get(1).isItemEqual(itemstack))
+        if (!this.getInventory().get(1).isItemEqual(itemstack))
         {
             return false;
         }
-        int result = this.stacks.get(1).getCount() + itemstack.getCount();
+        int result = this.getInventory().get(1).getCount() + itemstack.getCount();
         return result <= this.getInventoryStackLimit() && result <= itemstack.getMaxStackSize();
     }
 
@@ -212,21 +217,21 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
                 }
             }
 
-            if (this.stacks.get(1).isEmpty())
+            if (this.getInventory().get(1).isEmpty())
             {
-                this.stacks.set(1, resultItemStack.copy());
+                this.getInventory().set(1, resultItemStack.copy());
             }
-            else if (this.stacks.get(1).isItemEqual(resultItemStack))
+            else if (this.getInventory().get(1).isItemEqual(resultItemStack))
             {
-                if (this.stacks.get(1).getCount() + resultItemStack.getCount() > 64)
+                if (this.getInventory().get(1).getCount() + resultItemStack.getCount() > 64)
                 {
-                    resultItemStack.grow(this.stacks.get(1).getCount() - 64);
+                    resultItemStack.grow(this.getInventory().get(1).getCount() - 64);
                     GCCoreUtil.spawnItem(this.world, this.getPos(), resultItemStack);
-                    this.stacks.get(1).setCount(64);
+                    this.getInventory().get(1).setCount(64);
                 }
                 else
                 {
-                    this.stacks.get(1).grow(resultItemStack.getCount());
+                    this.getInventory().get(1).grow(resultItemStack.getCount());
                 }
             }
 
@@ -252,7 +257,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         this.processTicks = nbt.getInteger("smeltingTicks");
         NBTTagList var2 = nbt.getTagList("Items", 10);
 
-        this.stacks = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
 
         NBTTagList nbttaglist = nbt.getTagList("Items", 10);
 
@@ -261,13 +266,13 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
-            if (j >= 0 && j < this.stacks.size())
+            if (j >= 0 && j < this.getInventory().size())
             {
-                this.stacks.set(j, new ItemStack(nbttagcompound));
+                this.getInventory().set(j, new ItemStack(nbttagcompound));
             }
-            else if (j < this.stacks.size() + this.compressingCraftMatrix.getSizeInventory())
+            else if (j < this.getInventory().size() + this.compressingCraftMatrix.getSizeInventory())
             {
-                this.compressingCraftMatrix.setInventorySlotContents(j - this.stacks.size(), new ItemStack(nbttagcompound));
+                this.compressingCraftMatrix.setInventorySlotContents(j - this.getInventory().size(), new ItemStack(nbttagcompound));
             }
         }
 
@@ -282,13 +287,13 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         NBTTagList var2 = new NBTTagList();
         int i;
 
-        for (i = 0; i < this.stacks.size(); ++i)
+        for (i = 0; i < this.getInventory().size(); ++i)
         {
-            if (!this.stacks.get(i).isEmpty())
+            if (!this.getInventory().get(i).isEmpty())
             {
                 NBTTagCompound tagCompound = new NBTTagCompound();
                 tagCompound.setByte("Slot", (byte) i);
-                this.stacks.get(i).writeToNBT(tagCompound);
+                this.getInventory().get(i).writeToNBT(tagCompound);
                 var2.appendTag(tagCompound);
             }
         }
@@ -298,7 +303,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
                 NBTTagCompound tagCompound = new NBTTagCompound();
-                tagCompound.setByte("Slot", (byte) (i + this.stacks.size()));
+                tagCompound.setByte("Slot", (byte) (i + this.getInventory().size()));
                 this.compressingCraftMatrix.getStackInSlot(i).writeToNBT(tagCompound);
                 var2.appendTag(tagCompound);
             }
@@ -308,30 +313,35 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         return nbt;
     }
 
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
 
     @Override
     public int getSizeInventory()
     {
-        return this.stacks.size() + this.compressingCraftMatrix.getSizeInventory();
+        return super.getSizeInventory() + this.compressingCraftMatrix.getSizeInventory();
     }
 
     @Override
     public ItemStack getStackInSlot(int par1)
     {
-        if (par1 >= this.stacks.size())
+        if (par1 >= this.getInventory().size())
         {
-            return this.compressingCraftMatrix.getStackInSlot(par1 - this.stacks.size());
+            return this.compressingCraftMatrix.getStackInSlot(par1 - this.getInventory().size());
         }
 
-        return this.stacks.get(par1);
+        return this.getInventory().get(par1);
     }
 
     @Override
     public ItemStack decrStackSize(int par1, int par2)
     {
-        if (par1 >= this.stacks.size())
+        if (par1 >= this.getInventory().size())
         {
-            ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.stacks.size(), par2);
+            ItemStack result = this.compressingCraftMatrix.decrStackSize(par1 - this.getInventory().size(), par2);
             if (!result.isEmpty())
             {
                 this.updateInput();
@@ -340,24 +350,24 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             return result;
         }
 
-        if (!this.stacks.get(par1).isEmpty())
+        if (!this.getInventory().get(par1).isEmpty())
         {
             ItemStack var3;
 
-            if (this.stacks.get(par1).getCount() <= par2)
+            if (this.getInventory().get(par1).getCount() <= par2)
             {
-                var3 = this.stacks.get(par1);
-                this.stacks.set(par1, ItemStack.EMPTY);
+                var3 = this.getInventory().get(par1);
+                this.getInventory().set(par1, ItemStack.EMPTY);
                 this.markDirty();
                 return var3;
             }
             else
             {
-                var3 = this.stacks.get(par1).splitStack(par2);
+                var3 = this.getInventory().get(par1).splitStack(par2);
 
-                if (this.stacks.get(par1).isEmpty())
+                if (this.getInventory().get(par1).isEmpty())
                 {
-                    this.stacks.set(par1, ItemStack.EMPTY);
+                    this.getInventory().set(par1, ItemStack.EMPTY);
                 }
 
                 this.markDirty();
@@ -373,16 +383,16 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public ItemStack removeStackFromSlot(int par1)
     {
-        if (par1 >= this.stacks.size())
+        if (par1 >= this.getInventory().size())
         {
         	this.markDirty();
-            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.stacks.size());
+            return this.compressingCraftMatrix.removeStackFromSlot(par1 - this.getInventory().size());
         }
 
-        if (!this.stacks.get(par1).isEmpty())
+        if (!this.getInventory().get(par1).isEmpty())
         {
-            ItemStack var2 = this.stacks.get(par1);
-            this.stacks.set(par1, ItemStack.EMPTY);
+            ItemStack var2 = this.getInventory().get(par1);
+            this.getInventory().set(par1, ItemStack.EMPTY);
             this.markDirty();
             return var2;
         }
@@ -395,14 +405,14 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public void setInventorySlotContents(int par1, ItemStack stack)
     {
-        if (par1 >= this.stacks.size())
+        if (par1 >= this.getInventory().size())
         {
-            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.stacks.size(), stack);
+            this.compressingCraftMatrix.setInventorySlotContents(par1 - this.getInventory().size(), stack);
             this.updateInput();
         }
         else
         {
-            this.stacks.set(par1, stack);
+            this.getInventory().set(par1, stack);
 
             if (!stack.isEmpty() && stack.getCount() > this.getInventoryStackLimit())
             {
@@ -415,7 +425,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     @Override
     public boolean isEmpty()
     {
-        for (ItemStack itemstack : this.stacks)
+        for (ItemStack itemstack : this.getInventory())
         {
             if (!itemstack.isEmpty())
             {
@@ -424,12 +434,6 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         }
 
         return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine.3.name");
     }
 
     @Override

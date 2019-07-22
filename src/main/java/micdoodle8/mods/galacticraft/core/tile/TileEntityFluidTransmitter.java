@@ -37,8 +37,9 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     private int pullAmount;
     private boolean validated = true;
 
-    public TileEntityFluidTransmitter(int pullAmount)
+    public TileEntityFluidTransmitter(String tileName, int pullAmount)
     {
+        super(tileName);
         this.pullAmount = pullAmount;
     }
 

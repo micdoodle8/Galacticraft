@@ -45,7 +45,6 @@ import java.util.List;
 public class TileEntityLaunchController extends TileBaseElectricBlockWithInventory implements IChunkLoader, ISidedInventory, ILandingPadAttachable
 {
     public static final int WATTS_PER_TICK = 1;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean launchPadRemovalDisabled = true;
     private Ticket chunkLoadTicket;
@@ -75,8 +74,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
 
     public TileEntityLaunchController()
     {
+        super("container.launchcontroller.name");
         this.storage.setMaxExtract(6);
         this.noRedstoneControl = true;
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
@@ -222,7 +223,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         this.ownerName = nbt.getString("OwnerName");
         this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
@@ -239,7 +239,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setString("OwnerName", this.ownerName);
         nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
         nbt.setInteger("ControllerFrequency", this.frequency);
@@ -248,18 +247,6 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
         nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
         return nbt;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.launchcontroller.name");
     }
 
     @Override

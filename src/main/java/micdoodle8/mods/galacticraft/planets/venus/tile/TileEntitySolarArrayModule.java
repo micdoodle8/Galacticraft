@@ -6,6 +6,17 @@ import net.minecraft.util.EnumFacing;
 
 public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
 {
+    public TileEntitySolarArrayModule()
+    {
+        super("container.solar_array_module.name");
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
     @Override
     public boolean canConnect(EnumFacing direction, NetworkType type)
     {

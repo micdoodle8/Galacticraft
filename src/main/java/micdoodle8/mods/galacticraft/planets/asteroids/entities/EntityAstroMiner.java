@@ -36,6 +36,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,7 +53,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.IPlantable;
@@ -64,7 +67,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
-public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
+public class EntityAstroMiner extends Entity implements IInventory, IPacketReceiver, IEntityNoisy, IAntiGrav, ITelemetry
 {
     private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityAstroMiner.class, DataSerializers.FLOAT);
 
@@ -346,6 +349,41 @@ public class EntityAstroMiner extends Entity implements IInventoryDefaults, IPac
     public boolean hasCustomName()
     {
         return true;
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
     }
 
     private boolean emptyInventory(TileEntityMinerBase minerBase)

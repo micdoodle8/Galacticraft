@@ -19,13 +19,18 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.lang.reflect.Field;
 import java.util.*;
 
-public abstract class TileEntityAdvanced extends TileEntity implements IPacketReceiver, ITickable
+public abstract class TileEntityAdvanced extends TileEntityInventory implements IPacketReceiver, ITickable
 {
     public int ticks = 0;
     private LinkedHashSet<Field> fieldCacheClient;
     private LinkedHashSet<Field> fieldCacheServer;
     private Map<Field, Object> lastSentData = new HashMap<Field, Object>(4, 1F);
     private boolean networkDataChanged = false;
+
+    public TileEntityAdvanced(String tileName)
+    {
+        super(tileName);
+    }
 
     @Override
     public void update()

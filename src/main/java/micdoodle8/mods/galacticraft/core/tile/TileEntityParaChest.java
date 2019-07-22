@@ -16,6 +16,7 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,8 +35,6 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
-    public NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
-
     public boolean adjacentChestChecked = false;
     public float lidAngle;
     public float prevLidAngle;
@@ -45,7 +44,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
     public TileEntityParaChest()
     {
+        super("container.parachest.name");
         this.color = EnumDyeColor.RED;
+        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
     @Override
@@ -67,84 +68,22 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int index)
-    {
-        return this.stacks.get(index);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
     public void setSizeInventory(int size)
     {
-        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(size, ItemStack.EMPTY);
     }
 
     @Override
-    public boolean isEmpty()
+    public int[] getSlotsForFace(EnumFacing side)
     {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return new int[0];
     }
 
     @Override
-    public String getName()
+    protected boolean handleInventory()
     {
-        return GCCoreUtil.translate("container.parachest.name");
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
+        // Custom size loading, so handle in this class
+        return false;
     }
 
     @Override
@@ -157,9 +96,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             size += 18 - ((size - 3) % 18);
         }
-        this.stacks = NonNullList.withSize(size, ItemStack.EMPTY);
+        this.inventory = NonNullList.withSize(size, ItemStack.EMPTY);
 
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
+        ItemStackHelper.loadAllItems(nbt, this.getInventory());
 
         if (nbt.hasKey("fuelTank"))
         {
@@ -177,8 +116,8 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         super.writeToNBT(nbt);
 
-        nbt.setInteger("chestContentLength", this.stacks.size());
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
+        nbt.setInteger("chestContentLength", this.getInventory().size());
+        ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
         if (this.fuelTank.getFluid() != null)
         {
@@ -193,18 +132,6 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -286,15 +213,14 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (!this.world.isRemote)
         {
-            this.checkFluidTankTransfer(this.stacks.size() - 1, this.fuelTank);
+            this.checkFluidTankTransfer(this.getInventory().size() - 1, this.fuelTank);
         }
     }
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        FluidUtil.tryFillContainerFuel(tank, this.stacks, slot);
+        FluidUtil.tryFillContainerFuel(tank, this.getInventory(), slot);
     }
-
 
     @Override
     public boolean receiveClientEvent(int par1, int par2)
@@ -365,36 +291,6 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public boolean isNetworkedTile()
     {
         return true;
-    }
-
-    @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

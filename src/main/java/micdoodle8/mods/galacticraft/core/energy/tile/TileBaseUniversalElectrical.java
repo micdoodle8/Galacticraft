@@ -46,6 +46,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     //	public float energyStored = 0;
     private float IC2surplusInGJ = 0F;
 
+    public TileBaseUniversalElectrical(String tileName)
+    {
+        super(tileName);
+    }
+
     @Override
     public double getPacketRange()
     {

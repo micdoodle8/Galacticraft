@@ -180,16 +180,6 @@ public class BlockTier1TreasureChest extends BlockContainer implements ITileEnti
 
             worldIn.setBlockState(pos, state, 3);
         }
-
-        if (stack.hasDisplayName())
-        {
-            TileEntity tileentity = worldIn.getTileEntity(pos);
-
-            if (tileentity instanceof TileEntityTreasureChest)
-            {
-                ((TileEntityTreasureChest) tileentity).setCustomName(stack.getDisplayName());
-            }
-        }
     }
 
     public IBlockState checkForSurroundingChests(World worldIn, BlockPos pos, IBlockState state)

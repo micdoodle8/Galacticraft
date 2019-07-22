@@ -21,9 +21,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ISidedInventory, ILandingPadAttachable
+public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ILandingPadAttachable
 {
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(15, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean targetEmpty;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -35,7 +34,9 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
 
     public TileEntityCargoUnloader()
     {
+        super("container.cargounloader.name");
         this.storage.setMaxExtract(45);
+        this.inventory = NonNullList.withSize(15, ItemStack.EMPTY);
     }
 
     @Override
@@ -116,27 +117,6 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-        this.stacks = this.readStandardItemsFromNBT(nbt);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
-        return nbt;
-    }
-
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
 //    @Override
 //    public boolean hasCustomName()
 //    {
@@ -148,12 +128,6 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     public boolean hasCustomName()
     {
         return false;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.cargounloader.name");
     }
 
     // ISidedInventory Implementation:
@@ -211,9 +185,9 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     {
         int count = 1;
 
-        for (count = 1; count < this.stacks.size(); count++)
+        for (count = 1; count < this.getInventory().size(); count++)
         {
-            ItemStack stackAt = this.stacks.get(count);
+            ItemStack stackAt = this.getInventory().get(count);
 
             if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
@@ -251,15 +225,15 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
             }
         }
 
-        for (count = 1; count < this.stacks.size(); count++)
+        for (count = 1; count < this.getInventory().size(); count++)
         {
-            ItemStack stackAt = this.stacks.get(count);
+            ItemStack stackAt = this.getInventory().get(count);
 
             if (stackAt.isEmpty())
             {
                 if (doAdd)
                 {
-                    this.stacks.set(count, stack);
+                    this.getInventory().set(count, stack);
                     this.markDirty();
                 }
 

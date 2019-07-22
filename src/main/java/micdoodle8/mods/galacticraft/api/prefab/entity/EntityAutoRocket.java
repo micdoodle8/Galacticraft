@@ -16,7 +16,6 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
-import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.*;
@@ -27,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +36,9 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -55,7 +57,7 @@ import java.util.List;
 /**
  * Do not include this prefab class in your released mod download.
  */
-public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ILandable, IInventoryDefaults, IEntityNoisy
+public abstract class EntityAutoRocket extends EntitySpaceshipBase implements ILandable, IInventory, IEntityNoisy
 {
     public int destinationFrequency = -1;
     public BlockPos targetVec;
@@ -1316,6 +1318,41 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
 
         return true;
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
     }
 
     @Override
