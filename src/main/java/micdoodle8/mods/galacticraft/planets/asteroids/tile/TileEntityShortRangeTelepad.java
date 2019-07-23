@@ -492,7 +492,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                 {
                     double distance = this.getDistanceSq(addressResult.position.x + 0.5F, addressResult.position.y + 0.5F, addressResult.position.z + 0.5F);
 
-                    if (distance < Math.pow(TELEPORTER_RANGE * TELEPORTER_RANGE, 2))
+                    if (distance < Math.pow(TELEPORTER_RANGE, 2))
                     {
                         if (!addressResult.enabled)
                         {
