@@ -70,7 +70,6 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public int teleportTime = 0;
     @NetworkedField(targetSide = Side.CLIENT)
     public String owner = "";
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     @NetworkedField(targetSide = Side.CLIENT)
     public boolean teleporting;
     private AxisAlignedBB renderAABB;
@@ -79,6 +78,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         super("container.short_range_telepad.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 115 : 50);
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     public int canTeleportHere()
@@ -228,8 +228,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     {
         super.readFromNBT(nbt);
 
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
+        this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+        ItemStackHelper.loadAllItems(nbt, this.getIntentory());
 
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
@@ -243,7 +243,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
+        ItemStackHelper.saveAllItems(nbt, this.inventory);
 
         nbt.setInteger("TargetAddress", this.targetAddress);
         nbt.setInteger("Address", this.address);
@@ -533,70 +533,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         this.targetAddress = address;
         this.updateTarget();
     }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
+   
     public void setOwner(String owner)
     {
         this.owner = owner;
