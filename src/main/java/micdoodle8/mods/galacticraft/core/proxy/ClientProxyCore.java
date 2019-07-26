@@ -883,7 +883,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             {
                 if (line.contains(":"))
                 {
-                    capeMap.put(line.split(":")[0], new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + line.split(":")[1].split(" ")[0].toLowerCase() + ".png"));
+                    capeMap.put(line.split(":")[0], new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + line.split(":")[1].split(" ")[0].substring(4).toLowerCase() + ".png"));
                 }
             }
         }
