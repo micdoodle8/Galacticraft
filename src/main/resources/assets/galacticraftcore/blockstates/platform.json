@@ -1,7 +1,6 @@
 {
     "forge_marker": 1,
     "variants": {
-        "inventory": { "model": "galacticraftcore:platform_unset" },
         "type=none": { "model": "galacticraftcore:platform_unset" },
         "type=nw": { "model": "galacticraftcore:platform", "y": 270 },
         "type=ne": { "model": "galacticraftcore:platform", "y": 180 },
