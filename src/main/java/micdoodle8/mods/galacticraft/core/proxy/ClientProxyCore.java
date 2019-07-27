@@ -148,7 +148,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
     public static IPlayerClient playerClientHandler = new PlayerClient();
     public static Minecraft mc = FMLClientHandler.instance().getClient();
-    public static List<String> gearDataRequests = Lists.newArrayList();
+    public static List<UUID> gearDataRequests = Lists.newArrayList();
     public static DynamicTextureProper overworldTextureClient;
     public static DynamicTextureProper overworldTextureWide;
     public static DynamicTextureProper overworldTextureLarge;
@@ -943,11 +943,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         if (gearData == null)
         {
-            String id = PlayerUtil.getName(player);
+            UUID id = player.getUniqueID();
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

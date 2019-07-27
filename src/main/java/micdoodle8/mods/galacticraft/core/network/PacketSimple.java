@@ -124,7 +124,8 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         S_REMOVE_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_ADD_RACE_PLAYER(Side.SERVER, String.class, Integer.class),
         S_COMPLETE_CBODY_HANDSHAKE(Side.SERVER, String.class),
-        S_REQUEST_GEAR_DATA(Side.SERVER, String.class),
+        S_REQUEST_GEAR_DATA1(Side.SERVER, UUID.class),
+        S_REQUEST_GEAR_DATA2(Side.SERVER, UUID.class),
         S_REQUEST_OVERWORLD_IMAGE(Side.SERVER),
         S_REQUEST_MAP_IMAGE(Side.SERVER, Integer.class, Integer.class, Integer.class),
         S_REQUEST_PLAYERSKIN(Side.SERVER, String.class),
@@ -269,6 +270,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         {
             System.err.println("[Galacticraft] Error handling simple packet type: " + this.type.toString() + " " + buffer.toString());
             e.printStackTrace();
+            throw e;
         }
     }
 
@@ -400,19 +402,20 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             if (gearDataPlayer != null)
             {
                 PlayerGearData gearData = ClientProxyCore.playerItemData.get(PlayerUtil.getName(gearDataPlayer));
+                UUID gearDataPlayerID = gearDataPlayer.getUniqueID();
 
                 if (gearData == null)
                 {
                     gearData = new PlayerGearData(player);
-                    if (!ClientProxyCore.gearDataRequests.contains(gearName))
+                    if (!ClientProxyCore.gearDataRequests.contains(gearDataPlayerID))
                     {
-                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, getDimensionID(), new Object[] { gearName }));
-                        ClientProxyCore.gearDataRequests.add(gearName);
+                        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA1, getDimensionID(), new Object[] { gearDataPlayerID }));
+                        ClientProxyCore.gearDataRequests.add(gearDataPlayerID);
                     }
                 }
                 else
                 {
-                    ClientProxyCore.gearDataRequests.remove(gearName);
+                    ClientProxyCore.gearDataRequests.remove(gearDataPlayerID);
                 }
 
                 EnumExtendedInventorySlot type = EnumExtendedInventorySlot.values()[(Integer) this.data.get(2)];
@@ -1181,12 +1184,16 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             }
 
             break;
-        case S_REQUEST_GEAR_DATA:
-            String name = (String) this.data.get(0);
-            EntityPlayerMP e = PlayerUtil.getPlayerBaseServerFromPlayerUsername(name, true);
-            if (e != null)
+        case S_REQUEST_GEAR_DATA1:
+        case S_REQUEST_GEAR_DATA2:
+            UUID id = (UUID) this.data.get(0);
+            if (id != null)
             {
-                GCPlayerHandler.checkGear(e, GCPlayerStats.get(e), true);
+                EntityPlayer otherPlayer = player.world.getPlayerEntityByUUID(id);
+                if (otherPlayer instanceof EntityPlayerMP)
+                {
+                    GCPlayerHandler.checkGear((EntityPlayerMP) otherPlayer, GCPlayerStats.get(otherPlayer), true);
+                }
             }
             break;
         case S_BUILDFLAGS_UPDATE:
