@@ -229,7 +229,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         super.readFromNBT(nbt);
 
         this.inventory = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.getIntentory());
+        ItemStackHelper.loadAllItems(nbt, this.getInventory());
 
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
@@ -243,7 +243,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        ItemStackHelper.saveAllItems(nbt, this.inventory);
+        ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
         nbt.setInteger("TargetAddress", this.targetAddress);
         nbt.setInteger("Address", this.address);
