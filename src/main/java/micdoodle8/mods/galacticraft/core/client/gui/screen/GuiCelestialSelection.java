@@ -677,7 +677,7 @@ public class GuiCelestialSelection extends GuiScreen
             int deltaY = y - lastMovePosY;
             float zoom = -Math.abs(this.zoom);
 
-            if (this.zoom > 0.15F && zoom < -0.15F)
+            if (this.zoom >= 0.0F || zoom >= -0.15F && zoom <= -0.20F)
             {
                 zoom = -0.15F;
             }
