@@ -675,9 +675,14 @@ public class GuiCelestialSelection extends GuiScreen
         {
             int deltaX = x - lastMovePosX;
             int deltaY = y - lastMovePosY;
+            float zoom = -Math.abs(this.zoom);
 
-            translation.x += (deltaX - deltaY) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
-            translation.y += (deltaY + deltaX) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
+            if (this.zoom > 0.15F && zoom < -0.15F)
+            {
+                zoom = -0.15F;
+            }
+            translation.x += (deltaX - deltaY) * zoom * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
+            translation.y += (deltaY + deltaX) * zoom * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
         }
 
         lastMovePosX = x;

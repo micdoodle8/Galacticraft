@@ -586,7 +586,7 @@ public class ConfigManagerCore
             prop = getConfig(Constants.CONFIG_CATEGORY_CONTROLS, "Map Scroll Mouse Sensitivity", 1.0);
             prop.setComment("Increase to make the mouse drag scroll more sensitive, decrease to lower sensitivity.");
             prop.setLanguageKey("gc.configgui.map_scroll_sensitivity");
-            mapMouseScrollSensitivity = (float) prop.getDouble(1.0);
+            mapMouseScrollSensitivity = (float) prop.getDouble(0.2);
             finishProp(prop);
 
             prop = getConfig(Constants.CONFIG_CATEGORY_CONTROLS, "Map Scroll Mouse Invert", false);
