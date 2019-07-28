@@ -46,4 +46,9 @@ public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
     {
         return true;
     }
+
+    protected boolean handleInventory()
+    {
+        return false;
+    }
 }
