@@ -56,7 +56,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     {
         super(tier == 1 ? "tile.machine.2.name" : "tile.machine.7.name");
         this.initialised = true;
-	this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
+	    this.inventory = NonNullList.withSize(4, ItemStack.EMPTY);
         if (tier == 1)
         {
             this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 45);
@@ -281,11 +281,6 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
         return nbt;
-    }
-
-    public int getSizeInventory()
-    {
-        return this.tierGC == 1 && this.initialised ? 3 : 4;
     }
 
 //    @Override
