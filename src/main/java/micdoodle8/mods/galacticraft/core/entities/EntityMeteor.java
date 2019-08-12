@@ -136,6 +136,8 @@ public class EntityMeteor extends Entity
     {
         if (!this.world.isRemote)
         {
+            this.world.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
+
             if (movingObjPos != null)
             {
                 BlockPos pos = movingObjPos.getBlockPos();
@@ -161,8 +163,6 @@ public class EntityMeteor extends Entity
                     movingObjPos.entityHit.attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12F : 6F);
                 }
             }
-
-            this.world.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
 
         this.setDead();
