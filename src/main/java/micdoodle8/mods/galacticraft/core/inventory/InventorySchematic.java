@@ -13,7 +13,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 public class InventorySchematic implements IInventory
 {
     public NonNullList<ItemStack> stacks;
-    private final Container eventHandler;
+    protected final Container eventHandler;
 
     public InventorySchematic(Container par1Container)
     {
@@ -41,6 +41,7 @@ public class InventorySchematic implements IInventory
         if (!itemstack.isEmpty())
         {
             this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
 
         return itemstack;
@@ -53,6 +54,7 @@ public class InventorySchematic implements IInventory
         if (!oldstack.isEmpty())
         {
             this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
     	return oldstack;
     }
@@ -68,6 +70,7 @@ public class InventorySchematic implements IInventory
         }
 
         this.markDirty();
+        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override
