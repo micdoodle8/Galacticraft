@@ -34,6 +34,12 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
         return new int[0];
     }
 
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
     public void setMainBlock(BlockPos mainBlock)
     {
         this.setMainBlockInternal(mainBlock);
