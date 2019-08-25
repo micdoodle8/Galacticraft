@@ -1,4 +1,4 @@
-package micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer;
+package micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynth;
 
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
@@ -18,7 +18,7 @@ import javax.annotation.Nonnull;
 
 import java.util.List;
 
-public class MethaneSynthesizerRecipeCategory implements IRecipeCategory
+public class MethaneSynthRecipeCategory implements IRecipeCategory
 {
     private static final ResourceLocation refineryGuiTex = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methane_synthesizer_recipe.png");
     private static final ResourceLocation gasesTex = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gases_methane_oxygen_nitrogen.png");
@@ -36,7 +36,7 @@ public class MethaneSynthesizerRecipeCategory implements IRecipeCategory
 
     boolean fillAtmos = false;
 
-    public MethaneSynthesizerRecipeCategory(IGuiHelper guiHelper)
+    public MethaneSynthRecipeCategory(IGuiHelper guiHelper)
     {
         this.background = guiHelper.createDrawable(refineryGuiTex, 3, 4, 168, 66);
         this.localizedName = GCCoreUtil.translate("tile.mars_machine.5.name");
@@ -95,9 +95,9 @@ public class MethaneSynthesizerRecipeCategory implements IRecipeCategory
         itemstacks.init(2, true, 49, 48);
         itemstacks.init(3, false, 113, 2);
 
-        if (recipeWrapper instanceof MethaneSynthesizerRecipeWrapper)
+        if (recipeWrapper instanceof MethaneSynthRecipeWrapper)
         {
-            MethaneSynthesizerRecipeWrapper gasLiquefierRecipeWrapper = (MethaneSynthesizerRecipeWrapper) recipeWrapper;
+            MethaneSynthRecipeWrapper gasLiquefierRecipeWrapper = (MethaneSynthRecipeWrapper) recipeWrapper;
             List<ItemStack> input = ingredients.getInputs(ItemStack.class).get(0);
 
             Item inputItem = input.get(0).getItem();

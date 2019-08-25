@@ -15,9 +15,9 @@ import micdoodle8.mods.galacticraft.planets.mars.client.jei.cargorocket.CargoRoc
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier.GasLiquefierRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier.GasLiquefierRecipeMaker;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.gasliquefier.GasLiquefierRecipeWrapper;
-import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.MethaneSynthesizerRecipeCategory;
-import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.MethaneSynthesizerRecipeMaker;
-import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynthesizer.MethaneSynthesizerRecipeWrapper;
+import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynth.MethaneSynthRecipeCategory;
+import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynth.MethaneSynthRecipeMaker;
+import micdoodle8.mods.galacticraft.planets.mars.client.jei.methanesynth.MethaneSynthRecipeWrapper;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeCategory;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeMaker;
 import micdoodle8.mods.galacticraft.planets.mars.client.jei.tier2rocket.Tier2RocketRecipeWrapper;
@@ -34,12 +34,12 @@ public class GalacticraftMarsJEI extends BlankModPlugin
         registry.handleRecipes(INasaWorkbenchRecipe.class, Tier2RocketRecipeWrapper::new, RecipeCategories.ROCKET_T2_ID);
         registry.handleRecipes(GasLiquefierRecipeWrapper.class, recipe -> recipe, RecipeCategories.GAS_LIQUEFIER_ID);
         registry.handleRecipes(INasaWorkbenchRecipe.class, CargoRocketRecipeWrapper::new, RecipeCategories.ROCKET_CARGO_ID);
-        registry.handleRecipes(MethaneSynthesizerRecipeWrapper.class, recipe -> recipe, RecipeCategories.METHANE_SYNTHESIZER_ID);
+        registry.handleRecipes(MethaneSynthRecipeWrapper.class, recipe -> recipe, RecipeCategories.METHANE_SYNTHESIZER_ID);
 
         registry.addRecipes(Tier2RocketRecipeMaker.getRecipesList(), RecipeCategories.ROCKET_T2_ID);
         registry.addRecipes(GasLiquefierRecipeMaker.getRecipesList(), RecipeCategories.GAS_LIQUEFIER_ID);
         registry.addRecipes(CargoRocketRecipeMaker.getRecipesList(), RecipeCategories.ROCKET_CARGO_ID);
-        registry.addRecipes(MethaneSynthesizerRecipeMaker.getRecipesList(), RecipeCategories.METHANE_SYNTHESIZER_ID);
+        registry.addRecipes(MethaneSynthRecipeMaker.getRecipesList(), RecipeCategories.METHANE_SYNTHESIZER_ID);
 
         registry.addRecipeCatalyst(new ItemStack(GCBlocks.nasaWorkbench), RecipeCategories.ROCKET_T2_ID, RecipeCategories.ROCKET_CARGO_ID);
         registry.addRecipeCatalyst(new ItemStack(MarsBlocks.machineT2), RecipeCategories.GAS_LIQUEFIER_ID);
@@ -53,6 +53,6 @@ public class GalacticraftMarsJEI extends BlankModPlugin
         registry.addRecipeCategories(new Tier2RocketRecipeCategory(guiHelper),
                 new GasLiquefierRecipeCategory(guiHelper),
                 new CargoRocketRecipeCategory(guiHelper),
-                new MethaneSynthesizerRecipeCategory(guiHelper));
+                new MethaneSynthRecipeCategory(guiHelper));
     }
 }
