@@ -56,6 +56,7 @@ gc.configgui.disable_ambient_lightning=Disable Lightning (Venus)
 gc.configgui.disable_copper_gen_mars=Disable Copper Ore Gen (Mars)
 gc.configgui.disable_desh_gen_mars=Disable Desh Ore Gen (Mars)
 gc.configgui.disable_galacticraft_helium=Disable Helium gas registration
+gc.configgui.disable_small_asteroids=Disable Small Asteroid spawning (Asteroids)
 gc.configgui.disable_ilmenite_gen_asteroids=Disable Ilmenite Ore Gen (Asteroids)
 gc.configgui.disable_iron_gen_asteroids=Disable Iron Ore Gen (Asteroids)
 gc.configgui.disable_iron_gen_mars=Disable Iron Ore Gen (Mars)
