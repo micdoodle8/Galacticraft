@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.tile;
 
+import org.lwjgl.opengl.GL11;
+
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableList;
+
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.client.model.OBJLoaderGC;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -15,14 +18,11 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<TileEntityLaserTurret>
@@ -64,14 +64,13 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
     @Override
     public void render(TileEntityLaserTurret tile, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        GL11.glPushMatrix();
-
-        GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-
-        GL11.glPushMatrix();
-
+        GlStateManager.pushMatrix();
+        GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
+        GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
+
         this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+
         if (Minecraft.isAmbientOcclusionEnabled())
         {
             GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -81,56 +80,54 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        updateModels();
+        this.updateModels();
+
+        GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(0.9F, 1.0F, 0.9F);
+        ClientUtil.drawBakedModel(laserBase);
+        GlStateManager.popMatrix();
+
+        GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
+
+        // Interpolate between yaw and targetYaw
+
+        float partialRot = Math.signum(tile.pitch) * tile.pitch * (tile.pitch / 120.0F);
+        GlStateManager.rotate(partialRot, 0.0F, 0.0F, -1.0F);
+
+        GlStateManager.pushMatrix();
+        GlStateManager.scale(1.1F, 1.0F, 1.0F);
+
+        ClientUtil.drawBakedModel(laserPhalange);
+        GlStateManager.popMatrix();
+
+        GlStateManager.rotate(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
+
+        ClientUtil.drawBakedModel(laserPhalangeAxle);
+        ClientUtil.drawBakedModel(tile.active ? laserTurrets : laserTurretsOff);
+
+        GlStateManager.popMatrix();
+        Tessellator tess = Tessellator.getInstance();
+
+        float inv = (float) (Math.pow(tile.chargeLevel / 5.0F + 1.0F, 2.5F) * 1.0F);
+        float invNext = (float) (Math.pow((tile.chargeLevel + 1) / 5.0F + 1.0F, 2.5F) * 1.0F);
+        float rotate = inv + (invNext - inv) * partialTicks;
 
         float lightMapSaveX = OpenGlHelper.lastBrightnessX;
         float lightMapSaveY = OpenGlHelper.lastBrightnessY;
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
 
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
-
-        GL11.glScalef(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
-
-        GL11.glPushMatrix();
-        GL11.glScalef(0.9F, 1.0F, 0.9F);
-        ClientUtil.drawBakedModel(laserBase);
-        GL11.glPopMatrix();
-
-        GL11.glRotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
-
-        // Interpolate between yaw and targetYaw
-
-        float partialRot = Math.signum(tile.pitch) * tile.pitch * (tile.pitch / 120.0F);
-        GL11.glRotatef(partialRot, 0.0F, 0.0F, -1.0F);
-
-        GL11.glPushMatrix();
-        GL11.glScalef(1.1F, 1.0F, 1.0F);
-
-        ClientUtil.drawBakedModel(laserPhalange);
-        GL11.glPopMatrix();
-
-        GL11.glRotatef(tile.pitch - partialRot, 0.0F, 0.0F, -1.0F);
-
-        ClientUtil.drawBakedModel(laserPhalangeAxle);
-        ClientUtil.drawBakedModel(tile.active ? laserTurrets : laserTurretsOff);
-
-        GL11.glPopMatrix();
-        Tessellator tess = Tessellator.getInstance();
-
-        float inv = (float) (Math.pow((tile.chargeLevel) / 5.0F + 1.0F, 2.5F) * 1.0F);
-        float invNext = (float) (Math.pow((tile.chargeLevel + 1) / 5.0F + 1.0F, 2.5F) * 1.0F);
-        float rotate = inv + (invNext - inv) * partialTicks;
-
         if (tile.chargeLevel > 0)
         {
-            GL11.glPushMatrix();
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glRotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
-            GL11.glTranslatef(-0.6F, 0.28F, 0.0F);
+            GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+            GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(tile.pitch, 0.0F, 0.0F, -1.0F);
+            GlStateManager.translate(-0.6F, 0.28F, 0.0F);
 
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.disableTexture2D();
 
             tess.getBuffer().begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION_COLOR);
 
@@ -139,16 +136,16 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
             tess.getBuffer().pos(0.09F, 0.0F, -0.275F).color(0.0F, 1.0F, 0.0F, 1.0F).endVertex();
 
             tess.draw();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.enableTexture2D();
 
             float scale = tile.chargeLevel / 600.0F;
-            GL11.glScalef(0.01F + scale, 0.01F + scale, 0.01F + scale);
-            GL11.glRotatef(rotate, 0.0F, 1.0F, 0.0F);
+            GlStateManager.scale(0.01F + scale, 0.01F + scale, 0.01F + scale);
+            GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModel(orb1);
-            GL11.glRotatef(rotate, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModel(orb2);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glPopMatrix();
+            GlStateManager.disableBlend();
+            GlStateManager.popMatrix();
         }
 
         if (tile.timeSinceShot > 0 && tile.timeSinceShot < 5)
@@ -157,14 +154,14 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
 
             if (e != null)
             {
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glPushMatrix();
-                GL11.glEnable(GL11.GL_BLEND);
-                GL11.glDisable(GL11.GL_CULL_FACE);
-                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                GL11.glRotatef(tile.yaw, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(tile.pitch, 0.0F, 0.0F, -1.0F);
-                GL11.glTranslatef(-0.6F, 0.28F, 0.0F);
+                GlStateManager.disableTexture2D();
+                GlStateManager.pushMatrix();
+                GlStateManager.enableBlend();
+                GlStateManager.disableCull();
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                GlStateManager.rotate(tile.yaw, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(tile.pitch, 0.0F, 0.0F, -1.0F);
+                GlStateManager.translate(-0.6F, 0.28F, 0.0F);
 
                 BufferBuilder bb = tess.getBuffer();
 
@@ -173,7 +170,6 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
                 Vector3 vec = new Vector3(e.posX, e.posY + e.getEyeHeight(), e.posZ);
                 vec.translate(new Vector3(-(tile.getPos().getX() + 0.5F), -(tile.getPos().getY() + 1.78F), -(tile.getPos().getZ() + 0.5F)));
                 float dist = (float) vec.getMagnitude() - 0.8F;
-
                 float shotTimer = (float) (Math.pow((5.0F - tile.timeSinceShot) / 5.0F + 1.0F, 2.5F) * 0.5F);
                 float shotTimerNext = (float) (Math.pow((5.0F - (tile.timeSinceShot + 1)) / 5.0F + 1.0F, 2.5F) * 0.5F);
                 float fade = shotTimer + (shotTimerNext - shotTimer) * partialTicks;
@@ -203,13 +199,13 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
                 tess.getBuffer().pos(-dist, yMax1 * 0.4F, yMin1 * 0.4F).color(0.0F, 1.0F, 0.0F, 0.5F).endVertex();
 
                 tess.draw();
-                GL11.glEnable(GL11.GL_CULL_FACE);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
 
-                GL11.glPopMatrix();
+                GlStateManager.enableCull();
+                GlStateManager.enableTexture2D();
+                GlStateManager.popMatrix();
             }
         }
-
-        GL11.glPopMatrix();
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+        GlStateManager.popMatrix();
     }
 }
