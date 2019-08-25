@@ -52,6 +52,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     protected static final AxisAlignedBB AABB_SOLAR = new AxisAlignedBB(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
     protected static final AxisAlignedBB AABB_SOLAR_POLE = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 1.0F, 0.7F);
     protected static final AxisAlignedBB AABB_SOLAR_TOP = new AxisAlignedBB(0.3F, 0.0F, 0.3F, 0.7F, 0.6F, 0.7F);
+    protected static final AxisAlignedBB AABB_TURRET = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 
     public enum EnumBlockMultiType implements IStringSerializable
     {
@@ -63,7 +64,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         CRYO_CHAMBER(5, "cryo_chamber"),
         BUGGY_FUEL_PAD(6, "buggy_pad"),
         MINER_BASE(7, "miner_base"),  //UNUSED
-        DISH_LARGE(8, "dish_large");
+        DISH_LARGE(8, "dish_large"),
+        LASER_TURRET(9, "laser_turret");
 
         private final int meta;
         private final String name;
@@ -117,6 +119,8 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         case ROCKET_PAD:
         case BUGGY_FUEL_PAD:
             return AABB_PAD;
+        case LASER_TURRET:
+            return AABB_TURRET;
         default:
             return FULL_BLOCK_AABB;
         }

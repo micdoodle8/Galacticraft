@@ -10,6 +10,7 @@
            "buggy_pad":      { "model": "galacticraftcore:buggy_pad_model" },
            "miner_base":     { "model": "galacticraftcore:block_multi_model" },
            "dish_large":     { "model": "galacticraftcore:block_multi_model" },
+           "laser_turret":   { "model": "galacticraftcore:block_multi_model" },
 
            "cryo_chamber": { "model": "galacticraftcore:cryo_1" }
         },

@@ -123,8 +123,8 @@ public class NetworkUtil
             }
             else if (dataValue instanceof UUID)
             {
-                buffer.writeLong(((UUID) dataValue).getLeastSignificantBits());
                 buffer.writeLong(((UUID) dataValue).getMostSignificantBits());
+                buffer.writeLong(((UUID) dataValue).getLeastSignificantBits());
             }
             else if (dataValue instanceof Collection)
             {

@@ -37,5 +37,7 @@
   "ambience.singledrip": { "category":"master", "sounds":[ "galacticraftcore:ambience/singledrip1", "galacticraftcore:ambience/singledrip2", "galacticraftcore:ambience/singledrip3", "galacticraftcore:ambience/singledrip4", "galacticraftcore:ambience/singledrip5", "galacticraftcore:ambience/singledrip6", "galacticraftcore:ambience/singledrip7", "galacticraftcore:ambience/singledrip8" ]},
   "ambience.scaryscape": { "category":"master", "sounds":[{"name": "galacticraftcore:ambience/scaryscape", "stream": false }]},
   "shuttle.shuttle": { "category":"master", "sounds":[{"name": "galacticraftcore:shuttle/shuttle", "stream": false }]},
-  "block.deconstructor": { "category":"master", "sounds":[{"name": "galacticraftcore:deconstructor", "stream": false }]}
+  "block.deconstructor": { "category":"master", "sounds":[{"name": "galacticraftcore:deconstructor", "stream": false }]},
+  "laser.charge": { "category":"master", "sounds":[{"name": "galacticraftcore:laser/charge", "stream": false }]},
+  "laser.shoot": { "category":"master", "sounds":[{"name": "galacticraftcore:laser/shoot", "stream": false }]}
 }

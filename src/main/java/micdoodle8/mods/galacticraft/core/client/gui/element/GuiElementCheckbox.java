@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -60,7 +61,7 @@ public class GuiElementCheckbox extends GuiButton
         if (this.visible)
         {
             par1Minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
             this.drawTexturedModalRect(this.x, this.y, this.isSelected ? this.texX + this.texWidth : this.texX, this.hovered ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
             this.mouseDragged(par1Minecraft, par2, par3);

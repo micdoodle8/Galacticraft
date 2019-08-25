@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockGC;
+import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockLaser;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.*;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockTorchWeb;
@@ -23,6 +24,7 @@ public class VenusBlocks
     public static Block scorchedRock;
     public static Block solarArrayModule;
     public static Block solarArrayController;
+    public static Block laserTurret;
 
     public static void initBlocks()
     {
@@ -36,6 +38,7 @@ public class VenusBlocks
         VenusBlocks.scorchedRock = new BlockScorchedRock("venus_rock_scorched");
         VenusBlocks.solarArrayModule = new BlockSolarArrayModule("solar_array_module");
         VenusBlocks.solarArrayController = new BlockSolarArrayController("solar_array_controller");
+        VenusBlocks.laserTurret = new BlockLaserTurret("laser_turret");
 
         GCBlocks.hiddenBlocks.add(VenusBlocks.bossSpawner);
 
@@ -79,6 +82,7 @@ public class VenusBlocks
         registerBlock(VenusBlocks.scorchedRock, ItemBlockGC.class);
         registerBlock(VenusBlocks.solarArrayModule, ItemBlockDesc.class);
         registerBlock(VenusBlocks.solarArrayController, ItemBlockDesc.class);
+        registerBlock(VenusBlocks.laserTurret, ItemBlockLaser.class);
     }
 
     public static void oreDictRegistration()
