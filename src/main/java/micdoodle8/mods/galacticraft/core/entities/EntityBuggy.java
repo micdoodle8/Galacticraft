@@ -56,7 +56,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ROCK_DIRECTION = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     public static final int tankCapacity = 1000;
-    public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
+    public FluidTank buggyFuelTank = new FluidTank(EntityBuggy.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
     public int currentDamage;
@@ -85,7 +85,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1.4F);
+        this.setSize(1.4F, 0.6F);
         this.speed = 0.0D;
         this.preventEntitySpawning = true;
         this.dataManager.register(CURRENT_DAMAGE, 0);
@@ -112,7 +112,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         final double fuelLevel = this.buggyFuelTank.getFluid() == null ? 0 : this.buggyFuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / this.tankCapacity);
+        return (int) (fuelLevel * i / EntityBuggy.tankCapacity);
     }
 
     public ModelBase getModel()
@@ -279,7 +279,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
             if (item.hasTagCompound())
             {
-                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound(item.getTagCompound().copy());
             }
         }
     }
@@ -310,10 +310,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     {
         if (!this.getPassengers().isEmpty())
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
-            {
-            }
-            else
+            if (!this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
             {
                 this.boatPosRotationIncrements = posRotationIncrements + 5;
                 this.boatX = x;
