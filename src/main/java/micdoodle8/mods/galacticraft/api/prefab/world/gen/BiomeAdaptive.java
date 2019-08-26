@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 
 public class BiomeAdaptive extends BiomeGenBaseGC
 {
@@ -27,6 +28,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     public static List<BiomeAdaptive> biomeList = new LinkedList<>(); 
     private Biome biomeTrue;
     private final int index;
+    private boolean loggedConflict;
     
     public BiomeAdaptive(int i, Biome biomeInitial)
     {
@@ -214,7 +216,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
         else
         {
-            Thread.dumpStack();
+            reportBiomeIDconflict();
         }
         biomeTrue.decorate(worldIn, rand, pos);
     }
@@ -228,7 +230,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
         else
         {
-            Thread.dumpStack();
+            reportBiomeIDconflict();
         }
         biomeTrue.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
     }
@@ -249,7 +251,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
         else
         {
-            Thread.dumpStack();
+            reportBiomeIDconflict();
         }
         biomeTrue.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
     }
@@ -369,8 +371,17 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         }
         else
         {
-            Thread.dumpStack();
+            reportBiomeIDconflict();
         }
         biomeTrue.plantFlower(world, rand, pos);
+    }
+
+    private void reportBiomeIDconflict()
+    {
+        if (this.loggedConflict) return;
+        this.loggedConflict = true;
+        GCLog.severe("POTENTIAL BIOME ID CONFLICT for id " + Biome.getIdForBiome(this) + " " + this.getBiomeName() + " conflicting with Galacticraft");
+        GCLog.severe("PLEASE CHECK CONFIGS FOR BOTH MODS");
+        Thread.dumpStack();
     }
 }
