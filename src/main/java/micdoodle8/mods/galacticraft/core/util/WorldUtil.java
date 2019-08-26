@@ -182,7 +182,7 @@ public class WorldUtil
      */
     public static List<Integer> getPossibleDimensionsForSpaceshipTier(int tier, EntityPlayerMP playerBase)
     {
-        List<Integer> temp = new ArrayList<Integer>();
+        List<Integer> temp = new ArrayList<>();
 
         if (!ConfigManagerCore.disableRocketsToOverworld)
         {
@@ -364,7 +364,7 @@ public class WorldUtil
     public static HashMap<String, Integer> getArrayOfPossibleDimensions(int tier, EntityPlayerMP playerBase)
     {
         List<Integer> ids = WorldUtil.getPossibleDimensionsForSpaceshipTier(tier, playerBase);
-        final HashMap<String, Integer> map = new HashMap<String, Integer>(ids.size(), 1F);
+        final HashMap<String, Integer> map = new HashMap<>(ids.size(), 1F);
 
         for (Integer id : ids)
         {
@@ -402,7 +402,7 @@ public class WorldUtil
             }
         }
 
-        ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
+        ArrayList<CelestialBody> cBodyList = new ArrayList<>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
         cBodyList.addAll(GalaxyRegistry.getRegisteredMoons().values());
 
@@ -482,9 +482,9 @@ public class WorldUtil
                         worldDataTemp.readFromNBT(nbttagcompound.getCompoundTag("data"));
 
                         // Search for id in server-defined statically loaded dimensions
-                        int id = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
+                        int index = Arrays.binarySearch(ConfigManagerCore.staticLoadDimensions, registeredID);
 
-                        int providerID = id >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
+                        int providerID = index >= 0 ? worldDataTemp.getDimensionIdStatic() : worldDataTemp.getDimensionIdDynamic();
                         boolean registrationOK = false;
                         if (!DimensionManager.isDimensionRegistered(registeredID))
                         {
@@ -493,7 +493,7 @@ public class WorldUtil
                         }
                         else if (GalacticraftRegistry.isDimensionTypeIDRegistered(providerID))
                         {
-                            registrationOK = DimensionManager.getProviderType(id).getId() == providerID;
+                            registrationOK = DimensionManager.getProviderType(registeredID).getId() == providerID;
                             if (!registrationOK)
                             {
                                 try {
@@ -503,7 +503,7 @@ public class WorldUtil
                                     Int2ObjectMap<DimensionType> result = (Int2ObjectMap<DimensionType>) dtDI.get(null);
                                     if (result != null)
                                     {
-                                        result.put(id, WorldUtil.getDimensionTypeById(providerID));
+                                        result.put(registeredID, WorldUtil.getDimensionTypeById(providerID));
                                         GCLog.info("Re-registered dimension type " + providerID);
                                     }
                                     registrationOK = true;
@@ -514,7 +514,7 @@ public class WorldUtil
                         if (registrationOK)
                         {
                             WorldUtil.registeredSpaceStations.put(registeredID, providerID);
-                            if (id >= 0)
+                            if (index >= 0)
                             {
                                 theServer.getWorld(registeredID);
                             }
@@ -573,7 +573,7 @@ public class WorldUtil
     {
         if (WorldUtil.registeredPlanets == null)
         {
-            WorldUtil.registeredPlanets = new ArrayList<Integer>();
+            WorldUtil.registeredPlanets = new ArrayList<>();
         }
 
         if (initialiseDimensionAtServerInit)
@@ -1192,7 +1192,7 @@ public class WorldUtil
      */
     public static List<Object> getPlanetList()
     {
-        List<Object> objList = new ArrayList<Object>();
+        List<Object> objList = new ArrayList<>();
         objList.add(getPlanetListInts());
         return objList;
     }
@@ -1240,7 +1240,7 @@ public class WorldUtil
                     }
                 }
             }
-            WorldUtil.registeredPlanets = new ArrayList<Integer>();
+            WorldUtil.registeredPlanets = new ArrayList<>();
 
             String ids = "";
             if (data.size() > 0)
@@ -1295,7 +1295,7 @@ public class WorldUtil
 
     public static List<Object> getSpaceStationList()
     {
-        List<Object> objList = new ArrayList<Object>();
+        List<Object> objList = new ArrayList<>();
         objList.add(getSpaceStationListInts());
         return objList;
     }
