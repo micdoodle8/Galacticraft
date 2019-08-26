@@ -255,6 +255,31 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     @Override
     public void invalidate()
     {
+        if (this.lightUpdateBlockList == null)
+        {
+            if (this.world.isRemote)
+            {
+                this.buckets = bucketsClient;
+                this.usingBuckets = usingBucketsClient;
+                if (lightUpdateBlockListClient == null)
+                {
+                    lightUpdateBlockListClient = new int[SIZELIST];
+                }
+                this.lightUpdateBlockList = lightUpdateBlockListClient;
+                this.usingLightList = usingLightListClient;
+            }
+            else
+            {
+                this.buckets = bucketsServer;
+                this.usingBuckets = usingBucketsServer;
+                if (lightUpdateBlockListServer == null)
+                {
+                    lightUpdateBlockListServer = new int[SIZELIST];
+                }
+                this.lightUpdateBlockList = lightUpdateBlockListServer;
+                this.usingLightList = usingLightListServer;
+            }
+        }
         this.revertAir();
         this.isActive = false;
         super.invalidate();
