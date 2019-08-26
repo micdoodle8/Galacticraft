@@ -239,4 +239,10 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     {
         return GCCoreUtil.translate(tileName);
     }
+    
+    @Override
+    public synchronized void handleUpdateTag(NBTTagCompound tag)
+    {
+        this.readFromNBT(tag);
+    }
 }
