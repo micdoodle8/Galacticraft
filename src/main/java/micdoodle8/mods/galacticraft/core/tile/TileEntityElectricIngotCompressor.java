@@ -39,6 +39,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public int processTicks = 0;
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
+    private static final int[] allSlots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
 
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     private static Random randnum = new Random();
@@ -484,12 +485,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             return new int[] { 1, 2 };
         }
-        int[] slots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
         ArrayList<Integer> removeSlots = new ArrayList<>();
+        ArrayList<Integer> doneSlots = new ArrayList<>();
 
         for (int i = 3; i < 12; i++)
         {
-            if (removeSlots.contains(i))
+            if (doneSlots.contains(i))
             {
                 continue;
             }
@@ -499,9 +500,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 continue;
             }
 
+            int lowestCount = stack1.getCount();
+            int lowestSlot = i;
+            ArrayList<Integer> slotsWithSameItem = new ArrayList<>();
             for (int j = i + 1; j < 12; j++)
             {
-                if (removeSlots.contains(j))
+                if (doneSlots.contains(j))
                 {
                     continue;
                 }
@@ -513,37 +517,43 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
 
                 if (stack1.isItemEqual(stack2))
                 {
-                    if (stack2.getCount() >= stack1.getCount())
+                    slotsWithSameItem.add(j);
+                    if (stack2.getCount() < lowestCount)
                     {
-                        removeSlots.add(j);
+                        lowestCount = stack2.getCount();
+                        lowestSlot = j;
                     }
-                    else
-                    {
-                        removeSlots.add(i);
-                    }
-                    break;
+                }
+            }
+            if (!slotsWithSameItem.isEmpty())
+            {
+                if (lowestSlot != i) removeSlots.add(i);
+                for (Integer k : slotsWithSameItem)
+                {
+                    doneSlots.add(k);
+                    if (k.intValue() != lowestSlot) removeSlots.add(k);
                 }
             }
         }
 
         if (removeSlots.size() > 0)
         {
-            int[] returnSlots = new int[slots.length - removeSlots.size()];
-            int j = 0;
-            for (int i = 0; i < slots.length; i++)
+            int[] returnSlots = new int[10 - removeSlots.size()];
+            returnSlots[0] = 0;
+            int j = 1;
+            for (int i = 3; i < 12; i++)
             {
-                if (i > 0 && removeSlots.contains(slots[i]))
+                if (removeSlots.contains(i))
                 {
                     continue;
                 }
-                returnSlots[j] = slots[i];
-                j++;
+                returnSlots[j++] = i;
             }
 
             return returnSlots;
         }
 
-        return slots;
+        return allSlots;
     }
 
     @Override
