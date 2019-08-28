@@ -1,5 +1,8 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.util.Random;
+
+import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
@@ -12,7 +15,9 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -136,4 +141,16 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     {
         return new BlockStateContainer(this, FACING);
     }
+    
+    @Override
+    public void dropEntireInventory(World worldIn, BlockPos pos, IBlockState state)
+    {
+        super.dropEntireInventory(worldIn, pos, state);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if (tileEntity instanceof TileEntityCrafting)
+        {
+            ((TileEntityCrafting)tileEntity).dropHiddenOutputBuffer(worldIn, pos);
+        }
+    }
+
 }
