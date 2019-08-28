@@ -4,6 +4,7 @@ import buildcraft.api.mj.IMjReceiver;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import ic2.api.energy.tile.IEnergySink;
 import mekanism.api.energy.IStrictEnergyAcceptor;
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IElectricityNetwork;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
@@ -16,6 +17,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 
@@ -679,31 +681,29 @@ public class EnergyNetwork implements IElectricityNetwork
                     boolean[] toDo = { true, true, true, true, true, true };
                     TileEntity tileEntity;
 
-                    int xCoord = ((TileEntity) splitPoint).getPos().getX();
-                    int yCoord = ((TileEntity) splitPoint).getPos().getY();
-                    int zCoord = ((TileEntity) splitPoint).getPos().getZ();
+                    BlockPos pos = ((TileEntity) splitPoint).getPos();
 
                     for (int j = 0; j < 6; j++)
                     {
                         switch (j)
                         {
                         case 0:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().down());
+                            tileEntity = world.getTileEntity(pos.down());
                             break;
                         case 1:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().up());
+                            tileEntity = world.getTileEntity(pos.up());
                             break;
                         case 2:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().north());
+                            tileEntity = world.getTileEntity(pos.north());
                             break;
                         case 3:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().south());
+                            tileEntity = world.getTileEntity(pos.south());
                             break;
                         case 4:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().west());
+                            tileEntity = world.getTileEntity(pos.west());
                             break;
                         case 5:
-                            tileEntity = world.getTileEntity(((TileEntity) splitPoint).getPos().east());
+                            tileEntity = world.getTileEntity(pos.east());
                             break;
                         default:
                             //Not reachable, only to prevent uninitiated compile errors
@@ -711,7 +711,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             break;
                         }
 
-                        if (tileEntity instanceof IConductor)
+                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(EnumFacing.getFront(j ^ 1), NetworkType.POWER))
                         {
                             nextToSplit[j] = tileEntity;
                         }
@@ -726,7 +726,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         if (toDo[i1])
                         {
                             TileEntity connectedBlockA = nextToSplit[i1];
-                            NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3((TileEntity) splitPoint));
+                            NetworkFinder finder = new NetworkFinder(world, new BlockVec3(connectedBlockA), new BlockVec3(pos));
                             List<IConductor> partNetwork = finder.exploreNetwork();
 
                             //Mark any others still to do in the nextToSplit array which are connected to this, as dealt with
