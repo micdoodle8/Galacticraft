@@ -196,6 +196,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
             if (item instanceof IItemElectric)
             {
                 this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+                this.poweredByTierGC = ((IItemElectric)item).getTierGC(itemStack);
             }
 //            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
 //            {

@@ -67,7 +67,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 {
                     ++this.processTicks;
 
-                    this.processTimeRequired = TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED_BASE * 2 / (1 + this.poweredByTierGC);
+                    this.processTimeRequired = TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED_BASE * 3 / (1 + this.poweredByTierGC * 2);
 
                     if (this.processTicks >= this.processTimeRequired)
                     {
