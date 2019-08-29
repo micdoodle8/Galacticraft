@@ -124,6 +124,7 @@ public class TickHandlerServer
         TickHandlerServer.tickCount = 0L;
         TickHandlerServer.fluidNetworks.clear();
         MapUtil.reset();
+        TileEntityPainter.loadedTilesForDim.clear();
     }
 
     public static void addFootprint(long chunkKey, Footprint print, int dimID)
