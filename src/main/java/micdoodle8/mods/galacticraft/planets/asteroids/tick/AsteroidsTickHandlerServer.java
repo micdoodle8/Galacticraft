@@ -103,7 +103,7 @@ public class AsteroidsTickHandlerServer
                                 break;
                             }
                         }
-                        if (!inListAlready && !miner.isDead)
+                        if (!inListAlready)
                         {
                             BlockVec3 data = new BlockVec3(miner.chunkCoordX, miner.dimension, miner.chunkCoordZ);
                             data.sideDoneBits = index;
@@ -138,11 +138,13 @@ public class AsteroidsTickHandlerServer
                         {
                             Class clazz = ((WorldServer)miner.world).getChunkProvider().getClass();
                             droppedChunks = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "droppedChunksSet" : "field_73248_b");
+                            droppedChunks.setAccessible(true);
                         }
                         Set<Long> undrop = (Set<Long>) droppedChunks.get(((WorldServer)miner.world).getChunkProvider());
                         undrop.remove(ChunkPos.asLong(miner.chunkCoordX, miner.chunkCoordZ));
                     } catch (Exception ignore)
                     {
+                        ignore.printStackTrace();
                     }
                 }
             }            
