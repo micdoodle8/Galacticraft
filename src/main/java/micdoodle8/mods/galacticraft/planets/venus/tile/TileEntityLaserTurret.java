@@ -409,7 +409,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         else
         {
             // Client side only
-            if (chargeLevel > 0)
+            if (chargeLevel > 0 && chargeLevel < 60)
             {
                 chargeLevel++;
             }
