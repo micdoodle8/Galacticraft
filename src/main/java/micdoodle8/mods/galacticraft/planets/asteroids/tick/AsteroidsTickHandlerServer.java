@@ -119,12 +119,21 @@ public class AsteroidsTickHandlerServer
     @SubscribeEvent
     public void onWorldTick(WorldTickEvent event)
     {
-        if (event.phase == Phase.END)
+        if (event.phase == Phase.START)
         {
-            int index = -1;
             for(EntityAstroMiner miner : activeMiners)
             {
-                index ++;
+                if (miner.playerMP != null && miner.world == event.world && !miner.isDead)
+                {
+                    miner.serverTick = true;
+                    miner.serverTickSave = miner.ticksExisted;
+                }
+            }
+        }
+        else if (event.phase == Phase.END)
+        {
+            for(EntityAstroMiner miner : activeMiners)
+            {
                 if (miner.isDead)
                 {
 //                    minerIt.remove();  Don't remove it, we want the index number to be static for the others
@@ -132,6 +141,13 @@ public class AsteroidsTickHandlerServer
                 }
                 if (miner.playerMP != null && miner.world == event.world)
                 {
+                    if (miner.serverTick)
+                    {
+                        //Force an entity update tick, if it didn't happen already (mainly needed on Sponge servers - entities not super close to players seem to be not updated at all on Sponge even if the chunk is active, see issue #3307)
+                        miner.ticksExisted = miner.serverTickSave + 1;
+                        miner.onUpdate();
+                    }
+
                     try
                     {
                         if (droppedChunks == null)
@@ -144,7 +160,6 @@ public class AsteroidsTickHandlerServer
                         undrop.remove(ChunkPos.asLong(miner.chunkCoordX, miner.chunkCoordZ));
                     } catch (Exception ignore)
                     {
-                        ignore.printStackTrace();
                     }
                 }
             }            

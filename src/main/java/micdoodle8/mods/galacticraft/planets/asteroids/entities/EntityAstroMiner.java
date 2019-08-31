@@ -98,6 +98,8 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     private boolean TEMPDEBUG = false;
     private boolean TEMPFAST = false;
 
+    public boolean serverTick = false;
+    public int serverTickSave;
     public NonNullList<ItemStack> stacks;
 
     public int energyLevel;
@@ -419,6 +421,7 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public void onUpdate()
     {
+        this.serverTick = false;
         if (this.posY < -64.0D)
         {
             this.setDead();
@@ -2193,7 +2196,13 @@ public class EntityAstroMiner extends Entity implements IInventory, IPacketRecei
     @Override
     public AxisAlignedBB getCollisionBox(Entity par1Entity)
     {
-        return par1Entity.getCollisionBoundingBox();
+        return null;  //AstroMiners aren't stopped by any other entity
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox()
+    {
+        return this.getEntityBoundingBox().shrink(0.1D);
     }
 
     @Override
