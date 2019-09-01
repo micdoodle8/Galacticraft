@@ -380,8 +380,8 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (this.loggedConflict) return;
         this.loggedConflict = true;
-        GCLog.severe("POTENTIAL BIOME ID CONFLICT for id " + Biome.getIdForBiome(this) + " " + this.getBiomeName() + " conflicting with Galacticraft");
-        GCLog.severe("PLEASE CHECK CONFIGS FOR BOTH MODS");
+        GCLog.severe("POTENTIAL BIOME ID CONFLICT for id " + Biome.getIdForBiome(this) + " conflicting with Galacticraft");
+        GCLog.severe("PLEASE CHECK CONFIGS FOR BOTH MODS: see Galacticraft core.conf setting BiomeIDBase");
         Thread.dumpStack();
     }
 }
