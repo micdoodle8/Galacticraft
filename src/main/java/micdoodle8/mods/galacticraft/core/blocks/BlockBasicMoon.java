@@ -157,7 +157,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
     {
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
+        IBlockState bs = world.getBlockState(pos);
+        if (bs.getBlock() != this) return false;
+        EnumBlockBasicMoon type = (EnumBlockBasicMoon) bs.getValue(BASIC_TYPE_MOON);
         if (type == EnumBlockBasicMoon.MOON_DIRT || type == EnumBlockBasicMoon.MOON_TURF)
         {
             return true;
