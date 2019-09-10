@@ -58,7 +58,8 @@ public class CompatibilityManager
 //    public static int isBG2Loaded = 0;
 
     public static Class<?> classGTOre = null;
-    private static Method spongeOverride = null;
+    private static Method spongeOverrideSet = null;
+    private static Method spongeOverrideGet = null;
     public static Class classBCTransport;
     public static Class classBCTransportPipeTile;
 	public static Class classBOPWorldType = null;
@@ -223,10 +224,17 @@ public class CompatibilityManager
 
         if (Loader.isModLoaded("sponge")) {
             try {
-                spongeOverride = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer").getMethod("setForceChunkRequests", boolean.class);
+                Class clazz = Class.forName("org.spongepowered.common.interfaces.world.gen.IMixinChunkProviderServer");
+                spongeOverrideSet = clazz.getMethod("setForceChunkRequests", boolean.class);
+                spongeOverrideGet = clazz.getMethod("getForceChunkRequests");
                 spongeLoaded = true;
             } catch (Exception e) {
-                e.printStackTrace();
+                try {
+                    Class clazz = Class.forName("org.spongepowered.common.bridge.world.chunk.ChunkProviderServerBridge");
+                    spongeOverrideSet = clazz.getMethod("bridge$setForceChunkRequests", boolean.class);
+                    spongeOverrideGet = clazz.getMethod("bridge$getForceChunkRequests");
+                    spongeLoaded = true;
+                } catch (Exception enew) { enew.printStackTrace(); }
             }
         }
 
@@ -334,28 +342,30 @@ public class CompatibilityManager
     {
     }
 
-    public static void forceLoadChunks(WorldServer w)
+    public static boolean forceLoadChunks(WorldServer w)
     {
+        Boolean spongeForceChunksPrevious = null;
         if (spongeLoaded)
         {   
             ChunkProviderServer cps = w.getChunkProvider();
             try
             {
-                spongeOverride.invoke(cps, true);
+                spongeForceChunksPrevious = (Boolean) spongeOverrideGet.invoke(cps);
+                spongeOverrideSet.invoke(cps, true);
             } catch (Exception ignore)
             {
             }
         }
+        return Boolean.TRUE.equals(spongeForceChunksPrevious);
     }
 
-    public static void forceLoadChunksEnd(WorldServer w)
+    public static void forceLoadChunksEnd(WorldServer w, boolean previous)
     {
         if (spongeLoaded)
         {   
-            ChunkProviderServer cps = w.getChunkProvider();
             try
             {
-                spongeOverride.invoke(cps, false);
+                spongeOverrideSet.invoke(w.getChunkProvider(), previous);
             } catch (Exception ignore)
             {
             }
