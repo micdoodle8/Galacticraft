@@ -37,13 +37,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public static final int OUTPUT_PER_SECOND = 1;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
 
     public TileEntityRefinery()
     {
+        super("container.refinery.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
         this.oilTank.setFluid(new FluidStack(GCFluids.fluidOil, 0));
         this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, 0));
+        this.inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
     @Override
@@ -53,10 +54,10 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
         if (!this.world.isRemote)
         {
-            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(1));
+            final FluidStack liquid = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isOil(liquid))
             {
-                FluidUtil.loadFromContainer(this.oilTank, GCFluids.fluidOil, this.stacks, 1, liquid.amount);
+                FluidUtil.loadFromContainer(this.oilTank, GCFluids.fluidOil, this.getInventory(), 1, liquid.amount);
             }
 
             checkFluidTankTransfer(2, this.fuelTank);
@@ -90,7 +91,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
     private void checkFluidTankTransfer(int slot, FluidTank tank)
     {
-        FluidUtil.tryFillContainerFuel(tank, this.stacks, slot);
+        FluidUtil.tryFillContainerFuel(tank, this.getInventory(), slot);
     }
 
     public int getScaledOilLevel(int i)
@@ -138,7 +139,6 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         if (nbt.hasKey("oilTank"))
         {
@@ -165,7 +165,6 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
 
         if (this.oilTank.getFluid() != null)
         {
@@ -177,19 +176,6 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
         }
         return nbt;
-    }
-
-
-    @Override
-    protected NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.refinery.name");
     }
 
     @Override

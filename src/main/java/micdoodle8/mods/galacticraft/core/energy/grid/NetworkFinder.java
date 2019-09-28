@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.energy.grid;
 
+import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -66,7 +68,7 @@ public class NetworkFinder
 
                 TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(obj.x, obj.y, obj.z));
 
-                if (tileEntity instanceof IConductor)
+                if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(EnumFacing.getFront(dir ^ 1), NetworkType.POWER))
                 {
                     found.add((IConductor) tileEntity);
                     loopAll(obj.x, obj.y, obj.z, dir ^ 1);

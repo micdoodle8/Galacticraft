@@ -32,7 +32,6 @@ import java.util.Random;
 
 public class TileEntityTreasureChest extends TileEntityAdvanced implements ITickable, IInventory, IKeyable, ISidedInventory
 {
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(27, ItemStack.EMPTY);
     public boolean adjacentChestChecked;
     public float lidAngle;
     public float prevLidAngle;
@@ -55,94 +54,10 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
 
     public TileEntityTreasureChest(int tier)
     {
+        super("container.treasurechest.name");
         this.tier = tier;
+        inventory = NonNullList.withSize(27, ItemStack.EMPTY);
     }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return 27;
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Gets the name of this command sender (usually username, but possibly "Rcon")
-     */
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.treasurechest.name");
-    }
-
-    /**
-     * Returns true if this thing is named
-     */
-    @Override
-    public boolean hasCustomName()
-    {
-        return false;
-    }
-
-    public void setCustomName(String name)
-    {
-    }
-    
 
     @Override
     public void readFromNBT(NBTTagCompound nbt)
@@ -150,9 +65,6 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         super.readFromNBT(nbt);
         this.locked = nbt.getBoolean("isLocked");
         this.tier = nbt.getInteger("tier");
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
 
         checkLootAndRead(nbt);
     }
@@ -163,7 +75,6 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         super.writeToNBT(nbt);
         nbt.setBoolean("isLocked", this.locked);
         nbt.setInteger("tier", this.tier);
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
 
         checkLootAndWrite(nbt);
 
@@ -174,25 +85,6 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public NBTTagCompound getUpdateTag()
     {
         return this.writeToNBT(new NBTTagCompound());
-    }
-
-    /**
-     * Returns the maximum stack size for a inventory slot. Seems to always be 64, possibly will be extended. *Isn't
-     * this more of a set than a get?*
-     */
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    /**
-     * Do not make give this method the name canInteractWith because it clashes with Container
-     */
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player)
-    {
-        return this.world.getTileEntity(this.pos) != this ? false : player.getDistanceSq((double) this.pos.getX() + 0.5D, (double) this.pos.getY() + 0.5D, (double) this.pos.getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
@@ -378,21 +270,6 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     public int getFieldCount()
     {
         return 0;
-    }
-
-    @Override
-    public void clear()
-    {
-        for (int i = 0; i < this.stacks.size(); ++i)
-        {
-            this.stacks.set(i, ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return (ITextComponent) (this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
+import java.util.Random;
+
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
@@ -7,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -25,6 +28,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     private static final int SIZEINVENTORY = 9;
     public PersistantInventoryCrafting craftMatrix = new PersistantInventoryCrafting();
     public NonNullList<ItemStack> memory = NonNullList.withSize(SIZEINVENTORY, ItemStack.EMPTY);
+    private ItemStack hiddenOutputBuffer = ItemStack.EMPTY;   //Used for Buildcraft pipes and other inventory-slot setters which do not fully clear the results slot - see setInventorySlotContents()
 
     public TileEntityCrafting()
     {
@@ -81,6 +85,13 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     {
         if (par1 < SIZEINVENTORY)
             return this.craftMatrix.getStackInSlot(par1);
+
+        //Results slot
+        //First, try to clear the hidden output buffer before generating new results items
+        if (!this.hiddenOutputBuffer.isEmpty())
+        {
+            return this.hiddenOutputBuffer;
+        }
         
         // Crafting Manager can produce concurrent modification exception in single player
         // if a server-side tick (e.g. from a Hopper) calls this while client-side is still initialising recipes
@@ -101,6 +112,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
         else if (par1 == SIZEINVENTORY)
         {
+            if (!this.hiddenOutputBuffer.isEmpty())
+            {
+                return this.hiddenOutputBuffer.splitStack(par2);
+            }
             if (this.stillMatchesRecipe())
             {
                 ItemStack craftingResult = CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
@@ -108,7 +123,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 {
                     this.pullOneResultStack();
                     this.markDirty();
-                    return craftingResult;
+                    ItemStack result = craftingResult.splitStack(par2);
+                    this.hiddenOutputBuffer = craftingResult;  //save any balance
+                    return result;
                 }
             }
         }
@@ -117,6 +134,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     
     private void pullOneResultStack()
     {
+        Thread.dumpStack();
         NonNullList<ItemStack> aitemstack = CraftingManager.getRemainingItems(this.craftMatrix, this.world);
 
         for (int i = 0; i < aitemstack.size(); ++i)
@@ -197,15 +215,37 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             this.craftMatrix.setInventorySlotContents(par1, stack);
             this.markDirty();
         }
-        else if (par1 == SIZEINVENTORY && stack.isEmpty())
+        else if (par1 == SIZEINVENTORY)
         {
-            if (this.stillMatchesRecipe())
+            if (stack.isEmpty())
             {
-                ItemStack craftingResult = CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
-                if (!craftingResult.isEmpty())
+                if (this.hiddenOutputBuffer.isEmpty())
                 {
-                    this.pullOneResultStack();
+                    //Standard behaviour: hiddenOutputBuffer not in use
+                    this.craftOutput();
                 }
+            }
+            else
+            //Buildcraft pipes and some other extractors may not fully clear the results slot, but instead set it to partial contents
+            {
+                if (!stack.isItemEqual(this.hiddenOutputBuffer))  //also true if hiddenOutputBuffer is empty, e.g. craft 9 new items and pipe takes 4, setting output stack to 5 items
+                {
+                    this.dropHiddenOutputBuffer(this.world, this.pos);
+                    this.craftOutput();
+                }
+            }
+            this.hiddenOutputBuffer = stack;
+        }
+    }
+
+    private void craftOutput()
+    {
+        if (this.stillMatchesRecipe())
+        {
+            ItemStack craftingResult = CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld());
+            if (!craftingResult.isEmpty())
+            {
+                this.pullOneResultStack();
             }
         }
     }
@@ -249,6 +289,8 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                     }
                 }
             }
+            NBTTagCompound buffer = nbt.getCompoundTag("buf");
+            this.hiddenOutputBuffer = new ItemStack(buffer);
         }
     }
 
@@ -279,6 +321,9 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
 
         nbt.setTag("Items", var2);
+        NBTTagCompound buffer = new NBTTagCompound();
+        this.hiddenOutputBuffer.writeToNBT(buffer);
+        nbt.setTag("buf", buffer);
         return nbt;
     }
 
@@ -355,7 +400,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
     {
-        return index == SIZEINVENTORY && this.stillMatchesRecipe();
+        return index == SIZEINVENTORY && (!this.hiddenOutputBuffer.isEmpty() || this.stillMatchesRecipe());
     }
 
     /**
@@ -429,5 +474,29 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     private boolean matchingStacks(ItemStack stack, ItemStack target)
     {
         return !target.isEmpty() && target.getItem() == stack.getItem() && (!stack.getHasSubtypes() || stack.getMetadata() == target.getMetadata()) && RecipeUtil.areItemStackTagsEqual(stack, target) && target.isStackable() && target.getCount() < target.getMaxStackSize();
+    }
+
+    public void dropHiddenOutputBuffer(World worldIn, BlockPos pos)
+    {
+        ItemStack var7 = this.hiddenOutputBuffer;
+
+        if (var7 != null && !var7.isEmpty())
+        {
+            Random syncRandom = GCCoreUtil.getRandom(pos);
+
+            float var8 = syncRandom.nextFloat() * 0.8F + 0.1F;
+            float var9 = syncRandom.nextFloat() * 0.8F + 0.1F;
+            float var10 = syncRandom.nextFloat() * 0.8F + 0.1F;
+
+            while (!var7.isEmpty())
+            {
+                EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
+                float var13 = 0.05F;
+                var12.motionX = (float) syncRandom.nextGaussian() * var13;
+                var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;
+                var12.motionZ = (float) syncRandom.nextGaussian() * var13;
+                worldIn.spawnEntity(var12);
+            }
+        }
     }
 }

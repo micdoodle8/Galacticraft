@@ -22,6 +22,7 @@ import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -49,13 +50,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
+public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, IDockable, IControllableEntity, IEntityFullSync
 {
     private static final DataParameter<Integer> CURRENT_DAMAGE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> TIME_SINCE_HIT = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> ROCK_DIRECTION = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
     public static final int tankCapacity = 1000;
-    public FluidTank buggyFuelTank = new FluidTank(this.tankCapacity);
+    public FluidTank buggyFuelTank = new FluidTank(EntityBuggy.tankCapacity);
     protected long ticks = 0;
     public int buggyType;
     public int currentDamage;
@@ -79,10 +80,12 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     private int timeClimbing;
     private boolean shouldClimb;
 
+
+
     public EntityBuggy(World var1)
     {
         super(var1);
-        this.setSize(0.98F, 1.4F);
+        this.setSize(1.4F, 0.6F);
         this.speed = 0.0D;
         this.preventEntitySpawning = true;
         this.dataManager.register(CURRENT_DAMAGE, 0);
@@ -109,7 +112,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     {
         final double fuelLevel = this.buggyFuelTank.getFluid() == null ? 0 : this.buggyFuelTank.getFluid().amount;
 
-        return (int) (fuelLevel * i / this.tankCapacity);
+        return (int) (fuelLevel * i / EntityBuggy.tankCapacity);
     }
 
     public ModelBase getModel()
@@ -276,7 +279,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
 
             if (item.hasTagCompound())
             {
-                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound(item.getTagCompound().copy());
             }
         }
     }
@@ -307,10 +310,7 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     {
         if (!this.getPassengers().isEmpty())
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
-            {
-            }
-            else
+            if (!this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
             {
                 this.boatPosRotationIncrements = posRotationIncrements + 5;
                 this.boatX = x;
@@ -576,6 +576,41 @@ public class EntityBuggy extends Entity implements IInventoryDefaults, IPacketRe
     @Override
     public void markDirty()
     {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
     }
 
     @Override

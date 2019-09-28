@@ -46,6 +46,7 @@ public class ConfigManagerAsteroids
 
     // GENERAL
     public static boolean disableGalacticraftHelium;
+    public static boolean disableSmallAsteroids;
     public static int astroMinerMax;
 
     public static boolean disableIlmeniteGen;
@@ -112,6 +113,17 @@ public class ConfigManagerAsteroids
                 propCopy.setLanguageKey(prop.getLanguageKey());
             }
             astroMinerMax = prop.getInt(6);
+            GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
+
+            prop = config.get(Constants.CONFIG_CATEGORY_GENERAL, "disableSmallAsteroids", false);
+            prop.setComment("Option to disable small asteroids from spawning in the Asteroids Dimension.");
+            prop.setLanguageKey("gc.configgui.disable_small_asteroids");
+            if (update)
+            {
+                propCopy = ConfigManagerMars.config.get(Constants.CONFIG_CATEGORY_GENERAL, prop.getName(), prop.getBoolean(), prop.getComment());
+                propCopy.setLanguageKey(prop.getLanguageKey());
+            }
+            disableSmallAsteroids = prop.getBoolean(false);
             GalacticraftPlanets.finishProp(prop, Constants.CONFIG_CATEGORY_GENERAL);
 
             prop = config.get(update ? Constants.CONFIG_CATEGORY_GENERAL : Constants.CONFIG_CATEGORY_WORLDGEN, "Disable Iron Ore Gen on Asteroids", false);

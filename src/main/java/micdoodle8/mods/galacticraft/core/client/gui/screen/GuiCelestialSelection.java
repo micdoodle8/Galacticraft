@@ -76,6 +76,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected int animateGrandchildren = 0;
     protected Vector2f position = new Vector2f(0, 0);
     protected Map<CelestialBody, Vector3f> planetPosMap = Maps.newHashMap();
+    @Deprecated
     protected Map<CelestialBody, Integer> celestialBodyTicks = Maps.newHashMap();
     protected CelestialBody selectedBody;
     protected CelestialBody lastSelectedBody;
@@ -127,21 +128,6 @@ public class GuiCelestialSelection extends GuiScreen
     @Override
     public void initGui()
     {
-        for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
-        {
-            this.celestialBodyTicks.put(planet, 0);
-        }
-
-        for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
-        {
-            this.celestialBodyTicks.put(moon, 0);
-        }
-
-        for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
-        {
-            this.celestialBodyTicks.put(satellite, 0);
-        }
-
         GuiCelestialSelection.BORDER_SIZE = this.width / 65;
         GuiCelestialSelection.BORDER_EDGE_SIZE = GuiCelestialSelection.BORDER_SIZE / 4;
 
@@ -546,21 +532,6 @@ public class GuiCelestialSelection extends GuiScreen
             Mouse.setGrabbed(false);
         }
 
-        for (CelestialBody e : this.celestialBodyTicks.keySet())
-        {
-//			if (!(e instanceof Planet && e == this.selectedBody) && !(e instanceof Planet && this.selectedBody instanceof IChildBody && GalaxyRegistry.getIChildBodysForPlanet((Planet) e).contains(this.selectedBody)))
-            {
-                Integer i = this.celestialBodyTicks.get(e);
-
-                if (i != null)
-                {
-                    i++;
-                }
-
-                this.celestialBodyTicks.put(e, i);
-            }
-        }
-
         if (this.selectedBody != null)
         {
             this.ticksSinceSelection++;
@@ -675,9 +646,25 @@ public class GuiCelestialSelection extends GuiScreen
         {
             int deltaX = x - lastMovePosX;
             int deltaY = y - lastMovePosY;
+            float scollMultiplier = -Math.abs(this.zoom);
 
-            translation.x += (deltaX - deltaY) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
-            translation.y += (deltaY + deltaX) * -0.4F * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity;
+            if (this.zoom == -1.0F)
+            {
+                scollMultiplier = -1.5F;
+            }
+
+            if (this.zoom >= -0.25F && this.zoom <= 0.15F)
+            {
+                scollMultiplier = -0.2F;
+            }
+
+            if (this.zoom >= 0.15F)
+            {
+                scollMultiplier = -0.15F;
+            }
+
+            translation.x += (deltaX - deltaY) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
+            translation.y += (deltaY + deltaX) * scollMultiplier * (ConfigManagerCore.invertMapMouseScroll ? -1.0F : 1.0F) * ConfigManagerCore.mapMouseScrollSensitivity * 0.2F;
         }
 
         lastMovePosX = x;
@@ -1316,10 +1303,9 @@ public class GuiCelestialSelection extends GuiScreen
             return ((Star) cBody).getParentSolarSystem().getMapPosition().toVector3f();
         }
 
-        int cBodyTicks = this.celestialBodyTicks.get(cBody);
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
         float distanceFromCenter = this.getScale(cBody);
-        Vector3f cBodyPos = new Vector3f((float) Math.sin(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(cBodyTicks / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
+        Vector3f cBodyPos = new Vector3f((float) Math.sin(ticksTotal / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticksTotal / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
 
         if (cBody instanceof Planet)
         {

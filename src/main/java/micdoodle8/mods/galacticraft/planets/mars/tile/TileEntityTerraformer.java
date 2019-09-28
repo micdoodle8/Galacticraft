@@ -47,7 +47,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public boolean active;
     public boolean lastActive;
     public static final int WATTS_PER_TICK = 1;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(14, ItemStack.EMPTY);
     private ArrayList<BlockPos> terraformableBlocksList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grassBlockList = new ArrayList<BlockPos>();
     private ArrayList<BlockPos> grownTreesList = new ArrayList<BlockPos>();
@@ -68,7 +67,9 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     public TileEntityTerraformer()
     {
+        super("container.tile_terraformer.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 60 : 30);
+        this.inventory = NonNullList.withSize(14, ItemStack.EMPTY);
     }
 
     public int getScaledWaterLevel(int i)
@@ -108,10 +109,10 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (!this.world.isRemote)
         {
-            final FluidStack liquid = FluidUtil.getFluidContained(this.stacks.get(0));
+            final FluidStack liquid = FluidUtil.getFluidContained(this.getInventory().get(0));
             if (FluidUtil.isFluidStrict(liquid, FluidRegistry.WATER.getName()))
             {
-                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.stacks, 0, liquid.amount);
+                FluidUtil.loadFromContainer(waterTank, FluidRegistry.WATER, this.getInventory(), 0, liquid.amount);
             }
 
             this.active = this.bubbleSize == this.MAX_SIZE && this.hasEnoughEnergyToRun && !this.getFirstBonemealStack().isEmpty() && this.waterTank.getFluid() != null && this.waterTank.getFluid().amount > 0;
@@ -323,7 +324,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         switch (type)
         {
         case 0:
-            stack = this.stacks.get(this.saplingIndex);
+            stack = this.getInventory().get(this.saplingIndex);
 
             if (!stack.isEmpty())
             {
@@ -351,7 +352,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     {
         for (int i = start; i < end; i++)
         {
-            ItemStack stack = this.stacks.get(i);
+            ItemStack stack = this.getInventory().get(i);
 
             if (!stack.isEmpty())
             {
@@ -367,7 +368,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         int stackcount = 0;
         for (int i = start; i < end; i++)
         {
-            if (!this.stacks.get(i).isEmpty())
+            if (!this.getInventory().get(i).isEmpty())
             {
                 stackcount++;
             }
@@ -381,7 +382,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         int random = this.world.rand.nextInt(stackcount);
         for (int i = start; i < end; i++)
         {
-            if (!this.stacks.get(i).isEmpty())
+            if (!this.getInventory().get(i).isEmpty())
             {
                 if (random == 0)
                 {
@@ -400,7 +401,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (index != -1)
         {
-            return this.stacks.get(index);
+            return this.getInventory().get(index);
         }
 
         return ItemStack.EMPTY;
@@ -413,7 +414,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         if (index != -1)
         {
             this.saplingIndex = index;
-            return this.stacks.get(index);
+            return this.getInventory().get(index);
         }
 
         return ItemStack.EMPTY;
@@ -425,7 +426,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (index != -1)
         {
-            return this.stacks.get(index);
+            return this.getInventory().get(index);
         }
 
         return ItemStack.EMPTY;
@@ -435,7 +436,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.stacks = this.readStandardItemsFromNBT(nbt);
 
         this.bubbleSize = nbt.getFloat("BubbleSize");
         this.useCount = nbt.getIntArray("UseCountArray");
@@ -460,7 +460,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setFloat("BubbleSize", this.bubbleSize);
         nbt.setIntArray("UseCountArray", this.useCount);
 
@@ -471,18 +470,6 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
         return nbt;
-    }
-
-    @Override
-    public NonNullList<ItemStack> getContainingItems()
-    {
-        return this.stacks;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.tile_terraformer.name");
     }
 
     // ISidedInventory Implementation:

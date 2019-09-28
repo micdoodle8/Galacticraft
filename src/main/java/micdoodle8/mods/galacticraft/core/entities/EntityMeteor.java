@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import micdoodle8.mods.galacticraft.api.entity.ILaserTrackableFast;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
@@ -7,16 +8,18 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.MoverType;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -28,9 +31,9 @@ import net.minecraft.world.World;
 import java.util.Iterator;
 import java.util.List;
 
-public class EntityMeteor extends Entity
+public class EntityMeteor extends Entity implements ILaserTrackableFast
 {
-    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityBuggy.class, DataSerializers.VARINT);
+    private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityMeteor.class, DataSerializers.VARINT);
     public EntityLiving shootingEntity;
     public int size;
 
@@ -68,53 +71,53 @@ public class EntityMeteor extends Entity
             this.spawnParticles();
         }
 
-        Vec3d var15 = new Vec3d(this.posX, this.posY, this.posZ);
-        Vec3d var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-        RayTraceResult var3 = this.world.rayTraceBlocks(var15, var2, true, true, false);
-        var15 = new Vec3d(this.posX, this.posY, this.posZ);
-        var2 = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        Vec3d currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
+        Vec3d nextPosition = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+        RayTraceResult collisionIntercept = this.world.rayTraceBlocks(currentPosition, nextPosition, true, true, false);
+        currentPosition = new Vec3d(this.posX, this.posY, this.posZ);
+        nextPosition = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
-        if (var3 != null)
+        if (collisionIntercept != null)
         {
-            var2 = new Vec3d(var3.hitVec.x, var3.hitVec.y, var3.hitVec.z);
+            nextPosition = new Vec3d(collisionIntercept.hitVec.x, collisionIntercept.hitVec.y, collisionIntercept.hitVec.z);
         }
 
-        Entity var4 = null;
-        final List<?> var5 = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(2.0D, 2.0D, 2.0D));
-        double var6 = 0.0D;
-        final Iterator<?> var8 = var5.iterator();
-        final double var10 = 0.01D;
+        Entity collidingEntity = null;
+        final List<?> nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(2.0D, 2.0D, 2.0D));
+        double distanceToCollidingEntityIntercept = 0.0D;
+        final Iterator<?> nearbyEntitiesIterator = nearbyEntities.iterator();
+        final double entityBBPadding = 0.01D;
 
-        while (var8.hasNext())
+        while (nearbyEntitiesIterator.hasNext())
         {
-            final Entity var9 = (Entity) var8.next();
+            final Entity nearbyEntity = (Entity) nearbyEntitiesIterator.next();
 
-            if (var9.canBeCollidedWith() && !var9.isEntityEqual(this.shootingEntity))
+            if (nearbyEntity.canBeCollidedWith() && !nearbyEntity.isEntityEqual(this.shootingEntity))
             {
-                final AxisAlignedBB var11 = var9.getEntityBoundingBox().grow(var10, var10, var10);
-                final RayTraceResult var12 = var11.calculateIntercept(var15, var2);
+                final AxisAlignedBB nearbyEntityPaddedBB = nearbyEntity.getEntityBoundingBox().grow(entityBBPadding, entityBBPadding, entityBBPadding);
+                final RayTraceResult nearbyEntityIntercept = nearbyEntityPaddedBB.calculateIntercept(currentPosition, nextPosition);
 
-                if (var12 != null)
+                if (nearbyEntityIntercept != null)
                 {
-                    final double var13 = var15.distanceTo(var12.hitVec);
+                    final double distanceToNearbyEntityIntercept = currentPosition.distanceTo(nearbyEntityIntercept.hitVec);
 
-                    if (var13 < var6 || var6 == 0.0D)
+                    if (distanceToNearbyEntityIntercept < distanceToCollidingEntityIntercept || distanceToCollidingEntityIntercept == 0.0D)
                     {
-                        var4 = var9;
-                        var6 = var13;
+                        collidingEntity = nearbyEntity;
+                        distanceToCollidingEntityIntercept = distanceToNearbyEntityIntercept;
                     }
                 }
             }
         }
 
-        if (var4 != null)
+        if (collidingEntity != null)
         {
-            var3 = new RayTraceResult(var4);
+            collisionIntercept = new RayTraceResult(collidingEntity);
         }
 
-        if (var3 != null)
+        if (collisionIntercept != null)
         {
-            this.onImpact(var3);
+            this.onImpact(collisionIntercept);
         }
 
         if (this.posY <= -20 || this.posY >= 400)
@@ -136,6 +139,8 @@ public class EntityMeteor extends Entity
     {
         if (!this.world.isRemote)
         {
+            this.world.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
+
             if (movingObjPos != null)
             {
                 BlockPos pos = movingObjPos.getBlockPos();
@@ -161,8 +166,6 @@ public class EntityMeteor extends Entity
                     movingObjPos.entityHit.attackEntityFrom(EntityMeteor.causeMeteorDamage(this, this.shootingEntity), ConfigManagerCore.hardMode ? 12F : 6F);
                 }
             }
-
-            this.world.newExplosion(this, this.posX, this.posY, this.posZ, this.size / 3 + 2, false, true);
         }
 
         this.setDead();
@@ -204,12 +207,12 @@ public class EntityMeteor extends Entity
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(NBTTagCompound compound)
     {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(NBTTagCompound compound)
     {
     }
 }

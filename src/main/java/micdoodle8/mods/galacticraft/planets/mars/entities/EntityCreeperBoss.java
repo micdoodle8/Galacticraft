@@ -338,9 +338,11 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public void setSwingingArms(boolean swingingArms)
+    public void setSwingingArms(boolean swingingArms) {}
+
+    @Override
+    public void onKillCommand()
     {
-        // TODO Auto-generated method stub
-        //TODO for 1.12.2
+        this.setHealth(0.0F);
     }
 }

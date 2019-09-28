@@ -148,7 +148,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
     public static IPlayerClient playerClientHandler = new PlayerClient();
     public static Minecraft mc = FMLClientHandler.instance().getClient();
-    public static List<String> gearDataRequests = Lists.newArrayList();
+    public static List<UUID> gearDataRequests = Lists.newArrayList();
     public static DynamicTextureProper overworldTextureClient;
     public static DynamicTextureProper overworldTextureWide;
     public static DynamicTextureProper overworldTextureLarge;
@@ -877,35 +877,31 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         BufferedReader reader = new BufferedReader(streamReader);
 
         String line;
-        try {
-            while ((line = reader.readLine()) != null) {
-                if (line.contains(":")) {
-                    int splitLocation = line.indexOf(":");
-                    String uuid = line.substring(0, splitLocation);
-                    capeMap.put(uuid, new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + convertCapeString(line.substring(splitLocation + 1)) + ".png"));
+        try
+        {
+            while ((line = reader.readLine()) != null)
+            {
+                if (line.contains(":"))
+                {
+                    capeMap.put(line.split(":")[0], new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/capes/cape_" + line.split(":")[1].split(" ")[0].substring(4).toLowerCase() + ".png"));
                 }
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             if (ConfigManagerCore.enableDebug)e.printStackTrace();
-        } finally {
-            try {
+        }
+        finally
+        {
+            try
+            {
                 reader.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 if (ConfigManagerCore.enableDebug) e.printStackTrace();
             }
         }
-    }
-
-    private static String convertCapeString(String capeName) {
-        String s = "";
-        for (int i = 0; i < capeName.length(); ++i) {
-            char c = capeName.charAt(i);
-            if (c == " ".charAt(0)) {
-                break;
-            }
-            s = String.join("", s, Character.toString(c));
-        }
-        return s.substring(4).toLowerCase();
     }
 
     public static void registerInventoryTabs()
@@ -947,11 +943,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
         if (gearData == null)
         {
-            String id = PlayerUtil.getName(player);
+            UUID id = player.getUniqueID();
 
             if (!ClientProxyCore.gearDataRequests.contains(id))
             {
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_GEAR_DATA2, GCCoreUtil.getDimensionID(player.world), new Object[] { id }));
                 ClientProxyCore.gearDataRequests.add(id);
             }
         }

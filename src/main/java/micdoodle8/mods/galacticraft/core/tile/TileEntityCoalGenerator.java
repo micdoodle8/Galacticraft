@@ -49,11 +49,12 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 
     @NetworkedField(targetSide = Side.CLIENT)
     public int itemCookTime = 0;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
 
     public TileEntityCoalGenerator()
     {
+        super("tile.machine.0.name");
         this.storage.setMaxExtract(TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK - TileEntityCoalGenerator.MIN_GENERATE_GJ_PER_TICK);
+        this.inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
@@ -75,14 +76,14 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
                 this.heatGJperTick = Math.min(this.heatGJperTick + Math.max(this.heatGJperTick * 0.005F, TileEntityCoalGenerator.BASE_ACCELERATION), TileEntityCoalGenerator.MAX_GENERATE_GJ_PER_TICK);
             }
 
-            if (this.itemCookTime <= 0 && !this.stacks.get(0).isEmpty())
+            if (this.itemCookTime <= 0 && !this.getInventory().get(0).isEmpty())
             {
-                if (this.stacks.get(0).getItem() == Items.COAL && this.stacks.get(0).getCount() > 0)
+                if (this.getInventory().get(0).getItem() == Items.COAL && this.getInventory().get(0).getCount() > 0)
                 {
                     this.itemCookTime = 320;
                     this.decrStackSize(0, 1);
                 }
-                else if (this.stacks.get(0).getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && this.stacks.get(0).getCount() > 0)
+                else if (this.getInventory().get(0).getItem() == Item.getItemFromBlock(Blocks.COAL_BLOCK) && this.getInventory().get(0).getCount() > 0)
                 {
                     this.itemCookTime = 320 * 10;
                     this.decrStackSize(0, 1);
@@ -106,9 +107,6 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         super.readFromNBT(nbt);
         this.itemCookTime = nbt.getInteger("itemCookTime");
         this.heatGJperTick = nbt.getInteger("generateRateInt");
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
     }
 
     @Override
@@ -118,89 +116,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
         nbt.setInteger("itemCookTime", this.itemCookTime);
         nbt.setFloat("generateRate", this.heatGJperTick);
 
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
         return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.machine.0.name");
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
 //    @Override
@@ -225,12 +141,6 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
-    }
-
-    @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing direction)
-    {
-        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override

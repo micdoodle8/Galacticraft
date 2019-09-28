@@ -22,6 +22,7 @@ public class GuiElementTextBox extends GuiButton
     public int backspacePressed;
     public boolean isTextFocused = false;
     public int incorrectUseTimer;
+    public boolean resetOnClick = true;
 
     private ITextBoxCallback parentGui;
 
@@ -229,7 +230,10 @@ public class GuiElementTextBox extends GuiButton
         {
             Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, 0xffA0A0A0);
             this.isTextFocused = true;
-            this.text = this.parentGui.getInitialText(this);
+            if (resetOnClick)
+            {
+                this.text = this.parentGui.getInitialText(this);
+            }
             this.parentGui.onTextChanged(this, this.text);
             return true;
         }

@@ -1,0 +1,9 @@
+{
+    "forge_marker": 1,
+    "variants": {
+        "facing=north": { "model": "galacticraftplanets:laser_turret" },
+        "facing=east":  { "model": "galacticraftplanets:laser_turret", "y": 90 },
+        "facing=west":  { "model": "galacticraftplanets:laser_turret", "y": 270 },
+        "facing=south": { "model": "galacticraftplanets:laser_turret", "y": 180 }
+    }
+}

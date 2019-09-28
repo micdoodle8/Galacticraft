@@ -26,21 +26,22 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.EnumSet;
 
-public class TileEntityOxygenCollector extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory
+public class TileEntityOxygenCollector extends TileEntityOxygen
 {
     public boolean active;
     public static final int OUTPUT_PER_TICK = 100;
+    public static float OXYGEN_PER_PLANT = 0.75F;
     @NetworkedField(targetSide = Side.CLIENT)
     public float lastOxygenCollected;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(1, ItemStack.EMPTY);
     private boolean noAtmosphericOxygen = true;
     private boolean isInitialised = false;
     private boolean producedLastTick = false;
 
     public TileEntityOxygenCollector()
     {
-        super(6000, 0);
+        super("container.oxygencollector.name", 6000, 0);
         this.noRedstoneControl = true;
+        inventory = NonNullList.withSize(1, ItemStack.EMPTY);
     }
 
     @Override
@@ -167,7 +168,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
                                             BlockPos pos = new BlockPos(x, y, z);
                                             if (state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.world, pos) == EnumPlantType.Crop)
                                             {
-                                                nearbyLeaves += 0.075F * 10F;
+                                                nearbyLeaves += OXYGEN_PER_PLANT;
                                             }
                                         }
                                     }
@@ -194,123 +195,12 @@ public class TileEntityOxygenCollector extends TileEntityOxygen implements IInve
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
-
-        return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.oxygencollector.name");
-    }
-
-    @Override
-    public int getInventoryStackLimit()
-    {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
-
-    public boolean hasCustomName()
-    {
-        return true;
-    }
-
     // ISidedInventory Implementation:
 
     @Override
     public int[] getSlotsForFace(EnumFacing side)
     {
         return new int[] { 0 };
-    }
-
-    @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
-    {
-        return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override

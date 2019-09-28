@@ -18,8 +18,9 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     public TileEntity[] adjacentConnections = null;
     private boolean validated = true;
 
-    public TileEntitySolarTransmitter()
+    public TileEntitySolarTransmitter(String tileName)
     {
+        super(tileName);
     }
 
     @Override

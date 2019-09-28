@@ -23,6 +23,23 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     @NetworkedField(targetSide = Side.CLIENT)
     private boolean canConnect = false;
 
+    public TileEntityTelepadFake()
+    {
+        super("tile.telepadfake.name");
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
     public void setMainBlock(BlockPos mainBlock)
     {
         this.setMainBlockInternal(mainBlock);

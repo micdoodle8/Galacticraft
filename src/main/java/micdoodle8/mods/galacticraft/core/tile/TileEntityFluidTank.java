@@ -39,6 +39,23 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     private DelayTimer delayTimer = new DelayTimer(1);
     private AxisAlignedBB renderAABB;
 
+    public TileEntityFluidTank()
+    {
+        super("tile.fluid_tank.name");
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side)
+    {
+        return new int[0];
+    }
+
+    @Override
+    protected boolean handleInventory()
+    {
+        return false;
+    }
+
     public void onBreak()
     {
         if (fluidTank.getFluidAmount() > 0)

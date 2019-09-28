@@ -117,13 +117,9 @@ public class ModelBipedGC
             }
         }
 
-        final List<?> l = player.world.getEntitiesWithinAABBExcludingEntity(player, new AxisAlignedBB(player.posX - 20, 0, player.posZ - 20, player.posX + 20, 200, player.posZ + 20));
-
-        for (int i = 0; i < l.size(); i++)
+        for (Entity e : player.world.loadedEntityList)
         {
-            final Entity e = (Entity) l.get(i);
-
-            if (e instanceof EntityTieredRocket)
+            if (e instanceof EntityTieredRocket && e.getDistanceSq(player) < 200)
             {
                 final EntityTieredRocket ship = (EntityTieredRocket) e;
 

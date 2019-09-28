@@ -20,6 +20,8 @@ public class GCSounds
     public static SoundEvent singleDrip;
     public static SoundEvent scaryScape;
     public static SoundEvent deconstructor;
+    public static SoundEvent laserCharge;
+    public static SoundEvent laserShoot;
 
     public static SoundEvent music;
 
@@ -39,6 +41,8 @@ public class GCSounds
         scaryScape = registerSound("ambience.scaryscape", registry);
         music = registerSound("galacticraft.music_space", registry);
         deconstructor = registerSound("block.deconstructor", registry);
+        laserCharge = registerSound("laser.charge", registry);
+        laserShoot = registerSound("laser.shoot", registry);
     }
 
     private static SoundEvent registerSound(String soundName, IForgeRegistry<SoundEvent> registry)

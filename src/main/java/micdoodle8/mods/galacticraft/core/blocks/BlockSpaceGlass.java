@@ -889,6 +889,11 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         }
         return 0;
     }
+    
+    public void resetColor()
+    {
+        this.color = this.frame.defaultColor;
+    }
 
     @SideOnly(Side.CLIENT)
     public static void updateGlassColors(int color1, int color2, int color3)

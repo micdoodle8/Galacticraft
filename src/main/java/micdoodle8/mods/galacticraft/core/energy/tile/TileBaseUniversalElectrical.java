@@ -46,6 +46,11 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     //	public float energyStored = 0;
     private float IC2surplusInGJ = 0F;
 
+    public TileBaseUniversalElectrical(String tileName)
+    {
+        super(tileName);
+    }
+
     @Override
     public double getPacketRange()
     {
@@ -191,6 +196,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
             if (item instanceof IItemElectric)
             {
                 this.storage.receiveEnergyGC(ElectricItemHelper.dischargeItem(itemStack, energyToDischarge));
+                this.poweredByTierGC = ((IItemElectric)item).getTierGC(itemStack);
             }
 //            else if (EnergyConfigHandler.isRFAPILoaded() && item instanceof IEnergyContainerItem)
 //            {

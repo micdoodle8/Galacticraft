@@ -55,7 +55,6 @@ import com.google.common.collect.Lists;
 public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory implements ISidedInventory, IMultiBlock, IMachineSides
 {
     public static final int HOLDSIZE = 72;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(HOLDSIZE + 1, ItemStack.EMPTY);
     private int[] slotArray;
     public boolean isMaster = false;
     public EnumFacing facing = EnumFacing.NORTH;
@@ -77,65 +76,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public int linkedMinerDataDZ;
     @NetworkedField(targetSide=Side.CLIENT)
     public int linkedMinerDataCount;
-    
-    
-    public static void checkNewMinerBases()
-    {
-        Iterator<Entry<Integer, List<BlockPos>>> entries = newMinerBases.entrySet().iterator();
-        while (entries.hasNext())
-        {
-            Entry<Integer, List<BlockPos>> entry = entries.next();
-            if (entry.getValue().isEmpty()) continue;
-            
-            World w = WorldUtil.getWorldForDimensionServer(entry.getKey());
-            if (w == null)
-            {
-                GCLog.severe("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());
-                entries.remove();
-                continue;
-            }
-            
-            for (BlockPos posMain : entry.getValue())
-            {
-                BlockPos master = new BlockPos(posMain);
-                for (int x = 0; x < 2; x++)
-                {
-                    for (int y = 0; y < 2; y++)
-                    {
-                        for (int z = 0; z < 2; z++)
-                        {
-                            BlockPos pos = posMain.add(x, y, z);
-                            w.setBlockState(pos, AsteroidBlocks.minerBaseFull.getDefaultState(), 2);
-                            final TileEntity tile = w.getTileEntity(pos);
-
-                            if (tile instanceof TileEntityMinerBase)
-                            {
-                                ((TileEntityMinerBase) tile).setMainBlockPos(master);
-                                ((TileEntityMinerBase) tile).updateClientFlag = true;
-                            }
-                        }
-                    }
-                }
-            }
-            
-            entry.getValue().clear();
-        }
-    }
-    
-    public static void addNewMinerBase(int dimID, BlockPos blockPos)
-    {
-        if (newMinerBases.containsKey(dimID))
-        {
-            newMinerBases.get(dimID).add(blockPos);
-        }
-        else
-        {
-            List<BlockPos> blockPositions = Lists.newArrayList();
-            newMinerBases.put(dimID, blockPositions);
-            blockPositions.add(blockPos);
-        }
-    }
-    
 
     public void setMainBlockPosition(BlockPos mainBlockPosition)
     {
@@ -160,11 +100,70 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
     public TileEntityMinerBase()
     {
+        super("tile.miner_base.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 20 : 12);
         this.slotArray = new int[HOLDSIZE];
         for (int i = 0; i < HOLDSIZE; i++)
         {
             this.slotArray[i] = i + 1;
+        }
+        this.inventory = NonNullList.withSize(HOLDSIZE + 1, ItemStack.EMPTY);
+    }
+
+    public static void checkNewMinerBases()
+    {
+        Iterator<Entry<Integer, List<BlockPos>>> entries = newMinerBases.entrySet().iterator();
+        while (entries.hasNext())
+        {
+            Entry<Integer, List<BlockPos>> entry = entries.next();
+            if (entry.getValue().isEmpty()) continue;
+
+            World w = WorldUtil.getWorldForDimensionServer(entry.getKey());
+            if (w == null)
+            {
+                GCLog.severe("Astro Miner Base placement: Unable to find server world for dim " + entry.getKey());
+                entries.remove();
+                continue;
+            }
+
+            for (BlockPos posMain : entry.getValue())
+            {
+                BlockPos master = new BlockPos(posMain);
+                for (int x = 0; x < 2; x++)
+                {
+                    for (int y = 0; y < 2; y++)
+                    {
+                        for (int z = 0; z < 2; z++)
+                        {
+                            BlockPos pos = posMain.add(x, y, z);
+                            w.setBlockState(pos, AsteroidBlocks.minerBaseFull.getDefaultState(), 2);
+                            final TileEntity tile = w.getTileEntity(pos);
+
+                            if (tile instanceof TileEntityMinerBase)
+                            {
+                                ((TileEntityMinerBase) tile).setMainBlockPos(master);
+                                ((TileEntityMinerBase) tile).updateClientFlag = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            entry.getValue().clear();
+        }
+    }
+
+    public static void addNewMinerBase(int dimID, BlockPos blockPos)
+    {
+        if (newMinerBases.containsKey(dimID))
+        {
+            newMinerBases.get(dimID).add(blockPos);
+        }
+        else
+        {
+            List<BlockPos> blockPositions = Lists.newArrayList();
+            newMinerBases.put(dimID, blockPositions);
+            blockPositions.add(blockPos);
         }
     }
 
@@ -345,7 +344,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
-        this.stacks = this.readStandardItemsFromNBT(nbt);
         this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
@@ -393,7 +391,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
-        this.writeStandardItemsToNBT(nbt, this.stacks);
         nbt.setBoolean("isMaster", this.isMaster);
         if (!this.isMaster && this.mainBlockPosition != null)
         {
@@ -450,7 +447,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         {
             while (!itemstack.isEmpty() && k < invSize)
             {
-                existingStack = this.stacks.get(k);
+                existingStack = this.getInventory().get(k);
 
                 if (RecipeUtil.stacksMatch(itemstack, existingStack))
                 {
@@ -480,11 +477,11 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
             while (k < invSize)
             {
-                existingStack = this.stacks.get(k);
+                existingStack = this.getInventory().get(k);
 
                 if (existingStack.isEmpty())
                 {
-                    this.stacks.set(k, itemstack.copy());
+                    this.getInventory().set(k, itemstack.copy());
                     itemstack.setCount(0);
                     flag1 = true;
                     break;
@@ -515,12 +512,6 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("tile.miner_base.name");
-    }
-
-    @Override
     public double getPacketRange()
     {
         return 20.0D;
@@ -539,19 +530,19 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    protected NonNullList<ItemStack> getContainingItems()
+    public NonNullList<ItemStack> getInventory()
     {
         if (this.isMaster)
         {
-            return this.stacks;
+            return super.getInventory();
         }
         TileEntityMinerBase master = this.getMaster();
         if (master != null)
         {
-            return master.getContainingItems();
+            return master.getInventory();
         }
 
-        return this.stacks;
+        return super.getInventory();
     }
 
     @Override

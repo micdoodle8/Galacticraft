@@ -2,14 +2,18 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 
-public class InventorySchematic implements IInventoryDefaults
+public class InventorySchematic implements IInventory
 {
     public NonNullList<ItemStack> stacks;
-    private final Container eventHandler;
+    protected final Container eventHandler;
 
     public InventorySchematic(Container par1Container)
     {
@@ -37,6 +41,7 @@ public class InventorySchematic implements IInventoryDefaults
         if (!itemstack.isEmpty())
         {
             this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
 
         return itemstack;
@@ -49,6 +54,7 @@ public class InventorySchematic implements IInventoryDefaults
         if (!oldstack.isEmpty())
         {
             this.markDirty();
+            this.eventHandler.onCraftMatrixChanged(this);
         }
     	return oldstack;
     }
@@ -64,6 +70,7 @@ public class InventorySchematic implements IInventoryDefaults
         }
 
         this.markDirty();
+        this.eventHandler.onCraftMatrixChanged(this);
     }
 
     @Override
@@ -107,5 +114,52 @@ public class InventorySchematic implements IInventoryDefaults
     public boolean isItemValidForSlot(int i, ItemStack itemstack)
     {
         return false;
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void openInventory(EntityPlayer player)
+    {
+    }
+
+    //We don't use these because we use forge containers
+    @Override
+    public void closeInventory(EntityPlayer player)
+    {
+    }
+
+    @Override
+    public int getField(int id)
+    {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value)
+    {
+    }
+
+    @Override
+    public int getFieldCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public void clear()
+    {
+
+    }
+
+    @Override
+    public boolean hasCustomName()
+    {
+        return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName()
+    {
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
     }
 }

@@ -298,6 +298,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     @Override
     public int getSoundInterval(float rainStrength)
     {
-        return 80 - (int)(rainStrength * 88F);
+        int result = 80 - (int)(rainStrength * 88F);
+        return result > 0 ? result : 0;
     }
 }

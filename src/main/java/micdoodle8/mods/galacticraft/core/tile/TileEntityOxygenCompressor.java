@@ -18,17 +18,16 @@ import net.minecraft.util.NonNullList;
 
 import java.util.EnumSet;
 
-public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory
+public class TileEntityOxygenCompressor extends TileEntityOxygen
 {
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(3, ItemStack.EMPTY);
-
     public static final int TANK_TRANSFER_SPEED = 2;
     private boolean usingEnergy = false;
 
     public TileEntityOxygenCompressor()
     {
-        super(1200, 16);
+        super("container.oxygencompressor.name", 1200, 16);
         this.storage.setMaxExtract(15);
+        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
     @Override
@@ -56,7 +55,7 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
             this.usingEnergy = false;
             if (this.getOxygenStored() > 0 && this.hasEnoughEnergyToRun)
             {
-                ItemStack tank0 = this.stacks.get(0);
+                ItemStack tank0 = this.getInventory().get(0);
 
                 if (!tank0.isEmpty())
                 {
@@ -72,102 +71,9 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-        super.readFromNBT(nbt);
-
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        ItemStackHelper.loadAllItems(nbt, this.stacks);
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        ItemStackHelper.saveAllItems(nbt, this.stacks);
-        return nbt;
-    }
-
-    @Override
-    public int getSizeInventory()
-    {
-        return this.stacks.size();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1)
-    {
-        return this.stacks.get(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count)
-    {
-        ItemStack itemstack = ItemStackHelper.getAndSplit(this.stacks, index, count);
-
-        if (!itemstack.isEmpty())
-        {
-            this.markDirty();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index)
-    {
-        ItemStack oldstack = ItemStackHelper.getAndRemove(this.stacks, index);
-        if (!oldstack.isEmpty())
-        {
-        	this.markDirty();
-        }
-    	return oldstack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack)
-    {
-        this.stacks.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit())
-        {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-        this.markDirty();
-    }
-
-    @Override
-    public boolean isEmpty()
-    {
-        for (ItemStack itemstack : this.stacks)
-        {
-            if (!itemstack.isEmpty())
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.oxygencompressor.name");
-    }
-
-    @Override
     public int getInventoryStackLimit()
     {
         return 1;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
-    {
-        return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     // ISidedInventory Implementation:
@@ -228,12 +134,6 @@ public class TileEntityOxygenCompressor extends TileEntityOxygen implements IInv
         }
 
         return false;
-    }
-
-    @Override
-    public boolean hasCustomName()
-    {
-        return true;
     }
 
     @Override

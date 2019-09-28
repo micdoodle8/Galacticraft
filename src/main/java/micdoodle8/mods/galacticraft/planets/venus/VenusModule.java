@@ -31,7 +31,9 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.event.EventHandlerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerGeothermal;
+import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerLaserTurret;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
+import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
@@ -118,7 +120,7 @@ public class VenusModule implements IPlanetsModule
         VenusBlocks.oreDictRegistration();
         this.registerMicroBlocks();
 
-//        GalacticraftCore.packetPipeline.addDiscriminator(8, PacketSimpleVenus.class);
+        GalacticraftCore.packetPipeline.addDiscriminator(8, PacketSimpleVenus.class);
 
         this.registerTileEntities();
         this.registerCreatures();
@@ -184,6 +186,7 @@ public class VenusModule implements IPlanetsModule
         GameRegistry.registerTileEntity(TileEntityCrashedProbe.class, "GC Crashed Probe");
         GameRegistry.registerTileEntity(TileEntitySolarArrayModule.class, "GC Solar Array Module");
         GameRegistry.registerTileEntity(TileEntitySolarArrayController.class, "GC Solar Array Controller");
+        GameRegistry.registerTileEntity(TileEntityLaserTurret.class, "GC Laser Turret");
     }
 
     public void registerCreatures()
@@ -223,6 +226,10 @@ public class VenusModule implements IPlanetsModule
             else if (tile instanceof TileEntitySolarArrayController)
             {
                 return new ContainerSolarArrayController(player.inventory, (TileEntitySolarArrayController) tile);
+            }
+            else if (tile instanceof TileEntityLaserTurret)
+            {
+                return new ContainerLaserTurret(player.inventory, (TileEntityLaserTurret) tile);
             }
         }
 

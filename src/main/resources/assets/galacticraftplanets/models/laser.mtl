@@ -1,0 +1,6 @@
+# Made in Blockbench 3.0.6
+newmtl 0
+map_Kd galacticraftplanets:blocks/laser
+newmtl 1
+map_Kd galacticraftplanets:blocks/laser_off
+newmtl none

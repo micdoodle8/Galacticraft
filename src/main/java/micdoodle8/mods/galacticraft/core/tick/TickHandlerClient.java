@@ -107,6 +107,12 @@ public class TickHandlerClient
         }
         
         MapUtil.resetClient();
+        GCBlocks.spaceGlassVanilla.resetColor();
+        GCBlocks.spaceGlassClear.resetColor();
+        GCBlocks.spaceGlassStrong.resetColor();
+        GCBlocks.spaceGlassTinVanilla.resetColor();
+        GCBlocks.spaceGlassTinClear.resetColor();
+        GCBlocks.spaceGlassTinStrong.resetColor();
     }
 
     public static void addFluidNetwork(FluidNetwork network)
