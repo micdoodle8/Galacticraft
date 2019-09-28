@@ -92,17 +92,4 @@ public class GCEntityPlayerMP extends EntityPlayerMP
     		super.setInPortal();
     	}
     } TODO Fix disable of portal */
-
-    @Override
-    protected void updatePotionEffects()
-    {
-        super.updatePotionEffects();
-        if (getEntityWorld().provider instanceof IGalacticraftWorldProvider) {
-            for (PotionEffect potionEffect : getActivePotionEffects()) {
-                if (potionEffect.getPotion() == PotionTypes.LEAPING.getEffects().get(0).getPotion()) {
-                    GCTriggers.LOW_GRAVITY_JUMP.trigger(this);
-                }
-            }
-        }
-    }
 }

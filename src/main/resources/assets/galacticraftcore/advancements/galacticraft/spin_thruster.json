@@ -33,5 +33,5 @@
             "spin_thruster"
         ]
     ],
-    "parent": "galacticraftcore:galacticraft/moon"
+    "parent": "galacticraftcore:galacticraft/create_space_station"
 }

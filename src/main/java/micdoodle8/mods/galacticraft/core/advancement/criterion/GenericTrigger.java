@@ -18,7 +18,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * This is a generic advancement trigger that has no checks.
+ * This is a generic advancement trigger that has <b>no checks</b>.
  */
 public class GenericTrigger implements ICriterionTrigger
 {
@@ -40,29 +40,29 @@ public class GenericTrigger implements ICriterionTrigger
     @Override
     public void addListener(PlayerAdvancements playerAdvancements, ICriterionTrigger.Listener listener)
     {
-        Listeners myCustomTrigger$listeners = listeners.get(playerAdvancements);
+        Listeners listeners = this.listeners.get(playerAdvancements);
 
-        if (myCustomTrigger$listeners == null)
+        if (listeners == null)
         {
-            myCustomTrigger$listeners = new Listeners(playerAdvancements);
-            listeners.put(playerAdvancements, myCustomTrigger$listeners);
+            listeners = new Listeners(playerAdvancements);
+            this.listeners.put(playerAdvancements, listeners);
         }
 
-        myCustomTrigger$listeners.add(listener);
+        listeners.add(listener);
     }
 
     @Override
     public void removeListener(PlayerAdvancements advancements, ICriterionTrigger.Listener listener)
     {
-        Listeners tameanimaltrigger$listeners = listeners.get(advancements);
+        Listeners listeners = this.listeners.get(advancements);
 
-        if (tameanimaltrigger$listeners != null)
+        if (listeners != null)
         {
-            tameanimaltrigger$listeners.remove(listener);
+            listeners.remove(listener);
 
-            if (tameanimaltrigger$listeners.isEmpty())
+            if (listeners.isEmpty())
             {
-                listeners.remove(advancements);
+                this.listeners.remove(advancements);
             }
         }
     }
@@ -93,11 +93,11 @@ public class GenericTrigger implements ICriterionTrigger
      */
     public void trigger(EntityPlayerMP playerMP)
     {
-        Listeners tameanimaltrigger$listeners = listeners.get(playerMP.getAdvancements());
+        Listeners listeners = this.listeners.get(playerMP.getAdvancements());
 
-        if (tameanimaltrigger$listeners != null)
+        if (listeners != null)
         {
-            tameanimaltrigger$listeners.trigger(playerMP);
+            listeners.trigger(playerMP);
         }
     }
 

@@ -184,7 +184,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
                 if (d0 < 20 * 20)
                 {
                     if (entityplayer instanceof EntityPlayerMP) {
-                        GCTriggers.BOSS_MOON.trigger(((EntityPlayerMP) entityplayer));
+                        GCTriggers.KILL_MOON_BOSS.trigger(((EntityPlayerMP) entityplayer));
                     }
                 }
             }

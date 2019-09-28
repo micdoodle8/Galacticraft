@@ -75,17 +75,4 @@ public class GCPlayerBaseMP extends ServerPlayerBase
     {
         this.getClientHandler().knockBack(this.player, p_70653_1_, p_70653_2_, impulseX, impulseZ);
     }
-
-    @Override
-    public void updatePotionEffects()
-    {
-        super.updatePotionEffects();
-        if (player.getEntityWorld().provider instanceof IGalacticraftWorldProvider) {
-            for (PotionEffect potionEffect : player.getActivePotionEffects()) {
-                if (potionEffect.getPotion() == PotionTypes.LEAPING.getEffects().get(0).getPotion()) {
-                    GCTriggers.LOW_GRAVITY_JUMP.trigger(player);
-                }
-            }
-        }
-    }
 }

@@ -6,12 +6,12 @@ import net.minecraft.advancements.CriteriaTriggers;
 public class GCTriggers
 {
     public static final GenericTrigger LAUNCH_ROCKET = new GenericTrigger("launch_rocket");
-    public static final GenericTrigger LOW_GRAVITY_JUMP = new GenericTrigger("low_gravity_jump");
-    public static final GenericTrigger BOSS_MOON = new GenericTrigger("boss_moon");
+    public static final GenericTrigger KILL_MOON_BOSS = new GenericTrigger("boss_moon");
+    public static final GenericTrigger CREATE_SPACE_STATION = new GenericTrigger("create_space_station");
 
     public static void registerTriggers() {
         CriteriaTriggers.register(GCTriggers.LAUNCH_ROCKET);
-        CriteriaTriggers.register(GCTriggers.LOW_GRAVITY_JUMP);
-        CriteriaTriggers.register(GCTriggers.BOSS_MOON);
+        CriteriaTriggers.register(GCTriggers.KILL_MOON_BOSS);
+        CriteriaTriggers.register(GCTriggers.CREATE_SPACE_STATION);
     }
 }
