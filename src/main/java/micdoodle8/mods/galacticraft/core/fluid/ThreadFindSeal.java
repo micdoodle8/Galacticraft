@@ -678,7 +678,7 @@ public class ThreadFindSeal
                                 this.checkCount--;
 
                                 IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
-                                Block block = state.getBlock();
+                                Block block = state == null ? null : state.getBlock();
                                 // The most likely case
                                 if (block == breatheableAirID)
                                 {
@@ -881,7 +881,7 @@ public class ThreadFindSeal
                             else
                             {
                                 IBlockState state = sideVec.getBlockState_noChunkLoad(this.world);
-                                Block block = state.getBlock();
+                                Block block = state == null ? null : state.getBlock();
                                 // id == null means the void or height y>255, both
                                 // of which are unsealed obviously
                                 if (block == null || block == airID || block == breatheableAirID || block == airIDBright || block == breatheableAirIDBright || this.canBlockPassAirCheck(block, sideVec, side))
