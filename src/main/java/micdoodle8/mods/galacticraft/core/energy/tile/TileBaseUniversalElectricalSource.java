@@ -25,6 +25,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 import java.util.EnumSet;
 
@@ -211,12 +212,14 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         return this.tierGC + 1;
     }
 
+    @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
     public boolean canOutputEnergy(EnumFacing side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
     
+    @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
     public double pullEnergy(EnumFacing side, double amount, boolean simulate)
     {
@@ -251,6 +254,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     @Override
     public boolean hasCapability(Capability<?> cap, EnumFacing side)
     {
+        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return true;
         if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
         {
             return this.canOutputEnergy(side);
