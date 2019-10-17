@@ -1002,13 +1002,16 @@ public class ThreadFindSeal
     public List<BlockPos> checkedAll()
     {
         List<BlockPos> list = new LinkedList<BlockPos>();
+        int x = head.x;
+        int z = head.z;
         for (int i = 0; i < 256; i++)
         {
-            if (this.buckets[i].size() == 0) continue;
+            int size = this.buckets[i].size();
+            if (size == 0) continue;
             int ddx = i >> 4;
             int ddz = i & 15;
             int[] ints = this.buckets[i].contents();
-            for (int j = 0; j < this.buckets[i].size(); j++)
+            for (int j = 0; j < size; j++)
             {
                 int k = ints[j];
                 int y = k & 255;
@@ -1017,7 +1020,7 @@ public class ThreadFindSeal
                 int dz = ((k >> 10) & 0x3FF0) + ddz;
                 if (dx > 0x2000) dx -= 0x4000;
                 if (dz > 0x2000) dz -= 0x4000;
-                list.add(new BlockPos(head.x + dx, y, head.z + dz));
+                list.add(new BlockPos(x + dx, y, z + dz));
             }
         }
         return list;
