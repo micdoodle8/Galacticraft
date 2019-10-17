@@ -95,8 +95,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     public float targetPitch;
     @SideOnly(Side.CLIENT)
     public float targetYaw;
-    @SideOnly(Side.CLIENT)
-    public int timeSinceShot = -1;
+    public int timeSinceShot = -1;  //Cannot initialise client-only fields (causes a server crash on constructing the object)
 
     public TileEntityLaserTurret()
     {
