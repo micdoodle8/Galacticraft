@@ -1,0 +1,73 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.rocket_t1.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.rocket_t1.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:rocket_t1",
+            "data": 0
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "rocket_crafted": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_t1",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "rocket_crafted_18": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_t1",
+                        "data": 1
+                    }
+                ]
+            }
+        },
+        "rocket_crafted_36": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_t1",
+                        "data": 2
+                    }
+                ]
+            }
+        },
+        "rocket_crafted_56": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_t1",
+                        "data": 3
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "rocket_crafted",
+            "rocket_crafted_18",
+            "rocket_crafted_36",
+            "rocket_crafted_56"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/rocket_workbench"
+}

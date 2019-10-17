@@ -1,0 +1,29 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.create_space_station.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.create_space_station.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:basic_item",
+            "data": 1
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "create_space_station": {
+            "trigger": "galacticraftcore:create_space_station"
+        }
+    },
+    "requirements": [
+        [
+            "create_space_station"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/moon"
+}

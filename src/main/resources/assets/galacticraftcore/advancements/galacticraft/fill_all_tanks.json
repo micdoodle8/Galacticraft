@@ -1,0 +1,65 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.fill_all_tanks.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.fill_all_tanks.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:oxygen_tank_heavy_full",
+            "data": 0
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "small_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_light_full",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "medium_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_med_full",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "heavy_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_heavy_full",
+                        "data": 0
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "small_tank"
+        ],
+        [
+            "medium_tank"
+        ],
+        [
+            "heavy_tank"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/fill_tank"
+}

@@ -1,0 +1,87 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.all_oxygen_gear.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.all_oxygen_gear.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:oxygen_mask",
+            "data": 0
+        },
+        "frame": "goal",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "small_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_light_full",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "medium_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_med_full",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "heavy_tank": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_tank_heavy_full",
+                        "data": 0
+                    }
+                ]
+            }
+        },
+        "oxygen_mask": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_mask"
+                    }
+                ]
+            }
+        },
+        "oxygen_gear": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:oxygen_gear"
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "small_tank",
+            "medium_tank",
+            "heavy_tank"
+        ],
+        [
+            "oxygen_mask"
+        ],
+        [
+            "oxygen_gear"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/fill_tank"
+}
