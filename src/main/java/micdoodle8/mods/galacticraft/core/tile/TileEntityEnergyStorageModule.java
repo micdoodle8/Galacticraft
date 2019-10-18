@@ -307,7 +307,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

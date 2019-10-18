@@ -347,7 +347,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

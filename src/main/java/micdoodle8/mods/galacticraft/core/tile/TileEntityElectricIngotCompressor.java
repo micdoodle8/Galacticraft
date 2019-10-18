@@ -628,7 +628,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

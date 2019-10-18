@@ -385,7 +385,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

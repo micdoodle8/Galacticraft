@@ -784,7 +784,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (machineSides == null)
         {

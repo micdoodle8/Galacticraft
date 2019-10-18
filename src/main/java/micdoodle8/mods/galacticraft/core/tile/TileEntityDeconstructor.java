@@ -537,7 +537,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {
