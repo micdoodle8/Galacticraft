@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.ISidedInventory;
@@ -189,7 +190,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         {
             ItemStack stackAt = this.getInventory().get(count);
 
-            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
+            if (RecipeUtil.stacksMatch(stack, stackAt) && stackAt.getCount() < stackAt.getMaxStackSize())
             {
                 if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
@@ -225,7 +226,8 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
             }
         }
 
-        for (count = 1; count < this.getInventory().size(); count++)
+        int size = this.getInventory().size();
+        for (count = 1; count < size; count++)
         {
             ItemStack stackAt = this.getInventory().get(count);
 
