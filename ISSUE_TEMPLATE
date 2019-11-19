@@ -1,13 +1,15 @@
 REVIEW THE GUIDELINES - see [Contributing](https://github.com/micdoodle8/Galacticraft/blob/master/CONTRIBUTING.md) link on right side.
 
 Minecraft version:
-Galacticraft version:
+Galacticraft version ("latest" is not a valid option):
 
-Single player (SSP), Multiplayer (SMP), or SSP opened to LAN (LAN)?
-- If SMP server, please mention if it has **Sponge**, AtomMC, BukkitForge, BungeeCord etc.
+Single player (SP), Multiplayer (MP), or SP opened to LAN (LAN)?
+- If MP server, please mention if it has **Sponge**, AtomMC, BukkitForge, BungeeCord etc.
 
-Any Galacticraft add-ons installed? please list all
+Any Galacticraft add-ons installed? Please list all of them:
 
-Please provide screenshots / crash report / log / full modlist as needed
+Please upload crash report / full log to [Github Gist](https://gist.github.com/) or any other paste site:
 
-If the game is not starting at all, please confirm that you downloaded from the official Galacticraft download site (https://micdoodle8.com/mods/galacticraft)
+Please provide screenshots / videos / full modlist as needed
+
+Please state the site that you downloaded Galacticraft from:
