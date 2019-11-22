@@ -17,10 +17,7 @@ import net.minecraft.advancements.critereon.AbstractCriterionInstance;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
 
-/**
- * This is a generic advancement trigger that has <b>no checks</b>.
- */
-public class GenericTrigger implements ICriterionTrigger
+public abstract class GenericTrigger implements ICriterionTrigger
 {
     private final ResourceLocation id;
     private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
@@ -74,19 +71,6 @@ public class GenericTrigger implements ICriterionTrigger
     }
 
     /**
-     * Deserialize a ICriterionInstance of this trigger from the data in the JSON.
-     *
-     * @param json the json
-     * @param context the context
-     * @return the tame bird trigger. instance
-     */
-    @Override
-    public Instance deserializeInstance(JsonObject json, JsonDeserializationContext context)
-    {
-        return new Instance(getId());
-    }
-
-    /**
      * Trigger.
      *
      * @param playerMP the player
@@ -101,17 +85,14 @@ public class GenericTrigger implements ICriterionTrigger
         }
     }
 
-    public static class Instance extends AbstractCriterionInstance
+    public static abstract class Instance extends AbstractCriterionInstance
     {
         public Instance(ResourceLocation resourceLocation)
         {
             super(resourceLocation);
         }
 
-        public boolean test(EntityPlayerMP player)
-        {
-            return true;
-        }
+        public abstract boolean test(EntityPlayerMP player);
     }
 
     static class Listeners
@@ -145,9 +126,12 @@ public class GenericTrigger implements ICriterionTrigger
 
             for (ICriterionTrigger.Listener listener : listeners)
             {
-                if (listener.getCriterionInstance() instanceof Instance) {
-                    if (((Instance) listener.getCriterionInstance()).test(player)) {
-                        if (list == null) {
+                if (listener.getCriterionInstance() instanceof Instance)
+                {
+                    if (((Instance) listener.getCriterionInstance()).test(player))
+                    {
+                        if (list == null)
+                        {
                             list = Lists.newArrayList();
                         }
 
