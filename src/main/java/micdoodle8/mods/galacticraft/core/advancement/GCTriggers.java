@@ -20,11 +20,14 @@ public class GCTriggers
             Class clazz = CriteriaTriggers.class;
             Method[] mm = clazz.getDeclaredMethods();
             for (Method m : mm)
-                if (m.getParameterTypes()[0] == ICriterionTrigger.class)
+            {
+                Class<?>[] params = m.getParameterTypes();
+                if (params != null && params[0] == ICriterionTrigger.class)
                 {
                     register = m;
                     break;
                 }
+            }
         } catch (Exception e) { e.printStackTrace(); }
         
         if (register != null)
