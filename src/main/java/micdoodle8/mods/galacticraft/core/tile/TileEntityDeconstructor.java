@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -185,7 +186,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         List<ItemStack> ingredients = new LinkedList<>();
         ingredients.add(new ItemStack(this.getInventory().get(1).getItem(), 1, this.getInventory().get(1).getItemDamage()));
         this.recursiveCount = 0;
-        List<ItemStack> salvaged = this.getSalvageable(ingredients);
+        List<ItemStack> salvaged = this.getSalvageable(ingredients, null);
         salvaged = this.squashList(salvaged);
         salvaged = this.randomChanceList(salvaged);
         if (salvaged != null)
@@ -198,7 +199,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         this.decrStackSize(1, 1);
     }
 
-    private List<ItemStack> getSalvageable(List<ItemStack> ingredients)
+    private List<ItemStack> getSalvageable(List<ItemStack> ingredients, ItemStack done)
     {
         if (ingredients == null || ingredients.isEmpty())
         {
@@ -206,7 +207,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         }
         if (this.recursiveCount++ > 10)
         {
-            this.recursiveCount = 0;
             return null;
         }
 
@@ -221,10 +221,21 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             {
                 GCLog.debug("Trying to " + this.recursiveCount + " break down " + stack.toString());
                 List<ItemStack> ingredients2 = this.getIngredients(stack);
-                List<ItemStack> recursive = this.getSalvageable(ingredients2);
-                if (recursive != null && !recursive.isEmpty())
+                if (ingredients2 != null)
                 {
-                    ret.addAll(recursive);
+                    if (done != null)
+                    {
+                        Iterator<ItemStack> it = ingredients2.iterator();
+                        while (it.hasNext())
+                        {
+                            if (ItemStack.areItemStacksEqual(it.next(), done)) it.remove();  //prevent recursive A->{B}  B->{A} type recipe chains
+                        }
+                    }
+                    List<ItemStack> recursive = this.getSalvageable(ingredients2, stack);
+                    if (recursive != null && !recursive.isEmpty())
+                    {
+                        ret.addAll(recursive);
+                    }
                 }
             }
         }
