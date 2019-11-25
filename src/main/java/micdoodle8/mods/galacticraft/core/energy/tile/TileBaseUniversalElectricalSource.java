@@ -269,6 +269,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     @Override
     public <T> T getCapability(Capability<T> cap, EnumFacing side)
     {
+        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return (T) this;
         if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
         {
             return (T) this;
