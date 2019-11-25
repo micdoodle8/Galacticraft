@@ -86,6 +86,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         addSalvage(new ItemStack(Items.IRON_INGOT));
         addSalvage(new ItemStack(Items.GOLD_INGOT));
         addSalvage(new ItemStack(Items.GOLD_NUGGET));
+        addSalvage(new ItemStack(Items.DIAMOND));
     }
 
     public static void initialiseRecipeList()
