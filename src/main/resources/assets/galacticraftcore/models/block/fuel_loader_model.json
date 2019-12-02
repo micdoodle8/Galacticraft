@@ -7,6 +7,6 @@
         "north": "galacticraftcore:blocks/machine_fuelloader",
         "east": "galacticraftcore:blocks/machine_input",
         "south": "galacticraftcore:blocks/machine_fuelloader",
-        "west": "galacticraftcore:blocks/machine_oil_input"
+        "west": "galacticraftcore:blocks/machine_fuel_input"
     }
 }
