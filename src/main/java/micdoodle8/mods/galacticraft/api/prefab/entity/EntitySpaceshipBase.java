@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenText;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
@@ -383,6 +384,17 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
             // PacketDispatcher.sendPacketToAllInDimension(GCCorePacketManager.getPacket(GalacticraftCore.CHANNELENTITIES,
             // this, this.getNetworkedData(new ArrayList())),
             // this.world.provider.getDimension());
+        }
+
+        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal())
+        {
+            if (getPassengers().size() >= 1) //When the screen changes to the map, the player is not riding the rocket anymore.
+            {
+                if (getPassengers().get(0) instanceof EntityPlayerMP)
+                {
+                    GCTriggers.LAUNCH_ROCKET.trigger(((EntityPlayerMP) getPassengers().get(0)));
+                }
+            }
         }
     }
 

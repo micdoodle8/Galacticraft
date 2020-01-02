@@ -243,14 +243,6 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.lastLastMotionY = this.lastMotionY;
             this.lastMotionY = this.motionY;
         }
-
-        if (this.launchPhase >= EnumLaunchPhase.LAUNCHED.ordinal()) {
-            if (getPassengers().size() >= 1) { //When the screen changes to the map, the player is not riding the rocket anymore.
-                if (getPassengers().get(0) instanceof EntityPlayerMP) {
-                    GCTriggers.LAUNCH_ROCKET.trigger(((EntityPlayerMP) getPassengers().get(0)));
-                }
-            }
-        }
     }
 
     @Override
