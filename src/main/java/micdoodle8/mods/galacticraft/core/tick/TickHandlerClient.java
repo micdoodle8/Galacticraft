@@ -31,7 +31,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
@@ -205,7 +204,7 @@ public class TickHandlerClient
             return;
         }
 
-        GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBaseClient);;
+        GCPlayerStatsClient stats = GCPlayerStatsClient.get(playerBaseClient);
 
         if (event.phase == Phase.END)
         {
@@ -244,57 +243,30 @@ public class TickHandlerClient
             ClientProxyCore.playerRotationYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * event.renderTickTime;
             ClientProxyCore.playerRotationPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * event.renderTickTime;
 
-//            if (player != null && player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityTier1Rocket)
-//            {
-//                float f = (((EntityTier1Rocket) player.getRidingEntity()).timeSinceLaunch - 250F) / 175F;
-//
-//                if (f < 0)
-//                {
-//                    f = 0F;
-//                }
-//
-//                if (f > 1)
-//                {
-//                    f = 1F;
-//                }
-//
-//                final ScaledResolution scaledresolution = ClientUtil.getScaledRes(minecraft, minecraft.displayWidth, minecraft.displayHeight);
-//                scaledresolution.getScaledWidth();
-//                scaledresolution.getScaledHeight();
-//                minecraft.entityRenderer.setupOverlayRendering();
-//                GL11.glEnable(GL11.GL_BLEND);
-//                GL11.glDisable(GL11.GL_DEPTH_TEST);
-//                GL11.glDepthMask(false);
-//                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//                GL11.glColor4f(1.0F, 1.0F, 1.0F, f);
-//                GL11.glDisable(GL11.GL_ALPHA_TEST);
-//                GL11.glDepthMask(true);
-//                GL11.glEnable(GL11.GL_DEPTH_TEST);
-//                GL11.glEnable(GL11.GL_ALPHA_TEST);
-//                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-//            }
-
-            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
+            if (minecraft.currentScreen == null && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
             {
-                OverlayRocket.renderSpaceshipOverlay(((EntitySpaceshipBase) player.getRidingEntity()).getSpaceshipGui());
+                if (player.getRidingEntity() instanceof EntitySpaceshipBase)
+                {
+                    OverlayRocket.renderSpaceshipOverlay(minecraft, ((EntitySpaceshipBase) player.getRidingEntity()).getSpaceshipGui());
+                }
+
+                if (player.getRidingEntity() instanceof EntityLander)
+                {
+                    OverlayLander.renderLanderOverlay(minecraft, TickHandlerClient.tickCount);
+                }
+
+                if (player.getRidingEntity() instanceof EntityAutoRocket)
+                {
+                    OverlayDockingRocket.renderDockingOverlay(minecraft, TickHandlerClient.tickCount);
+                }
+
+                if (player.getRidingEntity() instanceof EntitySpaceshipBase && !((EntitySpaceshipBase) minecraft.player.getRidingEntity()).getLaunched())
+                {
+                    OverlayLaunchCountdown.renderCountdownOverlay(minecraft);
+                }
             }
 
-            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntityLander && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
-            {
-                OverlayLander.renderLanderOverlay();
-            }
-
-            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntityAutoRocket && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI)
-            {
-                OverlayDockingRocket.renderDockingOverlay();
-            }
-
-            if (minecraft.currentScreen == null && player.getRidingEntity() instanceof EntitySpaceshipBase && minecraft.gameSettings.thirdPersonView != 0 && !minecraft.gameSettings.hideGUI && !((EntitySpaceshipBase) minecraft.player.getRidingEntity()).getLaunched())
-            {
-                OverlayLaunchCountdown.renderCountdownOverlay();
-            }
-
-            if (player.world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.provider) && !playerBaseClient.isSpectator() && !minecraft.gameSettings.showDebugInfo)
+            if (player.world.provider instanceof IGalacticraftWorldProvider && OxygenUtil.shouldDisplayTankGui(minecraft.currentScreen) && OxygenUtil.noAtmosphericCombustion(player.world.provider) && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()) && !minecraft.gameSettings.showDebugInfo)
             {
                 int var6 = (TickHandlerClient.airRemaining - 90) * -1;
 
@@ -311,12 +283,12 @@ public class TickHandlerClient
                 }
 
                 int thermalLevel = stats.getThermalLevel() + 22;
-                OverlayOxygenTanks.renderOxygenTankIndicator(thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
+                OverlayOxygenTanks.renderOxygenTankIndicator(minecraft, thermalLevel, var6, var7, !ConfigManagerCore.oxygenIndicatorLeft, !ConfigManagerCore.oxygenIndicatorBottom, Math.abs(thermalLevel - 22) >= 10 && !stats.isThermalLevelNormalising());
             }
 
-            if (playerBaseClient != null && player.world.provider instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.provider) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !playerBaseClient.capabilities.isCreativeMode && !playerBaseClient.isSpectator())
+            if (playerBaseClient != null && player.world.provider instanceof IGalacticraftWorldProvider && !stats.isOxygenSetupValid() && OxygenUtil.noAtmosphericCombustion(player.world.provider) && minecraft.currentScreen == null && !minecraft.gameSettings.hideGUI && !(playerBaseClient.isCreative() || playerBaseClient.isSpectator()))
             {
-                OverlayOxygenWarning.renderOxygenWarningOverlay();
+                OverlayOxygenWarning.renderOxygenWarningOverlay(minecraft, TickHandlerClient.tickCount);
             }
         }
     }
