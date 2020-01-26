@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -147,14 +149,17 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.getInventory().get(1).isEmpty())
+        ItemStack stack = this.getInventory().get(1); 
+        if (stack.isEmpty())
         {
             return false;
         }
-        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
+        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
         if (result.isEmpty())
         {
-            return false;
+            int burnable = TileEntityFurnace.getItemBurnTime(stack);
+            if (burnable >= 200 && burnable < 400) result = new ItemStack(MarsItems.carbonFragments);   //this includes most wooden tools, doors, stairs, boats etc but not saplings and sticks
+            else return false;
         }
 
 
