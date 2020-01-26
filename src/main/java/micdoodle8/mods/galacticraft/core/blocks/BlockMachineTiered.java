@@ -1,8 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
@@ -31,29 +28,22 @@ public class BlockMachineTiered extends BlockMachineBase
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
-        STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule.class, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
-        ELECTRIC_FURNACE(1, "electric_furnace", TileEntityElectricFurnace.class, "tile.electric_furnace_tier1.description", "tile.machine.2"),
-        STORAGE_CLUSTER(2, "cluster_storage", TileEntityEnergyStorageModule.class, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
-        ARC_FURNACE(3, "arc_furnace", TileEntityElectricFurnace.class, "tile.electric_furnace_tier2.description", "tile.machine.7");
+        STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
+        ELECTRIC_FURNACE(1, "electric_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier1.description", "tile.machine.2"),
+        STORAGE_CLUSTER(2, "cluster_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
+        ARC_FURNACE(3, "arc_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier2.description", "tile.machine.7");
 
         private final int meta;
         private final String name;
-        private Constructor tile;
+        private TileConstructor tile;
         private final String shiftDescriptionKey;
         private final String blockName;
 
-        EnumTieredMachineType(int meta, String name, Class tile, String key, String blockName)
+        EnumTieredMachineType(int meta, String name, TileConstructor tc, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
-            try
-            {
-                this.tile = tile.getConstructor(int.class);
-            } catch (NoSuchMethodException | SecurityException e)
-            {
-                e.printStackTrace();
-                this.tile = null;
-            }
+            this.tile = tc;
             this.shiftDescriptionKey = key;
             this.blockName = blockName;
         }
@@ -83,13 +73,13 @@ public class BlockMachineTiered extends BlockMachineBase
         public TileEntity tileConstructor()
         {
             int tier = this.meta / 2 + 1;
-            try
-            {
-                return (TileEntity) this.tile.newInstance(tier);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
-            {
-                return null;
-            }
+            return this.tile.create(tier);
+        }
+        
+        @FunctionalInterface
+        private static interface TileConstructor
+        {
+              TileEntity create(int tier);
         }
 
         public String getShiftDescription()

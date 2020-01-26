@@ -18,8 +18,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import java.util.Random;
-
 public class BlockMachine2 extends BlockMachineBase
 {
     public static final PropertyEnum<EnumMachineExtendedType> TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
@@ -28,18 +26,18 @@ public class BlockMachine2 extends BlockMachineBase
 
     public enum EnumMachineExtendedType implements IStringSerializable
     {
-        ELECTRIC_COMPRESSOR(0, "electric_compressor", TileEntityElectricIngotCompressor.class, "tile.compressor_electric.description", "tile.machine2.4"),
-        CIRCUIT_FABRICATOR(1, "circuit_fabricator", TileEntityCircuitFabricator.class, "tile.circuit_fabricator.description", "tile.machine2.5"),
-        OXYGEN_STORAGE(2, "oxygen_storage", TileEntityOxygenStorageModule.class, "tile.oxygen_storage_module.description", "tile.machine2.6"),
-        DECONSTRUCTOR(3, "deconstructor", TileEntityDeconstructor.class, "tile.deconstructor.description", "tile.machine2.10");
+        ELECTRIC_COMPRESSOR(0, "electric_compressor", TileEntityElectricIngotCompressor::new, "tile.compressor_electric.description", "tile.machine2.4"),
+        CIRCUIT_FABRICATOR(1, "circuit_fabricator", TileEntityCircuitFabricator::new, "tile.circuit_fabricator.description", "tile.machine2.5"),
+        OXYGEN_STORAGE(2, "oxygen_storage", TileEntityOxygenStorageModule::new, "tile.oxygen_storage_module.description", "tile.machine2.6"),
+        DECONSTRUCTOR(3, "deconstructor", TileEntityDeconstructor::new, "tile.deconstructor.description", "tile.machine2.10");
         
         private final int meta;
         private final String name;
-        private final Class tile;
+        private final TileConstructor tile;
         private final String shiftDescriptionKey;
         private final String blockName;
 
-        EnumMachineExtendedType(int meta, String name, Class tile, String key, String blockName)
+        EnumMachineExtendedType(int meta, String name, TileConstructor tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
@@ -72,13 +70,13 @@ public class BlockMachine2 extends BlockMachineBase
         
         public TileEntity tileConstructor()
         {
-            try
-            {
-                return (TileEntity) this.tile.newInstance();
-            } catch (InstantiationException | IllegalAccessException ex)
-            {
-                return null;
-            }
+            return this.tile.create();
+        }
+
+        @FunctionalInterface
+        private static interface TileConstructor
+        {
+              TileEntity create();
         }
 
         public String getShiftDescription()

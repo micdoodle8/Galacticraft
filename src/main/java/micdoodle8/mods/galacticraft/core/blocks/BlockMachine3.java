@@ -24,15 +24,15 @@ public class BlockMachine3 extends BlockMachineBase
 
     public enum EnumMachineBuildingType implements IStringSerializable
     {
-        PAINTER(0, "painter", TileEntityPainter.class, "tile.painter.description", "tile.machine3.9");
+        PAINTER(0, "painter", TileEntityPainter::new, "tile.painter.description", "tile.machine3.9");
 
         private final int meta;
         private final String name;
-        private final Class tile;
+        private final TileConstructor tile;
         private final String shiftDescriptionKey;
         private final String blockName;
 
-        EnumMachineBuildingType(int meta, String name, Class tile, String key, String blockName)
+        EnumMachineBuildingType(int meta, String name, TileConstructor tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
@@ -65,13 +65,13 @@ public class BlockMachine3 extends BlockMachineBase
         
         public TileEntity tileConstructor()
         {
-            try
-            {
-                return (TileEntity) this.tile.newInstance();
-            } catch (InstantiationException | IllegalAccessException ex)
-            {
-                return null;
-            }
+            return this.tile.create();
+        }
+
+        @FunctionalInterface
+        private static interface TileConstructor
+        {
+              TileEntity create();
         }
 
         public String getShiftDescription()

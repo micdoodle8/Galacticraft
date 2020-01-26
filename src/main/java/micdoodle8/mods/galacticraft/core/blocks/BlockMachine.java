@@ -25,16 +25,16 @@ public class BlockMachine extends BlockMachineBase
 
     public enum EnumMachineType implements IStringSerializable
     {
-        COAL_GENERATOR(0, "coal_generator", TileEntityCoalGenerator.class, "tile.coal_generator.description", "tile.machine.0"),
-        COMPRESSOR(3, "ingot_compressor", TileEntityIngotCompressor.class, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
+        COAL_GENERATOR(0, "coal_generator", TileEntityCoalGenerator::new, "tile.coal_generator.description", "tile.machine.0"),
+        COMPRESSOR(3, "ingot_compressor", TileEntityIngotCompressor::new, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
 
         private final int meta;
         private final String name;
-        private final Class tile;
+        private final TileConstructor tile;
         private final String shiftDescriptionKey;
         private final String blockName;
 
-        EnumMachineType(int meta, String name, Class tile, String key, String blockName)
+        EnumMachineType(int meta, String name, TileConstructor tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
@@ -73,13 +73,13 @@ public class BlockMachine extends BlockMachineBase
         
         public TileEntity tileConstructor()
         {
-            try
-            {
-                return (TileEntity) this.tile.newInstance();
-            } catch (InstantiationException | IllegalAccessException ex)
-            {
-                return null;
-            }
+            return this.tile.create();
+        }
+
+        @FunctionalInterface
+        private static interface TileConstructor
+        {
+              TileEntity create();
         }
 
         public String getShiftDescription()
