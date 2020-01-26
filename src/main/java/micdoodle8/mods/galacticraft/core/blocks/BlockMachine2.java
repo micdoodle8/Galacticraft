@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
-import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
@@ -13,7 +12,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -30,48 +28,75 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
+public class BlockMachine2 extends BlockMachineBase
 {
-    public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
-    public static final int CIRCUIT_FABRICATOR_METADATA = 4;
-    public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
-    public static final int DECONSTRUCTOR_METADATA = 12;
-
     public static final PropertyEnum<EnumMachineExtendedType> TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
     public enum EnumMachineExtendedType implements IStringSerializable
     {
-        ELECTRIC_COMPRESSOR(0, "electric_compressor"),
-        CIRCUIT_FABRICATOR(1, "circuit_fabricator"),
-        OXYGEN_STORAGE(2, "oxygen_storage"),
-        DECONSTRUCTOR(3, "deconstructor");
-
+        ELECTRIC_COMPRESSOR(0, "electric_compressor", TileEntityElectricIngotCompressor.class, "tile.compressor_electric.description", "tile.machine2.4"),
+        CIRCUIT_FABRICATOR(1, "circuit_fabricator", TileEntityCircuitFabricator.class, "tile.circuit_fabricator.description", "tile.machine2.5"),
+        OXYGEN_STORAGE(2, "oxygen_storage", TileEntityOxygenStorageModule.class, "tile.oxygen_storage_module.description", "tile.machine2.6"),
+        DECONSTRUCTOR(3, "deconstructor", TileEntityDeconstructor.class, "tile.deconstructor.description", "tile.machine2.10");
+        
         private final int meta;
         private final String name;
+        private final Class tile;
+        private final String shiftDescriptionKey;
+        private final String blockName;
 
-        EnumMachineExtendedType(int meta, String name)
+        EnumMachineExtendedType(int meta, String name, Class tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
+            this.tile = tile;
+            this.shiftDescriptionKey = key;
+            this.blockName = blockName;
         }
 
-        public int getMeta()
+        public int getMetadata()
         {
-            return this.meta;
+            return this.meta * 4;
         }
 
         private final static EnumMachineExtendedType[] values = values();
-        public static EnumMachineExtendedType byMetadata(int meta)
+        public static EnumMachineExtendedType byMeta(int meta)
         {
             return values[meta % values.length];
+        }
+        
+        public static EnumMachineExtendedType getByMetadata(int metadata)
+        {
+            return byMeta(metadata / 4);
         }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+        
+        public TileEntity tileConstructor()
+        {
+            try
+            {
+                return (TileEntity) this.tile.newInstance();
+            } catch (InstantiationException | IllegalAccessException ex)
+            {
+                return null;
+            }
+        }
+
+        public String getShiftDescription()
+        {
+            return GCCoreUtil.translate(this.shiftDescriptionKey);
+        }
+
+        public String getUnlocalizedName()
+        {
+            return this.blockName;
         }
     }
 
@@ -115,7 +140,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
 
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
-        worldIn.setBlockState(pos, getStateFromMeta((metadata & 0x0c) + change), 3);
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
     }
 
     @Override
@@ -141,80 +166,30 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int metadata = getMetaFromState(state);
-        if (metadata >= BlockMachine2.DECONSTRUCTOR_METADATA)
-        {
-            return new TileEntityDeconstructor();
-        }
-        else if (metadata >= BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            return new TileEntityOxygenStorageModule();
-        }
-        else if (metadata >= BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            return new TileEntityCircuitFabricator();
-        }
-        else if (metadata >= BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            return new TileEntityElectricIngotCompressor();
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public ItemStack getElectricCompressor()
-    {
-        return new ItemStack(this, 1, BlockMachine2.ELECTRIC_COMPRESSOR_METADATA);
-    }
-
-    public ItemStack getCircuitFabricator()
-    {
-        return new ItemStack(this, 1, BlockMachine2.CIRCUIT_FABRICATOR_METADATA);
-    }
-
-    public ItemStack getOxygenStorageModule()
-    {
-        return new ItemStack(this, 1, BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA);
-    }
-
-    public ItemStack getDeconstructor()
-    {
-        return new ItemStack(this, 1, BlockMachine2.DECONSTRUCTOR_METADATA);
+        int meta = getMetaFromState(state);
+        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
+        return type.tileConstructor();
     }
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(this.getElectricCompressor());
-        list.add(this.getCircuitFabricator());
-        list.add(this.getOxygenStorageModule());
-        list.add(this.getDeconstructor());
+        for (EnumMachineExtendedType type : EnumMachineExtendedType.values)
+            list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
     @Override
     public int damageDropped(IBlockState state)
     {
         int metadata = getMetaFromState(state);
-        return metadata & 0x0c;
+        return metadata & BlockMachineBase.METADATA_MASK;
     }
 
     @Override
     public String getShiftDescription(int meta)
     {
-        switch (meta)
-        {
-        case CIRCUIT_FABRICATOR_METADATA:
-            return GCCoreUtil.translate("tile.circuit_fabricator.description");
-        case ELECTRIC_COMPRESSOR_METADATA:
-            return GCCoreUtil.translate("tile.compressor_electric.description");
-        case OXYGEN_STORAGE_MODULE_METADATA:
-            return GCCoreUtil.translate("tile.oxygen_storage_module.description");
-        case DECONSTRUCTOR_METADATA:
-            return GCCoreUtil.translate("tile.deconstructor.description");
-        }
-        return "";
+        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
+        return type.getShiftDescription();
     }
 
     @Override
@@ -224,17 +199,24 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
+    public String getUnlocalizedName(int meta)
+    {
+        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
+        return type.getUnlocalizedName();
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineExtendedType type = EnumMachineExtendedType.byMetadata(meta / 4);
+        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType) state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType) state.getValue(TYPE)).getMetadata();
     }
 
     @Override
@@ -266,28 +248,5 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String getUnlocalizedName(int typenum)
-    {
-        int index = 6;
-        if (typenum == BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-        {
-            index = 6;
-        }
-        else if (typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-        {
-            index = 5;
-        }
-        else if (typenum == BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-        {
-            index = 4;
-        }
-        else if (typenum == BlockMachine2.DECONSTRUCTOR_METADATA)
-        {
-            index = 10;
-        }
-        return this.getUnlocalizedName()  + "." + index; 
     }
 }

@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.blocks.IMachineBase;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -42,9 +42,9 @@ public class ItemBlockMachine extends ItemBlockDesc
         int index = 0;
         int typenum = itemstack.getItemDamage() & 12;
 
-        if (this.getBlock() instanceof IMachineBase)
+        if (this.getBlock() instanceof BlockMachineBase)
         {
-            return ((IMachineBase) this.getBlock()).getUnlocalizedName(typenum);
+            return ((BlockMachineBase) this.getBlock()).getUnlocalizedName(typenum);
         }
         return "tile.machine.0";
     }
@@ -62,11 +62,11 @@ public class ItemBlockMachine extends ItemBlockDesc
         //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
         if (player instanceof EntityPlayerSP)
         {
-            if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+            if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.EnumMachineType.COMPRESSOR.getMetadata())
             {
                 ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
             }
-            else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+            else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.EnumMachineExtendedType.CIRCUIT_FABRICATOR.getMetadata())
             {
                 ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
             }

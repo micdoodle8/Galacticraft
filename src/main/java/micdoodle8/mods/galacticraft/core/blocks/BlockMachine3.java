@@ -3,12 +3,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
-import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -32,42 +30,70 @@ import java.util.Random;
  * with a base building purpose - e.g. Painter
  *
  */
-public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
+public class BlockMachine3 extends BlockMachineBase
 {
-    public static final int PAINTER_METADATA = 0;
-
-    public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
-
     public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
 
     public enum EnumMachineBuildingType implements IStringSerializable
     {
-        PAINTER(0, "painter");
+        PAINTER(0, "painter", TileEntityPainter.class, "tile.painter.description", "tile.machine3.9");
 
         private final int meta;
         private final String name;
+        private final Class tile;
+        private final String shiftDescriptionKey;
+        private final String blockName;
 
-        EnumMachineBuildingType(int meta, String name)
+        EnumMachineBuildingType(int meta, String name, Class tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
+            this.tile = tile;
+            this.shiftDescriptionKey = key;
+            this.blockName = blockName;
         }
 
-        public int getMeta()
+        public int getMetadata()
         {
-            return this.meta;
+            return this.meta * 4;
         }
 
         private final static EnumMachineBuildingType[] values = values();
-        public static EnumMachineBuildingType byMetadata(int meta)
+        public static EnumMachineBuildingType byMeta(int meta)
         {
             return values[meta % values.length];
+        }
+        
+        public static EnumMachineBuildingType getByMetadata(int metadata)
+        {
+            return byMeta(metadata / 4);
         }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+        
+        public TileEntity tileConstructor()
+        {
+            try
+            {
+                return (TileEntity) this.tile.newInstance();
+            } catch (InstantiationException | IllegalAccessException ex)
+            {
+                return null;
+            }
+        }
+
+        public String getShiftDescription()
+        {
+            return GCCoreUtil.translate(this.shiftDescriptionKey);
+        }
+
+        public String getUnlocalizedName()
+        {
+            return this.blockName;
         }
     }
 
@@ -136,40 +162,30 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int metadata = getMetaFromState(state) & METADATA_MASK;
-        if (metadata == BlockMachine3.PAINTER_METADATA)
-        {
-            return new TileEntityPainter();
-        }
-        return null;
-    }
-
-    public ItemStack getPainter()
-    {
-        return new ItemStack(this, 1, BlockMachine3.PAINTER_METADATA);
+        int meta = getMetaFromState(state);
+        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
+        return type.tileConstructor();
     }
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(this.getPainter());
+        for (EnumMachineBuildingType type : EnumMachineBuildingType.values)
+            list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state) & METADATA_MASK;
+        int metadata = getMetaFromState(state);
+        return metadata & BlockMachineBase.METADATA_MASK;
     }
 
     @Override
     public String getShiftDescription(int meta)
     {
-        switch (meta)
-        {
-        case PAINTER_METADATA:
-            return GCCoreUtil.translate("tile.painter.description");
-        }
-        return "";
+        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
+        return type.getShiftDescription();
     }
 
     @Override
@@ -179,17 +195,24 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     }
 
     @Override
+    public String getUnlocalizedName(int meta)
+    {
+        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
+        return type.getUnlocalizedName();
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineBuildingType type = EnumMachineBuildingType.byMetadata(meta / 4);
+        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.getValue(TYPE)).getMetadata();
     }
 
     @Override
@@ -202,12 +225,5 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
-    }
-
-    @Override
-    public String getUnlocalizedName(int typenum)
-    {
-        int index = 9;
-        return this.getUnlocalizedName()  + "." + index; 
     }
 }

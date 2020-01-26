@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
@@ -10,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -26,33 +24,37 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockMachine extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
+public class BlockMachine extends BlockMachineBase
 {
-    public static final int COAL_GENERATOR_METADATA = 0;
-    public static final int COMPRESSOR_METADATA = 12;
-
     public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements IStringSerializable
     {
-        COAL_GENERATOR(0, "coal_generator"),
-        COMPRESSOR(3, "ingot_compressor"); // 3 for backwards compatibility
+        COAL_GENERATOR(0, "coal_generator", TileEntityCoalGenerator.class, "tile.coal_generator.description", "tile.machine.0"),
+        COMPRESSOR(3, "ingot_compressor", TileEntityIngotCompressor.class, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
 
         private final int meta;
         private final String name;
+        private final Class tile;
+        private final String shiftDescriptionKey;
+        private final String blockName;
 
-        EnumMachineType(int meta, String name)
+        EnumMachineType(int meta, String name, Class tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
+            this.tile = tile;
+            this.shiftDescriptionKey = key;
+            this.blockName = blockName;
         }
 
-        public int getMeta()
+        public int getMetadata()
         {
-            return this.meta;
+            return this.meta * 4;
         }
 
-        public static EnumMachineType byMetadata(int meta)
+        private final static EnumMachineType[] values = values();
+        public static EnumMachineType byMeta(int meta)
         {
             switch (meta)
             {
@@ -62,11 +64,37 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
                 return COAL_GENERATOR;
             }
         }
+        
+        public static EnumMachineType getByMetadata(int meta)
+        {
+            return byMeta(meta / 4);
+        }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+        
+        public TileEntity tileConstructor()
+        {
+            try
+            {
+                return (TileEntity) this.tile.newInstance();
+            } catch (InstantiationException | IllegalAccessException ex)
+            {
+                return null;
+            }
+        }
+
+        public String getShiftDescription()
+        {
+            return GCCoreUtil.translate(this.shiftDescriptionKey);
+        }
+
+        public String getUnlocalizedName()
+        {
+            return this.blockName;
         }
     }
 
@@ -134,7 +162,7 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        worldIn.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
     }
 
     @Override
@@ -153,7 +181,7 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
 //            }
 //        }
 
-        world.setBlockState(pos, getStateFromMeta((metadata & 12) + change), 3);
+        world.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
         return true;
     }
 
@@ -175,59 +203,37 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int metadata = getMetaFromState(state) & 12;
-        if (metadata == BlockMachine.COMPRESSOR_METADATA)
+        int meta = getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
+        if (meta == 4)
         {
-            return new TileEntityIngotCompressor();
+            return new TileEntityEnergyStorageModule();   //Legacy code in case a block in game not yet converted to BlockMachineTiered
         }
-        else if (metadata == 4)
+        else if (meta == 8)
         {
-            return new TileEntityEnergyStorageModule();
+            return new TileEntityElectricFurnace();   //Legacy code in case a block in game not yet converted to BlockMachineTiered
         }
-        else if (metadata == 8)
-        {
-            return new TileEntityElectricFurnace();
-        }
-        else
-        {
-            return new TileEntityCoalGenerator();
-        }
-    }
-
-    public ItemStack getCompressor()
-    {
-        return new ItemStack(this, 1, BlockMachine.COMPRESSOR_METADATA);
-    }
-
-    public ItemStack getCoalGenerator()
-    {
-        return new ItemStack(this, 1, BlockMachine.COAL_GENERATOR_METADATA);
+        EnumMachineType type = EnumMachineType.getByMetadata(meta);
+        return type.tileConstructor();
     }
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(this.getCoalGenerator());
-        list.add(this.getCompressor());
+        for (EnumMachineType type : EnumMachineType.values)
+            list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state) & 12;
+        return getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
     }
 
     @Override
     public String getShiftDescription(int meta)
     {
-        switch (meta)
-        {
-        case COAL_GENERATOR_METADATA:
-            return GCCoreUtil.translate("tile.coal_generator.description");
-        case COMPRESSOR_METADATA:
-            return GCCoreUtil.translate("tile.compressor.description");
-        }
-        return "";
+        EnumMachineType type = EnumMachineType.getByMetadata(meta);
+        return type.getShiftDescription();
     }
 
     @Override
@@ -237,17 +243,24 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     }
 
     @Override
+    public String getUnlocalizedName(int meta)
+    {
+        EnumMachineType type = EnumMachineType.getByMetadata(meta);
+        return type.getUnlocalizedName();
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineType type = EnumMachineType.byMetadata((int) Math.floor(meta / 4.0));
+        EnumMachineType type = EnumMachineType.getByMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMetadata();
     }
 
     @Override
@@ -260,11 +273,5 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
-    }
-
-    @Override
-    public String getUnlocalizedName(int typenum)
-    {
-        return this.getUnlocalizedName() + "." + (typenum / 4);
     }
 }

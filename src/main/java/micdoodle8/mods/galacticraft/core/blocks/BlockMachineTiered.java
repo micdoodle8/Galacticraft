@@ -1,9 +1,11 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
-import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
@@ -11,7 +13,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -30,47 +31,84 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockMachineTiered extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
+public class BlockMachineTiered extends BlockMachineBase
 {
-    public static final int STORAGE_MODULE_METADATA = 0;
-    public static final int ELECTRIC_FURNACE_METADATA = 4;
-    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
-    
     public static final PropertyEnum<EnumTieredMachineType> TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
-    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
+    public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
+    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
 
     public enum EnumTieredMachineType implements IStringSerializable
     {
-        STORAGE_MODULE(0, "energy_storage"),
-        ELECTRIC_FURNACE(1, "electric_furnace"),
-        STORAGE_CLUSTER(2, "cluster_storage"),
-        ARC_FURNACE(3, "arc_furnace");
+        STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule.class, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
+        ELECTRIC_FURNACE(1, "electric_furnace", TileEntityElectricFurnace.class, "tile.electric_furnace_tier1.description", "tile.machine.2"),
+        STORAGE_CLUSTER(2, "cluster_storage", TileEntityEnergyStorageModule.class, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
+        ARC_FURNACE(3, "arc_furnace", TileEntityElectricFurnace.class, "tile.electric_furnace_tier2.description", "tile.machine.7");
 
         private final int meta;
         private final String name;
+        private Constructor tile;
+        private final String shiftDescriptionKey;
+        private final String blockName;
 
-        EnumTieredMachineType(int meta, String name)
+        EnumTieredMachineType(int meta, String name, Class tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
+            try
+            {
+                this.tile = tile.getConstructor(int.class);
+            } catch (NoSuchMethodException | SecurityException e)
+            {
+                e.printStackTrace();
+                this.tile = null;
+            }
+            this.shiftDescriptionKey = key;
+            this.blockName = blockName;
         }
 
-        public int getMeta()
+        public int getMetadata()
         {
-            return this.meta;
+            return this.meta * 4;
         }
 
         private final static EnumTieredMachineType[] values = values();
-        public static EnumTieredMachineType byMetadata(int meta)
+        public static EnumTieredMachineType byMeta(int meta)
         {
             return values[meta % values.length];
+        }
+        
+        public static EnumTieredMachineType getByMetadata(int metadata)
+        {
+            return byMeta(metadata / 4);
         }
 
         @Override
         public String getName()
         {
             return this.name;
+        }
+        
+        public TileEntity tileConstructor()
+        {
+            int tier = this.meta / 2 + 1;
+            try
+            {
+                return (TileEntity) this.tile.newInstance(tier);
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex)
+            {
+                return null;
+            }
+        }
+
+        public String getShiftDescription()
+        {
+            return GCCoreUtil.translate(this.shiftDescriptionKey);
+        }
+
+        public String getUnlocalizedName()
+        {
+            return this.blockName;
         }
     }
 
@@ -96,22 +134,7 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
-        if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + 8 + change), 3);
-        }
-        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA + 8)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + 8 + change), 3);
-        }
-        else if (metadata >= BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.ELECTRIC_FURNACE_METADATA + change), 3);
-        }
-        else if (metadata >= BlockMachineTiered.STORAGE_MODULE_METADATA)
-        {
-            worldIn.setBlockState(pos, getStateFromMeta(BlockMachineTiered.STORAGE_MODULE_METADATA + change), 3);
-        }
+        worldIn.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
     }
 
     @Override
@@ -137,71 +160,34 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int metadata)
+    public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int tier = metadata / 8 + 1;
-
-        TileEntity tile;
-        if ((metadata & 4) == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-        {
-            tile = new TileEntityElectricFurnace(tier);
-        }
-        else
-        {
-            tile = new TileEntityEnergyStorageModule(tier);
-        }
-        
+        int meta = getMetaFromState(state);
+        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
+        TileEntity tile = type.tileConstructor();
         tile.setWorld(world);
         return tile;
-    }
-
-    public ItemStack getEnergyStorageModule()
-    {
-        return new ItemStack(this, 1, BlockMachineTiered.STORAGE_MODULE_METADATA);
-    }
-
-    public ItemStack getEnergyStorageCluster()
-    {
-        return new ItemStack(this, 1, 8 + BlockMachineTiered.STORAGE_MODULE_METADATA);
-    }
-
-    public ItemStack getElectricFurnace()
-    {
-        return new ItemStack(this, 1, BlockMachineTiered.ELECTRIC_FURNACE_METADATA);
-    }
-
-    public ItemStack getElectricArcFurnace()
-    {
-        return new ItemStack(this, 1, 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA);
     }
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
     {
-        list.add(this.getEnergyStorageModule());
-        list.add(this.getElectricFurnace());
-        list.add(this.getEnergyStorageCluster());
-        list.add(this.getElectricArcFurnace());
+        for (EnumTieredMachineType type : EnumTieredMachineType.values)
+            list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
     @Override
     public int damageDropped(IBlockState state)
     {
-        return getMetaFromState(state) & 12;
+        int metadata = getMetaFromState(state);
+        return metadata & BlockMachineBase.METADATA_MASK;
     }
 
     @Override
     public String getShiftDescription(int meta)
     {
-        int tier = (meta >= 8 ? 2 : 1);
-        switch (meta & 4)
-        {
-        case ELECTRIC_FURNACE_METADATA:
-            return GCCoreUtil.translate("tile.electric_furnace_tier" + tier + ".description");
-        case STORAGE_MODULE_METADATA:
-            return GCCoreUtil.translate("tile.energy_storage_module_tier" + tier + ".description");
-        }
-        return "";
+        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
+        return type.getShiftDescription();
     }
 
     @Override
@@ -211,17 +197,24 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
     }
 
     @Override
+    public String getUnlocalizedName(int meta)
+    {
+        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
+        return type.getUnlocalizedName();
+    }
+
+    @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumTieredMachineType type = EnumTieredMachineType.byMetadata((int) Math.floor(meta / 4.0));
+        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType) state.getValue(TYPE)).getMeta() * 4;
+        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType) state.getValue(TYPE)).getMetadata();
     }
 
     @Override
@@ -261,28 +254,5 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String getUnlocalizedName(int typenum)
-    {
-        if (typenum == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-        {
-            return "tile.machine.2";
-        }
-        else if (typenum == BlockMachineTiered.STORAGE_MODULE_METADATA)
-        {
-            return "tile.machine.1";
-        }
-
-        //Tier 2 versions of the same
-        if (typenum == 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-        {
-            return "tile.machine.7";
-        }
-        else
-        {
-            return "tile.machine.8";
-        }
     }
 }
