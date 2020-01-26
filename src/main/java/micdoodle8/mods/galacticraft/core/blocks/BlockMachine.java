@@ -1,26 +1,21 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -100,18 +95,10 @@ public class BlockMachine extends BlockMachineBase
 
     public BlockMachine(String assetName)
     {
-        super(GCBlocks.machine);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(assetName);
     }
 
-    @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
-
+    @SideOnly(Side.CLIENT)
     @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
@@ -151,55 +138,6 @@ public class BlockMachine extends BlockMachineBase
         }
     }
 
-    /**
-     * Called when the block is placed in the world.
-     */
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        int metadata = getMetaFromState(state);
-
-        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
-
-        worldIn.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
-    }
-
-    @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        int metadata = getMetaFromState(world.getBlockState(pos));
-        int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
-
-//(Currently neither of these machines is electric, so the following is unnecessary)
-//        if (metadata < BlockMachine.COMPRESSOR_METADATA)
-//        {
-//            TileEntity te = world.getTileEntity(pos);
-//            if (te instanceof TileBaseUniversalElectrical)
-//            {
-//                ((TileBaseUniversalElectrical) te).updateFacing();
-//            }
-//        }
-
-        world.setBlockState(pos, getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
-        return true;
-    }
-
-    /**
-     * Called when the block is right clicked by the player
-     */
-    @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (!world.isRemote)
-        {
-            entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
-
-        return true;
-    }
-
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
@@ -224,22 +162,10 @@ public class BlockMachine extends BlockMachineBase
     }
 
     @Override
-    public int damageDropped(IBlockState state)
-    {
-        return getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
-    }
-
-    @Override
     public String getShiftDescription(int meta)
     {
         EnumMachineType type = EnumMachineType.getByMetadata(meta);
         return type.getShiftDescription();
-    }
-
-    @Override
-    public boolean showDescription(int meta)
-    {
-        return true;
     }
 
     @Override
@@ -267,11 +193,5 @@ public class BlockMachine extends BlockMachineBase
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, TYPE);
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
     }
 }
