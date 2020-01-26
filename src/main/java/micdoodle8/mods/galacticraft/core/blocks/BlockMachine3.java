@@ -5,13 +5,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 
 /**
  * A block for several types of Galacticraft machine
@@ -22,7 +18,7 @@ public class BlockMachine3 extends BlockMachineBase
 {
     public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
 
-    public enum EnumMachineBuildingType implements IStringSerializable
+    public enum EnumMachineBuildingType implements EnumMachineBase, IStringSerializable
     {
         PAINTER(0, "painter", TileEntityPainter::new, "tile.painter.description", "tile.machine3.9");
 
@@ -41,28 +37,26 @@ public class BlockMachine3 extends BlockMachineBase
             this.blockName = blockName;
         }
 
+        @Override
         public int getMetadata()
         {
             return this.meta * 4;
         }
 
         private final static EnumMachineBuildingType[] values = values();
-        public static EnumMachineBuildingType byMeta(int meta)
+        @Override
+        public EnumMachineBuildingType byMeta(int meta)
         {
             return values[meta % values.length];
         }
         
-        public static EnumMachineBuildingType getByMetadata(int metadata)
-        {
-            return byMeta(metadata / 4);
-        }
-
         @Override
         public String getName()
         {
             return this.name;
         }
         
+        @Override
         public TileEntity tileConstructor()
         {
             return this.tile.create();
@@ -74,11 +68,13 @@ public class BlockMachine3 extends BlockMachineBase
               TileEntity create();
         }
 
+        @Override
         public String getShiftDescription()
         {
             return GCCoreUtil.translate(this.shiftDescriptionKey);
         }
 
+        @Override
         public String getUnlocalizedName()
         {
             return this.blockName;
@@ -91,39 +87,17 @@ public class BlockMachine3 extends BlockMachineBase
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    protected void initialiseTypes()
     {
-        int meta = getMetaFromState(state);
-        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
-        return type.tileConstructor();
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        for (EnumMachineBuildingType type : EnumMachineBuildingType.values)
-            list.add(new ItemStack(this, 1, type.getMetadata()));
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
-    {
-        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
-        return type.getShiftDescription();
-    }
-
-    @Override
-    public String getUnlocalizedName(int meta)
-    {
-        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
-        return type.getUnlocalizedName();
+        this.types = EnumMachineBuildingType.values;
+        this.typeBase = EnumMachineBuildingType.values[0];
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineBuildingType type = EnumMachineBuildingType.getByMetadata(meta);
+        EnumMachineBuildingType type = (EnumMachineBuildingType) typeBase.fromMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 

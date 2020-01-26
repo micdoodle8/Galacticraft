@@ -10,13 +10,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 
 public class BlockMachine2 extends BlockMachineBase
 {
@@ -24,7 +21,7 @@ public class BlockMachine2 extends BlockMachineBase
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
-    public enum EnumMachineExtendedType implements IStringSerializable
+    public enum EnumMachineExtendedType implements EnumMachineBase, IStringSerializable
     {
         ELECTRIC_COMPRESSOR(0, "electric_compressor", TileEntityElectricIngotCompressor::new, "tile.compressor_electric.description", "tile.machine2.4"),
         CIRCUIT_FABRICATOR(1, "circuit_fabricator", TileEntityCircuitFabricator::new, "tile.circuit_fabricator.description", "tile.machine2.5"),
@@ -46,28 +43,26 @@ public class BlockMachine2 extends BlockMachineBase
             this.blockName = blockName;
         }
 
+        @Override
         public int getMetadata()
         {
             return this.meta * 4;
         }
 
         private final static EnumMachineExtendedType[] values = values();
-        public static EnumMachineExtendedType byMeta(int meta)
+        @Override
+        public EnumMachineExtendedType byMeta(int meta)
         {
             return values[meta % values.length];
         }
         
-        public static EnumMachineExtendedType getByMetadata(int metadata)
-        {
-            return byMeta(metadata / 4);
-        }
-
         @Override
         public String getName()
         {
             return this.name;
         }
         
+        @Override
         public TileEntity tileConstructor()
         {
             return this.tile.create();
@@ -79,11 +74,13 @@ public class BlockMachine2 extends BlockMachineBase
               TileEntity create();
         }
 
+        @Override
         public String getShiftDescription()
         {
             return GCCoreUtil.translate(this.shiftDescriptionKey);
         }
 
+        @Override
         public String getUnlocalizedName()
         {
             return this.blockName;
@@ -96,39 +93,17 @@ public class BlockMachine2 extends BlockMachineBase
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    protected void initialiseTypes()
     {
-        int meta = getMetaFromState(state);
-        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
-        return type.tileConstructor();
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        for (EnumMachineExtendedType type : EnumMachineExtendedType.values)
-            list.add(new ItemStack(this, 1, type.getMetadata()));
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
-    {
-        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
-        return type.getShiftDescription();
-    }
-
-    @Override
-    public String getUnlocalizedName(int meta)
-    {
-        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
-        return type.getUnlocalizedName();
+        this.types = EnumMachineExtendedType.values;
+        this.typeBase = EnumMachineExtendedType.values[0];
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineExtendedType type = EnumMachineExtendedType.getByMetadata(meta);
+        EnumMachineExtendedType type = (EnumMachineExtendedType) typeBase.fromMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 

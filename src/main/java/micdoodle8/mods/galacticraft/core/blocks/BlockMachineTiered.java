@@ -9,12 +9,9 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,7 +23,7 @@ public class BlockMachineTiered extends BlockMachineBase
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
 
-    public enum EnumTieredMachineType implements IStringSerializable
+    public enum EnumTieredMachineType implements EnumMachineBase, IStringSerializable
     {
         STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
         ELECTRIC_FURNACE(1, "electric_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier1.description", "tile.machine.2"),
@@ -48,28 +45,26 @@ public class BlockMachineTiered extends BlockMachineBase
             this.blockName = blockName;
         }
 
+        @Override
         public int getMetadata()
         {
             return this.meta * 4;
         }
 
         private final static EnumTieredMachineType[] values = values();
-        public static EnumTieredMachineType byMeta(int meta)
+        @Override
+        public EnumMachineBase byMeta(int meta)
         {
             return values[meta % values.length];
         }
         
-        public static EnumTieredMachineType getByMetadata(int metadata)
-        {
-            return byMeta(metadata / 4);
-        }
-
         @Override
         public String getName()
         {
             return this.name;
         }
         
+        @Override
         public TileEntity tileConstructor()
         {
             int tier = this.meta / 2 + 1;
@@ -82,11 +77,13 @@ public class BlockMachineTiered extends BlockMachineBase
               TileEntity create(int tier);
         }
 
+        @Override
         public String getShiftDescription()
         {
             return GCCoreUtil.translate(this.shiftDescriptionKey);
         }
 
+        @Override
         public String getUnlocalizedName()
         {
             return this.blockName;
@@ -99,41 +96,25 @@ public class BlockMachineTiered extends BlockMachineBase
     }
 
     @Override
+    protected void initialiseTypes()
+    {
+        this.types = EnumTieredMachineType.values;
+        this.typeBase = EnumTieredMachineType.values[0];
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        int meta = getMetaFromState(state);
-        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
-        TileEntity tile = type.tileConstructor();
+        TileEntity tile = super.createTileEntity(world, state);
         tile.setWorld(world);
         return tile;
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        for (EnumTieredMachineType type : EnumTieredMachineType.values)
-            list.add(new ItemStack(this, 1, type.getMetadata()));
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
-    {
-        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
-        return type.getShiftDescription();
-    }
-
-    @Override
-    public String getUnlocalizedName(int meta)
-    {
-        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
-        return type.getUnlocalizedName();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumTieredMachineType type = EnumTieredMachineType.getByMetadata(meta);
+        EnumTieredMachineType type = (EnumTieredMachineType) typeBase.fromMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 

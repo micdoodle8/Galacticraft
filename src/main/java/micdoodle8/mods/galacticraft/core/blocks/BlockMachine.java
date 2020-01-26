@@ -8,8 +8,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -23,7 +21,7 @@ public class BlockMachine extends BlockMachineBase
 {
     public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
-    public enum EnumMachineType implements IStringSerializable
+    public enum EnumMachineType implements EnumMachineBase, IStringSerializable
     {
         COAL_GENERATOR(0, "coal_generator", TileEntityCoalGenerator::new, "tile.coal_generator.description", "tile.machine.0"),
         COMPRESSOR(3, "ingot_compressor", TileEntityIngotCompressor::new, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
@@ -43,13 +41,15 @@ public class BlockMachine extends BlockMachineBase
             this.blockName = blockName;
         }
 
+        @Override
         public int getMetadata()
         {
             return this.meta * 4;
         }
 
         private final static EnumMachineType[] values = values();
-        public static EnumMachineType byMeta(int meta)
+        @Override
+        public EnumMachineType byMeta(int meta)
         {
             switch (meta)
             {
@@ -60,17 +60,13 @@ public class BlockMachine extends BlockMachineBase
             }
         }
         
-        public static EnumMachineType getByMetadata(int meta)
-        {
-            return byMeta(meta / 4);
-        }
-
         @Override
         public String getName()
         {
             return this.name;
         }
         
+        @Override
         public TileEntity tileConstructor()
         {
             return this.tile.create();
@@ -82,11 +78,13 @@ public class BlockMachine extends BlockMachineBase
               TileEntity create();
         }
 
+        @Override
         public String getShiftDescription()
         {
             return GCCoreUtil.translate(this.shiftDescriptionKey);
         }
 
+        @Override
         public String getUnlocalizedName()
         {
             return this.blockName;
@@ -96,6 +94,13 @@ public class BlockMachine extends BlockMachineBase
     public BlockMachine(String assetName)
     {
         super(assetName);
+    }
+
+    @Override
+    protected void initialiseTypes()
+    {
+        this.types = EnumMachineType.values;
+        this.typeBase = EnumMachineType.values[0];
     }
 
     @SideOnly(Side.CLIENT)
@@ -150,36 +155,15 @@ public class BlockMachine extends BlockMachineBase
         {
             return new TileEntityElectricFurnace();   //Legacy code in case a block in game not yet converted to BlockMachineTiered
         }
-        EnumMachineType type = EnumMachineType.getByMetadata(meta);
+        EnumMachineBase type = typeBase.fromMetadata(meta);
         return type.tileConstructor();
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        for (EnumMachineType type : EnumMachineType.values)
-            list.add(new ItemStack(this, 1, type.getMetadata()));
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
-    {
-        EnumMachineType type = EnumMachineType.getByMetadata(meta);
-        return type.getShiftDescription();
-    }
-
-    @Override
-    public String getUnlocalizedName(int meta)
-    {
-        EnumMachineType type = EnumMachineType.getByMetadata(meta);
-        return type.getUnlocalizedName();
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineType type = EnumMachineType.getByMetadata(meta);
+        EnumMachineType type = (EnumMachineType) typeBase.fromMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 

@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -24,6 +26,8 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
 {
     public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    protected EnumMachineBase[] types;
+    protected EnumMachineBase typeBase;
 
     public BlockMachineBase(String assetName)
     {
@@ -31,7 +35,10 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
         this.setHardness(1.0F);
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
+        this.initialiseTypes();
     }
+
+    protected abstract void initialiseTypes();
 
     @Override
     public CreativeTabs getCreativeTabToDisplayOn()
@@ -83,14 +90,33 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
         }
         return false;
     }
-    
+   
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state)
+    {
+        int meta = getMetaFromState(state);
+        EnumMachineBase type = typeBase.fromMetadata(meta);
+        return type.tileConstructor();
+    }
+   
     @Override
     public int damageDropped(IBlockState state)
     {
         return getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
     }
 
-    public abstract String getUnlocalizedName(int typenum);
+    public String getUnlocalizedName(int meta)
+    {
+        EnumMachineBase type = typeBase.fromMetadata(meta);
+        return type.getUnlocalizedName();
+    }
+
+    @Override
+    public String getShiftDescription(int meta)
+    {
+        EnumMachineBase type = typeBase.fromMetadata(meta);
+        return type.getShiftDescription();
+    }
 
     @Override
     public boolean showDescription(int meta)
@@ -111,5 +137,25 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    {
+        for (EnumMachineBase type : types)
+            list.add(new ItemStack(this, 1, type.getMetadata()));
+    }
+
+    static interface EnumMachineBase <T extends Enum<T> & IStringSerializable>
+    {
+        int getMetadata();
+        default EnumMachineBase fromMetadata(int metadata)
+        {
+            return byMeta(metadata / 4);
+        }
+        EnumMachineBase byMeta(int meta);
+        String getShiftDescription();
+        String getUnlocalizedName();
+        TileEntity tileConstructor();
     }
 }
