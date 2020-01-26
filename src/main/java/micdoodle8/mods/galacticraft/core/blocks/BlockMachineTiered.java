@@ -4,7 +4,6 @@ import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
@@ -26,9 +25,9 @@ public class BlockMachineTiered extends BlockMachineBase
     public enum EnumTieredMachineType implements EnumMachineBase, IStringSerializable
     {
         STORAGE_MODULE(0, "energy_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier1.description", "tile.machine.1"),
-        ELECTRIC_FURNACE(1, "electric_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier1.description", "tile.machine.2"),
-        STORAGE_CLUSTER(2, "cluster_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
-        ARC_FURNACE(3, "arc_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier2.description", "tile.machine.7");
+        ELECTRIC_FURNACE(4, "electric_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier1.description", "tile.machine.2"),
+        STORAGE_CLUSTER(8, "cluster_storage", TileEntityEnergyStorageModule::new, "tile.energy_storage_module_tier2.description", "tile.machine.8"),
+        ARC_FURNACE(12, "arc_furnace", TileEntityElectricFurnace::new, "tile.electric_furnace_tier2.description", "tile.machine.7");
 
         private final int meta;
         private final String name;
@@ -48,14 +47,14 @@ public class BlockMachineTiered extends BlockMachineBase
         @Override
         public int getMetadata()
         {
-            return this.meta * 4;
+            return this.meta;
         }
 
         private final static EnumTieredMachineType[] values = values();
         @Override
-        public EnumMachineBase byMeta(int meta)
+        public EnumMachineBase fromMetadata(int meta)
         {
-            return values[meta % values.length];
+            return values[(meta / 4) % values.length];
         }
         
         @Override
@@ -67,20 +66,20 @@ public class BlockMachineTiered extends BlockMachineBase
         @Override
         public TileEntity tileConstructor()
         {
-            int tier = this.meta / 2 + 1;
+            int tier = this.meta / 8 + 1;
             return this.tile.create(tier);
         }
         
         @FunctionalInterface
         private static interface TileConstructor
         {
-              TileEntity create(int tier);
+              TileEntity create(int tier);  //Note this variant picks up the new TileEntityStorageModule(int tier) constructor, and forces the ::new above to that
         }
 
         @Override
-        public String getShiftDescription()
+        public String getShiftDescriptionKey()
         {
-            return GCCoreUtil.translate(this.shiftDescriptionKey);
+            return this.shiftDescriptionKey;
         }
 
         @Override

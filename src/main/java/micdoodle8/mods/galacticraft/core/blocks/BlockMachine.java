@@ -1,10 +1,7 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,7 +21,7 @@ public class BlockMachine extends BlockMachineBase
     public enum EnumMachineType implements EnumMachineBase, IStringSerializable
     {
         COAL_GENERATOR(0, "coal_generator", TileEntityCoalGenerator::new, "tile.coal_generator.description", "tile.machine.0"),
-        COMPRESSOR(3, "ingot_compressor", TileEntityIngotCompressor::new, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
+        COMPRESSOR(12, "ingot_compressor", TileEntityIngotCompressor::new, "tile.compressor.description", "tile.machine.3"); // 3 for backwards compatibility
 
         private final int meta;
         private final String name;
@@ -44,14 +41,14 @@ public class BlockMachine extends BlockMachineBase
         @Override
         public int getMetadata()
         {
-            return this.meta * 4;
+            return this.meta;
         }
 
         private final static EnumMachineType[] values = values();
         @Override
-        public EnumMachineType byMeta(int meta)
+        public EnumMachineType fromMetadata(int meta)
         {
-            switch (meta)
+            switch (meta / 4)
             {
             case 3:
                 return COMPRESSOR;
@@ -79,9 +76,9 @@ public class BlockMachine extends BlockMachineBase
         }
 
         @Override
-        public String getShiftDescription()
+        public String getShiftDescriptionKey()
         {
-            return GCCoreUtil.translate(this.shiftDescriptionKey);
+            return this.shiftDescriptionKey;
         }
 
         @Override
@@ -141,22 +138,6 @@ public class BlockMachine extends BlockMachineBase
                 }
             }
         }
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        int meta = getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
-        if (meta == 4)
-        {
-            return new TileEntityEnergyStorageModule();   //Legacy code in case a block in game not yet converted to BlockMachineTiered
-        }
-        else if (meta == 8)
-        {
-            return new TileEntityElectricFurnace();   //Legacy code in case a block in game not yet converted to BlockMachineTiered
-        }
-        EnumMachineBase type = typeBase.fromMetadata(meta);
-        return type.tileConstructor();
     }
 
     @Override

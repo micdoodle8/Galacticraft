@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +22,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class BlockMachineBase extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
@@ -41,6 +44,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     protected abstract void initialiseTypes();
 
     @Override
+    @SideOnly(Side.CLIENT)
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
@@ -115,7 +119,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     public String getShiftDescription(int meta)
     {
         EnumMachineBase type = typeBase.fromMetadata(meta);
-        return type.getShiftDescription();
+        return GCCoreUtil.translate(type.getShiftDescriptionKey());
     }
 
     @Override
@@ -146,15 +150,11 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
             list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
-    static interface EnumMachineBase <T extends Enum<T> & IStringSerializable>
+    public static interface EnumMachineBase <T extends Enum<T> & IStringSerializable>
     {
         int getMetadata();
-        default EnumMachineBase fromMetadata(int metadata)
-        {
-            return byMeta(metadata / 4);
-        }
-        EnumMachineBase byMeta(int meta);
-        String getShiftDescription();
+        EnumMachineBase fromMetadata(int meta);
+        String getShiftDescriptionKey();
         String getUnlocalizedName();
         TileEntity tileConstructor();
     }

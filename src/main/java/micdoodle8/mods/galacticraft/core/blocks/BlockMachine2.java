@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -24,9 +23,9 @@ public class BlockMachine2 extends BlockMachineBase
     public enum EnumMachineExtendedType implements EnumMachineBase, IStringSerializable
     {
         ELECTRIC_COMPRESSOR(0, "electric_compressor", TileEntityElectricIngotCompressor::new, "tile.compressor_electric.description", "tile.machine2.4"),
-        CIRCUIT_FABRICATOR(1, "circuit_fabricator", TileEntityCircuitFabricator::new, "tile.circuit_fabricator.description", "tile.machine2.5"),
-        OXYGEN_STORAGE(2, "oxygen_storage", TileEntityOxygenStorageModule::new, "tile.oxygen_storage_module.description", "tile.machine2.6"),
-        DECONSTRUCTOR(3, "deconstructor", TileEntityDeconstructor::new, "tile.deconstructor.description", "tile.machine2.10");
+        CIRCUIT_FABRICATOR(4, "circuit_fabricator", TileEntityCircuitFabricator::new, "tile.circuit_fabricator.description", "tile.machine2.5"),
+        OXYGEN_STORAGE(8, "oxygen_storage", TileEntityOxygenStorageModule::new, "tile.oxygen_storage_module.description", "tile.machine2.6"),
+        DECONSTRUCTOR(12, "deconstructor", TileEntityDeconstructor::new, "tile.deconstructor.description", "tile.machine2.10");
         
         private final int meta;
         private final String name;
@@ -46,14 +45,14 @@ public class BlockMachine2 extends BlockMachineBase
         @Override
         public int getMetadata()
         {
-            return this.meta * 4;
+            return this.meta;
         }
 
         private final static EnumMachineExtendedType[] values = values();
         @Override
-        public EnumMachineExtendedType byMeta(int meta)
+        public EnumMachineExtendedType fromMetadata(int meta)
         {
-            return values[meta % values.length];
+            return values[(meta / 4) % values.length];
         }
         
         @Override
@@ -75,9 +74,9 @@ public class BlockMachine2 extends BlockMachineBase
         }
 
         @Override
-        public String getShiftDescription()
+        public String getShiftDescriptionKey()
         {
-            return GCCoreUtil.translate(this.shiftDescriptionKey);
+            return this.shiftDescriptionKey;
         }
 
         @Override

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -40,14 +39,14 @@ public class BlockMachine3 extends BlockMachineBase
         @Override
         public int getMetadata()
         {
-            return this.meta * 4;
+            return this.meta;
         }
 
         private final static EnumMachineBuildingType[] values = values();
         @Override
-        public EnumMachineBuildingType byMeta(int meta)
+        public EnumMachineBuildingType fromMetadata(int meta)
         {
-            return values[meta % values.length];
+            return values[(meta / 4) % values.length];
         }
         
         @Override
@@ -69,9 +68,9 @@ public class BlockMachine3 extends BlockMachineBase
         }
 
         @Override
-        public String getShiftDescription()
+        public String getShiftDescriptionKey()
         {
-            return GCCoreUtil.translate(this.shiftDescriptionKey);
+            return this.shiftDescriptionKey;
         }
 
         @Override
