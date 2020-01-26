@@ -30,13 +30,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockMachineTiered extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachineTiered extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
 {
     public static final int STORAGE_MODULE_METADATA = 0;
     public static final int ELECTRIC_FURNACE_METADATA = 4;
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumTieredMachineType> TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
     public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
@@ -262,5 +261,28 @@ public class BlockMachineTiered extends BlockTileGC implements IShiftDescription
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getUnlocalizedName(int typenum)
+    {
+        if (typenum == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
+        {
+            return "tile.machine.2";
+        }
+        else if (typenum == BlockMachineTiered.STORAGE_MODULE_METADATA)
+        {
+            return "tile.machine.1";
+        }
+
+        //Tier 2 versions of the same
+        if (typenum == 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
+        {
+            return "tile.machine.7";
+        }
+        else
+        {
+            return "tile.machine.8";
+        }
     }
 }

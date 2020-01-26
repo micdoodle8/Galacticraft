@@ -30,14 +30,13 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
 {
     public static final int ELECTRIC_COMPRESSOR_METADATA = 0;
     public static final int CIRCUIT_FABRICATOR_METADATA = 4;
     public static final int OXYGEN_STORAGE_MODULE_METADATA = 8;
     public static final int DECONSTRUCTOR_METADATA = 12;
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumMachineExtendedType> TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
@@ -105,7 +104,7 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
     @Override
     public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        TileEntity tile = worldIn.getTileEntity(pos);
+//        TileEntity tile = worldIn.getTileEntity(pos);
 
     }
 
@@ -267,5 +266,28 @@ public class BlockMachine2 extends BlockTileGC implements IShiftDescription, ISo
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String getUnlocalizedName(int typenum)
+    {
+        int index = 6;
+        if (typenum == BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
+        {
+            index = 6;
+        }
+        else if (typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+        {
+            index = 5;
+        }
+        else if (typenum == BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
+        {
+            index = 4;
+        }
+        else if (typenum == BlockMachine2.DECONSTRUCTOR_METADATA)
+        {
+            index = 10;
+        }
+        return this.getUnlocalizedName()  + "." + index; 
     }
 }

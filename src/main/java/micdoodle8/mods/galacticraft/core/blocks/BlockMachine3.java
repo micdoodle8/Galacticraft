@@ -32,13 +32,12 @@ import java.util.Random;
  * with a base building purpose - e.g. Painter
  *
  */
-public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
 {
     public static final int PAINTER_METADATA = 0;
 
     public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
 
     public enum EnumMachineBuildingType implements IStringSerializable
@@ -203,5 +202,12 @@ public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISo
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+
+    @Override
+    public String getUnlocalizedName(int typenum)
+    {
+        int index = 9;
+        return this.getUnlocalizedName()  + "." + index; 
     }
 }

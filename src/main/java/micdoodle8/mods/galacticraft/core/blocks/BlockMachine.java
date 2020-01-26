@@ -26,12 +26,11 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockMachine extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachine extends BlockTileGC implements IShiftDescription, ISortableBlock, IMachineBase
 {
     public static final int COAL_GENERATOR_METADATA = 0;
     public static final int COMPRESSOR_METADATA = 12;
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements IStringSerializable
@@ -261,5 +260,11 @@ public class BlockMachine extends BlockTileGC implements IShiftDescription, ISor
     public EnumSortCategoryBlock getCategory(int meta)
     {
         return EnumSortCategoryBlock.MACHINE;
+    }
+
+    @Override
+    public String getUnlocalizedName(int typenum)
+    {
+        return this.getUnlocalizedName() + "." + (typenum / 4);
     }
 }
