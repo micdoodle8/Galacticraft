@@ -39,4 +39,10 @@ public class ItemCarbonFragments extends Item implements ISortableItem
     {
         return EnumSortCategoryItem.GENERAL;
     }
+
+    @Override
+    public int getItemBurnTime(ItemStack itemStack)
+    {
+        return 200;
+    }
 }

@@ -2,20 +2,21 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -148,14 +149,17 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
      */
     public boolean canProcess()
     {
-        if (this.getInventory().get(1).isEmpty())
+        ItemStack stack = this.getInventory().get(1); 
+        if (stack.isEmpty())
         {
             return false;
         }
-        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(this.getInventory().get(1));
+        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
         if (result.isEmpty())
         {
-            return false;
+            int burnable = TileEntityFurnace.getItemBurnTime(stack);
+            if (burnable >= 200 && burnable < 400) result = new ItemStack(MarsItems.carbonFragments);   //this includes most wooden tools, doors, stairs, boats etc but not saplings and sticks
+            else return false;
         }
 
 
@@ -340,12 +344,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
-        if (state.getBlock() instanceof BlockMachineTiered)
-        {
-            return state.getValue(BlockMachineTiered.FACING);
-        }
-        return EnumFacing.NORTH;
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
@@ -385,7 +384,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

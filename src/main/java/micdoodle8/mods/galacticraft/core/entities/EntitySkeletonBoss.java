@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -16,12 +17,14 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfo;
@@ -170,6 +173,22 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     {
         this.ticks++;
 
+        for (int j2 = 0; j2 < world.playerEntities.size(); ++j2) //World#isAnyPlayerWithinRangeAt
+        {
+            EntityPlayer entityplayer = world.playerEntities.get(j2);
+
+            if (EntitySelectors.NOT_SPECTATING.apply(entityplayer) && entityplayer instanceof EntityPlayerMP)
+            {
+                double d0 = entityplayer.getDistanceSq(this.posX, this.posY, this.posZ);
+
+                if (d0 < 20 * 20)
+                {
+                    GCTriggers.FIND_MOON_BOSS.trigger(((EntityPlayerMP) entityplayer));
+
+                }
+            }
+        }
+
         if (!this.world.isRemote && this.getHealth() <= 150.0F * ConfigManagerCore.dungeonBossHealthMod / 2)
         {
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
@@ -309,7 +328,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - arrow.posY;
         double d2 = target.posZ - this.posZ;
-        double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
+        double d3 = MathHelper.sqrt(d0 * d0 + d2 * d2);
         arrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
 
         this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));

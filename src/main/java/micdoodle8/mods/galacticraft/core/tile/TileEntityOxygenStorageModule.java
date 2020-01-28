@@ -1,15 +1,12 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.item.IItemOxygenSupply;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -178,12 +175,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.world.getBlockState(this.getPos());
-        if (state.getBlock() != GCBlocks.machineBase2)
-        {
-            return EnumFacing.NORTH;
-        }
-        return state.getValue(BlockMachine2.FACING);
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
@@ -347,7 +339,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (this.machineSides == null)
         {

@@ -330,10 +330,10 @@ public class TeleportTypeAsteroids implements ITeleportType
                 {
                     EntityEntryPod entryPod = new EntityEntryPod(player);
 
-                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                    boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                     entryPod.forceSpawn = true;
                     newWorld.spawnEntity(entryPod);
-                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld, previous);
                 }
 
                 stats.setTeleportCooldown(10);

@@ -95,8 +95,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     public float targetPitch;
     @SideOnly(Side.CLIENT)
     public float targetYaw;
-    @SideOnly(Side.CLIENT)
-    public int timeSinceShot = -1;
+    public int timeSinceShot = -1;  //Cannot initialise client-only fields (causes a server crash on constructing the object)
 
     public TileEntityLaserTurret()
     {
@@ -409,7 +408,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         else
         {
             // Client side only
-            if (chargeLevel > 0)
+            if (chargeLevel > 0 && chargeLevel < 60)
             {
                 chargeLevel++;
             }
@@ -785,7 +784,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     private MachineSidePack[] machineSides;
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         if (machineSides == null)
         {

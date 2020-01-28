@@ -1,0 +1,37 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.dungeon_key_moon.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.dungeon_key_moon.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:key",
+            "data": 0
+        },
+        "frame": "challenge",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria":{
+        "got_key":{
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:key",
+                        "data": 0
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "got_key"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/moon_dungeon"
+}

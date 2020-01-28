@@ -211,9 +211,9 @@ public class AsteroidsTickHandlerServer
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
                     WorldServer w = (WorldServer)p.world;
-                    CompatibilityManager.forceLoadChunks(w);
+                    boolean previous = CompatibilityManager.forceLoadChunks(w);
                     w.getChunkProvider().loadChunk(data.x, data.z);
-                    CompatibilityManager.forceLoadChunksEnd(w);
+                    CompatibilityManager.forceLoadChunksEnd(w, previous);
                 }
             }
             AsteroidsTickHandlerServer.loadingSavedChunks.set(false);

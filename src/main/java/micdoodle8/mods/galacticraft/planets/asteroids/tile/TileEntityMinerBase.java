@@ -1094,7 +1094,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public MachineSidePack[] getAllMachineSides()
+    public synchronized MachineSidePack[] getAllMachineSides()
     {
         return null;
     }

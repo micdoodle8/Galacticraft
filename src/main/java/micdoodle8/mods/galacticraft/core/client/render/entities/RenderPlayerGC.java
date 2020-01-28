@@ -80,7 +80,7 @@ public class RenderPlayerGC extends RenderPlayer
         int skullLayerIndex = -1;
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
-            LayerRenderer layer = this.layerRenderers.get(i); 
+            LayerRenderer layer = this.layerRenderers.get(i);
             if (layer instanceof LayerHeldItem)
             {
                 itemLayerIndex = i;
@@ -91,7 +91,7 @@ public class RenderPlayerGC extends RenderPlayer
                 {
                     try {
                         f1.set(layer, this);
-                    } catch (Exception ignore) {}
+                    } catch (Exception ignore) { }
                 }
             }
             else if (layer instanceof LayerCustomHead)
@@ -138,11 +138,28 @@ public class RenderPlayerGC extends RenderPlayer
         this.mainModel = new ModelPlayerGC(0.0F, smallArms);
         
         //Preserve any layers added by other mods, for example WearableBackpacks
-        try
+        Class clazz = old.getClass().getSuperclass();
+        Field f = null;
+        do {
+            try
+            {
+                f = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "layerRenderers" : "field_177097_h");
+                f.setAccessible(true);
+            } catch (Exception ignore) { }
+            clazz = clazz.getSuperclass();
+        } while (f == null && clazz != null);
+        if (f != null) try
         {
-            Field f = old.getClass().getSuperclass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "layerRenderers" : "field_177097_h");
-            f.setAccessible(true);
             List<LayerRenderer<?>> layers = (List<LayerRenderer<?>>) f.get(old);
+            if(layers.size() == 0)
+            {
+                //Specifically fix for compatibility with MetaMorph's non-standard "RenderSubPlayer" class
+                try {
+                Field g = old.getClass().getDeclaredField("original");
+                old = (RenderPlayer) g.get(old);
+                layers = (List<LayerRenderer<?>>) f.get(old);
+                } catch (Exception ignore) { }
+            }
             if (layers.size() > 0)
             {
                 for (LayerRenderer<?> oldLayer : layers)

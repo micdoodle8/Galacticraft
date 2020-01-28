@@ -1,0 +1,37 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.rocket_workbench.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.rocket_workbench.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:rocket_workbench",
+            "data": 0
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "rocket_workbench": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:rocket_workbench",
+                        "data": 0
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "rocket_workbench"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/compressor"
+}

@@ -330,7 +330,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         if (this.shouldPullOxygen())
         {
-            return this.oxygenPerTick * 2;
+            return Math.min(this.oxygenPerTick * 2, this.getMaxOxygenStored() - this.getOxygenStored());
         }
         else
         {

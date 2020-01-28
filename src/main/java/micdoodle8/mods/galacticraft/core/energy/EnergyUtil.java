@@ -701,7 +701,11 @@ public class EnergyUtil
             {
                 clazzIC2EnergyTile = Class.forName("ic2.core.energy.Tile");
                 if (clazzIC2EnergyTile != null) isIC2TileLoaded = true;
-                
+            }
+            catch (Exception ignore) {}
+            
+            try
+            {
                clazzIC2Cable = Class.forName("ic2.api.energy.tile.IEnergyConductor");
                Class<?> clazz = Class.forName("ic2.api.energy.tile.IEnergySink");
 
@@ -709,15 +713,14 @@ public class EnergyUtil
 
                 try
                 {
-                    //1.7.2 version
-                    EnergyUtil.demandedEnergyIC2 = clazz.getMethod("demandedEnergyUnits");
+                    EnergyUtil.demandedEnergyIC2 = clazz.getMethod("getDemandedEnergy");
                 }
                 catch (Exception e)
                 {
-                    //if that fails, try 1.7.10 version
+                    //if that fails, try legacy version
                     try
                     {
-                        EnergyUtil.demandedEnergyIC2 = clazz.getMethod("getDemandedEnergy");
+                        EnergyUtil.demandedEnergyIC2 = clazz.getMethod("demandedEnergyUnits");
                     }
                     catch (Exception ee)
                     {
@@ -729,18 +732,17 @@ public class EnergyUtil
 
                 try
                 {
-                    //1.7.2 version
-                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
-                    GCLog.debug("IC2 inject 1.7.2 succeeded");
+                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
+                    EnergyUtil.voltageParameterIC2 = true;
+                    GCLog.debug("Set IC2 injectEnergy method OK");
                 }
                 catch (Exception e)
                 {
-                    //if that fails, try 1.7.10 version
+                    //if that fails, try legacy version
                     try
                     {
-                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
-                        EnergyUtil.voltageParameterIC2 = true;
-                        GCLog.debug("Set IC2 injectEnergy method OK");
+                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
+                        GCLog.debug("IC2 inject 1.7.2 succeeded");
                     }
                     catch (Exception ee)
                     {

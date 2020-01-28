@@ -984,12 +984,12 @@ public class WorldUtil
 
         if (ridingRocket != null)
         {
-            CompatibilityManager.forceLoadChunks((WorldServer) worldNew);
+            boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) worldNew);
             ridingRocket.forceSpawn = true;
             worldNew.spawnEntity(ridingRocket);
             ridingRocket.setWorld(worldNew);
             worldNew.updateEntityWithOptionalForce(ridingRocket, true);
-            CompatibilityManager.forceLoadChunksEnd((WorldServer) worldNew);
+            CompatibilityManager.forceLoadChunksEnd((WorldServer) worldNew, previous);
             entity.startRiding(ridingRocket);
             GCLog.debug("Entering rocket at : " + entity.posX + "," + entity.posZ + " rocket at: " + ridingRocket.posX + "," + ridingRocket.posZ);
         }
@@ -1097,7 +1097,7 @@ public class WorldUtil
      */
     public static void forceMoveEntityToPos(Entity entity, WorldServer worldNew, Vector3 spawnPos, boolean spawnRequired)
     {
-        CompatibilityManager.forceLoadChunks(worldNew);
+        boolean previous = CompatibilityManager.forceLoadChunks(worldNew);
         ChunkPos pair = worldNew.getChunkFromChunkCoords(spawnPos.intX() >> 4, spawnPos.intZ() >> 4).getPos();
         GCLog.debug("Loading first chunk in new dimension at " + pair.x + "," + pair.z);
         worldNew.getChunkProvider().loadChunk(pair.x, pair.z);
@@ -1115,7 +1115,7 @@ public class WorldUtil
         {
             ((EntityPlayerMP) entity).connection.setPlayerLocation(spawnPos.x, spawnPos.y, spawnPos.z, entity.rotationYaw, entity.rotationPitch);
         }
-        CompatibilityManager.forceLoadChunksEnd(worldNew);
+        CompatibilityManager.forceLoadChunksEnd(worldNew, previous);
     }
 
     public static WorldServer getStartWorld(WorldServer unchanged)

@@ -1,207 +1,114 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
-import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.World;
-
-import java.util.Random;
 
 /**
  * A block for several types of Galacticraft machine
  * with a base building purpose - e.g. Painter
  *
  */
-public class BlockMachine3 extends BlockTileGC implements IShiftDescription, ISortableBlock
+public class BlockMachine3 extends BlockMachineBase
 {
-    public static final int PAINTER_METADATA = 0;
-
-    public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
-
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
     public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
 
-    public enum EnumMachineBuildingType implements IStringSerializable
+    public enum EnumMachineBuildingType implements EnumMachineBase, IStringSerializable
     {
-        PAINTER(0, "painter");
+        PAINTER(0, "painter", TileEntityPainter::new, "tile.painter.description", "tile.machine3.9");
 
         private final int meta;
         private final String name;
+        private final TileConstructor tile;
+        private final String shiftDescriptionKey;
+        private final String blockName;
 
-        EnumMachineBuildingType(int meta, String name)
+        EnumMachineBuildingType(int meta, String name, TileConstructor tile, String key, String blockName)
         {
             this.meta = meta;
             this.name = name;
+            this.tile = tile;
+            this.shiftDescriptionKey = key;
+            this.blockName = blockName;
         }
 
-        public int getMeta()
+        @Override
+        public int getMetadata()
         {
             return this.meta;
         }
 
         private final static EnumMachineBuildingType[] values = values();
-        public static EnumMachineBuildingType byMetadata(int meta)
+        @Override
+        public EnumMachineBuildingType fromMetadata(int meta)
         {
-            return values[meta % values.length];
+            return values[(meta / 4) % values.length];
         }
-
+        
         @Override
         public String getName()
         {
             return this.name;
         }
+        
+        @Override
+        public TileEntity tileConstructor()
+        {
+            return this.tile.create();
+        }
+
+        @FunctionalInterface
+        private static interface TileConstructor
+        {
+              TileEntity create();
+        }
+
+        @Override
+        public String getShiftDescriptionKey()
+        {
+            return this.shiftDescriptionKey;
+        }
+
+        @Override
+        public String getUnlocalizedName()
+        {
+            return this.blockName;
+        }
     }
 
     public BlockMachine3(String assetName)
     {
-        super(GCBlocks.machine);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(assetName);
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    protected void initialiseTypes()
     {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isFullCube(IBlockState state)
-    {
-        return true;
-    }
-
-    @Override
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
-    {
-        int metadata = getMetaFromState(state);
-
-        final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
-
-        worldIn.setBlockState(pos, getStateFromMeta((metadata & METADATA_MASK) + change), 3);
-    }
-
-    @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        IBlockState state = world.getBlockState(pos);
-        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
-        return true;
-    }
-
-    @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        if (!worldIn.isRemote)
-        {
-            entityPlayer.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
-            return true;
-        }
-
-        return true;
-    }
-
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
-    {
-        int metadata = getMetaFromState(state) & METADATA_MASK;
-        if (metadata == BlockMachine3.PAINTER_METADATA)
-        {
-            return new TileEntityPainter();
-        }
-        return null;
-    }
-
-    public ItemStack getPainter()
-    {
-        return new ItemStack(this, 1, BlockMachine3.PAINTER_METADATA);
-    }
-
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
-    {
-        list.add(this.getPainter());
-    }
-
-    @Override
-    public int damageDropped(IBlockState state)
-    {
-        return getMetaFromState(state) & METADATA_MASK;
-    }
-
-    @Override
-    public String getShiftDescription(int meta)
-    {
-        switch (meta)
-        {
-        case PAINTER_METADATA:
-            return GCCoreUtil.translate("tile.painter.description");
-        }
-        return "";
-    }
-
-    @Override
-    public boolean showDescription(int meta)
-    {
-        return true;
+        this.types = EnumMachineBuildingType.values;
+        this.typeBase = EnumMachineBuildingType.values[0];
     }
 
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
-        EnumMachineBuildingType type = EnumMachineBuildingType.byMetadata(meta / 4);
+        EnumMachineBuildingType type = (EnumMachineBuildingType) typeBase.fromMetadata(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.getValue(TYPE)).getMetadata();
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
         return new BlockStateContainer(this, FACING, TYPE);
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-        return EnumSortCategoryBlock.MACHINE;
     }
 }

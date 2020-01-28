@@ -95,13 +95,13 @@ public class TeleportTypeMoon implements ITeleportType
 
             if (!newWorld.isRemote)
             {
-                CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                 lander.forceSpawn = true;
                 newWorld.spawnEntity(lander);
                 lander.setWorld(newWorld);
                 newWorld.updateEntityWithOptionalForce(lander, true);
                 player.startRiding(lander);
-                CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
+                CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld, previous);
                 GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
             }
 

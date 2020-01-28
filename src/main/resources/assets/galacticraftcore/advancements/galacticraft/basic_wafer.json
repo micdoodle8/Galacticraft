@@ -1,0 +1,37 @@
+{
+    "display": {
+        "title": {
+            "translate": "advancement.galacticraft.basic_wafer.title"
+        },
+        "description": {
+            "translate": "advancement.galacticraft.basic_wafer.description"
+        },
+        "icon": {
+            "item": "galacticraftcore:basic_item",
+            "data": 13
+        },
+        "frame": "task",
+        "show_toast": true,
+        "announce_to_chat": true,
+        "hidden": false
+    },
+    "criteria": {
+        "compressor": {
+            "trigger": "minecraft:inventory_changed",
+            "conditions": {
+                "items": [
+                    {
+                        "item": "galacticraftcore:basic_item",
+                        "data": 13
+                    }
+                ]
+            }
+        }
+    },
+    "requirements": [
+        [
+            "compressor"
+        ]
+    ],
+    "parent": "galacticraftcore:galacticraft/circuit_fabricator"
+}

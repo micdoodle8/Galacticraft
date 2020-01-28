@@ -89,10 +89,10 @@ public class TeleportTypeVenus implements ITeleportType
                 {
                     EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
 
-                    CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                    boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
                     entryPod.forceSpawn = true;
                     newWorld.spawnEntity(entryPod);
-                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld);
+                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld, previous);
                 }
 
                 stats.setTeleportCooldown(10);

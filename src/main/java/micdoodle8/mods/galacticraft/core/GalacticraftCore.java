@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiHandler;
 import micdoodle8.mods.galacticraft.core.client.screen.GameScreenBasic;
@@ -49,6 +50,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -339,6 +341,7 @@ public class GalacticraftCore
 //        case 10:
 //            return this.shieldControllerSlotValid(itemstack);
 //        }
+        GCTriggers.registerTriggers();
     }
 
     @EventHandler
