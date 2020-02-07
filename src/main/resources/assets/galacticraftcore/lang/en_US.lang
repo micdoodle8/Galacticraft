@@ -134,6 +134,7 @@ gc.configgui.title=Galacticraft Core Config
 gc.configgui.use_old_fuel_fluid_i_d=Use legacy fuelgc fluid registration
 gc.configgui.use_old_oil_fluid_i_d=Use legacy oilgc fluid registration
 gc.configgui.whitelist_co_f_h_core_gen=Whitelist CoFHCore World Gen
+gc.configgui.moon_is_breatheable=Make Moon breathable
 gui.battery_slot.desc.0=Battery slot, place battery here
 gui.battery_slot.desc.1=or use a connected power source
 gui.bed_fail.message=Uh oh, what if the oxygen runs out when I am asleep?  I'll need a Cryogenic Chamber to sleep in space!

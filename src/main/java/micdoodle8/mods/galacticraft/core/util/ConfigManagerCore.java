@@ -70,6 +70,8 @@ public class ConfigManagerCore
     public static boolean disableRocketLaunchAllNonGC;
     public static int otherPlanetWorldBorders = 0;
     public static boolean keepLoadedNewSpaceStations;
+    public static boolean moonisbreatheable;
+
 
     // SCHEMATICS
     public static int idSchematicRocketT1;
@@ -226,6 +228,12 @@ public class ConfigManagerCore
             prop.setComment("If true, rockets will be unable to reach the Overworld (only use this in special modpacks!)");
             prop.setLanguageKey("gc.configgui.rocket_disable_overworld_return");
             disableRocketsToOverworld = prop.getBoolean(false);
+            finishProp(prop);
+            
+            prop = getConfig(Constants.CONFIG_CATEGORY_DIMENSIONS, "Make Moon breathable for players", false);
+            prop.setComment("Set this to true to to be able to breathe without oxygen gear while on the Moon. Very usefull for servers");
+            prop.setLanguageKey("gc.configgui.moon_is_breatheable");
+            moonisbreatheable = prop.getBoolean();
             finishProp(prop);
 
             prop = getConfig(Constants.CONFIG_CATEGORY_SERVER, "World border for landing location on other planets (Moon, Mars, etc)", 0);
