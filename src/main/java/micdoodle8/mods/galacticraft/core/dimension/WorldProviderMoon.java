@@ -165,6 +165,12 @@ public class WorldProviderMoon extends WorldProviderSpace implements IGalacticra
     }
 
     @Override
+    public boolean hasBreathableAtmosphere()
+    {
+	    return ConfigManagerCore.moonisbreatheable;
+    }
+
+    @Override
     public List<Block> getSurfaceBlocks()
     {
         List<Block> list = new LinkedList<>();
