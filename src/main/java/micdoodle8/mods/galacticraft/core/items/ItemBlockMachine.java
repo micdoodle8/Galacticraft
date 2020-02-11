@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
-import micdoodle8.mods.galacticraft.core.blocks.BlockMachineTiered;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -42,56 +42,11 @@ public class ItemBlockMachine extends ItemBlockDesc
         int index = 0;
         int typenum = itemstack.getItemDamage() & 12;
 
-        if (this.getBlock() == GCBlocks.machineBase)
+        if (this.getBlock() instanceof BlockMachineBase)
         {
-            index = typenum / 4;
+            return ((BlockMachineBase) this.getBlock()).getUnlocalizedName(typenum);
         }
-        else if (this.getBlock() == GCBlocks.machineTiered)
-        {
-            if (typenum == BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-            {
-                return "tile.machine.2";
-            }
-            else if (typenum == BlockMachineTiered.STORAGE_MODULE_METADATA)
-            {
-                return "tile.machine.1";
-            }
-
-            //Tier 2 versions of the same
-            if (typenum == 8 + BlockMachineTiered.ELECTRIC_FURNACE_METADATA)
-            {
-                return "tile.machine.7";
-            }
-            else if (typenum == 8 + BlockMachineTiered.STORAGE_MODULE_METADATA)
-            {
-                return "tile.machine.8";
-            }
-        }
-        else if (this.getBlock() == GCBlocks.machineBase2)
-        {
-            if (typenum == BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA)
-            {
-                index = 6;
-            }
-            else if (typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
-            {
-                index = 5;
-            }
-            else if (typenum == BlockMachine2.ELECTRIC_COMPRESSOR_METADATA)
-            {
-                index = 4;
-            }
-            else if (typenum == BlockMachine2.DECONSTRUCTOR_METADATA)
-            {
-                index = 10;
-            }
-        }
-        else //machineBase3
-        {
-            index = 9;
-        }
-
-        return this.getBlock().getUnlocalizedName() + "." + index;
+        return "tile.machine.0";
     }
 
     @Override
@@ -107,11 +62,11 @@ public class ItemBlockMachine extends ItemBlockDesc
         //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
         if (player instanceof EntityPlayerSP)
         {
-            if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.COMPRESSOR_METADATA)
+            if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.EnumMachineType.COMPRESSOR.getMetadata())
             {
                 ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
             }
-            else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.CIRCUIT_FABRICATOR_METADATA)
+            else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.EnumMachineExtendedType.CIRCUIT_FABRICATOR.getMetadata())
             {
                 ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
             }
