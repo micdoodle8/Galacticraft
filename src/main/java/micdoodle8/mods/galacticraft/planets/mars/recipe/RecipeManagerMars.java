@@ -34,6 +34,7 @@ public class RecipeManagerMars
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 1), new ItemStack(GCItems.basicItem, 1, 4), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 2), new ItemStack(MarsItems.marsItemBasic, 1, 2), 0.2F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(MarsBlocks.marsBlock, 1, 3), new ItemStack(Items.IRON_INGOT), 0.2F);
+        FurnaceRecipes.instance().addSmeltingRecipeForBlock(Blocks.PLANKS, new ItemStack(MarsItems.carbonFragments), 0.0F);
 
         // Schematic
         HashMap<Integer, ItemStack> input = new HashMap<Integer, ItemStack>();

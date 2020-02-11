@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -19,8 +21,6 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -30,7 +30,6 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
@@ -85,6 +84,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         addSalvage(new ItemStack(Items.IRON_INGOT));
         addSalvage(new ItemStack(Items.GOLD_INGOT));
         addSalvage(new ItemStack(Items.GOLD_NUGGET));
+        addSalvage(new ItemStack(Items.DIAMOND));
     }
 
     public static void initialiseRecipeList()
@@ -185,7 +185,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         List<ItemStack> ingredients = new LinkedList<>();
         ingredients.add(new ItemStack(this.getInventory().get(1).getItem(), 1, this.getInventory().get(1).getItemDamage()));
         this.recursiveCount = 0;
-        List<ItemStack> salvaged = this.getSalvageable(ingredients);
+        List<ItemStack> salvaged = this.getSalvageable(ingredients, null);
         salvaged = this.squashList(salvaged);
         salvaged = this.randomChanceList(salvaged);
         if (salvaged != null)
@@ -198,7 +198,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         this.decrStackSize(1, 1);
     }
 
-    private List<ItemStack> getSalvageable(List<ItemStack> ingredients)
+    private List<ItemStack> getSalvageable(List<ItemStack> ingredients, ItemStack done)
     {
         if (ingredients == null || ingredients.isEmpty())
         {
@@ -206,7 +206,6 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         }
         if (this.recursiveCount++ > 10)
         {
-            this.recursiveCount = 0;
             return null;
         }
 
@@ -221,10 +220,21 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             {
                 GCLog.debug("Trying to " + this.recursiveCount + " break down " + stack.toString());
                 List<ItemStack> ingredients2 = this.getIngredients(stack);
-                List<ItemStack> recursive = this.getSalvageable(ingredients2);
-                if (recursive != null && !recursive.isEmpty())
+                if (ingredients2 != null)
                 {
-                    ret.addAll(recursive);
+                    if (done != null)
+                    {
+                        Iterator<ItemStack> it = ingredients2.iterator();
+                        while (it.hasNext())
+                        {
+                            if (ItemStack.areItemStacksEqual(it.next(), done)) it.remove();  //prevent recursive A->{B}  B->{A} type recipe chains
+                        }
+                    }
+                    List<ItemStack> recursive = this.getSalvageable(ingredients2, stack);
+                    if (recursive != null && !recursive.isEmpty())
+                    {
+                        ret.addAll(recursive);
+                    }
                 }
             }
         }
@@ -486,12 +496,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     @Override
     public EnumFacing getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
-        if (state.getBlock() instanceof BlockMachine2)
-        {
-            return state.getValue(BlockMachine2.FACING);
-        }
-        return EnumFacing.NORTH;
+        return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override

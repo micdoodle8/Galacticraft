@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.planets.mars.items;
 
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.items.ItemBlockDesc;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
-import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -83,18 +83,7 @@ public class ItemBlockMachine extends ItemBlockDesc
         }
         else if (this.getBlock() == MarsBlocks.machineT2)
         {
-            if (typenum == BlockMachineMarsT2.GAS_LIQUEFIER_META)
-            {
-                return "tile.mars_machine.4";
-            }
-            else if (typenum == BlockMachineMarsT2.METHANE_SYNTHESIZER_META)
-            {
-                return "tile.mars_machine.5";
-            }
-            else if (typenum == BlockMachineMarsT2.ELECTROLYZER_META)
-            {
-                return "tile.mars_machine.6";
-            }
+            return ((BlockMachineBase) MarsBlocks.machineT2).getUnlocalizedName(typenum);
         }
 
         return this.getBlock().getUnlocalizedName() + "." + index;
