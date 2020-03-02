@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class Tier1RocketRecipeMaker
     {
         int count = 0;
         ItemStack chest = new ItemStack(Blocks.CHEST);
-        for (Entry<Integer, ItemStack> e : recipe.getRecipeInput().entrySet())
+        for (Entry<Integer, Ingredient> e : recipe.getRecipeInput().entrySet())
         {
-            if (ItemStack.areItemsEqual(chest, e.getValue()))
+            if (e.getValue().apply(chest))
                 count++;
         }
         return count;

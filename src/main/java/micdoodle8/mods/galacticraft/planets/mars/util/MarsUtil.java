@@ -18,17 +18,18 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSi
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import java.util.HashMap;
 
 public class MarsUtil
 {
-    public static void addRocketBenchT2Recipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    public static void addRocketBenchT2Recipe(ItemStack result, HashMap<Integer, Ingredient> input)
     {
         GalacticraftRegistry.addT2RocketRecipe(new NasaWorkbenchRecipe(result, input));
     }
 
-    public static void adCargoRocketRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    public static void adCargoRocketRecipe(ItemStack result, HashMap<Integer, Ingredient> input)
     {
         GalacticraftRegistry.addCargoRocketRecipe(new NasaWorkbenchRecipe(result, input));
     }
