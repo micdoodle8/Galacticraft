@@ -22,18 +22,22 @@ import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Objects;
 
 public class EntityGrapple extends Entity implements IProjectile
 {
     private static final DataParameter<Integer> PULLING_ENTITY_ID = EntityDataManager.createKey(EntityGrapple.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> IS_PULLING = EntityDataManager.createKey(EntityGrapple.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<ItemStack> STRING_ITEM_STACK = EntityDataManager.createKey(EntityGrapple.class, DataSerializers.ITEM_STACK);
     private BlockPos hitVec;
     private Block hitBlock;
     private int inData;
@@ -55,7 +59,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.setSize(0.75F, 0.75F);
     }
 
-    public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3)
+    public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3, ItemStack stringStack)
     {
         super(par1World);
         this.shootingEntity = shootingEntity;
@@ -76,6 +80,7 @@ public class EntityGrapple extends Entity implements IProjectile
 //        this.yOffset = -1.5F;
         this.setPosition(this.posX, this.posY, this.posZ);
         this.shoot(this.motionX, this.motionY, this.motionZ, par3 * 1.5F, 1.0F);
+        this.updateStringStack(stringStack);
     }
 
     @Override
@@ -103,6 +108,7 @@ public class EntityGrapple extends Entity implements IProjectile
     {
         this.dataManager.register(PULLING_ENTITY_ID, 0);
         this.dataManager.register(IS_PULLING, false);
+        this.dataManager.register(STRING_ITEM_STACK, new ItemStack(Items.STRING));
     }
 
     @Override
@@ -154,8 +160,6 @@ public class EntityGrapple extends Entity implements IProjectile
             float f = MathHelper.sqrt(par1 * par1 + par5 * par5);
             this.prevRotationYaw = this.rotationYaw = (float) Math.atan2(par1, par5) * Constants.RADIANS_TO_DEGREES;
             this.prevRotationPitch = this.rotationPitch = (float) Math.atan2(par3, f) * Constants.RADIANS_TO_DEGREES;
-            this.prevRotationPitch = this.rotationPitch;
-            this.prevRotationYaw = this.rotationYaw;
             this.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
             this.ticksInGround = 0;
         }
@@ -311,14 +315,14 @@ public class EntityGrapple extends Entity implements IProjectile
             }
 
             Entity entity = null;
-            List list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+            List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
             double d0 = 0.0D;
             int i;
             final double border = 0.3D;
 
             for (i = 0; i < list.size(); ++i)
             {
-                Entity entity1 = (Entity) list.get(i);
+                Entity entity1 = list.get(i);
 
                 if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
                 {
@@ -410,8 +414,6 @@ public class EntityGrapple extends Entity implements IProjectile
 
             this.rotationPitch = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * 0.2F;
             this.rotationYaw = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * 0.2F;
-            float f3 = 0.99F;
-            float f1 = 0.05F;
 
             if (this.isInWater())
             {
@@ -421,7 +423,6 @@ public class EntityGrapple extends Entity implements IProjectile
                     this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * f4, this.posY - this.motionY * f4, this.posZ - this.motionZ * f4, this.motionX, this.motionY, this.motionZ);
                 }
 
-                f3 = 0.8F;
             }
 
             if (this.isWet())
@@ -454,6 +455,7 @@ public class EntityGrapple extends Entity implements IProjectile
         par1NBTTagCompound.setByte("shake", (byte) this.arrowShake);
         par1NBTTagCompound.setByte("inGround", (byte) (this.inGround ? 1 : 0));
         par1NBTTagCompound.setByte("pickup", (byte) this.canBePickedUp);
+        par1NBTTagCompound.setString("stringStack", Objects.requireNonNull(getStringItemStack().getItem().getRegistryName()).toString());
     }
 
     @Override
@@ -478,6 +480,12 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             this.canBePickedUp = par1NBTTagCompound.getBoolean("player") ? 1 : 0;
         }
+
+        if (par1NBTTagCompound.hasKey("stringStack")) {
+            this.updateStringStack(new ItemStack(Objects.requireNonNull(ForgeRegistries.ITEMS.getValue(new ResourceLocation(par1NBTTagCompound.getString("stringStack"))))));
+        } else {
+            this.updateStringStack(new ItemStack(Items.STRING));
+        }
     }
 
     @Override
@@ -487,7 +495,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(new ItemStack(Items.STRING, 1)))
+            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(getStringItemStack()))
             {
                 flag = false;
             }
@@ -546,8 +554,17 @@ public class EntityGrapple extends Entity implements IProjectile
         this.dataManager.set(IS_PULLING, pulling);
     }
 
+    public void updateStringStack(ItemStack stringStack)
+    {
+        this.dataManager.set(STRING_ITEM_STACK, stringStack);
+    }
+
     public boolean getPullingEntity()
     {
         return this.dataManager.get(IS_PULLING);
+    }
+
+    public ItemStack getStringItemStack() {
+        return this.dataManager.get(STRING_ITEM_STACK);
     }
 }
