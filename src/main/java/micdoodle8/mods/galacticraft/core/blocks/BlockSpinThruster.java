@@ -10,6 +10,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
@@ -34,6 +35,7 @@ import java.util.Random;
 public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyBool ORIENTATION = PropertyBool.create("rev");
 
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
@@ -46,7 +48,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         this.setHardness(0.1F);
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ORIENTATION, false));
     }
 
     @Override
@@ -231,7 +233,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
                 {
                     worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 - var15, 0.0D, 0.0D, 0.0D);
                 }
-                else if (var6 == 4)
+                else if (var6 == 0)
                 {
                     worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, var7, var9 + var13, var11 + var15, 0.0D, 0.0D, 0.0D);
                 }
@@ -242,20 +244,15 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        EnumFacing currentFacing = world.getBlockState(pos).getValue(FACING);
-        for (EnumFacing nextFacing = currentFacing.rotateY(); ; nextFacing = nextFacing.rotateY())
-        {
-            if (this.canBlockStay(world, pos.offset(nextFacing.getOpposite()), nextFacing))
-            {
-                world.setBlockState(pos, this.getStateFromMeta(nextFacing.getHorizontalIndex()), 2);
-                break;
-            }
-
-            if (nextFacing == currentFacing)
-            {
-                break;
-            }
-        }
+        IBlockState state = world.getBlockState(pos);
+        boolean orientation = state.getValue(ORIENTATION);
+        System.out.println("Spinthruster " + orientation);
+        EnumFacing currentFacing = state.getValue(FACING);
+//        if (this.canBlockStay(world, pos.offset(currentFacing.getOpposite()), currentFacing))
+//        {
+            world.setBlockState(pos, state.withProperty(ORIENTATION, !orientation), 2);
+//        }
+        //TODO  else
 
         if (world.provider instanceof WorldProviderSpaceStation && !world.isRemote)
         {
@@ -307,20 +304,20 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public IBlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ORIENTATION, meta >= 8);
     }
 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.getValue(FACING).getHorizontalIndex() + (state.getValue(ORIENTATION) ? 8 : 0);
     }
 
     @Override
     protected BlockStateContainer createBlockState()
     {
-        return new BlockStateContainer(this, FACING);
+        return new BlockStateContainer(this, FACING, ORIENTATION);
     }
 
     @Override
