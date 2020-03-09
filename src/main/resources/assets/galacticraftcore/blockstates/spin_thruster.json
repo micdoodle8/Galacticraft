@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": { "model": "galacticraftcore:spin_thruster_model", "y": 180 },
-        "facing=east":  { "model": "galacticraftcore:spin_thruster_model", "y": 270 },
-        "facing=west":  { "model": "galacticraftcore:spin_thruster_model", "y": 90 },
-        "facing=south": { "model": "galacticraftcore:spin_thruster_model" }
+        "facing=north,rev=false": { "model": "galacticraftcore:spin_thruster_model", "y": 180 },
+        "facing=east,rev=false":  { "model": "galacticraftcore:spin_thruster_model", "y": 270 },
+        "facing=west,rev=false":  { "model": "galacticraftcore:spin_thruster_model", "y": 90 },
+        "facing=south,rev=false": { "model": "galacticraftcore:spin_thruster_model" },
+        "facing=north,rev=true": { "model": "galacticraftcore:spin_thruster_model", "x": 180},
+        "facing=east,rev=true":  { "model": "galacticraftcore:spin_thruster_model", "x": 180, "y": 90},
+        "facing=west,rev=true":  { "model": "galacticraftcore:spin_thruster_model", "x": 180, "y": 270},
+        "facing=south,rev=true": { "model": "galacticraftcore:spin_thruster_model", "x": 180, "y": 180}
     }
 }

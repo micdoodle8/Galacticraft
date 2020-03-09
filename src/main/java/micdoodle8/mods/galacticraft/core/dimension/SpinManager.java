@@ -354,14 +354,14 @@ public class SpinManager
         for (BlockPos thruster : foundThrusters)
         {
             IBlockState state = this.worldProvider.world.getBlockState(thruster);
-            int facing = state.getBlock().getMetaFromState(state) & 8;
-            if (facing == 0)
+            boolean reversed = state.getValue(BlockSpinThruster.ORIENTATION);
+            if (reversed)
             {
-                this.thrustersPlus.add(thruster);
+                this.thrustersMinus.add(thruster);
             }
             else
             {
-                this.thrustersMinus.add(thruster);
+                this.thrustersPlus.add(thruster);
             }
         }
 
