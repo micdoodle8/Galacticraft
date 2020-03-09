@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDecompressor;
@@ -78,14 +77,6 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     public CreativeTabs getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
-    }
-
-    @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        IBlockState state = world.getBlockState(pos);
-        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
-        return true;
     }
 
     @Override
@@ -186,7 +177,7 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumCompressorType) state.getValue(TYPE)).getMeta() * 4;
+        return state.getValue(FACING).getHorizontalIndex() + state.getValue(TYPE).getMeta() * 4;
     }
 
     @Override

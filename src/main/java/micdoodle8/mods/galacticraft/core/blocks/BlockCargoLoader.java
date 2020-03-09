@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoLoader;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
@@ -126,14 +125,6 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        IBlockState state = world.getBlockState(pos);
-        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
-        return true;
-    }
-
-    @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
@@ -162,7 +153,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int damageDropped(IBlockState state)
     {
-        return ((EnumLoaderType) state.getValue(TYPE)).getMeta();
+        return state.getValue(TYPE).getMeta();
     }
 
     @Override
@@ -196,7 +187,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return ((EnumFacing) state.getValue(FACING)).getHorizontalIndex() + ((EnumLoaderType) state.getValue(TYPE)).getMeta();
+        return state.getValue(FACING).getHorizontalIndex() + state.getValue(TYPE).getMeta();
     }
 
     @Override

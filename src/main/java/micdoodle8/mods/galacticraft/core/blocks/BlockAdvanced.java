@@ -57,7 +57,12 @@ public abstract class BlockAdvanced extends Block
 
     protected boolean useWrench(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        /**
+        if (heldItem.getItem() == GCItems.wrench)
+        {
+            playerIn.swingArm(hand);
+            return true;
+        }
+        /*
          * Check if the player is holding a wrench or an electric item. If so,
          * call the wrench event.
          */
@@ -96,7 +101,8 @@ public abstract class BlockAdvanced extends Block
         if (entityPlayer != null && itemStack != null)
         {
             Item item = itemStack.getItem();
-            if (item == GCItems.wrench) return true;
+            if (item == GCItems.wrench)
+                return false;
             
             Class<? extends Item> wrenchClass = item.getClass();
 
