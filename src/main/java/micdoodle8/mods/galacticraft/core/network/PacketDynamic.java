@@ -93,11 +93,18 @@ public class PacketDynamic extends PacketBase
         super.decodeInto(buffer);
         this.type = buffer.readInt();
 
-        World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
-
-        if (world == null)
+        if (GCCoreUtil.getServer() != null)
         {
-            FMLLog.severe("Failed to get world for dimension ID: " + this.getDimensionID());
+            GCCoreUtil.getServer().callFromMainThread(() ->
+            {
+                World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
+
+                if (world == null)
+                {
+                    FMLLog.severe("Failed to get world for dimension ID: " + this.getDimensionID());
+                }
+                return world;
+            });
         }
 
         switch (this.type)
