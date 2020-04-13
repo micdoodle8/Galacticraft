@@ -555,20 +555,20 @@ public class BaseRoom extends SizedPiece
                 case 0:
                     break;
                 case 1:
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
                     break;
                 case 2:
                     //Creeper or Zombie head
                     int slot = semirand % 9;
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(slot,new ItemStack(Items.SKULL, 1, (semirand % 13 < 6) ? 4 : 2));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(slot,new ItemStack(Items.SKULL, 1, (semirand % 13 < 6) ? 4 : 2));
                     break;
                 case 3:
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(4, new ItemStack(Items.STICK));
-                    ((TileEntityCrafting)tile).craftMatrix.setInventorySlotContents(7, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(0, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(1, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(3, new ItemStack(Items.IRON_INGOT));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(4, new ItemStack(Items.STICK));
+                    ((TileEntityCrafting)tile).setInventorySlotContents(7, new ItemStack(Items.STICK));
                     break;
                 }
             }
