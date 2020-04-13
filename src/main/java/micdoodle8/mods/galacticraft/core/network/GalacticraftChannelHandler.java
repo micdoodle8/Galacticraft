@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.network.FMLEmbeddedChannel;
 import net.minecraftforge.fml.common.network.FMLIndexedMessageToMessageCodec;
 import net.minecraftforge.fml.common.network.FMLOutboundHandler;
@@ -44,7 +45,11 @@ public class GalacticraftChannelHandler extends FMLIndexedMessageToMessageCodec<
     @Override
     public void decodeInto(ChannelHandlerContext ctx, ByteBuf source, IPacket msg)
     {
-        msg.decodeInto(source);
+        try {
+            msg.decodeInto(source);
+        } catch (IndexOutOfBoundsException ex) {
+            FMLLog.severe("Incomplete Galacticraft entity packet: dimension " + msg.getDimensionID());
+        }
     }
 
     /**

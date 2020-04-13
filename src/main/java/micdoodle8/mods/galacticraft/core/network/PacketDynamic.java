@@ -16,10 +16,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**  PacketDynamic is used for updating data for regularly updating Entities and TileEntities 
+ * Two types of PacketDynamic:
+ *  Type 0: the identifier is an Entity ID
+ *  Type 1: the identifier is a TileEntity's BlockPos
+ */
 public class PacketDynamic extends PacketBase
 {
     private int type;
-    private Object[] data;
+    private Object identifier;
     private ArrayList<Object> sendData;
     private ByteBuf payloadData;
 
@@ -33,7 +38,7 @@ public class PacketDynamic extends PacketBase
         super(GCCoreUtil.getDimensionID(entity.world));
         assert entity instanceof IPacketReceiver : "Entity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 0;
-        this.data = new Object[] { entity.getEntityId() };
+        this.identifier = new Integer(entity.getEntityId());
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) entity).getNetworkedData(this.sendData);
     }
@@ -43,7 +48,7 @@ public class PacketDynamic extends PacketBase
         super(GCCoreUtil.getDimensionID(tile.getWorld()));
         assert tile instanceof IPacketReceiver : "TileEntity does not implement " + IPacketReceiver.class.getSimpleName();
         this.type = 1;
-        this.data = new Object[] { tile.getPos() };
+        this.identifier = tile.getPos();
         this.sendData = new ArrayList<Object>();
         ((IPacketReceiver) tile).getNetworkedData(this.sendData);
     }
@@ -62,12 +67,13 @@ public class PacketDynamic extends PacketBase
         switch (this.type)
         {
         case 0:
-            buffer.writeInt((Integer) this.data[0]);
+            buffer.writeInt((Integer) this.identifier);
             break;
         case 1:
-            buffer.writeInt(((BlockPos) this.data[0]).getX());
-            buffer.writeInt(((BlockPos) this.data[0]).getY());
-            buffer.writeInt(((BlockPos) this.data[0]).getZ());
+            BlockPos bp = (BlockPos) this.identifier;
+            buffer.writeInt(bp.getX());
+            buffer.writeInt(bp.getY());
+            buffer.writeInt(bp.getZ());
             break;
         }
 
@@ -88,31 +94,28 @@ public class PacketDynamic extends PacketBase
     }
 
     @Override
-    public void decodeInto(ByteBuf buffer)
+    public void decodeInto(ByteBuf buffer) throws IndexOutOfBoundsException
     {
         super.decodeInto(buffer);
         this.type = buffer.readInt();
-
-        World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
-
-        if (world == null)
-        {
-            FMLLog.severe("Failed to get world for dimension ID: " + this.getDimensionID());
-        }
-
+//        World world = GalacticraftCore.proxy.getWorldForID(this.getDimensionID());
+//
+//        if (world == null)
+//        {
+//            FMLLog.severe("Failed to get world for dimension ID: " + this.getDimensionID());
+//        }
+//
         switch (this.type)
         {
         case 0:
-            this.data = new Object[1];
-            this.data[0] = buffer.readInt();
+            this.identifier = new Integer(buffer.readInt());
 
             int length = buffer.readInt();
             payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
 //                if (entity instanceof IPacketReceiver && buffer.readableBytes() > 0)
             break;
         case 1:
-            this.data = new Object[1];
-            this.data[0] = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
+            this.identifier = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
 
             length = buffer.readInt();
             payloadData = Unpooled.copiedBuffer(buffer.readBytes(length));
@@ -138,7 +141,7 @@ public class PacketDynamic extends PacketBase
         switch (this.type)
         {
         case 0:
-            Entity entity = player.world.getEntityByID((Integer) this.data[0]);
+            Entity entity = player.world.getEntityByID((Integer) this.identifier);
 
             if (entity instanceof IPacketReceiver)
             {
@@ -156,9 +159,10 @@ public class PacketDynamic extends PacketBase
             break;
 
         case 1:
-            if (player.world.isBlockLoaded((BlockPos) this.data[0], false))
+            BlockPos bp = (BlockPos) this.identifier;
+            if (player.world.isBlockLoaded(bp, false))
             {
-                TileEntity tile = player.world.getTileEntity((BlockPos) this.data[0]);
+                TileEntity tile = player.world.getTileEntity(bp);
 
                 if (tile instanceof IPacketReceiver)
                 {
