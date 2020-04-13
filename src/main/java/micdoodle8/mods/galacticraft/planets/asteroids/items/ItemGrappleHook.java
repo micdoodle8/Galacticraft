@@ -23,7 +23,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemGrappleHook extends ItemBow implements ISortableItem
 {
-    private static final NonNullList<ItemStack> STRING_ENTRIES = OreDictionary.getOres("string");
+    private static NonNullList<ItemStack> stringEntries = null;
+
     public ItemGrappleHook(String assetName)
     {
         super();
@@ -63,11 +64,13 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
         EntityPlayer player = (EntityPlayer) entity;
 
         boolean canShoot = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
-        ItemStack string = null;
+        ItemStack string = ItemStack.EMPTY;
+
+        if (stringEntries == null) stringEntries = OreDictionary.getOres("string");
 
         for (ItemStack itemstack : player.inventory.mainInventory)
         {
-            if (OreDictionary.containsMatch(false, STRING_ENTRIES, itemstack))
+            if (OreDictionary.containsMatch(false, stringEntries, itemstack))
             {
                 string = itemstack;
                 canShoot = true;
@@ -76,7 +79,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
 
         if (canShoot)
         {
-            if (string == null)
+            if (string == ItemStack.EMPTY)
             {
                 string = new ItemStack(Items.STRING, 1);
             }
