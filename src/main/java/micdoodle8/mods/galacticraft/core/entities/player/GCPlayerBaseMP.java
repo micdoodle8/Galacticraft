@@ -2,13 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import api.player.server.ServerPlayerAPI;
 import api.player.server.ServerPlayerBase;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.advancement.GCTriggers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 
 public class GCPlayerBaseMP extends ServerPlayerBase

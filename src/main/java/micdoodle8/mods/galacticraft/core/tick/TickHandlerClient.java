@@ -31,7 +31,6 @@ import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.items.ItemSensorGlasses;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketRotateRocket;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;

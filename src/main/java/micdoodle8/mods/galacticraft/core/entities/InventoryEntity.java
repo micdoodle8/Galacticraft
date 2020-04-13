@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;

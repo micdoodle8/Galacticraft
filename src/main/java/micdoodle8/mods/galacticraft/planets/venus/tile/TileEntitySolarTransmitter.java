@@ -9,8 +9,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced implements ITransmitter
 {

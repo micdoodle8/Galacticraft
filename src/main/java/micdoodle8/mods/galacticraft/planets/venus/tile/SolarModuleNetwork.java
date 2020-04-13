@@ -1,17 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import com.google.common.collect.Lists;
-import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
-import micdoodle8.mods.galacticraft.api.transmission.grid.Pathfinder;
-import micdoodle8.mods.galacticraft.api.transmission.grid.PathfinderChecker;
-import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
-import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkProvider;
 import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
-import micdoodle8.mods.galacticraft.core.energy.grid.NetworkFinder;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;

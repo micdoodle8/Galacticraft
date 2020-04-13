@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;

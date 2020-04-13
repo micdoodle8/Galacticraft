@@ -6,7 +6,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonObject;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.core.advancement.criterion.GenericTrigger;
-import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import net.minecraft.advancements.CriteriaTriggers;

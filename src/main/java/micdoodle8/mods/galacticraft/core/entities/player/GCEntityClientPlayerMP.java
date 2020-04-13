@@ -30,10 +30,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.core.config.plugins.convert.TypeConverters;
-
 import java.util.List;
-import java.util.function.BiConsumer;
 
 public class GCEntityClientPlayerMP extends EntityPlayerSP
 {

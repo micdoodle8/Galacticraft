@@ -7,9 +7,6 @@ import java.util.Set;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonObject;
-
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;

@@ -50,7 +50,6 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

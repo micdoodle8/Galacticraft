@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
-import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.network.*;
 import micdoodle8.mods.galacticraft.core.network.PacketEntityUpdate.IEntityFullSync;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;

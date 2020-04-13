@@ -1,6 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
