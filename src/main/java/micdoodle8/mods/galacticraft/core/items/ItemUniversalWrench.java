@@ -3,7 +3,9 @@ package micdoodle8.mods.galacticraft.core.items;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
+import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +19,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,6 +39,38 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         this.setMaxStackSize(1);
         this.setMaxDamage(256);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
+    }
+
+    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
+    public boolean canWrench(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
+    {
+        return true;
+    }
+
+    @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
+    public void wrenchUsed(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
+    {
+        ItemStack stack = player.inventory.getCurrentItem();
+
+        if (!stack.isEmpty())
+        {
+            stack.damageItem(1, player);
+
+            if (stack.getItemDamage() >= stack.getMaxDamage())
+            {
+                stack.shrink(1);
+            }
+
+            if (stack.getCount() <= 0)
+            {
+                player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    public void wrenchUsed(EntityPlayer entityPlayer, BlockPos pos)
+    {
+
     }
 
     @Override
@@ -108,6 +143,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                     player.setHeldItem(hand, stack);
                     return EnumActionResult.SUCCESS;
                 }
+                return EnumActionResult.PASS;
             }
         }
 
