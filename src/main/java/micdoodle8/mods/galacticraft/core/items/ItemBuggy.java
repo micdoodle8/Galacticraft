@@ -126,7 +126,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
                     int var33 = var24.getBlockPos().getY();
                     final int var34 = var24.getBlockPos().getZ();
 
-                    if (worldIn.getBlockState(new BlockPos(var29, var33, var34)) == Blocks.SNOW)
+                    if (worldIn.getBlockState(new BlockPos(var29, var33, var34)).getBlock() == Blocks.SNOW)
                     {
                         --var33;
                     }
