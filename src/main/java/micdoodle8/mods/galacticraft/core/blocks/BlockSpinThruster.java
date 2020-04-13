@@ -246,7 +246,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     {
         IBlockState state = world.getBlockState(pos);
         boolean orientation = state.getValue(ORIENTATION);
-        System.out.println("Spinthruster " + orientation);
+
         EnumFacing currentFacing = state.getValue(FACING);
 //        if (this.canBlockStay(world, pos.offset(currentFacing.getOpposite()), currentFacing))
 //        {
