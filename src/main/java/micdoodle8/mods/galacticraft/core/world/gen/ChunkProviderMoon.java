@@ -131,7 +131,7 @@ public class ChunkProviderMoon extends ChunkProviderBase
                     else
                     {
                         IBlockState var18 = primer.getBlockState(var8, var16, var9);
-                        if (Blocks.AIR == var18)
+                        if (Blocks.AIR == var18.getBlock())
                         {
                             var13 = -1;
                         }
