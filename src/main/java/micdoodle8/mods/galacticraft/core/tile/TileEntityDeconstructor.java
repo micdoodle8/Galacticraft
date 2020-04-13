@@ -380,7 +380,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             }
             for (ItemStack stack : stacks)
             {
-                if (isSalvage(stack));
+                if (isSalvage(stack))
                 {
                     return stack.copy();
                 }
