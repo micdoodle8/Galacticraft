@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -74,14 +73,6 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
 
         return true;
     }
-
-    @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        IBlockState state = world.getBlockState(pos);
-        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
-        return true;
-    }
     
     @Override
     public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
@@ -150,12 +141,16 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
             list.add(new ItemStack(this, 1, type.getMetadata()));
     }
 
-    public static interface EnumMachineBase <T extends Enum<T> & IStringSerializable>
+    public interface EnumMachineBase<T extends Enum<T> & IStringSerializable>
     {
         int getMetadata();
+
         EnumMachineBase fromMetadata(int meta);
+
         String getShiftDescriptionKey();
+
         String getUnlocalizedName();
+
         TileEntity tileConstructor();
     }
 }

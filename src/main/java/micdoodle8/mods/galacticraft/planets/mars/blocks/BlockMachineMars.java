@@ -7,7 +7,6 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTileGC;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -65,7 +64,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         private final int meta;
         private final String name;
 
-        private EnumMachineType(int meta, String name)
+        EnumMachineType(int meta, String name)
         {
             this.meta = meta;
             this.name = name;
@@ -137,29 +136,21 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
             TileEntity var8 = worldIn.getTileEntity(pos);
             if (var8 instanceof IChunkLoader && !worldIn.isRemote && ConfigManagerMars.launchControllerChunkLoad && placer instanceof EntityPlayer)
             {
-                ((IChunkLoader) var8).setOwnerName(((EntityPlayer) placer).getName());
+                ((IChunkLoader) var8).setOwnerName(placer.getName());
                 ((IChunkLoader) var8).onTicketLoaded(ForgeChunkManager.requestTicket(GalacticraftCore.instance, var8.getWorld(), Type.NORMAL), true);
             }
             else if (var8 instanceof TileEntityLaunchController && placer instanceof EntityPlayer)
             {
-                ((TileEntityLaunchController) var8).setOwnerName(((EntityPlayer) placer).getName());
+                ((TileEntityLaunchController) var8).setOwnerName(placer.getName());
             }
             break;
         }
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
-    {
-        IBlockState state = world.getBlockState(pos);
-        TileBaseUniversalElectrical.onUseWrenchBlock(state, world, pos, state.getValue(FACING));
-        return true;
-    }
-
-    @Override
     public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
-        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        EnumMachineType type = state.getValue(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -192,14 +183,14 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
     {
-        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        EnumMachineType type = state.getValue(TYPE);
         return type == EnumMachineType.CRYOGENIC_CHAMBER ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        EnumMachineType type = state.getValue(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return new TileEntityLaunchController();
@@ -251,7 +242,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public int damageDropped(IBlockState state)
     {
-        EnumMachineType type = (EnumMachineType) state.getValue(TYPE);
+        EnumMachineType type = state.getValue(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
@@ -334,7 +325,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public int getMetaFromState(IBlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMeta() * 4;
+        return (state.getValue(FACING)).getHorizontalIndex() + state.getValue(TYPE).getMeta() * 4;
     }
 
     @Override
