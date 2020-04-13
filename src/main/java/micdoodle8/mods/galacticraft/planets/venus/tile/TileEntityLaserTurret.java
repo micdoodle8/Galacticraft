@@ -29,6 +29,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -246,6 +247,12 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                                     shouldTarget = !shouldTarget;
                                 }
                             }
+                        }
+                    }
+                    else if(e instanceof EntityTameable && ((EntityTameable) e).getOwnerId() != null)
+                    {
+                        if ((((EntityTameable) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((EntityTameable) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((EntityTameable) e).getOwner().getName()))) {
+                            shouldTarget = false;
                         }
                     }
                     else
