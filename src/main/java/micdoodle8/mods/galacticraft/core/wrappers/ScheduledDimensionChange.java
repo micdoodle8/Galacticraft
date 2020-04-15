@@ -5,9 +5,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 public class ScheduledDimensionChange
 {
     private EntityPlayerMP player;
-    private String dimensionName;
+    private int dimensionName;
 
-    public ScheduledDimensionChange(EntityPlayerMP player, String dimensionName)
+    public ScheduledDimensionChange(EntityPlayerMP player, int dimensionName)
     {
         this.player = player;
         this.dimensionName = dimensionName;
@@ -18,7 +18,7 @@ public class ScheduledDimensionChange
         return player;
     }
 
-    public String getDimensionName()
+    public int getDimensionId()
     {
         return dimensionName;
     }
@@ -28,7 +28,7 @@ public class ScheduledDimensionChange
         this.player = player;
     }
 
-    public void setDimensionName(String dimensionName)
+    public void setDimensionName(int dimensionName)
     {
         this.dimensionName = dimensionName;
     }
