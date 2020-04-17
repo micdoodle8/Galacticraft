@@ -101,26 +101,29 @@ public class EntityParachest extends Entity implements IPacketReceiver
                     final int y = MathHelper.floor(this.posY);
                     final int z = MathHelper.floor(this.posZ);
 
-                    BlockPos pos = new BlockPos(x, y + i, z);
-                    IBlockState state = this.world.getBlockState(pos);
-                    Block block = state.getBlock();
-
-                    if (block.getMaterial(state).isReplaceable())
+                    if (tryPlaceAtPos(new BlockPos(x, y + i, z)))
                     {
-                        if (this.placeChest(pos))
-                        {
-                            this.setDead();
-                            return;
-                        }
-                        else if (this.cargo != null)
-                        {
-                            for (final ItemStack stack : this.cargo)
-                            {
-                                final EntityItem e = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
-                                this.world.spawnEntity(e);
-                            }
+                        return;
+                    }
+                }
 
-                            return;
+                for (int size = 1; size < 5; ++size)
+                {
+                    for (int xOff = -size; xOff <= size; xOff++)
+                    {
+                        for (int yOff = -size; yOff <= size; yOff++)
+                        {
+                            for (int zOff = -size; zOff <= size; zOff++)
+                            {
+                                final int x = MathHelper.floor(this.posX) + xOff;
+                                final int y = MathHelper.floor(this.posY) + yOff;
+                                final int z = MathHelper.floor(this.posZ) + zOff;
+
+                                if (tryPlaceAtPos(new BlockPos(x, y, z)))
+                                {
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -133,6 +136,9 @@ public class EntityParachest extends Entity implements IPacketReceiver
                         this.world.spawnEntity(e);
                     }
                 }
+
+                this.placedChest = true;
+                this.setDead();
             }
             else
             {
@@ -148,29 +154,55 @@ public class EntityParachest extends Entity implements IPacketReceiver
         }
     }
 
+    private boolean tryPlaceAtPos(BlockPos pos)
+    {
+        IBlockState state = this.world.getBlockState(pos);
+        Block block = state.getBlock();
+
+        if (block.getMaterial(state).isReplaceable())
+        {
+            if (this.placeChest(pos))
+            {
+                this.placedChest = true;
+                this.setDead();
+                return true;
+            }
+        }
+        return false;
+    }
+
     private boolean placeChest(BlockPos pos)
     {
-        this.world.setBlockState(pos, GCBlocks.parachest.getDefaultState(), 3);
-        final TileEntity te = this.world.getTileEntity(pos);
-
-        if (te instanceof TileEntityParaChest && this.cargo != null)
+        if (this.world.setBlockState(pos, GCBlocks.parachest.getDefaultState(), 3))
         {
-            final TileEntityParaChest chest = (TileEntityParaChest) te;
+            if (this.cargo != null)
+            {
+                final TileEntity te = this.world.getTileEntity(pos);
 
-            chest.inventory = NonNullList.withSize(this.cargo.size() + 1, ItemStack.EMPTY);
-            chest.color = this.color;
+                if (te instanceof TileEntityParaChest)
+                {
+                    final TileEntityParaChest chest = (TileEntityParaChest) te;
 
-            Collections.copy(chest.getInventory(), this.cargo);
-//            System.arraycopy(this.cargo, 0, chest.stacks, 0, this.cargo.size());
+                    chest.inventory = NonNullList.withSize(this.cargo.size() + 1, ItemStack.EMPTY);
+                    chest.color = this.color;
 
-            chest.fuelTank.fill(FluidRegistry.getFluidStack(GCFluids.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
+                    Collections.copy(chest.getInventory(), this.cargo);
 
+                    chest.fuelTank.fill(FluidRegistry.getFluidStack(GCFluids.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
+                }
+                else
+                {
+                    for (ItemStack stack : this.cargo)
+                    {
+                        final EntityItem e = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+                        this.world.spawnEntity(e);
+                    }
+                }
+            }
             return true;
         }
 
-        this.placedChest = true;
-
-        return true;
+        return false;
     }
 
     @Override
