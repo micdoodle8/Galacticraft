@@ -44,6 +44,15 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class ClientUtil
 {
+    /**
+     * Use getClientTimeTotal() now.
+     */
+    @Deprecated
+    public static long getMilliseconds()
+    {
+        return getClientTimeTotal();
+    }
+    
     public static long getClientTimeTotal()
     {
         return (long) (Minecraft.getMinecraft().world.getTotalWorldTime() * 66.666666666666);
