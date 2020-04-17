@@ -168,6 +168,11 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
     @Override
     public void onLivingUpdate()
     {
+        if (this.world.isRemote)
+        {
+            this.setHealth(this.getHealth());
+        }
+
         if (this.spawner != null)
         {
             List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.spawner.getRangeBounds());
