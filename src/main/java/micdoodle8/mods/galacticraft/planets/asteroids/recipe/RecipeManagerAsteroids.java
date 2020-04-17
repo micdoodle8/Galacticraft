@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
 
@@ -47,90 +48,86 @@ public class RecipeManagerAsteroids
     	
     	CompressorRecipes.addShapelessRecipe(new ItemStack(AsteroidsItems.basicItem, 1, 6), titaniumIngot, titaniumIngot);
     	CompressorRecipes.addShapelessRecipe(platingTier3, new ItemStack(MarsItems.marsItemBasic, 1, 3), new ItemStack(MarsItems.marsItemBasic, 1, 5));
-
-        HashMap<Integer, ItemStack> input = new HashMap<>();
+    	
+        ItemStack[] chests = new ItemStack[OreDictionary.getOres("chestWood").size()];
+        for (int i = 0; i < chests.length; i++) {
+            chests[i] = OreDictionary.getOres("chestWood").get(i);
+        }
+        
+        HashMap<Integer, Ingredient> input = new HashMap<>();
         ItemStack plateTier3 = new ItemStack(AsteroidsItems.basicItem, 1, 5);
         ItemStack rocketFinsTier2 = new ItemStack(AsteroidsItems.basicItem, 1, 2);
-        input.put(1, new ItemStack(AsteroidsItems.heavyNoseCone));
-        input.put(2, plateTier3);
-        input.put(3, plateTier3);
-        input.put(4, plateTier3);
-        input.put(5, plateTier3);
-        input.put(6, plateTier3);
-        input.put(7, plateTier3);
-        input.put(8, plateTier3);
-        input.put(9, plateTier3);
-        input.put(10, plateTier3);
-        input.put(11, plateTier3);
-        input.put(12, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(13, rocketFinsTier2);
-        input.put(14, rocketFinsTier2);
-        input.put(15, new ItemStack(AsteroidsItems.basicItem, 1, 1));
-        input.put(16, new ItemStack(GCItems.rocketEngine, 1, 1));
-        input.put(17, rocketFinsTier2);
-        input.put(18, rocketFinsTier2);
-        input.put(19, ItemStack.EMPTY);
-        input.put(20, ItemStack.EMPTY);
-        input.put(21, ItemStack.EMPTY);
+        input.put(1, Ingredient.fromStacks(new ItemStack(AsteroidsItems.heavyNoseCone)));
+        input.put(2, Ingredient.fromStacks(plateTier3));
+        input.put(3, Ingredient.fromStacks(plateTier3));
+        input.put(4, Ingredient.fromStacks(plateTier3));
+        input.put(5, Ingredient.fromStacks(plateTier3));
+        input.put(6, Ingredient.fromStacks(plateTier3));
+        input.put(7, Ingredient.fromStacks(plateTier3));
+        input.put(8, Ingredient.fromStacks(plateTier3));
+        input.put(9, Ingredient.fromStacks(plateTier3));
+        input.put(10, Ingredient.fromStacks(plateTier3));
+        input.put(11, Ingredient.fromStacks(plateTier3));
+        input.put(12, Ingredient.fromStacks(new ItemStack(GCItems.rocketEngine, 1, 1)));
+        input.put(13, Ingredient.fromStacks(rocketFinsTier2));
+        input.put(14, Ingredient.fromStacks(rocketFinsTier2));
+        input.put(15, Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 1)));
+        input.put(16, Ingredient.fromStacks(new ItemStack(GCItems.rocketEngine, 1, 1)));
+        input.put(17, Ingredient.fromStacks(rocketFinsTier2));
+        input.put(18, Ingredient.fromStacks(rocketFinsTier2));
+        input.put(19, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(20, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(21, Ingredient.fromStacks(ItemStack.EMPTY));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 0), input));
 
-        HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, ItemStack.EMPTY);
-        input2.put(21, ItemStack.EMPTY);
+        HashMap<Integer, Ingredient> input2 = new HashMap<>(input);
+        input2.put(19, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, ItemStack.EMPTY);
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(20, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, ItemStack.EMPTY);
-        input2.put(20, ItemStack.EMPTY);
-        input2.put(21, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(21, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 1), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(19, Ingredient.fromStacks(chests));
+        input2.put(20, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, ItemStack.EMPTY);
-        input2.put(21, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(19, Ingredient.fromStacks(chests));
+        input2.put(21, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, ItemStack.EMPTY);
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(20, Ingredient.fromStacks(chests));
+        input2.put(21, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 2), input2));
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(19, new ItemStack(Blocks.CHEST));
-        input2.put(20, new ItemStack(Blocks.CHEST));
-        input2.put(21, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(19, Ingredient.fromStacks(chests));
+        input2.put(20, Ingredient.fromStacks(chests));
+        input2.put(21, Ingredient.fromStacks(chests));
         GalacticraftRegistry.addT3RocketRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.tier3Rocket, 1, 3), input2));
 
-        input = new HashMap<Integer, ItemStack>();
-        input.put(1, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(11, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(2, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(4, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(9, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(10, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(12, new ItemStack(AsteroidsItems.orionDrive));
-        input.put(6, new ItemStack(GCItems.basicItem, 1, 14));
-        input.put(7, new ItemStack(Blocks.CHEST));
-        input.put(8, new ItemStack(Blocks.CHEST));
-        input.put(13, new ItemStack(AsteroidsItems.basicItem, 1, 8));
-        input.put(14, new ItemStack(GCItems.flagPole));
+        input = new HashMap<>();
+        input.put(1, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(2, Ingredient.fromStacks(new ItemStack(AsteroidsItems.orionDrive)));
+        input.put(3, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(4, Ingredient.fromStacks(new ItemStack(AsteroidsItems.orionDrive)));
+        input.put(5, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(6, Ingredient.fromStacks(new ItemStack(GCItems.basicItem, 1, 14)));
+        input.put(7, Ingredient.fromStacks(chests));
+        input.put(8, Ingredient.fromStacks(chests));
+        input.put(9, Ingredient.fromStacks(new ItemStack(AsteroidsItems.orionDrive)));
+        input.put(10, Ingredient.fromStacks(new ItemStack(AsteroidsItems.orionDrive)));
+        input.put(11, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(12, Ingredient.fromStacks(new ItemStack(AsteroidsItems.orionDrive)));
+        input.put(13, Ingredient.fromStacks(new ItemStack(AsteroidsItems.basicItem, 1, 8)));
+        input.put(14,Ingredient.fromStacks( new ItemStack(GCItems.flagPole)));
         GalacticraftRegistry.addAstroMinerRecipe(new NasaWorkbenchRecipe(new ItemStack(AsteroidsItems.astroMiner, 1, 0), input));
 
         //All this is for NEI's benefit

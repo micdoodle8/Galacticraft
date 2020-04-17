@@ -47,7 +47,7 @@ public class SlotSchematicTier2Rocket extends Slot
         List<INasaWorkbenchRecipe> recipes = GalacticraftRegistry.getRocketT2Recipes();
         for (INasaWorkbenchRecipe recipe : recipes)
         {
-            if (ItemStack.areItemsEqual(par1ItemStack, recipe.getRecipeInput().get(this.index)))
+            if (recipe.getRecipeInput().get(this.index).apply(par1ItemStack))
                 return true;
         }
         return false;

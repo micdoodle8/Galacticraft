@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -73,12 +74,12 @@ public class RecipeUtil
         GameData.register_impl(rec);
     }
 
-    public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    public static void addRocketBenchRecipe(ItemStack result, HashMap<Integer, Ingredient> input)
     {
         GalacticraftRegistry.addT1RocketRecipe(new NasaWorkbenchRecipe(result, input));
     }
 
-    public static void addBuggyBenchRecipe(ItemStack result, HashMap<Integer, ItemStack> input)
+    public static void addBuggyBenchRecipe(ItemStack result, HashMap<Integer, Ingredient> input)
     {
         GalacticraftRegistry.addMoonBuggyRecipe(new NasaWorkbenchRecipe(result, input));
     }

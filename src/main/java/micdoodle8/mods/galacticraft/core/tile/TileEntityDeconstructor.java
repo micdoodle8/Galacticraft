@@ -300,7 +300,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     {
         for (INasaWorkbenchRecipe recipe : knownRecipes)
         {
-            ItemStack test = (ItemStack) recipe.getRecipeOutput();
+            ItemStack test = recipe.getRecipeOutput();
             if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
                 return toItemStackList(recipe.getRecipeInput().values());
@@ -402,14 +402,14 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         return null;
     }
 
-    private List<ItemStack> toItemStackList(Collection<ItemStack> inputs)
+    private List<ItemStack> toItemStackList(Collection<Ingredient> inputs)
     {
         List<ItemStack> ret = new LinkedList<>();
-        for (ItemStack o : inputs)
+        for (Ingredient o : inputs)
         {
-            if (o != null && !o.isEmpty())
+            if (o != null && o.getMatchingStacks().length >= 1 && !o.getMatchingStacks()[0].isEmpty())
             {
-                ret.add(o.copy());
+                ret.add(o.getMatchingStacks()[0].copy());
             }
         }
         return ret;

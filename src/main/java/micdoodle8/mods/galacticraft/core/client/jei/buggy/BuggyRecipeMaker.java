@@ -4,6 +4,7 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,9 @@ public class BuggyRecipeMaker
     {
         int count = 0;
         ItemStack storage = new ItemStack(GCItems.partBuggy, 1, 2);
-        for (Entry<Integer, ItemStack> e : recipe.getRecipeInput().entrySet())
+        for (Entry<Integer, Ingredient> e : recipe.getRecipeInput().entrySet())
         {
-            if (ItemStack.areItemsEqual(storage, e.getValue()))
+            if (e.getValue().apply(storage))
                 count++;
         }
         return count;

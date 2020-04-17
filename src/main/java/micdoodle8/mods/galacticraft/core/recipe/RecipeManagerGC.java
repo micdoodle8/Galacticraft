@@ -32,17 +32,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 import net.minecraftforge.oredict.RecipeSorter.Category;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import appeng.api.AEApi;
 import appeng.api.features.IGrinderRegistry;
@@ -106,132 +103,121 @@ public class RecipeManagerGC
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCItems.foodItem, 1, 6), new ItemStack(GCItems.foodItem, 1, 7), 1.0F);
         FurnaceRecipes.instance().addSmeltingRecipe(new ItemStack(GCBlocks.blockMoon, 1, 6), new ItemStack(GCItems.itemBasicMoon, 1, 2), 1.0F);
 
-        HashMap<Integer, ItemStack> input = new HashMap<>();
-        input.put(1, new ItemStack(GCItems.partNoseCone));
-        input.put(2, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(4, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(6, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(7, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(8, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(9, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(10, new ItemStack(GCItems.partFins));
-        input.put(11, new ItemStack(GCItems.partFins));
-        input.put(12, new ItemStack(GCItems.rocketEngine));
-        input.put(13, new ItemStack(GCItems.partFins));
-        input.put(14, new ItemStack(GCItems.partFins));
-        input.put(15, ItemStack.EMPTY);
-        input.put(16, ItemStack.EMPTY);
-        input.put(17, ItemStack.EMPTY);
+        HashMap<Integer, Ingredient> input = new HashMap<>();
+        input.put(1, Ingredient.fromStacks(new ItemStack(GCItems.partNoseCone)));
+        input.put(2, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(3, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(4, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(5, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(6, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(7, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(8, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(9, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(10, Ingredient.fromStacks(new ItemStack(GCItems.partFins)));
+        input.put(11, Ingredient.fromStacks(new ItemStack(GCItems.partFins)));
+        input.put(12, Ingredient.fromStacks(new ItemStack(GCItems.rocketEngine)));
+        input.put(13, Ingredient.fromStacks(new ItemStack(GCItems.partFins)));
+        input.put(14, Ingredient.fromStacks(new ItemStack(GCItems.partFins)));
+        input.put(15, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(16, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(17, Ingredient.fromStacks(ItemStack.EMPTY));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 0), input);
 
-        HashMap<Integer, ItemStack> input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, ItemStack.EMPTY);
-        input2.put(17, ItemStack.EMPTY);
+        ItemStack[] chests = new ItemStack[OreDictionary.getOres("chestWood").size()];
+        for (int i = 0; i < chests.length; i++) {
+            chests[i] = OreDictionary.getOres("chestWood").get(i);
+        }
+
+
+        HashMap<Integer, Ingredient> input2 = new HashMap<>(input);
+        input2.put(15, Ingredient.fromStacks(chests));
+        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 1), input2);
+        
+        input2 = new HashMap<>(input);
+        input2.put(16, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 1), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, ItemStack.EMPTY);
-        input2.put(16, new ItemStack(Blocks.CHEST));
-        input2.put(17, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(17, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 1), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, ItemStack.EMPTY);
-        input2.put(16, ItemStack.EMPTY);
-        input2.put(17, new ItemStack(Blocks.CHEST));
-        RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 1), input2);
-
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, new ItemStack(Blocks.CHEST));
-        input2.put(17, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(15, Ingredient.fromStacks(chests));
+        input2.put(16, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, ItemStack.EMPTY);
-        input2.put(17, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(15, Ingredient.fromStacks(chests));
+        input2.put(17, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, ItemStack.EMPTY);
-        input2.put(16, new ItemStack(Blocks.CHEST));
-        input2.put(17, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(16, Ingredient.fromStacks(chests));
+        input2.put(17, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(15, new ItemStack(Blocks.CHEST));
-        input2.put(16, new ItemStack(Blocks.CHEST));
-        input2.put(17, new ItemStack(Blocks.CHEST));
+        input2 = new HashMap<>(input);
+        input2.put(15, Ingredient.fromStacks(chests));
+        input2.put(16, Ingredient.fromStacks(chests));
+        input2.put(17, Ingredient.fromStacks(chests));
         RecipeUtil.addRocketBenchRecipe(new ItemStack(GCItems.rocketTier1, 1, 3), input2);
 
         //
 
-        input = new HashMap<Integer, ItemStack>();
-        input.put(1, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(2, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(3, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(4, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(5, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(6, new ItemStack(GCItems.partBuggy, 1, 1));
-        input.put(7, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(8, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(9, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(10, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(11, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(12, new ItemStack(GCItems.heavyPlatingTier1));
-        input.put(13, new ItemStack(GCItems.partBuggy));
-        input.put(14, new ItemStack(GCItems.partBuggy));
-        input.put(15, new ItemStack(GCItems.partBuggy));
-        input.put(16, new ItemStack(GCItems.partBuggy));
-        input.put(17, ItemStack.EMPTY);
-        input.put(18, ItemStack.EMPTY);
-        input.put(19, ItemStack.EMPTY);
+        input = new HashMap<>();
+        input.put(1, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(2, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(3, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(4, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(5, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(6, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 1)));
+        input.put(7, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(8, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(9, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(10, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(11, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(12, Ingredient.fromStacks(new ItemStack(GCItems.heavyPlatingTier1)));
+        input.put(13, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy)));
+        input.put(14, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy)));
+        input.put(15, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy)));
+        input.put(16, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy)));
+        input.put(17, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(18, Ingredient.fromStacks(ItemStack.EMPTY));
+        input.put(19, Ingredient.fromStacks(ItemStack.EMPTY));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 0), input);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(18, ItemStack.EMPTY);
-        input2.put(19, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(17, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 1), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, ItemStack.EMPTY);
-        input2.put(18, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(19, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(18, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 1), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, ItemStack.EMPTY);
-        input2.put(18, ItemStack.EMPTY);
-        input2.put(19, new ItemStack(GCItems.partBuggy, 1, 2));
+        input2 = new HashMap<>(input);
+        input2.put(19, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 1), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(18, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(19, ItemStack.EMPTY);
+        input2 = new HashMap<>(input);
+        input2.put(17, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+        input2.put(18, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(18, ItemStack.EMPTY);
-        input2.put(19, new ItemStack(GCItems.partBuggy, 1, 2));
+        input2 = new HashMap<>(input);
+        input2.put(17, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+        input2.put(19, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, ItemStack.EMPTY);
-        input2.put(18, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(19, new ItemStack(GCItems.partBuggy, 1, 2));
+        input2 = new HashMap<>(input);
+        input2.put(18, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+        input2.put(19, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 2), input2);
 
-        input2 = new HashMap<Integer, ItemStack>(input);
-        input2.put(17, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(18, new ItemStack(GCItems.partBuggy, 1, 2));
-        input2.put(19, new ItemStack(GCItems.partBuggy, 1, 2));
+        input2 = new HashMap<>(input);
+        input2.put(17, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+        input2.put(18, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
+        input2.put(19, Ingredient.fromStacks(new ItemStack(GCItems.partBuggy, 1, 2)));
         RecipeUtil.addBuggyBenchRecipe(new ItemStack(GCItems.buggy, 1, 3), input2);
 
         aluminumIngots.addAll(OreDictionary.getOres("ingotAluminum"));
