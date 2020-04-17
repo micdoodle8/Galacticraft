@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ContainerSchematicTier2Rocket extends Container
 {
@@ -153,25 +154,37 @@ public class ContainerSchematicTier2Rocket extends Container
 
                 if (!done)
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(19)).getHasStack())
+                    boolean foundChest = false;
+                    for (ItemStack woodChest : OreDictionary.getOres("chestWood"))
                     {
-                        if (!this.mergeOneItem(var4, 19, 20, false))
+                        if (var2.getItem() == woodChest.getItem())
                         {
-                            return ItemStack.EMPTY;
+                            foundChest = true;
+                            break;
                         }
                     }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(20)).getHasStack())
+                    if (foundChest)
                     {
-                        if (!this.mergeOneItem(var4, 20, 21, false))
+                        if (!((Slot) this.inventorySlots.get(19)).getHasStack())
                         {
-                            return ItemStack.EMPTY;
+                            if (!this.mergeOneItem(var4, 19, 20, false))
+                            {
+                                return ItemStack.EMPTY;
+                            }
                         }
-                    }
-                    else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST) && !((Slot) this.inventorySlots.get(21)).getHasStack())
-                    {
-                        if (!this.mergeOneItem(var4, 21, 22, false))
+                        else if (!((Slot) this.inventorySlots.get(20)).getHasStack())
                         {
-                            return ItemStack.EMPTY;
+                            if (!this.mergeOneItem(var4, 20, 21, false))
+                            {
+                                return ItemStack.EMPTY;
+                            }
+                        }
+                        else if (!((Slot) this.inventorySlots.get(21)).getHasStack())
+                        {
+                            if (!this.mergeOneItem(var4, 21, 22, false))
+                            {
+                                return ItemStack.EMPTY;
+                            }
                         }
                     }
                     else if (par1 >= 22 && par1 < 49)

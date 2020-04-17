@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ContainerSchematicTier1Rocket extends Container
 {
@@ -164,25 +165,37 @@ public class ContainerSchematicTier1Rocket extends Container
                     return ItemStack.EMPTY;
                 }
             }
-            else if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
+            else
             {
-                if (!this.mergeOneItem(var4, 15, 18, false))
+                boolean foundChest = false;
+                for (ItemStack woodChest : OreDictionary.getOres("chestWood"))
                 {
-                    return ItemStack.EMPTY;
+                    if (var2.getItem() == woodChest.getItem())
+                    {
+                        foundChest = true;
+                        break;
+                    }
                 }
-            }
-            else if (par1 >= 18 && par1 < 45)
-            {
-                if (!this.mergeItemStack(var4, 45, 54, false))
+                if (foundChest)
                 {
-                    return ItemStack.EMPTY;
+                    if (!this.mergeOneItem(var4, 15, 18, false))
+                    {
+                        return ItemStack.EMPTY;
+                    }
                 }
-            }
-            else if (par1 >= 45 && par1 < 54)
-            {
-                if (!this.mergeItemStack(var4, 18, 45, false))
+                else if (par1 >= 18 && par1 < 45)
                 {
-                    return ItemStack.EMPTY;
+                    if (!this.mergeItemStack(var4, 45, 54, false))
+                    {
+                        return ItemStack.EMPTY;
+                    }
+                }
+                else if (par1 >= 45 && par1 < 54)
+                {
+                    if (!this.mergeItemStack(var4, 18, 45, false))
+                    {
+                        return ItemStack.EMPTY;
+                    }
                 }
             }
 

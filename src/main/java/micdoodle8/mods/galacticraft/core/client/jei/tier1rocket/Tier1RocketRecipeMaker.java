@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,14 @@ public class Tier1RocketRecipeMaker
     public static int countChests(INasaWorkbenchRecipe recipe)
     {
         int count = 0;
-        ItemStack chest = new ItemStack(Blocks.CHEST);
-        for (Entry<Integer, ItemStack> e : recipe.getRecipeInput().entrySet())
+        NonNullList<ItemStack> woodChests = OreDictionary.getOres("chestWood");
+        for (ItemStack woodChest : woodChests)
         {
-            if (ItemStack.areItemsEqual(chest, e.getValue()))
-                count++;
+            for (Entry<Integer, ItemStack> e : recipe.getRecipeInput().entrySet())
+            {
+                if (ItemStack.areItemsEqual(woodChest, e.getValue()))
+                    count++;
+            }
         }
         return count;
     }

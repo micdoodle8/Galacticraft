@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ContainerSchematicTier3Rocket extends Container
 {
@@ -153,7 +154,16 @@ public class ContainerSchematicTier3Rocket extends Container
                 }
                 else
                 {
-                    if (var2.getItem() == Item.getItemFromBlock(Blocks.CHEST))
+                    boolean foundChest = false;
+                    for (ItemStack woodChest : OreDictionary.getOres("chestWood"))
+                    {
+                        if (var2.getItem() == woodChest.getItem())
+                        {
+                            foundChest = true;
+                            break;
+                        }
+                    }
+                    if (foundChest)
                     {
                         if (!this.mergeOneItemTestValid(var4, 19, 22, false))
                         {
