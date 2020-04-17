@@ -139,7 +139,7 @@ public class AsteroidsEventHandlerClient
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
-            GL11.glRotatef(ClientUtil.getMilliseconds() / 10.0F % 360, 0, 0, 1);
+            GL11.glRotatef(ClientUtil.getClientTimeTotal() / 10.0F % 360, 0, 0, 1);
         }
     }
 

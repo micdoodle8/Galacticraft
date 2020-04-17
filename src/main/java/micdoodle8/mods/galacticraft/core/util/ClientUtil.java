@@ -44,9 +44,9 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class ClientUtil
 {
-    public static long getMilliseconds()
+    public static long getClientTimeTotal()
     {
-        return (Sys.getTime() * 1000) / Sys.getTimerResolution();
+        return (long) (Minecraft.getMinecraft().world.getTotalWorldTime() * 66.666666666666);
     }
 
     public static void addVariant(String modID, String name, String... variants)
