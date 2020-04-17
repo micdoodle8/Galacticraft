@@ -42,10 +42,9 @@ public class BlockTier1TreasureChest extends BlockContainer implements ITileEnti
 
     public BlockTier1TreasureChest(String assetName)
     {
-        super(Material.WOOD);
-        this.setSoundType(SoundType.WOOD);
+        super(Material.ROCK);
+        this.setSoundType(SoundType.STONE);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-//        this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
         this.setHardness(100000.0F);
         this.setUnlocalizedName(assetName);
     }

@@ -16,13 +16,11 @@ import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -94,24 +92,6 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return AABB_WEB;
     }
 
-    //    @Override
-//    public RayTraceResult collisionRayTrace(World worldIn, BlockPos pos, Vec3d start, Vec3d end)
-//    {
-//        EnumWebType type = (EnumWebType)worldIn.getBlockState(pos).getValue(WEB_TYPE);
-//        float f = 0.15F;
-//
-//        if (type == EnumWebType.WEB_0)
-//        {
-//            this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-//        }
-//        else if (type == EnumWebType.WEB_1)
-//        {
-//            this.setBlockBounds(0.5F - f, 0.25F, 0.5F - f, 0.5F + f, 1.0F, 0.5F + f);
-//        }
-//
-//        return super.collisionRayTrace(worldIn, pos, start, end);
-//    }
-
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
     {
@@ -154,20 +134,20 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return null;
     }
 
-    public boolean canBlockStay(World world, BlockPos pos, IBlockState state)
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    {
+        if (world.getBlockState(pos).getBlock().isReplaceable(world, pos) && this.canBlockStay(world, pos, this.getStateFromMeta(meta)))
+        {
+            return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, hand);
+        }
+        return world.getBlockState(pos);
+    }
+
+    private boolean canBlockStay(World world, BlockPos pos, IBlockState state)
     {
         IBlockState blockUp = world.getBlockState(pos.up());
-        
-        int meta = this.getMetaFromState(state);
-
-        if (meta == 0)
-        {
-            return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
-        }
-        else
-        {
-            return blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
-        }
+        return blockUp.getMaterial().isSolid() || blockUp.getBlock() == this && blockUp.getValue(WEB_TYPE) == EnumWebType.WEB_0;
     }
 
     @Override

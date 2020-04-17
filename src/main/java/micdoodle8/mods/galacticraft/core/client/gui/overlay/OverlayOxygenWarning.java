@@ -12,15 +12,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class OverlayOxygenWarning extends Overlay
 {
-    private static long screenTicks;
-
     /**
      * Render the GUI when player is in inventory
      */
-    public static void renderOxygenWarningOverlay()
+    public static void renderOxygenWarningOverlay(Minecraft mc, long ticks)
     {
-        OverlayOxygenWarning.screenTicks++;
-        final Minecraft mc = Minecraft.getMinecraft();
         final ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
         final int width = scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
@@ -30,7 +26,7 @@ public class OverlayOxygenWarning extends Overlay
         GlStateManager.scale(2.0F, 2.0F, 0.0F);
         GlStateManager.enableBlend();
         mc.fontRenderer.drawString(GCCoreUtil.translate("gui.warning"), width / 4 - mc.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.warning")) / 2, height / 8 - 20, ColorUtil.to32BitColor(255, 255, 0, 0));
-        final int alpha = (int) (200 * (Math.sin(OverlayOxygenWarning.screenTicks / 20.0F) * 0.5F + 0.5F)) + 5;
+        final int alpha = (int) (200 * (Math.sin(ticks / 1.5F) * 0.5F + 0.5F)) + 5;
         mc.fontRenderer.drawString(GCCoreUtil.translate("gui.oxygen.warning"), width / 4 - mc.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.oxygen.warning")) / 2, height / 8, ColorUtil.to32BitColor(alpha, 255, 0, 0));
         GlStateManager.popMatrix();
     }
