@@ -14,7 +14,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,26 +22,24 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class OverlayRocket extends Overlay
 {
-    private static Minecraft minecraft = FMLClientHandler.instance().getClient();
-
     /**
      * Render the GUI when player is in inventory
      */
-    public static void renderSpaceshipOverlay(ResourceLocation guiTexture)
+    public static void renderSpaceshipOverlay(Minecraft mc, ResourceLocation guiTexture)
     {
         if (guiTexture == null)
         {
             return;
         }
 
-        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(OverlayRocket.minecraft, OverlayRocket.minecraft.displayWidth, OverlayRocket.minecraft.displayHeight);
+        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
         scaledresolution.getScaledWidth();
         final int height = scaledresolution.getScaledHeight();
-        OverlayRocket.minecraft.entityRenderer.setupOverlayRendering();
+        mc.entityRenderer.setupOverlayRendering();
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(guiTexture);
+        mc.renderEngine.bindTexture(guiTexture);
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;
@@ -66,15 +63,15 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.color(1.0F, 1.0F, 1.0F);
 
-        Entity rocket = OverlayRocket.minecraft.player.getRidingEntity();
+        Entity rocket = mc.player.getRidingEntity();
         float headOffset = 0;
         if (rocket instanceof EntityTier1Rocket)
         {
             headOffset = 5F;
         }
-        Render spaceshipRender = (Render) minecraft.getRenderManager().entityRenderMap.get(rocket.getClass());
+        Render spaceshipRender = (Render) mc.getRenderManager().entityRenderMap.get(rocket.getClass());
 
-        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(OverlayRocket.minecraft.player) / 10.5F);
+        final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(mc.player) / 10.5F);
         var1 = 2.5F;
         var2 = y1;
         var3 = 8;
@@ -99,7 +96,7 @@ public class OverlayRocket extends Overlay
 
         try
         {
-            spaceshipRender.doRender(rocket.getClass().getConstructor(World.class).newInstance(OverlayRocket.minecraft.player.world), 0, 0, 0, 0, 0);
+            spaceshipRender.doRender(rocket.getClass().getConstructor(World.class).newInstance(mc.player.world), 0, 0, 0, 0, 0);
         }
         catch (Exception e)
         {
@@ -108,7 +105,7 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.popMatrix();
 
-        OverlayRocket.minecraft.renderEngine.bindTexture(ClientProxyCore.playerHead);
+        mc.renderEngine.bindTexture(ClientProxyCore.playerHead);
 
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();
