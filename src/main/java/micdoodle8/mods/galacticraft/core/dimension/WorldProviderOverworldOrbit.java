@@ -147,9 +147,15 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     }
 
     @Override
+    @Deprecated
     public String getPlanetToOrbit()
     {
         return "overworld";
+    }
+
+    @Override
+    public int getPlanetIdToOrbit() {
+        return 0;
     }
 
     @Override

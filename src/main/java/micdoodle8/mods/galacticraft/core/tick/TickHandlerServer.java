@@ -268,11 +268,11 @@ public class TickHandlerServer
                 try
                 {
                     GCPlayerStats stats = GCPlayerStats.get(change.getPlayer());
-                    final WorldProvider provider = WorldUtil.getProviderForNameServer(change.getDimensionName());
+                    final WorldProvider provider = WorldUtil.getProviderForDimensionServer(change.getDimensionId());
                     if (provider != null)
                     {
-                        final Integer dim = GCCoreUtil.getDimensionID(provider);
-                        GCLog.info("Found matching world (" + dim.toString() + ") for name: " + change.getDimensionName());
+                        final int dim = GCCoreUtil.getDimensionID(provider);
+                        GCLog.info("Found matching world (" + dim + ") for name: " + change.getDimensionId());
 
                         if (change.getPlayer().world instanceof WorldServer)
                         {
@@ -283,7 +283,7 @@ public class TickHandlerServer
                     }
                     else
                     {
-                        GCLog.severe("World not found when attempting to transfer entity to dimension: " + change.getDimensionName());
+                        GCLog.severe("World not found when attempting to transfer entity to dimension: " + change.getDimensionId());
                     }
 
                     stats.setTeleportCooldown(10);
@@ -291,7 +291,7 @@ public class TickHandlerServer
                 }
                 catch (Exception e)
                 {
-                    GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + change.getDimensionName());
+                    GCLog.severe("Error occurred when attempting to transfer entity to dimension: " + change.getDimensionId());
                     e.printStackTrace();
                 }
             }
@@ -604,7 +604,8 @@ public class TickHandlerServer
             {
                 try
                 {
-                    int dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.provider).getPlanetToOrbit()));
+                    int dim = ((IOrbitDimension) world.provider).getPlanetIdToOrbit();
+                    if (dim == Integer.MIN_VALUE) dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.provider).getPlanetToOrbit()));
                     int minY = ((IOrbitDimension)world.provider).getYCoordToTeleportToPlanet();
 
                     final Entity[] entityList = world.loadedEntityList.toArray(new Entity[world.loadedEntityList.size()]);

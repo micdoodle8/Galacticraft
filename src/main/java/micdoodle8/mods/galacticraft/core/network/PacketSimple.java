@@ -103,7 +103,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
     {
         // SERVER
         S_RESPAWN_PLAYER(Side.SERVER, String.class),
-        S_TELEPORT_ENTITY(Side.SERVER, String.class),
+        S_TELEPORT_ENTITY(Side.SERVER, Integer.class),
         S_IGNITE_ROCKET(Side.SERVER),
         S_OPEN_SCHEMATIC_PAGE(Side.SERVER, Integer.class, Integer.class, Integer.class, Integer.class),
         S_OPEN_FUEL_GUI(Side.SERVER, String.class),
@@ -802,7 +802,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
             playerBase.connection.sendPacket(new SPacketRespawn(player.dimension, player.world.getDifficulty(), player.world.getWorldInfo().getTerrainType(), playerBase.interactionManager.getGameType()));
             break;
         case S_TELEPORT_ENTITY:
-            TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, (String) PacketSimple.this.data.get(0)));
+            TickHandlerServer.scheduleNewDimensionChange(new ScheduledDimensionChange(playerBase, (int)PacketSimple.this.data.get(0)));
             break;
         case S_IGNITE_ROCKET:
             if (!player.world.isRemote && !player.isDead && player.getRidingEntity() != null && !player.getRidingEntity().isDead && player.getRidingEntity() instanceof EntityTieredRocket)

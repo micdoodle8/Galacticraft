@@ -5,7 +5,9 @@ public interface IOrbitDimension extends IGalacticraftWorldProvider
     /**
      * @return the name of the world that this dimension is orbiting. For the
      * overworld it returns "Overworld"
+     * @deprecated use {@link IOrbitDimension#getPlanetIdToOrbit()}
      */
+    @Deprecated
     String getPlanetToOrbit();
 
     /**
@@ -13,4 +15,8 @@ public interface IOrbitDimension extends IGalacticraftWorldProvider
      * are orbiting
      */
     int getYCoordToTeleportToPlanet();
+
+    default int getPlanetIdToOrbit() {
+        return Integer.MIN_VALUE;
+    }
 }
