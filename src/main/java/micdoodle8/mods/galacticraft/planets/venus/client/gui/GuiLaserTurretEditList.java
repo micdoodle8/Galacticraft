@@ -152,7 +152,7 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
             this.name = new GuiElementTextBox(3, this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
             this.name.resetOnClick = false;
             this.addButton(this.name);
-            this.buttonList.add(new GuiButton(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_blacklist.name")));
+            this.buttonList.add(new GuiButton(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name")));
             break;
         }
     }
