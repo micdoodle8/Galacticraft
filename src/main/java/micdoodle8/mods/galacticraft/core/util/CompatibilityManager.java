@@ -34,6 +34,7 @@ public class CompatibilityManager
 
     public static boolean modJEILoaded = Loader.isModLoaded("jei");
     private static boolean modIc2Loaded = Loader.isModLoaded(modidIC2);
+    private static boolean modICClassicLoaded;
     public static boolean modBCraftLoaded = Loader.isModLoaded(modidBuildcraft);
 	private static boolean modBCraftEnergyLoaded = Loader.isModLoaded(modBCraftEnergy);
     private static boolean modBCraftTransportLoaded;
@@ -71,10 +72,12 @@ public class CompatibilityManager
     public static Class classIC2tileEventUnload;
     public static Field fieldIC2tickhandler;
     public static Field fieldIC2networkManager;
+    public static Class classIc2ClassicNetworkManager;
     public static Class classIC2cableType = null;
     public static Constructor constructorIC2cableTE = null;
     private static Method androidPlayerGet;
     private static Method androidPlayerIsAndroid;
+    public static Class classIc2ClassicTileCable;
 	
     public static void checkForCompatibleMods()
     {
@@ -107,6 +110,28 @@ public class CompatibilityManager
         {
             try
             {
+                classIc2ClassicTileCable = Class.forName("ic2.core.block.wiring.tile.TileEntityCable");
+                classIc2ClassicNetworkManager = Class.forName("ic2.core.network.NetworkManager");
+                modICClassicLoaded = true;
+            }
+            catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            if (!modICClassicLoaded) {
+                // Ic2 loaded
+                try
+                {
+                    classIC2cableType = Class.forName("ic2.core.block.wiring.CableType");
+                }
+                catch (ClassNotFoundException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            try
+            {
                 try {
                     classIC2wrench = Class.forName("ic2.core.item.tool.ItemToolWrench");
                 } catch (ClassNotFoundException e) { }
@@ -122,20 +147,42 @@ public class CompatibilityManager
                 
                 try {
                     Class clazzIC2 = Class.forName("ic2.core.IC2");
-                    fieldIC2tickhandler = clazzIC2.getDeclaredField("tickHandler");
                     fieldIC2networkManager  = clazzIC2.getDeclaredField("network");
-                } catch (ClassNotFoundException e) { }
-                
-                Class classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");
-                classIC2cableType = Class.forName("ic2.core.block.wiring.CableType");
+                    fieldIC2tickhandler = clazzIC2.getDeclaredField("tickHandler");
+                } catch (Exception e) { }
+
+                Class classIC2cable;
+                try
+                {
+                    classIC2cable = Class.forName("ic2.core.block.wiring.TileEntityCable");
+                }
+                catch (ClassNotFoundException e)
+                {
+                    try
+                    {
+                        classIC2cable = Class.forName("ic2.core.block.wiring.tile.TileEntityCable");
+                    }
+                    catch (Exception e1)
+                    {
+                        classIC2cable = null;
+                    }
+                }
                 if (classIC2cable != null)
                 {
-                    try {
+                    try
+                    {
                         BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onNeighborChange", Block.class);
                     }
-                    catch (NoSuchMethodException e)
+                    catch (Exception e)
                     {
-                        BlockEnclosed.onBlockNeighbourChangeIC2b = classIC2cable.getMethod("onNeighborChange", Block.class, BlockPos.class);
+                        try
+                        {
+                            BlockEnclosed.onBlockNeighbourChangeIC2b = classIC2cable.getMethod("onNeighborChange", Block.class, BlockPos.class);
+                        }
+                        catch (Exception e1)
+                        {
+                            BlockEnclosed.onBlockNeighbourChangeIC2a = classIC2cable.getMethod("onBlockUpdate", Block.class);
+                        }
                     }
                     
                     Constructor<?>[] constructors = classIC2cable.getDeclaredConstructors();
@@ -272,6 +319,11 @@ public class CompatibilityManager
     public static boolean isIc2Loaded()
     {
         return CompatibilityManager.modIc2Loaded;
+    }
+
+    public static boolean isIc2ClassicLoaded()
+    {
+        return CompatibilityManager.modICClassicLoaded;
     }
 
     public static boolean isBCraftTransportLoaded()

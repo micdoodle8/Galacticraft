@@ -25,6 +25,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -38,6 +39,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import ic2.api.network.INetworkManager;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class BlockEnclosed extends Block implements IPartialSealableBlock, ITileEntityProvider, IShiftDescription, ISortableBlock
@@ -46,6 +49,11 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     public static Block blockPipeBC = null;
     public static Method onBlockNeighbourChangeIC2a = null;
     public static Method onBlockNeighbourChangeIC2b = null;
+    private static Class icCableContainerClass;
+    private static Class icWireRegClass;
+    private static Field icWireRegInstance;
+    private static Method icContainerGetMethod;
+    private static Constructor icTileCableConstuctor;
 
     public static final PropertyEnum<EnumEnclosedBlockType> TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
 
@@ -58,13 +66,13 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 //        tin(1, 1, 0.25F, 0.2D, 32),
 //        detector(0, 2147483647, 0.5F, 0.5D, 8192),
 //        splitter(0, 2147483647, 0.5F, 0.5D, 8192);
-        IC2_HV_CABLE(0, "iron", 2, "enclosed_hv_cable"),
+        IC2_HV_CABLE(0, "iron", 2, 7, "enclosed_hv_cable"),
         OXYGEN_PIPE(1, "enclosed_fluid_pipe"),
-        IC2_COPPER_CABLE(2, "copper", 1, "enclosed_copper_cable"),
-        IC2_GOLD_CABLE(3, "gold", 2, "enclosed_gold_cable"),
+        IC2_COPPER_CABLE(2, "copper", 1, 1, "enclosed_copper_cable"),
+        IC2_GOLD_CABLE(3, "gold", 2, 4, "enclosed_gold_cable"),
         TE_CONDUIT(4, "enclosed_te_conduit"), //CURRENTLY UNUSED
-        IC2_GLASS_FIBRE_CABLE(5, "glass", 0, "enclosed_glass_fibre_cable"),
-        IC2_LV_CABLE(6, "tin", 1, "enclosed_lv_cable"),
+        IC2_GLASS_FIBRE_CABLE(5, "glass", 0, 9, "enclosed_glass_fibre_cable"),
+        IC2_LV_CABLE(6, "tin", 1, 10, "enclosed_lv_cable"),
         BC_ITEM_STONEPIPE(7, "pipeItemStone", "enclosed_pipe_items_stone"),
         BC_ITEM_COBBLESTONEPIPE(8, "pipeItemCobble", "enclosed_pipe_items_cobblestone"),
         BC_FLUIDS_STONEPIPE(9, "pipeFluidStone", "enclosed_pipe_fluids_stone"),
@@ -79,28 +87,30 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         private final String name;
         private final String ic2Enum;
         private final int ic2Insulation;
+        private final int icClassicMeta;
         private final String bcPipeType;
 
         EnumEnclosedBlockType(int meta, String bcPipeType, String name)
         {
-            this(meta, null, -1, bcPipeType, name);
+            this(meta, null, -1, -1, bcPipeType, name);
         }
 
         EnumEnclosedBlockType(int meta, String name)
         {
-            this(meta, null, -1, null, name);
+            this(meta, null, -1, -1, null, name);
         }
 
-        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, String name)
+        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, int icClassicMeta, String name)
         {
-            this(meta, ic2Enum, ic2Insulation, null, name);
+            this(meta, ic2Enum, ic2Insulation, icClassicMeta, null, name);
         }
 
-        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, String bcPipeType, String name)
+        EnumEnclosedBlockType(int meta, String ic2Enum, int ic2Insulation, int icClassicMeta, String bcPipeType, String name)
         {
             this.meta = meta;
             this.ic2Enum = ic2Enum;
             this.ic2Insulation = ic2Insulation;
+            this.icClassicMeta = icClassicMeta;
             this.bcPipeType = bcPipeType;
             this.name = name;
         }
@@ -320,19 +330,41 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             {
                 try
                 {
-                    Enum[] enums = (Enum[]) CompatibilityManager.classIC2cableType.getEnumConstants();
-                    Enum foundEnum = null;
                     EnumEnclosedBlockType enclosedType = EnumEnclosedBlockType.byMetadata(metadata);
-                    for (Enum e : enums)
+                    if (CompatibilityManager.isIc2ClassicLoaded())
                     {
-                        if (e.name().equals(enclosedType.getIc2Enum()))
+                        if (icCableContainerClass == null)
                         {
-                            foundEnum = e;
-                            break;
-                        }
-                    }
+                            icCableContainerClass = Class.forName("ic2.core.block.wiring.cables.CableContainer");
 
-                    return new TileCableIC2Sealed().setupInsulation(foundEnum, enclosedType.getIc2Insulation());
+                            icWireRegClass = Class.forName("ic2.core.block.wiring.cables.WireRegistry");
+                            icWireRegInstance = icWireRegClass.getDeclaredField("instance");
+                            icContainerGetMethod = icWireRegClass.getMethod("getContainerFromMeta", int.class);
+
+                            icTileCableConstuctor = CompatibilityManager.classIc2ClassicTileCable.getConstructor(icCableContainerClass);
+                        }
+
+                        Object wireRegInstance = icWireRegInstance.get(null);
+                        Object container = icContainerGetMethod.invoke(wireRegInstance, enclosedType.icClassicMeta);
+
+                        return (TileEntity) icTileCableConstuctor.newInstance(container);
+                    }
+                    else
+                    {
+                        // IndustrialCraft 2 uses enums for types
+                        Enum[] enums = (Enum[]) CompatibilityManager.classIC2cableType.getEnumConstants();
+                        Enum foundEnum = null;
+                        for (Enum e : enums)
+                        {
+                            if (e.name().equals(enclosedType.getIc2Enum()))
+                            {
+                                foundEnum = e;
+                                break;
+                            }
+                        }
+
+                        return new TileCableIC2Sealed().setupInsulation(foundEnum, enclosedType.getIc2Insulation());
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -429,17 +461,27 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
             TileEntity te = worldIn.getTileEntity(pos);
             if (te != null)
             {
-                INetworkManager manager = null;
                 try {
                     Object network = CompatibilityManager.fieldIC2networkManager.get(null);
-                    Method get = network.getClass().getMethod("get", boolean.class);
-                    manager = (INetworkManager)get.invoke(network, true);
+                    if (CompatibilityManager.isIc2ClassicLoaded())
+                    {
+                        Method get = network.getClass().getMethod("get");
+                        Object manager = get.invoke(network);
+                        Method sendMethod = CompatibilityManager.classIc2ClassicNetworkManager.getMethod("sendInitialData", EntityPlayerMP.class, TileEntity.class);
+                        sendMethod.invoke(manager, (EntityPlayerMP) placer, te);
+                    }
+                    else
+                    {
+                        INetworkManager manager = null;
+                        Method get = network.getClass().getMethod("get", boolean.class);
+                        manager = (INetworkManager)get.invoke(network, true);
+                        if (manager != null)
+                        {
+                            manager.sendInitialData(te);
+                        }
+                    }
                 }
                 catch (Exception e) { e.printStackTrace(); }
-                if (manager != null)
-                {
-                    manager.sendInitialData(te);
-                }
             }
         }
     }
