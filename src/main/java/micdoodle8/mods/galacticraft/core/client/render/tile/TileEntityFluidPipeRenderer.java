@@ -6,7 +6,9 @@ import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
+import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -32,37 +34,12 @@ import java.util.HashMap;
 public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileEntityFluidPipe>
 {
     private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
-    private static IBakedModel[] pullConnectorModel = new IBakedModel[6];
 
     private final int stages = 100;
-
-    private void updateModels()
-    {
-        if (pullConnectorModel[0] == null)
-        {
-            try
-            {
-                for (EnumFacing facing : EnumFacing.VALUES)
-                {
-                    // Get the first character of the direction name (n/e/s/w/u/d)
-                    Character c = Character.toLowerCase(facing.getName().charAt(0));
-                    IModel model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "block/fluid_pipe_pull_" + c));
-                    Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
-                    pullConnectorModel[facing.ordinal()] = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, spriteFunction);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new RuntimeException(e);
-            }
-        }
-    }
 
     @Override
     public void render(TileEntityFluidPipe pipe, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        updateModels();
-
         if (pipe.getBlockType() == GCBlocks.oxygenPipePull)
         {
             GL11.glPushMatrix();
@@ -107,7 +84,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
                             GL11.glTranslatef(-1/16F, 0F, 0F);
                             break;
                         }
-                    ClientUtil.drawBakedModel(pullConnectorModel[facing.ordinal()]);
+                    ClientUtil.drawBakedModel(EventHandlerClient.fluidPipeModels[facing.ordinal()]);
                     GL11.glPopMatrix();
                 }
             }

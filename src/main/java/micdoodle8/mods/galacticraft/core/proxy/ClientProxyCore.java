@@ -173,13 +173,13 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             ClientPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseSP.class);
         }
         MinecraftForge.EVENT_BUS.register(this);
+        ClientProxyCore.registerHandlers();
     }
 
     @Override
     public void init(FMLInitializationEvent event)
     {
         MUSIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new Class[] { SoundEvent.class, Integer.TYPE, Integer.TYPE }, GCSounds.music, 12000, 24000);
-        ClientProxyCore.registerHandlers();
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.updateCapeList();
         ClientProxyCore.registerInventoryJsons();
