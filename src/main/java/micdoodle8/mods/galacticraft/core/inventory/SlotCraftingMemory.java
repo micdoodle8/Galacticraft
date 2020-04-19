@@ -20,7 +20,7 @@ public class SlotCraftingMemory extends SlotCrafting
     @Override
     public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack)
     {
-        if (!stack.isEmpty()) this.tileEntity.updateMemory();
+        if (!stack.isEmpty()) this.tileEntity.updateMemory(stack);
         return super.onTake(thePlayer, stack);
     }
 }
