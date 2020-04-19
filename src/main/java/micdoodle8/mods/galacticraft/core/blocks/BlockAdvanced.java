@@ -59,6 +59,16 @@ public abstract class BlockAdvanced extends Block
     {
         if (heldItem.getItem() == GCItems.wrench)
         {
+            if (playerIn.isSneaking())
+            {
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+                {
+                    playerIn.swingArm(hand);
+                    return true;
+                }
+                return false;
+            }
+
             playerIn.swingArm(hand);
             return true;
         }
