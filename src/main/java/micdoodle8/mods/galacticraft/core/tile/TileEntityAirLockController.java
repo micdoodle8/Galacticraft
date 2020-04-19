@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -241,10 +242,41 @@ public class TileEntityAirLockController extends TileEntityAirLock
             this.world.playSound(null, x, y, z, GCSounds.closeAirLock, SoundCategory.BLOCKS, 1.0F, 1.0F);
         }
 
+        boolean sealedSide = false;
+        Block b;
         if (this.lastHorizontalModeEnabled)
         {
             if (this.protocol.minY == this.protocol.maxY && this.protocol.minX != this.protocol.maxX && this.protocol.minZ != this.protocol.maxZ)
             {
+                // First test if there is sealed air to either side
+                for (x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
+                {
+                    for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
+                    {
+                        pos = new BlockPos(x, y, z);
+                        b = this.world.getBlockState(pos.up()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                            continue;
+                        }
+                        b = this.world.getBlockState(pos.down()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (sealedSide) break;
+                }
+                // Now replace the airlock blocks with either air, or sealed air
                 for (x = this.protocol.minX + 1; x <= this.protocol.maxX - 1; x++)
                 {
                     for (z = this.protocol.minZ + 1; z <= this.protocol.maxZ - 1; z++)
@@ -252,7 +284,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.world.setBlockToAir(pos);
+                            if (sealedSide)
+                                this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            else
+                                this.world.setBlockToAir(pos);
                         }
                     }
                 }
@@ -262,6 +297,35 @@ public class TileEntityAirLockController extends TileEntityAirLock
         {
             if (this.lastProtocol.minX != this.lastProtocol.maxX)
             {
+                // First test if there is sealed air to either side
+                for (x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
+                {
+                    for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                    {
+                        pos = new BlockPos(x, y, z);
+                        b = this.world.getBlockState(pos.north()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                            continue;
+                        }
+                        b = this.world.getBlockState(pos.south()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (sealedSide) break;
+                }
+                // Now replace the airlock blocks with either air, or sealed air
                 for (x = this.lastProtocol.minX + 1; x <= this.lastProtocol.maxX - 1; x++)
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
@@ -269,13 +333,45 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.world.setBlockToAir(pos);
+                            if (sealedSide)
+                                this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            else
+                                this.world.setBlockToAir(pos);
                         }
                     }
                 }
             }
             else if (this.lastProtocol.minZ != this.lastProtocol.maxZ)
             {
+                // First test if there is sealed air to either side
+                for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
+                {
+                    for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
+                    {
+                        pos = new BlockPos(x, y, z);
+                        b = this.world.getBlockState(pos.west()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                            continue;
+                        }
+                        b = this.world.getBlockState(pos.east()).getBlock();
+                        if (b == GCBlocks.breatheableAir || b == GCBlocks.brightBreatheableAir)
+                        {
+                            if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
+                            {
+                                sealedSide = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (sealedSide) break;
+                }
+                // Now replace the airlock blocks with either air, or sealed air
                 for (z = this.lastProtocol.minZ + 1; z <= this.lastProtocol.maxZ - 1; z++)
                 {
                     for (y = this.lastProtocol.minY + 1; y <= this.lastProtocol.maxY - 1; y++)
@@ -283,7 +379,10 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock() == GCBlocks.airLockSeal)
                         {
-                            this.world.setBlockToAir(pos);
+                            if (sealedSide)
+                                this.world.setBlockState(pos, GCBlocks.breatheableAir.getDefaultState(), 3);
+                            else
+                                this.world.setBlockToAir(pos);
                         }
                     }
                 }
