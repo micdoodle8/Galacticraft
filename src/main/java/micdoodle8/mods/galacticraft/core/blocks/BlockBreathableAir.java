@@ -62,11 +62,24 @@ public class BlockBreathableAir extends BlockAir
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block oldBlock, BlockPos fromPos)
     {
-        if (Blocks.AIR == blockIn)
+        if (Blocks.AIR != oldBlock)
         //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
+            // Check if replacing a passthrough breathable block, like a torch - if so replace with BreathableAir not Air
+            if (Blocks.AIR == worldIn.getBlockState(fromPos).getBlock())
+            {
+                EnumFacing side;
+                if (pos.getX() != fromPos.getX()) side = pos.getX() > fromPos.getX() ? EnumFacing.EAST : EnumFacing.WEST; 
+                else if (pos.getY() != fromPos.getY()) side = pos.getY() > fromPos.getY() ? EnumFacing.UP : EnumFacing.DOWN; 
+                else side = pos.getZ() > fromPos.getZ() ? EnumFacing.SOUTH : EnumFacing.NORTH; 
+                if (OxygenPressureProtocol.canBlockPassAir(worldIn, oldBlock, fromPos, side))
+                {
+                    worldIn.setBlockState(fromPos, GCBlocks.breatheableAir.getDefaultState(), 6);
+                }
+            }
+            // In all cases, trigger a leak check at this point
             OxygenPressureProtocol.onEdgeBlockUpdated(worldIn, pos);
         }
     }
