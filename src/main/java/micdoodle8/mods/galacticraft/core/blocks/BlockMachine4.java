@@ -18,7 +18,7 @@ import net.minecraft.world.IBlockAccess;
  * A block for advanced types of POWERED Galacticraft machine
  * with a base building purpose - e.g. Advanced Compressor
  * 
- * Note: this does not implement IMachineSides, in comparison with BlockMachine3 which does not
+ * Note: this DOES implement IMachineSides, in comparison with BlockMachine3 which does not
  *
  */
 public class BlockMachine4 extends BlockMachineBase
