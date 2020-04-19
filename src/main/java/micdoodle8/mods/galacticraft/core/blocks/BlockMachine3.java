@@ -9,8 +9,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 
 /**
- * A block for several types of Galacticraft machine
+ * A block for several types of UNPOWERED Galacticraft machine
  * with a base building purpose - e.g. Painter
+ * 
+ * Note: does not implement IMachineSides
  *
  */
 public class BlockMachine3 extends BlockMachineBase

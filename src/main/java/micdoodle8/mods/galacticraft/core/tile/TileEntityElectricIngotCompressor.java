@@ -4,7 +4,9 @@ import micdoodle8.mods.galacticraft.api.recipe.CompressorRecipes;
 import micdoodle8.mods.galacticraft.api.recipe.ShapedRecipesGC;
 import micdoodle8.mods.galacticraft.api.recipe.ShapelessOreRecipeGC;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
+import micdoodle8.mods.galacticraft.core.blocks.BlockMachine4;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
+import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -32,7 +34,8 @@ import java.util.Random;
 
 public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
-    public static final int PROCESS_TIME_REQUIRED_BASE = 200;
+    private static final int PROCESS_TIME_REQUIRED_BASE = 200;
+    private int processTimeRequiredBase;
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTimeRequired = PROCESS_TIME_REQUIRED_BASE;
     @NetworkedField(targetSide = Side.CLIENT)
@@ -40,6 +43,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     private ItemStack producingStack = ItemStack.EMPTY;
     private long ticks;
     private static final int[] allSlots = new int[] { 0, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+    private boolean advanced;
 
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
     private static Random randnum = new Random();
@@ -47,8 +51,20 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public TileEntityElectricIngotCompressor()
     {
         super("tile.machine2.4.name");
+        this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE; 
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
         this.setTierGC(2);
+        inventory = NonNullList.withSize(3, ItemStack.EMPTY);
+    }
+
+    public TileEntityElectricIngotCompressor(boolean advanced)
+    {
+        super("tile.machine4.11.name");
+        this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
+        this.processTimeRequired = processTimeRequiredBase;
+        this.advanced = true;
+        this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 75);
+        this.setTierGC(3);
         inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
@@ -67,11 +83,14 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
                 {
                     ++this.processTicks;
 
-                    this.processTimeRequired = TileEntityElectricIngotCompressor.PROCESS_TIME_REQUIRED_BASE * 3 / (1 + this.poweredByTierGC * 2);
+                    this.processTimeRequired = this.processTimeRequiredBase / (1 + this.poweredByTierGC * 2);
 
                     if (this.processTicks >= this.processTimeRequired)
                     {
-                        this.world.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.3F, this.world.rand.nextFloat() * 0.1F + 0.9F);
+                        if (this.advanced)
+                            this.world.playSound(null, this.getPos(), GCSounds.advanced_compressor, SoundCategory.BLOCKS, 0.23F, this.world.rand.nextFloat() * 0.1F + 9.5F);
+                        else
+                            this.world.playSound(null, this.getPos(), SoundEvents.BLOCK_ANVIL_LAND, SoundCategory.BLOCKS, 0.12F, this.world.rand.nextFloat() * 0.1F - 9.5F);
                         this.processTicks = 0;
                         this.compressItems();
                         updateInv = true;
@@ -201,6 +220,12 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public void readFromNBT(NBTTagCompound nbt)
     {
         super.readFromNBT(nbt);
+        this.advanced = nbt.getBoolean("adv");
+        if (this.advanced)  {
+            this.processTimeRequiredBase = PROCESS_TIME_REQUIRED_BASE * 3 / 5;
+            this.processTimeRequired = processTimeRequiredBase;
+            this.setTierGC(3);
+        }
         this.processTicks = nbt.getInteger("smeltingTicks");
 
         this.inventory = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
@@ -228,6 +253,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     public NBTTagCompound writeToNBT(NBTTagCompound nbt)
     {
         super.writeToNBT(nbt);
+        nbt.setBoolean("adv", this.advanced);
         nbt.setInteger("smeltingTicks", this.processTicks);
         NBTTagList items = new NBTTagList();
         int i;
@@ -648,7 +674,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     @Override
     public IMachineSidesProperties getConfigurationType()
     {
-        return BlockMachine2.MACHINESIDES_RENDERTYPE;
+        return this.advanced ? BlockMachine4.MACHINESIDES_RENDERTYPE : BlockMachine2.MACHINESIDES_RENDERTYPE;
     }
     //------------------END OF IMachineSides implementation
 }

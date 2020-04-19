@@ -722,6 +722,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 8, "cluster_storage");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineTiered, 12, "arc_furnace");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase3, 0, "painter");
+        ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.machineBase4, 0, "advanced_compressor");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 0, "aluminum_wire");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 1, "aluminum_wire_heavy");
         ClientUtil.registerBlockJson(Constants.TEXTURE_PREFIX, GCBlocks.aluminumWire, 2, "aluminum_wire_switch");
@@ -788,6 +789,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         addCoreVariant("machine", "coal_generator", "ingot_compressor");
         addCoreVariant("machine2", "circuit_fabricator", "oxygen_storage_module", "electric_ingot_compressor", "deconstructor");
         addCoreVariant("machine3", "painter");
+        addCoreVariant("machine4", "advanced_compressor");
         addCoreVariant("machine_tiered", "energy_storage", "electric_furnace", "cluster_storage", "arc_furnace");
         addCoreVariant("basic_block_moon", "ore_copper_moon", "ore_tin_moon", "ore_cheese_moon", "moon_dirt_moon", "basic_block_moon", "moon_turf", "ore_sapphire_moon", "moon_dungeon_brick");
         addCoreVariant("aluminum_wire", "aluminum_wire", "aluminum_wire_heavy", "aluminum_wire_switch", "aluminum_wire_switch_heavy");

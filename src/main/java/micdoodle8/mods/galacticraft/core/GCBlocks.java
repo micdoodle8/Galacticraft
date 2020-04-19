@@ -79,6 +79,7 @@ public class GCBlocks
     public static Block machineBase;
     public static Block machineBase2;
     public static Block machineBase3;
+    public static Block machineBase4;
     public static Block machineTiered;
     public static Block aluminumWire;
     public static Block panelLighting;
@@ -159,6 +160,7 @@ public class GCBlocks
         GCBlocks.machineBase = new BlockMachine("machine");
         GCBlocks.machineBase2 = new BlockMachine2("machine2");
         GCBlocks.machineBase3 = new BlockMachine3("machine3");
+        GCBlocks.machineBase4 = new BlockMachine4("machine4");
         GCBlocks.machineTiered = new BlockMachineTiered("machine_tiered");
         GCBlocks.aluminumWire = new BlockAluminumWire("aluminum_wire");
         GCBlocks.panelLighting = new BlockPanelLighting("panel_lighting");
@@ -478,6 +480,7 @@ public class GCBlocks
         registerBlock(GCBlocks.machineBase2, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineBase3, ItemBlockMachine.class);
         registerBlock(GCBlocks.machineTiered, ItemBlockMachine.class);
+        registerBlock(GCBlocks.machineBase4, ItemBlockMachine.class);
         registerBlock(GCBlocks.panelLighting, ItemBlockPanel.class);
         registerBlock(GCBlocks.glowstoneTorch, ItemBlockDesc.class);
         registerBlock(GCBlocks.fallenMeteor, ItemBlockDesc.class);

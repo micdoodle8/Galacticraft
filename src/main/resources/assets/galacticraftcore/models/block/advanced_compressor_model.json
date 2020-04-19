@@ -1,0 +1,12 @@
+{
+    "parent": "block/cube",
+    "textures": {
+        "particle": "galacticraftcore:blocks/advanced/machine",
+        "down": "galacticraftcore:blocks/advanced/machine",
+        "up": "galacticraftcore:blocks/advanced/machine",
+        "north": "galacticraftcore:blocks/advanced/electric_compressor",
+        "east": "galacticraftcore:blocks/advanced/machine_input",
+        "south": "galacticraftcore:blocks/advanced/machine_side",
+        "west": "galacticraftcore:blocks/advanced/machine_side"
+    }
+}
