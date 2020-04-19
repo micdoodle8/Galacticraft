@@ -1,12 +1,12 @@
 {
     "parent": "block/cube",
     "textures": {
-        "particle": "galacticraftplanets:blocks/machine",
-        "down": "galacticraftplanets:blocks/machine",
-        "up": "galacticraftplanets:blocks/machine",
-        "north": "galacticraftplanets:blocks/electric_furnace",
-        "east": "galacticraftplanets:blocks/machine_input",
-        "south": "galacticraftplanets:blocks/machine_side",
-        "west": "galacticraftplanets:blocks/machine_side"
+        "particle": "galacticraftcore:blocks/advanced/machine",
+        "down": "galacticraftcore:blocks/advanced/machine",
+        "up": "galacticraftcore:blocks/advanced/machine",
+        "north": "galacticraftcore:blocks/advanced/electric_furnace",
+        "east": "galacticraftcore:blocks/advanced/machine_input",
+        "south": "galacticraftcore:blocks/advanced/machine_side",
+        "west": "galacticraftcore:blocks/advanced/machine_side"
     }
 }

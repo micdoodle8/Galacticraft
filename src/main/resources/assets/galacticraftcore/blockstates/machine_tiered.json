@@ -44,14 +44,14 @@
             },
            "arc_furnace": { 
                     "textures": {
-                        "particle": "galacticraftplanets:blocks/machine",
-                        "front": "galacticraftplanets:blocks/electric_furnace",
-                        "rear": "galacticraftplanets:blocks/machine_side",
-                        "side": "galacticraftplanets:blocks/machine_side",
-                        "el_in": "galacticraftplanets:blocks/machine_input",
-                        "el_out": "galacticraftplanets:blocks/machine_side",
-                        "top": "galacticraftplanets:blocks/machine",
-                        "base": "galacticraftplanets:blocks/machine" }
+                        "particle": "galacticraftcore:blocks/advanced/machine",
+                        "front": "galacticraftcore:blocks/advanced/electric_furnace",
+                        "rear": "galacticraftcore:blocks/advanced/machine_side",
+                        "side": "galacticraftcore:blocks/advanced/machine_side",
+                        "el_in": "galacticraftcore:blocks/advanced/machine_input",
+                        "el_out": "galacticraftcore:blocks/advanced/machine_side",
+                        "top": "galacticraftcore:blocks/advanced/machine",
+                        "base": "galacticraftcore:blocks/advanced/machine" }
             },
            "energy_storage": { 
                     "textures": {
@@ -66,14 +66,14 @@
             },
            "cluster_storage": { 
                "textures": {
-                    "particle": "galacticraftplanets:blocks/machine",
-                    "front": "galacticraftplanets:blocks/energy_storage_module_0",
-                    "rear": "galacticraftplanets:blocks/energy_storage_module_0",
-                    "side": "galacticraftplanets:blocks/machine" ,
-                    "el_in": "galacticraftplanets:blocks/machine_input" ,
-                    "el_out": "galacticraftplanets:blocks/machine_output",
-                    "top": "galacticraftplanets:blocks/machine",
-                    "base": "galacticraftplanets:blocks/machine" }
+                    "particle": "galacticraftcore:blocks/advanced/machine",
+                    "front": "galacticraftcore:blocks/advanced/energy_storage_module_0",
+                    "rear": "galacticraftcore:blocks/advanced/energy_storage_module_0",
+                    "side": "galacticraftcore:blocks/advanced/machine" ,
+                    "el_in": "galacticraftcore:blocks/advanced/machine_input" ,
+                    "el_out": "galacticraftcore:blocks/advanced/machine_output",
+                    "top": "galacticraftcore:blocks/advanced/machine",
+                    "base": "galacticraftcore:blocks/advanced/machine" }
             }
         },
 
@@ -96,23 +96,23 @@
             "15": { "textures": { "front": "galacticraftcore:blocks/energy_storage_module_15", "rear": "galacticraftcore:blocks/energy_storage_module_15"  }},
             "16": { "textures": { "front": "galacticraftcore:blocks/energy_storage_module_16", "rear": "galacticraftcore:blocks/energy_storage_module_16"  }},
 		
-            "17": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_0", "rear": "galacticraftplanets:blocks/energy_storage_module_0"  }},
-            "18": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_1", "rear": "galacticraftplanets:blocks/energy_storage_module_1"  }},
-            "19": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_2", "rear": "galacticraftplanets:blocks/energy_storage_module_2"  }},
-            "20": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_3", "rear": "galacticraftplanets:blocks/energy_storage_module_3"  }},
-            "21": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_4", "rear": "galacticraftplanets:blocks/energy_storage_module_4"  }},
-            "22": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_5", "rear": "galacticraftplanets:blocks/energy_storage_module_5"  }},
-            "23": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_6", "rear": "galacticraftplanets:blocks/energy_storage_module_6"  }},
-            "24": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_7", "rear": "galacticraftplanets:blocks/energy_storage_module_7"  }},
-            "25": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_8", "rear": "galacticraftplanets:blocks/energy_storage_module_8"  }},
-            "26": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_9", "rear": "galacticraftplanets:blocks/energy_storage_module_9"  }},
-            "27": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_10", "rear": "galacticraftplanets:blocks/energy_storage_module_10"  }},
-            "28": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_11", "rear": "galacticraftplanets:blocks/energy_storage_module_11"  }},
-            "29": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_12", "rear": "galacticraftplanets:blocks/energy_storage_module_12"  }},
-            "30": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_13", "rear": "galacticraftplanets:blocks/energy_storage_module_13"  }},
-            "31": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_14", "rear": "galacticraftplanets:blocks/energy_storage_module_14"  }},
-            "32": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_15", "rear": "galacticraftplanets:blocks/energy_storage_module_15"  }},
-            "33": { "textures": { "front": "galacticraftplanets:blocks/energy_storage_module_16", "rear": "galacticraftplanets:blocks/energy_storage_module_16"  }}
+            "17": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_0", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_0"  }},
+            "18": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_1", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_1"  }},
+            "19": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_2", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_2"  }},
+            "20": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_3", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_3"  }},
+            "21": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_4", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_4"  }},
+            "22": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_5", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_5"  }},
+            "23": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_6", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_6"  }},
+            "24": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_7", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_7"  }},
+            "25": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_8", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_8"  }},
+            "26": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_9", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_9"  }},
+            "27": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_10", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_10"  }},
+            "28": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_11", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_11"  }},
+            "29": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_12", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_12"  }},
+            "30": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_13", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_13"  }},
+            "31": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_14", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_14"  }},
+            "32": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_15", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_15"  }},
+            "33": { "textures": { "front": "galacticraftcore:blocks/advanced/energy_storage_module_16", "rear": "galacticraftcore:blocks/advanced/energy_storage_module_16"  }}
         }
    }
 }
