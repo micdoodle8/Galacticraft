@@ -11,6 +11,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -89,7 +90,7 @@ public class EventHandlerClient
             if (ClientProxyCore.overworldTexturesValid)
             {
                 event.celestialBodyTexture = null;
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ClientProxyCore.overworldTextureClient.getGlTextureId());
+                GlStateManager.bindTexture(ClientProxyCore.overworldTextureClient.getGlTextureId());
             }
         }
     }
