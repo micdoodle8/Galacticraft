@@ -26,12 +26,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 import javax.annotation.Nonnull;
 import java.util.EnumSet;
 
 
-public abstract class TileBaseUniversalElectrical extends EnergyStorageTile implements net.minecraftforge.energy.IEnergyStorage
+public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
 {
     protected boolean isAddedToEnergyNet;
     protected Object powerHandlerBC;
@@ -430,55 +431,10 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
         return this.getElectricalInputDirections().contains(direction);
     }
     
-    //ForgeEnergy
-    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate)
-    {
-        if (EnergyConfigHandler.disableFEInput)
-            return 0;
-
-        return MathHelper.floor(super.receiveElectricity(null, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
-    }
-    
-    //ForgeEnergy OR BuildCraft (method name clash!)
-    @Override
+    //BuildCraft
     public boolean canReceive()
     {
-        return !EnergyConfigHandler.disableBuildCraftInput || !EnergyConfigHandler.disableFEInput;
-    }
-
-    //ForgeEnergy
-    @Override
-    public int getEnergyStored()
-    {
-        if (EnergyConfigHandler.disableFEInput)
-            return 0;
-
-        return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
-    }
-
-    //ForgeEnergy
-    @Override
-    public int getMaxEnergyStored()
-    {
-        if (EnergyConfigHandler.disableFEInput)
-            return 0;
-
-        return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
-    }
-
-    //ForgeEnergy
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate)
-    {
-         return 0;
-    }
-
-    //ForgeEnergy
-    @Override
-    public boolean canExtract()
-    {
-        return false;
+        return !EnergyConfigHandler.disableBuildCraftInput;
     }
 
     //Buildcraft 7
@@ -656,7 +612,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
         {
             return this.getElectricalInputDirections().contains(facing);
         }
-        return super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
     }
 
     @Override
@@ -664,8 +620,63 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile impl
     {
         if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
-            return this.getElectricalInputDirections().contains(facing) ? (T) this : null;
+            return this.getElectricalInputDirections().contains(facing) ? (T) new ForgeReceiver(this) : null;
         }
         return super.getCapability(capability, facing);
+    }
+    
+    private static class ForgeReceiver implements net.minecraftforge.energy.IEnergyStorage
+    {
+        private TileBaseUniversalElectrical tile;
+
+        public ForgeReceiver(TileBaseUniversalElectrical tileElectrical)
+        {
+            this.tile = tileElectrical;
+        }
+        
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
+            if (EnergyConfigHandler.disableFEInput)
+                return 0;
+
+            return MathHelper.floor(tile.receiveElectricity(null, maxReceive * EnergyConfigHandler.RF_RATIO, 1, !simulate) / EnergyConfigHandler.RF_RATIO);
+        }
+        
+        @Override
+        public boolean canReceive()
+        {
+            return !EnergyConfigHandler.disableFEInput;
+        }
+
+        @Override
+        public int getEnergyStored()
+        {
+            if (EnergyConfigHandler.disableFEInput)
+                return 0;
+
+            return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        }
+
+        @Override
+        public int getMaxEnergyStored()
+        {
+            if (EnergyConfigHandler.disableFEInput)
+                return 0;
+
+            return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate)
+        {
+             return 0;
+        }
+
+        @Override
+        public boolean canExtract()
+        {
+            return false;
+        }
     }
 }

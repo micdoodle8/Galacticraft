@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
+import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
@@ -15,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -126,21 +128,38 @@ public class ItemUniversalWrench extends Item implements ISortableItem
             {
                 PropertyEnum<EnumFacing> property = (PropertyEnum<EnumFacing>) iProperty;
                 Collection<EnumFacing> values = property.getAllowedValues();
-                List<EnumFacing> list = Arrays.asList(values.toArray(new EnumFacing[0]));
-                if (list.size() > 0)
+                if (values.size() > 0)
                 {
-                    int i = list.indexOf(state.getValue(property));
-                    if (i + 1 < list.size())
+                    boolean done = false;
+                    EnumFacing currentFacing = state.getValue(property);
+                    
+                    // Special case: horizontal facings should be rotated around the Y axis - this includes most of GC's own blocks
+                    if (values.size() == 4 && !values.contains(EnumFacing.UP) && !values.contains(EnumFacing.DOWN))
                     {
-                        world.setBlockState(pos, state.withProperty(property, list.get(i + 1)));
-                    } else
-                    {
-                        world.setBlockState(pos, state.withProperty(property, list.get(0)));
+                        EnumFacing newFacing = currentFacing.rotateY();
+                        if (values.contains(newFacing))
+                        {
+                            world.setBlockState(pos, state.withProperty(property, newFacing));
+                            done = true;
+                        }
                     }
+                    if (!done)
+                    {
+                        // General case: rotation will follow the order in FACING (may be a bit jumpy)
+                        List<EnumFacing> list = Arrays.asList(values.toArray(new EnumFacing[0]));
+                        int i = list.indexOf(currentFacing) + 1;
+                        EnumFacing newFacing = list.get(i >= list.size() ? 0 : i);
+                        world.setBlockState(pos, state.withProperty(property, newFacing));
+                    }
+
                     ItemStack stack = player.getHeldItem(hand).copy();
                     stack.damageItem(1, player);
-
                     player.setHeldItem(hand, stack);
+
+                    TileEntity tile = world.getTileEntity(pos);
+                    if (tile instanceof TileBaseUniversalElectrical)
+                        ((TileBaseUniversalElectrical) tile).updateFacing();
+
                     return EnumActionResult.SUCCESS;
                 }
                 return EnumActionResult.PASS;

@@ -255,7 +255,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     public boolean hasCapability(Capability<?> cap, EnumFacing side)
     {
         if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return true;
-        if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
+        if (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage)
         {
             return this.canOutputEnergy(side);
         }
@@ -269,7 +269,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     @Override
     public <T> T getCapability(Capability<T> cap, EnumFacing side)
     {
-        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return (T) this;
+        if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return (T) new ForgeEmitter(this);
         if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
         {
             return (T) this;
@@ -324,20 +324,58 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
     }
     
-    //ForgeEnergy
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate)
+    private static class ForgeEmitter implements net.minecraftforge.energy.IEnergyStorage
     {
-        if (!canExtract())
+        private TileBaseUniversalElectrical tile;
+
+        public ForgeEmitter(TileBaseUniversalElectrical tileElectrical)
+        {
+            this.tile = tileElectrical;
+        }
+        
+        @Override
+        public int receiveEnergy(int maxReceive, boolean simulate)
+        {
             return 0;
+        }
+        
+        @Override
+        public boolean canReceive()
+        {
+            return false;
+        }
 
-        return MathHelper.floor(this.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
-    }
+        @Override
+        public int getEnergyStored()
+        {
+            if (EnergyConfigHandler.disableFEOutput)
+                return 0;
 
-    //ForgeEnergy
-    @Override
-    public boolean canExtract()
-    {
-        return !EnergyConfigHandler.disableFEOutput;
+            return MathHelper.floor(tile.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        }
+
+        @Override
+        public int getMaxEnergyStored()
+        {
+            if (EnergyConfigHandler.disableFEOutput)
+                return 0;
+
+            return MathHelper.floor(tile.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
+        }
+
+        @Override
+        public int extractEnergy(int maxExtract, boolean simulate)
+        {
+            if (!canExtract())
+                return 0;
+
+            return MathHelper.floor(tile.storage.extractEnergyGC(maxExtract / EnergyConfigHandler.TO_RF_RATIO, !simulate) * EnergyConfigHandler.TO_RF_RATIO);
+        }
+
+        @Override
+        public boolean canExtract()
+        {
+            return !EnergyConfigHandler.disableFEOutput;
+        }
     }
 }

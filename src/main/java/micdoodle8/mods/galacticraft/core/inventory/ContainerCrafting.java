@@ -28,7 +28,7 @@ public class ContainerCrafting extends Container
         this.tileEntity = (TileEntityCrafting) tile;
         this.craftMatrix = tileEntity.craftMatrix;
         this.craftMatrix.eventHandler = this;
-        this.addSlotToContainer(new SlotCraftingMemory(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 35, this.tileEntity));
+        this.addSlotToContainer(new SlotCraftingMemory(playerInventory.player, this.craftMatrix, this.craftResult, 0, 124, 33, this.tileEntity));
 
         for (int i = 0; i < 3; ++i)
         {

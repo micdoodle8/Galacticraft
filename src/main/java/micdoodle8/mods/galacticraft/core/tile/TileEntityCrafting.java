@@ -4,6 +4,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
+import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -23,13 +24,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory
+public class TileEntityCrafting extends TileEntity implements IInventoryDefaults, ISidedInventory, IInventorySettable
 {
     private static final int SIZEINVENTORY = 9;
     public PersistantInventoryCrafting craftMatrix = new PersistantInventoryCrafting();
     public NonNullList<ItemStack> memory = NonNullList.withSize(SIZEINVENTORY, ItemStack.EMPTY);
     private ItemStack hiddenOutputBuffer = ItemStack.EMPTY;   //Used for Buildcraft pipes and other inventory-slot setters which do not fully clear the results slot - see setInventorySlotContents()
     private Boolean overriddenStatus;
+    private ItemStack memoryResult;
 
     public TileEntityCrafting()
     {
@@ -51,9 +53,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         return oldState.getBlock() != newSate.getBlock();
     }
 
-    public void updateMemory()
+    public void updateMemory(ItemStack craftingResult)
     {
         if (CraftingManager.findMatchingResult(this.craftMatrix, this.getWorld()) == ItemStack.EMPTY) return;
+        this.setMemoryHeld(craftingResult);
         for (int i = 0; i < SIZEINVENTORY; i++)
         {
             ItemStack stack = this.craftMatrix.getStackInSlot(i);
@@ -296,6 +299,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             }
             NBTTagCompound buffer = nbt.getCompoundTag("buf");
             this.hiddenOutputBuffer = new ItemStack(buffer);
+            this.updateMemoryItem();
         }
         this.updateOverriddenStatus();
     }
@@ -517,5 +521,41 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 worldIn.spawnEntity(var12);
             }
         }
+    }
+    
+    public void setMemoryHeld(ItemStack stack)
+    {
+        this.memoryResult = stack.copy();
+    }
+
+    public ItemStack getMemoryHeld()
+    {
+        return this.memoryResult == null ? ItemStack.EMPTY : this.memoryResult;
+    }
+    
+    private void updateMemoryItem()
+    {
+        PersistantInventoryCrafting memCopy = new PersistantInventoryCrafting();
+        for (int i = 0; i < SIZEINVENTORY; i++)
+        {
+            memCopy.setInventorySlotContents(i, this.getMemory(i));
+        }
+        ItemStack stack = CraftingManager.findMatchingResult(memCopy, this.getWorld());
+        if (!stack.isEmpty()) this.setMemoryHeld(stack);
+    }
+
+    public void setStacksClientSide(ItemStack[] stacks)
+    {
+        for (int i = 0; i < SIZEINVENTORY; i++)
+        {
+            this.setInventorySlotContents(i, stacks[i]);
+        }
+        if (stacks.length > SIZEINVENTORY) this.setMemoryHeld(stacks[SIZEINVENTORY]);
+    }
+
+    @Override
+    public void setSizeInventory(int size)
+    {
+        //Intentionally no operation
     }
 }

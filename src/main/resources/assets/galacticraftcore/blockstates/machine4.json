@@ -1,0 +1,47 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+                        "textures": {
+                        "particle": "galacticraftcore:blocks/advanced/machine",
+                        "front": "galacticraftcore:blocks/advanced/electric_compressor",
+                        "rear": "galacticraftcore:blocks/advanced/machine_side",
+                        "side": "galacticraftcore:blocks/advanced/machine_side",
+                        "el_in": "galacticraftcore:blocks/advanced/machine_input",
+                        "el_out": "galacticraftcore:blocks/advanced/machine_side",
+                        "top": "galacticraftcore:blocks/advanced/machine",
+                        "base": "galacticraftcore:blocks/advanced/machine"  }
+    },
+    "variants": {
+        "inventory": [{ "model": "galacticraftcore:electric_compressor_model" }],
+
+        "facing" : {
+           "north": { },
+           "east":  { "y": 90 },
+           "west":  { "y": 270 },
+           "south": { "y": 180 }
+        },
+        
+        "msm" : {
+            "lr": { "model": "galacticraftcore:machine_tiered_lr" },
+            "lb": { "model": "galacticraftcore:machine_tiered_lb" },
+            "rl": { "model": "galacticraftcore:machine_tiered_rl" },
+            "rb": { "model": "galacticraftcore:machine_tiered_rb" },
+            "bl": { "model": "galacticraftcore:machine_tiered_bl" },
+            "br": { "model": "galacticraftcore:machine_tiered_br" }
+        },
+
+        "type" : {
+           "advanced_compressor": { 
+                    "textures": {
+                        "particle": "galacticraftcore:blocks/advanced/machine",
+                        "front": "galacticraftcore:blocks/advanced/electric_compressor",
+                        "rear": "galacticraftcore:blocks/advanced/machine_side",
+                        "side": "galacticraftcore:blocks/advanced/machine_side",
+                        "el_in": "galacticraftcore:blocks/advanced/machine_input",
+                        "el_out": "galacticraftcore:blocks/advanced/machine_side",
+                        "top": "galacticraftcore:blocks/advanced/machine",
+                        "base": "galacticraftcore:blocks/advanced/machine"  }
+            }
+        }
+    }
+}

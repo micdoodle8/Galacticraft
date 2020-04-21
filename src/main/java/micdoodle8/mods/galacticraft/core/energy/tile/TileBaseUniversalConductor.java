@@ -453,7 +453,9 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     {
         if (capability == CapabilityEnergy.ENERGY)
         {
-            return (T) this;
+            if (EnergyUtil.clazzEnderIOCable == null) return (T) this;
+            TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, facing);
+            return EnergyUtil.clazzEnderIOCable.isInstance(tile) ? null : (T) this;
         }
         if (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR))
         {

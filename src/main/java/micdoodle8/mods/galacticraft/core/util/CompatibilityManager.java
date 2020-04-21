@@ -115,7 +115,7 @@ public class CompatibilityManager
                 modICClassicLoaded = true;
             }
             catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                //Silent error - there will always be an Exception here if IC2 (not IC2 Classic) is present.
             }
 
             if (!modICClassicLoaded) {
