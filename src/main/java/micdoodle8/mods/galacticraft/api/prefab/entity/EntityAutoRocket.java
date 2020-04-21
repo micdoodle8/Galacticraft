@@ -471,6 +471,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             if (this.rocketSoundToStop)
             {
                 this.stopRocketSound();
+                if (this.rocketSoundUpdater != null)
+                {
+                    FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+                }
                 this.rocketSoundUpdater = null;
             }
         }
@@ -641,6 +645,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         this.setPositionAndRotation(pos.getX() + 0.5, pos.getY() + 0.4D + this.getOnPadYOffset(), pos.getZ() + 0.5, this.rotationYaw, 0.0F);
         this.stopRocketSound();
+        if (this.rocketSoundUpdater != null)
+        {
+            FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+        }
         this.rocketSoundUpdater = null;  //Allow sound to be restarted again if it relaunches
     }
     
@@ -695,6 +703,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         boolean landingNew = buffer.readBoolean();
         if (landingNew && launchPhaseLast != EnumLaunchPhase.LANDING.ordinal())
         {
+            if (this.rocketSoundUpdater != null)
+            {
+                FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+            }
             this.rocketSoundUpdater = null;  //Flag TickHandlerClient to restart it
         }
         this.destinationFrequency = buffer.readInt();
