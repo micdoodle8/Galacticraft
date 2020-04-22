@@ -60,6 +60,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledDimensionChange;
+import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -136,6 +137,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
         S_REQUEST_DATA(Side.SERVER, Integer.class, BlockPos.class),
         S_UPDATE_CHECKLIST(Side.SERVER, NBTTagCompound.class),
         S_REQUEST_MACHINE_DATA(Side.SERVER, BlockPos.class),
+        S_REQUEST_CONTAINER_SLOT_REFRESH(Side.SERVER, Integer.class),
         // CLIENT
         C_AIR_REMAINING(Side.CLIENT, Integer.class, Integer.class, String.class),
         C_UPDATE_DIMENSION_LIST(Side.CLIENT, String.class, String.class, Boolean.class),
@@ -561,6 +563,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 player.openContainer.windowId = (Integer) this.data.get(0);
                 break;
             }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
             break;
         case C_UPDATE_WIRE_BOUNDS:
             TileEntity tile = player.world.getTileEntity((BlockPos) this.data.get(0));
@@ -1318,7 +1321,19 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                 ((ITileClientUpdates)tile3).sendUpdateToClient(playerBase);
             }
             break;
-
+        case S_REQUEST_CONTAINER_SLOT_REFRESH:
+            // It seems as though "Update slot" packets sent internally on the minecraft network packets are sent and
+            // received before our custom gui open packets are handled. This causes slots to not update, because from
+            // the client's perspective the gui isn't open yet. Sending this to the server causes all slots to be updated
+            // server -> client
+            if (player.openContainer.windowId == (Integer) this.data.get(0))
+            {
+                for (int i = 0; i < player.openContainer.inventoryItemStacks.size(); ++i)
+                {
+                    player.openContainer.inventoryItemStacks.set(i, ItemStack.EMPTY);
+                }
+            }
+            break;
         default:
             break;
         }

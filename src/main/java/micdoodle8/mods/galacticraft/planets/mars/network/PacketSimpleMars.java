@@ -1,9 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.mars.network;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketBase;
+import micdoodle8.mods.galacticraft.core.network.PacketSimple;
+import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
@@ -162,6 +165,8 @@ public class PacketSimpleMars extends PacketBase
                 player.openContainer.windowId = (Integer) this.data.get(0);
                 break;
             }
+
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
             break;
         case C_OPEN_CUSTOM_GUI_TILE:
             BlockPos pos;
@@ -181,6 +186,7 @@ public class PacketSimpleMars extends PacketBase
                 player.openContainer.windowId = (Integer) this.data.get(0);
                 break;
             }
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_CONTAINER_SLOT_REFRESH, GCCoreUtil.getDimensionID(player.world), new Object[] { player.openContainer.windowId }));
             break;
         case C_BEGIN_CRYOGENIC_SLEEP:
             pos = (BlockPos) this.data.get(0);
