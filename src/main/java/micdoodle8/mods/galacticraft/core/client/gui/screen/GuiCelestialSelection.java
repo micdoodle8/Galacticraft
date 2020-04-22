@@ -69,9 +69,17 @@ public class GuiCelestialSelection extends GuiScreen
     protected Vector2f preSelectPosition = new Vector2f();
     protected static ResourceLocation guiMain0 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection.png");
     protected static ResourceLocation guiMain1 = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialselection1.png");
+    protected float ticksSinceSelectionF = 0;
+    protected float ticksSinceUnselectionF = -1;
+    protected float ticksSinceMenuOpenF = 0;
+    protected float ticksTotalF = 0;
+    @Deprecated
     protected int ticksSinceSelection = 0;
+    @Deprecated
     protected int ticksSinceUnselection = -1;
+    @Deprecated
     protected int ticksSinceMenuOpen = 0;
+    @Deprecated
     protected int ticksTotal = 0;
     protected int animateGrandchildren = 0;
     protected Vector2f position = new Vector2f(0, 0);
@@ -312,9 +320,9 @@ public class GuiCelestialSelection extends GuiScreen
 
     protected float getZoomAdvanced()
     {
-        if (this.ticksTotal < 30)
+        if (this.ticksTotalF < 30)
         {
-            float scale = Math.max(0.0F, Math.min(this.ticksTotal / 30.0F, 1.0F));
+            float scale = Math.max(0.0F, Math.min(this.ticksTotalF / 30.0F, 1.0F));
             return this.lerp(-0.75F, 0.0F, (float) Math.pow(scale, 0.5F));
         }
 
@@ -322,12 +330,13 @@ public class GuiCelestialSelection extends GuiScreen
         {
             if (!this.doneZooming)
             {
-                float unselectScale = this.lerp(this.zoom, this.preSelectZoom, Math.max(0.0F, Math.min(this.ticksSinceUnselection / 100.0F, 1.0F)));
+                float unselectScale = this.lerp(this.zoom, this.preSelectZoom, Math.max(0.0F, Math.min(this.ticksSinceUnselectionF / 100.0F, 1.0F)));
 
                 if (unselectScale <= this.preSelectZoom + 0.05F)
                 {
                     this.zoom = this.preSelectZoom;
 //                    this.preSelectZoom = 0.0F;
+                    this.ticksSinceUnselectionF = -1;
                     this.ticksSinceUnselection = -1;
                     this.doneZooming = true;
                 }
@@ -340,7 +349,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         if (!this.doneZooming)
         {
-            float f = this.lerp(this.zoom, 12, Math.max(0.0F, Math.min((this.ticksSinceSelection - 20) / 40.0F, 1.0F)));
+            float f = this.lerp(this.zoom, 12, Math.max(0.0F, Math.min((this.ticksSinceSelectionF - 20) / 40.0F, 1.0F)));
 
             if (f >= 11.95F)
             {
@@ -357,11 +366,12 @@ public class GuiCelestialSelection extends GuiScreen
     {
         if (this.selectedBody == null)
         {
-            if (this.ticksSinceUnselection > 0)
+            if (this.ticksSinceUnselectionF > 0)
             {
-                float f0 = Math.max(0.0F, Math.min((this.ticksSinceUnselection + partialTicks) / 100.0F, 1.0F));
+                float f0 = Math.max(0.0F, Math.min(this.ticksSinceUnselectionF / 100.0F, 1.0F));
                 if (f0 >= 0.999999F)
                 {
+                    this.ticksSinceUnselectionF = 0;
                     this.ticksSinceUnselection = 0;
                 }
                 return this.lerpVec2(this.position, this.preSelectPosition, f0);
@@ -397,7 +407,7 @@ public class GuiCelestialSelection extends GuiScreen
         }
 
         Vector3f posVec = this.getCelestialBodyPosition(this.selectedBody);
-        return this.lerpVec2(pos, new Vector2f(posVec.x, posVec.y), Math.max(0.0F, Math.min((this.ticksSinceSelection + partialTicks - 18) / 7.5F, 1.0F)));
+        return this.lerpVec2(pos, new Vector2f(posVec.x, posVec.y), Math.max(0.0F, Math.min((this.ticksSinceSelectionF - 18) / 7.5F, 1.0F)));
     }
 
     @Override
@@ -513,6 +523,7 @@ public class GuiCelestialSelection extends GuiScreen
     protected void unselectCelestialBody()
     {
         this.selectionState = EnumSelection.UNSELECTED;
+        this.ticksSinceUnselectionF = 0;
         this.ticksSinceUnselection = 0;
         this.lastSelectedBody = this.selectedBody;
         this.selectedBody = null;
@@ -715,6 +726,7 @@ public class GuiCelestialSelection extends GuiScreen
                                 this.selectionState = EnumSelection.ZOOMED;
                                 this.preSelectZoom = this.zoom;
                                 this.preSelectPosition = this.position;
+                                this.ticksSinceSelectionF = 0;
                                 this.ticksSinceSelection = 0;
                                 this.doneZooming = false;
                             }
@@ -892,10 +904,12 @@ public class GuiCelestialSelection extends GuiScreen
             }
 
             this.selectedBody = (CelestialBody) this.selectedParent;
+            this.ticksSinceSelectionF = 0;
             this.ticksSinceSelection = 0;
             this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
             if (this.isZoomed() && !planetZoomedMoon)
             {
+                this.ticksSinceMenuOpenF = 0;
                 this.ticksSinceMenuOpen = 0;
             }
             clickHandled = true;
@@ -925,6 +939,7 @@ public class GuiCelestialSelection extends GuiScreen
                 }
 
                 this.selectedBody = (CelestialBody) this.selectedParent;
+                this.ticksSinceSelectionF = 0;
                 this.ticksSinceSelection = 0;
                 this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
             }
@@ -1010,6 +1025,7 @@ public class GuiCelestialSelection extends GuiScreen
                         }
 
                         this.selectedBody = bodyClicked;
+                        this.ticksSinceSelectionF = 0;
                         this.ticksSinceSelection = 0;
                         this.selectionState = EnumSelection.values()[this.selectionState.ordinal() + 1];
 
@@ -1020,6 +1036,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                         if (this.isZoomed())
                         {
+                            this.ticksSinceMenuOpenF = 0;
                             this.ticksSinceMenuOpen = 0;
                         }
 
@@ -1105,10 +1122,12 @@ public class GuiCelestialSelection extends GuiScreen
                 }
 
                 this.selectedBody = body;
+                this.ticksSinceSelectionF = 0;
                 this.ticksSinceSelection = 0;
                 if (grandchild) this.selectionState = EnumSelection.ZOOMED;
                 if (this.isZoomed())
                 {
+                    this.ticksSinceMenuOpenF = 0;
                     this.ticksSinceMenuOpen = 0;
                 }
                 this.animateGrandchildren = 0;
@@ -1127,6 +1146,19 @@ public class GuiCelestialSelection extends GuiScreen
     @Override
     public void drawScreen(int mousePosX, int mousePosY, float partialTicks)
     {
+        this.ticksSinceMenuOpenF += partialTicks;
+        this.ticksTotalF += partialTicks;
+
+        if (this.selectedBody != null)
+        {
+            this.ticksSinceSelectionF += partialTicks;
+        }
+
+        if (this.selectedBody == null && this.ticksSinceUnselectionF >= 0)
+        {
+            this.ticksSinceUnselectionF += partialTicks;
+        }
+
         if (Mouse.hasWheel())
         {
             float wheel = Mouse.getDWheel() / (this.selectedBody == null ? 500.0F : 250.0F);
@@ -1252,7 +1284,7 @@ public class GuiCelestialSelection extends GuiScreen
                 fb.clear();
                 GL11.glScalef(1 / 15.0F, 1 / 15.0F, 1);
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
-                float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 2.0F) * 0.5F + 0.5F) : 1.0F;
+                float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelectionF / 2.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(1.0F, 1.0F, 0.0F, 1 * colMod);
                 int width = (int)Math.floor((getWidthForCelestialBody(this.selectedBody) / 2.0) * (this.selectedBody instanceof IChildBody ? 9.0 : 30.0));
 
@@ -1275,10 +1307,10 @@ public class GuiCelestialSelection extends GuiScreen
                 setupMatrix(this.selectedBody, worldMatrix, fb);
                 fb.clear();
                 float div = (this.zoom + 1.0F - this.planetZoom);
-                float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelection / 5.0F)) * 2.0F / div;
+                float scale = Math.max(0.3F, 1.5F / (this.ticksSinceSelectionF / 5.0F)) * 2.0F / div;
                 GL11.glScalef(scale, scale, 1);
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
-                float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelection / 1.0F) * 0.5F + 0.5F) : 1.0F;
+                float colMod = this.getZoomAdvanced() < 4.9F ? (float) (Math.sin(this.ticksSinceSelectionF / 1.0F) * 0.5F + 0.5F) : 1.0F;
                 GL11.glColor4f(0.4F, 0.8F, 1.0F, 1 * colMod);
                 int width = getWidthForCelestialBody(this.selectedBody) * 13;
                 this.drawTexturedModalRect(-width, -width, width * 2, width * 2, 266, 29, 100, 100, false, false);
@@ -1305,7 +1337,7 @@ public class GuiCelestialSelection extends GuiScreen
 
         float timeScale = cBody instanceof Planet ? 200.0F : 2.0F;
         float distanceFromCenter = this.getScale(cBody);
-        Vector3f cBodyPos = new Vector3f((float) Math.sin(ticksTotal / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticksTotal / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
+        Vector3f cBodyPos = new Vector3f((float) Math.sin(ticksTotalF / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, (float) Math.cos(ticksTotalF / (timeScale * cBody.getRelativeOrbitTime()) + cBody.getPhaseShift()) * distanceFromCenter, 0);
 
         if (cBody instanceof Planet)
         {
@@ -1437,8 +1469,8 @@ public class GuiCelestialSelection extends GuiScreen
                 this.drawTexturedModalRect(LHS, BOT - 13, 88, 13, 0, 392, 148, 22, false, true);
                 this.drawTexturedModalRect(RHS - 88, BOT - 13, 88, 13, 0, 392, 148, 22, true, true);
                 int menuTopLeft = TOP - 115 + height / 2 - 4;
-                int posX = LHS + Math.min(this.ticksSinceSelection * 10, 133) - 134;
-                int posX2 = (int) (LHS + Math.min(this.ticksSinceSelection * 1.25F, 15) - 15);
+                int posX = LHS + Math.min((int)this.ticksSinceSelectionF * 10, 133) - 134;
+                int posX2 = (int) (LHS + Math.min(this.ticksSinceSelectionF * 1.25F, 15) - 15);
                 int fontPosY = menuTopLeft + GuiCelestialSelection.BORDER_EDGE_SIZE + this.fontRenderer.FONT_HEIGHT / 2 - 2;
                 this.drawTexturedModalRect(posX, menuTopLeft + 12, 133, 196, 0, 0, 266, 392, false, false);
 
@@ -1512,7 +1544,7 @@ public class GuiCelestialSelection extends GuiScreen
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.fontRenderer.drawString(str, LHS + 40 - fontRenderer.getStringWidth(str) / 2, TOP + 1, WHITE);
 
-            int scale = (int) Math.min(95, this.ticksSinceMenuOpen * 12.0F);
+            int scale = (int) Math.min(95, this.ticksSinceMenuOpenF * 12.0F);
             boolean planetZoomedNotMoon = this.isZoomed() && !(this.selectedParent instanceof Planet); 
 
             // Parent frame:
@@ -1737,7 +1769,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                                 Iterator<ItemStack> it = items.iterator();
                                 int count = 0;
-                                int toRenderIndex = (this.ticksSinceMenuOpen / 20) % items.size();
+                                int toRenderIndex = ((int)this.ticksSinceMenuOpenF / 20) % items.size();
                                 ItemStack toRender = null;
                                 while (it.hasNext())
                                 {
@@ -1833,7 +1865,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                         this.drawTexturedModalRect(RHS - 95, TOP + 182 + canCreateOffset, 93, 12, 0, 174, 93, 12, false, false);
 
-                        int color = (int) ((Math.sin(this.ticksSinceMenuOpen / 5.0) * 0.5 + 0.5) * 255);
+                        int color = (int) ((Math.sin(this.ticksSinceMenuOpenF / 5.0) * 0.5 + 0.5) * 255);
                         this.drawSplitString(GCCoreUtil.translate("gui.message.can_create_space_station.name"), RHS - 48, TOP + 137, 91, ColorUtil.to32BitColor(255, color, 255, color), true, false);
 
                         if (!mapMode)
@@ -1849,7 +1881,7 @@ public class GuiCelestialSelection extends GuiScreen
 
                 // Catalog overlay
                 this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F - Math.min(0.3F, this.ticksSinceSelection / 50.0F));
+                GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.3F - Math.min(0.3F, this.ticksSinceSelectionF / 50.0F));
                 this.drawTexturedModalRect(LHS, TOP, 74, 11, 0, 392, 148, 22, false, false);
                 str = GCCoreUtil.translate("gui.message.catalog.name").toUpperCase();
                 this.fontRenderer.drawString(str, LHS + 40 - fontRenderer.getStringWidth(str) / 2, TOP + 1, WHITE);
@@ -1931,7 +1963,7 @@ public class GuiCelestialSelection extends GuiScreen
                     int sliderPos = this.zoomTooltipPos;
                     if (zoomTooltipPos != 38)
                     {
-                        sliderPos = Math.min(this.ticksSinceSelection * 2, 38);
+                        sliderPos = Math.min((int)this.ticksSinceSelectionF * 2, 38);
                         this.zoomTooltipPos = sliderPos;
                     }
 
@@ -1995,7 +2027,7 @@ public class GuiCelestialSelection extends GuiScreen
                     str = this.renamingString;
                     String str0 = this.renamingString;
 
-                    if ((this.ticksSinceMenuOpen / 10) % 2 == 0)
+                    if ((this.ticksSinceMenuOpenF / 10) % 2 == 0)
                     {
                         str0 += "_";
                     }
@@ -2026,7 +2058,7 @@ public class GuiCelestialSelection extends GuiScreen
         {
             CelestialBody child = children.get(i);
             int xOffset = xOffsetBase + (child.equals(this.selectedBody) ? 5 : 0);  
-            final int scale = (int) Math.min(95.0F, Math.max(0.0F, (this.ticksSinceMenuOpen * 25.0F) - 95 * i));
+            final int scale = (int) Math.min(95.0F, Math.max(0.0F, (this.ticksSinceMenuOpenF * 25.0F) - 95 * i));
 
             this.mc.renderEngine.bindTexture(GuiCelestialSelection.guiMain0);
             float brightness = child.equals(this.selectedBody) ? 0.2F : 0.0F;
@@ -2345,7 +2377,7 @@ public class GuiCelestialSelection extends GuiScreen
         if (body instanceof IChildBody)
         {
             boolean selected = body == this.selectedBody || (((IChildBody) body).getParentPlanet() == this.selectedBody && this.selectionState != EnumSelection.SELECTED);
-            boolean ready = this.lastSelectedBody != null || this.ticksSinceSelection > 35;
+            boolean ready = this.lastSelectedBody != null || this.ticksSinceSelectionF > 35;
             boolean isSibling = getSiblings(this.selectedBody).contains(body);
             boolean isPossible = !(body instanceof Satellite) || (this.possibleBodies != null && this.possibleBodies.contains(body));
             if ((!selected && !isSibling) || !isPossible)
@@ -2354,7 +2386,7 @@ public class GuiCelestialSelection extends GuiScreen
             }
             else if (this.isZoomed() && ((!selected || !ready) && !isSibling))
             {
-                alpha = Math.min(Math.max((this.ticksSinceSelection - 30) / 15.0F, 0.0F), 1.0F);
+                alpha = Math.min(Math.max((this.ticksSinceSelectionF - 30) / 15.0F, 0.0F), 1.0F);
             }
         }
         else
@@ -2371,7 +2403,7 @@ public class GuiCelestialSelection extends GuiScreen
                 }
                 else
                 {
-                    alpha = 1.0F - Math.min(this.ticksSinceSelection / 25.0F, 1.0F);
+                    alpha = 1.0F - Math.min(this.ticksSinceSelectionF / 25.0F, 1.0F);
                 }
             }
         }
