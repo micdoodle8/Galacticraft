@@ -70,7 +70,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
 
         for (ItemStack itemstack : player.inventory.mainInventory)
         {
-            if (OreDictionary.containsMatch(false, stringEntries, itemstack))
+            if (!canShoot && OreDictionary.containsMatch(false, stringEntries, itemstack))
             {
                 string = itemstack;
                 canShoot = true;
@@ -79,12 +79,8 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
 
         if (canShoot)
         {
-            if (string == ItemStack.EMPTY)
-            {
-                string = new ItemStack(Items.STRING, 1);
-            }
-
-            EntityGrapple grapple = new EntityGrapple(worldIn, player, 2.0F, new ItemStack(string.getItem(), 1, string.getItemDamage(), string.getTagCompound()));
+            ItemStack pickupString = string == ItemStack.EMPTY ? ItemStack.EMPTY : new ItemStack(string.getItem(), 1, string.getItemDamage(), string.getTagCompound());
+            EntityGrapple grapple = new EntityGrapple(worldIn, player, 2.0F, pickupString);
 
             worldIn.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (Item.itemRand.nextFloat() * 0.4F + 1.2F) + 0.5F);
 

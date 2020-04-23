@@ -495,7 +495,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             boolean flag = this.canBePickedUp == 1 || this.canBePickedUp == 2 && par1EntityPlayer.capabilities.isCreativeMode;
 
-            if (this.canBePickedUp == 1 && !par1EntityPlayer.inventory.addItemStackToInventory(getStringItemStack()))
+            if (this.canBePickedUp == 1 && getStringItemStack() != ItemStack.EMPTY && !par1EntityPlayer.inventory.addItemStackToInventory(getStringItemStack()))
             {
                 flag = false;
             }
