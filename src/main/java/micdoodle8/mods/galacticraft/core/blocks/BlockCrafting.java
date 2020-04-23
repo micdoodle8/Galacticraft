@@ -69,6 +69,46 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
         return true;
     }
 
+    private void rotate6Ways(World world, BlockPos pos)
+    {
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing facing = state.getValue(FACING);
+        if (facing == EnumFacing.DOWN)
+        {
+            facing = EnumFacing.UP;
+        }
+        else if (facing == EnumFacing.UP)
+        {
+            facing = EnumFacing.NORTH;
+        }
+        else if (facing == EnumFacing.WEST)
+        {
+            facing = EnumFacing.DOWN;
+        }
+        else
+        {
+            facing = facing.rotateY();
+        }
+//        int metadata = this.getMetaFromState(world.getBlockState(pos));
+//        int metaDir = ((metadata & 7) + 1) % 6;
+//        //DOWN->UP->NORTH->*EAST*->*SOUTH*->WEST
+//        //0->1 1->2 2->5 3->4 4->0 5->3
+//        if (metaDir == 3) //after north
+//        {
+//            metaDir = 5;
+//        }
+//        else if (metaDir == 0)
+//        {
+//            metaDir = 3;
+//        }
+//        else if (metaDir == 5)
+//        {
+//            metaDir = 0;
+//        }
+
+        world.setBlockState(pos, state.withProperty(FACING, facing), 3);
+    }
+
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta)
     {

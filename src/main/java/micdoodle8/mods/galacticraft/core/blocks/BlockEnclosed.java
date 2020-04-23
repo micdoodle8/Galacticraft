@@ -229,14 +229,15 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        int metadata = state.getBlock().getMetaFromState(state);
+//        int metadata = state.getBlock().getMetaFromState(state);
+        EnumEnclosedBlockType type = state.getValue(TYPE);
         final TileEntity tileEntity = worldIn.getTileEntity(pos);
 
-        if (metadata == EnumEnclosedBlockType.TE_CONDUIT.getMeta())
+        if (type == EnumEnclosedBlockType.TE_CONDUIT)
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         }
-        else if (metadata == EnumEnclosedBlockType.OXYGEN_PIPE.getMeta())
+        else if (type == EnumEnclosedBlockType.OXYGEN_PIPE)
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
@@ -245,7 +246,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 ((INetworkConnection) tileEntity).refresh();
             }
         }
-        else if (metadata <= 6)
+        else if (type.getMeta() <= 6)
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
             if (CompatibilityManager.isIc2Loaded() && tileEntity != null)
@@ -267,7 +268,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 }
             }
         }
-        else if (metadata <= 12)
+        else if (type.getMeta() <= 12)
         {
             if (CompatibilityManager.isBCraftTransportLoaded())
             {
@@ -287,7 +288,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
         }
-        else if (metadata <= EnumEnclosedBlockType.ME_CABLE.getMeta())
+        else if (type.getMeta() <= EnumEnclosedBlockType.ME_CABLE.getMeta())
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
             if (CompatibilityManager.isAppEngLoaded())
@@ -295,7 +296,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 //                worldIn.notifyBlockUpdate(pos); TODO
             }
         }
-        else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())
+        else if (type.getMeta() <= EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta())
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
             if (tileEntity instanceof IConductor)
@@ -303,7 +304,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                 ((IConductor) tileEntity).refresh();
             }
         }
-        else if (metadata <= EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta())
+        else if (type.getMeta() <= EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta())
         {
             super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
             if (tileEntity instanceof IConductor)

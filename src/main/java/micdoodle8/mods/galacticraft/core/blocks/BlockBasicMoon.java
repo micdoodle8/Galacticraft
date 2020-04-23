@@ -378,12 +378,12 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune)
     {
         if (state.getBlock() != this) return 0;
-        
-        int meta = this.getMetaFromState(state);
-        if (meta == 2 || meta == 6)
+
+        EnumBlockBasicMoon type = state.getValue(BASIC_TYPE_MOON);
+        if (type == EnumBlockBasicMoon.ORE_CHEESE_MOON || type == EnumBlockBasicMoon.ORE_SAPPHIRE)
         {
             Random rand = world instanceof World ? ((World)world).rand : new Random();
-            return MathHelper.getInt(rand, 2, 5) + (meta == 6 ? 1 : 0);
+            return MathHelper.getInt(rand, 2, 5) + (type == EnumBlockBasicMoon.ORE_SAPPHIRE ? 1 : 0);
         }
         return 0;
     }

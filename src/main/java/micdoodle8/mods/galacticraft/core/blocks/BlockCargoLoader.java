@@ -114,7 +114,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public TileEntity createTileEntity(World world, IBlockState state)
     {
-        if (getMetaFromState(state) < BlockCargoLoader.METADATA_CARGO_UNLOADER)
+        if (state.getValue(TYPE) == EnumLoaderType.CARGO_LOADER)
         {
             return new TileEntityCargoLoader();
         }
@@ -128,18 +128,18 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
     {
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
+//        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
+//
+//        if (stack.getItemDamage() >= METADATA_CARGO_UNLOADER)
+//        {
+//            change += METADATA_CARGO_UNLOADER;
+//        }
+//        else if (stack.getItemDamage() >= METADATA_CARGO_LOADER)
+//        {
+//            change += METADATA_CARGO_LOADER;
+//        }
 
-        if (stack.getItemDamage() >= METADATA_CARGO_UNLOADER)
-        {
-            change += METADATA_CARGO_UNLOADER;
-        }
-        else if (stack.getItemDamage() >= METADATA_CARGO_LOADER)
-        {
-            change += METADATA_CARGO_LOADER;
-        }
-
-        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
+        worldIn.setBlockState(pos, state.withProperty(FACING, EnumFacing.getHorizontal(angle).getOpposite()), 3);
         WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 

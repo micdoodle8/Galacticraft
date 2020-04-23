@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 /**
  * Do not include this prefab class in your released mod download.
  */
+@Deprecated
 public class BlockMetaPair
 {
     private final Block block;

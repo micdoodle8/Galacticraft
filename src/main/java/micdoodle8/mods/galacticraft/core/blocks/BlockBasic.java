@@ -206,12 +206,13 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public boolean isValueable(IBlockState state)
     {
-        switch (this.getMetaFromState(state))
+        EnumBlockBasic type = state.getValue(BASIC_TYPE);
+        switch (type)
         {
-        case 5:
-        case 6:
-        case 7:
-        case 8:
+        case ORE_COPPER:
+        case ORE_TIN:
+        case ORE_ALUMINUM:
+        case ORE_SILICON:
             return true;
         }
         return false;
@@ -220,11 +221,9 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        int metadata = getMetaFromState(world.getBlockState(pos));
-
-        if (metadata == 8)
+        if (world.getBlockState(pos).getValue(BASIC_TYPE) == EnumBlockBasic.ORE_SILICON)
         {
-            return new ItemStack(Item.getItemFromBlock(this), 1, metadata);
+            return new ItemStack(Item.getItemFromBlock(this), 1, EnumBlockBasic.ORE_SILICON.getMeta());
         }
 
         return super.getPickBlock(state, target, world, pos, player);
