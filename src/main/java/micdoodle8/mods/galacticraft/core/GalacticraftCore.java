@@ -252,6 +252,7 @@ public class GalacticraftCore
         GalaxyRegistry.registerPlanet(GalacticraftCore.planetOverworld);
         GalaxyRegistry.registerMoon(GalacticraftCore.moonMoon);
         GalaxyRegistry.registerSatellite(GalacticraftCore.satelliteSpaceStation);
+
         GCDimensions.ORBIT = GalacticraftRegistry.registerDimension("Space Station", "_orbit", ConfigManagerCore.idDimensionOverworldOrbit, WorldProviderOverworldOrbit.class, false);
         if (GCDimensions.ORBIT == null)
         {
