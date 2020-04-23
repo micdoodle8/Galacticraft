@@ -1534,35 +1534,47 @@ public class WorldUtil
         return wp.getDimensionType().getName();
     }
 
-    public static Map<String, List<String>> getAllChecklistKeys()
+    private static void insertChecklistEntries(CelestialBody body, List<CelestialBody> bodiesDone, List<List<String>> checklistValues)
     {
-        Map<String, List<String>> checklistMap = Maps.newHashMap();
+        if (body.getReachable())
+        {
+            int insertPos = 0;
+            for (CelestialBody prevBody : bodiesDone)
+            {
+                if (body.getTierRequirement() >= prevBody.getTierRequirement())
+                {
+                    insertPos++;
+                }
+            }
+            List<String> checklist = Lists.newArrayList();
+            checklist.add(body.getUnlocalizedName());
+            checklist.addAll(body.getChecklistKeys());
+            checklistValues.add(insertPos, checklist);
+            bodiesDone.add(body);
+        }
+    }
+
+    public static List<List<String>> getAllChecklistKeys()
+    {
+        List<List<String>> checklistValues = Lists.newArrayList();
+        List<CelestialBody> bodiesDone = Lists.newArrayList();
 
         for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
         {
-            if (planet.getReachable())
-            {
-                checklistMap.put(planet.getUnlocalizedName(), planet.getChecklistKeys());
-            }
+            insertChecklistEntries(planet, bodiesDone, checklistValues);
         }
 
         for (Moon moon : GalaxyRegistry.getRegisteredMoons().values())
         {
-            if (moon.getReachable())
-            {
-                checklistMap.put(moon.getUnlocalizedName(), moon.getChecklistKeys());
-            }
+            insertChecklistEntries(moon, bodiesDone, checklistValues);
         }
 
         for (Satellite satellite : GalaxyRegistry.getRegisteredSatellites().values())
         {
-            if (satellite.getReachable())
-            {
-                checklistMap.put(satellite.getUnlocalizedName(), satellite.getChecklistKeys());
-            }
+            insertChecklistEntries(satellite, bodiesDone, checklistValues);
         }
 
-        return checklistMap;
+        return checklistValues;
     }
     
     public static DimensionType getDimensionTypeById(int id)

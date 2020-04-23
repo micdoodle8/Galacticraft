@@ -26,7 +26,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
     private static final ResourceLocation bookGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/checklist_book.png");
     private int bookImageWidth = 192;
     private int bookImageHeight = 192;
-    private Map<String, List<String>> checklistKeys;
+    private List<List<String>> checklistKeys;
     private int currPage = 0;
     private int bookTotalPages;
     private NextPageButton buttonNextPage;
@@ -34,7 +34,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
     private NBTTagCompound tagCompound;
     private Map<Integer, String> checkboxToKeyMap = Maps.newHashMap();
 
-    public GuiPreLaunchChecklist(Map<String, List<String>> checklistKeys, NBTTagCompound tagCompound)
+    public GuiPreLaunchChecklist(List<List<String>> checklistKeys, NBTTagCompound tagCompound)
     {
         this.tagCompound = tagCompound != null ? tagCompound : new NBTTagCompound();
         this.checklistKeys = checklistKeys;
@@ -55,10 +55,14 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         int index = 2;
         int page = 0;
 
-        for (Map.Entry<String, List<String>> e : this.checklistKeys.entrySet())
+        for (List<String> e : this.checklistKeys)
         {
-            String title = e.getKey();
-            List<String> checkboxes = e.getValue();
+            if (e.isEmpty())
+            {
+                continue;
+            }
+            String title = e.get(0);
+            List<String> checkboxes = e.subList(1, e.size());
             GuiElementCheckboxPreLaunch element = new GuiElementCheckboxPreLaunch(index, this, this.width / 2 - 73 + 11, yPos, GCCoreUtil.translate(title), 0);
             int size = element.willFit(152 - yPos);
             if (size >= 0)
