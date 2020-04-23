@@ -954,82 +954,86 @@ public class GCPlayerHandler
         }
     }
 
+    private void checkItemAndSwitch(ItemStack currentItem, EntityPlayerMP player, List<Item> sourceList, List<Item> replaceList, boolean offhand)
+    {
+        if (!currentItem.isEmpty() && sourceList.contains(currentItem.getItem()))
+        {
+            //Get space torch for this overworld torch
+            int torchItem = 0;
+            for (Item i : sourceList)
+            {
+                if (i == currentItem.getItem())
+                {
+                    ItemStack stack = new ItemStack(replaceList.get(torchItem), currentItem.getCount(), 0);
+                    if (offhand)
+                    {
+                        player.inventory.offHandInventory.set(0, stack);
+                    }
+                    else
+                    {
+                        player.inventory.mainInventory.set(player.inventory.currentItem, stack);
+                    }
+                    break;
+                }
+                torchItem ++;
+            }
+        }
+    }
+
     protected void checkCurrentItem(EntityPlayerMP player)
     {
         ItemStack theCurrentItem = player.inventory.getCurrentItem();
         ItemStack offHandItem = player.getHeldItemOffhand();
 
-        if (!theCurrentItem.isEmpty())
+        int postChangeItem = 0;
+        for (ItemStack i : itemChangesPre)
         {
-            int postChangeItem = 0;
-            for (ItemStack i : itemChangesPre)
+            if (!theCurrentItem.isEmpty() && i.getItem() == theCurrentItem.getItem() && i.getItemDamage() == theCurrentItem.getItemDamage())
             {
-                if (i.getItem() == theCurrentItem.getItem() && i.getItemDamage() == theCurrentItem.getItemDamage())
-                {
-                    ItemStack postChange = itemChangesPost.get(postChangeItem).copy();
-                    postChange.setCount(theCurrentItem.getCount());
-                    player.inventory.mainInventory.set(player.inventory.currentItem, postChange);
-                    break;
-                }
-                postChangeItem++;
+                ItemStack postChange = itemChangesPost.get(postChangeItem).copy();
+                postChange.setCount(theCurrentItem.getCount());
+                player.inventory.mainInventory.set(player.inventory.currentItem, postChange);
+                break;
             }
-            if (OxygenUtil.noAtmosphericCombustion(player.world.provider))
+            if (!offHandItem.isEmpty() && i.getItem() == offHandItem.getItem() && i.getItemDamage() == offHandItem.getItemDamage())
             {
-                //Is it a type of overworld torch?
-                if (torchItemsRegular.contains(theCurrentItem.getItem()))
-                {
-                    //Get space torch for this overworld torch
-                    int torchItem = 0;
-                    for (Item i : torchItemsRegular)
-                    {
-                        if (i == theCurrentItem.getItem())
-                        {
-                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsSpace.get(torchItem), theCurrentItem.getCount(), 0));
-                            break;
-                        }
-                        torchItem ++;
-                    }
-                }
+                ItemStack postChange = itemChangesPost.get(postChangeItem).copy();
+                postChange.setCount(offHandItem.getCount());
+                player.inventory.offHandInventory.set(0, postChange);
+                break;
             }
-            else
+            postChangeItem++;
+        }
+        if (OxygenUtil.noAtmosphericCombustion(player.world.provider))
+        {
+            checkItemAndSwitch(theCurrentItem, player, torchItemsRegular, torchItemsSpace, false);
+            checkItemAndSwitch(offHandItem, player, torchItemsRegular, torchItemsSpace, true);
+        }
+        else
+        {
+            checkItemAndSwitch(theCurrentItem, player, torchItemsSpace, torchItemsRegular, false);
+            checkItemAndSwitch(offHandItem, player, torchItemsSpace, torchItemsRegular, true);
+        }
+
+        // If the player is holding a two-handed item in both hands, switch the off-hand item out, or drop if necessary
+        if (!theCurrentItem.isEmpty() && !offHandItem.isEmpty())
+        {
+            if (theCurrentItem.getItem() instanceof IHoldableItem && offHandItem.getItem() instanceof IHoldableItem)
             {
-                //Is it a type of space torch?
-                if (torchItemsSpace.contains(theCurrentItem.getItem()))
+                int emptyStack = player.inventory.getFirstEmptyStack();
+
+                if (emptyStack >= 0)
                 {
-                    //Get the overworld torch equivalent
-                    int torchItem = 0;
-                    for (Item i : torchItemsSpace)
-                    {
-                        if (i == theCurrentItem.getItem())
-                        {
-                            player.inventory.mainInventory.set(player.inventory.currentItem, new ItemStack(torchItemsRegular.get(torchItem), theCurrentItem.getCount(), 0));
-                            break;
-                        }
-                        torchItem ++;
-                    }
+                    ItemStack copyOffHandItem = offHandItem.copy();
+                    copyOffHandItem.setAnimationsToGo(5);
+                    player.inventory.mainInventory.set(emptyStack, copyOffHandItem);
                 }
-            }
-
-            // If the player is holding a two-handed item in both hands, switch the off-hand item out, or drop if necessary
-            if (!offHandItem.isEmpty())
-            {
-                if (theCurrentItem.getItem() instanceof IHoldableItem && offHandItem.getItem() instanceof IHoldableItem)
+                else
                 {
-                    int emptyStack = player.inventory.getFirstEmptyStack();
-
-                    if (emptyStack >= 0)
-                    {
-                    	ItemStack copyOffHandItem = offHandItem.copy();
-                        copyOffHandItem.setAnimationsToGo(5);
-                        player.inventory.mainInventory.set(emptyStack, copyOffHandItem);
-                    }
-                    else
-                    {
-                        player.dropItem(offHandItem, false);
-                    }
-
-                    player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
+                    player.dropItem(offHandItem, false);
                 }
+
+                player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, ItemStack.EMPTY);
             }
         }
     }
