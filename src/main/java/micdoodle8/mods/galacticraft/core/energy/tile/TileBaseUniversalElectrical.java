@@ -1,6 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import buildcraft.api.mj.IMjConnector;
+import buildcraft.api.mj.IMjReceiver;
 import buildcraft.api.mj.MjAPI;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergyTile;
@@ -625,7 +626,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return super.getCapability(capability, facing);
     }
     
-    private static class ForgeReceiver implements net.minecraftforge.energy.IEnergyStorage
+    private static class ForgeReceiver implements net.minecraftforge.energy.IEnergyStorage, IMjReceiver
     {
         private TileBaseUniversalElectrical tile;
 
@@ -677,6 +678,24 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         public boolean canExtract()
         {
             return false;
+        }
+
+        @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+        public boolean canConnect(@Nonnull IMjConnector other)
+        {
+            return true;
+        }
+
+        @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+        public long getPowerRequested()
+        {
+            return tile.getPowerRequested();
+        }
+
+        @RuntimeInterface(clazz = "buildcraft.api.mj.IMjReceiver", modID = CompatibilityManager.modBCraftEnergy)
+        public long receivePower(long microJoules, boolean simulate)
+        {
+            return tile.receivePower(microJoules, simulate);
         }
     }
 }
