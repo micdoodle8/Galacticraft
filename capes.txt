@@ -104,3 +104,9 @@ Sonic_Blender:capeLightGray
 xX_CreeperMr_Xx:capeRainbow
 Santiv:capePurple
 SebaSphere:capeRainbow
+SuperBoris:capeLime
+_SirWeffington_:capePurple
+gerrie333:capeLime
+Sheriffbenny:capeYellow
+Opossum_:capeRainbow
+TeenSarlacc:capeDarkGray
