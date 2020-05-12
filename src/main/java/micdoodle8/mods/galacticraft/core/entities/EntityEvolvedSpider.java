@@ -4,9 +4,12 @@ import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
+import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.monster.EntitySpider;
 import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
@@ -57,6 +60,20 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
+
+        // onInitialSpawn is called for EntitySpider, which has a chance of adding a vanilla skeleton, remove these
+        for (Entity entity : getPassengers())
+        {
+            entity.dismountRidingEntity();
+            if (!(entity instanceof EntitySkeleton))
+            {
+                GCLog.severe("Removed unexpected passenger from spider: " + entity);
+            }
+            else
+            {
+                entity.setDead();
+            }
+        }
 
         if (this.world.rand.nextInt(100) == 0)
         {
