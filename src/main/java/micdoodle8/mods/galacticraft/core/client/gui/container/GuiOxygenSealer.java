@@ -142,7 +142,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         Block blockAbove = this.sealer.getWorld().getBlockState(blockPosAbove).getBlock();
         IBlockState state = this.sealer.getWorld().getBlockState(blockPosAbove);
 
-        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), blockAbove, blockPosAbove, EnumFacing.UP))
+        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), state, blockPosAbove, EnumFacing.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

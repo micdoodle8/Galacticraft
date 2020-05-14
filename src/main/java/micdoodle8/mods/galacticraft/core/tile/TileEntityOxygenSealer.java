@@ -118,7 +118,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         }
         BlockPos posAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
         IBlockState stateAbove = this.world.getBlockState(posAbove);
-        if (!(stateAbove.getBlock().isAir(stateAbove, this.world, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.world, stateAbove.getBlock(), this.getPos().up(), EnumFacing.UP))
+        if (!(stateAbove.getBlock().isAir(stateAbove, this.world, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.world, stateAbove, this.getPos().up(), EnumFacing.UP))
         {
             // The vent is blocked
             return 0;

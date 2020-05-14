@@ -82,8 +82,15 @@ public class OxygenPressureProtocol
         }
     }
 
+    @Deprecated
     public static boolean canBlockPassAir(World world, Block block, BlockPos pos, EnumFacing side)
     {
+        return canBlockPassAir(world, world.getBlockState(pos), pos, side);
+    }
+
+    public static boolean canBlockPassAir(World world, IBlockState state, BlockPos pos, EnumFacing side)
+    {
+        Block block = state.getBlock();
         if (block == null)
         {
             return true;
@@ -101,7 +108,6 @@ public class OxygenPressureProtocol
             return true;
         }
 
-        IBlockState state = world.getBlockState(pos);
         if (block.isOpaqueCube(state))
         {
             return block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge;

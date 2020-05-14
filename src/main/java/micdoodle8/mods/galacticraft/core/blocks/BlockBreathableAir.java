@@ -68,13 +68,13 @@ public class BlockBreathableAir extends BlockAir
         //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
         {
             // Check if replacing a passthrough breathable block, like a torch - if so replace with BreathableAir not Air
-            if (Blocks.AIR == worldIn.getBlockState(fromPos).getBlock())
+            if (Blocks.AIR == state.getBlock())
             {
                 EnumFacing side;
                 if (pos.getX() != fromPos.getX()) side = pos.getX() > fromPos.getX() ? EnumFacing.EAST : EnumFacing.WEST; 
                 else if (pos.getY() != fromPos.getY()) side = pos.getY() > fromPos.getY() ? EnumFacing.UP : EnumFacing.DOWN; 
                 else side = pos.getZ() > fromPos.getZ() ? EnumFacing.SOUTH : EnumFacing.NORTH; 
-                if (OxygenPressureProtocol.canBlockPassAir(worldIn, oldBlock, fromPos, side))
+                if (OxygenPressureProtocol.canBlockPassAir(worldIn, state, fromPos, side))
                 {
                     worldIn.setBlockState(fromPos, GCBlocks.breatheableAir.getDefaultState(), 6);
                 }
