@@ -826,7 +826,7 @@ public class PacketSimple extends PacketBase implements Packet<INetHandler>
                         else if (stats.getChatCooldown() == 0 && stats.getLaunchAttempts() == 0)
                         {
                             player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.noparachute")));
-                            stats.setChatCooldown(250);
+                            stats.setChatCooldown(80);
                             stats.setLaunchAttempts(1);
                         }
                     }
