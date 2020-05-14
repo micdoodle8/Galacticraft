@@ -210,7 +210,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
-        drops.add(this.getBlockType().getPickBlock(this.world.getBlockState(this.getPos()), null, this.world, this.getPos(), player));
+        drops.add(this.getBlockType().getPickBlock(state, null, this.world, this.getPos(), player));
         return drops;
     }
 

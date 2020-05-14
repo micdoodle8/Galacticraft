@@ -221,7 +221,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
     {
-        if (world.getBlockState(pos).getValue(BASIC_TYPE) == EnumBlockBasic.ORE_SILICON)
+        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_SILICON)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, EnumBlockBasic.ORE_SILICON.getMeta());
         }
