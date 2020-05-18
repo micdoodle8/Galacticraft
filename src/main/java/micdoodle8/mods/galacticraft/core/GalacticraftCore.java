@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core;
 
-import api.player.server.ServerPlayerAPI;
+//import api.player.server.ServerPlayerAPI;
 import micdoodle8.mods.galacticraft.api.GalacticraftRegistry;
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.galaxies.*;
@@ -33,6 +33,7 @@ import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
 import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
+import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
@@ -51,37 +52,33 @@ import micdoodle8.mods.galacticraft.planets.asteroids.recipe.RecipeManagerAstero
 import micdoodle8.mods.galacticraft.planets.mars.recipe.RecipeManagerMars;
 import micdoodle8.mods.galacticraft.planets.venus.recipe.RecipeManagerVenus;
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
+//import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryManager;
 import net.minecraftforge.server.permission.DefaultPermissionLevel;
 import net.minecraftforge.server.permission.PermissionAPI;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
@@ -92,17 +89,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.function.Supplier;
 
-@Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+//@Mod(modid = Constants.MOD_ID_CORE, name = GalacticraftCore.NAME, version = Constants.COMBINEDVERSION, useMetadata = true, acceptedMinecraftVersions = Constants.MCVERSION, dependencies = Constants.DEPENDENCIES_FORGE + Constants.DEPENDENCIES_MICCORE + Constants.DEPENDENCIES_MODS, guiFactory = "micdoodle8.mods.galacticraft.core.client.gui.screen.ConfigGuiFactoryCore")
+@Mod(Constants.MOD_ID_CORE)
 public class GalacticraftCore
 {
     public static final String NAME = "Galacticraft Core";
-    private File GCCoreSource;
+//    private File GCCoreSource;
 
-    @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
-    public static CommonProxyCore proxy;
+//    @SidedProxy(clientSide = "micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore", serverSide = "micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore")
+//    public static CommonProxyCore proxy;
 
-    @Instance(Constants.MOD_ID_CORE)
+    public static CommonProxyCore proxy = DistExecutor.runForDist(() -> getClientProxy(), () -> () -> new CommonProxyCore());
+
+    @OnlyIn(Dist.CLIENT)
+    private static Supplier<CommonProxyCore> getClientProxy() {
+        //NOTE: This extra method is needed to avoid classloading issues on servers
+        return CommonProxyCore::new;
+    }
+
     public static GalacticraftCore instance;
 
     public static boolean isPlanetsLoaded;
@@ -135,20 +141,25 @@ public class GalacticraftCore
     public static ImageWriter jpgWriter;
     public static ImageWriteParam writeParam;
     public static boolean enableJPEG = false;
+
+    public final ArtifactVersion versionNumber;
     
     static
     {
         FluidRegistry.enableUniversalBucket();
     }
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+    public GalacticraftCore()
     {
-        GCCoreSource = event.getSourceFile();
+        versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion();
+    }
+
+    private void commonSetup(FMLCommonSetupEvent event)
+    {
+//        GCCoreSource = event.getSourceFile();
         GCCapabilities.register();
 
-    	this.initModInfo(event.getModMetadata());
-    	isPlanetsLoaded = Loader.isModLoaded(Constants.MOD_ID_PLANETS);
+    	isPlanetsLoaded = ModList.get().isLoaded(Constants.MOD_ID_PLANETS);
     	GCCoreUtil.nextID = 0;
     	
         if (CompatibilityManager.isSmartMovingLoaded || CompatibilityManager.isWitcheryLoaded)
@@ -164,10 +175,9 @@ public class GalacticraftCore
     	MinecraftForge.EVENT_BUS.register(new EventHandlerGC());
         handler = new GCPlayerHandler();
         MinecraftForge.EVENT_BUS.register(handler);
-        GalacticraftCore.proxy.preInit(event);
 
-        ConnectionPacket.bus = NetworkRegistry.INSTANCE.newEventDrivenChannel(ConnectionPacket.CHANNEL);
-        ConnectionPacket.bus.register(new ConnectionPacket());
+//        ConnectionPacket.bus = PacketBase.createChannel(GalacticraftCore.rl(Constants.MOD_ID_CORE));
+//        ConnectionPacket.bus.register(new ConnectionPacket());
 	
         ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), Constants.CONFIG_FILE));
         EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), Constants.POWER_CONFIG_FILE));
@@ -688,17 +698,22 @@ public class GalacticraftCore
         return planet;
     }
 
-    private void initModInfo(ModMetadata info)
+    public static ResourceLocation rl(String path)
     {
-        info.autogenerated = false;
-        info.modId = Constants.MOD_ID_CORE;
-        info.name = GalacticraftCore.NAME;
-        info.version = Constants.COMBINEDVERSION;
-        info.description = "An advanced space travel mod for Minecraft!";
-        info.url = "https://micdoodle8.com/";
-        info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
-        info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
+        return new ResourceLocation(Constants.MOD_ID_CORE, path);
     }
+
+//    private void initModInfo(ModMetadata info)
+//    {
+//        info.autogenerated = false;
+//        info.modId = Constants.MOD_ID_CORE;
+//        info.name = GalacticraftCore.NAME;
+//        info.version = Constants.COMBINEDVERSION;
+//        info.description = "An advanced space travel mod for Minecraft!";
+//        info.url = "https://micdoodle8.com/";
+//        info.authorList = Arrays.asList("micdoodle8", "radfast", "EzerArch", "fishtaco", "SpaceViking", "SteveKunG");
+//        info.logoFile = "assets/galacticraftcore/galacticraft_logo.png";
+//    } TODO
     
     @Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE)
     public static class RegistrationHandler

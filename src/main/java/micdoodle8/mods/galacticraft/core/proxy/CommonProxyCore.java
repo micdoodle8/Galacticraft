@@ -28,20 +28,12 @@ public class CommonProxyCore
 {
     public IPlayerServer player = new PlayerServer();
 
-    public void preInit(FMLPreInitializationEvent event)
-    {
-    }
-
     public void registerVariants()
     {
 
     }
 
-    public void init(FMLInitializationEvent event)
-    {
-    }
-
-    public void postInit(FMLPostInitializationEvent event)
+    public void init()
     {
     }
 

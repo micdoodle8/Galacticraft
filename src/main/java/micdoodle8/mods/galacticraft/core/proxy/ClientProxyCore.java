@@ -162,7 +162,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     private static List<PartialCanister> canisters = Lists.newArrayList();
 
     @Override
-    public void preInit(FMLPreInitializationEvent event)
+    public void init()
     {
         ClientProxyCore.registerEntityRenderers();
         ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
@@ -174,11 +174,9 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         MinecraftForge.EVENT_BUS.register(this);
         ClientProxyCore.registerHandlers();
-    }
 
-    @Override
-    public void init(FMLInitializationEvent event)
-    {
+        // ===============
+
         MUSIC_TYPE_MARS = EnumHelper.addEnum(MusicTicker.MusicType.class, "MARS_JC", new Class[] { SoundEvent.class, Integer.TYPE, Integer.TYPE }, GCSounds.music, 12000, 24000);
         ClientProxyCore.registerTileEntityRenderers();
         ClientProxyCore.updateCapeList();
@@ -208,11 +206,9 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                 }
                 return 0xFFFFFF;
             }, GCBlocks.panelLighting);
-    }
 
-    @Override
-    public void postInit(FMLPostInitializationEvent event)
-    {
+        // ===============
+
         ClientProxyCore.registerInventoryTabs();
         ItemSchematic.registerTextures();
 
