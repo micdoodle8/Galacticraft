@@ -9,31 +9,29 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -103,7 +101,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         switch ((EnumBlockMultiType)state.getValue(MULTI_TYPE))
         {
@@ -126,13 +124,13 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
@@ -219,7 +217,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -237,27 +235,27 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
     {
         int metadata = getMetaFromState(worldIn.getBlockState(pos));
 
         //Landing pad and refueling pad
         if (metadata == 2 || metadata == 6)
         {
-            return direction == EnumFacing.DOWN;
+            return direction == Direction.DOWN;
         }
 
         //Basic solar panel fixed top
         if (metadata == 4)
         {
-            return direction == EnumFacing.UP;
+            return direction == Direction.UP;
         }
 
         return false;
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -270,7 +268,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) worldIn.getTileEntity(pos);
         if (tileEntity == null)
@@ -281,7 +279,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) world.getTileEntity(pos);
         return tileEntity.onBlockWrenched(world, pos, entityPlayer, hand, side, hitX, hitY, hitZ);
@@ -297,13 +295,13 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public BlockRenderType getRenderType(BlockState state)
     {
-        return EnumBlockRenderType.MODEL;
+        return BlockRenderType.MODEL;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
@@ -315,7 +313,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -324,7 +322,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
-                IBlockState mainBlockState = world.getBlockState(mainBlockPosition);
+                BlockState mainBlockState = world.getBlockState(mainBlockPosition);
 
                 if (Blocks.AIR != mainBlockState.getBlock())
                 {
@@ -337,7 +335,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public EnumFacing getBedDirection(IBlockState state, IBlockAccess world, BlockPos pos)
+    public Direction getBedDirection(BlockState state, IBlockAccess world, BlockPos pos)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -346,16 +344,16 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
 	        if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
-                IBlockState mainState = world.getBlockState(mainBlockPosition);
+                BlockState mainState = world.getBlockState(mainBlockPosition);
                 return mainState.getBlock().getBedDirection(mainState, world, mainBlockPosition);
             }
         }
 
-        return EnumFacing.UP; // TODO
+        return Direction.UP; // TODO
     }
 
     @Override
-    public boolean isBed(IBlockState state, IBlockAccess world, BlockPos pos, Entity player)
+    public boolean isBed(BlockState state, IBlockAccess world, BlockPos pos, Entity player)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMulti)
@@ -364,7 +362,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
             if (mainBlockPosition != null && !mainBlockPosition.equals(pos))
             {
-                IBlockState mainState = world.getBlockState(mainBlockPosition);
+                BlockState mainState = world.getBlockState(mainBlockPosition);
                 return mainState.getBlock().isBed(state, world, mainBlockPosition, player);
             }
         }
@@ -373,7 +371,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public void setBedOccupied(IBlockAccess world, BlockPos pos, EntityPlayer player, boolean occupied)
+    public void setBedOccupied(IBlockAccess world, BlockPos pos, PlayerEntity player, boolean occupied)
     {
         TileEntity tileEntity = world.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
@@ -389,7 +387,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
     
     @Override
-    public BlockPos getBedSpawnPosition(IBlockState state, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    public BlockPos getBedSpawnPosition(BlockState state, IBlockAccess world, BlockPos pos, PlayerEntity player)
     {
         if (!(world instanceof World))
         {
@@ -399,11 +397,11 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         World worldIn = (World) world;
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
-        IBlockState cryoChamber = worldIn.getBlockState(mainBlockPosition);
-        EnumFacing enumfacing = EnumFacing.NORTH;
+        BlockState cryoChamber = worldIn.getBlockState(mainBlockPosition);
+        Direction enumfacing = Direction.NORTH;
         if (GalacticraftCore.isPlanetsLoaded && cryoChamber.getBlock() == MarsBlocks.machine)
         {
-            enumfacing = (EnumFacing)cryoChamber.getValue(BlockMachineMars.FACING);
+            enumfacing = (Direction)cryoChamber.getValue(BlockMachineMars.FACING);
         }
         int i = pos.getX();
         int j = pos.getY();
@@ -440,11 +438,11 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
 
     private static boolean hasRoomForPlayer(World worldIn, BlockPos pos)
     {
-        return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), EnumFacing.UP) && !worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos.up()).getMaterial().isSolid();
+        return worldIn.getBlockState(pos.down()).isSideSolid(worldIn, pos.down(), Direction.UP) && !worldIn.getBlockState(pos).getMaterial().isSolid() && !worldIn.getBlockState(pos.up()).getMaterial().isSolid();
     }
 
     @Override
-    public boolean addHitEffects(IBlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
+    public boolean addHitEffects(BlockState state, World worldObj, RayTraceResult target, ParticleManager manager)
     {
         TileEntity tileEntity = worldObj.getTileEntity(target.getBlockPos());
 
@@ -462,13 +460,13 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(MULTI_TYPE, EnumBlockMultiType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return state.getValue(MULTI_TYPE).getMeta();
     }
@@ -480,7 +478,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         EnumBlockMultiType type = state.getValue(MULTI_TYPE);
         int renderType = 0;
@@ -488,7 +486,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         switch (type)
         {
         case CRYO_CHAMBER:
-            IBlockState stateAbove = worldIn.getBlockState(pos.up());
+            BlockState stateAbove = worldIn.getBlockState(pos.up());
             TileEntityMulti tile = (TileEntityMulti) worldIn.getTileEntity(pos);
             if (stateAbove.getBlock() == this && (stateAbove.getValue(MULTI_TYPE)) == EnumBlockMultiType.CRYO_CHAMBER)
             {
@@ -500,10 +498,10 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             }
             if (tile != null && tile.mainBlockPosition != null && GalacticraftCore.isPlanetsLoaded)
             {
-                IBlockState stateMain = worldIn.getBlockState(tile.mainBlockPosition);
+                BlockState stateMain = worldIn.getBlockState(tile.mainBlockPosition);
                 if (stateMain.getBlock() == MarsBlocks.machine && stateMain.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
                 {
-                    EnumFacing dir = stateMain.getValue(BlockMachineMars.FACING);
+                    Direction dir = stateMain.getValue(BlockMachineMars.FACING);
                     renderType += dir.getHorizontalIndex();
                 }
             }
@@ -515,7 +513,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         return state.withProperty(RENDER_TYPE, renderType);
     }
     
-    public static void onPlacement(World worldIn, BlockPos pos,EntityLivingBase placer, Block callingBlock)
+    public static void onPlacement(World worldIn, BlockPos pos, LivingEntity placer, Block callingBlock)
     {
         final TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -526,7 +524,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             ((IMultiBlock) tile).getPositions(pos, toCheck);
             for (BlockPos toTest : toCheck)
             {
-                IBlockState blockAt = worldIn.getBlockState(toTest);
+                BlockState blockAt = worldIn.getBlockState(toTest);
                 if (!blockAt.getBlock().isReplaceable(worldIn, toTest))
                 {
                     validSpot = false;
@@ -538,14 +536,14 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             {
                 worldIn.setBlockToAir(pos);
 
-                if (!worldIn.isRemote && placer instanceof EntityPlayerMP)
+                if (!worldIn.isRemote && placer instanceof ServerPlayerEntity)
                 {
-                    EntityPlayerMP player = (EntityPlayerMP) placer;
-                    player.sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
+                    ServerPlayerEntity player = (ServerPlayerEntity) placer;
+                    player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
                     if (!player.capabilities.isCreativeMode)
                     {
                         final ItemStack nasaWorkbench = new ItemStack(callingBlock, 1, 0);
-                        final EntityItem entityitem = player.dropItem(nasaWorkbench, false);
+                        final ItemEntity entityitem = player.dropItem(nasaWorkbench, false);
                         entityitem.setPickupDelay(0);
                         entityitem.setOwner(player.getName());
                     }

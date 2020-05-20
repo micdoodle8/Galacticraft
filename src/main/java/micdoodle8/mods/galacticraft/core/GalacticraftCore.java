@@ -22,18 +22,14 @@ import micdoodle8.mods.galacticraft.core.command.*;
 import micdoodle8.mods.galacticraft.core.dimension.*;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.grid.ChunkPowerHandler;
-import micdoodle8.mods.galacticraft.core.energy.tile.TileCableIC2Sealed;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import micdoodle8.mods.galacticraft.core.entities.player.GCCapabilities;
-import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerBaseMP;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.event.EventHandlerGC;
 import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
 import micdoodle8.mods.galacticraft.core.items.ItemSchematic;
 import micdoodle8.mods.galacticraft.core.network.ConnectionEvents;
-import micdoodle8.mods.galacticraft.core.network.ConnectionPacket;
 import micdoodle8.mods.galacticraft.core.network.GalacticraftChannelHandler;
-import micdoodle8.mods.galacticraft.core.network.PacketBase;
 import micdoodle8.mods.galacticraft.core.proxy.CommonProxyCore;
 import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
 import micdoodle8.mods.galacticraft.core.schematic.SchematicAdd;
@@ -72,6 +68,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.registries.GameData;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -152,6 +149,7 @@ public class GalacticraftCore
     public GalacticraftCore()
     {
         versionNumber = ModLoadingContext.get().getActiveContainer().getModInfo().getVersion();
+        MinecraftForge.EVENT_BUS.addListener(this::serverStarting);
     }
 
     private void commonSetup(FMLCommonSetupEvent event)
@@ -179,18 +177,18 @@ public class GalacticraftCore
 //        ConnectionPacket.bus = PacketBase.createChannel(GalacticraftCore.rl(Constants.MOD_ID_CORE));
 //        ConnectionPacket.bus.register(new ConnectionPacket());
 	
-        ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), Constants.CONFIG_FILE));
-        EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), Constants.POWER_CONFIG_FILE));
-        ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), Constants.CHUNKLOADER_CONFIG_FILE));
+//        ConfigManagerCore.initialize(new File(event.getModConfigurationDirectory(), Constants.CONFIG_FILE));
+//        EnergyConfigHandler.setDefaultValues(new File(event.getModConfigurationDirectory(), Constants.POWER_CONFIG_FILE));
+//        ChunkLoadingCallback.loadConfig(new File(event.getModConfigurationDirectory(), Constants.CHUNKLOADER_CONFIG_FILE));
 
-        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", null, null);
-        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", null, null);
+//        GalacticraftCore.galacticraftBlocksTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_blocks", null, null);
+//        GalacticraftCore.galacticraftItemsTab = new CreativeTabGC(CreativeTabs.getNextID(), "galacticraft_items", null, null);
 
         GCFluids.registerOilandFuel();
 
         if (CompatibilityManager.PlayerAPILoaded)
         {
-            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
+//            ServerPlayerAPI.register(Constants.MOD_ID_CORE, GCPlayerBaseMP.class);
         }
 
         GCBlocks.initBlocks();
@@ -201,11 +199,7 @@ public class GalacticraftCore
         //Force initialisation of GC biome types in preinit (after config load) - this helps BiomeTweaker by initialising mod biomes in a fixed order during mod loading
         GalacticraftCore.satelliteSpaceStation.setBiomeInfo(BiomeOrbit.space);
         GalacticraftCore.moonMoon.setBiomeInfo(BiomeMoon.moonFlat);
-    }
-    
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+
         GalacticraftCore.galacticraftBlocksTab.setItemForTab(new ItemStack(Item.getItemFromBlock(GCBlocks.machineBase2)));
         GalacticraftCore.galacticraftItemsTab.setItemForTab(new ItemStack(GCItems.rocketTier1));
 
@@ -351,11 +345,7 @@ public class GalacticraftCore
 //            return this.shieldControllerSlotValid(itemstack);
 //        }
         GCTriggers.registerTriggers();
-    }
 
-    @EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
         GalacticraftCore.planetMercury = makeDummyPlanet("mercury", GalacticraftCore.solarSystemSol);
         if (GalacticraftCore.planetMercury != null)
         {
@@ -393,8 +383,6 @@ public class GalacticraftCore
         }
 
         MinecraftForge.EVENT_BUS.register(new OreGenOtherMods());
-
-        GalacticraftCore.proxy.postInit(event);
 
         ArrayList<CelestialBody> cBodyList = new ArrayList<CelestialBody>();
         cBodyList.addAll(GalaxyRegistry.getRegisteredPlanets().values());
@@ -481,24 +469,23 @@ public class GalacticraftCore
         BlockVec3.chunkCacheDim = Integer.MAX_VALUE;
     }
 
-    @EventHandler
-    public void onServerStarting(FMLServerStartingEvent event)
+    private void serverStarting(FMLServerStartingEvent event)
     {
         GCCoreUtil.notifyStarted(event.getServer());
         File worldFolder = DimensionManager.getCurrentSaveRootDirectory();
         moveLegacyGCFileLocations(worldFolder);
         
-        event.registerServerCommand(new CommandSpaceStationAddOwner());
-        event.registerServerCommand(new CommandSpaceStationChangeOwner());
-        event.registerServerCommand(new CommandSpaceStationRemoveOwner());
-        event.registerServerCommand(new CommandPlanetTeleport());
-        event.registerServerCommand(new CommandKeepDim());
-        event.registerServerCommand(new CommandGCInv());
-        event.registerServerCommand(new CommandGCHelp());
-        event.registerServerCommand(new CommandGCKit());
-        event.registerServerCommand(new CommandGCHouston());
-        event.registerServerCommand(new CommandGCEnergyUnits());
-        event.registerServerCommand(new CommandJoinSpaceRace());
+        event.getCommandDispatcher().register(new CommandSpaceStationAddOwner());
+        event.getCommandDispatcher().register(new CommandSpaceStationChangeOwner());
+        event.getCommandDispatcher().register(new CommandSpaceStationRemoveOwner());
+        event.getCommandDispatcher().register(new CommandPlanetTeleport());
+        event.getCommandDispatcher().register(new CommandKeepDim());
+        event.getCommandDispatcher().register(new CommandGCInv());
+        event.getCommandDispatcher().register(new CommandGCHelp());
+        event.getCommandDispatcher().register(new CommandGCKit());
+        event.getCommandDispatcher().register(new CommandGCHouston());
+        event.getCommandDispatcher().register(new CommandGCEnergyUnits());
+        event.getCommandDispatcher().register(new CommandJoinSpaceRace());
 
         WorldUtil.initialiseDimensionNames();
         WorldUtil.registerSpaceStations(event.getServer(), new File(worldFolder, "galacticraft"));
@@ -564,20 +551,20 @@ public class GalacticraftCore
         }        
     }
 
-    @EventHandler
-    public void onServerStopping(FMLServerStoppingEvent var1)
-    {
-        MapUtil.saveMapProgress();
-    }
-
-    @EventHandler
-    public void onServerStop(FMLServerStoppedEvent var1)
-    {
-        // Unregister dimensions
-        WorldUtil.unregisterPlanets();
-        WorldUtil.unregisterSpaceStations();
-        GCCoreUtil.notifyStarted(null);
-    }
+//    @EventHandler
+//    public void onServerStopping(FMLServerStoppingEvent var1)
+//    {
+//        MapUtil.saveMapProgress();
+//    }
+//
+//    @EventHandler
+//    public void onServerStop(FMLServerStoppedEvent var1)
+//    {
+//        // Unregister dimensions
+//        WorldUtil.unregisterPlanets();
+//        WorldUtil.unregisterSpaceStations();
+//        GCCoreUtil.notifyStarted(null);
+//    }
 
     private static void registerCoreGameScreens()
     {
@@ -599,58 +586,58 @@ public class GalacticraftCore
 
     private void registerTileEntities()
     {
-        GameRegistry.registerTileEntity(TileEntityTreasureChest.class, "GC Treasure Chest");
-        GameRegistry.registerTileEntity(TileEntityOxygenDistributor.class, "GC Air Distributor");
-        GameRegistry.registerTileEntity(TileEntityOxygenCollector.class, "GC Air Collector");
-        GameRegistry.registerTileEntity(TileEntityFluidPipe.class, "GC Oxygen Pipe");
-        GameRegistry.registerTileEntity(TileEntityAirLock.class, "GC Air Lock Frame");
-        GameRegistry.registerTileEntity(TileEntityRefinery.class, "GC Refinery");
-        GameRegistry.registerTileEntity(TileEntityNasaWorkbench.class, "GC NASA Workbench");
-        GameRegistry.registerTileEntity(TileEntityDeconstructor.class, "GC Deconstructor");
-        GameRegistry.registerTileEntity(TileEntityOxygenCompressor.class, "GC Air Compressor");
-        GameRegistry.registerTileEntity(TileEntityFuelLoader.class, "GC Fuel Loader");
-        GameRegistry.registerTileEntity(TileEntityLandingPadSingle.class, "GC Landing Pad");
-        GameRegistry.registerTileEntity(TileEntityLandingPad.class, "GC Landing Pad Full");
-        GameRegistry.registerTileEntity(TileEntitySpaceStationBase.class, "GC Space Station");
-        GameRegistry.registerTileEntity(TileEntityMulti.class, "GC Dummy Block");
-        GameRegistry.registerTileEntity(TileEntityOxygenSealer.class, "GC Air Sealer");
-        GameRegistry.registerTileEntity(TileEntityDungeonSpawner.class, "GC Dungeon Boss Spawner");
-        GameRegistry.registerTileEntity(TileEntityOxygenDetector.class, "GC Oxygen Detector");
-        GameRegistry.registerTileEntity(TileEntityBuggyFueler.class, "GC Buggy Fueler");
-        GameRegistry.registerTileEntity(TileEntityBuggyFuelerSingle.class, "GC Buggy Fueler Single");
-        GameRegistry.registerTileEntity(TileEntityCargoLoader.class, "GC Cargo Loader");
-        GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "GC Cargo Unloader");
-        GameRegistry.registerTileEntity(TileEntityParaChest.class, "GC Parachest Tile");
-        GameRegistry.registerTileEntity(TileEntitySolar.class, "GC Solar Panel");
-        GameRegistry.registerTileEntity(TileEntityDish.class, "GC Radio Telescope");
-        GameRegistry.registerTileEntity(TileEntityCrafting.class, "GC Magnetic Crafting Table");
-        GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "GC Energy Storage Module");
-        GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "GC Coal Generator");
-        GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "GC Electric Furnace");
-        GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "GC Aluminum Wire");
-        GameRegistry.registerTileEntity(TileEntityAluminumWireSwitch.class, "GC Switchable Aluminum Wire");
-        GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "GC Fallen Meteor");
-        GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "GC Ingot Compressor");
-        GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "GC Electric Ingot Compressor");
-        GameRegistry.registerTileEntity(TileEntityCircuitFabricator.class, "GC Circuit Fabricator");
-        GameRegistry.registerTileEntity(TileEntityAirLockController.class, "GC Air Lock Controller");
-        GameRegistry.registerTileEntity(TileEntityOxygenStorageModule.class, "GC Oxygen Storage Module");
-        GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "GC Oxygen Decompressor");
-        GameRegistry.registerTileEntity(TileEntityThruster.class, "GC Space Station Thruster");
-        GameRegistry.registerTileEntity(TileEntityArclamp.class, "GC Arc Lamp");
-        GameRegistry.registerTileEntity(TileEntityScreen.class, "GC View Screen");
-        GameRegistry.registerTileEntity(TileEntityPanelLight.class, "GC Panel Lighting");
-        GameRegistry.registerTileEntity(TileEntityTelemetry.class, "GC Telemetry Unit");
-        GameRegistry.registerTileEntity(TileEntityPainter.class, "GC Painter");
-        GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
-        GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
-        GameRegistry.registerTileEntity(TileEntityPlatform.class, "GC Platform");
-        GameRegistry.registerTileEntity(TileEntityEmergencyBox.class, "GC Emergency Post");
-        GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
-        if (CompatibilityManager.isIc2Loaded())
-        {
-            GameRegistry.registerTileEntity(TileCableIC2Sealed.class, "GC Sealed IC2 Cable");
-        }
+//        GameRegistry.registerTileEntity(TileEntityTreasureChest.class, "GC Treasure Chest");
+//        GameRegistry.registerTileEntity(TileEntityOxygenDistributor.class, "GC Air Distributor");
+//        GameRegistry.registerTileEntity(TileEntityOxygenCollector.class, "GC Air Collector");
+//        GameRegistry.registerTileEntity(TileEntityFluidPipe.class, "GC Oxygen Pipe");
+//        GameRegistry.registerTileEntity(TileEntityAirLock.class, "GC Air Lock Frame");
+//        GameRegistry.registerTileEntity(TileEntityRefinery.class, "GC Refinery");
+//        GameRegistry.registerTileEntity(TileEntityNasaWorkbench.class, "GC NASA Workbench");
+//        GameRegistry.registerTileEntity(TileEntityDeconstructor.class, "GC Deconstructor");
+//        GameRegistry.registerTileEntity(TileEntityOxygenCompressor.class, "GC Air Compressor");
+//        GameRegistry.registerTileEntity(TileEntityFuelLoader.class, "GC Fuel Loader");
+//        GameRegistry.registerTileEntity(TileEntityLandingPadSingle.class, "GC Landing Pad");
+//        GameRegistry.registerTileEntity(TileEntityLandingPad.class, "GC Landing Pad Full");
+//        GameRegistry.registerTileEntity(TileEntitySpaceStationBase.class, "GC Space Station");
+//        GameRegistry.registerTileEntity(TileEntityMulti.class, "GC Dummy Block");
+//        GameRegistry.registerTileEntity(TileEntityOxygenSealer.class, "GC Air Sealer");
+//        GameRegistry.registerTileEntity(TileEntityDungeonSpawner.class, "GC Dungeon Boss Spawner");
+//        GameRegistry.registerTileEntity(TileEntityOxygenDetector.class, "GC Oxygen Detector");
+//        GameRegistry.registerTileEntity(TileEntityBuggyFueler.class, "GC Buggy Fueler");
+//        GameRegistry.registerTileEntity(TileEntityBuggyFuelerSingle.class, "GC Buggy Fueler Single");
+//        GameRegistry.registerTileEntity(TileEntityCargoLoader.class, "GC Cargo Loader");
+//        GameRegistry.registerTileEntity(TileEntityCargoUnloader.class, "GC Cargo Unloader");
+//        GameRegistry.registerTileEntity(TileEntityParaChest.class, "GC Parachest Tile");
+//        GameRegistry.registerTileEntity(TileEntitySolar.class, "GC Solar Panel");
+//        GameRegistry.registerTileEntity(TileEntityDish.class, "GC Radio Telescope");
+//        GameRegistry.registerTileEntity(TileEntityCrafting.class, "GC Magnetic Crafting Table");
+//        GameRegistry.registerTileEntity(TileEntityEnergyStorageModule.class, "GC Energy Storage Module");
+//        GameRegistry.registerTileEntity(TileEntityCoalGenerator.class, "GC Coal Generator");
+//        GameRegistry.registerTileEntity(TileEntityElectricFurnace.class, "GC Electric Furnace");
+//        GameRegistry.registerTileEntity(TileEntityAluminumWire.class, "GC Aluminum Wire");
+//        GameRegistry.registerTileEntity(TileEntityAluminumWireSwitch.class, "GC Switchable Aluminum Wire");
+//        GameRegistry.registerTileEntity(TileEntityFallenMeteor.class, "GC Fallen Meteor");
+//        GameRegistry.registerTileEntity(TileEntityIngotCompressor.class, "GC Ingot Compressor");
+//        GameRegistry.registerTileEntity(TileEntityElectricIngotCompressor.class, "GC Electric Ingot Compressor");
+//        GameRegistry.registerTileEntity(TileEntityCircuitFabricator.class, "GC Circuit Fabricator");
+//        GameRegistry.registerTileEntity(TileEntityAirLockController.class, "GC Air Lock Controller");
+//        GameRegistry.registerTileEntity(TileEntityOxygenStorageModule.class, "GC Oxygen Storage Module");
+//        GameRegistry.registerTileEntity(TileEntityOxygenDecompressor.class, "GC Oxygen Decompressor");
+//        GameRegistry.registerTileEntity(TileEntityThruster.class, "GC Space Station Thruster");
+//        GameRegistry.registerTileEntity(TileEntityArclamp.class, "GC Arc Lamp");
+//        GameRegistry.registerTileEntity(TileEntityScreen.class, "GC View Screen");
+//        GameRegistry.registerTileEntity(TileEntityPanelLight.class, "GC Panel Lighting");
+//        GameRegistry.registerTileEntity(TileEntityTelemetry.class, "GC Telemetry Unit");
+//        GameRegistry.registerTileEntity(TileEntityPainter.class, "GC Painter");
+//        GameRegistry.registerTileEntity(TileEntityFluidTank.class, "GC Fluid Tank");
+//        GameRegistry.registerTileEntity(TileEntityPlayerDetector.class, "GC Player Detector");
+//        GameRegistry.registerTileEntity(TileEntityPlatform.class, "GC Platform");
+//        GameRegistry.registerTileEntity(TileEntityEmergencyBox.class, "GC Emergency Post");
+//        GameRegistry.registerTileEntity(TileEntityNull.class, "GC Null Tile");
+//        if (CompatibilityManager.isIc2Loaded())
+//        {
+//            GameRegistry.registerTileEntity(TileCableIC2Sealed.class, "GC Sealed IC2 Cable");
+//        }
     }
 
     private void registerCreatures()

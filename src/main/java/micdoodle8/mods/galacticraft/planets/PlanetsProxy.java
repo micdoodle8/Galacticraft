@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.SolarModuleNetwork;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.*;
@@ -61,7 +61,7 @@ public class PlanetsProxy implements IGuiHandler
     }
 
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         for (IPlanetsModule module : GalacticraftPlanets.commonModules)
         {
@@ -77,7 +77,7 @@ public class PlanetsProxy implements IGuiHandler
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         for (IPlanetsModuleClient module : GalacticraftPlanets.clientModules)
         {

@@ -9,31 +9,32 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.effect.EntityLightningBolt;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.effect.LightningBoltEntity;
+import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.merchant.IMerchant;
+import net.minecraft.entity.monster.WitchEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.InventoryBasic;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.potion.Effects;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.stats.StatList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.village.Village;
@@ -44,20 +45,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class EntityAlienVillager extends EntityAgeable implements IMerchant, INpc, IEntityBreathable
+public class EntityAlienVillager extends AgeableEntity implements IMerchant, INPC, IEntityBreathable
 {
     private int randomTickDivider;
     private boolean isMating;
     private boolean isPlaying;
     private Village villageObj;
-    private EntityPlayer buyingPlayer;
+    private PlayerEntity buyingPlayer;
     private MerchantRecipeList buyingList;
     private int timeUntilReset;
     private boolean needsInitilization;
     private int wealth;
     private String lastBuyingPlayer;
     private boolean isLookingForHome;
-    private InventoryBasic villagerInventory;
+    private Inventory villagerInventory;
     private static final EntityAlienVillager.ITradeList[] DEFAULT_TRADE_LIST_MAP = new EntityAlienVillager.ITradeList[] {
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxMask, 1, 0), new EntityAlienVillager.PriceInfo(1, 2)),
             new EntityAlienVillager.ListItemForEmeralds(new ItemStack(GCItems.oxTankLight, 1, 235), new EntityAlienVillager.PriceInfo(3, 4)),
@@ -77,20 +78,20 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     public EntityAlienVillager(World worldIn)
     {
         super(worldIn);
-        this.villagerInventory = new InventoryBasic("Items", false, 8);
+        this.villagerInventory = new Inventory("Items", false, 8);
         this.setSize(0.6F, 1.8F);
-        ((PathNavigateGround) this.getNavigator()).setBreakDoors(true);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(1, new EntityAIAvoidEntity<>(this, EntityZombie.class, 8.0F, 0.6D, 0.6D));
+        ((GroundPathNavigator) this.getNavigator()).setBreakDoors(true);
+        this.tasks.addTask(0, new SwimGoal(this));
+        this.tasks.addTask(1, new AvoidEntityGoal<>(this, ZombieEntity.class, 8.0F, 0.6D, 0.6D));
         this.tasks.addTask(1, new EntityAITradePlayerGC(this));
         this.tasks.addTask(1, new EntityAILookAtTradePlayerGC(this));
         this.tasks.addTask(2, new EntityAIMoveIndoors(this));
         this.tasks.addTask(3, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(4, new EntityAIOpenDoor(this, true));
-        this.tasks.addTask(5, new EntityAIMoveTowardsRestriction(this, 0.6D));
-        this.tasks.addTask(9, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(9, new EntityAIWander(this, 0.6D));
-        this.tasks.addTask(10, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(4, new OpenDoorGoal(this, true));
+        this.tasks.addTask(5, new MoveTowardsRestrictionGoal(this, 0.6D));
+        this.tasks.addTask(9, new EntityAIWatchClosest2(this, PlayerEntity.class, 3.0F, 1.0F));
+        this.tasks.addTask(9, new RandomWalkingGoal(this, 0.6D));
+        this.tasks.addTask(10, new LookAtGoal(this, MobEntity.class, 8.0F));
         this.setCanPickUpLoot(true);
     }
 
@@ -160,7 +161,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                     }
                 }
 
-                this.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 200, 0));
+                this.addPotionEffect(new EffectInstance(Effects.REGENERATION, 200, 0));
             }
         }
 
@@ -168,7 +169,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public boolean processInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInteract(PlayerEntity player, Hand hand)
     {
         ItemStack itemstack = player.inventory.getCurrentItem();
         boolean flag = itemstack != null && itemstack.getItem() == Items.SPAWN_EGG;
@@ -186,20 +187,20 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
                 }
                 else
                 {
-                    if (player instanceof EntityPlayerMP)
+                    if (player instanceof ServerPlayerEntity)
                     {
-                        EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                        ServerPlayerEntity playerMP = (ServerPlayerEntity) player;
                         GCPlayerStats stats = GCPlayerStats.get(playerMP);
                         if (stats.getChatCooldown() == 0)
                         {
-                            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
+                            player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.village.warning.no_freq_mod")));
                             stats.setChatCooldown(20);
                         }
                     }
                 }
             }
 
-            player.addStat(StatList.TALKED_TO_VILLAGER);
+            player.addStat(Stats.TALKED_TO_VILLAGER);
             return true;
         }
         else
@@ -209,7 +210,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+    public void writeEntityToNBT(CompoundNBT tagCompound)
     {
         super.writeEntityToNBT(tagCompound);
         tagCompound.setInteger("Riches", this.wealth);
@@ -219,7 +220,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             tagCompound.setTag("Offers", this.buyingList.getRecipiesAsTags());
         }
 
-        NBTTagList nbttaglist = new NBTTagList();
+        ListNBT nbttaglist = new ListNBT();
 
         for (int i = 0; i < this.villagerInventory.getSizeInventory(); ++i)
         {
@@ -227,7 +228,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
             if (!itemstack.isEmpty())
             {
-                nbttaglist.appendTag(itemstack.writeToNBT(new NBTTagCompound()));
+                nbttaglist.appendTag(itemstack.writeToNBT(new CompoundNBT()));
             }
         }
 
@@ -235,18 +236,18 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund)
+    public void readEntityFromNBT(CompoundNBT tagCompund)
     {
         super.readEntityFromNBT(tagCompund);
         this.wealth = tagCompund.getInteger("Riches");
 
         if (tagCompund.hasKey("Offers", 10))
         {
-            NBTTagCompound nbttagcompound = tagCompund.getCompoundTag("Offers");
+            CompoundNBT nbttagcompound = tagCompund.getCompoundTag("Offers");
             this.buyingList = new MerchantRecipeList(nbttagcompound);
         }
 
-        NBTTagList nbttaglist = tagCompund.getTagList("Inventory", 10);
+        ListNBT nbttaglist = tagCompund.getTagList("Inventory", 10);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
@@ -312,7 +313,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public void setRevengeTarget(EntityLivingBase livingBase)
+    public void setRevengeTarget(LivingEntity livingBase)
     {
         super.setRevengeTarget(livingBase);
 
@@ -320,7 +321,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         {
             this.villageObj.addOrRenewAgressor(livingBase);
 
-            if (livingBase instanceof EntityPlayer)
+            if (livingBase instanceof PlayerEntity)
             {
                 int i = -1;
 
@@ -348,7 +349,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
             if (entity != null)
             {
-                if (entity instanceof EntityPlayer)
+                if (entity instanceof PlayerEntity)
                 {
                     this.villageObj.modifyPlayerReputation(entity.getName(), -2);
                 }
@@ -359,7 +360,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
             }
             else
             {
-                EntityPlayer entityplayer = this.world.getClosestPlayerToEntity(this, 16.0D);
+                PlayerEntity entityplayer = this.world.getClosestPlayerToEntity(this, 16.0D);
 
                 if (entityplayer != null)
                 {
@@ -372,13 +373,13 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public void setCustomer(EntityPlayer p_70932_1_)
+    public void setCustomer(PlayerEntity p_70932_1_)
     {
         this.buyingPlayer = p_70932_1_;
     }
 
     @Override
-    public EntityPlayer getCustomer()
+    public PlayerEntity getCustomer()
     {
         return this.buyingPlayer;
     }
@@ -420,7 +421,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
 
         if (recipe.getRewardsExp())
         {
-            this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
+            this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY + 0.5D, this.posZ, i));
         }
     }
 
@@ -443,7 +444,7 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public MerchantRecipeList getRecipes(EntityPlayer p_70934_1_)
+    public MerchantRecipeList getRecipes(PlayerEntity p_70934_1_)
     {
         if (this.buyingList == null)
         {
@@ -520,17 +521,17 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, ILivingEntityData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
         return livingdata;
     }
 
     @Override
-    public EntityAlienVillager createChild(EntityAgeable ageable)
+    public EntityAlienVillager createChild(AgeableEntity ageable)
     {
         EntityAlienVillager entityvillager = new EntityAlienVillager(this.world);
-        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (IEntityLivingData) null);
+        entityvillager.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entityvillager)), (ILivingEntityData) null);
         return entityvillager;
     }
 
@@ -547,19 +548,19 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
     }
 
     @Override
-    public boolean canBeLeashedTo(EntityPlayer player)
+    public boolean canBeLeashedTo(PlayerEntity player)
     {
         return false;
     }
 
     @Override
-    public void onStruckByLightning(EntityLightningBolt lightningBolt)
+    public void onStruckByLightning(LightningBoltEntity lightningBolt)
     {
         if (!this.world.isRemote && !this.isDead)
         {
-            EntityWitch entitywitch = new EntityEvolvedWitch(this.world);
+            WitchEntity entitywitch = new EntityEvolvedWitch(this.world);
             entitywitch.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
-            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), (IEntityLivingData) null);
+            entitywitch.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(entitywitch)), (ILivingEntityData) null);
             entitywitch.setNoAI(this.isAIDisabled());
 
             if (this.hasCustomName())
@@ -573,13 +574,13 @@ public class EntityAlienVillager extends EntityAgeable implements IMerchant, INp
         }
     }
 
-    public InventoryBasic getVillagerInventory()
+    public Inventory getVillagerInventory()
     {
         return this.villagerInventory;
     }
 
     @Override
-    protected void updateEquipmentIfNeeded(EntityItem itemEntity)
+    protected void updateEquipmentIfNeeded(ItemEntity itemEntity)
     {
         ItemStack itemstack = itemEntity.getItem();
         Item item = itemstack.getItem();

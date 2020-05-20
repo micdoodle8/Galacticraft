@@ -11,13 +11,12 @@ import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.*;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -159,7 +158,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
@@ -167,7 +166,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
@@ -208,9 +207,9 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
-        if (side == EnumFacing.DOWN)
+        if (side == Direction.DOWN)
         {
             return new int[] { 6 };
         }
@@ -221,13 +220,13 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID < 6 && this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID == 6;
     }
@@ -239,13 +238,13 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -254,9 +253,9 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();

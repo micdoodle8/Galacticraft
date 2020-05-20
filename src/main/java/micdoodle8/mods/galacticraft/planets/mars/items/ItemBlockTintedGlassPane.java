@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemDye;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeItem;
+import net.minecraft.item.Rarity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemBlockTintedGlassPane extends ItemBlock
+public class ItemBlockTintedGlassPane extends BlockItem
 {
     public ItemBlockTintedGlassPane(Block block)
     {
@@ -34,12 +34,12 @@ public class ItemBlockTintedGlassPane extends ItemBlock
     @Override
     public String getUnlocalizedName(ItemStack itemstack)
     {
-        return this.getBlock().getUnlocalizedName() + "." + ItemDye.DYE_COLORS[~itemstack.getItemDamage() & 15];
+        return this.getBlock().getUnlocalizedName() + "." + DyeItem.DYE_COLORS[~itemstack.getItemDamage() & 15];
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }

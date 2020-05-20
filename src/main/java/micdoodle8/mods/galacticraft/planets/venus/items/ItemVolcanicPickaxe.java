@@ -8,21 +8,21 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCommandBlock;
-import net.minecraft.block.BlockStructure;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.settings.GameSettings;
+import net.minecraft.block.CommandBlockBlock;
+import net.minecraft.block.StructureBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemPickaxe;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.Packet;
+import net.minecraft.network.IPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, IShiftDescription
+public class ItemVolcanicPickaxe extends PickaxeItem implements ISortableItem, IShiftDescription
 {
     public ItemVolcanicPickaxe(String assetName)
     {
@@ -63,14 +63,14 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -82,29 +82,29 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving)
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving)
     {
         boolean ret = super.onBlockDestroyed(stack, worldIn, state, pos, entityLiving);
 
-        if (!(entityLiving instanceof EntityPlayer) || worldIn.isRemote)
+        if (!(entityLiving instanceof PlayerEntity) || worldIn.isRemote)
         {
             return ret;
         }
 
-        EntityPlayer player = (EntityPlayer) entityLiving;
-        EnumFacing facing = entityLiving.getHorizontalFacing();
+        PlayerEntity player = (PlayerEntity) entityLiving;
+        Direction facing = entityLiving.getHorizontalFacing();
 
         if (entityLiving.rotationPitch < -45.0F)
         {
-            facing = EnumFacing.UP;
+            facing = Direction.UP;
         }
         else if (entityLiving.rotationPitch > 45.0F)
         {
-            facing = EnumFacing.DOWN;
+            facing = Direction.DOWN;
         }
 
-        boolean yAxis = facing.getAxis() == EnumFacing.Axis.Y;
-        boolean xAxis = facing.getAxis() == EnumFacing.Axis.X;
+        boolean yAxis = facing.getAxis() == Direction.Axis.Y;
+        boolean xAxis = facing.getAxis() == Direction.Axis.X;
         
         for (int i = -1; i <= 1; ++i)
         {
@@ -130,7 +130,7 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                 }
 
                 //:Replicate logic of PlayerInteractionManager.tryHarvestBlock(pos1)
-                IBlockState state1 = worldIn.getBlockState(pos1);
+                BlockState state1 = worldIn.getBlockState(pos1);
                 float f = state1.getBlockHardness(worldIn, pos1);
                 if (f >= 0F)
                 {
@@ -139,7 +139,7 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                     if (!event.isCanceled())
                     {
                         Block block = state1.getBlock(); 
-                        if ((block instanceof BlockCommandBlock || block instanceof BlockStructure) && !player.canUseCommandBlock())
+                        if ((block instanceof CommandBlockBlock || block instanceof StructureBlock) && !player.canUseCommandBlock())
                         {
                             worldIn.notifyBlockUpdate(pos1, state1, state1, 3);
                             continue;
@@ -147,10 +147,10 @@ public class ItemVolcanicPickaxe extends ItemPickaxe implements ISortableItem, I
                         TileEntity tileentity = worldIn.getTileEntity(pos1);
                         if (tileentity != null)
                         {
-                            Packet<?> pkt = tileentity.getUpdatePacket();
+                            IPacket<?> pkt = tileentity.getUpdatePacket();
                             if (pkt != null)
                             {
-                                ((EntityPlayerMP)player).connection.sendPacket(pkt);
+                                ((ServerPlayerEntity)player).connection.sendPacket(pkt);
                             }
                         }
     

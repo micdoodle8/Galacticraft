@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -13,7 +13,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-public abstract class GuiStarBackground extends GuiScreen
+public abstract class GuiStarBackground extends Screen
 {
     private static final ResourceLocation backgroundTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/stars.png");
     private static final ResourceLocation blackTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/black.png");

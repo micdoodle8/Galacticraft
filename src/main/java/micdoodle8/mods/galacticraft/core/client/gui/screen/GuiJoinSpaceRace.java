@@ -19,10 +19,10 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -32,12 +32,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
+public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, ITextBoxCallback
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
 
     private int ticksPassed;
-    private EntityPlayer thePlayer;
+    private PlayerEntity thePlayer;
     private boolean initialized;
 
     private int buttonFlag_height;
@@ -49,7 +49,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
 
     private SpaceRace spaceRaceData;
 
-    public GuiJoinSpaceRace(EntityPlayerSP player)
+    public GuiJoinSpaceRace(ClientPlayerEntity player)
     {
         this.thePlayer = player;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
@@ -91,7 +91,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     }
 
     @Override
-    protected void actionPerformed(GuiButton buttonClicked)
+    protected void actionPerformed(Button buttonClicked)
     {
         switch (buttonClicked.id)
         {
@@ -190,7 +190,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return true;
     }
@@ -212,7 +212,7 @@ public class GuiJoinSpaceRace extends GuiScreen implements ICheckBoxCallback, IT
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return true;
     }

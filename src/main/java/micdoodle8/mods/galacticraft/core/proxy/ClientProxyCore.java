@@ -67,25 +67,25 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MusicTicker;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.resources.IReloadableResourceManager;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
@@ -140,7 +140,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     public static HashMap<Integer, Integer> clientSpaceStationID = Maps.newHashMap();
     public static MusicTicker.MusicType MUSIC_TYPE_MARS;
-    public static EnumRarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
+    public static Rarity galacticraftItem = EnumHelper.addRarity("GCRarity", TextFormatting.BLUE, "Space");
     public static Map<String, ResourceLocation> capeMap = new HashMap<>();
     public static InventoryExtended dummyInventory = new InventoryExtended();
     public static Map<Fluid, ResourceLocation> submergedTextures = Maps.newHashMap();
@@ -200,7 +200,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                     TileEntity tile = world.getTileEntity(pos);
                     if (tile instanceof TileEntityPanelLight)
                     {
-                        IBlockState baseState = ((TileEntityPanelLight)tile).getBaseBlock();
+                        BlockState baseState = ((TileEntityPanelLight)tile).getBaseBlock();
                         return Minecraft.getMinecraft().getBlockColors().colorMultiplier(baseState, world, pos, tintIndex);
                     }
                 }
@@ -218,13 +218,13 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         {
             try
             {
-                Field field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "field_178637_m");
+                Field field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "playerRenderer" : "field_178637_m");
                 field.setAccessible(true);
                 field.set(FMLClientHandler.instance().getClient().getRenderManager(), new RenderPlayerGC());
 
-                field = RenderManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "field_178636_l");
+                field = EntityRendererManager.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "skinMap" : "field_178636_l");
                 field.setAccessible(true);
-                Map<String, RenderPlayer> skinMap = (Map<String, RenderPlayer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
+                Map<String, PlayerRenderer> skinMap = (Map<String, PlayerRenderer>) field.get(FMLClientHandler.instance().getClient().getRenderManager());
                 skinMap.put("default", new RenderPlayerGC(skinMap.get("default"), false));
                 skinMap.put("slim", new RenderPlayerGC(skinMap.get("slim"), true));
             }
@@ -279,7 +279,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ModelLoader.setCustomStateMapper(GCBlocks.fuel, new StateMapperBase()
         {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            protected ModelResourceLocation getModelResourceLocation(BlockState state)
             {
                 return fuelLocation;
             }
@@ -290,7 +290,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ModelLoader.setCustomStateMapper(GCBlocks.crudeOil, new StateMapperBase()
         {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            protected ModelResourceLocation getModelResourceLocation(BlockState state)
             {
                 return oilLocation;
             }
@@ -366,11 +366,11 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     }
 
     @Override
-    public EntityPlayer getPlayerFromNetHandler(INetHandler handler)
+    public PlayerEntity getPlayerFromNetHandler(INetHandler handler)
     {
-        if (handler instanceof NetHandlerPlayServer)
+        if (handler instanceof ServerPlayNetHandler)
         {
-            return ((NetHandlerPlayServer) handler).player;
+            return ((ServerPlayNetHandler) handler).player;
         }
         else
         {
@@ -405,7 +405,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     {
         if (FMLClientHandler.instance().getClient().isSingleplayer() && !FMLClientHandler.instance().getClient().getIntegratedServer().getPublic())
         {
-            GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
+            Screen screen = FMLClientHandler.instance().getClient().currentScreen;
 
             if (screen != null)
             {
@@ -505,23 +505,23 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
 
     public static void registerEntityRenderers()
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (RenderManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.ASSET_PREFIX, "rocket_t1"));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (RenderManager manager) -> new RenderEvolvedSpider(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (RenderManager manager) -> new RenderEvolvedZombie(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (RenderManager manager) -> new RenderEvolvedCreeper(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, (RenderManager manager) -> new RenderEvolvedSkeleton(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, (RenderManager manager) -> new RenderEvolvedSkeletonBoss(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, (RenderManager manager) -> new RenderMeteor(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, (RenderManager manager) -> new RenderFlag(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, (RenderManager manager) -> new RenderParaChest(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (RenderManager manager) -> new RenderAlienVillager(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, (RenderManager manager) -> new RenderLander(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (RenderManager manager) -> new RenderEntityFake(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (RenderManager manager) -> new RenderBuggy(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, (RenderManager manager) -> new RenderMeteorChunk(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, (RenderManager manager) -> new RenderSchematic(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedEnderman.class, (RenderManager manager) -> new RenderEvolvedEnderman(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedWitch.class, (RenderManager manager) -> new RenderEvolvedWitch(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.ASSET_PREFIX, "rocket_t1"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (EntityRendererManager manager) -> new RenderEvolvedSpider(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (EntityRendererManager manager) -> new RenderEvolvedZombie(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (EntityRendererManager manager) -> new RenderEvolvedCreeper(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSkeleton.class, (EntityRendererManager manager) -> new RenderEvolvedSkeleton(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySkeletonBoss.class, (EntityRendererManager manager) -> new RenderEvolvedSkeletonBoss(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMeteor.class, (EntityRendererManager manager) -> new RenderMeteor(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityFlag.class, (EntityRendererManager manager) -> new RenderFlag(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityParachest.class, (EntityRendererManager manager) -> new RenderParaChest(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityAlienVillager.class, (EntityRendererManager manager) -> new RenderAlienVillager(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityLander.class, (EntityRendererManager manager) -> new RenderLander(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCelestialFake.class, (EntityRendererManager manager) -> new RenderEntityFake(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityBuggy.class, (EntityRendererManager manager) -> new RenderBuggy(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityMeteorChunk.class, (EntityRendererManager manager) -> new RenderMeteorChunk(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityHangingSchematic.class, (EntityRendererManager manager) -> new RenderSchematic(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedEnderman.class, (EntityRendererManager manager) -> new RenderEvolvedEnderman(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedWitch.class, (EntityRendererManager manager) -> new RenderEvolvedWitch(manager));
     }
 
     private static void registerHandlers()
@@ -933,7 +933,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     }
     
     @Override
-    public PlayerGearData getGearData(EntityPlayer player)
+    public PlayerGearData getGearData(PlayerEntity player)
     {
         PlayerGearData gearData = ClientProxyCore.playerItemData.get(player.getName());
 

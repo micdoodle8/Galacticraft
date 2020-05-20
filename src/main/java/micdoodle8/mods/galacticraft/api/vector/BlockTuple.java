@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 

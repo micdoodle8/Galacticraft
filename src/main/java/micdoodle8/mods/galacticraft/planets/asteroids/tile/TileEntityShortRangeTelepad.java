@@ -21,20 +21,20 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockTelepadFake;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.ShortRangeTelepadHandler;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -117,7 +117,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         {
             if (!this.getDisabled(0) && this.targetAddressResult == EnumTelepadSearchResult.VALID && (this.ticks % 5 == 0 || teleporting))
             {
-                List containedEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                List containedEntities = this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                         this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                 if (containedEntities.size() > 0 && this.getEnergyStoredGC() >= ENERGY_USE_ON_TELEPORT)
@@ -148,7 +148,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                     if (finalPos != null)
                     {
                         TileEntity tileAt = finalPos.getTileEntity(this.world);
-                        List<EntityLivingBase> containedEntities = this.world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
+                        List<LivingEntity> containedEntities = this.world.getEntitiesWithinAABB(LivingEntity.class, new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(),
                                 this.getPos().getX() + 1, this.getPos().getY() + 2, this.getPos().getZ() + 1));
 
                         if (tileAt instanceof TileEntityShortRangeTelepad)
@@ -157,13 +157,13 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                             int teleportResult = destTelepad.canTeleportHere();
                             if (teleportResult == 0)
                             {
-                                for (EntityLivingBase e : containedEntities)
+                                for (LivingEntity e : containedEntities)
                                 {
                                     e.setPosition(finalPos.x + 0.5F, finalPos.y + 0.08F, finalPos.z + 0.5F);
                                     this.world.updateEntityWithOptionalForce(e, true);
-                                    if (e instanceof EntityPlayerMP)
+                                    if (e instanceof ServerPlayerEntity)
                                     {
-                                        ((EntityPlayerMP) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
+                                        ((ServerPlayerEntity) e).connection.setPlayerLocation(finalPos.x, finalPos.y, finalPos.z, e.rotationYaw, e.rotationPitch);
                                     }
                                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.C_TELEPAD_SEND, GCCoreUtil.getDimensionID(this.world), new Object[] { finalPos, e.getEntityId() }), GCCoreUtil.getDimensionID(this.world));
                                 }
@@ -179,29 +179,29 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
                                 switch (teleportResult)
                                 {
                                 case -1:
-                                    for (EntityLivingBase e : containedEntities)
+                                    for (LivingEntity e : containedEntities)
                                     {
-                                        if (e instanceof EntityPlayer)
+                                        if (e instanceof PlayerEntity)
                                         {
-                                            e.sendMessage(new TextComponentString("Cannot Send client-side")); // No need for translation, since this should never happen
+                                            e.sendMessage(new StringTextComponent("Cannot Send client-side")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
                                 case 1:
-                                    for (EntityLivingBase e : containedEntities)
+                                    for (LivingEntity e : containedEntities)
                                     {
-                                        if (e instanceof EntityPlayer)
+                                        if (e instanceof PlayerEntity)
                                         {
-                                            e.sendMessage(new TextComponentString("Target address invalid")); // No need for translation, since this should never happen
+                                            e.sendMessage(new StringTextComponent("Target address invalid")); // No need for translation, since this should never happen
                                         }
                                     }
                                     break;
                                 case 2:
-                                    for (EntityLivingBase e : containedEntities)
+                                    for (LivingEntity e : containedEntities)
                                     {
-                                        if (e instanceof EntityPlayer)
+                                        if (e instanceof PlayerEntity)
                                         {
-                                            e.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.target_no_energy.name")));
+                                            e.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.target_no_energy.name")));
                                         }
                                     }
                                     break;
@@ -224,7 +224,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -240,7 +240,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         ItemStackHelper.saveAllItems(nbt, this.getInventory());
@@ -272,7 +272,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public boolean onActivated(EntityPlayer entityPlayer)
+    public boolean onActivated(PlayerEntity entityPlayer)
     {
         entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_ASTEROIDS, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         return true;
@@ -324,7 +324,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.world.getBlockState(pos);
+            BlockState stateAt = this.world.getBlockState(pos);
 
             if (stateAt.getBlock() == AsteroidBlocks.fakeTelepad)
             {
@@ -353,7 +353,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
@@ -371,7 +371,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return this.world.getTileEntity(getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
@@ -383,21 +383,21 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return index == 0;
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction)
     {
         return this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
@@ -407,9 +407,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
-        return EnumFacing.getFront((this.getBlockMetadata() & 3) + 2);
+        return Direction.getFront((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override
@@ -646,8 +646,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 }

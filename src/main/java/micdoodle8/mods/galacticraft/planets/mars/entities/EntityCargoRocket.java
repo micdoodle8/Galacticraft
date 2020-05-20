@@ -15,19 +15,19 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -192,7 +192,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
 
         if (!this.isDead)
         {
-            EntityLivingBase riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
+            LivingEntity riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(this.posX + 0.2 - this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1), new Vector3(x1, y1, z1), new Object[] { riddenByEntity });
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ + 0.2 - this.rand.nextDouble() / 10 + z1), new Vector3(x1, y1, z1), new Object[] { riddenByEntity });
             GalacticraftCore.proxy.spawnParticle(this.getLaunched() ? "launchFlameLaunched" : "launchFlameIdle", new Vector3(this.posX - 0.2 + this.rand.nextDouble() / 10 + x1, y, this.posZ - 0.2 + this.rand.nextDouble() / 10 + z1), new Vector3(x1, y1, z1), new Object[] { riddenByEntity });
@@ -248,12 +248,12 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
             if (this.targetDimension != GCCoreUtil.getDimensionID(this.world))
             {
                 GCLog.debug("Destination is in different dimension: " + this.targetDimension);
-                WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
-                if (targetDim != null && targetDim.world instanceof WorldServer)
+                Dimension targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
+                if (targetDim != null && targetDim.world instanceof ServerWorld)
                 {
                     GCLog.debug("Loaded destination dimension " + this.targetDimension);
                     this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
-                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer) targetDim.world, false, null);
+                    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld) targetDim.world, false, null);
 
                     if (e instanceof EntityCargoRocket)
                     {
@@ -290,18 +290,18 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
-        if (!this.world.isRemote && player instanceof EntityPlayerMP)
+        if (!this.world.isRemote && player instanceof ServerPlayerEntity)
         {
-            MarsUtil.openCargoRocketInventory((EntityPlayerMP) player, this);
+            MarsUtil.openCargoRocketInventory((ServerPlayerEntity) player, this);
         }
 
         return false;
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
     	if (world.isRemote) return;
         nbt.setInteger("Type", this.rocketType.getIndex());
@@ -310,7 +310,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
 
@@ -364,7 +364,7 @@ public class EntityCargoRocket extends EntityAutoRocket implements IRocketType, 
     {
         super.getItemsDropped(droppedItemList);
         ItemStack rocket = new ItemStack(MarsItems.rocketMars, 1, this.rocketType.getIndex() + 10);
-        rocket.setTagCompound(new NBTTagCompound());
+        rocket.setTagCompound(new CompoundNBT());
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItemList.add(rocket);
         return droppedItemList;

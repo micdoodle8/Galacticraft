@@ -7,10 +7,10 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 import java.util.List;
 
@@ -95,7 +95,7 @@ public class CommandGCAstroMiner extends CommandBase
         //Proceed if syntax of show|reset|set<number> was correct
         if (type > 0)
         {
-            EntityPlayerMP playerBase = null;
+            ServerPlayerEntity playerBase = null;
             try
             {
                 if (args.length == 2)
@@ -113,15 +113,15 @@ public class CommandGCAstroMiner extends CommandBase
                     switch (type)
                     {
                     case 1:
-                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + stats.getAstroMinerCount())));
+                        sender.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + stats.getAstroMinerCount())));
                         break;
                     case 2:
                         stats.setAstroMinerCount(0);
-                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + 0)));
+                        sender.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + 0)));
                         break;
                     case 3:
                         stats.setAstroMinerCount(newvalue);
-                        sender.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + newvalue)));
+                        sender.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("command.gcastrominer.count", PlayerUtil.getName(playerBase), "" + newvalue)));
                         break;
                     }
                 }

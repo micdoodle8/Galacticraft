@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -87,12 +87,12 @@ public class TileEntityAirLockController extends TileEntityAirLock
                 Vector3 minPos = new Vector3(this).translate(0.5D - distance);
                 Vector3 maxPos = new Vector3(this).translate(0.5D + distance);
                 AxisAlignedBB matchingRegion = new AxisAlignedBB(minPos.x, minPos.y, minPos.z, maxPos.x, maxPos.y, maxPos.z);
-                List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, matchingRegion);
+                List<PlayerEntity> playersWithin = this.world.getEntitiesWithinAABB(PlayerEntity.class, matchingRegion);
 
                 if (this.playerNameMatches)
                 {
                     boolean foundPlayer = false;
-                    for (EntityPlayer p : playersWithin)
+                    for (PlayerEntity p : playersWithin)
                     {
                         if (PlayerUtil.getName(p).equalsIgnoreCase(this.playerToOpenFor))
                         {
@@ -151,7 +151,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
 
                 if (this.active != this.lastActive)
                 {
-                    IBlockState state = this.world.getBlockState(this.getPos());
+                    BlockState state = this.world.getBlockState(this.getPos());
                     this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
                 }
 
@@ -235,7 +235,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         int z = this.lastProtocol.minZ + (this.lastProtocol.maxZ - this.lastProtocol.minZ) / 2;
 
         BlockPos pos = new BlockPos(x, y, z);
-        IBlockState state = this.world.getBlockState(pos);
+        BlockState state = this.world.getBlockState(pos);
 
         if (state.getMaterial() != Material.AIR)
         {
@@ -391,7 +391,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.ownerName = nbt.getString("OwnerName");
@@ -407,7 +407,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setString("OwnerName", this.ownerName);
@@ -424,9 +424,9 @@ public class TileEntityAirLockController extends TileEntityAirLock
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override

@@ -5,11 +5,11 @@ import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -52,7 +52,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         this.setPosition(var2, var4, var6);
     }
 
-    public EntityCelestialFake(EntityPlayerMP player)
+    public EntityCelestialFake(ServerPlayerEntity player)
     {
         this(player.world, player.posX, player.posY, player.posZ);
 
@@ -75,7 +75,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         {
             if (this.getPassengers().isEmpty())
             {
-                final EntityPlayer player = this.world.getClosestPlayerToEntity(this, 5);
+                final PlayerEntity player = this.world.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
@@ -132,7 +132,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         if (nbt.hasKey("RiderUUID_LSB"))
         {
@@ -141,9 +141,9 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
-        final NBTTagList nbttaglist = new NBTTagList();
+        final ListNBT nbttaglist = new ListNBT();
 
         UUID id = this.getOwnerUUID();
 
@@ -295,7 +295,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     @Override
     public UUID getOwnerUUID()
     {
-        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof PlayerEntity))
         {
             return null;
         }

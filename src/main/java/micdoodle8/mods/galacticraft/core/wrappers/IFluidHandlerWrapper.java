@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 public interface IFluidHandlerWrapper 
 {
-    int fill(EnumFacing from, FluidStack resource, boolean doFill);
+    int fill(Direction from, FluidStack resource, boolean doFill);
 
-    FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain);
+    FluidStack drain(Direction from, FluidStack resource, boolean doDrain);
 
-    FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain);
+    FluidStack drain(Direction from, int maxDrain, boolean doDrain);
 
-    boolean canFill(EnumFacing from, Fluid fluid);
+    boolean canFill(Direction from, Fluid fluid);
 
-    boolean canDrain(EnumFacing from, Fluid fluid);
+    boolean canDrain(Direction from, Fluid fluid);
     
-    FluidTankInfo[] getTankInfo(EnumFacing from);
+    FluidTankInfo[] getTankInfo(Direction from);
 }

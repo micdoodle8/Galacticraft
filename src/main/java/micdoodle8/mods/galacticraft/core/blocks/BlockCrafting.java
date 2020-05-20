@@ -9,14 +9,14 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -32,13 +32,13 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
@@ -63,7 +63,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         this.rotate6Ways(world, pos);
         return true;
@@ -71,19 +71,19 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 
     private void rotate6Ways(World world, BlockPos pos)
     {
-        IBlockState state = world.getBlockState(pos);
-        EnumFacing facing = state.getValue(FACING);
-        if (facing == EnumFacing.DOWN)
+        BlockState state = world.getBlockState(pos);
+        Direction facing = state.getValue(FACING);
+        if (facing == Direction.DOWN)
         {
-            facing = EnumFacing.UP;
+            facing = Direction.UP;
         }
-        else if (facing == EnumFacing.UP)
+        else if (facing == Direction.UP)
         {
-            facing = EnumFacing.NORTH;
+            facing = Direction.NORTH;
         }
-        else if (facing == EnumFacing.WEST)
+        else if (facing == Direction.WEST)
         {
-            facing = EnumFacing.DOWN;
+            facing = Direction.DOWN;
         }
         else
         {
@@ -116,12 +116,12 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(worldIn, pos, placer)), 2);
     }
 
-    public static EnumFacing getFacingFromEntity(World worldIn, BlockPos clickedBlock, EntityLivingBase entityIn)
+    public static Direction getFacingFromEntity(World worldIn, BlockPos clickedBlock, LivingEntity entityIn)
     {
         if (MathHelper.abs((float)entityIn.posX - (float)clickedBlock.getX()) < 3.0F && MathHelper.abs((float)entityIn.posZ - (float)clickedBlock.getZ()) < 3.0F)
         {
@@ -129,12 +129,12 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 
             if (d0 - (double)clickedBlock.getY() > 2.0D)
             {
-                return EnumFacing.UP;
+                return Direction.UP;
             }
 
             if ((double)clickedBlock.getY() - d0 > 1.0D)
             {
-                return EnumFacing.DOWN;
+                return Direction.DOWN;
             }
         }
 
@@ -160,13 +160,13 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, EnumFacing.getFront(meta));
+        return this.getDefaultState().withProperty(FACING, Direction.getFront(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return (state.getValue(FACING)).getIndex();
     }
@@ -178,7 +178,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
     
     @Override
-    public void dropEntireInventory(World worldIn, BlockPos pos, IBlockState state)
+    public void dropEntireInventory(World worldIn, BlockPos pos, BlockState state)
     {
         super.dropEntireInventory(worldIn, pos, state);
         TileEntity tileEntity = worldIn.getTileEntity(pos);

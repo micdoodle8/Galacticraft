@@ -21,20 +21,20 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.AbstractArrowEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumParticleTypes;
@@ -44,9 +44,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.AbstractChunkProvider;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
@@ -91,15 +91,15 @@ public class TransformerHooks
     {
         if (entity.world.provider instanceof IGalacticraftWorldProvider)
         {
-            if (entity instanceof EntityChicken && !OxygenUtil.isAABBInBreathableAirBlock(entity.world, entity.getEntityBoundingBox()))
+            if (entity instanceof ChickenEntity && !OxygenUtil.isAABBInBreathableAirBlock(entity.world, entity.getEntityBoundingBox()))
             {
                 return 0.08D;
             }
 
             final IGalacticraftWorldProvider customProvider = (IGalacticraftWorldProvider) entity.world.provider;
-            if (entity instanceof EntityPlayer)
+            if (entity instanceof PlayerEntity)
             {
-                EntityPlayer player = (EntityPlayer) entity;
+                PlayerEntity player = (PlayerEntity) entity;
                 if (player.inventory != null)
                 {
                     int armorModLowGrav = 100;
@@ -147,7 +147,7 @@ public class TransformerHooks
         }
     }
 
-    public static double getItemGravity(EntityItem e)
+    public static double getItemGravity(ItemEntity e)
     {
         if (e.world.provider instanceof IGalacticraftWorldProvider)
         {
@@ -160,7 +160,7 @@ public class TransformerHooks
         }
     }
 
-    public static float getArrowGravity(EntityArrow e)
+    public static float getArrowGravity(AbstractArrowEntity e)
     {
         if (e.world.provider instanceof IGalacticraftWorldProvider)
         {
@@ -185,7 +185,7 @@ public class TransformerHooks
         return world.prevRainingStrength + (world.rainingStrength - world.prevRainingStrength) * partialTicks;
     }
 
-    public static void otherModGenerate(int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    public static void otherModGenerate(int chunkX, int chunkZ, World world, ChunkGenerator chunkGenerator, AbstractChunkProvider chunkProvider)
     {
         if (world.provider instanceof WorldProviderSpaceStation)
         {
@@ -360,7 +360,7 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static Vec3d getFogColorHook(World world)
     {
-        EntityPlayerSP player = FMLClientHandler.instance().getClient().player;
+        ClientPlayerEntity player = FMLClientHandler.instance().getClient().player;
         if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld)
         {
             float var20 = ((float) (player.posY) - Constants.OVERWORLD_SKYPROVIDER_STARTHEIGHT) / 1000.0F;
@@ -378,7 +378,7 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static Vec3d getSkyColorHook(World world)
     {
-        EntityPlayerSP player = FMLClientHandler.instance().getClient().player;
+        ClientPlayerEntity player = FMLClientHandler.instance().getClient().player;
         if (world.provider.getSkyRenderer() instanceof SkyProviderOverworld || (player != null && player.posY > Constants.OVERWORLD_CLOUD_HEIGHT && player.getRidingEntity() instanceof EntitySpaceshipBase))
         {
             float f1 = world.getCelestialAngle(1.0F);
@@ -446,7 +446,7 @@ public class TransformerHooks
             return entity.isBurning();
         }
 
-        if (!(entity instanceof EntityLivingBase) && !(entity instanceof EntityArrow))
+        if (!(entity instanceof LivingEntity) && !(entity instanceof AbstractArrowEntity))
         {
             return entity.isBurning();
         }
@@ -470,7 +470,7 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static void orientCamera(float partialTicks)
     {
-        EntityPlayerSP player = ClientProxyCore.mc.player;
+        ClientPlayerEntity player = ClientProxyCore.mc.player;
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         Entity viewEntity = ClientProxyCore.mc.getRenderViewEntity();
@@ -492,7 +492,7 @@ public class TransformerHooks
             }
         }
 
-        if (viewEntity instanceof EntityLivingBase && viewEntity.world.provider instanceof IZeroGDimension && !((EntityLivingBase)viewEntity).isPlayerSleeping())
+        if (viewEntity instanceof LivingEntity && viewEntity.world.provider instanceof IZeroGDimension && !((LivingEntity)viewEntity).isPlayerSleeping())
         {
             float pitch = viewEntity.prevRotationPitch + (viewEntity.rotationPitch - viewEntity.prevRotationPitch) * partialTicks;
             float yaw = viewEntity.prevRotationYaw + (viewEntity.rotationYaw - viewEntity.prevRotationYaw) * partialTicks + 180.0F;
@@ -590,7 +590,7 @@ public class TransformerHooks
             return previous;
         }
 
-        EntityPlayer player = Minecraft.getMinecraft().player;
+        PlayerEntity player = Minecraft.getMinecraft().player;
         if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             return ((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom();
@@ -599,9 +599,9 @@ public class TransformerHooks
         return previous;
     }
     
-    public static double armorDamageHook(EntityLivingBase entity)
+    public static double armorDamageHook(LivingEntity entity)
     {
-        if (entity instanceof EntityPlayer && GalacticraftCore.isPlanetsLoaded)
+        if (entity instanceof PlayerEntity && GalacticraftCore.isPlanetsLoaded)
         {
             GCPlayerStats stats = GCPlayerStats.get(entity);
             if (stats != null)
@@ -626,7 +626,7 @@ public class TransformerHooks
         return orig || (b instanceof BlockGrating && b != GCBlocks.grating && MinecraftForgeClient.getRenderLayer() == BlockRenderLayer.TRANSLUCENT);
     }
 
-    public static float armorDamageHookF(EntityLivingBase entity)
+    public static float armorDamageHookF(LivingEntity entity)
     {
         return (float) armorDamageHook(entity);
     }
@@ -675,7 +675,7 @@ public class TransformerHooks
                 double xd = random.nextDouble();
                 double zd = random.nextDouble();
                 BlockPos blockpos2 = blockpos1.down();
-                IBlockState iblockstate = world.getBlockState(blockpos2);
+                BlockState iblockstate = world.getBlockState(blockpos2);
                 AxisAlignedBB axisalignedbb = iblockstate.getBoundingBox(world, blockpos2);
 
                 if (iblockstate.getMaterial() != Material.LAVA && iblockstate.getBlock() != Blocks.MAGMA)

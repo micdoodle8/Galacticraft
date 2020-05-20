@@ -14,9 +14,9 @@ import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -28,13 +28,13 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 {
     private static final ResourceLocation terraformerGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/terraformer.png");
     private TileEntityTerraformer terraformer;
-    private GuiButton enableTreesButton;
-    private GuiButton enableGrassButton;
+    private Button enableTreesButton;
+    private Button enableGrassButton;
     private GuiElementCheckbox checkboxRenderBubble;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
     private GuiElementInfoRegion waterTankInfoRegion = new GuiElementInfoRegion(0, 0, 41, 28, null, 0, 0, this);
 
-    public GuiTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer terraformer)
+    public GuiTerraformer(PlayerInventory par1InventoryPlayer, TileEntityTerraformer terraformer)
     {
         super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().player));
         this.ySize = 237;
@@ -87,8 +87,8 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.buttonList.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableTreesButton = new GuiButton(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"));
-        this.enableGrassButton = new GuiButton(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"));
+        this.enableTreesButton = new Button(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"));
+        this.enableGrassButton = new Button(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"));
         this.buttonList.add(this.enableTreesButton);
         this.buttonList.add(this.enableGrassButton);
         this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
@@ -96,7 +96,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {
@@ -219,7 +219,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return true;
     }

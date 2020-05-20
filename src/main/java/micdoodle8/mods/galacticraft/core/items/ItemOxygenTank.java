@@ -6,16 +6,15 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -44,9 +43,9 @@ public class ItemOxygenTank extends Item implements ISortableItem, IClickableIte
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             list.add(new ItemStack(this, 1, 0));
             list.add(new ItemStack(this, 1, this.getMaxDamage()));
@@ -54,14 +53,14 @@ public class ItemOxygenTank extends Item implements ISortableItem, IClickableIte
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -79,11 +78,11 @@ public class ItemOxygenTank extends Item implements ISortableItem, IClickableIte
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand)
     {
         ItemStack itemStack = player.getHeldItem(hand);
 
-        if (player instanceof EntityPlayerMP)
+        if (player instanceof ServerPlayerEntity)
         {
             if (itemStack.getItem() instanceof IClickableItem)
             {
@@ -92,14 +91,14 @@ public class ItemOxygenTank extends Item implements ISortableItem, IClickableIte
 
             if (itemStack.isEmpty())
             {
-                return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+                return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
             }
         }
-        return new ActionResult<>(EnumActionResult.PASS, itemStack);
+        return new ActionResult<>(ActionResultType.PASS, itemStack);
     }
     
     @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, EntityPlayer player)
+    public ItemStack onItemRightClick(ItemStack itemStack, World worldIn, PlayerEntity player)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
         ItemStack gear = stats.getExtendedInventory().getStackInSlot(2);

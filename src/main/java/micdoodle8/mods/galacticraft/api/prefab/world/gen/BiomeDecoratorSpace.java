@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 import micdoodle8.mods.galacticraft.api.event.wgen.GCCoreEventPopulate;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Random;
@@ -50,7 +50,7 @@ public abstract class BiomeDecoratorSpace
 
 	protected abstract World getCurrentWorld();
 
-	protected void generateOre(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
+	protected void generateOre(int amountPerChunk, Feature worldGenerator, int minY, int maxY)
     {
         World currentWorld = this.getCurrentWorld();
 		for (int var5 = 0; var5 < amountPerChunk; ++var5)

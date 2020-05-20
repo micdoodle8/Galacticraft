@@ -3,19 +3,19 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerElectricIngotCompressor extends Container
 {
     private TileEntityElectricIngotCompressor tileEntity;
 
-    public ContainerElectricIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityElectricIngotCompressor tileEntity)
+    public ContainerElectricIngotCompressor(PlayerInventory par1InventoryPlayer, TileEntityElectricIngotCompressor tileEntity)
     {
         this.tileEntity = tileEntity;
         tileEntity.compressingCraftMatrix.eventHandler = this;
@@ -32,8 +32,8 @@ public class ContainerElectricIngotCompressor extends Container
         this.addSlotToContainer(new SlotSpecific(tileEntity, 0, 55, 75, IItemElectric.class));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 1, 138, 30));
-        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 2, 138, 48));
+        this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 1, 138, 30));
+        this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 2, 138, 48));
 
         int var3;
 
@@ -52,13 +52,13 @@ public class ContainerElectricIngotCompressor extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -75,7 +75,7 @@ public class ContainerElectricIngotCompressor extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         Slot var3 = this.inventorySlots.get(par1);

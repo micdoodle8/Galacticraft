@@ -6,9 +6,9 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +31,7 @@ public class ItemBlockMachine extends ItemBlockDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -50,7 +50,7 @@ public class ItemBlockMachine extends ItemBlockDesc
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    public void onCreated(ItemStack stack, World world, PlayerEntity player)
     {
         if (!world.isRemote)
         {
@@ -60,15 +60,15 @@ public class ItemBlockMachine extends ItemBlockDesc
         int typenum = stack.getItemDamage() & 12;
 
         //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
-        if (player instanceof EntityPlayerSP)
+        if (player instanceof ClientPlayerEntity)
         {
             if (this.getBlock() == GCBlocks.machineBase && typenum == BlockMachine.EnumMachineType.COMPRESSOR.getMetadata())
             {
-                ClientProxyCore.playerClientHandler.onBuild(1, (EntityPlayerSP) player);
+                ClientProxyCore.playerClientHandler.onBuild(1, (ClientPlayerEntity) player);
             }
             else if (this.getBlock() == GCBlocks.machineBase2 && typenum == BlockMachine2.EnumMachineExtendedType.CIRCUIT_FABRICATOR.getMetadata())
             {
-                ClientProxyCore.playerClientHandler.onBuild(2, (EntityPlayerSP) player);
+                ClientProxyCore.playerClientHandler.onBuild(2, (ClientPlayerEntity) player);
             }
         }
     }

@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.client.gui.GuiIdsCore;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -28,7 +28,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     }
 
     @Override
-    public boolean onActivated(EntityPlayer entityPlayer)
+    public boolean onActivated(PlayerEntity entityPlayer)
     {
         entityPlayer.openGui(GalacticraftCore.instance, GuiIdsCore.NASA_WORKBENCH_ROCKET, this.world, this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
         return true;
@@ -98,7 +98,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.world.getBlockState(pos);
+            BlockState stateAt = this.world.getBlockState(pos);
 
             if (stateAt.getBlock() == GCBlocks.fakeBlock && stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.NASA_WORKBENCH)
             {

@@ -7,10 +7,10 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelZombie;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
+public class RenderEvolvedZombie extends BipedRenderer<EntityEvolvedZombie>
 {
     private static final ResourceLocation zombieTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/zombie.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
@@ -27,12 +27,12 @@ public class RenderEvolvedZombie extends RenderBiped<EntityEvolvedZombie>
     private final ModelBase model = new ModelEvolvedZombie(0.2F, false, true);
     private boolean texSwitch;
 
-    public RenderEvolvedZombie(RenderManager manager)
+    public RenderEvolvedZombie(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedZombie(true), 0.5F);
         LayerRenderer layerrenderer = (LayerRenderer) this.layerRenderers.get(0);
-        this.addLayer(new LayerHeldItem(this));
-        LayerBipedArmor layerbipedarmor = new LayerBipedArmor(this)
+        this.addLayer(new HeldItemLayer(this));
+        BipedArmorLayer layerbipedarmor = new BipedArmorLayer(this)
         {
             @Override
             protected void initArmor()

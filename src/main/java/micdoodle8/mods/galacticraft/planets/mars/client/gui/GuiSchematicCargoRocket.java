@@ -6,8 +6,8 @@ import micdoodle8.mods.galacticraft.core.client.gui.container.GuiPositionedConta
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicCargoRocket;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 
@@ -19,7 +19,7 @@ public class GuiSchematicCargoRocket extends GuiPositionedContainer implements I
 
     private int pageIndex;
 
-    public GuiSchematicCargoRocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
+    public GuiSchematicCargoRocket(PlayerInventory par1InventoryPlayer, BlockPos pos)
     {
         super(new ContainerSchematicCargoRocket(par1InventoryPlayer, pos), pos);
         this.ySize = 220;
@@ -30,12 +30,12 @@ public class GuiSchematicCargoRocket extends GuiPositionedContainer implements I
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
+        this.buttonList.add(new Button(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
+        this.buttonList.add(new Button(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {

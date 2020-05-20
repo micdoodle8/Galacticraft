@@ -11,11 +11,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,7 +35,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         this.setSize(3.0F, 4.25F);
     }
 
-    public EntityLander(EntityPlayerMP player)
+    public EntityLander(ServerPlayerEntity player)
     {
         super(player, 0.0F);
     }
@@ -61,7 +61,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         super.readEntityFromNBT(nbt);
 
@@ -69,7 +69,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         super.writeEntityToNBT(nbt);
     }
@@ -87,7 +87,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
         if (this.world.isRemote)
         {
@@ -104,12 +104,12 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             return true;
         }
 
-        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof ServerPlayerEntity)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
+            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
             return true;
         }
-        else if (player instanceof EntityPlayerMP)
+        else if (player instanceof ServerPlayerEntity)
         {
             if (!this.onGround)
             {
@@ -186,7 +186,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {
-        EntityLivingBase passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
+        LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
         return new ParticleLanderFlame(this.world, x, y, z, motX, motY, motZ, passenger);
     }
 
@@ -227,9 +227,9 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
                 for (Entity entity : this.getPassengers())
                 {
                     entity.dismountRidingEntity();
-                    if (entity instanceof EntityPlayerMP)
+                    if (entity instanceof ServerPlayerEntity)
                     {
-                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (EntityPlayerMP) entity);
+                        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (ServerPlayerEntity) entity);
                     }
                     entity.motionX = 0;
                     entity.motionY = 0;

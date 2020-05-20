@@ -14,9 +14,9 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerLaserTurret;
 import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
@@ -31,15 +31,15 @@ public class GuiLaserTurret extends GuiContainerGC implements GuiElementCheckbox
     private final TileEntityLaserTurret laserTurret;
     private GuiElementCheckbox blacklistMode;
     private GuiElementCheckbox targetMeteors;
-    private GuiButton buttonEditList;
-    private GuiButton buttonEditPriority;
+    private Button buttonEditList;
+    private Button buttonEditPriority;
 
     private int cannotEditTimer;
 
-    private GuiButton buttonEnable;
+    private Button buttonEnable;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiLaserTurret(InventoryPlayer par1InventoryPlayer, TileEntityLaserTurret turret)
+    public GuiLaserTurret(PlayerInventory par1InventoryPlayer, TileEntityLaserTurret turret)
     {
         super(new ContainerLaserTurret(par1InventoryPlayer, turret));
         this.laserTurret = turret;
@@ -48,7 +48,7 @@ public class GuiLaserTurret extends GuiContainerGC implements GuiElementCheckbox
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         if (!this.mc.player.getUniqueID().equals(this.laserTurret.getOwnerUUID()))
         {
@@ -92,11 +92,11 @@ public class GuiLaserTurret extends GuiContainerGC implements GuiElementCheckbox
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 81, (this.height - this.ySize) / 2 + 92, 18, 18, batterySlotDesc, this.width, this.height, this));
         String enableString = !this.laserTurret.getDisabled(0) ? GCCoreUtil.translate("gui.button.disable.name") : GCCoreUtil.translate("gui.button.enable.name");
-        this.buttonList.add(this.buttonEnable = new GuiButton(0, (this.width - this.xSize) / 2 + 7, this.height / 2 - 9, 72, 20, enableString));
+        this.buttonList.add(this.buttonEnable = new Button(0, (this.width - this.xSize) / 2 + 7, this.height / 2 - 9, 72, 20, enableString));
         this.blacklistMode = new GuiElementCheckbox(1, this, this.width / 2 - 81, yTop + 26, GCCoreUtil.translate("gui.message.blacklist_mode.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
         this.targetMeteors = new GuiElementCheckbox(2, this, this.width / 2 - 81, yTop + 40, GCCoreUtil.translate("gui.message.target_meteors.name"), ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.buttonList.add(this.buttonEditList = new GuiButton(3, (this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name")));
-        this.buttonList.add(this.buttonEditPriority = new GuiButton(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority.name")));
+        this.buttonList.add(this.buttonEditList = new Button(3, (this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 55, 82, 20, GCCoreUtil.translate("gui.button.edit_" + (laserTurret.blacklistMode ? "blacklist" : "whitelist") + ".name")));
+        this.buttonList.add(this.buttonEditPriority = new Button(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 41, yTop + 78, 82, 20, GCCoreUtil.translate("gui.button.edit_priority.name")));
         this.buttonList.add(this.blacklistMode);
         this.buttonList.add(this.targetMeteors);
         this.buttonList.add(this.buttonEditList);
@@ -196,7 +196,7 @@ public class GuiLaserTurret extends GuiContainerGC implements GuiElementCheckbox
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return player.getUniqueID().equals(this.laserTurret.getOwnerUUID()) && this.cannotEditTimer <= 0;
     }

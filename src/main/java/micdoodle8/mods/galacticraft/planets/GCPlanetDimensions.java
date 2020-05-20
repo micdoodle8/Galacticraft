@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets;
 
-import net.minecraft.world.DimensionType;
+import net.minecraft.world.dimension.DimensionType;
 
 public class GCPlanetDimensions
 {

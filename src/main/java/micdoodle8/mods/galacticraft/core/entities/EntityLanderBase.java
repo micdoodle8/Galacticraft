@@ -10,11 +10,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -78,7 +78,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         super.setPositionAndRotationDirect(x, y, z, yaw, pitch, posRotationIncrements, b);
         if (this.syncAdjustFlag && this.world.isBlockLoaded(new BlockPos(x, 255D, z)))
         {
-            EntityPlayer p = FMLClientHandler.instance().getClientPlayerEntity();
+            PlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
             double dx = x - p.posX;
             double dz = z - p.posZ;
             if (dx * dx + dz * dz < 1024)
@@ -127,7 +127,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         this.setPosition(var2, var4, var6);
     }
 
-    public EntityLanderBase(EntityPlayerMP player, float yOffset)
+    public EntityLanderBase(ServerPlayerEntity player, float yOffset)
     {
         this(player.world, player.posX, player.posY, player.posZ, yOffset);
 
@@ -161,7 +161,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
         {
             if (this.getPassengers().isEmpty())
             {
-                final EntityPlayer player = this.world.getClosestPlayerToEntity(this, 5);
+                final PlayerEntity player = this.world.getClosestPlayerToEntity(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
@@ -229,7 +229,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         int invSize = nbt.getInteger("rocketStacksLength");
         if (invSize < 3)
@@ -251,7 +251,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         if (world.isRemote) return;
         nbt.setInteger("rocketStacksLength", this.stacks.size());
@@ -260,7 +260,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
 
         UUID id = this.getOwnerUUID();
@@ -398,9 +398,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                         {
                             if (e.dimension != this.dimension)
                             {
-                                if (e instanceof EntityPlayer)
+                                if (e instanceof PlayerEntity)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity) e).interactionManager.getGameType().getID());
                                     e.startRiding(this);
                                     this.syncAdjustFlag = true;
                                 }
@@ -426,9 +426,9 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
                         {
                             if (e.dimension != this.dimension)
                             {
-                                if (e instanceof EntityPlayer)
+                                if (e instanceof PlayerEntity)
                                 {
-                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP) e).interactionManager.getGameType().getID());
+                                    e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity) e).interactionManager.getGameType().getID());
                                     e.startRiding(this, true);
                                     this.syncAdjustFlag = true;
                                 }
@@ -492,7 +492,7 @@ public abstract class EntityLanderBase extends EntityAdvancedMotion implements I
     @Override
     public UUID getOwnerUUID()
     {
-        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof PlayerEntity))
         {
             return null;
         }

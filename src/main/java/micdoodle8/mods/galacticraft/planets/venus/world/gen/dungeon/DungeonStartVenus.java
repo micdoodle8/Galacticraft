@@ -3,17 +3,17 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import com.google.common.collect.Lists;
 
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.StructurePiece;
 
 import java.util.List;
 import java.util.Random;
 
 public class DungeonStartVenus extends EntranceCraterVenus
 {
-    public List<StructureComponent> attachedComponents = Lists.newArrayList();
-    public List<StructureBoundingBox> componentBounds = Lists.newArrayList();
+    public List<StructurePiece> attachedComponents = Lists.newArrayList();
+    public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
     public DungeonStartVenus()
     {
@@ -25,7 +25,7 @@ public class DungeonStartVenus extends EntranceCraterVenus
     }
 
     @Override
-    public void buildComponent(StructureComponent componentIn, List<StructureComponent> listIn, Random rand)
+    public void buildComponent(StructurePiece componentIn, List<StructurePiece> listIn, Random rand)
     {
         boolean validAttempt = false;
         final int maxAttempts = 10;
@@ -66,14 +66,14 @@ public class DungeonStartVenus extends EntranceCraterVenus
 
     public boolean checkIntersection(int blockX, int blockZ, int sizeX, int sizeZ)
     {
-        return this.checkIntersection(new StructureBoundingBox(blockX, blockZ, blockX + sizeX, blockZ + sizeZ));
+        return this.checkIntersection(new MutableBoundingBox(blockX, blockZ, blockX + sizeX, blockZ + sizeZ));
     }
 
-    public boolean checkIntersection(StructureBoundingBox bounds)
+    public boolean checkIntersection(MutableBoundingBox bounds)
     {
         for (int i = 0; i < componentBounds.size() - 1; ++i)
         {
-            StructureBoundingBox boundingBox = componentBounds.get(i);
+            MutableBoundingBox boundingBox = componentBounds.get(i);
             if (boundingBox.intersectsWith(bounds))
             {
                 return true;

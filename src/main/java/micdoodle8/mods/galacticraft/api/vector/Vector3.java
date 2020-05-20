@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.api.vector;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -82,7 +82,7 @@ public class Vector3 implements Cloneable
         this(par1.getBlockPos());
     }
 
-    public Vector3(EnumFacing direction)
+    public Vector3(Direction direction)
     {
         this(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ());
     }
@@ -90,7 +90,7 @@ public class Vector3 implements Cloneable
     /**
      * Loads a Vector3 from an NBT compound.
      */
-    public Vector3(NBTTagCompound nbt)
+    public Vector3(CompoundNBT nbt)
     {
         this(nbt.getDouble("x"), nbt.getDouble("y"), nbt.getDouble("z"));
     }
@@ -153,7 +153,7 @@ public class Vector3 implements Cloneable
         return world.getBlockState(new BlockPos(this.intX(), this.intY(), this.intZ())).getBlock();
     }
 
-    public IBlockState getBlockMetadata(IBlockAccess world)
+    public BlockState getBlockMetadata(IBlockAccess world)
     {
         return world.getBlockState(new BlockPos(this.intX(), this.intY(), this.intZ()));
     }
@@ -163,12 +163,12 @@ public class Vector3 implements Cloneable
         return world.getTileEntity(new BlockPos(this.intX(), this.intY(), this.intZ()));
     }
 
-    public boolean setBlock(World world, IBlockState state, int notify)
+    public boolean setBlock(World world, BlockState state, int notify)
     {
         return world.setBlockState(new BlockPos(this.intX(), this.intY(), this.intZ()), state, notify);
     }
 
-    public boolean setBlock(World world, IBlockState state)
+    public boolean setBlock(World world, BlockState state)
     {
         return this.setBlock(world, state, 3);
     }
@@ -195,9 +195,9 @@ public class Vector3 implements Cloneable
     /**
      * Converts Vector3 into a EnumFacing.
      */
-    public EnumFacing toEnumFacing()
+    public Direction toEnumFacing()
     {
-        for (EnumFacing direction : EnumFacing.VALUES)
+        for (Direction direction : Direction.VALUES)
         {
             if (this.x == direction.getFrontOffsetX() && this.y == direction.getFrontOffsetY() && this.z == direction.getFrontOffsetZ())
             {
@@ -449,12 +449,12 @@ public class Vector3 implements Cloneable
      *
      * @return The position relative to the original position's side
      */
-    public Vector3 modifyPositionFromSide(EnumFacing side, double amount)
+    public Vector3 modifyPositionFromSide(Direction side, double amount)
     {
         return this.translate(new Vector3(side).scale(amount));
     }
 
-    public Vector3 modifyPositionFromSide(EnumFacing side)
+    public Vector3 modifyPositionFromSide(Direction side)
     {
         this.modifyPositionFromSide(side, 1);
         return this;
@@ -650,7 +650,7 @@ public class Vector3 implements Cloneable
      * Loads a Vector3 from an NBT compound.
      */
     @Deprecated
-    public static Vector3 readFromNBT(NBTTagCompound nbt)
+    public static Vector3 readFromNBT(CompoundNBT nbt)
     {
         return new Vector3(nbt);
     }
@@ -658,7 +658,7 @@ public class Vector3 implements Cloneable
     /**
      * Saves this Vector3 to disk
      */
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         nbt.setDouble("x", this.x);
         nbt.setDouble("y", this.y);

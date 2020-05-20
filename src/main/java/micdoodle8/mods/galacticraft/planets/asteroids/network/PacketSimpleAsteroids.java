@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -109,13 +109,13 @@ public class PacketSimpleAsteroids extends PacketBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
-        EntityPlayerSP playerBaseClient = null;
+        ClientPlayerEntity playerBaseClient = null;
 
-        if (player instanceof EntityPlayerSP)
+        if (player instanceof ClientPlayerEntity)
         {
-            playerBaseClient = (EntityPlayerSP) player;
+            playerBaseClient = (ClientPlayerEntity) player;
         }
 
         TileEntity tile;
@@ -124,7 +124,7 @@ public class PacketSimpleAsteroids extends PacketBase
         case C_TELEPAD_SEND:
             Entity entity = playerBaseClient.world.getEntityByID((Integer) this.data.get(1));
 
-            if (entity != null && entity instanceof EntityLivingBase)
+            if (entity != null && entity instanceof LivingEntity)
             {
                 BlockVec3 pos = (BlockVec3) this.data.get(0);
                 entity.setPosition(pos.x + 0.5, pos.y + 2.2, pos.z + 0.5);
@@ -144,9 +144,9 @@ public class PacketSimpleAsteroids extends PacketBase
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        ServerPlayerEntity playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
         switch (this.type)
         {

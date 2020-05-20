@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
 
-public abstract class ChunkProviderBase implements IChunkGenerator
+public abstract class ChunkProviderBase implements ChunkGenerator
 {
     @Override
     @Nullable

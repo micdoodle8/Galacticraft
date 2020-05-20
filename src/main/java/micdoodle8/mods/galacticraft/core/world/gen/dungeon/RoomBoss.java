@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
@@ -21,25 +21,25 @@ public class RoomBoss extends SizedPiece
     {
     }
 
-    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
         this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 14, rand.nextInt(2) + 8, rand.nextInt(6) + 14, entranceDir);
     }
 
-    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomBoss(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.setCoordBaseMode(EnumFacing.SOUTH);
+        this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
         this.sizeY = sizeY;
         int yPos = configuration.getYPosition();
 
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -50,17 +50,17 @@ public class RoomBoss extends SizedPiece
                     if (i == 0 || i == this.sizeX || j == 0 || j == this.sizeY || k == 0 || k == this.sizeZ)
                     {
                         boolean placeBlock = true;
-                        if (getDirection().getAxis() == EnumFacing.Axis.Z)
+                        if (getDirection().getAxis() == Direction.Axis.Z)
                         {
                             int start = (this.boundingBox.maxX - this.boundingBox.minX) / 2 - 1;
                             int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
                             if (i > start && i <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.SOUTH && k == 0)
+                                if (getDirection() == Direction.SOUTH && k == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.NORTH && k == this.sizeZ)
+                                else if (getDirection() == Direction.NORTH && k == this.sizeZ)
                                 {
                                     placeBlock = false;
                                 }
@@ -72,11 +72,11 @@ public class RoomBoss extends SizedPiece
                             int end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
                             if (k > start && k <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.EAST && i == 0)
+                                if (getDirection() == Direction.EAST && i == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.WEST && i == this.sizeX)
+                                else if (getDirection() == Direction.WEST && i == this.sizeX)
                                 {
                                     placeBlock = false;
                                 }
@@ -136,7 +136,7 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -149,7 +149,7 @@ public class RoomBoss extends SizedPiece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
     {
         super.readStructureFromNBT(nbt, manager);
         this.chestPos = new BlockPos(nbt.getInteger("chestX"), nbt.getInteger("chestY"), nbt.getInteger("chestZ"));

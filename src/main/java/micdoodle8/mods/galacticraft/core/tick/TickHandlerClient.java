@@ -43,21 +43,21 @@ import micdoodle8.mods.galacticraft.core.wrappers.BlockMetaList;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.IngameMenuScreen;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.GameSettings;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.tileentity.TileEntity;
@@ -197,8 +197,8 @@ public class TickHandlerClient
     public void onRenderTick(RenderTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
-        final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        final ClientPlayerEntity player = minecraft.player;
+        final ClientPlayerEntity playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
         if (player == null || playerBaseClient == null)
         {
             return;
@@ -208,7 +208,7 @@ public class TickHandlerClient
 
         if (event.phase == Phase.END)
         {
-            if (minecraft.currentScreen instanceof GuiIngameMenu)
+            if (minecraft.currentScreen instanceof IngameMenuScreen)
             {
                 int i = Mouse.getEventX() * minecraft.currentScreen.width / minecraft.displayWidth;
                 int j = minecraft.currentScreen.height - Mouse.getEventY() * minecraft.currentScreen.height / minecraft.displayHeight - 1;
@@ -233,8 +233,8 @@ public class TickHandlerClient
                 this.drawGradientRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height, ColorUtil.to32BitColor(150, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor), ColorUtil.to32BitColor(250, 10 + deltaColor, 10 + deltaColor, 10 + deltaColor));
                 minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.space_race.create.title.name.0"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.space_race.create.title.name.0")) / 2, minecraft.currentScreen.height - 26, ColorUtil.to32BitColor(255, 240, 240, 240));
                 minecraft.fontRenderer.drawString(GCCoreUtil.translate("gui.space_race.create.title.name.1"), minecraft.currentScreen.width - 50 - minecraft.fontRenderer.getStringWidth(GCCoreUtil.translate("gui.space_race.create.title.name.1")) / 2, minecraft.currentScreen.height - 16, ColorUtil.to32BitColor(255, 240, 240, 240));
-                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, ColorUtil.to32BitColor(255, 0, 0, 0));
-                Gui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, ColorUtil.to32BitColor(255, 0, 0, 0));
+                AbstractGui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width - 99, minecraft.currentScreen.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+                AbstractGui.drawRect(minecraft.currentScreen.width - 100, minecraft.currentScreen.height - 35, minecraft.currentScreen.width, minecraft.currentScreen.height - 34, ColorUtil.to32BitColor(255, 0, 0, 0));
             }
 
             ClientProxyCore.playerPosX = player.prevPosX + (player.posX - player.prevPosX) * event.renderTickTime;
@@ -297,7 +297,7 @@ public class TickHandlerClient
     public void onPreGuiRender(RenderGameOverlayEvent.Pre event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
+        final ClientPlayerEntity player = minecraft.player;
 
         if (event.getType() == RenderGameOverlayEvent.ElementType.ALL)
         {
@@ -318,8 +318,8 @@ public class TickHandlerClient
     public void onClientTick(ClientTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final WorldClient world = minecraft.world;
-        final EntityPlayerSP player = minecraft.player;
+        final ClientWorld world = minecraft.world;
+        final ClientPlayerEntity player = minecraft.player;
 
         if (teleportingGui != null)
         {
@@ -347,7 +347,7 @@ public class TickHandlerClient
                 }
                 else
                 {
-                    ClientProxyCore.playerHead = DefaultPlayerSkin.getDefaultSkin(EntityPlayer.getUUID(player.getGameProfile()));
+                    ClientProxyCore.playerHead = DefaultPlayerSkin.getDefaultSkin(PlayerEntity.getUUID(player.getGameProfile()));
                 }
             }
 
@@ -422,7 +422,7 @@ public class TickHandlerClient
                                 int z = MathHelper.floor(player.posZ + k);
                                 BlockPos pos = new BlockPos(x, y, z);
 
-                                IBlockState state = player.world.getBlockState(pos);
+                                BlockState state = player.world.getBlockState(pos);
                                 final Block block = state.getBlock();
 
                                 if (block.getMaterial(state) != Material.AIR)

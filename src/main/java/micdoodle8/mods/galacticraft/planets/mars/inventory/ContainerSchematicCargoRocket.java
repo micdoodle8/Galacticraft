@@ -2,13 +2,13 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.inventory.SlotRocketBenchResult;
 import micdoodle8.mods.galacticraft.planets.mars.util.RecipeUtilMars;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -17,10 +17,10 @@ import net.minecraft.world.World;
 public class ContainerSchematicCargoRocket extends Container
 {
     public InventorySchematicCargoRocket craftMatrix = new InventorySchematicCargoRocket(this);
-    public IInventory craftResult = new InventoryCraftResult();
+    public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematicCargoRocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
+    public ContainerSchematicCargoRocket(PlayerInventory par1InventoryPlayer, BlockPos pos)
     {
         int change = 27;
         this.world = par1InventoryPlayer.player.world;
@@ -83,7 +83,7 @@ public class ContainerSchematicCargoRocket extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
 
@@ -108,13 +108,13 @@ public class ContainerSchematicCargoRocket extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot var3 = this.inventorySlots.get(par1);

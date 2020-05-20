@@ -12,10 +12,10 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomBoss;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
@@ -28,9 +28,9 @@ import java.util.Random;
 
 public class ChunkProviderMoon extends ChunkProviderBase
 {
-    public static final IBlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
-    public static final IBlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
-    public static final IBlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
+    public static final BlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
+    public static final BlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
+    public static final BlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
 
     private final Random rand;
 
@@ -117,8 +117,8 @@ public class ChunkProviderMoon extends ChunkProviderBase
             {
                 final int var12 = (int) (this.noiseGen4.getNoise(var8 + par1 * 16, var9 * par2 * 16) / 3.0D + 3.0D + this.rand.nextDouble() * 0.25D);
                 int var13 = -1;
-                IBlockState state0 = BLOCK_TOP;
-                IBlockState state1 = BLOCK_FILL;
+                BlockState state0 = BLOCK_TOP;
+                BlockState state1 = BLOCK_FILL;
 
                 for (int var16 = 127; var16 >= 0; --var16)
                 {
@@ -130,7 +130,7 @@ public class ChunkProviderMoon extends ChunkProviderBase
                     }
                     else
                     {
-                        IBlockState var18 = primer.getBlockState(var8, var16, var9);
+                        BlockState var18 = primer.getBlockState(var8, var16, var9);
                         if (Blocks.AIR == var18.getBlock())
                         {
                             var13 = -1;
@@ -270,7 +270,7 @@ public class ChunkProviderMoon extends ChunkProviderBase
     @Override
     public void populate(int x, int z)
     {
-        BlockFalling.fallInstantly = true;
+        FallingBlock.fallInstantly = true;
         int i = x * 16;
         int j = z * 16;
         BlockPos blockpos = new BlockPos(i, 0, j);
@@ -288,11 +288,11 @@ public class ChunkProviderMoon extends ChunkProviderBase
         this.dungeonGeneratorMoon.generateStructure(this.world, this.rand, new ChunkPos(x, z));
 
         biomegenbase.decorate(this.world, this.rand, new BlockPos(i, 0, j));
-        BlockFalling.fallInstantly = false;
+        FallingBlock.fallInstantly = false;
     }
 
     @Override
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
     {
         Biome biomegenbase = this.world.getBiome(pos);
         return biomegenbase.getSpawnableList(creatureType);

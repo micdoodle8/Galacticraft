@@ -5,7 +5,7 @@ import java.util.HashMap;
 import javax.annotation.Nullable;
 
 import net.minecraft.block.Block;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -96,13 +96,13 @@ public class ShapedRecipeNBT extends IForgeRegistryEntry.Impl<IRecipe> implement
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
     {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn)
+    public boolean matches(CraftingInventory inv, World worldIn)
     {
         for (int i = 0; i <= 3 - this.recipeWidth; ++i)
         {
@@ -123,7 +123,7 @@ public class ShapedRecipeNBT extends IForgeRegistryEntry.Impl<IRecipe> implement
         return false;
     }
 
-    private boolean checkMatch(InventoryCrafting inv, int x, int z, boolean mirror)
+    private boolean checkMatch(CraftingInventory inv, int x, int z, boolean mirror)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -177,7 +177,7 @@ public class ShapedRecipeNBT extends IForgeRegistryEntry.Impl<IRecipe> implement
 
     @Override
     @Nullable
-    public ItemStack getCraftingResult(InventoryCrafting inv)
+    public ItemStack getCraftingResult(CraftingInventory inv)
     {
         return this.getRecipeOutput().copy();
     }

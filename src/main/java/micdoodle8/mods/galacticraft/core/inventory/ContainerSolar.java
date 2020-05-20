@@ -3,17 +3,17 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerSolar extends Container
 {
     private TileEntitySolar tileEntity;
 
-    public ContainerSolar(InventoryPlayer par1InventoryPlayer, TileEntitySolar solarGen)
+    public ContainerSolar(PlayerInventory par1InventoryPlayer, TileEntitySolar solarGen)
     {
         this.tileEntity = solarGen;
         this.addSlotToContainer(new SlotSpecific(solarGen, 0, 152, 83, IItemElectric.class));
@@ -38,13 +38,13 @@ public class ContainerSolar extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(PlayerEntity var1)
     {
         return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par1);

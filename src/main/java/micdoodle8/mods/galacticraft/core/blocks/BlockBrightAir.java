@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.material.EnumPushReaction;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Random;
 
-public class BlockBrightAir extends BlockAir
+public class BlockBrightAir extends AirBlock
 {
     public BlockBrightAir(String assetName)
     {
@@ -29,37 +29,37 @@ public class BlockBrightAir extends BlockAir
     }
 
     @Override
-    public EnumPushReaction getMobilityFlag(IBlockState state)
+    public PushReaction getMobilityFlag(BlockState state)
     {
-        return EnumPushReaction.DESTROY;
+        return PushReaction.DESTROY;
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(Blocks.AIR);
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         return false;
     }
 
     @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos)
+    public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos)
     {
         return 15;
     }
     
     @Override
-    public int getLightOpacity(IBlockState state)
+    public int getLightOpacity(BlockState state)
     {
         return 0;
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos vec, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos vec, BlockState state)
     {
     }
 }

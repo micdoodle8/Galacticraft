@@ -10,23 +10,23 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class RenderGrapple extends Render<EntityGrapple>
+public class RenderGrapple extends EntityRenderer<EntityGrapple>
 {
     private ItemModelGrapple grappleModel;
 
-    public RenderGrapple(RenderManager manager)
+    public RenderGrapple(EntityRendererManager manager)
     {
         super(manager);
     }
@@ -49,7 +49,7 @@ public class RenderGrapple extends Render<EntityGrapple>
         GL11.glPushMatrix();
 
         Vec3d vec3 = new Vec3d(0.0D, -0.2D, 0.0D);
-        EntityPlayer shootingEntity = grapple.getShootingEntity();
+        PlayerEntity shootingEntity = grapple.getShootingEntity();
 
         if (shootingEntity != null && grapple.getPullingEntity())
         {
@@ -90,7 +90,7 @@ public class RenderGrapple extends Render<EntityGrapple>
 
         updateModel();
 
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

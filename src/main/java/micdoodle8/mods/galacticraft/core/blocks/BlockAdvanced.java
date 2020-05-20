@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,9 +30,9 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
     {
-        if (hand != EnumHand.MAIN_HAND)
+        if (hand != Hand.MAIN_HAND)
         {
             return false;
         }
@@ -55,7 +55,7 @@ public abstract class BlockAdvanced extends Block
         return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
-    protected boolean useWrench(World worldIn, BlockPos pos, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    protected boolean useWrench(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         if (heldItem.getItem() == GCItems.wrench)
         {
@@ -106,7 +106,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if it is a wrench.
      */
-    public boolean isUsableWrench(EntityPlayer entityPlayer, ItemStack itemStack, BlockPos pos)
+    public boolean isUsableWrench(PlayerEntity entityPlayer, ItemStack itemStack, BlockPos pos)
     {
         if (entityPlayer != null && itemStack != null)
         {
@@ -121,7 +121,7 @@ public abstract class BlockAdvanced extends Block
              */
             try
             {
-                Method methodCanWrench = wrenchClass.getMethod("canWrench", EntityPlayer.class, BlockPos.class);
+                Method methodCanWrench = wrenchClass.getMethod("canWrench", PlayerEntity.class, BlockPos.class);
                 return (Boolean) methodCanWrench.invoke(item, entityPlayer, pos);
             }
             catch (NoClassDefFoundError e)
@@ -152,7 +152,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if damage was successfull.
      */
-    public boolean damageWrench(EntityPlayer entityPlayer, ItemStack itemStack, BlockPos pos)
+    public boolean damageWrench(PlayerEntity entityPlayer, ItemStack itemStack, BlockPos pos)
     {
         if (this.isUsableWrench(entityPlayer, itemStack, pos))
         {
@@ -163,7 +163,7 @@ public abstract class BlockAdvanced extends Block
              */
             try
             {
-                Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", EntityPlayer.class, BlockPos.class);
+                Method methodWrenchUsed = wrenchClass.getMethod("wrenchUsed", PlayerEntity.class, BlockPos.class);
                 methodWrenchUsed.invoke(itemStack.getItem(), entityPlayer, pos);
                 return true;
             }
@@ -178,7 +178,7 @@ public abstract class BlockAdvanced extends Block
             {
                 if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
                 {
-                    Method methodWrenchDamage = wrenchClass.getMethod("damage", ItemStack.class, Integer.TYPE, EntityPlayer.class);
+                    Method methodWrenchDamage = wrenchClass.getMethod("damage", ItemStack.class, Integer.TYPE, PlayerEntity.class);
                     methodWrenchDamage.invoke(itemStack.getItem(), itemStack, 1, entityPlayer);
                     return true;
                 }
@@ -196,7 +196,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -206,7 +206,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onSneakMachineActivated(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -216,7 +216,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         return false;
     }
@@ -227,13 +227,13 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
     @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction side)
     {
         return this.isNormalCube(base_state, world, pos);
     }

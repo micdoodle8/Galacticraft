@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -138,7 +138,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
-    public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
+    public double injectEnergy(Direction directionFrom, double amount, double voltage)
     {
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, directionFrom);
         int tier = ((int) voltage > 120) ? 2 : 1;
@@ -168,7 +168,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = CompatibilityManager.modidIC2)
-    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side)
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (emitter instanceof IElectrical || emitter instanceof IConductor)
@@ -193,7 +193,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
-    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side)
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction side)
     {
         //Don't add connection to IC2 grid if it's a Galacticraft tile
         if (receiver instanceof IElectrical || receiver instanceof IConductor)
@@ -304,7 +304,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyReceiver", modID = "")
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+    public int receiveEnergy(Direction from, int maxReceive, boolean simulate)
     {
         if (this.getNetwork() == null)
         {
@@ -316,13 +316,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyProvider", modID = "")
-    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+    public int extractEnergy(Direction from, int maxExtract, boolean simulate)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public boolean canConnectEnergy(EnumFacing from)
+    public boolean canConnectEnergy(Direction from)
     {
         //Do not form wire-to-wire connections with EnderIO conduits
         TileEntity tile = new BlockVec3(this).getTileEntityOnSide(this.world, from);
@@ -340,13 +340,13 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public int getEnergyStored(EnumFacing from)
+    public int getEnergyStored(Direction from)
     {
         return 0;
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public int getMaxEnergyStored(EnumFacing from)
+    public int getMaxEnergyStored(Direction from)
     {
         if (this.getNetwork() == null)
         {
@@ -357,7 +357,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public double transferEnergyToAcceptor(EnumFacing side, double amount)
+    public double transferEnergyToAcceptor(Direction side, double amount)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
@@ -373,7 +373,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    public double acceptEnergy(Direction side, double amount, boolean simulate)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
@@ -389,7 +389,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveEnergy(EnumFacing side)
+    public boolean canReceiveEnergy(Direction side)
     {
         if (this.getNetwork() == null)
         {
@@ -434,7 +434,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
     
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY)
         {
@@ -449,7 +449,7 @@ public abstract class TileBaseUniversalConductor extends TileBaseConductor imple
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY)
         {

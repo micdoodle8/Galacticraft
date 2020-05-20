@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiElementSpinner extends GuiButton
+public class GuiElementSpinner extends Button
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
     private ISpinnerCallback parentGui;
@@ -94,7 +94,7 @@ public class GuiElementSpinner extends GuiButton
     {
         void onSelectionChanged(GuiElementSpinner spinner, int newVal);
 
-        boolean canPlayerEdit(GuiElementSpinner spinner, EntityPlayer player);
+        boolean canPlayerEdit(GuiElementSpinner spinner, PlayerEntity player);
 
         int getInitialValue(GuiElementSpinner spinner);
 

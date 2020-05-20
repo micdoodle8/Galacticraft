@@ -6,19 +6,19 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerHeldItemEvolvedWitch;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedWitch;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedWitch extends RenderLiving<EntityEvolvedWitch>
+public class RenderEvolvedWitch extends MobRenderer<EntityEvolvedWitch>
 {
     private static final ResourceLocation witchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_witch.png");
     private boolean texSwitch;
 
-    public RenderEvolvedWitch(RenderManager manager)
+    public RenderEvolvedWitch(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedWitch(), 0.5F);
         this.addLayer(new LayerHeldItemEvolvedWitch(this));

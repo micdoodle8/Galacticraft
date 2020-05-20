@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,7 +27,7 @@ public class EventHandlerVenus
             ArrayList<Entity> list = new ArrayList<>(event.world.loadedEntityList);
             for (Entity e : list)
             {
-                if (e.ticksExisted % 20 == 1 && e instanceof EntityLivingBase)
+                if (e.ticksExisted % 20 == 1 && e instanceof LivingEntity)
                 {
                     if (event.world.isMaterialInBB(e.getEntityBoundingBox().grow(-0.1D, -0.4D, -0.1D), VenusModule.acidMaterial))
                     {

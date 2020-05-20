@@ -6,12 +6,12 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform.EnumCorner;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -51,7 +51,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
     
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.corner = nbt.getInteger("co");
@@ -62,7 +62,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("co", this.corner);
@@ -130,7 +130,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             }
         }
 
-        IBlockState b = this.world.getBlockState(this.getPos());
+        BlockState b = this.world.getBlockState(this.getPos());
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             //Scan area for player entities and light up
@@ -138,7 +138,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
             {
                 this.detection = new AxisAlignedBB(this.getPos().getX() + 0.9D, this.getPos().getY() + 0.75D, this.getPos().getZ() + 0.9D, this.getPos().getX() + 1.1D, this.getPos().getY() + 1.85D, this.getPos().getZ() + 1.1D);
             }
-            final List<Entity> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, detection);
+            final List<Entity> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, detection);
 
             if (list.size() > 0)
             {
@@ -146,7 +146,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 this.lightOn = true;
 
                 // If this player is within the box
-                EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+                ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
                 GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
                 if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
                 {
@@ -243,8 +243,8 @@ public class TileEntityPlatform extends TileEntity implements ITickable
      */
     private int checkCorner(BlockPos blockPos, EnumCorner corner)
     {
-        IBlockState b = this.world.getBlockState(blockPos);
-        if (b.getBlock() instanceof BlockAir)
+        BlockState b = this.world.getBlockState(blockPos);
+        if (b.getBlock() instanceof AirBlock)
         {
             return 0;
         }
@@ -326,7 +326,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
 
     private boolean checkIntact()
     {
-        IBlockState bs = this.world.getBlockState(this.pos); 
+        BlockState bs = this.world.getBlockState(this.pos);
         if (bs.getBlock() != GCBlocks.platform || ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() != this.corner)
         {
             this.resetBlocks();
@@ -377,7 +377,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         if (!this.world.isBlockLoaded(blockPos, false))
             return 4;
 
-        IBlockState bs = this.world.getBlockState(blockPos); 
+        BlockState bs = this.world.getBlockState(blockPos);
         if (bs.getBlock() == GCBlocks.platform && ((BlockPlatform.EnumCorner)bs.getValue(BlockPlatform.CORNER)).getMeta() == meta)
         {
             final TileEntity tile = this.world.getTileEntity(blockPos);
@@ -393,7 +393,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState)
     {
         return oldState.getBlock() != newState.getBlock();
     }
@@ -456,7 +456,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     {
         if (this.moving)
         {
-            EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+            ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
             float playerY = (float)(p.lastTickPosY + (p.posY - p.lastTickPosY) * (double)partialTicks);
             return (playerY - this.pos.getY() - BlockPlatform.HEIGHT);
         }
@@ -515,7 +515,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     @SideOnly(Side.CLIENT)
     public boolean motionObstructed(double y, double velocityY)
     {
-        EntityPlayerSP p = FMLClientHandler.instance().getClientPlayerEntity();
+        ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
         int x = this.pos.getX() + 1;
         int z = this.pos.getZ() + 1;
         double size = 9/16D;

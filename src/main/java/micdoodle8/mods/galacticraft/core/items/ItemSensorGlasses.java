@@ -8,21 +8,20 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Rarity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemSensorGlasses extends ItemArmor implements ISortableItem, ISensorGlassesArmor
+public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISensorGlassesArmor
 {
     public ItemSensorGlasses(String assetName)
     {
-        super(GCItems.ARMOR_SENSOR_GLASSES, 0, EntityEquipmentSlot.HEAD);
+        super(GCItems.ARMOR_SENSOR_GLASSES, 0, EquipmentSlotType.HEAD);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
@@ -34,27 +33,27 @@ public class ItemSensorGlasses extends ItemArmor implements ISortableItem, ISens
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
     {
         return Constants.TEXTURE_PREFIX + "textures/model/armor/sensor_1.png";
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void renderHelmetOverlay(ItemStack stack, EntityPlayer player, ScaledResolution resolution, float partialTicks)
+    public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, ScaledResolution resolution, float partialTicks)
     {
         OverlaySensorGlasses.renderSensorGlassesMain(stack, player, resolution, partialTicks);
         OverlaySensorGlasses.renderSensorGlassesValueableBlocks(stack, player, resolution, partialTicks);

@@ -3,12 +3,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.entities.*;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -46,7 +46,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -91,7 +91,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityMob> entitiesWithin = this.world.getEntitiesWithinAABB(EntityMob.class, this.rangeBoundsPlus3);
+            List<MonsterEntity> entitiesWithin = this.world.getEntitiesWithinAABB(MonsterEntity.class, this.rangeBoundsPlus3);
 
             for (Entity mob : entitiesWithin)
             {
@@ -101,7 +101,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                 }
             }
 
-            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.rangeBounds);
+            List<PlayerEntity> playersWithin = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.rangeBounds);
 
             this.playerInRange = !playersWithin.isEmpty();
 
@@ -127,9 +127,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                     //Now spawn the boss
                     if (this.boss != null)
                     {
-                        if (this.boss instanceof EntityLiving)
+                        if (this.boss instanceof MobEntity)
                         {
-                            EntityLiving bossLiving = (EntityLiving) this.boss;
+                            MobEntity bossLiving = (MobEntity) this.boss;
                             bossLiving.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(bossLiving)), null);
                             this.world.spawnEntity(bossLiving);
                             this.playSpawnSound(bossLiving);
@@ -148,9 +148,9 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
     }
 
-    public List<Class<? extends EntityLiving>> getDisabledCreatures()
+    public List<Class<? extends MobEntity>> getDisabledCreatures()
     {
-        List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();
+        List<Class<? extends MobEntity>> list = new ArrayList<Class<? extends MobEntity>>();
         list.add(EntityEvolvedSkeleton.class);
         list.add(EntityEvolvedCreeper.class);
         list.add(EntityEvolvedZombie.class);
@@ -165,7 +165,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -213,7 +213,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 

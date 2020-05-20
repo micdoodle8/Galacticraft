@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public interface IPacket
 {
@@ -9,9 +9,9 @@ public interface IPacket
 
     void decodeInto(ByteBuf buffer);
 
-    void handleClientSide(EntityPlayer player);
+    void handleClientSide(PlayerEntity player);
 
-    void handleServerSide(EntityPlayer player);
+    void handleServerSide(PlayerEntity player);
 
     int getDimensionID();
 }

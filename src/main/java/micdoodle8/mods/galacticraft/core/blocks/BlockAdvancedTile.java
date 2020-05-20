@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -29,19 +29,19 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
     {
         super.onBlockAdded(worldIn, pos, state);
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         this.dropEntireInventory(worldIn, pos, state);
         super.breakBlock(worldIn, pos, state);
     }
 
-    public void dropEntireInventory(World worldIn, BlockPos pos, IBlockState state)
+    public void dropEntireInventory(World worldIn, BlockPos pos, BlockState state)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof ILockable)
@@ -69,7 +69,7 @@ public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEn
 
                         while (!var7.isEmpty())
                         {
-                            EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
+                            ItemEntity var12 = new ItemEntity(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
                             float var13 = 0.05F;
                             var12.motionX = (float) syncRandom.nextGaussian() * var13;
                             var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;

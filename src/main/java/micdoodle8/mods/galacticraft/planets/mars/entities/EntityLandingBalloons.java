@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.util.MarsUtil;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,7 +36,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
         this.rotationYawSpeed = this.rand.nextFloat();
     }
 
-    public EntityLandingBalloons(EntityPlayerMP player)
+    public EntityLandingBalloons(ServerPlayerEntity player)
     {
         super(player, 0F);
         this.setSize(2.0F, 2.0F);
@@ -84,14 +84,14 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         super.readEntityFromNBT(nbt);
         this.groundHitCount = nbt.getInteger("GroundHitCount");
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         super.writeEntityToNBT(nbt);
         nbt.setInteger("GroundHitCount", this.groundHitCount);
@@ -110,7 +110,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
         if (this.world.isRemote)
         {
@@ -123,12 +123,12 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
 
             return true;
         }
-        else if (this.getPassengers().isEmpty() && this.groundHitCount >= 14 && player instanceof EntityPlayerMP)
+        else if (this.getPassengers().isEmpty() && this.groundHitCount >= 14 && player instanceof ServerPlayerEntity)
         {
-            MarsUtil.openParachestInventory((EntityPlayerMP) player, this);
+            MarsUtil.openParachestInventory((ServerPlayerEntity) player, this);
             return true;
         }
-        else if (player instanceof EntityPlayerMP)
+        else if (player instanceof ServerPlayerEntity)
         {
             if (!this.onGround)
             {

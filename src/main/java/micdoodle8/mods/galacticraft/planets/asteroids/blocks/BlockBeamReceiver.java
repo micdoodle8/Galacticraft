@@ -12,24 +12,24 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -54,7 +54,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (state.getValue(FACING))
         {
@@ -76,16 +76,16 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
-        int meta = this.getMetadataFromAngle(worldIn, pos, EnumFacing.getFront(oldMeta).getOpposite());
+        int meta = this.getMetadataFromAngle(worldIn, pos, Direction.getFront(oldMeta).getOpposite());
 
         if (meta == -1)
         {
@@ -98,7 +98,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             if (thisTile instanceof TileEntityBeamReceiver)
             {
                 TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile;
-                thisReceiver.setFacing(EnumFacing.getFront(meta));
+                thisReceiver.setFacing(Direction.getFront(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
@@ -108,12 +108,12 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World world, BlockPos pos, BlockState state)
     {
         TileEntity thisTile = world.getTileEntity(pos);
         if (thisTile instanceof TileEntityBeamReceiver)
         {
-            ((TileEntityBeamReceiver) thisTile).setFacing(EnumFacing.getFront(getMetaFromState(state)));
+            ((TileEntityBeamReceiver) thisTile).setFacing(Direction.getFront(getMetaFromState(state)));
         }
     }
 
@@ -159,9 +159,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 //        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
 //    }
 
-    private int getMetadataFromAngle(World world, BlockPos pos, EnumFacing side)
+    private int getMetadataFromAngle(World world, BlockPos pos, Direction side)
     {
-        EnumFacing direction = side.getOpposite();
+        Direction direction = side.getOpposite();
 
         TileEntity tileAt = world.getTileEntity(pos.add(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ()));
 
@@ -182,7 +182,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             return direction.ordinal();
         }
 
-        for (EnumFacing adjacentDir : EnumFacing.VALUES)
+        for (Direction adjacentDir : Direction.VALUES)
         {
             if (adjacentDir == direction)
             {
@@ -210,13 +210,13 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
     {
         return getStateFromMeta(this.getMetadataFromAngle(world, pos, facing));
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
     {
         if (this.getMetadataFromAngle(worldIn, pos, side) != -1)
         {
@@ -234,54 +234,54 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @SideOnly(Side.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().player.sendMessage(new TextComponentString(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
+        FMLClientHandler.instance().getClient().player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public BlockRenderType getRenderType(BlockState state)
     {
-        return EnumBlockRenderType.INVISIBLE;
+        return BlockRenderType.INVISIBLE;
     }
 
     @Override
-    public int damageDropped(IBlockState metadata)
+    public int damageDropped(BlockState metadata)
     {
         return 0;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, IBlockState metadata)
+    public TileEntity createTileEntity(World world, BlockState metadata)
     {
         return new TileEntityBeamReceiver();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, 0));
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -306,14 +306,14 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getFront(meta);
+        Direction enumfacing = Direction.getFront(meta);
         return this.getDefaultState().withProperty(FACING, enumfacing);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return (state.getValue(FACING)).getIndex();
     }

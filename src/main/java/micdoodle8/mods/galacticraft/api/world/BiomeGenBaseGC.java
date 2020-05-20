@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.api.world;
 import java.util.LinkedList;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAmbientCreature;
-import net.minecraft.entity.passive.EntityWaterMob;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.passive.AmbientEntity;
+import net.minecraft.entity.passive.WaterMobEntity;
 import net.minecraft.world.biome.Biome;
 
 /**
@@ -60,15 +60,15 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
         for (SpawnListEntry entry : mobInfo)
         {
             Class<?> mobClass = entry.entityClass;
-            if (EntityWaterMob.class.isAssignableFrom(mobClass))
+            if (WaterMobEntity.class.isAssignableFrom(mobClass))
             {
                 this.spawnableWaterCreatureList.add(entry);
             }
-            else if (EntityAmbientCreature.class.isAssignableFrom(mobClass))
+            else if (AmbientEntity.class.isAssignableFrom(mobClass))
             {
                 this.spawnableCaveCreatureList.add(entry);
             }
-            else if (EntityMob.class.isAssignableFrom(mobClass))
+            else if (MonsterEntity.class.isAssignableFrom(mobClass))
             {
                 this.spawnableMonsterList.add(entry);
             }

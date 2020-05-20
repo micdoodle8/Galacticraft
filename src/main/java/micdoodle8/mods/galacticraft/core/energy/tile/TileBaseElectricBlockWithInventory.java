@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectricBlock implements IInventoryDefaults
 {
@@ -12,9 +12,9 @@ public abstract class TileBaseElectricBlockWithInventory extends TileBaseElectri
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
-        return EnumFacing.getHorizontal(((this.getBlockMetadata() & 3) + 1) % 4);
+        return Direction.getHorizontal(((this.getBlockMetadata() & 3) + 1) % 4);
     }
 
     @Override

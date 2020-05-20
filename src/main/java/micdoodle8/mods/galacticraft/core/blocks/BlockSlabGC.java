@@ -4,14 +4,14 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSlab;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.SlabBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IStringSerializable;
@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockSlabGC extends BlockSlab implements ISortableBlock
+public class BlockSlabGC extends SlabBlock implements ISortableBlock
 {
     public final static PropertyEnum<BlockType> VARIANT = PropertyEnum.create("variant", BlockType.class);
 
@@ -42,7 +42,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); ++i)
         {
@@ -51,13 +51,13 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return this.getMetaFromState(state) & 7;
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(GCBlocks.slabGCHalf);
     }
@@ -69,13 +69,13 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return this.isDouble() ? null : GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos)
     {
         Block block = worldIn.getBlockState(pos).getBlock();
 
@@ -95,7 +95,7 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(this, 1, this.getMetaFromState(state) & 7);
     }
@@ -126,19 +126,19 @@ public class BlockSlabGC extends BlockSlab implements ISortableBlock
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
-        IBlockState state = this.getDefaultState().withProperty(VARIANT, BlockType.byMetadata(meta & 7));
+        BlockState state = this.getDefaultState().withProperty(VARIANT, BlockType.byMetadata(meta & 7));
 
         if (!this.isDouble())
         {
-            state = state.withProperty(HALF, (meta & 8) == 0 ? BlockSlab.EnumBlockHalf.BOTTOM : BlockSlab.EnumBlockHalf.TOP);
+            state = state.withProperty(HALF, (meta & 8) == 0 ? SlabBlock.EnumBlockHalf.BOTTOM : SlabBlock.EnumBlockHalf.TOP);
         }
         return state;
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         byte b0 = 0;
         int i = b0 | ((BlockType) state.getValue(VARIANT)).getMetadata();

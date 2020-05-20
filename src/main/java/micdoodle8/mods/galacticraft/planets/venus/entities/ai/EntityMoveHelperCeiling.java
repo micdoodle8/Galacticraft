@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.ai.controller.MovementController;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityMoveHelperCeiling extends EntityMoveHelper
+public class EntityMoveHelperCeiling extends MovementController
 {
-    public EntityMoveHelperCeiling(EntityLiving entitylivingIn)
+    public EntityMoveHelperCeiling(MobEntity entitylivingIn)
     {
         super(entitylivingIn);
     }
@@ -20,7 +20,7 @@ public class EntityMoveHelperCeiling extends EntityMoveHelper
 
         if (this.isUpdating())
         {
-            this.action = EntityMoveHelper.Action.WAIT;
+            this.action = MovementController.Action.WAIT;
             int i = MathHelper.floor(this.entity.getEntityBoundingBox().minY + 0.5D);
             double d0 = this.posX - this.entity.posX;
             double d1 = this.posZ - this.entity.posZ;

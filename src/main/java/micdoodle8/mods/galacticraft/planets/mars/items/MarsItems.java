@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.planets.mars.items;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ArmorItem.ArmorMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 
 public class MarsItems
@@ -41,10 +41,10 @@ public class MarsItems
         MarsItems.deshHoe = new ItemHoeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_hoe");
         MarsItems.deshSpade = new ItemSpadeMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_spade");
         MarsItems.deshSword = new ItemSwordMars(MarsItems.TOOLDESH).setUnlocalizedName("desh_sword");
-        MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, EntityEquipmentSlot.HEAD).setUnlocalizedName("desh_helmet");
-        MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, EntityEquipmentSlot.CHEST).setUnlocalizedName("desh_chestplate");
-        MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, EntityEquipmentSlot.LEGS).setUnlocalizedName("desh_leggings");
-        MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, EntityEquipmentSlot.FEET).setUnlocalizedName("desh_boots");
+        MarsItems.deshHelmet = new ItemArmorMars(MarsItems.ARMORDESH, 7, EquipmentSlotType.HEAD).setUnlocalizedName("desh_helmet");
+        MarsItems.deshChestplate = new ItemArmorMars(MarsItems.ARMORDESH, 7, EquipmentSlotType.CHEST).setUnlocalizedName("desh_chestplate");
+        MarsItems.deshLeggings = new ItemArmorMars(MarsItems.ARMORDESH, 7, EquipmentSlotType.LEGS).setUnlocalizedName("desh_leggings");
+        MarsItems.deshBoots = new ItemArmorMars(MarsItems.ARMORDESH, 7, EquipmentSlotType.FEET).setUnlocalizedName("desh_boots");
         MarsItems.rocketMars = new ItemTier2Rocket().setUnlocalizedName("rocket_t2");
         MarsItems.key = new ItemKeyMars().setUnlocalizedName("key");
         MarsItems.schematic = new ItemSchematicTier2().setUnlocalizedName("schematic");

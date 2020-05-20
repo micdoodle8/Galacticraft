@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.api.vector;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ReportedException;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.chunk.ServerChunkProvider;
 
 import javax.annotation.Nullable;
 
@@ -96,7 +96,7 @@ public class BlockVec3 implements Cloneable
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
      */
-    public IBlockState getBlockState(World world)
+    public BlockState getBlockState(World world)
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -160,7 +160,7 @@ public class BlockVec3 implements Cloneable
      * Returns Blocks.BEDROCK if the coordinates being checked are in an
      * unloaded chunk
      */
-    public IBlockState getBlockState_noChunkLoad(World world)
+    public BlockState getBlockState_noChunkLoad(World world)
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -220,7 +220,7 @@ public class BlockVec3 implements Cloneable
         }
     }
 
-    public IBlockState getBlockState(IBlockAccess par1iBlockAccess)
+    public BlockState getBlockState(IBlockAccess par1iBlockAccess)
     {
         return par1iBlockAccess.getBlockState(new BlockPos(this.x, this.y, this.z));
     }
@@ -236,7 +236,7 @@ public class BlockVec3 implements Cloneable
      * checked are in an unloaded chunk
      */
     @Nullable
-    public IBlockState getBlockStateSafe_noChunkLoad(World world)
+    public BlockState getBlockStateSafe_noChunkLoad(World world)
     {
         if (this.y < 0 || this.y >= 256)
         {
@@ -335,7 +335,7 @@ public class BlockVec3 implements Cloneable
         return this;
     }
 
-    public BlockVec3 modifyPositionFromSide(EnumFacing side, int amount)
+    public BlockVec3 modifyPositionFromSide(Direction side, int amount)
     {
         switch (side.ordinal())
         {
@@ -389,7 +389,7 @@ public class BlockVec3 implements Cloneable
         return vec;
     }
 
-    public BlockVec3 modifyPositionFromSide(EnumFacing side)
+    public BlockVec3 modifyPositionFromSide(Direction side)
     {
         return this.modifyPositionFromSide(side, 1);
     }
@@ -431,7 +431,7 @@ public class BlockVec3 implements Cloneable
     /**
      * No chunk load: returns null if chunk to side is unloaded
      */
-    public TileEntity getTileEntityOnSide(World world, EnumFacing side)
+    public TileEntity getTileEntityOnSide(World world, Direction side)
     {
         int x = this.x;
         int y = this.y;
@@ -530,7 +530,7 @@ public class BlockVec3 implements Cloneable
             return false;
         }
         final BlockPos pos = new BlockPos(x, y, z);
-        return world.getBlockState(pos).getBlock().isSideSolid(world.getBlockState(pos), world, pos, EnumFacing.getFront(side ^ 1));
+        return world.getBlockState(pos).getBlock().isSideSolid(world.getBlockState(pos), world, pos, Direction.getFront(side ^ 1));
     }
 
     /**
@@ -570,11 +570,11 @@ public class BlockVec3 implements Cloneable
 
     public int getBlockMetadata(IBlockAccess world)
     {
-        final IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+        final BlockState state = world.getBlockState(new BlockPos(x, y, z));
         return state.getBlock().getMetaFromState(state);
     }
 
-    public static BlockVec3 readFromNBT(NBTTagCompound nbtCompound)
+    public static BlockVec3 readFromNBT(CompoundNBT nbtCompound)
     {
         final BlockVec3 tempVector = new BlockVec3();
         tempVector.x = nbtCompound.getInteger("x");
@@ -599,7 +599,7 @@ public class BlockVec3 implements Cloneable
         return var2 * var2 + var4 * var4 + var6 * var6;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public CompoundNBT writeToNBT(CompoundNBT par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("x", this.x);
         par1NBTTagCompound.setInteger("y", this.y);
@@ -607,14 +607,14 @@ public class BlockVec3 implements Cloneable
         return par1NBTTagCompound;
     }
 
-    public BlockVec3(NBTTagCompound par1NBTTagCompound)
+    public BlockVec3(CompoundNBT par1NBTTagCompound)
     {
         this.x = par1NBTTagCompound.getInteger("x");
         this.y = par1NBTTagCompound.getInteger("y");
         this.z = par1NBTTagCompound.getInteger("z");
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound, String prefix)
+    public CompoundNBT writeToNBT(CompoundNBT par1NBTTagCompound, String prefix)
     {
         par1NBTTagCompound.setInteger(prefix + "_x", this.x);
         par1NBTTagCompound.setInteger(prefix + "_y", this.y);
@@ -622,7 +622,7 @@ public class BlockVec3 implements Cloneable
         return par1NBTTagCompound;
     }
 
-    public static BlockVec3 readFromNBT(NBTTagCompound par1NBTTagCompound, String prefix)
+    public static BlockVec3 readFromNBT(CompoundNBT par1NBTTagCompound, String prefix)
     {
         Integer readX = par1NBTTagCompound.getInteger(prefix + "_x");
         if (readX == null) return null;
@@ -643,7 +643,7 @@ public class BlockVec3 implements Cloneable
         return this.x * this.x + this.y * this.y + this.z * this.z;
     }
 
-    public void setBlock(World worldObj, IBlockState block)
+    public void setBlock(World worldObj, BlockState block)
     {
         worldObj.setBlockState(new BlockPos(x, y, z), block, 3);
     }
@@ -666,7 +666,7 @@ public class BlockVec3 implements Cloneable
         if (world.getChunkProvider().getLoadedChunk(chunkx, chunkz) != null)
             return world.getTileEntity(this.toBlockPos());
         
-        Chunk chunk = ((ChunkProviderServer) world.getChunkProvider()).loadChunk(chunkx, chunkz);
+        Chunk chunk = ((ServerChunkProvider) world.getChunkProvider()).loadChunk(chunkx, chunkz);
         return chunk.getTileEntity(new BlockPos(this.x & 15, this.y, this.z & 15), Chunk.EnumCreateEntityType.IMMEDIATE);
     }
 

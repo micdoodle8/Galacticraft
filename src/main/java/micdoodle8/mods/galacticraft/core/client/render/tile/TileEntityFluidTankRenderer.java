@@ -5,22 +5,22 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 import org.lwjgl.opengl.GL11;
 
-public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileEntityFluidTank>
+public class TileEntityFluidTankRenderer extends TileEntityRenderer<TileEntityFluidTank>
 {
     @Override
     public void render(TileEntityFluidTank tank, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
     {
-        FluidTankInfo[] info = tank.getTankInfo(EnumFacing.DOWN);
+        FluidTankInfo[] info = tank.getTankInfo(Direction.DOWN);
 
         if (info.length != 1)
         {
@@ -35,7 +35,7 @@ public class TileEntityFluidTankRenderer extends TileEntitySpecialRenderer<TileE
         TileEntityFluidTank tankAbove = tank.getNextTank(tank.getPos());
         TileEntityFluidTank tankBelow = tank.getPreviousTank(tank.getPos());
 
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
         TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(tankFluid.getFluid().getStill().toString());
         final double uMin = sprite.getMinU();
         final double uMax = sprite.getMaxU();

@@ -7,17 +7,17 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWireSwitch;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -216,34 +216,34 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         state = this.getActualState(state, source, pos);
         return BOUNDING_BOXES[getBoundingBoxIdx(state)];
     }
 
-    private static int getBoundingBoxIdx(IBlockState state)
+    private static int getBoundingBoxIdx(BlockState state)
     {
         int i = 0;
 
         if (state.getValue(NORTH).booleanValue())
         {
-            i |= 1 << EnumFacing.NORTH.getHorizontalIndex();
+            i |= 1 << Direction.NORTH.getHorizontalIndex();
         }
 
         if (state.getValue(EAST).booleanValue())
         {
-            i |= 1 << EnumFacing.EAST.getHorizontalIndex();
+            i |= 1 << Direction.EAST.getHorizontalIndex();
         }
 
         if (state.getValue(SOUTH).booleanValue())
         {
-            i |= 1 << EnumFacing.SOUTH.getHorizontalIndex();
+            i |= 1 << Direction.SOUTH.getHorizontalIndex();
         }
 
         if (state.getValue(WEST).booleanValue())
         {
-            i |= 1 << EnumFacing.WEST.getHorizontalIndex();
+            i |= 1 << Direction.WEST.getHorizontalIndex();
         }
 
         if (state.getValue(DOWN).booleanValue())
@@ -266,31 +266,31 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return getMetaFromState(state);
     }
@@ -322,7 +322,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, 0));
         list.add(new ItemStack(this, 1, 1));
@@ -331,7 +331,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public NetworkType getNetworkType(IBlockState state)
+    public NetworkType getNetworkType(BlockState state)
     {
         return NetworkType.POWER;
     }
@@ -354,13 +354,13 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(WIRE_TYPE, EnumWireType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumWireType) state.getValue(WIRE_TYPE)).getMeta();
     }

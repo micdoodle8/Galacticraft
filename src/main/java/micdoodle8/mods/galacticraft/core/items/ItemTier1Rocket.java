@@ -12,18 +12,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -49,22 +49,22 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ)
     {
         ItemStack stack = playerIn.getHeldItem(hand);
         boolean padFound = false;
         TileEntity tile = null;
 
-        if (worldIn.isRemote && playerIn instanceof EntityPlayerSP)
+        if (worldIn.isRemote && playerIn instanceof ClientPlayerEntity)
         {
-            ClientProxyCore.playerClientHandler.onBuild(8, (EntityPlayerSP) playerIn);
-            return EnumActionResult.PASS;
+            ClientProxyCore.playerClientHandler.onBuild(8, (ClientPlayerEntity) playerIn);
+            return ActionResultType.PASS;
         }
         else
         {
@@ -77,7 +77,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
                 for (int j = -1; j < 2; j++)
                 {
                     BlockPos pos1 = pos.add(i, 0, j);
-                    IBlockState state = worldIn.getBlockState(pos1);
+                    BlockState state = worldIn.getBlockState(pos1);
                     final Block id = state.getBlock();
                     int meta = id.getMetaFromState(state);
 
@@ -104,18 +104,18 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
             {
                 if (!placeRocketOnPad(stack, worldIn, tile, centerX, centerY, centerZ))
                 {
-                    return EnumActionResult.FAIL;
+                    return ActionResultType.FAIL;
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
                 {
                     stack.shrink(1);
                 }
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
             else
             {
-                return EnumActionResult.PASS;
+                return ActionResultType.PASS;
             }
         }
     }
@@ -153,9 +153,9 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             for (int i = 0; i < EnumRocketType.values().length; i++)
             {
@@ -166,7 +166,7 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -195,19 +195,19 @@ public class ItemTier1Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    public boolean shouldHoldLeftHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    public boolean shouldHoldRightHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldCrouch(EntityPlayer player)
+    public boolean shouldCrouch(PlayerEntity player)
     {
         return true;
     }

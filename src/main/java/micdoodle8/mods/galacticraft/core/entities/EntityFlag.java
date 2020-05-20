@@ -5,19 +5,19 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFence;
+import net.minecraft.block.FenceBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -57,7 +57,7 @@ public class EntityFlag extends Entity
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         Entity e = par1DamageSource.getTrueSource();
-        boolean flag = e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode;
+        boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode;
 
         if (!this.world.isRemote && !this.isDead && !this.indestructable)
         {
@@ -71,7 +71,7 @@ public class EntityFlag extends Entity
                 this.setDamage(this.getDamage() + par2 * 10);
                 this.world.playSound(null, this.posX, this.posY, this.posZ, SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 1.0F);
 
-                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
                 {
                     this.setDamage(100.0F);
                 }
@@ -153,7 +153,7 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
     {
         this.setOwner(par1NBTTagCompound.getString("Owner"));
         this.setType(par1NBTTagCompound.getInteger("Type"));
@@ -166,7 +166,7 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(CompoundNBT par1NBTTagCompound)
     {
         par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
         par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
@@ -199,7 +199,7 @@ public class EntityFlag extends Entity
         if (blockAt != null)
         {
             BlockPos pos = new BlockPos(vec.intX(), vec.intY(), vec.intZ());
-            if (blockAt instanceof BlockFence)
+            if (blockAt instanceof FenceBlock)
             {
 
             }
@@ -213,7 +213,7 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
         if (!this.world.isRemote)
         {

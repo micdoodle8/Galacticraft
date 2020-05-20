@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggyBench;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -18,7 +18,7 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
 
     private int pageIndex;
 
-    public GuiSchematicBuggy(InventoryPlayer par1InventoryPlayer, BlockPos pos)
+    public GuiSchematicBuggy(PlayerInventory par1InventoryPlayer, BlockPos pos)
     {
         super(new ContainerBuggyBench(par1InventoryPlayer, pos, FMLClientHandler.instance().getClient().player), pos);
         this.ySize = 221;
@@ -29,12 +29,12 @@ public class GuiSchematicBuggy extends GuiPositionedContainer implements ISchema
     {
         super.initGui();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
+        this.buttonList.add(new Button(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
+        this.buttonList.add(new Button(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {

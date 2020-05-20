@@ -2,18 +2,18 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterOxygenInfinite;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerExtendedInventory extends Container
 {
-    public InventoryPlayer inventoryPlayer;
+    public PlayerInventory inventoryPlayer;
     public InventoryExtended extendedInventory;
 
-    public ContainerExtendedInventory(EntityPlayer thePlayer, InventoryExtended extendedInventory)
+    public ContainerExtendedInventory(PlayerEntity thePlayer, InventoryExtended extendedInventory)
     {
         this.inventoryPlayer = thePlayer.inventory;
         this.extendedInventory = extendedInventory;
@@ -55,13 +55,13 @@ public class ContainerExtendedInventory extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(PlayerEntity var1)
     {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par1);

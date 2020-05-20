@@ -13,10 +13,10 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
@@ -59,11 +59,11 @@ public class CommonProxyCore
         return WorldUtil.getWorldForDimensionServer(dimensionID);
     }
 
-    public EntityPlayer getPlayerFromNetHandler(INetHandler handler)
+    public PlayerEntity getPlayerFromNetHandler(INetHandler handler)
     {
-        if (handler instanceof NetHandlerPlayServer)
+        if (handler instanceof ServerPlayNetHandler)
         {
-            return ((NetHandlerPlayServer) handler).player;
+            return ((ServerPlayNetHandler) handler).player;
         }
         else
         {
@@ -96,7 +96,7 @@ public class CommonProxyCore
         return false;
     }
     
-    public PlayerGearData getGearData(EntityPlayer player)
+    public PlayerGearData getGearData(PlayerEntity player)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
         

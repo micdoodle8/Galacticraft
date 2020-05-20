@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelLander;
 import micdoodle8.mods.galacticraft.core.entities.EntityLander;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,13 +14,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderLander extends Render<EntityLander>
+public class RenderLander extends EntityRenderer<EntityLander>
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/lander.png");
 
     protected ModelLander landerModel;
 
-    public RenderLander(RenderManager manager)
+    public RenderLander(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 2F;

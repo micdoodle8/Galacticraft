@@ -4,11 +4,11 @@ import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 
 /**
  * This class provides various hooks which are missing from Forge or don't quite do what we need.
@@ -16,9 +16,9 @@ import net.minecraft.world.WorldServer;
  * Do not reference this or test 'instance of' this in your code:
  * if PlayerAPI is installed, GCEntityPlayerMP will not be used.
  */
-public class GCEntityPlayerMP extends EntityPlayerMP
+public class GCEntityPlayerMP extends ServerPlayerEntity
 {
-    public GCEntityPlayerMP(MinecraftServer server, WorldServer world, GameProfile profile, PlayerInteractionManager interactionManager)
+    public GCEntityPlayerMP(MinecraftServer server, ServerWorld world, GameProfile profile, PlayerInteractionManager interactionManager)
     {
         super(server, world, profile, interactionManager);
 //        if (this.world != world)

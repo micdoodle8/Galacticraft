@@ -26,14 +26,14 @@ import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import micdoodle8.mods.galacticraft.planets.venus.tile.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -65,10 +65,10 @@ public class VenusModuleClient implements IPlanetsModuleClient
     public void preInit(FMLPreInitializationEvent event)
     {
         MinecraftForge.EVENT_BUS.register(this);
-        RenderingRegistry.registerEntityRenderingHandler(EntityJuicer.class, (RenderManager manager) -> new RenderJuicer(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPodVenus.class, (RenderManager manager) -> new RenderEntryPodVenus(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, (RenderManager manager) -> new RenderSpiderQueen(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, (RenderManager manager) -> new RenderWebShot(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityJuicer.class, (EntityRendererManager manager) -> new RenderJuicer(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPodVenus.class, (EntityRendererManager manager) -> new RenderEntryPodVenus(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpiderQueen.class, (EntityRendererManager manager) -> new RenderSpiderQueen(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityWebShot.class, (EntityRendererManager manager) -> new RenderWebShot(manager));
     }
 
     private void addPlanetVariants(String name, String... variants)
@@ -96,7 +96,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
         ModelLoader.setCustomStateMapper(VenusBlocks.sulphuricAcid, new StateMapperBase()
         {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            protected ModelResourceLocation getModelResourceLocation(BlockState state)
             {
                 return sulphuricAcidLocation;
             }
@@ -186,7 +186,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     }
 
     @Override
-    public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getGuiElement(Side side, int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         if (side == Side.CLIENT)
         {

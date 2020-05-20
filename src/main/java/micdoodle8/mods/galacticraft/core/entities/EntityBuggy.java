@@ -13,29 +13,29 @@ import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -218,9 +218,9 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         else
         {
             Entity e = var1.getTrueSource();
-            boolean flag = e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode;
+            boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode;
 
-            if (this.isEntityInvulnerable(var1) || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(var1) || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -231,7 +231,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
                 this.dataManager.set(CURRENT_DAMAGE, (int) (this.dataManager.get(CURRENT_DAMAGE) + var2 * 10));
                 this.markVelocityChanged();
 
-                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
                 {
                     this.dataManager.set(CURRENT_DAMAGE, 100);
                 }
@@ -274,7 +274,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
         for (final ItemStack item : dropped)
         {
-            EntityItem entityItem = this.entityDropItem(item, 0);
+            ItemEntity entityItem = this.entityDropItem(item, 0);
 
             if (item.hasTagCompound())
             {
@@ -288,7 +288,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
         final List<ItemStack> items = new ArrayList<ItemStack>();
 
         ItemStack buggy = new ItemStack(GCItems.buggy, 1, this.buggyType);
-        buggy.setTagCompound(new NBTTagCompound());
+        buggy.setTagCompound(new CompoundNBT());
         buggy.getTagCompound().setInteger("BuggyFuel", this.buggyFuelTank.getFluidAmount());
         items.add(buggy);
 
@@ -484,7 +484,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         this.buggyType = nbt.getInteger("buggyType");
         ItemStackHelper.loadAllItems(nbt, this.stacks);
@@ -496,15 +496,15 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
     	if (world.isRemote) return;
         nbt.setInteger("buggyType", this.buggyType);
-        final NBTTagList var2 = new NBTTagList();
+        final ListNBT var2 = new ListNBT();
 
         if (this.buggyFuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.buggyFuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.buggyFuelTank.writeToNBT(new CompoundNBT()));
         }
 
         ItemStackHelper.saveAllItems(nbt, stacks);
@@ -567,7 +567,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer var1)
+    public boolean isUsableByPlayer(PlayerEntity var1)
     {
         return !this.isDead && var1.getDistanceSq(this) <= 64.0D;
     }
@@ -579,13 +579,13 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
 
     //We don't use these because we use forge containers
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
     }
 
@@ -613,16 +613,16 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
         if (this.world.isRemote)
         {
             if (this.getPassengers().isEmpty())
             {
-                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
-                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
-                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
-                player.sendMessage(new TextComponentString(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
+                player.sendMessage(new StringTextComponent(GameSettings.getKeyDisplayString(KeyHandlerClient.leftKey.getKeyCode()) + " / " + GameSettings.getKeyDisplayString(KeyHandlerClient.rightKey.getKeyCode()) + "  - " + GCCoreUtil.translate("gui.buggy.turn.name")));
+                player.sendMessage(new StringTextComponent(GameSettings.getKeyDisplayString(KeyHandlerClient.accelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.accel.name")));
+                player.sendMessage(new StringTextComponent(GameSettings.getKeyDisplayString(KeyHandlerClient.decelerateKey.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.decel.name")));
+                player.sendMessage(new StringTextComponent(GameSettings.getKeyDisplayString(KeyHandlerClient.openFuelGui.getKeyCode()) + "       - " + GCCoreUtil.translate("gui.buggy.inv.name")));
             }
 
             return true;
@@ -825,7 +825,7 @@ public class EntityBuggy extends Entity implements IInventory, IPacketReceiver, 
     @Override
     public UUID getOwnerUUID()
     {
-        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof EntityPlayer))
+        if (!this.getPassengers().isEmpty() && !(this.getPassengers().get(0) instanceof PlayerEntity))
         {
             return null;
         }

@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeProvider;
-import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.gen.layer.IntCache;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,8 +23,8 @@ import java.util.Random;
 
 public class BiomeProviderVenus extends BiomeProvider
 {
-    private GenLayer unzoomedBiomes;
-    private GenLayer zoomedBiomes;
+    private Layer unzoomedBiomes;
+    private Layer zoomedBiomes;
     private BiomeCache biomeCache;
     private List<Biome> biomesToSpawnIn;
     private CelestialBody body; 
@@ -40,7 +40,7 @@ public class BiomeProviderVenus extends BiomeProvider
     public BiomeProviderVenus(long seed, WorldType type)
     {
         this();
-        GenLayer[] genLayers = GenLayerVenus.createWorld(seed);
+        Layer[] genLayers = GenLayerVenus.createWorld(seed);
         this.unzoomedBiomes = genLayers[0];
         this.zoomedBiomes = genLayers[1];
     }

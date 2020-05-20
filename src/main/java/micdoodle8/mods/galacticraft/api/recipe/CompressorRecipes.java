@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import micdoodle8.mods.galacticraft.api.GalacticraftConfigAccess;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.block.Blocks;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -149,7 +149,7 @@ public class CompressorRecipes
     	adventureOnly = false;
     }
     
-    public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World par2World)
+    public static ItemStack findMatchingRecipe(CraftingInventory inventory, World par2World)
     {
         int i = 0;
         ItemStack itemstack = ItemStack.EMPTY;

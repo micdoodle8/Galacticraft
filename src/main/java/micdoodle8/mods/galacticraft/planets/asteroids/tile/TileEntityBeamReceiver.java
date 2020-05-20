@@ -15,9 +15,9 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.*;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEnergyHandlerGC, ILaserNode
 {
     @NetworkedField(targetSide = Side.CLIENT)
-    public EnumFacing facing = null;
+    public Direction facing = null;
     private int preLoadFacing = -1;
     private float maxRate = 1500;
     private EnergyStorage storage = new EnergyStorage(10 * maxRate, maxRate);  //In broken circuits, Beam Receiver will accept energy for 0.5s (15000gJ max) then stop
@@ -45,7 +45,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         if (this.preLoadFacing != -1)
         {
-            this.setFacing(EnumFacing.getFront(this.preLoadFacing));
+            this.setFacing(Direction.getFront(this.preLoadFacing));
             this.preLoadFacing = -1;
         }
 
@@ -62,7 +62,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
-                        EnergySourceAdjacent source = new EnergySourceAdjacent(EnumFacing.getFront(this.facing.getIndex() ^ 1));
+                        EnergySourceAdjacent source = new EnergySourceAdjacent(Direction.getFront(this.facing.getIndex() ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
                         electricalTile.extractEnergyGC(source, transmitted, false);
@@ -285,7 +285,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
     }
 
-    public void setFacing(EnumFacing newDirection)
+    public void setFacing(Direction newDirection)
     {
         if (newDirection != this.facing)
         {
@@ -362,14 +362,14 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.preLoadFacing = nbt.getInteger("FacingSide");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("FacingSide", this.facing == null ? this.preLoadFacing : this.facing.ordinal());
@@ -377,9 +377,9 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     private AxisAlignedBB renderAABB;

@@ -6,20 +6,20 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedCreeper;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedCreeperCharge;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedCreeper extends RenderLiving<EntityEvolvedCreeper>
+public class RenderEvolvedCreeper extends MobRenderer<EntityEvolvedCreeper>
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/creeper.png");
     private boolean texSwitch;
 
-    public RenderEvolvedCreeper(RenderManager manager)
+    public RenderEvolvedCreeper(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedCreeper(), 0.5F);
         this.addLayer(new LayerEvolvedCreeperCharge(this));

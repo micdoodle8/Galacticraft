@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.planets.mars.entities;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.projectile.EntityFireball;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityProjectileTNT extends EntityFireball
+public class EntityProjectileTNT extends DamagingProjectileEntity
 {
     public EntityProjectileTNT(World par1World)
     {
@@ -18,7 +18,7 @@ public class EntityProjectileTNT extends EntityFireball
         this.setSize(1.0F, 1.0F);
     }
 
-    public EntityProjectileTNT(World par1World, EntityLivingBase par2EntityLivingBase, double par3, double par5, double par7)
+    public EntityProjectileTNT(World par1World, LivingEntity par2EntityLivingBase, double par3, double par5, double par7)
     {
         super(par1World, par2EntityLivingBase, par3, par5, par7);
         this.setSize(1.0F, 1.0F);
@@ -42,7 +42,7 @@ public class EntityProjectileTNT extends EntityFireball
     {
         if (!this.world.isRemote)
         {
-            if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof EntityCreeper))
+            if (movingObjectPosition.entityHit != null && !(movingObjectPosition.entityHit instanceof CreeperEntity))
             {
                 float difficulty = 0;
                 switch (this.world.getDifficulty())

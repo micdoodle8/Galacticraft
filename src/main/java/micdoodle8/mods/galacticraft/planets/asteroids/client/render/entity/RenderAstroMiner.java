@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.render.entity;
 import java.util.ArrayList;
 import java.util.Random;
 
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.util.Direction;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Function;
@@ -22,19 +24,17 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
 import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
-public class RenderAstroMiner extends Render<EntityAstroMiner>
+public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
 {
     private static final float LSIZE = 0.12F;
     private static final float RETRACTIONSPEED = 0.02F;
@@ -86,7 +86,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         scanTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/misc/gradient.png");
     }
 
-    public RenderAstroMiner(RenderManager renderManager)
+    public RenderAstroMiner(EntityRendererManager renderManager)
     {
         super(renderManager);
         this.shadowSize = 2F;
@@ -443,12 +443,12 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
         float zD = mainLaserZ - 0.5F;
         float xx, yy, zz;
 
-        if (entity.facing.getIndex() > EnumFacing.SOUTH.getIndex())
+        if (entity.facing.getIndex() > Direction.SOUTH.getIndex())
         {
             xx = xD < 0 ? cA : cB;
             this.drawLaserX(mainLaserX, mainLaserY, mainLaserZ, xx, 0.5F, 0.5F);
         }
-        else if (entity.facing.getIndex() <= EnumFacing.UP.getIndex())
+        else if (entity.facing.getIndex() <= Direction.UP.getIndex())
         {
             yy = yD < 0 ? cA : cB;
             this.drawLaserY(mainLaserX, mainLaserY, mainLaserZ, 0.5F, yy, 0.5F);
@@ -593,7 +593,7 @@ public class RenderAstroMiner extends Render<EntityAstroMiner>
     @Override
     protected ResourceLocation getEntityTexture(EntityAstroMiner entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
     
     @Override

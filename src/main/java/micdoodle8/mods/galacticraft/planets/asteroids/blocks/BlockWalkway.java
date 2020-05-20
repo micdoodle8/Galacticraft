@@ -13,18 +13,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -86,7 +86,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         state = this.getActualState(state, source, pos);
 
@@ -100,44 +100,44 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         return true;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos)
+    public boolean canPlaceTorchOnTop(BlockState state, IBlockAccess world, BlockPos pos)
     {
         return true;
     }
     
     @Override
-    public boolean isNormalCube(IBlockState state)
+    public boolean isNormalCube(BlockState state)
     {
         return state.getMaterial().blocksMovement() && state.getBlock().isFullCube(state);
     }
@@ -159,7 +159,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public NetworkType getNetworkType(IBlockState state)
+    public NetworkType getNetworkType(BlockState state)
     {
         if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
         {
@@ -322,9 +322,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        Object[] connectable = new Object[EnumFacing.VALUES.length];
+        Object[] connectable = new Object[Direction.VALUES.length];
 
         TileEntity tileEntity = null;
         
@@ -332,9 +332,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         {
             tileEntity = worldIn.getTileEntity(pos);
         }
-        for (EnumFacing direction : EnumFacing.VALUES)
+        for (Direction direction : Direction.VALUES)
         {
-            if (direction == EnumFacing.UP || (direction == EnumFacing.DOWN && tileEntity == null))
+            if (direction == Direction.UP || (direction == Direction.DOWN && tileEntity == null))
             {
                 continue;
             }
@@ -359,27 +359,27 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
             }
         }
 
-        return state.withProperty(NORTH, Boolean.valueOf(connectable[EnumFacing.NORTH.ordinal()] != null))
-                .withProperty(EAST, Boolean.valueOf(connectable[EnumFacing.EAST.ordinal()] != null))
-                .withProperty(SOUTH, Boolean.valueOf(connectable[EnumFacing.SOUTH.ordinal()] != null))
-                .withProperty(WEST, Boolean.valueOf(connectable[EnumFacing.WEST.ordinal()] != null))
-                .withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null));
+        return state.withProperty(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
+                .withProperty(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
+                .withProperty(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
+                .withProperty(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null))
+                .withProperty(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null));
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumWalkwayType) state.getValue(WALKWAY_TYPE)).getMeta();
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, 0));
         list.add(new ItemStack(this, 1, 1));
@@ -387,7 +387,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return this.getMetaFromState(state);
     }

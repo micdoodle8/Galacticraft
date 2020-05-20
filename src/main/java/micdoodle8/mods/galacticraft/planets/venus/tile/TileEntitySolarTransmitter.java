@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.galacticraft.planets.venus.tick.VenusTickHandlerServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced implements ITransmitter
 {
@@ -137,7 +137,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
             this.adjacentConnections = null;
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing side : EnumFacing.VALUES)
+            for (Direction side : Direction.VALUES)
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
@@ -173,11 +173,11 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
          */
         if (this.adjacentConnections == null)
         {
-            this.adjacentConnections = new TileEntity[EnumFacing.VALUES.length];
+            this.adjacentConnections = new TileEntity[Direction.VALUES.length];
 
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing direction : EnumFacing.VALUES)
+            for (Direction direction : Direction.VALUES)
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, direction);
 
@@ -195,7 +195,7 @@ public abstract class TileEntitySolarTransmitter extends TileEntityAdvanced impl
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         return type == NetworkType.SOLAR_MODULE;
     }

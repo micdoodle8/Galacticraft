@@ -17,15 +17,15 @@ import micdoodle8.mods.galacticraft.core.tile.*;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,13 +34,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class GuiHandler implements IGuiHandler
 {
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        ServerPlayerEntity playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
         if (playerBase == null)
         {
-            player.sendMessage(new TextComponentString("Galacticraft player instance null server-side. This is a bug."));
+            player.sendMessage(new StringTextComponent("Galacticraft player instance null server-side. This is a bug."));
             return null;
         }
 
@@ -158,7 +158,7 @@ public class GuiHandler implements IGuiHandler
     }
 
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
@@ -169,9 +169,9 @@ public class GuiHandler implements IGuiHandler
     }
 
     @SideOnly(Side.CLIENT)
-    private Object getClientGuiElement(int ID, EntityPlayer player, World world, BlockPos position)
+    private Object getClientGuiElement(int ID, PlayerEntity player, World world, BlockPos position)
     {
-        EntityPlayerSP playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        ClientPlayerEntity playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
         if (ID == GuiIdsCore.GALAXY_MAP)
         {
@@ -196,7 +196,7 @@ public class GuiHandler implements IGuiHandler
         else if (ID == GuiIdsCore.PRE_LAUNCH_CHECKLIST)
         {
             ItemStack checkList = GCCoreUtil.getMatchingItemEitherHand(playerClient, GCItems.prelaunchChecklist);
-            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), checkList != null && checkList.hasTagCompound() ? (NBTTagCompound) checkList.getTagCompound().getTag("checklistData") : null);
+            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), checkList != null && checkList.hasTagCompound() ? (CompoundNBT) checkList.getTagCompound().getTag("checklistData") : null);
         }
 
         TileEntity tile = world.getTileEntity(position);
@@ -301,7 +301,7 @@ public class GuiHandler implements IGuiHandler
             {
                 if (ID == page.getGuiID())
                 {
-                    GuiScreen screen = page.getResultScreen(playerClient, position);
+                    Screen screen = page.getResultScreen(playerClient, position);
 
                     if (screen instanceof ISchematicResultPage)
                     {

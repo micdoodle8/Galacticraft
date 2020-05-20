@@ -19,14 +19,14 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITextBoxCallback
+public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextBoxCallback
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
 
@@ -54,7 +54,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     private int ticksPassed;
-    private EntityPlayer thePlayer;
+    private PlayerEntity thePlayer;
     private GuiElementCheckbox checkboxPaintbrush;
     private GuiElementCheckbox checkboxShowGrid;
     private GuiElementCheckbox checkboxEraser;
@@ -104,7 +104,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     private boolean isDirty = true;
     private boolean canEdit;
 
-    public GuiNewSpaceRace(EntityPlayer player)
+    public GuiNewSpaceRace(PlayerEntity player)
     {
         this.thePlayer = player;
 
@@ -307,7 +307,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     @Override
-    protected void actionPerformed(GuiButton buttonClicked)
+    protected void actionPerformed(Button buttonClicked)
     {
         switch (buttonClicked.id)
         {
@@ -409,7 +409,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             List<ListElement> playerNames = new ArrayList<ListElement>();
             for (int i = 0; i < this.thePlayer.world.playerEntities.size(); i++)
             {
-                EntityPlayer player = (EntityPlayer) this.thePlayer.world.playerEntities.get(i);
+                PlayerEntity player = (PlayerEntity) this.thePlayer.world.playerEntities.get(i);
 
                 if (player.getDistanceSq(this.thePlayer) <= 25 * 25)
                 {
@@ -836,7 +836,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
             this.gradientListRemovePlayers.draw(par1, par2);
         }
 
-        for (GuiButton button : this.buttonList)
+        for (Button button : this.buttonList)
         {
             if (button instanceof GuiElementSlider)
             {
@@ -874,18 +874,18 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
         if (this.buttonFlag_hover)
         {
-            Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 50, 50, 50));
+            AbstractGui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 50, 50, 50));
         }
 
-        Gui.drawRect(this.buttonFlag_xPosition + this.buttonFlag_width - 1, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + 1, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition + this.buttonFlag_height - 1, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonFlag_xPosition + this.buttonFlag_width - 1, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + 1, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonFlag_xPosition, this.buttonFlag_yPosition + this.buttonFlag_height - 1, this.buttonFlag_xPosition + this.buttonFlag_width, this.buttonFlag_yPosition + this.buttonFlag_height, ColorUtil.to32BitColor(255, 0, 0, 0));
     }
 
     private void drawColorButton()
     {
-        Gui.drawRect(this.buttonTeamColor_xPosition + 2, this.buttonTeamColor_yPosition + 2, this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 2, ColorUtil.to32BitColor(255, (int) (this.spaceRaceData.getTeamColor().x * 255.0F), (int) (this.spaceRaceData.getTeamColor().y * 255.0F), (int) (this.spaceRaceData.getTeamColor().z * 255.0F)));
+        AbstractGui.drawRect(this.buttonTeamColor_xPosition + 2, this.buttonTeamColor_yPosition + 2, this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 2, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 2, ColorUtil.to32BitColor(255, (int) (this.spaceRaceData.getTeamColor().x * 255.0F), (int) (this.spaceRaceData.getTeamColor().y * 255.0F), (int) (this.spaceRaceData.getTeamColor().z * 255.0F)));
 
         GL11.glPushMatrix();
         GL11.glTranslatef(0.0F, 0.0F, 500.0F);
@@ -900,13 +900,13 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
 
         if (this.buttonTeamColor_hover)
         {
-            Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(55, 50, 50, 50));
+            AbstractGui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(55, 50, 50, 50));
         }
 
-        Gui.drawRect(this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 1, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + 1, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
-        Gui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 1, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonTeamColor_xPosition + this.buttonTeamColor_width - 1, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + 1, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.drawRect(this.buttonTeamColor_xPosition, this.buttonTeamColor_yPosition + this.buttonTeamColor_height - 1, this.buttonTeamColor_xPosition + this.buttonTeamColor_width, this.buttonTeamColor_yPosition + this.buttonTeamColor_height, ColorUtil.to32BitColor(255, 0, 0, 0));
     }
 
     @Override
@@ -1027,7 +1027,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return true;
     }
@@ -1052,7 +1052,7 @@ public class GuiNewSpaceRace extends GuiScreen implements ICheckBoxCallback, ITe
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return this.canEdit;
     }

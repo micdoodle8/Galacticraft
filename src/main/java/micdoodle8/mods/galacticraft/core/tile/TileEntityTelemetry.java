@@ -14,22 +14,21 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -100,7 +99,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                 }
                 else
                 {
-                    if (linkedEntity instanceof EntityPlayerMP)
+                    if (linkedEntity instanceof ServerPlayerEntity)
                     {
                         name = "$" + linkedEntity.getName();
                     }
@@ -120,7 +119,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                     }
 
                     double xmotion = linkedEntity.motionX;
-                    double ymotion = linkedEntity instanceof EntityLivingBase ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
+                    double ymotion = linkedEntity instanceof LivingEntity ? linkedEntity.motionY + 0.078D : linkedEntity.motionY;
                     double zmotion = linkedEntity.motionZ;
                     data[2] = (int) (MathHelper.sqrt(xmotion * xmotion + ymotion * ymotion + zmotion * zmotion) * 2000D);
 
@@ -128,9 +127,9 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                     {
                         ((ITelemetry) linkedEntity).transmitData(data);
                     }
-                    else if (linkedEntity instanceof EntityLivingBase)
+                    else if (linkedEntity instanceof LivingEntity)
                     {
-                        EntityLivingBase eLiving = (EntityLivingBase) linkedEntity;
+                        LivingEntity eLiving = (LivingEntity) linkedEntity;
                         data[0] = eLiving.hurtTime;
 
                         //Calculate a "pulse rate" based on motion and taking damage
@@ -160,12 +159,12 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         data[2] = this.pulseRate / 10;
 
                         data[1] = (int) (eLiving.getHealth() * 100 / eLiving.getMaxHealth());
-                        if (eLiving instanceof EntityPlayerMP)
+                        if (eLiving instanceof ServerPlayerEntity)
                         {
-                            data[3] = ((EntityPlayerMP) eLiving).getFoodStats().getFoodLevel() * 5;
+                            data[3] = ((ServerPlayerEntity) eLiving).getFoodStats().getFoodLevel() * 5;
                             GCPlayerStats stats = GCPlayerStats.get(eLiving);
                             data[4] = stats.getAirRemaining() * 4096 + stats.getAirRemaining2();
-                            UUID uuid = ((EntityPlayerMP) eLiving).getUniqueID();
+                            UUID uuid = ((ServerPlayerEntity) eLiving).getUniqueID();
                             if (uuid != null)
                             {
                                 strUUID = uuid.toString();
@@ -195,14 +194,14 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
                         {
                             data[3] = ((EntityOcelot) eLiving).getTameSkin();
                         }
-                        else if (eLiving instanceof EntitySkeleton)
+                        else if (eLiving instanceof SkeletonEntity)
                         {
 //                            data[3] = ((EntitySkeleton) eLiving).getSkeletonType().ordinal();
                         }
-                        else if (eLiving instanceof EntityZombie)
+                        else if (eLiving instanceof ZombieEntity)
                         {
 //                            data[3] = ((EntityZombie) eLiving).isVillager() ? 1 : 0; TODO Fix for MC 1.10
-                            data[4] = ((EntityZombie) eLiving).isChild() ? 1 : 0;
+                            data[4] = ((ZombieEntity) eLiving).isChild() ? 1 : 0;
                         }
                     }
                 }
@@ -222,7 +221,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         if (name.startsWith("$"))
         {
             //It's a player name
-            this.clientClass = EntityPlayerMP.class;
+            this.clientClass = ServerPlayerEntity.class;
             String strName = name.substring(1);
             this.clientName = strName;
             this.clientGameProfile = PlayerUtil.getSkinForName(strName, (String) data.get(7), dimID);
@@ -240,7 +239,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         Long msb = nbt.getLong("entityUUIDMost");
@@ -251,7 +250,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
 
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         if (this.linkedEntity != null && !this.linkedEntity.isDead)
@@ -344,20 +343,20 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
      * @param held   The frequency module
      * @param player
      */
-    public static void frequencyModulePlayer(ItemStack held, EntityPlayerMP player, boolean remove)
+    public static void frequencyModulePlayer(ItemStack held, ServerPlayerEntity player, boolean remove)
     {
         if (held == null)
         {
             return;
         }
-        NBTTagCompound fmData = held.getTagCompound();
+        CompoundNBT fmData = held.getTagCompound();
         if (fmData != null && fmData.hasKey("teDim"))
         {
             int dim = fmData.getInteger("teDim");
             int x = fmData.getInteger("teCoordX");
             int y = fmData.getInteger("teCoordY");
             int z = fmData.getInteger("teCoordZ");
-            WorldProvider wp = WorldUtil.getProviderForDimensionServer(dim);
+            Dimension wp = WorldUtil.getProviderForDimensionServer(dim);
             //TODO
             if (wp == null || wp.world == null)
             {
@@ -382,7 +381,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         }
     }
 
-    public static void updateLinkedPlayer(EntityPlayerMP playerOld, EntityPlayerMP playerNew)
+    public static void updateLinkedPlayer(ServerPlayerEntity playerOld, ServerPlayerEntity playerNew)
     {
         for (BlockVec3Dim telemeter : loadedList)
         {
@@ -398,7 +397,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
     }

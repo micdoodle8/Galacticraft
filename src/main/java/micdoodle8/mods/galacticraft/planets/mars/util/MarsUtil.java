@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class MarsUtil
         GalacticraftRegistry.addCargoRocketRecipe(new NasaWorkbenchRecipe(result, input));
     }
 
-    public static void openParachestInventory(EntityPlayerMP player, EntityLandingBalloons landerInv)
+    public static void openParachestInventory(ServerPlayerEntity player, EntityLandingBalloons landerInv)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -44,7 +44,7 @@ public class MarsUtil
         player.openContainer.addListener(player);
     }
 
-    public static void openSlimelingInventory(EntityPlayerMP player, EntitySlimeling slimeling)
+    public static void openSlimelingInventory(ServerPlayerEntity player, EntitySlimeling slimeling)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -55,7 +55,7 @@ public class MarsUtil
         player.openContainer.addListener(player);
     }
 
-    public static void openCargoRocketInventory(EntityPlayerMP player, EntityCargoRocket rocket)
+    public static void openCargoRocketInventory(ServerPlayerEntity player, EntityCargoRocket rocket)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -66,7 +66,7 @@ public class MarsUtil
         player.openContainer.addListener(player);
     }
 
-    public static void openAdvancedLaunchController(EntityPlayerMP player, TileEntityLaunchController launchController)
+    public static void openAdvancedLaunchController(ServerPlayerEntity player, TileEntityLaunchController launchController)
     {
         player.getNextWindowId();
         player.closeContainer();

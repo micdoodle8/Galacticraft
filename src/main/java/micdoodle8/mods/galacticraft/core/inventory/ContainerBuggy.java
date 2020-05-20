@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerBuggy extends Container
@@ -11,7 +11,7 @@ public class ContainerBuggy extends Container
     private final IInventory lowerChestInventory;
     private final IInventory spaceshipInv;
 
-    public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type, EntityPlayer player)
+    public ContainerBuggy(IInventory par1IInventory, IInventory par2IInventory, int type, PlayerEntity player)
     {
         this.lowerChestInventory = par1IInventory;
         this.spaceshipInv = par2IInventory;
@@ -46,7 +46,7 @@ public class ContainerBuggy extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.spaceshipInv.isUsableByPlayer(par1EntityPlayer);
     }
@@ -56,7 +56,7 @@ public class ContainerBuggy extends Container
      * you will crash when someone does that.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);
@@ -96,7 +96,7 @@ public class ContainerBuggy extends Container
      * Callback for when the crafting gui is closed.
      */
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
         this.lowerChestInventory.closeInventory(par1EntityPlayer);

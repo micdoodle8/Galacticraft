@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class TileEntityAluminumWire extends TileBaseUniversalConductor
 {
@@ -18,7 +18,7 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.tier = nbt.getInteger("tier");
@@ -30,7 +30,7 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("tier", this.tier);
@@ -38,9 +38,9 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override

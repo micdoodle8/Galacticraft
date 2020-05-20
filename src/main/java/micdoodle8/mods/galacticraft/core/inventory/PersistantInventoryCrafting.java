@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 
-public class PersistantInventoryCrafting extends InventoryCrafting
+public class PersistantInventoryCrafting extends CraftingInventory
 {
     public NonNullList<ItemStack> stacks;
 
@@ -137,18 +137,18 @@ public class PersistantInventoryCrafting extends InventoryCrafting
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return true;
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
     }
 
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
     }
 

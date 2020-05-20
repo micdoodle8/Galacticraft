@@ -10,23 +10,23 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.LongNBT;
+import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -54,12 +54,12 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         super(worldIn);
         this.setSize(1.4F, 0.9F);
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0, true));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0, true));
+        this.tasks.addTask(5, new RandomWalkingGoal(this, 0.8D));
+        this.tasks.addTask(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.tasks.addTask(6, new LookRandomlyGoal(this));
+        this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.maxRangedAttackTime = 60;
         this.minRangedAttackTime = 20;
         this.ignoreFrustumCheck = true;
@@ -78,9 +78,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    protected PathNavigate createNavigator(World worldIn)
+    protected PathNavigator createNavigator(World worldIn)
     {
-        return new PathNavigateGround(this, worldIn);
+        return new GroundPathNavigator(this, worldIn);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         {
             if (!this.shouldEvade && this.deathTicks <= 0)
             {
-                EntityLivingBase attackTarget = this.getAttackTarget();
+                LivingEntity attackTarget = this.getAttackTarget();
 
                 if (attackTarget != null)
                 {
@@ -321,9 +321,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public boolean isPotionApplicable(PotionEffect potioneffectIn)
+    public boolean isPotionApplicable(EffectInstance potioneffectIn)
     {
-        return potioneffectIn.getPotion() != MobEffects.POISON && super.isPotionApplicable(potioneffectIn);
+        return potioneffectIn.getPotion() != Effects.POISON && super.isPotionApplicable(potioneffectIn);
     }
 
     @Override
@@ -369,7 +369,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float damage)
+    public void attackEntityWithRangedAttack(LivingEntity target, float damage)
     {
         EntityWebShot entityarrow = new EntityWebShot(this.world, this, target, 0.8F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
@@ -377,23 +377,23 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+    public void writeEntityToNBT(CompoundNBT tagCompound)
     {
         super.writeEntityToNBT(tagCompound);
 
         tagCompound.setBoolean("should_evade", this.shouldEvade);
 
-        NBTTagList list = new NBTTagList();
+        ListNBT list = new ListNBT();
         for (EntityJuicer juicer : this.juicersSpawned)
         {
-            list.appendTag(new NBTTagLong(juicer.getPersistentID().getMostSignificantBits()));
-            list.appendTag(new NBTTagLong(juicer.getPersistentID().getLeastSignificantBits()));
+            list.appendTag(new LongNBT(juicer.getPersistentID().getMostSignificantBits()));
+            list.appendTag(new LongNBT(juicer.getPersistentID().getLeastSignificantBits()));
         }
         tagCompound.setTag("spawned_children", list);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompound)
+    public void readEntityFromNBT(CompoundNBT tagCompound)
     {
         super.readEntityFromNBT(tagCompound);
 
@@ -402,11 +402,11 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         if (tagCompound.hasKey("spawned_children"))
         {
             this.spawnedPreload = Lists.newArrayList();
-            NBTTagList list = tagCompound.getTagList("spawned_children", 4);
+            ListNBT list = tagCompound.getTagList("spawned_children", 4);
             for (int i = 0; i < list.tagCount(); i += 2)
             {
-                NBTTagLong tagMost = (NBTTagLong) list.get(i);
-                NBTTagLong tagLeast = (NBTTagLong) list.get(i + 1);
+                LongNBT tagMost = (LongNBT) list.get(i);
+                LongNBT tagLeast = (LongNBT) list.get(i + 1);
                 this.spawnedPreload.add(new UUID(tagMost.getLong(), tagLeast.getLong()));
             }
         }
@@ -419,9 +419,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
+    public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops)

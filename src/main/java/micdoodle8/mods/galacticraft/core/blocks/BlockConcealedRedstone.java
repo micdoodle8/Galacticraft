@@ -9,17 +9,16 @@ import com.google.common.collect.Sets;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedstoneRepeater;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
+import net.minecraft.block.RepeaterBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -41,7 +40,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
@@ -53,13 +52,13 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((Integer)state.getValue(POWER)).intValue();
     }
@@ -70,7 +69,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         return new BlockStateContainer(this, new IProperty[] {POWER});
     }
 
-    private IBlockState updateSurroundingRedstone(World worldIn, BlockPos pos, IBlockState state)
+    private BlockState updateSurroundingRedstone(World worldIn, BlockPos pos, BlockState state)
     {
         state = this.calculateCurrentChanges(worldIn, pos, pos, state);
         List<BlockPos> list = Lists.newArrayList(this.blocksNeedingUpdate);
@@ -84,9 +83,9 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         return state;
     }
 
-    private IBlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, IBlockState state)
+    private BlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, BlockState state)
     {
-        IBlockState iblockstate = state;
+        BlockState iblockstate = state;
         int currentPower = ((Integer)state.getValue(POWER)).intValue();
         int maxPower = 0;
         maxPower = this.getMaxCurrentStrength(worldIn, pos2, maxPower);
@@ -101,7 +100,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
         int l = 0;
 
-        for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+        for (Direction enumfacing : Direction.Plane.HORIZONTAL)
         {
             BlockPos blockpos = pos1.offset(enumfacing);
             boolean flag = blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ();
@@ -111,8 +110,8 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
                 l = this.getMaxCurrentStrength(worldIn, blockpos, l);
             }
 
-            IBlockState bs = worldIn.getBlockState(blockpos);
-            IBlockState bsUp = worldIn.getBlockState(pos1.up());
+            BlockState bs = worldIn.getBlockState(blockpos);
+            BlockState bsUp = worldIn.getBlockState(pos1.up());
             if (bs.getBlock().isNormalCube(bs) && !bsUp.getBlock().isNormalCube(bsUp))
             {
                 if (flag && pos1.getY() >= pos2.getY())
@@ -155,7 +154,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
             this.blocksNeedingUpdate.add(pos1);
 
-            for (EnumFacing enumfacing1 : EnumFacing.VALUES)
+            for (Direction enumfacing1 : Direction.VALUES)
             {
                 this.blocksNeedingUpdate.add(pos1.offset(enumfacing1));
             }
@@ -171,7 +170,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         {
             worldIn.notifyNeighborsOfStateChange(pos, this, false);
 
-            for (EnumFacing enumfacing : EnumFacing.VALUES)
+            for (Direction enumfacing : Direction.VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
             }
@@ -179,18 +178,18 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
     {
         if (!worldIn.isRemote)
         {
             this.updateSurroundingRedstone(worldIn, pos, state);
 
-            for (EnumFacing enumfacing : EnumFacing.Plane.VERTICAL)
+            for (Direction enumfacing : Direction.Plane.VERTICAL)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
             }
 
-            for (EnumFacing enumfacing1 : EnumFacing.Plane.HORIZONTAL)
+            for (Direction enumfacing1 : Direction.Plane.HORIZONTAL)
             {
                 this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
             }
@@ -201,11 +200,11 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
     private void notifyNeighbors(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing2 : EnumFacing.Plane.HORIZONTAL)
+        for (Direction enumfacing2 : Direction.Plane.HORIZONTAL)
         {
             BlockPos blockpos = pos.offset(enumfacing2);
 
-            IBlockState bs = worldIn.getBlockState(blockpos); 
+            BlockState bs = worldIn.getBlockState(blockpos);
             if (bs.getBlock().isNormalCube(bs))
             {
                 this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
@@ -218,20 +217,20 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         super.breakBlock(worldIn, pos, state);
 
         if (!worldIn.isRemote)
         {
-            for (EnumFacing enumfacing : EnumFacing.VALUES)
+            for (Direction enumfacing : Direction.VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
             }
 
             this.updateSurroundingRedstone(worldIn, pos, state);
 
-            for (EnumFacing enumfacing1 : EnumFacing.Plane.HORIZONTAL)
+            for (Direction enumfacing1 : Direction.Plane.HORIZONTAL)
             {
                 this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
             }
@@ -254,7 +253,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!worldIn.isRemote)
         {
@@ -263,13 +262,13 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public int getStrongPower(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing side)
+    public int getStrongPower(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction side)
     {
         return !this.canProvidePower ? 0 : this.getWeakPower(state, worldIn, pos, side);
     }
 
     @Override
-    public int getWeakPower(IBlockState state, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public int getWeakPower(BlockState state, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         if (!this.canProvidePower)
         {
@@ -281,16 +280,16 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         }
     }
 
-    protected static boolean canRedstoneConnect(IBlockAccess world, BlockPos pos, EnumFacing side)
+    protected static boolean canRedstoneConnect(IBlockAccess world, BlockPos pos, Direction side)
     {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         if (state.getBlock() == Blocks.REDSTONE_WIRE || state.getBlock() == GCBlocks.concealedRedstone)
         {
             return true;
         }
         else if (Blocks.UNPOWERED_REPEATER.isAssociatedBlock(state.getBlock()))
         {
-            EnumFacing direction = (EnumFacing)state.getValue(BlockRedstoneRepeater.FACING);
+            Direction direction = (Direction)state.getValue(RepeaterBlock.FACING);
             return direction == side || direction.getOpposite() == side;
         }
         else
@@ -300,31 +299,31 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     }
 
     @Override
-    public boolean canProvidePower(IBlockState state)
+    public boolean canProvidePower(BlockState state)
     {
         return this.canProvidePower;
     }
     
     @Override
-    public int getLightOpacity(IBlockState state)
+    public int getLightOpacity(BlockState state)
     {
         return 0;
     }
     
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return true;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return true;
     }
 
     @Override
-    public boolean isSideSolid(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side)
+    public boolean isSideSolid(BlockState state, IBlockAccess world, BlockPos pos, Direction side)
     {
         return true;
     }

@@ -32,8 +32,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -62,11 +62,11 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @Override
     public void preInit(FMLPreInitializationEvent event)
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, (RenderManager manager) -> new RenderSmallAsteroid(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, (RenderManager manager) -> new RenderGrapple(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, (RenderManager manager) -> new RenderEntryPod(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, (RenderManager manager) -> new RenderTier3Rocket(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (RenderManager manager) -> new RenderAstroMiner(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySmallAsteroid.class, (EntityRendererManager manager) -> new RenderSmallAsteroid(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityGrapple.class, (EntityRendererManager manager) -> new RenderGrapple(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityEntryPod.class, (EntityRendererManager manager) -> new RenderEntryPod(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier3Rocket.class, (EntityRendererManager manager) -> new RenderTier3Rocket(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityAstroMiner.class, (EntityRendererManager manager) -> new RenderAstroMiner(manager));
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -230,7 +230,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     }
 
     @Override
-    public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getGuiElement(Side side, int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
 

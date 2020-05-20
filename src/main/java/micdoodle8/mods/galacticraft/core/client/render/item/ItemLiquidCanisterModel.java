@@ -1,13 +1,13 @@
 package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -23,7 +23,7 @@ public class ItemLiquidCanisterModel implements IBakedModel
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+    public List<BakedQuad> getQuads(BlockState state, Direction side, long rand)
     {
         return iBakedModel.getQuads(state, side, rand);
     }
@@ -74,12 +74,12 @@ public class ItemLiquidCanisterModel implements IBakedModel
         }
 
         @Override
-        public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity)
+        public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, LivingEntity entity)
         {
             if (stack.getTagCompound() == null)
             {
                 ItemStack copy = stack.copy();
-                copy.setTagCompound(new NBTTagCompound());
+                copy.setTagCompound(new CompoundNBT());
                 copy.getTagCompound().setBoolean("Unbreakable", true);
                 return FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getItemModel(copy);
             }

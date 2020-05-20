@@ -10,23 +10,23 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
@@ -164,15 +164,15 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     Vec3d thisVec3 = new Vec3d(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
                     for (Entity entry : moblist)
                     {
-                        if (!(entry instanceof EntityCreature))
+                        if (!(entry instanceof CreatureEntity))
                         {
                             continue;
                         }
-                        EntityCreature mob = (EntityCreature) entry;
+                        CreatureEntity mob = (CreatureEntity) entry;
                         //Check whether the mob can actually *see* the arclamp tile
                         //if (this.world.func_147447_a(thisPos, new Vec3(entry.posX, entry.posY, entry.posZ), true, true, false) != null) continue;
 
-                        PathNavigate nav = mob.getNavigator();
+                        PathNavigator nav = mob.getNavigator();
                         if (nav == null)
                         {
                             continue;
@@ -295,8 +295,8 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         int index = 0;
         Block air = Blocks.AIR;
         Block breatheableAirID = GCBlocks.breatheableAir;
-        IBlockState brightAir = GCBlocks.brightAir.getDefaultState();
-        IBlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
+        BlockState brightAir = GCBlocks.brightAir.getDefaultState();
+        BlockState brightBreatheableAir = GCBlocks.brightBreatheableAir.getDefaultState();
         boolean dirty = false;
         checkedClear();
         HashSet<BlockVec3> airToRevert = new HashSet<>();
@@ -315,7 +315,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             if (i != sideskip1 && i != sideskip2 && i != (sideskip1 ^ 1) && i != (sideskip2 ^ 1))
             {
                 BlockVec3 onEitherSide = thisvec.newVecSide(i);
-                IBlockState state = onEitherSide.getBlockStateSafe_noChunkLoad(world);
+                BlockState state = onEitherSide.getBlockStateSafe_noChunkLoad(world);
                 if (state != null && state.getBlock().getLightOpacity(state) < 15)
                 {
                     currentLayer.add(onEitherSide);
@@ -326,7 +326,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         for (int i = 0; i < 4; i++)
         {
             inFront = inFront.newVecSide(this.facingSide);
-            IBlockState state = inFront.getBlockStateSafe_noChunkLoad(world);
+            BlockState state = inFront.getBlockStateSafe_noChunkLoad(world);
             if (state != null && state.getBlock().getLightOpacity(state) == 15)
             {
                 break;
@@ -421,14 +421,14 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             toAdd = true;
                         }
 
-                        IBlockState bs = sideVec.getBlockStateSafe_noChunkLoad(world);
+                        BlockState bs = sideVec.getBlockStateSafe_noChunkLoad(world);
                         if (bs == null)
                         {
                             side++;
                             continue;
                         }
                         Block b = bs.getBlock();
-                        if (b instanceof BlockAir)
+                        if (b instanceof AirBlock)
                         {
                             if (toAdd && side != sideskip1 && side != sideskip2)
                             {
@@ -459,13 +459,13 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     if (Blocks.AIR == id)
                     {
                         this.brightenAir(world, vec, brightAir);
-                        index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
+                        index = this.checkLightPartA(LightType.BLOCK, vec.toBlockPos(), index);
                         dirty = true;
                     }
                     else if (id == breatheableAirID)
                     {
                         this.brightenAir(world, vec, brightBreatheableAir);
-                        index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
+                        index = this.checkLightPartA(LightType.BLOCK, vec.toBlockPos(), index);
                         dirty = true;
                     }
                 }
@@ -481,7 +481,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         if (dirty)
         {
             this.markDirty();
-            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+            this.checkLightPartB(LightType.BLOCK, index);
         }
         
         //Look for any holdover bright blocks which are no longer lit (e.g. because the Arc Lamp became blocked in a tunnel)
@@ -492,7 +492,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         {
             BlockVec3 vec = (BlockVec3) obj;
             this.setDarkerAir(vec);
-            index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
+            index = this.checkLightPartA(LightType.BLOCK, vec.toBlockPos(), index);
             this.airToRestore.remove(vec);
             dirty = true;
         }
@@ -500,7 +500,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         if (dirty)
         {
             this.markDirty();
-            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+            this.checkLightPartB(LightType.BLOCK, index);
         }
 
 //        long time3 = System.nanoTime();
@@ -512,7 +512,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -520,12 +520,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.airToRestore.clear();
-            NBTTagList airBlocks = nbt.getTagList("AirBlocks", 10);
+            ListNBT airBlocks = nbt.getTagList("AirBlocks", 10);
             if (airBlocks.tagCount() > 0)
             {
                 for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
                 {
-                    NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
+                    CompoundNBT tag1 = airBlocks.getCompoundTagAt(j);
                     if (tag1 != null)
                     {
                         this.airToRestore.add(BlockVec3.readFromNBT(tag1));
@@ -536,17 +536,17 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
         nbt.setInteger("Facing", this.facing);
 
-        NBTTagList airBlocks = new NBTTagList();
+        ListNBT airBlocks = new ListNBT();
 
         for (BlockVec3 vec : this.airToRestore)
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             vec.writeToNBT(tag);
             airBlocks.appendTag(tag);
         }
@@ -570,11 +570,11 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         this.ticks = 91;
     }
 
-    private void brightenAir(World world, BlockVec3 vec, IBlockState newState)
+    private void brightenAir(World world, BlockVec3 vec, BlockState newState)
     {
         BlockPos blockpos = vec.toBlockPos();
         Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
-        IBlockState oldState = chunk.setBlockState(blockpos, newState);
+        BlockState oldState = chunk.setBlockState(blockpos, newState);
         if (this.world.isRemote && oldState != null) this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
         this.airToRestore.add(vec);
@@ -584,7 +584,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     {
         BlockPos blockpos = vec.toBlockPos();
         Block b = this.world.getBlockState(blockpos).getBlock();
-        IBlockState newState;
+        BlockState newState;
         if (b == GCBlocks.brightAir)
         {
             newState = Blocks.AIR.getDefaultState();
@@ -601,7 +601,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
 //      Roughly similar to:  this.worldObj.setBlockState(pos, newState, (this.worldObj.isRemote) ? 2 : 0);
         
         Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
-        IBlockState oldState = chunk.setBlockState(blockpos, newState);
+        BlockState oldState = chunk.setBlockState(blockpos, newState);
         if (this.world.isRemote && oldState != null) this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
     }
@@ -625,16 +625,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         {
             for (BlockVec3 vec : this.airToRestore)
             {
-                index = this.checkLightPartA(EnumSkyBlock.BLOCK, vec.toBlockPos(), index);
+                index = this.checkLightPartA(LightType.BLOCK, vec.toBlockPos(), index);
             }
-            this.checkLightPartB(EnumSkyBlock.BLOCK, index);
+            this.checkLightPartB(LightType.BLOCK, index);
             this.usingLightList.set(false);
         }
         this.airToRestore.clear();
-        this.checkLightFor(EnumSkyBlock.BLOCK, this.pos);
+        this.checkLightFor(LightType.BLOCK, this.pos);
     }
 
-    public boolean checkLightFor(EnumSkyBlock lightType, BlockPos bp)
+    public boolean checkLightFor(LightType lightType, BlockPos bp)
     {
         if (!this.world.isAreaLoaded(bp, 17, false))
         {
@@ -688,7 +688,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                             {
                                 savedLight = world.getLightFor(lightType, vec);
                                 if (savedLight == 0) continue;  //eliminate backtracking
-                                IBlockState bs = world.getBlockState(vec); 
+                                BlockState bs = world.getBlockState(vec);
                                 opacity = bs.getBlock().getLightOpacity(bs, world, vec);
                                 if (opacity <= 0) opacity = 1;
                                 //Tack positions onto the list as long as it looks like lit from here. i.e. saved light is adjacent light - opacity!
@@ -747,7 +747,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         return true;
     }
 
-    public int checkLightPartA(EnumSkyBlock lightType, BlockPos bp, int indexIn)
+    public int checkLightPartA(LightType lightType, BlockPos bp, int indexIn)
     {
         if (indexIn >= SIZELIST)
         {
@@ -795,7 +795,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
                     {
                         savedLight = world.getLightFor(lightType, vec);
                         if (savedLight == 0) continue;  //eliminate backtracking
-                        IBlockState bs = world.getBlockState(vec); 
+                        BlockState bs = world.getBlockState(vec);
                         opacity = bs.getBlock().getLightOpacity(bs, world, vec);
                         if (opacity <= 0) opacity = 1;
                         //Tack positions onto the list as long as it looks like lit from here. i.e. saved light is adjacent light - opacity!
@@ -814,7 +814,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         return index;
     }
 
-    public boolean checkLightPartB(EnumSkyBlock lightType, int index)
+    public boolean checkLightPartB(LightType lightType, int index)
     {
         World world = this.world;
         BlockPos blockpos;
@@ -874,12 +874,12 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
  * From vanilla.  This is buggy, gets confused if two low opacity blocks adjacent (e.g. redstone wire, stairs)
  * if those blocks are receiving similar light levels from another source
  */
-    private int getRawLight(BlockPos pos, EnumSkyBlock lightType)
+    private int getRawLight(BlockPos pos, LightType lightType)
     {
-        IBlockState bs = this.world.getBlockState(pos);
+        BlockState bs = this.world.getBlockState(pos);
         Block block = bs.getBlock();
         int blockLight = block.getLightValue(bs, this.world, pos);
-        int light = lightType == EnumSkyBlock.SKY ? 0 : blockLight;
+        int light = lightType == LightType.SKY ? 0 : blockLight;
 
         if (light < 14)
         {
@@ -917,7 +917,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
         return light;
     }
     
-    private void setLightFor_preChecked(EnumSkyBlock type, BlockPos pos, int lightValue)
+    private void setLightFor_preChecked(LightType type, BlockPos pos, int lightValue)
     {
         this.world.getChunkFromChunkCoords(pos.getX() >> 4, pos.getZ() >> 4).setLightFor(type, pos, lightValue);
     }
@@ -928,7 +928,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
     }

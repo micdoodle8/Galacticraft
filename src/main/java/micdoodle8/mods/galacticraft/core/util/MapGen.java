@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.miccore.IntCache;
-import net.minecraft.init.Biomes;
+import net.minecraft.world.biome.Biomes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeCache;
-import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.biome.provider.BiomeProvider;
 import net.minecraft.world.gen.ChunkGeneratorSettings;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
-import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.OctavesNoiseGenerator;
+import net.minecraft.world.gen.PerlinNoiseGenerator;
+import net.minecraft.world.gen.layer.Layer;
 import net.minecraft.world.storage.WorldInfo;
 
 import org.apache.commons.io.FileUtils;
@@ -49,8 +49,8 @@ public class MapGen extends BiomeProvider implements Runnable
     private int imagefactor;
 
     private BiomeCache biomeCache;
-    private GenLayer genBiomes;
-    private GenLayer biomeIndexLayer;
+    private Layer genBiomes;
+    private Layer biomeIndexLayer;
     public File biomeMapFile;
     private byte[] biomeAndHeightArray = null;
     private int biomeMapSizeX;
@@ -127,7 +127,7 @@ public class MapGen extends BiomeProvider implements Runnable
         long seed = worldInfo.getSeed();
         this.biomeCache = new BiomeCache(this);
         String options = worldInfo.getGeneratorOptions();
-        GenLayer[] agenlayer;
+        Layer[] agenlayer;
         try {
             if (options != null)
             {
@@ -137,11 +137,11 @@ public class MapGen extends BiomeProvider implements Runnable
             {
                 Object settingsBOP = CompatibilityManager.classBOPws.getConstructor(String.class).newInstance(options);
                 Method bopSetup = CompatibilityManager.classBOPwcm.getMethod("setupBOPGenLayers", long.class, settingsBOP.getClass());
-                agenlayer = (GenLayer[]) bopSetup.invoke(null, seed, settingsBOP);
+                agenlayer = (Layer[]) bopSetup.invoke(null, seed, settingsBOP);
             }
             else
             {
-                agenlayer = GenLayer.initializeAllBiomeGenerators(seed, worldType, this.settings);
+                agenlayer = Layer.initializeAllBiomeGenerators(seed, worldType, this.settings);
             }
             agenlayer = getModdedBiomeGenerators(worldType, seed, agenlayer);
         }
@@ -567,21 +567,21 @@ public class MapGen extends BiomeProvider implements Runnable
     static double[] minLimitRegion;
     static double[] maxLimitRegion;
     static double[] depthRegion;
-    private NoiseGeneratorOctaves noiseGen1;
-    private NoiseGeneratorOctaves noiseGen2;
-    private NoiseGeneratorOctaves noiseGen3;
-    public NoiseGeneratorOctaves noiseGen4;
+    private OctavesNoiseGenerator noiseGen1;
+    private OctavesNoiseGenerator noiseGen2;
+    private OctavesNoiseGenerator noiseGen3;
+    public OctavesNoiseGenerator noiseGen4;
 
     public void initialise(long seed)
     {
         rand = new Random(seed);
-        noiseGen1 = new NoiseGeneratorOctaves(rand, 16);
-        noiseGen2 = new NoiseGeneratorOctaves(rand, 16);
-        noiseGen3 = new NoiseGeneratorOctaves(rand, 8);
-        NoiseGeneratorPerlin ignore1 = new NoiseGeneratorPerlin(this.rand, 4);
-        NoiseGeneratorOctaves ignore2 = new NoiseGeneratorOctaves(this.rand, 10);
-        noiseGen4 = new NoiseGeneratorOctaves(rand, 16);
-        NoiseGeneratorOctaves ignore3 = new NoiseGeneratorOctaves(this.rand, 8);
+        noiseGen1 = new OctavesNoiseGenerator(rand, 16);
+        noiseGen2 = new OctavesNoiseGenerator(rand, 16);
+        noiseGen3 = new OctavesNoiseGenerator(rand, 8);
+        PerlinNoiseGenerator ignore1 = new PerlinNoiseGenerator(this.rand, 4);
+        OctavesNoiseGenerator ignore2 = new OctavesNoiseGenerator(this.rand, 10);
+        noiseGen4 = new OctavesNoiseGenerator(rand, 16);
+        OctavesNoiseGenerator ignore3 = new OctavesNoiseGenerator(this.rand, 8);
         net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld ctx =
                 new net.minecraftforge.event.terraingen.InitNoiseGensEvent.ContextOverworld(noiseGen1, noiseGen2, noiseGen3, ignore1, ignore2, noiseGen4, ignore3);
         ctx = net.minecraftforge.event.terraingen.TerrainGen.getModdedNoiseGenerators(this.world, this.rand, ctx);

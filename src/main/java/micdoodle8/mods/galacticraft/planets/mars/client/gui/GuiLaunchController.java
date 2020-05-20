@@ -17,12 +17,12 @@ import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchContro
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -41,9 +41,9 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
 
     private TileEntityLaunchController launchController;
 
-    private GuiButton enableControllerButton;
-    private GuiButton hideDestinationFrequency;
-    private GuiButton openAdvancedConfig;
+    private Button enableControllerButton;
+    private Button hideDestinationFrequency;
+    private Button openAdvancedConfig;
     private GuiElementTextBox frequency;
     private GuiElementTextBox destinationFrequency;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
@@ -51,7 +51,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
 
     private int cannotEditTimer;
 
-    public GuiLaunchController(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
+    public GuiLaunchController(PlayerInventory playerInventory, TileEntityLaunchController launchController)
     {
         super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
@@ -76,7 +76,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         this.enableControllerButton.displayString = this.launchController.getDisabled(0) ? GCCoreUtil.translate("gui.button.enable.name") : GCCoreUtil.translate("gui.button.disable.name");
         this.hideDestinationFrequency.displayString = !this.launchController.getDisabled(2) ? GCCoreUtil.translate("gui.button.unhide_dest.name") : GCCoreUtil.translate("gui.button.hide_dest.name");
         // Hacky way of rendering buttons properly, possibly bugs here:
-        List<GuiButton> buttonList = new ArrayList<>(this.buttonList);
+        List<Button> buttonList = new ArrayList<>(this.buttonList);
         List<GuiLabel> labelList = new ArrayList<>(this.labelList);
         List<GuiElementInfoRegion> infoRegions = new ArrayList<>(this.infoRegions);
         this.buttonList.clear();
@@ -93,7 +93,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         int k;
         for (k = 0; k < buttonList.size(); ++k)
         {
-            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
+            ((Button) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
         }
 
         for (k = 0; k < labelList.size(); ++k)
@@ -158,7 +158,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
 
     public boolean isValid(String string)
     {
-        if (string.length() > 0 && ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1)))
+        if (string.length() > 0 && SharedConstants.isAllowedCharacter(string.charAt(string.length() - 1)))
         {
             try
             {
@@ -183,11 +183,11 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
         this.buttonList.clear();
         final int xLeft = (this.width - this.xSize) / 2;
         final int yTop = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new GuiButton(0, xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
+        this.enableControllerButton = new Button(0, xLeft + 70 + 124 - 72, yTop + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
         this.frequency = new GuiElementTextBox(4, this, xLeft + 66, yTop + 16, 48, 20, "", true, 6, false);
         this.destinationFrequency = new GuiElementTextBox(5, this, xLeft + 45, yTop + 16 + 22, 48, 20, "", true, 6, false);
-        this.hideDestinationFrequency = new GuiButton(6, xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"));
-        this.openAdvancedConfig = new GuiButton(7, xLeft + 48, yTop + 62, 80, 20, GCCoreUtil.translate("gui.launch_controller.advanced") + "...");
+        this.hideDestinationFrequency = new Button(6, xLeft + 95, yTop + 16 + 22, 39, 20, GCCoreUtil.translate("gui.button.hide_dest.name"));
+        this.openAdvancedConfig = new Button(7, xLeft + 48, yTop + 62, 80, 20, GCCoreUtil.translate("gui.launch_controller.advanced") + "...");
         this.buttonList.add(this.enableControllerButton);
         this.buttonList.add(this.frequency);
         this.buttonList.add(this.destinationFrequency);
@@ -221,7 +221,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
@@ -319,7 +319,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
     }

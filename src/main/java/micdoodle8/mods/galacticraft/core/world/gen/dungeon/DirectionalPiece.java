@@ -1,38 +1,38 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
 public abstract class DirectionalPiece extends Piece
 {
-    private EnumFacing direction;
+    private Direction direction;
 
     public DirectionalPiece()
     {
     }
 
-    public DirectionalPiece(DungeonConfiguration configuration, EnumFacing direction)
+    public DirectionalPiece(DungeonConfiguration configuration, Direction direction)
     {
         super(configuration);
         this.direction = direction;
     }
 
-    public EnumFacing getDirection()
+    public Direction getDirection()
     {
         return direction;
     }
 
-    public void setDirection(EnumFacing direction)
+    public void setDirection(Direction direction)
     {
         this.direction = direction;
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -40,23 +40,23 @@ public abstract class DirectionalPiece extends Piece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
     {
         super.readStructureFromNBT(nbt, manager);
 
         if (nbt.hasKey("direction"))
         {
-            this.direction = EnumFacing.getFront(nbt.getInteger("direction"));
+            this.direction = Direction.getFront(nbt.getInteger("direction"));
         }
         else
         {
-            this.direction = EnumFacing.NORTH;
+            this.direction = Direction.NORTH;
         }
     }
 
     public Piece getCorridor(Random rand, DungeonStart startPiece, int maxAttempts, boolean small)
     {
-        EnumFacing randomDir;
+        Direction randomDir;
         int blockX;
         int blockZ;
         int sizeX;
@@ -66,8 +66,8 @@ public abstract class DirectionalPiece extends Piece
         int randDir = rand.nextInt(3);
         do
         {
-            randomDir = EnumFacing.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
-            StructureBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 3);
+            randomDir = Direction.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
+            MutableBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 3);
             blockX = extension.minX;
             blockZ = extension.minZ;
             sizeX = extension.maxX - extension.minX;

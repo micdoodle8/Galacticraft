@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.api.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 
 import java.lang.reflect.Method;
 
@@ -29,7 +29,7 @@ public class OxygenHooks
      *            True if fire cannot burn in this world
      *            
      */
-	public static boolean noAtmosphericCombustion(WorldProvider provider)
+	public static boolean noAtmosphericCombustion(Dimension provider)
     {
         try
         {
@@ -39,7 +39,7 @@ public class OxygenHooks
                 {
                     oxygenUtilClass = Class.forName("micdoodle8.mods.galacticraft.core.util.OxygenUtil");
                 }
-                combusionTestMethod = oxygenUtilClass.getDeclaredMethod("noAtmosphericCombustion", WorldProvider.class);
+                combusionTestMethod = oxygenUtilClass.getDeclaredMethod("noAtmosphericCombustion", Dimension.class);
             }
             return (Boolean)combusionTestMethod.invoke(null, provider);
         }
@@ -102,7 +102,7 @@ public class OxygenHooks
      * @param entity
      * @return  True if the entity's head is in an oxygen bubble or block, false otherwise 
      */
-	public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity)
+	public static boolean isAABBInBreathableAirBlock(LivingEntity entity)
     {
         try
         {
@@ -112,7 +112,7 @@ public class OxygenHooks
                 {
                     oxygenUtilClass = Class.forName("micdoodle8.mods.galacticraft.core.util.OxygenUtil");
                 }
-                breathableAirBlockEntityMethod = oxygenUtilClass.getDeclaredMethod("isAABBInBreathableAirBlock", EntityLivingBase.class);
+                breathableAirBlockEntityMethod = oxygenUtilClass.getDeclaredMethod("isAABBInBreathableAirBlock", LivingEntity.class);
             }
             return (Boolean)breathableAirBlockEntityMethod.invoke(null, entity);
         }
@@ -199,7 +199,7 @@ public class OxygenHooks
      * @param player
      * @return True if the setup is valid, otherwise false
      */
-    public static boolean hasValidOxygenSetup(EntityPlayerMP player)
+    public static boolean hasValidOxygenSetup(ServerPlayerEntity player)
     {
         try
         {
@@ -209,7 +209,7 @@ public class OxygenHooks
                 {
                     oxygenUtilClass = Class.forName("micdoodle8.mods.galacticraft.core.util.OxygenUtil");
                 }
-                validOxygenSetupMethod = oxygenUtilClass.getDeclaredMethod("hasValidOxygenSetup", EntityPlayerMP.class);
+                validOxygenSetupMethod = oxygenUtilClass.getDeclaredMethod("hasValidOxygenSetup", ServerPlayerEntity.class);
             }
             return (Boolean)validOxygenSetupMethod.invoke(null, player);
         }

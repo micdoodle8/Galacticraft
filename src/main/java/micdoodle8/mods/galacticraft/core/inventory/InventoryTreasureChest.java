@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventoryTreasureChest implements IInventory
 {
@@ -95,20 +95,20 @@ public class InventoryTreasureChest implements IInventory
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer p_70300_1_)
+    public boolean isUsableByPlayer(PlayerEntity p_70300_1_)
     {
         return this.upperChest.isUsableByPlayer(p_70300_1_) && this.lowerChest.isUsableByPlayer(p_70300_1_);
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
         this.upperChest.openInventory(player);
         this.lowerChest.openInventory(player);
     }
 
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
         this.upperChest.closeInventory(player);
         this.lowerChest.closeInventory(player);
@@ -153,6 +153,6 @@ public class InventoryTreasureChest implements IInventory
     @Override
     public ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
     }
 }

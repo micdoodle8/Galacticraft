@@ -13,20 +13,20 @@ import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.layers.ArmorLayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
+public class LayerThermalPadding extends ArmorLayer<ModelBiped>
 {
-    private final RenderPlayer renderer;
+    private final PlayerRenderer renderer;
 
-    public LayerThermalPadding(RenderPlayer playerRendererIn)
+    public LayerThermalPadding(PlayerRenderer playerRendererIn)
     {
         super(playerRendererIn);
         this.renderer = playerRendererIn;
@@ -39,7 +39,7 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     }
 
     @Override
-    protected void setModelSlotVisible(ModelBiped model, EntityEquipmentSlot slotIn)
+    protected void setModelSlotVisible(ModelBiped model, EquipmentSlotType slotIn)
     {
         model.setVisible(false);
 
@@ -64,9 +64,9 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
         }
     }
 
-    public ItemStack getItemStackFromSlot(EntityLivingBase living, EntityEquipmentSlot slotIn)
+    public ItemStack getItemStackFromSlot(LivingEntity living, EquipmentSlotType slotIn)
     {
-        PlayerGearData gearData = GalacticraftCore.proxy.getGearData((EntityPlayer) living);
+        PlayerGearData gearData = GalacticraftCore.proxy.getGearData((PlayerEntity) living);
 
         if (gearData != null)
         {
@@ -95,15 +95,15 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     }
 
     @Override
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.CHEST);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.LEGS);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.FEET);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EntityEquipmentSlot.HEAD);
+        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.CHEST);
+        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.LEGS);
+        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.FEET);
+        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.HEAD);
     }
 
-    private void renderArmorLayer(EntityLivingBase entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityEquipmentSlot slotIn)
+    private void renderArmorLayer(LivingEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EquipmentSlotType slotIn)
     {
         ItemStack itemstack = this.getItemStackFromSlot(entityLivingBaseIn, slotIn);
 
@@ -162,8 +162,8 @@ public class LayerThermalPadding extends LayerArmorBase<ModelBiped>
     }
 
     @Override
-    public ModelBiped getModelFromSlot(EntityEquipmentSlot slotIn)
+    public ModelBiped getModelFromSlot(EquipmentSlotType slotIn)
     {
-        return slotIn == EntityEquipmentSlot.FEET ? this.modelLeggings : this.modelArmor;  //FEET is intended here, actually picks up the helmet (yes really)
+        return slotIn == EquipmentSlotType.FEET ? this.modelLeggings : this.modelArmor;  //FEET is intended here, actually picks up the helmet (yes really)
     }
 }

@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 
-public class GuiElementSlider extends GuiButton
+public class GuiElementSlider extends Button
 {
     private Vector3 firstColor;
     private Vector3 lastColor;

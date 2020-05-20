@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * Applied to TileEntities that can connect to an electrical OR oxygen network.
@@ -14,5 +14,5 @@ public interface IConnector
     /**
      * @return If the connection is possible.
      */
-    boolean canConnect(EnumFacing direction, NetworkType type);
+    boolean canConnect(Direction direction, NetworkType type);
 }

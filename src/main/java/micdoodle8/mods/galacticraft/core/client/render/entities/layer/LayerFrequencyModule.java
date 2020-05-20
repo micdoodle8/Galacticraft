@@ -10,12 +10,12 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
@@ -25,13 +25,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
+public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayerEntity>
 {
-    private final RenderPlayer playerRenderer;
+    private final PlayerRenderer playerRenderer;
     private OBJModel.OBJBakedModel moduleModel;
     private OBJModel.OBJBakedModel radarModel;
 
-    public LayerFrequencyModule(RenderPlayer playerRendererIn)
+    public LayerFrequencyModule(PlayerRenderer playerRendererIn)
     {
         this.playerRenderer = playerRendererIn;
     }
@@ -55,7 +55,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayer player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
+    public void doRenderLayer(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
         {
@@ -72,7 +72,7 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayer>
                     this.updateModels();
                     GlStateManager.enableRescaleNormal();
                     GlStateManager.pushMatrix();
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+                    Minecraft.getMinecraft().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
                     GlStateManager.rotate(180, 1, 0, 0);
                     GlStateManager.pushMatrix();

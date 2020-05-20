@@ -3,13 +3,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.schematic;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.gui.GuiSchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerSchematicAstroMiner;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,13 +36,13 @@ public class SchematicAstroMiner implements ISchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos)
+    public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {
         return new GuiSchematicAstroMiner(player.inventory, pos);
     }
 
     @Override
-    public Container getResultContainer(EntityPlayer player, BlockPos pos)
+    public Container getResultContainer(PlayerEntity player, BlockPos pos)
     {
         return new ContainerSchematicAstroMiner(player.inventory, pos);
     }

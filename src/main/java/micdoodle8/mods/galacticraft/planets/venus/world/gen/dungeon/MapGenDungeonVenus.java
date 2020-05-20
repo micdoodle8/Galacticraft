@@ -4,15 +4,15 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructureIO;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.StructureStart;
 
 import java.util.List;
 import java.util.Random;
 
-public class MapGenDungeonVenus extends MapGenStructure
+public class MapGenDungeonVenus extends Structure
 {
     private static boolean initialized;
     private DungeonConfigurationVenus configuration;
@@ -38,15 +38,15 @@ public class MapGenDungeonVenus extends MapGenStructure
     {
         if (!MapGenDungeonVenus.initialized)
         {
-            MapGenStructureIO.registerStructure(MapGenDungeonVenus.Start.class, "VenusDungeon");
-            MapGenStructureIO.registerStructureComponent(DungeonStartVenus.class, "VenusDungeonStart");
-            MapGenStructureIO.registerStructureComponent(CorridorVenus.class, "VenusDungeonCorridor");
-            MapGenStructureIO.registerStructureComponent(RoomEmptyVenus.class, "VenusDungeonEmptyRoom");
-            MapGenStructureIO.registerStructureComponent(RoomBossVenus.class, "VenusDungeonBossRoom");
-            MapGenStructureIO.registerStructureComponent(RoomTreasureVenus.class, "VenusDungeonTreasureRoom");
-            MapGenStructureIO.registerStructureComponent(RoomSpawnerVenus.class, "VenusDungeonSpawnerRoom");
-            MapGenStructureIO.registerStructureComponent(RoomChestVenus.class, "VenusDungeonChestRoom");
-            MapGenStructureIO.registerStructureComponent(RoomEntranceVenus.class, "VenusDungeonEntranceRoom");
+            StructureIO.registerStructure(MapGenDungeonVenus.Start.class, "VenusDungeon");
+            StructureIO.registerStructureComponent(DungeonStartVenus.class, "VenusDungeonStart");
+            StructureIO.registerStructureComponent(CorridorVenus.class, "VenusDungeonCorridor");
+            StructureIO.registerStructureComponent(RoomEmptyVenus.class, "VenusDungeonEmptyRoom");
+            StructureIO.registerStructureComponent(RoomBossVenus.class, "VenusDungeonBossRoom");
+            StructureIO.registerStructureComponent(RoomTreasureVenus.class, "VenusDungeonTreasureRoom");
+            StructureIO.registerStructureComponent(RoomSpawnerVenus.class, "VenusDungeonSpawnerRoom");
+            StructureIO.registerStructureComponent(RoomChestVenus.class, "VenusDungeonChestRoom");
+            StructureIO.registerStructureComponent(RoomEntranceVenus.class, "VenusDungeonEntranceRoom");
         }
 
         MapGenDungeonVenus.initialized = true;
@@ -93,12 +93,12 @@ public class MapGenDungeonVenus extends MapGenStructure
             this.configuration = configuration;
             DungeonStartVenus startPiece = new DungeonStartVenus(worldIn, configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
-            List<StructureComponent> list = startPiece.attachedComponents;
+            List<StructurePiece> list = startPiece.attachedComponents;
 
             while (!list.isEmpty())
             {
                 int i = rand.nextInt(list.size());
-                StructureComponent structurecomponent = list.remove(i);
+                StructurePiece structurecomponent = list.remove(i);
                 structurecomponent.buildComponent(startPiece, this.components, rand);
             }
 

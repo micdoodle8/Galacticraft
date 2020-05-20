@@ -2,25 +2,25 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 
 public class DungeonConfigurationVenus extends DungeonConfiguration
 {
-    private IBlockState brickBlockFloor;
+    private BlockState brickBlockFloor;
 
     public DungeonConfigurationVenus()
     {
     }
 
-    public DungeonConfigurationVenus(IBlockState brickBlock, IBlockState brickBlockFloor, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
+    public DungeonConfigurationVenus(BlockState brickBlock, BlockState brickBlockFloor, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
     {
         super(brickBlock, yPosition, hallwayLengthMin, hallwayLengthMax, hallwayHeight, roomHeight, bossRoom, treasureRoom);
         this.brickBlockFloor = brickBlockFloor;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+    public CompoundNBT writeToNBT(CompoundNBT tagCompound)
     {
         tagCompound.setString("brickBlock", Block.REGISTRY.getNameForObject(this.brickBlockFloor.getBlock()).toString());
 
@@ -28,7 +28,7 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound)
+    public void readFromNBT(CompoundNBT tagCompound)
     {
         try
         {
@@ -43,7 +43,7 @@ public class DungeonConfigurationVenus extends DungeonConfiguration
         super.readFromNBT(tagCompound);
     }
 
-    public IBlockState getBrickBlockFloor()
+    public BlockState getBrickBlockFloor()
     {
         return brickBlockFloor;
     }

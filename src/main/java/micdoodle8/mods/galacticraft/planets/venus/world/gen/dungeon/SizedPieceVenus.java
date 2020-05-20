@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 public abstract class SizedPieceVenus extends DirectionalPieceVenus
 {
@@ -14,7 +14,7 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     {
     }
 
-    public SizedPieceVenus(DungeonConfigurationVenus configuration, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
+    public SizedPieceVenus(DungeonConfigurationVenus configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
         super(configuration, direction);
         this.sizeX = sizeX;
@@ -23,7 +23,7 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -33,7 +33,7 @@ public abstract class SizedPieceVenus extends DirectionalPieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         super.readStructureFromNBT(tagCompound, manager);
 

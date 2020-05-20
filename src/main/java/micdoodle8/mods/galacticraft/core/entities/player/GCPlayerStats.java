@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 
 import java.lang.ref.WeakReference;
@@ -23,15 +23,15 @@ public abstract class GCPlayerStats
         return entity.getCapability(GCCapabilities.GC_STATS_CAPABILITY, null);
     }
 
-    public abstract void saveNBTData(NBTTagCompound nbt);
+    public abstract void saveNBTData(CompoundNBT nbt);
 
-    public abstract void loadNBTData(NBTTagCompound nbt);
+    public abstract void loadNBTData(CompoundNBT nbt);
 
     public abstract void copyFrom(GCPlayerStats oldData, boolean keepInv);
 
-    public abstract WeakReference<EntityPlayerMP> getPlayer();
+    public abstract WeakReference<ServerPlayerEntity> getPlayer();
 
-    public abstract void setPlayer(WeakReference<EntityPlayerMP> player);
+    public abstract void setPlayer(WeakReference<ServerPlayerEntity> player);
 
     public abstract InventoryExtended getExtendedInventory();
 
@@ -319,7 +319,7 @@ public abstract class GCPlayerStats
 
     public abstract int getGlassColor3();
 
-    public abstract IBlockState[] getPanelLightingBases();
+    public abstract BlockState[] getPanelLightingBases();
     
     public abstract int getPanelLightingColor();
 

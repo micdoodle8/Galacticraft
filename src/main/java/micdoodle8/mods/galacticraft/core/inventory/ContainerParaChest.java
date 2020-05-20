@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerParaChest extends Container
@@ -11,7 +11,7 @@ public class ContainerParaChest extends Container
     private IInventory parachestInventory;
     public int numRows;
 
-    public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory, EntityPlayer player)
+    public ContainerParaChest(IInventory par1IInventory, IInventory par2IInventory, PlayerEntity player)
     {
         this.parachestInventory = par2IInventory;
         this.numRows = (par2IInventory.getSizeInventory() - 3) / 9;
@@ -47,13 +47,13 @@ public class ContainerParaChest extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.parachestInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(par2);
@@ -93,7 +93,7 @@ public class ContainerParaChest extends Container
      * Callback for when the crafting gui is closed.
      */
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
         this.parachestInventory.closeInventory(par1EntityPlayer);

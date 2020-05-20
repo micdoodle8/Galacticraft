@@ -6,17 +6,16 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Potions;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtils;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -36,14 +35,14 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -55,10 +54,10 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity player, Hand hand)
     {
         ItemStack itemStack = player.getHeldItem(hand);
-        if (player instanceof EntityPlayerMP)
+        if (player instanceof ServerPlayerEntity)
         {
             GCPlayerStats stats = GCPlayerStats.get(player);
             
@@ -76,9 +75,9 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
             }
 
             itemStack.setCount(0);
-            return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+            return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
         }
-        return new ActionResult<>(EnumActionResult.PASS, itemStack);
+        return new ActionResult<>(ActionResultType.PASS, itemStack);
     }
     
     public static ItemStack getContents(int slot)
@@ -91,8 +90,8 @@ public class ItemEmergencyKit extends ItemDesc implements ISortableItem
         case 3: return new ItemStack(GCItems.oxTankLight);
         case 4: return new ItemStack(GCItems.steelPickaxe);
         case 5: return new ItemStack(GCItems.foodItem, 1, 3);
-        case 6: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HEALING);
-        case 7: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.LONG_NIGHT_VISION);
+        case 6: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), Potions.HEALING);
+        case 7: return PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), Potions.LONG_NIGHT_VISION);
         case 8: return new ItemStack(GCItems.parachute, 1, 13);
         default: return null;
         }

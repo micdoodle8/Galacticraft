@@ -25,18 +25,18 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockLaserTurret;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.passive.EntityTameable;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
@@ -231,9 +231,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                 else
                 {
                     boolean shouldTarget = !this.blacklistMode;
-                    if (e instanceof EntityPlayer)
+                    if (e instanceof PlayerEntity)
                     {
-                        EntityPlayer toTargetPlayer = (EntityPlayer) e;
+                        PlayerEntity toTargetPlayer = (PlayerEntity) e;
                         if (this.alwaysIgnoreSpaceRace && (toTargetPlayer.getUniqueID().equals(this.ownerUUID) || this.ownerSpaceRace != null && this.ownerSpaceRace.getPlayerNames().contains(toTargetPlayer.getName())))
                         {
                             shouldTarget = false;
@@ -249,9 +249,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                             }
                         }
                     }
-                    else if(e instanceof EntityTameable && ((EntityTameable) e).getOwnerId() != null)
+                    else if(e instanceof TameableEntity && ((TameableEntity) e).getOwnerId() != null)
                     {
-                        if ((((EntityTameable) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((EntityTameable) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((EntityTameable) e).getOwner().getName()))) {
+                        if ((((TameableEntity) e).getOwnerId().equals(this.ownerUUID)) || (this.alwaysIgnoreSpaceRace && this.ownerSpaceRace != null && ((TameableEntity) e).getOwner() != null && this.ownerSpaceRace.getPlayerNames().contains(((TameableEntity) e).getOwner().getName()))) {
                             shouldTarget = false;
                         }
                     }
@@ -278,9 +278,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                         // Make sure target is within range and not directly below turret:
                         if ((vec.getMagnitudeSquared() < RANGE * RANGE || (targetMeteors && e instanceof EntityMeteor && vecNoHeight.getMagnitudeSquared() < METEOR_RANGE * METEOR_RANGE)) && Math.asin(vec.clone().normalize().y) > -Math.PI / 3.0)
                         {
-                            if (e instanceof EntityLivingBase)
+                            if (e instanceof LivingEntity)
                             {
-                                list.add(new EntityEntrySortable((EntityLivingBase)e, vec.getMagnitude()));
+                                list.add(new EntityEntrySortable((LivingEntity)e, vec.getMagnitude()));
                             }
                             else if (targetMeteors && e instanceof EntityMeteor)
                             {
@@ -363,7 +363,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                 {
                     for (Entity e : world.loadedEntityList)
                     {
-                        if (e instanceof EntityLivingBase || e instanceof ILaserTrackableFast)
+                        if (e instanceof LivingEntity || e instanceof ILaserTrackableFast)
                         {
                             this.trackEntity(e);
                         }
@@ -393,9 +393,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                 Entity toTarget = this.world.getEntityByID(this.targettedEntity);
                 if (toTarget != null)
                 {
-                    if (toTarget instanceof EntityLivingBase)
+                    if (toTarget instanceof LivingEntity)
                     {
-                        EntityLivingBase entityLiving = (EntityLivingBase) toTarget;
+                        LivingEntity entityLiving = (LivingEntity) toTarget;
                         entityLiving.attackEntityFrom(DamageSourceGC.laserTurret, 1.5F);
                     }
                     else if (toTarget instanceof EntityMeteor)
@@ -501,22 +501,22 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
 
-        NBTTagList playersTag = nbt.getTagList("PlayerList", 10);
+        ListNBT playersTag = nbt.getTagList("PlayerList", 10);
         for (int i = 0; i < playersTag.tagCount(); i++)
         {
-            NBTTagCompound tagAt = playersTag.getCompoundTagAt(i);
+            CompoundNBT tagAt = playersTag.getCompoundTagAt(i);
             this.players.add(tagAt.getString("PlayerName"));
         }
 
-        NBTTagList entitiesTag = nbt.getTagList("EntitiesList", 10);
+        ListNBT entitiesTag = nbt.getTagList("EntitiesList", 10);
         for (int i = 0; i < entitiesTag.tagCount(); i++)
         {
-            NBTTagCompound tagAt = entitiesTag.getCompoundTagAt(i);
+            CompoundNBT tagAt = entitiesTag.getCompoundTagAt(i);
             this.entities.add(new ResourceLocation(tagAt.getString("EntityRes")));
         }
 
@@ -535,25 +535,25 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 
-        NBTTagList playersTag = new NBTTagList();
+        ListNBT playersTag = new ListNBT();
         for (String player : this.players)
         {
-            NBTTagCompound tagComp = new NBTTagCompound();
+            CompoundNBT tagComp = new CompoundNBT();
             tagComp.setString("PlayerName", player);
             playersTag.appendTag(tagComp);
         }
 
         nbt.setTag("PlayerList", playersTag);
 
-        NBTTagList entitiesTag = new NBTTagList();
+        ListNBT entitiesTag = new ListNBT();
         for (ResourceLocation entity : this.entities)
         {
-            NBTTagCompound tagComp = new NBTTagCompound();
+            CompoundNBT tagComp = new CompoundNBT();
             tagComp.setString("EntityRes", entity.toString());
             entitiesTag.appendTag(tagComp);
         }
@@ -598,13 +598,13 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         return slotID == 0;
     }
@@ -616,7 +616,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
@@ -634,18 +634,18 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = world.getBlockState(getPos());
+        BlockState state = world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockLaserTurret)
         {
             return state.getValue(BlockLaserTurret.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -654,9 +654,9 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();
@@ -668,7 +668,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         this.ownerUUID = uniqueID;
         if (uniqueID != null)
         {
-            EntityPlayer player = this.world.getPlayerEntityByUUID(uniqueID);
+            PlayerEntity player = this.world.getPlayerEntityByUUID(uniqueID);
             if (player != null)
             {
                 this.ownerName = player.getName();
@@ -689,7 +689,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean onActivated(EntityPlayer entityPlayer)
+    public boolean onActivated(PlayerEntity entityPlayer)
     {
         entityPlayer.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -712,7 +712,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.world.getBlockState(pos);
+            BlockState stateAt = this.world.getBlockState(pos);
 
             if (stateAt.getBlock() == GCBlocks.fakeBlock)
             {
@@ -822,21 +822,21 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
 
     private class EntityEntrySortable
     {
-        private EntityLivingBase entity;
+        private LivingEntity entity;
         private double distance;
 
-        public EntityEntrySortable(EntityLivingBase entity, double distance)
+        public EntityEntrySortable(LivingEntity entity, double distance)
         {
             this.entity = entity;
             this.distance = distance;
         }
 
-        public EntityLivingBase getEntity()
+        public LivingEntity getEntity()
         {
             return entity;
         }
 
-        public void setEntity(EntityLivingBase entity)
+        public void setEntity(LivingEntity entity)
         {
             this.entity = entity;
         }

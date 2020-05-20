@@ -8,8 +8,8 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IElectrical;
 import micdoodle8.mods.galacticraft.core.tile.ReceiverMode;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAdvanced;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class EnergyStorageTile extends TileEntityAdvanced implements IEnergyHandlerGC, IElectrical
@@ -28,7 +28,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
 
         super.readFromNBT(nbt);
@@ -36,7 +36,7 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         this.storage.writeToNBT(nbt);
@@ -44,12 +44,12 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
     
-    public abstract ReceiverMode getModeFromDirection(EnumFacing direction);
+    public abstract ReceiverMode getModeFromDirection(Direction direction);
 
     @Override
     public float receiveEnergyGC(EnergySource from, float amount, boolean simulate)
@@ -97,33 +97,33 @@ public abstract class EnergyStorageTile extends TileEntityAdvanced implements IE
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         return false;
     }
 
     //Five methods for compatibility with basic electricity
     @Override
-    public float receiveElectricity(EnumFacing from, float receive, int tier, boolean doReceive)
+    public float receiveElectricity(Direction from, float receive, int tier, boolean doReceive)
     {
         this.poweredByTierGC = (tier < 6) ? tier : 6;
         return this.storage.receiveEnergyGC(receive, !doReceive);
     }
 
     @Override
-    public float provideElectricity(EnumFacing from, float request, boolean doProvide)
+    public float provideElectricity(Direction from, float request, boolean doProvide)
     {
         return this.storage.extractEnergyGC(request, !doProvide);
     }
 
     @Override
-    public float getRequest(EnumFacing direction)
+    public float getRequest(Direction direction)
     {
         return Math.min(this.storage.getCapacityGC() - this.storage.getEnergyStoredGC(), this.storage.getMaxReceive());
     }
 
     @Override
-    public float getProvide(EnumFacing direction)
+    public float getProvide(Direction direction)
     {
         return 0;
     }

@@ -4,7 +4,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
 import micdoodle8.mods.galacticraft.core.world.gen.ChunkProviderOrbit;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
 
 /***
  * Properties of a WorldProviderSpaceStation
@@ -42,7 +42,7 @@ public abstract class WorldProviderSpaceStation extends WorldProviderSpace
     }
 
     @Override
-    public Class<? extends IChunkGenerator> getChunkProviderClass()
+    public Class<? extends ChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderOrbit.class;
     }

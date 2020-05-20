@@ -10,24 +10,23 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityMulti;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -49,26 +48,26 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+    public ActionResultType onItemUseFirst(PlayerEntity playerIn, World worldIn, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
     {
         TileEntity tile = null;
 
         if (playerIn == null)
         {
-            return EnumActionResult.PASS;
+            return ActionResultType.PASS;
         }
         else
         {
@@ -94,41 +93,41 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 //Don't open GUI on client
                 if (worldIn.isRemote)
                 {
-                    return EnumActionResult.FAIL;
+                    return ActionResultType.FAIL;
                 }
                 
                 if (worldIn.provider instanceof WorldProviderSpaceStation)
                 {
-                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
-                    return EnumActionResult.FAIL;
+                    playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
+                    return ActionResultType.FAIL;
                 }
 
                 if (((TileEntityMinerBase) tile).getLinkedMiner() != null)
                 {
-                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner.fail")));
-                    return EnumActionResult.FAIL;
+                    playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner.fail")));
+                    return ActionResultType.FAIL;
                 }
 
                 //Gives a chance for any loaded Astro Miner to link itself
                 if (((TileEntityMinerBase) tile).ticks < 15)
                 {
-                    return EnumActionResult.FAIL;
+                    return ActionResultType.FAIL;
                 }
 
-                EntityPlayerMP playerMP = (EntityPlayerMP) playerIn;
+                ServerPlayerEntity playerMP = (ServerPlayerEntity) playerIn;
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
 
                 int astroCount = stats.getAstroMinerCount();
                 if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
                 {
-                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
-                    return EnumActionResult.FAIL;
+                    playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
+                    return ActionResultType.FAIL;
                 }
 
                 if (!((TileEntityMinerBase) tile).spawnMiner(playerMP))
                 {
-                    playerIn.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
-                    return EnumActionResult.FAIL;
+                    playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner1.fail") + " " + GCCoreUtil.translate(EntityAstroMiner.blockingBlock.toString())));
+                    return ActionResultType.FAIL;
                 }
 
                 if (!playerIn.capabilities.isCreativeMode)
@@ -136,10 +135,10 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                     stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
                     playerIn.getHeldItem(hand).shrink(1);
                 }
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
         }
-        return EnumActionResult.PASS;
+        return ActionResultType.PASS;
     }
 
     @Override
@@ -150,19 +149,19 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    public boolean shouldHoldLeftHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    public boolean shouldHoldRightHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldCrouch(EntityPlayer player)
+    public boolean shouldCrouch(PlayerEntity player)
     {
         return true;
     }

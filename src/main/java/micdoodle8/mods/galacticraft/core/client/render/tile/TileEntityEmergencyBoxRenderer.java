@@ -3,17 +3,16 @@ package micdoodle8.mods.galacticraft.core.client.render.tile;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEmergencyBox;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityEmergencyBoxRenderer extends TileEntitySpecialRenderer<TileEntityEmergencyBox>
+public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntityEmergencyBox>
 {
     private static final float MASKSCALE = 3F;
     
@@ -155,7 +154,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntitySpecialRenderer<Ti
     @Override
     public void render(TileEntityEmergencyBox tileEntity, double d, double d1, double d2, float f, int par9, float alpha)
     {
-        IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (!(b.getBlock() instanceof BlockEmergencyBox)) return;
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);

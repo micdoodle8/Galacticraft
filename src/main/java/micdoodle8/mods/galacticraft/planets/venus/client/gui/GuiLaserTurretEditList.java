@@ -10,9 +10,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.common.registry.EntityEntry;
@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextBox.ITextBoxCallback, GuiElementCheckbox.ICheckBoxCallback
+public class GuiLaserTurretEditList extends Screen implements GuiElementTextBox.ITextBoxCallback, GuiElementCheckbox.ICheckBoxCallback
 {
     private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/laser_turret_edit.png");
 
@@ -50,7 +50,7 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         switch (button.id)
         {
@@ -117,9 +117,9 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
             this.ySize = 144;
             this.xSize = 222;
             yTop = (this.height - this.ySize) / 2;
-            this.buttonList.add(new GuiButton(0, (this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name")));
-            this.buttonList.add(new GuiButton(1, (this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name")));
-            this.buttonList.add(new GuiButton(2, (this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name")));
+            this.buttonList.add(new Button(0, (this.width - this.xSize) / 2 + 4, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_player.name")));
+            this.buttonList.add(new Button(1, (this.width - this.xSize) / 2 + 66, yTop + 5, 62, 20, GCCoreUtil.translate("gui.button.add_entity.name")));
+            this.buttonList.add(new Button(2, (this.width - this.xSize) / 2 + 128, yTop + 5, 90, 20, GCCoreUtil.translate("gui.button.remove_selected.name")));
             this.entityListElement = new GuiElementGradientList((this.width - this.xSize) / 2 + 4, yTop + 26, xSize - 8, ySize - 45);
             List<String> alphabeticalList = Lists.newArrayList();
             alphabeticalList.addAll(laserTurret.getPlayers());
@@ -152,7 +152,7 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
             this.name = new GuiElementTextBox(3, this, (this.width - this.xSize) / 2 + 4, yTop + 16, 140, 20, "", false, 64, false);
             this.name.resetOnClick = false;
             this.addButton(this.name);
-            this.buttonList.add(new GuiButton(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name")));
+            this.buttonList.add(new Button(4, (this.width - this.xSize) / 2 + this.xSize / 2 - 31, yTop + 40, 62, 20, GCCoreUtil.translate(laserTurret.blacklistMode ? "gui.button.add_blacklist.name" : "gui.button.add_whitelist.name")));
             break;
         }
     }
@@ -279,7 +279,7 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return player.getUniqueID().equals(this.laserTurret.getOwnerUUID());
     }
@@ -328,7 +328,7 @@ public class GuiLaserTurretEditList extends GuiScreen implements GuiElementTextB
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return player.getUniqueID().equals(this.laserTurret.getOwnerUUID());
     }

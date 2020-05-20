@@ -5,12 +5,12 @@ import java.util.List;
 
 import micdoodle8.mods.galacticraft.api.tile.ITileClientUpdates;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties.MachineSidesModel;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -102,12 +102,12 @@ public interface IMachineSides extends ITileClientUpdates
      * This CANNOT be set: use a wrench to change the block's facing to change it
      * (If player wants to change the front then rotate the block's facing and all other sides)
      */
-    public EnumFacing getFront();
+    public Direction getFront();
 
     /**
      * Used internally by tileEntity logic
      */
-    public default EnumFacing getElectricInputDirection()
+    public default Direction getElectricInputDirection()
     {
         return null;
     }
@@ -115,7 +115,7 @@ public interface IMachineSides extends ITileClientUpdates
     /**
      * Used internally by tileEntity logic
      */
-    public default EnumFacing getElectricOutputDirection()
+    public default Direction getElectricOutputDirection()
     {
         return null;
     }
@@ -123,7 +123,7 @@ public interface IMachineSides extends ITileClientUpdates
     /**
      * Used internally by tileEntity logic
      */
-    public default EnumFacing getPipeInputDirection()
+    public default Direction getPipeInputDirection()
     {
         return null;
     }
@@ -131,7 +131,7 @@ public interface IMachineSides extends ITileClientUpdates
     /**
      * Used internally by tileEntity logic
      */
-    public default EnumFacing getPipeOutputDirection()
+    public default Direction getPipeOutputDirection()
     {
         return null;
     }
@@ -139,7 +139,7 @@ public interface IMachineSides extends ITileClientUpdates
     /**
      * Used internally by tileEntity logic
      */
-    public default EnumFacing getCustomDirection()
+    public default Direction getCustomDirection()
     {
         return null;
     }
@@ -370,7 +370,7 @@ public interface IMachineSides extends ITileClientUpdates
      * 
      * @return   A blockstate with the property added
      */
-    public static IBlockState addPropertyForTile(IBlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum<MachineSidesModel> key)
+    public static BlockState addPropertyForTile(BlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum<MachineSidesModel> key)
     {
         if (tile instanceof IMachineSides)
         {
@@ -487,12 +487,12 @@ public interface IMachineSides extends ITileClientUpdates
      */
     public void setupMachineSides(int length);
     
-    public default void addMachineSidesToNBT(NBTTagCompound par1nbtTagCompound)
+    public default void addMachineSidesToNBT(CompoundNBT par1nbtTagCompound)
     {
-        NBTTagList tagList = new NBTTagList();
+        ListNBT tagList = new ListNBT();
         for(MachineSidePack msp : this.getAllMachineSides())
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             msp.writeToNBT(tag);
             tagList.appendTag(tag);
         }
@@ -500,9 +500,9 @@ public interface IMachineSides extends ITileClientUpdates
     }
 
 
-    public default void readMachineSidesFromNBT(NBTTagCompound par1nbtTagCompound)
+    public default void readMachineSidesFromNBT(CompoundNBT par1nbtTagCompound)
     {
-        NBTTagList tagList = par1nbtTagCompound.getTagList("macsides", 10);
+        ListNBT tagList = par1nbtTagCompound.getTagList("macsides", 10);
         MachineSidePack[] msps = this.getAllMachineSides();
         if (tagList.tagCount() == msps.length)
         {
@@ -553,13 +553,13 @@ public interface IMachineSides extends ITileClientUpdates
             this.set(defaultFace);
         }
         
-        public void writeToNBT(NBTTagCompound tag)
+        public void writeToNBT(CompoundNBT tag)
         {
             tag.setInteger("ts", this.theSide.ordinal());
             tag.setInteger("cf", this.currentFace.ordinal());
         }
 
-        public void readFromNBT(NBTTagCompound tag)
+        public void readFromNBT(CompoundNBT tag)
         {
             int ts = -1;
             int cf = -1;

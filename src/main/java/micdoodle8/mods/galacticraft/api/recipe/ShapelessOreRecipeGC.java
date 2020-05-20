@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.block.Block;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -69,11 +69,11 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
     public ItemStack getRecipeOutput(){ return output; }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting var1){ return output.copy(); }
+    public ItemStack getCraftingResult(CraftingInventory var1){ return output.copy(); }
 
     @SuppressWarnings("unchecked")
     @Override
-    public boolean matches(InventoryCrafting var1, World world)
+    public boolean matches(CraftingInventory var1, World world)
     {
         List<Object> required = new LinkedList<>(input);
 
@@ -177,7 +177,7 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) //getRecipeLeftovers
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) //getRecipeLeftovers
     {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);
     }

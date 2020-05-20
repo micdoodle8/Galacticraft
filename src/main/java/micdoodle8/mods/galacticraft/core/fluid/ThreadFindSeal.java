@@ -12,11 +12,11 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.ScheduledBlockChange;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -82,7 +82,7 @@ public class ThreadFindSeal
         {
             if (checkCount > 0)
             {
-                IBlockState headState = this.world.getBlockState(head);
+                BlockState headState = this.world.getBlockState(head);
                 if (!(headState.getBlock().isAir(headState, world, head)))
                 {
                     this.canBlockPassAirCheck(headState.getBlock(), this.head, 1);
@@ -144,7 +144,7 @@ public class ThreadFindSeal
         long time1 = System.nanoTime();
 
         this.sealed = true;
-        TileEntity tile = this.head.getTileEntityOnSide(world, EnumFacing.DOWN);
+        TileEntity tile = this.head.getTileEntityOnSide(world, Direction.DOWN);
         this.foundAmbientThermal = tile instanceof TileEntityOxygenSealer && ((TileEntityOxygenSealer) tile).thermalControlEnabled();
         this.checkedAdd(this.head);
         this.currentLayer = new LinkedList<BlockVec3>();
@@ -158,7 +158,7 @@ public class ThreadFindSeal
             this.currentLayer.add(this.head);
             if (this.head.x < -29990000 || this.head.z < -29990000 || this.head.x >= 29990000 || this.head.z >= 29990000)
             {
-                IBlockState state = this.head.getBlockState_noChunkLoad(this.world);
+                BlockState state = this.head.getBlockState_noChunkLoad(this.world);
                 if (Blocks.AIR == state.getBlock())
                 {
                     this.airToReplace.add(this.head.clone());
@@ -171,7 +171,7 @@ public class ThreadFindSeal
             }
             else
             {
-                IBlockState headState = this.head.getBlockStateSafe_noChunkLoad(this.world);
+                BlockState headState = this.head.getBlockStateSafe_noChunkLoad(this.world);
                 if (Blocks.AIR == headState.getBlock())
                 {
                     this.airToReplace.add(this.head.clone());
@@ -469,7 +469,7 @@ public class ThreadFindSeal
                         if (!checkedContains(vec, side))
                         {
                             BlockVec3 sideVec = vec.newVecSide(side);
-                            IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
+                            BlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
                             Block block = state == null ? null : state.getBlock();
 
                             if (block == breatheableAirID)
@@ -573,7 +573,7 @@ public class ThreadFindSeal
                         if (!checkedContains(vec, side))
                         {
                             BlockVec3 sideVec = vec.newVecSide(side);
-                            IBlockState state = sideVec.getBlockState_noChunkLoad(world);
+                            BlockState state = sideVec.getBlockState_noChunkLoad(world);
                             Block block = state == null ? null : state.getBlock();
 
                             if (block == breatheableAirID)
@@ -677,7 +677,7 @@ public class ThreadFindSeal
                             {
                                 this.checkCount--;
 
-                                IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
+                                BlockState state = sideVec.getBlockStateSafe_noChunkLoad(world);
                                 Block block = state == null ? null : state.getBlock();
                                 // The most likely case
                                 if (block == breatheableAirID)
@@ -743,7 +743,7 @@ public class ThreadFindSeal
                             // the if (this.isSealed) check here is unnecessary because of the returns
                             else
                             {
-                                IBlockState state = sideVec.getBlockStateSafe_noChunkLoad(this.world);
+                                BlockState state = sideVec.getBlockStateSafe_noChunkLoad(this.world);
                                 Block block = state == null ? null : state.getBlock();
                                 // id == null means the void or height y>255, both
                                 // of which are unsealed obviously
@@ -814,7 +814,7 @@ public class ThreadFindSeal
                             {
                                 this.checkCount--;
 
-                                IBlockState state = sideVec.getBlockState_noChunkLoad(world);
+                                BlockState state = sideVec.getBlockState_noChunkLoad(world);
                                 Block block = state == null ? null : state.getBlock();
                                 // The most likely case
                                 if (block == breatheableAirID)
@@ -880,7 +880,7 @@ public class ThreadFindSeal
                             // the if (this.isSealed) check here is unnecessary because of the returns
                             else
                             {
-                                IBlockState state = sideVec.getBlockState_noChunkLoad(this.world);
+                                BlockState state = sideVec.getBlockState_noChunkLoad(this.world);
                                 Block block = state == null ? null : state.getBlock();
                                 // id == null means the void or height y>255, both
                                 // of which are unsealed obviously
@@ -1072,7 +1072,7 @@ public class ThreadFindSeal
     {
         if (block instanceof IPartialSealableBlock)
         {
-            EnumFacing testSide = EnumFacing.getFront(side);
+            Direction testSide = Direction.getFront(side);
             IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
             BlockPos vecPos = new BlockPos(vec.x, vec.y, vec.z);
             if (blockPartial.isSealed(this.world, vecPos, testSide))
@@ -1086,7 +1086,7 @@ public class ThreadFindSeal
             }
 
             //Find the solid sides so they don't get iterated into, when doing the next layer
-            for (EnumFacing face : EnumFacing.VALUES)
+            for (Direction face : Direction.VALUES)
             {
                 if (face == testSide)
                 {
@@ -1103,22 +1103,22 @@ public class ThreadFindSeal
 
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
-        if (block instanceof BlockLeaves)
+        if (block instanceof LeavesBlock)
         {
             checkedAdd(vec);
             return true;
         }
 
-        IBlockState state = world.getBlockState(vec.toBlockPos());
+        BlockState state = world.getBlockState(vec.toBlockPos());
         if (block.isOpaqueCube(state))
         {
             checkedAdd(vec);
             //Gravel, wool and sponge are porous
-            return block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge;
+            return block instanceof GravelBlock || block.getMaterial(state) == Material.CLOTH || block instanceof SpongeBlock;
 
         }
 
-        if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
+        if (block instanceof GlassBlock || block instanceof StainedGlassBlock)
         {
             checkedAdd(vec);
             return false;
@@ -1143,7 +1143,7 @@ public class ThreadFindSeal
         }
 
         //Half slab seals on the top side or the bottom side according to its metadata
-        if (block instanceof BlockSlab)
+        if (block instanceof SlabBlock)
         {
             boolean isTopSlab = (vec.getBlockMetadata(this.world) & 8) == 8;
             //Looking down onto a top slab or looking up onto a bottom slab
@@ -1160,7 +1160,7 @@ public class ThreadFindSeal
         }
 
         //Farmland etc only seals on the solid underside
-        if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
+        if (block instanceof FarmlandBlock || block instanceof EnchantingTableBlock || block instanceof BlockLiquid)
         {
             if (side == 1)
             {
@@ -1174,12 +1174,12 @@ public class ThreadFindSeal
             return true;
         }
 
-        if (block instanceof BlockPistonBase)
+        if (block instanceof PistonBlock)
         {
-            BlockPistonBase piston = (BlockPistonBase) block;
-            if (state.getValue(BlockPistonBase.EXTENDED).booleanValue())
+            PistonBlock piston = (PistonBlock) block;
+            if (state.getValue(PistonBlock.EXTENDED).booleanValue())
             {
-                int facing = ((EnumFacing) state.getValue(BlockPistonBase.FACING)).getIndex();
+                int facing = ((Direction) state.getValue(PistonBlock.FACING)).getIndex();
                 if (side == facing)
                 {
                     this.checkCount--;
@@ -1196,7 +1196,7 @@ public class ThreadFindSeal
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        if (block.isSideSolid(state, this.world, vec.toBlockPos(), EnumFacing.getFront(side ^ 1)))
+        if (block.isSideSolid(state, this.world, vec.toBlockPos(), Direction.getFront(side ^ 1)))
         {
             //Solid on all sides
             if (block.getMaterial(state).blocksMovement() && block.isFullCube(state))
@@ -1224,7 +1224,7 @@ public class ThreadFindSeal
             {
                 continue;
             }
-            if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), EnumFacing.getFront(i)))
+            if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), Direction.getFront(i)))
             {
                 vec.setSideDone(i);
             }

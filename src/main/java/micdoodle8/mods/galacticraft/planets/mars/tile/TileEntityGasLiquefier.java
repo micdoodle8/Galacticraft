@@ -26,15 +26,15 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMarsT2;
 import micdoodle8.mods.miccore.Annotations;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -95,7 +95,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return true;
@@ -107,7 +107,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
@@ -185,7 +185,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
                     //Air -> Air tank
                     if (this.gasTankType == -1 || (this.gasTankType == TankGases.AIR.index && this.gasTank.getFluid().amount < this.gasTank.getCapacity()))
                     {
-                        IBlockState stateAbove = this.world.getBlockState(getPos().up());
+                        BlockState stateAbove = this.world.getBlockState(getPos().up());
                         if (stateAbove.getMaterial() == Material.AIR && stateAbove.getBlock() != GCBlocks.breatheableAir && stateAbove.getBlock() != GCBlocks.brightBreatheableAir)
                         {
                             FluidStack gcAtmosphere = FluidRegistry.getFluidStack(TankGases.AIR.gas, 4);
@@ -432,7 +432,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public int getAirProducts()
     {
-        WorldProvider WP = this.world.provider;
+        Dimension WP = this.world.provider;
         if (WP instanceof WorldProviderSpace)
         {
             int result = 0;
@@ -536,7 +536,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
@@ -557,23 +557,23 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
 
         if (this.gasTank.getFluid() != null)
         {
-            nbt.setTag("gasTank", this.gasTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.liquidTank.getFluid() != null)
         {
-            nbt.setTag("liquidTank", this.liquidTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
         }
         if (this.liquidTank2.getFluid() != null)
         {
-            nbt.setTag("liquidTank2", this.liquidTank2.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("liquidTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
         }
 
         return nbt;
@@ -588,14 +588,14 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
-        if (side == EnumFacing.DOWN)
+        if (side == Direction.DOWN)
         {
             return new int[] { 0, 1, 2, 3 };
         }
 
-        if (side == EnumFacing.UP)
+        if (side == Direction.UP)
         {
             return new int[] { 0 };
         }
@@ -604,7 +604,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -626,7 +626,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         switch (slotID)
         {
@@ -672,13 +672,13 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
-        return EnumFacing.DOWN;
+        return Direction.DOWN;
     }
 
     @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid)
+    public boolean canDrain(Direction from, Fluid fluid)
     {
         if (from == getGasInputDirection().getOpposite())
         {
@@ -695,7 +695,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
     {
         if (from == getGasInputDirection().getOpposite())
         {
@@ -718,7 +718,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
     {
         if (from == getGasInputDirection().getOpposite())
         {
@@ -735,7 +735,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public boolean canFill(EnumFacing from, Fluid fluid)
+    public boolean canFill(Direction from, Fluid fluid)
     {
         if (from.equals(this.getGasInputDirection()))
         {
@@ -747,7 +747,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -765,7 +765,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from)
+    public FluidTankInfo[] getTankInfo(Direction from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 
@@ -798,7 +798,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int receiveOxygen(EnumFacing from, int receive, boolean doReceive)
+    public int receiveOxygen(Direction from, int receive, boolean doReceive)
     {
         if (from == this.getGasInputDirection() && this.shouldPullOxygen())
         {
@@ -812,25 +812,25 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Override
-    public int provideOxygen(EnumFacing from, int request, boolean doProvide)
+    public int provideOxygen(Direction from, int request, boolean doProvide)
     {
         return 0;
     }
 
     @Override
-    public int getOxygenRequest(EnumFacing direction)
+    public int getOxygenRequest(Direction direction)
     {
         return this.receiveOxygen(direction, 1000000, false);
     }
 
     @Override
-    public int getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(Direction direction)
     {
         return 0;
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null)
         {
@@ -844,30 +844,30 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
         if (type == NetworkType.POWER)
         {
-            return direction == EnumFacing.DOWN;
+            return direction == Direction.DOWN;
         }
 
         return false;
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMarsT2)
         {
             return state.getValue(BlockMachineMarsT2.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
-    public EnumFacing getGasInputDirection()
+    public Direction getGasInputDirection()
     {
         return this.getFront().rotateY();
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
     {
         if (!stack.getGas().getName().equals("oxygen") || !this.shouldPullOxygen())
         {
@@ -882,37 +882,37 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(EnumFacing side, GasStack stack)
+    public int receiveGas(Direction side, GasStack stack)
     {
         return this.receiveGas(side, stack, true);
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
     {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(EnumFacing side, int amount)
+    public GasStack drawGas(Direction side, int amount)
     {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveGas(EnumFacing side, Gas type)
+    public boolean canReceiveGas(Direction side, Gas type)
     {
         return this.shouldPullOxygen() && type.getName().equals("oxygen") && side.equals(this.getGasInputDirection());
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canDrawGas(EnumFacing side, Gas type)
+    public boolean canDrawGas(Direction side, Gas type)
     {
         return false;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
-    public boolean canTubeConnect(EnumFacing side)
+    public boolean canTubeConnect(Direction side)
     {
         return side.equals(this.getGasInputDirection());
     }

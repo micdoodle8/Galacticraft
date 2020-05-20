@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -122,7 +122,7 @@ public class SkyProviderOverworld extends IRenderHandler
     private final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
     @Override
-    public void render(float partialTicks, WorldClient world, Minecraft mc)
+    public void render(float partialTicks, ClientWorld world, Minecraft mc)
     {
         if (!ClientProxyCore.overworldTextureRequestSent)
         {

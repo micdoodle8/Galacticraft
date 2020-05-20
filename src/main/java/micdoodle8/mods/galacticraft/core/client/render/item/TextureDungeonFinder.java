@@ -9,9 +9,9 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -50,7 +50,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
     /**
      * Updates the compass based on the given x,z coords and camera direction
      */
-    public void updateCompass(World worldIn, EntityPlayerSP player, double angle, boolean flag1, boolean flag2)
+    public void updateCompass(World worldIn, ClientPlayerEntity player, double angle, boolean flag1, boolean flag2)
     {
         if (!this.framesTextureData.isEmpty())
         {
@@ -109,7 +109,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
         }
     }
 
-    public void register(TextureMap map)
+    public void register(AtlasTexture map)
     {
         try
         {

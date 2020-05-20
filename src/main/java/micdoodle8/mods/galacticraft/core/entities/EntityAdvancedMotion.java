@@ -10,9 +10,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
@@ -151,7 +151,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         else
         {
             Entity e = var1.getTrueSource();
-            if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+            if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -162,7 +162,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
                 this.currentDamage = this.currentDamage + var2 * 10;
                 this.markVelocityChanged();
 
-                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
                 {
                     this.currentDamage = 100;
                 }

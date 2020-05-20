@@ -5,24 +5,24 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.item.EntityXPOrb;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.item.ExperienceOrbEntity;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.BossInfo;
-import net.minecraft.world.BossInfoServer;
+import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 import java.util.List;
 import java.util.Random;
 
-public abstract class EntityBossBase extends EntityMob implements IBoss
+public abstract class EntityBossBase extends MonsterEntity implements IBoss
 {
     protected TileEntityDungeonSpawner<?> spawner;
     public int deathTicks = 0;
@@ -30,7 +30,7 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
     public int entitiesWithin;
     public int entitiesWithinLast;
 
-    private final BossInfoServer bossInfo = (BossInfoServer)(new BossInfoServer(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS));
+    private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS));
 
     public EntityBossBase(World world)
     {
@@ -81,9 +81,9 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
                 while (i > 0)
                 {
-                    j = EntityXPOrb.getXPSplit(i);
+                    j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
         }
@@ -94,9 +94,9 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
             while (i > 0)
             {
-                j = EntityXPOrb.getXPSplit(i);
+                j = ExperienceOrbEntity.getXPSplit(i);
                 i -= j;
-                this.world.spawnEntity(new EntityXPOrb(this.world, this.posX, this.posY, this.posZ, j));
+                this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
             }
 
             TileEntityTreasureChest chest = null;
@@ -175,17 +175,17 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
 
         if (this.spawner != null)
         {
-            List<EntityPlayer> playersWithin = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.spawner.getRangeBounds());
+            List<PlayerEntity> playersWithin = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.spawner.getRangeBounds());
 
             this.entitiesWithin = playersWithin.size();
 
             if (this.entitiesWithin == 0 && this.entitiesWithinLast != 0)
             {
-                List<EntityPlayer> entitiesWithin2 = this.world.getEntitiesWithinAABB(EntityPlayer.class, this.spawner.getRangeBoundsPlus11());
+                List<PlayerEntity> entitiesWithin2 = this.world.getEntitiesWithinAABB(PlayerEntity.class, this.spawner.getRangeBoundsPlus11());
 
-                for (EntityPlayer p : entitiesWithin2)
+                for (PlayerEntity p : entitiesWithin2)
                 {
-                    p.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.skeleton_boss.message")));
+                    p.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
                 this.setDead();
@@ -220,14 +220,14 @@ public abstract class EntityBossBase extends EntityMob implements IBoss
     }
 
     @Override
-    public void addTrackingPlayer(EntityPlayerMP player)
+    public void addTrackingPlayer(ServerPlayerEntity player)
     {
         super.addTrackingPlayer(player);
         this.bossInfo.addPlayer(player);
     }
 
     @Override
-    public void removeTrackingPlayer(EntityPlayerMP player)
+    public void removeTrackingPlayer(ServerPlayerEntity player)
     {
         super.removeTrackingPlayer(player);
         this.bossInfo.removePlayer(player);

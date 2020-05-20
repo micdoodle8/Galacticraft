@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class WorldGenSpaceStation extends WorldGenerator
+public class WorldGenSpaceStation extends Feature
 {
     @Override
     public boolean generate(World world, Random rand, BlockPos pos)

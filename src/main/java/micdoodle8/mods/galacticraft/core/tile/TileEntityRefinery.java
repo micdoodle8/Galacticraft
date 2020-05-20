@@ -11,11 +11,11 @@ import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
@@ -134,7 +134,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
@@ -160,19 +160,19 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
 
         if (this.oilTank.getFluid() != null)
         {
-            nbt.setTag("oilTank", this.oilTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("oilTank", this.oilTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
         return nbt;
     }
@@ -186,13 +186,13 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0, 1, 2 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (!itemstack.isEmpty() && this.isItemValidForSlot(slotID, itemstack))
         {
@@ -212,7 +212,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (!itemstack.isEmpty() && this.isItemValidForSlot(slotID, itemstack))
         {
@@ -253,34 +253,34 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
-        return EnumFacing.UP;
+        return Direction.UP;
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockRefinery)
         {
             return state.getValue(BlockRefinery.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
-    private EnumFacing getOilPipe()
+    private Direction getOilPipe()
     {
         return getFront().rotateY();
     }
     
-    private EnumFacing getFuelPipe()
+    private Direction getFuelPipe()
     {
         return getFront().rotateYCCW();
     }
     
     @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid)
+    public boolean canDrain(Direction from, Fluid fluid)
     {
         if (from == getFuelPipe())
         {
@@ -291,7 +291,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
     {
         if (from == getFuelPipe() && resource != null)
         {
@@ -302,7 +302,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
     {
         if (from == getFuelPipe())
         {
@@ -313,7 +313,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean canFill(EnumFacing from, Fluid fluid)
+    public boolean canFill(Direction from, Fluid fluid)
     {
         if (from == getOilPipe())
         {
@@ -324,7 +324,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -349,7 +349,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from)
+    public FluidTankInfo[] getTankInfo(Direction from)
     {
         FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 
@@ -366,14 +366,14 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, @Nullable Direction facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
@@ -383,7 +383,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null)
         {
@@ -395,7 +395,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         }
         if (type == NetworkType.FLUID)
         {
-            EnumFacing pipeSide = getFuelPipe();
+            Direction pipeSide = getFuelPipe();
             return direction == pipeSide || direction == pipeSide.getOpposite();
         }
         return false;

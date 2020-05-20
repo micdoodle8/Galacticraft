@@ -8,16 +8,18 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.ChestContainer;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,7 +59,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.locked = nbt.getBoolean("isLocked");
@@ -67,7 +69,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("isLocked", this.locked);
@@ -79,9 +81,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override
@@ -112,18 +114,18 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         {
             this.numPlayersUsing = 0;
             f = 5.0F;
-            List list = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
+            List list = this.world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) ((float) i - f), (double) ((float) j - f), (double) ((float) k - f), (double) ((float) (i + 1) + f), (double) ((float) (j + 1) + f), (double) ((float) (k + 1) + f)));
             Iterator iterator = list.iterator();
 
             while (iterator.hasNext())
             {
-                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+                PlayerEntity entityplayer = (PlayerEntity) iterator.next();
 
-                if (entityplayer.openContainer instanceof ContainerChest)
+                if (entityplayer.openContainer instanceof ChestContainer)
                 {
-                    IInventory iinventory = ((ContainerChest) entityplayer.openContainer).getLowerChestInventory();
+                    IInventory iinventory = ((ChestContainer) entityplayer.openContainer).getLowerChestInventory();
 
-                    if (iinventory == this || iinventory instanceof InventoryLargeChest && ((InventoryLargeChest) iinventory).isPartOfLargeChest(this))
+                    if (iinventory == this || iinventory instanceof DoubleSidedInventory && ((DoubleSidedInventory) iinventory).isPartOfLargeChest(this))
                     {
                         ++this.numPlayersUsing;
                     }
@@ -195,7 +197,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
         if (!player.isSpectator())
         {
@@ -212,7 +214,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
         if (!player.isSpectator())
         {
@@ -247,9 +249,9 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return "minecraft:chest";
     }
 
-    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn)
+    public Container createContainer(PlayerInventory playerInventory, PlayerEntity playerIn)
     {
-        return new ContainerChest(playerInventory, this, playerIn);
+        return new ChestContainer(playerInventory, this, playerIn);
     }
 
     @Override
@@ -294,7 +296,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public boolean onValidKeyActivated(EntityPlayer player, ItemStack key, EnumFacing face)
+    public boolean onValidKeyActivated(PlayerEntity player, ItemStack key, Direction face)
     {
         if (this.locked)
         {
@@ -320,7 +322,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public boolean onActivatedWithoutKey(EntityPlayer player, EnumFacing face)
+    public boolean onActivatedWithoutKey(PlayerEntity player, Direction face)
     {
         if (this.locked)
         {
@@ -369,7 +371,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         return chest;
     }
 
-    protected boolean checkLootAndRead(NBTTagCompound compound)
+    protected boolean checkLootAndRead(CompoundNBT compound)
     {
         if (compound.hasKey("LootTable", 8))
         {
@@ -383,7 +385,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
-    protected boolean checkLootAndWrite(NBTTagCompound compound)
+    protected boolean checkLootAndWrite(CompoundNBT compound)
     {
         if (this.lootTable != null)
         {
@@ -402,7 +404,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
         }
     }
 
-    public void fillWithLoot(EntityPlayer player)
+    public void fillWithLoot(PlayerEntity player)
     {
         if (this.lootTable != null)
         {
@@ -419,7 +421,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
                 random = new Random(this.lootTableSeed);
             }
 
-            LootContext.Builder builder = new LootContext.Builder((WorldServer)this.world);
+            LootContext.Builder builder = new LootContext.Builder((ServerWorld)this.world);
 
             if (player != null)
             {
@@ -460,19 +462,19 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction)
+    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction)
     {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return false;
     }

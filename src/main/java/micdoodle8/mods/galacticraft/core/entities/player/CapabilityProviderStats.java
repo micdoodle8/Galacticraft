@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 
 import java.lang.ref.WeakReference;
 
-public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCompound>
+public class CapabilityProviderStats implements ICapabilitySerializable<CompoundNBT>
 {
-    private EntityPlayerMP owner;
+    private ServerPlayerEntity owner;
     private GCPlayerStats statsCapability;
 
-    public CapabilityProviderStats(EntityPlayerMP owner)
+    public CapabilityProviderStats(ServerPlayerEntity owner)
     {
         this.owner = owner;
         this.statsCapability = GCCapabilities.GC_STATS_CAPABILITY.getDefaultInstance();
@@ -21,13 +21,13 @@ public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCo
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, Direction facing)
     {
         return capability == GCCapabilities.GC_STATS_CAPABILITY;
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, Direction facing)
     {
         if (GCCapabilities.GC_STATS_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CAPABILITY)
         {
@@ -38,15 +38,15 @@ public class CapabilityProviderStats implements ICapabilitySerializable<NBTTagCo
     }
 
     @Override
-    public NBTTagCompound serializeNBT()
+    public CompoundNBT serializeNBT()
     {
-        NBTTagCompound nbt = new NBTTagCompound();
+        CompoundNBT nbt = new CompoundNBT();
         statsCapability.saveNBTData(nbt);
         return nbt;
     }
 
     @Override
-    public void deserializeNBT(NBTTagCompound nbt)
+    public void deserializeNBT(CompoundNBT nbt)
     {
         statsCapability.loadNBTData(nbt);
     }

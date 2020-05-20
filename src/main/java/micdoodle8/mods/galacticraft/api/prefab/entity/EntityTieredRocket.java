@@ -19,15 +19,15 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.ServerWorld;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -188,9 +188,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 if (this.preGenIterator.hasNext())
                 {
                     MinecraftServer mcserver;
-                    if (this.world instanceof WorldServer)
+                    if (this.world instanceof ServerWorld)
                     {
-                        mcserver = ((WorldServer) this.world).getMinecraftServer();
+                        mcserver = ((ServerWorld) this.world).getMinecraftServer();
 	                	BlockVec3 coords = this.preGenIterator.next();
 	                    World w = mcserver.getWorld(coords.y);
                         if (w != null)
@@ -298,8 +298,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 if (this.targetDimension != this.world.provider.getDimension())
                 {
-                    WorldProvider targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);               
-                    if (targetDim != null && targetDim.world instanceof WorldServer)
+                    Dimension targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
+                    if (targetDim != null && targetDim.world instanceof ServerWorld)
                     {
                     	boolean dimensionAllowed = this.targetDimension == ConfigManagerCore.idDimensionOverworld;
 
@@ -328,15 +328,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		{
                     		    for (Entity passenger : this.getPassengers())
                     		    {
-                    		        if (passenger instanceof EntityPlayerMP)
+                    		        if (passenger instanceof ServerPlayerEntity)
                     		        {
-                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (WorldServer) targetDim.world, false, this);
+                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (ServerWorld) targetDim.world, false, this);
                     		        }
                     		    }
                     		}
                     		else
                     		{
-                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (WorldServer)targetDim.world, false, null);
+                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld)targetDim.world, false, null);
                     		    if (e instanceof EntityAutoRocket)
                     		    {
                     		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
@@ -365,9 +365,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     this.motionY = 0.1D;
                     for (Entity passenger : this.getPassengers())
                     {
-                        if (passenger instanceof EntityPlayerMP)
+                        if (passenger instanceof ServerPlayerEntity)
                         {
-                            WorldUtil.forceMoveEntityToPos(passenger, (WorldServer) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
+                            WorldUtil.forceMoveEntityToPos(passenger, (ServerWorld) this.world, new Vector3(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F), false);
                             this.setWaitForPlayer(true);
                             GCLog.debug("Rocket repositioned, waiting for player");
                         }
@@ -392,9 +392,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             for (Entity e : this.getPassengers())
             {
-                if (e instanceof EntityPlayerMP)
+                if (e instanceof ServerPlayerEntity)
                 {
-                    EntityPlayerMP player = (EntityPlayerMP) e;
+                    ServerPlayerEntity player = (ServerPlayerEntity) e;
 
                     this.onTeleport(player);
                     GCPlayerStats stats = GCPlayerStats.get(player);
@@ -415,7 +415,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         return this.hasValidFuel() && Math.abs(this.lastLastMotionY) < 4;
     }
 
-    public void onTeleport(EntityPlayerMP player)
+    public void onTeleport(ServerPlayerEntity player)
     {
     }
 
@@ -439,9 +439,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
-        if (hand != EnumHand.MAIN_HAND)
+        if (hand != Hand.MAIN_HAND)
         {
             return false;
         }
@@ -455,7 +455,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.provider.getDimension(), new Object[] { }), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 // Prevent player being dropped from the top of the rocket...
@@ -467,11 +467,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             return true;
         }
-        else if (player instanceof EntityPlayerMP)
+        else if (player instanceof ServerPlayerEntity)
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.provider.getDimension(), new Object[] { }), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.provider.getDimension(), new Object[] { }), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 player.startRiding(this);
@@ -484,7 +484,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
     	if (world.isRemote) return;
     	nbt.setInteger("Type", this.rocketType.getIndex());
@@ -492,7 +492,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
         super.readEntityFromNBT(nbt);

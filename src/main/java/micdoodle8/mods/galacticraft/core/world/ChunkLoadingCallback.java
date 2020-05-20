@@ -3,13 +3,13 @@ package micdoodle8.mods.galacticraft.core.world;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
@@ -40,7 +40,7 @@ public class ChunkLoadingCallback implements LoadingCallback
     {
         for (Ticket ticket : tickets)
         {
-            NBTTagCompound nbt = ticket.getModData();
+            CompoundNBT nbt = ticket.getModData();
 
             if (nbt != null)
             {
@@ -135,7 +135,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         // }
     }
 
-    public static void save(WorldServer world)
+    public static void save(ServerWorld world)
     {
         if (!ChunkLoadingCallback.dirtyData)
         {
@@ -237,7 +237,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         return null;
     }
 
-    public static void load(WorldServer world)
+    public static void load(ServerWorld world)
     {
         if (ChunkLoadingCallback.loaded)
         {
@@ -316,7 +316,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         ChunkLoadingCallback.dirtyData = false;
     }
 
-    public static void onPlayerLogin(EntityPlayer player)
+    public static void onPlayerLogin(PlayerEntity player)
     {
         for (Entry<String, HashMap<Integer, HashSet<BlockPos>>> playerEntry : ChunkLoadingCallback.chunkLoaderList.entrySet())
         {
@@ -335,7 +335,7 @@ public class ChunkLoadingCallback implements LoadingCallback
         }
     }
 
-    public static void onPlayerLogout(EntityPlayer player)
+    public static void onPlayerLogout(PlayerEntity player)
     {
         // if (!keepLoadedOffline)
         // {

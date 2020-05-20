@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class CreativeTabGC extends CreativeTabs
+public class CreativeTabGC extends ItemGroup
 {
     private ItemStack itemForTab;
     private Comparator<ItemStack> tabSorter;

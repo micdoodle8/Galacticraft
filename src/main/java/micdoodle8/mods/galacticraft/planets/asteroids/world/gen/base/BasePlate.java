@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
+import net.minecraft.util.math.MutableBoundingBox;
 
 import java.util.Random;
 
@@ -13,18 +13,18 @@ public class BasePlate extends SizedPiece
     {
     }
 
-    public BasePlate(BaseConfiguration configuration, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeZ, EnumFacing dir)
+    public BasePlate(BaseConfiguration configuration, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeZ, Direction dir)
     {
         super(configuration, sizeX, 1, sizeZ, dir);
         this.setCoordBaseMode(dir);
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos, blockPosZ + this.sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
     {
-        IBlockState blockWall = this.configuration.getWallBlock();
-        boolean axisEW = getDirection().getAxis() == EnumFacing.Axis.X;
+        BlockState blockWall = this.configuration.getWallBlock();
+        boolean axisEW = getDirection().getAxis() == Direction.Axis.X;
         int maxX = axisEW ? this.sizeZ : this.sizeX;
         int maxZ = axisEW ? this.sizeX : this.sizeZ;
         for (int xx = 0; xx <= maxX; xx++)

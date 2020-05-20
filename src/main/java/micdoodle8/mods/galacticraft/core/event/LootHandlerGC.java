@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.event;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.LootTables;
 
 public class LootHandlerGC
 {
@@ -16,6 +16,6 @@ public class LootHandlerGC
 
     private static ResourceLocation register(String table)
     {
-        return LootTableList.register(new ResourceLocation(Constants.MOD_ID_CORE, table));
+        return LootTables.register(new ResourceLocation(Constants.MOD_ID_CORE, table));
     }
 }

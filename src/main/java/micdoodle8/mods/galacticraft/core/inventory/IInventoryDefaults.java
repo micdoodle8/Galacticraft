@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 /*
  * IInventory providing defaults for the eight methods
@@ -19,13 +19,13 @@ public interface IInventoryDefaults extends ISidedInventory
 {
     //We don't use these because we use forge containers
     @Override
-    public default void openInventory(EntityPlayer player)
+    public default void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public default void closeInventory(EntityPlayer player)
+    public default void closeInventory(PlayerEntity player)
     {
     }
 
@@ -66,6 +66,6 @@ public interface IInventoryDefaults extends ISidedInventory
     @Override
     public default ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
     }
 }

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.fx;
 
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -66,7 +66,7 @@ public class ParticleDrip extends Particle
         }
 
         BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
-        IBlockState state = this.world.getBlockState(pos);
+        BlockState state = this.world.getBlockState(pos);
         Material material = state.getMaterial();
 
         if (material.isLiquid() || material.isSolid())

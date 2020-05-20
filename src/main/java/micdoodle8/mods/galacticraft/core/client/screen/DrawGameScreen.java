@@ -6,13 +6,13 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.MapUtil;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
@@ -39,7 +39,7 @@ public class DrawGameScreen implements IScreenManager
     public Class telemetryLastClass;
     public String telemetryLastName;
     public Entity telemetryLastEntity;
-    public Render telemetryLastRender;
+    public EntityRenderer telemetryLastRender;
     public static DynamicTexture reusableMap;  //This will be set up in MapUtil.resetClientBody()
     public int[] localMap = null;
     public boolean mapDone = false;
@@ -199,7 +199,7 @@ public class DrawGameScreen implements IScreenManager
     }
 
     @Override
-    public WorldProvider getWorldProvider()
+    public Dimension getWorldProvider()
     {
         if (this.driver != null)
         {

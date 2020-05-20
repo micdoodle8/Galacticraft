@@ -5,10 +5,10 @@ import com.mojang.authlib.GameProfile;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,18 +23,18 @@ public class PlayerUtil
 {
     public static HashMap<String, GameProfile> knownSkins = new HashMap<>();
 
-    public static EntityPlayerMP getPlayerForUsernameVanilla(MinecraftServer server, String username)
+    public static ServerPlayerEntity getPlayerForUsernameVanilla(MinecraftServer server, String username)
     {
         return server.getPlayerList().getPlayerByUsername(username);
     }
 
-    public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
+    public static ServerPlayerEntity getPlayerBaseServerFromPlayerUsername(String username, boolean ignoreCase)
     {
         MinecraftServer server = GCCoreUtil.getServer();
         return getPlayerBaseServerFromPlayerUsername(server, username, ignoreCase);
     }
 
-    public static EntityPlayerMP getPlayerBaseServerFromPlayerUsername(MinecraftServer server, String username, boolean ignoreCase)
+    public static ServerPlayerEntity getPlayerBaseServerFromPlayerUsername(MinecraftServer server, String username, boolean ignoreCase)
     {
         if (server != null)
         {
@@ -45,7 +45,7 @@ public class PlayerUtil
             else
             {
                 Iterator iterator = server.getPlayerList().getPlayers().iterator();
-                EntityPlayerMP entityplayermp;
+                ServerPlayerEntity entityplayermp;
 
                 do
                 {
@@ -54,7 +54,7 @@ public class PlayerUtil
                         return null;
                     }
 
-                    entityplayermp = (EntityPlayerMP) iterator.next();
+                    entityplayermp = (ServerPlayerEntity) iterator.next();
                 }
                 while (!entityplayermp.getName().equalsIgnoreCase(username));
 
@@ -67,25 +67,25 @@ public class PlayerUtil
         return null;
     }
 
-    public static EntityPlayerMP getPlayerBaseServerFromPlayer(EntityPlayer player, boolean ignoreCase)
+    public static ServerPlayerEntity getPlayerBaseServerFromPlayer(PlayerEntity player, boolean ignoreCase)
     {
         if (player == null)
         {
             return null;
         }
 
-        if (player instanceof EntityPlayerMP)
+        if (player instanceof ServerPlayerEntity)
         {
-            return (EntityPlayerMP) player;
+            return (ServerPlayerEntity) player;
         }
 
         return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getName(), ignoreCase);
     }
 
     @SideOnly(Side.CLIENT)
-    public static EntityPlayerSP getPlayerBaseClientFromPlayer(EntityPlayer player, boolean ignoreCase)
+    public static ClientPlayerEntity getPlayerBaseClientFromPlayer(PlayerEntity player, boolean ignoreCase)
     {
-        EntityPlayerSP clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
+        ClientPlayerEntity clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
 
         if (clientPlayer == null && player != null)
         {
@@ -107,9 +107,9 @@ public class PlayerUtil
         GameProfile profile = null;
         for (Object e : FMLClientHandler.instance().getWorldClient().getLoadedEntityList())
         {
-            if (e instanceof AbstractClientPlayer)
+            if (e instanceof AbstractClientPlayerEntity)
             {
-                GameProfile gp2 = ((AbstractClientPlayer) e).getGameProfile();
+                GameProfile gp2 = ((AbstractClientPlayerEntity) e).getGameProfile();
                 if (gp2.getName().equals(strName))
                 {
                     profile = gp2;
@@ -146,13 +146,13 @@ public class PlayerUtil
         return profile;
     }
     
-    public static EntityPlayerMP getPlayerByUUID(UUID theUUID)
+    public static ServerPlayerEntity getPlayerByUUID(UUID theUUID)
     {
-        List<EntityPlayerMP> players = PlayerUtil.getPlayersOnline();
-        EntityPlayerMP entityplayermp;
+        List<ServerPlayerEntity> players = PlayerUtil.getPlayersOnline();
+        ServerPlayerEntity entityplayermp;
         for (int i = players.size() - 1; i >= 0; --i)
         {
-            entityplayermp = (EntityPlayerMP) players.get(i);
+            entityplayermp = (ServerPlayerEntity) players.get(i);
 
             if (entityplayermp.getUniqueID().equals(theUUID))
             {
@@ -163,18 +163,18 @@ public class PlayerUtil
     }
     
     
-    public static List<EntityPlayerMP> getPlayersOnline()
+    public static List<ServerPlayerEntity> getPlayersOnline()
     {
         return GCCoreUtil.getServer().getPlayerList().getPlayers();
     }
 
 
-    public static boolean isPlayerOnline(EntityPlayerMP player)
+    public static boolean isPlayerOnline(ServerPlayerEntity player)
     {
         return player.mcServer.getPlayerList().getPlayers().contains(player);
     }
     
-    public static String getName(EntityPlayer player)
+    public static String getName(PlayerEntity player)
     {
         if (player == null) return null;
         

@@ -21,20 +21,20 @@ import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAst
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.Direction.Axis;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -57,7 +57,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public static final int HOLDSIZE = 72;
     private int[] slotArray;
     public boolean isMaster = false;
-    public EnumFacing facing = EnumFacing.NORTH;
+    public Direction facing = Direction.NORTH;
     private BlockPos mainBlockPosition;
     private LinkedList<BlockVec3> targetPoints = new LinkedList<>();
     private WeakReference<TileEntityMinerBase> masterTile = null;
@@ -278,7 +278,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         }
     }
 
-    public boolean spawnMiner(EntityPlayerMP player)
+    public boolean spawnMiner(ServerPlayerEntity player)
     {
         if (this.isMaster)
         {
@@ -341,10 +341,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.facing = EnumFacing.getHorizontal(nbt.getInteger("facing"));
+        this.facing = Direction.getHorizontal(nbt.getInteger("facing"));
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.isMaster = nbt.getBoolean("isMaster");
@@ -353,7 +353,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                     this.updateClientFlag = true;
             }
             else {
-                NBTTagCompound tagCompound = nbt.getCompoundTag("masterpos");
+                CompoundNBT tagCompound = nbt.getCompoundTag("masterpos");
                 if (tagCompound.getKeySet().isEmpty())
                     this.setMainBlockPosition(null);
                 else
@@ -373,10 +373,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             if (nbt.hasKey("TargetPoints"))
             {
                 this.targetPoints.clear();
-                final NBTTagList mpList = nbt.getTagList("TargetPoints", 10);
+                final ListNBT mpList = nbt.getTagList("TargetPoints", 10);
                 for (int j = 0; j < mpList.tagCount(); j++)
                 {
-                    NBTTagCompound bvTag = mpList.getCompoundTagAt(j);
+                    CompoundNBT bvTag = mpList.getCompoundTagAt(j);
                     this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
                 }
             }
@@ -388,13 +388,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("isMaster", this.isMaster);
         if (!this.isMaster && this.mainBlockPosition != null)
         {
-            NBTTagCompound masterTag = new NBTTagCompound();
+            CompoundNBT masterTag = new CompoundNBT();
             masterTag.setInteger("x", this.mainBlockPosition.getX());
             masterTag.setInteger("y", this.mainBlockPosition.getY());
             masterTag.setInteger("z", this.mainBlockPosition.getZ());
@@ -406,10 +406,10 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
             nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
         }
-        NBTTagList mpList = new NBTTagList();
+        ListNBT mpList = new ListNBT();
         for (int j = 0; j < this.targetPoints.size(); j++)
         {
-            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new NBTTagCompound()));
+            mpList.appendTag(this.targetPoints.get(j).writeToNBT(new CompoundNBT()));
         }
         nbt.setTag("TargetPoints", mpList);
         return nbt;
@@ -422,7 +422,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
@@ -583,7 +583,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public boolean onActivated(EntityPlayer entityPlayer)
+    public boolean onActivated(PlayerEntity entityPlayer)
     {
         if (this.isMaster)
         {
@@ -640,7 +640,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         for (BlockPos pos : positions)
         {
-            IBlockState stateAt = this.world.getBlockState(pos);
+            BlockState stateAt = this.world.getBlockState(pos);
 
             if (stateAt.getBlock() == AsteroidBlocks.minerBaseFull) //GCBlocks.fakeBlock && (EnumBlockMultiType) stateAt.getValue(BlockMulti.MULTI_TYPE) == EnumBlockMultiType.MINER_BASE)
             {
@@ -685,16 +685,16 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             switch (this.facing)
             {
             case SOUTH:
-                this.facing = EnumFacing.WEST;
+                this.facing = Direction.WEST;
                 break;
             case EAST:
-                this.facing = EnumFacing.SOUTH;
+                this.facing = Direction.SOUTH;
                 break;
             case WEST:
-                this.facing = EnumFacing.NORTH;
+                this.facing = Direction.NORTH;
                 break;
             case NORTH:
-                this.facing = EnumFacing.EAST;
+                this.facing = Direction.EAST;
                 break;
             }
 
@@ -714,13 +714,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             this.updateAllInDimension();
         }
 
-        for (EnumFacing facing : EnumFacing.VALUES)
+        for (Direction facing : Direction.VALUES)
         {
             BlockPos offset = this.getPos().offset(facing);
             TileEntity tileOffset = this.world.getTileEntity(offset);
             if (tileOffset != null && !(tileOffset instanceof TileEntityMinerBase))
             {
-                IBlockState state = this.world.getBlockState(offset);
+                BlockState state = this.world.getBlockState(offset);
                 state.getBlock().neighborChanged(state, this.world, offset, this.world.getBlockState(this.getPos()).getBlock(), this.getPos());
                 world.markBlockRangeForRenderUpdate(offset, offset);
             }
@@ -753,7 +753,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         if (this.isMaster)
         {
@@ -798,7 +798,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         if (this.isMaster)
         {
@@ -815,13 +815,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         return false;
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (this.isMaster)
         {
@@ -985,32 +985,32 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
 
         this.targetPoints.add(posnTarget);
 
-        EnumFacing lateral = EnumFacing.NORTH;
-        EnumFacing inLine = this.facing;
+        Direction lateral = Direction.NORTH;
+        Direction inLine = this.facing;
         if (inLine.getAxis() == Axis.Z)
         {
-            lateral = EnumFacing.WEST;
+            lateral = Direction.WEST;
         }
 
         this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13));
         this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13));
         if (posnTarget.y > 17)
         {
-            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(EnumFacing.DOWN, 11));
-            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(EnumFacing.DOWN, 11));
+            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(Direction.DOWN, 11));
+            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(Direction.DOWN, 11));
         }
         else
         {
             this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 26));
             this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -26));
         }
-        this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(EnumFacing.UP, 11));
-        this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(EnumFacing.UP, 11));
+        this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 7).modifyPositionFromSide(Direction.UP, 11));
+        this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -7).modifyPositionFromSide(Direction.UP, 11));
         if (posnTarget.y < this.getPos().getY() - 38)
         {
-            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(EnumFacing.UP, 22));
-            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(EnumFacing.UP, 22));
-            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13).modifyPositionFromSide(EnumFacing.UP, 22));
+            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, 13).modifyPositionFromSide(Direction.UP, 22));
+            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(Direction.UP, 22));
+            this.targetPoints.add(posnTarget.clone().modifyPositionFromSide(lateral, -13).modifyPositionFromSide(Direction.UP, 22));
         }
 
         int s = this.targetPoints.size();
@@ -1047,7 +1047,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return this.facing;
     }
@@ -1063,7 +1063,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void updateClient(List<Object> data)
     {
         int data1 = (Integer) data.get(1);
-        this.facing = EnumFacing.getFront(data1 & 7);
+        this.facing = Direction.getFront(data1 & 7);
         this.setMainBlockPos(new BlockPos((Integer) data.get(2), (Integer) data.get(3), (Integer) data.get(4)));
         if (data1 > 7)
         {

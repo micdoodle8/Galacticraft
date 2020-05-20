@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.power;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 import java.util.List;
 
@@ -18,9 +18,9 @@ public abstract class EnergySource
 
     public static class EnergySourceAdjacent extends EnergySource
     {
-        public final EnumFacing direction;
+        public final Direction direction;
 
-        public EnergySourceAdjacent(EnumFacing direction)
+        public EnergySourceAdjacent(Direction direction)
         {
             this.direction = direction;
         }

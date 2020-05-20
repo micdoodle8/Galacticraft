@@ -7,9 +7,9 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import java.util.Random;
 
@@ -22,7 +22,7 @@ public class TeleportTypeVenus implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
+    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -60,19 +60,19 @@ public class TeleportTypeVenus implements ITeleportType
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
+    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
         return new Vector3(entity.posX, 900.0, entity.posZ);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand)
+    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         return null;
     }
 
     @Override
-    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
+    public void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket)
     {
         if (!ridingAutoRocket && player != null)
         {
@@ -89,10 +89,10 @@ public class TeleportTypeVenus implements ITeleportType
                 {
                     EntityEntryPodVenus entryPod = new EntityEntryPodVenus(player);
 
-                    boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                    boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                     entryPod.forceSpawn = true;
                     newWorld.spawnEntity(entryPod);
-                    CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld, previous);
+                    CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 }
 
                 stats.setTeleportCooldown(10);
@@ -101,7 +101,7 @@ public class TeleportTypeVenus implements ITeleportType
     }
 
     @Override
-    public void setupAdventureSpawn(EntityPlayerMP player)
+    public void setupAdventureSpawn(ServerPlayerEntity player)
     {
         // TODO Auto-generated method stub
 

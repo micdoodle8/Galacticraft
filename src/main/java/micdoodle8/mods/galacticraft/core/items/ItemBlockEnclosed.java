@@ -10,14 +10,13 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,13 +50,13 @@ public class ItemBlockEnclosed extends ItemBlockDesc
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction side, float hitX, float hitY, float hitZ)
     {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         int metadata = this.getMetadata(itemstack.getItemDamage());
         if (metadata == EnumEnclosedBlockType.ME_CABLE.getMeta() && CompatibilityManager.isAppEngLoaded())
         {
-            IBlockState iblockstate = worldIn.getBlockState(pos);
+            BlockState iblockstate = worldIn.getBlockState(pos);
             Block block = iblockstate.getBlock();
             BlockPos origPos = pos;
 
@@ -68,16 +67,16 @@ public class ItemBlockEnclosed extends ItemBlockDesc
 
             if (itemstack.getCount() == 0)
             {
-                return EnumActionResult.FAIL;
+                return ActionResultType.FAIL;
             }
             else if (!playerIn.canPlayerEdit(pos, side, itemstack))
             {
-                return EnumActionResult.FAIL;
+                return ActionResultType.FAIL;
             }
             else if (worldIn.mayPlace(this.block, pos, false, side, null))
             {
                 int i = this.getMetadata(itemstack.getMetadata());
-                IBlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
+                BlockState iblockstate1 = this.block.getStateForPlacement(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
 
                 if (placeBlockAt(itemstack, playerIn, worldIn, pos, side, hitX, hitY, hitZ, iblockstate1))
                 {
@@ -93,18 +92,18 @@ public class ItemBlockEnclosed extends ItemBlockDesc
                     {
                         Class clazzpp = Class.forName("appeng.parts.PartPlacement");
                         Class enumPlaceType = Class.forName("appeng.parts.PartPlacement$PlaceType");
-                        Method methPl = clazzpp.getMethod("place", ItemStack.class, BlockPos.class, EnumFacing.class, EntityPlayer.class, EnumHand.class, World.class, enumPlaceType, int.class);
+                        Method methPl = clazzpp.getMethod("place", ItemStack.class, BlockPos.class, Direction.class, PlayerEntity.class, Hand.class, World.class, enumPlaceType, int.class);
                         methPl.invoke(null, itemME, origPos, side, playerIn, hand, worldIn, enumPlaceType.getEnumConstants()[2], 0 );
                     } catch (Exception e)
                     {
                         e.printStackTrace();
                     }
                 }
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
             else
             {
-                return EnumActionResult.FAIL;
+                return ActionResultType.FAIL;
             }
         }
         else
@@ -115,7 +114,7 @@ public class ItemBlockEnclosed extends ItemBlockDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }

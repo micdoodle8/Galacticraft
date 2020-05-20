@@ -7,14 +7,14 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -37,7 +37,7 @@ public class ItemBlockMachine extends ItemBlockDesc
     }
 
     @Override
-    public boolean placeBlockAt(ItemStack itemStack, EntityPlayer player, World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, IBlockState state)
+    public boolean placeBlockAt(ItemStack itemStack, PlayerEntity player, World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, BlockState state)
     {
         int metaAt = itemStack.getItemDamage();
 
@@ -46,7 +46,7 @@ public class ItemBlockMachine extends ItemBlockDesc
         {
             for (int y = 0; y < 3; y++)
             {
-                IBlockState stateAt = world.getBlockState(pos.add(0, y, 0));
+                BlockState stateAt = world.getBlockState(pos.add(0, y, 0));
 
                 if (this.getBlock() == MarsBlocks.machine)
                 {
@@ -54,7 +54,7 @@ public class ItemBlockMachine extends ItemBlockDesc
                     {
                         if (world.isRemote)
                         {
-                            FMLClientHandler.instance().getClient().ingameGUI.setOverlayMessage(new TextComponentString(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                            FMLClientHandler.instance().getClient().ingameGUI.setOverlayMessage(new StringTextComponent(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
                         }
                         return false;
                     }
@@ -91,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }

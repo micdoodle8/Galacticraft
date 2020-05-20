@@ -17,13 +17,13 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 
 import java.lang.ref.WeakReference;
@@ -36,7 +36,7 @@ import java.util.List;
 
 public class StatsCapability extends GCPlayerStats
 {
-    public WeakReference<EntityPlayerMP> player;
+    public WeakReference<ServerPlayerEntity> player;
 
     public InventoryExtended extendedInventory = new InventoryExtended();
 
@@ -146,17 +146,17 @@ public class StatsCapability extends GCPlayerStats
     public int glassColor2 = -1;
     public int glassColor3 = -1;
     
-    private IBlockState[] panelLightingBases = new IBlockState[BlockPanelLighting.PANELTYPES_LENGTH];
+    private BlockState[] panelLightingBases = new BlockState[BlockPanelLighting.PANELTYPES_LENGTH];
     private int panelLightingColor = 0xf0f0e0;
 
     @Override
-    public WeakReference<EntityPlayerMP> getPlayer()
+    public WeakReference<ServerPlayerEntity> getPlayer()
     {
         return player;
     }
 
     @Override
-    public void setPlayer(WeakReference<EntityPlayerMP> player)
+    public void setPlayer(WeakReference<ServerPlayerEntity> player)
     {
         this.player = player;
     }
@@ -997,9 +997,9 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public void saveNBTData(NBTTagCompound nbt)
+    public void saveNBTData(CompoundNBT nbt)
     {
-        nbt.setTag("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new NBTTagList()));
+        nbt.setTag("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new ListNBT()));
         nbt.setInteger("playerAirRemaining", this.airRemaining);
         nbt.setInteger("damageCounter", this.damageCounter);
         nbt.setBoolean("OxygenSetupValid", this.oxygenSetupValid);
@@ -1014,13 +1014,13 @@ public class StatsCapability extends GCPlayerStats
 
         Collections.sort(this.unlockedSchematics);
 
-        NBTTagList tagList = new NBTTagList();
+        ListNBT tagList = new ListNBT();
 
         for (ISchematicPage page : this.unlockedSchematics)
         {
             if (page != null)
             {
-                final NBTTagCompound nbttagcompound = new NBTTagCompound();
+                final CompoundNBT nbttagcompound = new CompoundNBT();
                 nbttagcompound.setInteger("UnlockedPage", page.getPageID());
                 tagList.appendTag(nbttagcompound);
             }
@@ -1034,10 +1034,10 @@ public class StatsCapability extends GCPlayerStats
         if (this.rocketItem != null)
         {
             ItemStack returnRocket = new ItemStack(this.rocketItem, 1, this.rocketType);
-            nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new CompoundNBT()));
         }
 
-        NBTTagList nbttaglist = new NBTTagList();
+        ListNBT nbttaglist = new ListNBT();
 
         for (int i = 0; i < this.stacks.size(); ++i)
         {
@@ -1045,7 +1045,7 @@ public class StatsCapability extends GCPlayerStats
 
             if (!itemstack.isEmpty())
             {
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                CompoundNBT nbttagcompound = new CompoundNBT();
                 nbttagcompound.setByte("Slot", (byte)i);
                 itemstack.writeToNBT(nbttagcompound);
                 nbttaglist.appendTag(nbttagcompound);
@@ -1057,7 +1057,7 @@ public class StatsCapability extends GCPlayerStats
             nbt.setTag("RocketItems", nbttaglist);
         }
 
-        final NBTTagCompound var4 = new NBTTagCompound();
+        final CompoundNBT var4 = new CompoundNBT();
         if (this.launchpadStack != null)
         {
             nbt.setTag("LaunchpadStack", this.launchpadStack.writeToNBT(var4));
@@ -1073,12 +1073,12 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("BuildFlags", this.buildFlags);
         nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
         nbt.setInteger("AstroMinerCount", this.astroMinerCount);
-        NBTTagList astroList = new NBTTagList();
+        ListNBT astroList = new ListNBT();
         for (BlockVec3 data : this.activeAstroMinerChunks)
         {
             if (data != null)
             {
-                astroList.appendTag(data.writeToNBT(new NBTTagCompound()));
+                astroList.appendTag(data.writeToNBT(new CompoundNBT()));
             }
         }
         nbt.setTag("AstroData", astroList);
@@ -1087,11 +1087,11 @@ public class StatsCapability extends GCPlayerStats
         nbt.setInteger("GlassColor2", this.glassColor2);
         nbt.setInteger("GlassColor3", this.glassColor3);
         
-        NBTTagList panelList = new NBTTagList();
+        ListNBT panelList = new ListNBT();
         for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
         {
-            final NBTTagCompound stateNBT = new NBTTagCompound();
-            IBlockState bs = this.panelLightingBases[i];
+            final CompoundNBT stateNBT = new CompoundNBT();
+            BlockState bs = this.panelLightingBases[i];
             if (bs != null)
             {
                 TileEntityPanelLight.writeBlockState(stateNBT, bs);
@@ -1104,7 +1104,7 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public void loadNBTData(NBTTagCompound nbt)
+    public void loadNBTData(CompoundNBT nbt)
     {
         try
         {
@@ -1114,7 +1114,7 @@ public class StatsCapability extends GCPlayerStats
             this.thermalLevel = nbt.getInteger("thermalLevel");
 
             // Backwards compatibility
-            NBTTagList nbttaglist = nbt.getTagList("Inventory", 10);
+            ListNBT nbttaglist = nbt.getTagList("Inventory", 10);
             this.extendedInventory.readFromNBTOld(nbttaglist);
 
             if (nbt.hasKey("ExtendedInventoryGC"))
@@ -1126,7 +1126,7 @@ public class StatsCapability extends GCPlayerStats
             // inventory, load it now
             // (if there was no offline load, then the dontload flag in doLoad()
             // will make sure nothing happens)
-            EntityPlayerMP p = this.player.get();
+            ServerPlayerEntity p = this.player.get();
             if (p != null)
             {
                 ItemStack[] saveinv = CommandGCInv.getSaveData(PlayerUtil.getName(p).toLowerCase());
@@ -1180,11 +1180,11 @@ public class StatsCapability extends GCPlayerStats
 
                 this.stacks = NonNullList.withSize(length, ItemStack.EMPTY);
 
-                NBTTagList nbttaglist1 = nbt.getTagList("RocketItems", 10);
+                ListNBT nbttaglist1 = nbt.getTagList("RocketItems", 10);
 
                 for (int i = 0; i < nbttaglist1.tagCount(); ++i)
                 {
-                    NBTTagCompound nbttagcompound = nbttaglist1.getCompoundTagAt(i);
+                    CompoundNBT nbttagcompound = nbttaglist1.getCompoundTagAt(i);
                     int j = nbttagcompound.getByte("Slot") & 255;
 
                     if (j >= 0 && j < this.stacks.size())
@@ -1200,7 +1200,7 @@ public class StatsCapability extends GCPlayerStats
             {
                 for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
                 {
-                    final NBTTagCompound nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+                    final CompoundNBT nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
 
                     final int j = nbttagcompound.getInteger("UnlockedPage");
 
@@ -1248,10 +1248,10 @@ public class StatsCapability extends GCPlayerStats
             if (nbt.hasKey("AstroData"))
             {
                 this.activeAstroMinerChunks.clear();
-                NBTTagList astroList = nbt.getTagList("AstroData", 10);
+                ListNBT astroList = nbt.getTagList("AstroData", 10);
                 for (int i = 0; i < astroList.tagCount(); ++i)
                 {
-                    final NBTTagCompound nbttagcompound = astroList.getCompoundTagAt(i);
+                    final CompoundNBT nbttagcompound = astroList.getCompoundTagAt(i);
                     BlockVec3 data = BlockVec3.readFromNBT(nbttagcompound);
                     this.activeAstroMinerChunks.add(data);
                 }
@@ -1270,12 +1270,12 @@ public class StatsCapability extends GCPlayerStats
 
             if (nbt.hasKey("PanLi"))
             {
-                final NBTTagList panels = nbt.getTagList("PanLi", 10);
+                final ListNBT panels = nbt.getTagList("PanLi", 10);
                 for (int i = 0; i < panels.tagCount(); ++i)
                 {
                     if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
-                    final NBTTagCompound stateNBT = panels.getCompoundTagAt(i);
-                    IBlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
+                    final CompoundNBT stateNBT = panels.getCompoundTagAt(i);
+                    BlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
                     this.panelLightingBases[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
                 }
             }
@@ -1366,7 +1366,7 @@ public class StatsCapability extends GCPlayerStats
     }
 
     @Override
-    public IBlockState[] getPanelLightingBases()
+    public BlockState[] getPanelLightingBases()
     {
         return panelLightingBases;
     }

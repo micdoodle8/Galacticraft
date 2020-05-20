@@ -4,18 +4,18 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeDecoratorSpace;
 import micdoodle8.mods.galacticraft.core.world.gen.WorldGenMinableMeta;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 public class BiomeDecoratorMars extends BiomeDecoratorSpace
 {
-    private WorldGenerator dirtGen;
-    private WorldGenerator deshGen;
-    private WorldGenerator tinGen;
-    private WorldGenerator copperGen;
-    private WorldGenerator ironGen;
-    private WorldGenerator iceGen;
+    private Feature dirtGen;
+    private Feature deshGen;
+    private Feature tinGen;
+    private Feature copperGen;
+    private Feature ironGen;
+    private Feature iceGen;
     private World currentWorld;
 
     public BiomeDecoratorMars()
@@ -33,19 +33,19 @@ public class BiomeDecoratorMars extends BiomeDecoratorSpace
     {
         this.generateOre(4, this.iceGen, 60, 120);
         this.generateOre(20, this.dirtGen, 0, 200);
-        if (!ConfigManagerMars.disableDeshGen)
+        if (!ConfigManagerMars.disableDeshGenMars)
         {
             this.generateOre(15, this.deshGen, 20, 64);
         }
-        if (!ConfigManagerMars.disableCopperGen)
+        if (!ConfigManagerMars.disableCopperGenMars)
         {
             this.generateOre(26, this.copperGen, 0, 60);
         }
-        if (!ConfigManagerMars.disableTinGen)
+        if (!ConfigManagerMars.disableTinGenMars)
         {
             this.generateOre(23, this.tinGen, 0, 60);
         }
-        if (!ConfigManagerMars.disableIronGen)
+        if (!ConfigManagerMars.disableIronGenMars)
         {
             this.generateOre(20, this.ironGen, 0, 64);
         }

@@ -13,8 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.WorldProviderSurface;
 import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +31,7 @@ import org.apache.logging.log4j.Level;
 
 public class GalacticraftRegistry
 {
-    private static Map<Class<? extends WorldProvider>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends WorldProvider>, ITeleportType>();
+    private static Map<Class<? extends Dimension>, ITeleportType> teleportTypeMap = new HashMap<Class<? extends Dimension>, ITeleportType>();
     private static List<SpaceStationType> spaceStations = new ArrayList<SpaceStationType>();
     private static List<INasaWorkbenchRecipe> rocketBenchT1Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> buggyBenchRecipes = new ArrayList<INasaWorkbenchRecipe>();
@@ -39,7 +39,7 @@ public class GalacticraftRegistry
     private static List<INasaWorkbenchRecipe> cargoRocketRecipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> rocketBenchT3Recipes = new ArrayList<INasaWorkbenchRecipe>();
     private static List<INasaWorkbenchRecipe> astroMinerRecipes = new ArrayList<INasaWorkbenchRecipe>();
-    private static Map<Class<? extends WorldProvider>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends WorldProvider>, ResourceLocation>();
+    private static Map<Class<? extends Dimension>, ResourceLocation> rocketGuiMap = new HashMap<Class<? extends Dimension>, ResourceLocation>();
     private static Map<Integer, List<ItemStack>> dungeonLootMap = new HashMap<Integer, List<ItemStack>>();
     private static List<Integer> dimensionTypeIDs = new ArrayList<Integer>();
     private static List<IGameScreen> gameScreens = new ArrayList<IGameScreen>();
@@ -56,7 +56,7 @@ public class GalacticraftRegistry
      * @param type  an ITeleportType-implemented class that will be used for the
      *              provided world type
      */
-    public static void registerTeleportType(Class<? extends WorldProvider> clazz, ITeleportType type)
+    public static void registerTeleportType(Class<? extends Dimension> clazz, ITeleportType type)
     {
         if (!GalacticraftRegistry.teleportTypeMap.containsKey(clazz))
         {
@@ -71,7 +71,7 @@ public class GalacticraftRegistry
      * @param clazz     The World Provider class
      * @param rocketGui Resource Location for the gui texture
      */
-    public static void registerRocketGui(Class<? extends WorldProvider> clazz, ResourceLocation rocketGui)
+    public static void registerRocketGui(Class<? extends Dimension> clazz, ResourceLocation rocketGui)
     {
         if (!GalacticraftRegistry.rocketGuiMap.containsKey(clazz))
         {
@@ -195,7 +195,7 @@ public class GalacticraftRegistry
         GalacticraftRegistry.astroMinerRecipes.clear();
     }
 
-    public static ITeleportType getTeleportTypeForDimension(Class<? extends WorldProvider> clazz)
+    public static ITeleportType getTeleportTypeForDimension(Class<? extends Dimension> clazz)
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
         {
@@ -269,7 +269,7 @@ public class GalacticraftRegistry
 	}   
 
 	@SideOnly(Side.CLIENT)
-    public static ResourceLocation getResouceLocationForDimension(Class<? extends WorldProvider> clazz)
+    public static ResourceLocation getResouceLocationForDimension(Class<? extends Dimension> clazz)
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
         {
@@ -286,7 +286,7 @@ public class GalacticraftRegistry
     /***
      * Register a Galacticraft dimension
      */
-    public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends WorldProvider> provider, boolean keepLoaded) throws IllegalArgumentException
+    public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends Dimension> provider, boolean keepLoaded) throws IllegalArgumentException
     {
         for (DimensionType other : DimensionType.values())
         {

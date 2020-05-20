@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerCrashedProbe;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +15,7 @@ public class GuiCrashedProbe extends GuiContainerGC
 
     private final TileEntityCrashedProbe geothermalGenerator;
 
-    public GuiCrashedProbe(InventoryPlayer par1InventoryPlayer, TileEntityCrashedProbe geothermalGenerator)
+    public GuiCrashedProbe(PlayerInventory par1InventoryPlayer, TileEntityCrashedProbe geothermalGenerator)
     {
         super(new ContainerCrashedProbe(par1InventoryPlayer, geothermalGenerator));
         this.geothermalGenerator = geothermalGenerator;

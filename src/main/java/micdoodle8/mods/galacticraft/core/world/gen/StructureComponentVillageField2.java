@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
@@ -26,7 +26,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     {
     }
 
-    public StructureComponentVillageField2(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, StructureBoundingBox par4StructureBoundingBox, EnumFacing par5)
+    public StructureComponentVillageField2(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, MutableBoundingBox par4StructureBoundingBox, Direction par5)
     {
         super(par1ComponentVillageStartPiece, par2);
         this.setCoordBaseMode(par5);
@@ -38,7 +38,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound nbt)
+    protected void writeStructureToNBT(CompoundNBT nbt)
     {
         super.writeStructureToNBT(nbt);
 
@@ -50,7 +50,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
     {
         super.readStructureFromNBT(nbt, manager);
 
@@ -74,10 +74,10 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
         }
     }
 
-    public static StructureComponentVillageField2 func_74900_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructureComponent> par1List, Random par2Random, int par3, int par4, int par5, EnumFacing par6, int par7)
+    public static StructureComponentVillageField2 func_74900_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructurePiece> par1List, Random par2Random, int par3, int par4, int par5, Direction par6, int par7)
     {
-        final StructureBoundingBox structureboundingbox = StructureBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);
-        return StructureComponentVillage.canVillageGoDeeper(structureboundingbox) && StructureComponent.findIntersecting(par1List, structureboundingbox) == null ? new StructureComponentVillageField2(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
+        final MutableBoundingBox structureboundingbox = MutableBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 13, 4, 9, par6);
+        return StructureComponentVillage.canVillageGoDeeper(structureboundingbox) && StructurePiece.findIntersecting(par1List, structureboundingbox) == null ? new StructureComponentVillageField2(par0ComponentVillageStartPiece, par7, par2Random, structureboundingbox, par6) : null;
     }
 
     /**
@@ -85,7 +85,7 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
      * Mob Spawners, it closes Mineshafts at the end, it adds Fences...
      */
     @Override
-    public boolean addComponentParts(World par1World, Random par2Random, StructureBoundingBox par3StructureBoundingBox)
+    public boolean addComponentParts(World par1World, Random par2Random, MutableBoundingBox par3StructureBoundingBox)
     {
         if (this.averageGroundLevel < 0)
         {

@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntitySpiderQueen;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.util.SoundCategory;
 
 import java.util.ArrayList;
@@ -21,9 +21,9 @@ public class TileEntityDungeonSpawnerVenus extends TileEntityDungeonSpawner<Enti
     }
 
     @Override
-    public List<Class<? extends EntityLiving>> getDisabledCreatures()
+    public List<Class<? extends MobEntity>> getDisabledCreatures()
     {
-        List<Class<? extends EntityLiving>> list = new ArrayList<Class<? extends EntityLiving>>();
+        List<Class<? extends MobEntity>> list = new ArrayList<Class<? extends MobEntity>>();
         list.add(EntityEvolvedSkeleton.class);
         list.add(EntityEvolvedZombie.class);
         list.add(EntityEvolvedSpider.class);

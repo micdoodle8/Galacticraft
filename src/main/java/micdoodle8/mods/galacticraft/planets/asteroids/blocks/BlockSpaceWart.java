@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.blocks;
 
-import net.minecraft.block.BlockNetherWart;
+import net.minecraft.block.NetherWartBlock;
 
-public class BlockSpaceWart extends BlockNetherWart
+public class BlockSpaceWart extends NetherWartBlock
 {
     public BlockSpaceWart(String assetName)
     {

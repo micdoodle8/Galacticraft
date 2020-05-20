@@ -9,13 +9,13 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -23,8 +23,8 @@ public class ModelBipedGC
 {
     public static void setRotationAngles(ModelBiped biped, float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
     {
-        if (!(par7Entity instanceof EntityPlayer)) return;
-        final EntityPlayer player = (EntityPlayer) par7Entity;
+        if (!(par7Entity instanceof PlayerEntity)) return;
+        final PlayerEntity player = (PlayerEntity) par7Entity;
         final ItemStack currentItemStack = player.inventory.getCurrentItem();
         final float floatPI = 3.1415927F;
 
@@ -60,7 +60,7 @@ public class ModelBipedGC
 
         ItemStack heldItemStack = null;
 
-        for (EnumHand hand : EnumHand.values())
+        for (Hand hand : Hand.values())
         {
             ItemStack item = player.getHeldItem(hand);
             if (item != null && item.getItem() instanceof IHoldableItem)
@@ -131,7 +131,7 @@ public class ModelBipedGC
 
         if (player.isPlayerSleeping() && GalacticraftCore.isPlanetsLoaded)
         {
-            RenderPlayerGC.RotatePlayerEvent event = new RenderPlayerGC.RotatePlayerEvent((AbstractClientPlayer) player);
+            RenderPlayerGC.RotatePlayerEvent event = new RenderPlayerGC.RotatePlayerEvent((AbstractClientPlayerEntity) player);
             MinecraftForge.EVENT_BUS.post(event);
 
             if (event.vanillaOverride && (event.shouldRotate == null || event.shouldRotate))

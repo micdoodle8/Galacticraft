@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.planets.venus.blocks.*;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemBlockTorchWeb;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class VenusBlocks
@@ -65,7 +65,7 @@ public class VenusBlocks
         setHarvestLevel(VenusBlocks.spout, "pickaxe", 1);
     }
 
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends BlockItem> itemClass)
     {
         GCBlocks.registerBlock(block, itemClass);
     }

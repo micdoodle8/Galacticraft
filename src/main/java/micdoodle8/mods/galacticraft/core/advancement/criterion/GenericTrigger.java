@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.advancements.PlayerAdvancements;
 import net.minecraft.advancements.critereon.AbstractCriterionInstance;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 public abstract class GenericTrigger implements ICriterionTrigger
@@ -72,7 +72,7 @@ public abstract class GenericTrigger implements ICriterionTrigger
      *
      * @param playerMP the player
      */
-    public void trigger(EntityPlayerMP playerMP)
+    public void trigger(ServerPlayerEntity playerMP)
     {
         Listeners listeners = this.listeners.get(playerMP.getAdvancements());
 
@@ -89,7 +89,7 @@ public abstract class GenericTrigger implements ICriterionTrigger
             super(resourceLocation);
         }
 
-        public abstract boolean test(EntityPlayerMP player);
+        public abstract boolean test(ServerPlayerEntity player);
     }
 
     static class Listeners
@@ -117,7 +117,7 @@ public abstract class GenericTrigger implements ICriterionTrigger
             listeners.remove(listener);
         }
 
-        public void trigger(EntityPlayerMP player)
+        public void trigger(ServerPlayerEntity player)
         {
             ArrayList<ICriterionTrigger.Listener> list = null;
 

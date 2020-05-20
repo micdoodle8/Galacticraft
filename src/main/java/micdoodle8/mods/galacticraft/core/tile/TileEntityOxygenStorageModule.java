@@ -5,11 +5,11 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachine2;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 public class TileEntityOxygenStorageModule extends TileEntityOxygen implements IInventoryDefaults, ISidedInventory, IMachineSides
 {
-    public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
     public int scaledOxygenLevel;
     private int lastScaledOxygenLevel;
 
@@ -109,7 +109,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -117,7 +117,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
@@ -125,15 +125,15 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return null;
     }
@@ -167,13 +167,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public int getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(Direction direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
@@ -186,13 +186,13 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
     //ISidedInventory
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (slotID == 0 && this.isItemValidForSlot(slotID, itemstack))
         {
@@ -202,7 +202,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (slotID == 0 && !itemstack.isEmpty())
         {
@@ -213,25 +213,25 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
 
     //IFluidHandler methods - to allow this to accept Liquid Oxygen
     @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid)
+    public boolean canDrain(Direction from, Fluid fluid)
     {
         return super.canDrain(from, fluid);
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
     {
         return super.drain(from, resource, doDrain);
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
     {
         return super.drain(from, maxDrain, doDrain);
     }
 
     @Override
-    public boolean canFill(EnumFacing from, Fluid fluid)
+    public boolean canFill(Direction from, Fluid fluid)
     {
 //        if (from.ordinal() == this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2 && GalacticraftCore.isPlanetsLoaded)
 //        {
@@ -243,7 +243,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, boolean doFill)
     {
 //        int used = 0;
 //
@@ -256,7 +256,7 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from)
+    public FluidTankInfo[] getTankInfo(Direction from)
     {
 //        FluidTankInfo[] tankInfo = new FluidTankInfo[] {};
 //        int metaside = this.getBlockMetadata() - BlockMachine2.OXYGEN_STORAGE_MODULE_METADATA + 2;
@@ -271,19 +271,19 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenInputDirections()
+    public EnumSet<Direction> getOxygenInputDirections()
     {
-        EnumFacing dir;
+        Direction dir;
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
         case REAR:
             dir = getFront().getOpposite();
             break;
         case TOP:
-            dir = EnumFacing.UP;
+            dir = Direction.UP;
             break;
         case BOTTOM:
-            dir = EnumFacing.DOWN;
+            dir = Direction.DOWN;
             break;
         case RIGHT:
             dir = getFront().rotateYCCW();
@@ -296,19 +296,19 @@ public class TileEntityOxygenStorageModule extends TileEntityOxygen implements I
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenOutputDirections()
+    public EnumSet<Direction> getOxygenOutputDirections()
     {
-        EnumFacing dir;
+        Direction dir;
         switch (this.getSide(MachineSide.PIPE_OUT))
         {
         case REAR:
             dir = getFront().getOpposite();
             break;
         case TOP:
-            dir = EnumFacing.UP;
+            dir = Direction.UP;
             break;
         case BOTTOM:
-            dir = EnumFacing.DOWN;
+            dir = Direction.DOWN;
             break;
         case LEFT:
             dir = getFront().rotateY();

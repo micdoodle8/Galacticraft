@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 
 public class DungeonConfiguration
 {
-    private IBlockState brickBlock;
+    private BlockState brickBlock;
     private int yPosition;
     private int hallwayLengthMin;
     private int hallwayLengthMax;
@@ -19,7 +19,7 @@ public class DungeonConfiguration
     {
     }
 
-    public DungeonConfiguration(IBlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
+    public DungeonConfiguration(BlockState brickBlock, int yPosition, int hallwayLengthMin, int hallwayLengthMax, int hallwayHeight, int roomHeight, Class<?> bossRoom, Class<?> treasureRoom)
     {
         this.brickBlock = brickBlock;
         this.yPosition = yPosition;
@@ -31,7 +31,7 @@ public class DungeonConfiguration
         this.treasureRoom = treasureRoom;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+    public CompoundNBT writeToNBT(CompoundNBT tagCompound)
     {
         tagCompound.setString("brickBlock", Block.REGISTRY.getNameForObject(this.brickBlock.getBlock()).toString());
         tagCompound.setInteger("brickBlockMeta", this.brickBlock.getBlock().getMetaFromState(this.brickBlock));
@@ -45,7 +45,7 @@ public class DungeonConfiguration
         return tagCompound;
     }
 
-    public void readFromNBT(NBTTagCompound tagCompound)
+    public void readFromNBT(CompoundNBT tagCompound)
     {
         try
         {
@@ -65,7 +65,7 @@ public class DungeonConfiguration
         }
     }
 
-    public IBlockState getBrickBlock()
+    public BlockState getBrickBlock()
     {
         return brickBlock;
     }

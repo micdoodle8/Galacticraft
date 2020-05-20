@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.entity.IRocketType.EnumRocketType;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRocketInventory extends Container
@@ -13,7 +13,7 @@ public class ContainerRocketInventory extends Container
     private final IInventory spaceshipInv;
     private final EnumRocketType rocketType;
 
-    public ContainerRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType, EntityPlayer player)
+    public ContainerRocketInventory(IInventory par1IInventory, IInventory par2IInventory, EnumRocketType rocketType, PlayerEntity player)
     {
         this.lowerChestInventory = par1IInventory;
         this.spaceshipInv = par2IInventory;
@@ -86,13 +86,13 @@ public class ContainerRocketInventory extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.spaceshipInv.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = this.inventorySlots.get(par2);
@@ -132,7 +132,7 @@ public class ContainerRocketInventory extends Container
      * Callback for when the crafting gui is closed.
      */
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
         this.lowerChestInventory.closeInventory(par1EntityPlayer);

@@ -4,17 +4,17 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerLaserTurret extends Container
 {
     private TileEntityLaserTurret tileEntity;
 
-    public ContainerLaserTurret(InventoryPlayer par1InventoryPlayer, TileEntityLaserTurret laserTurret)
+    public ContainerLaserTurret(PlayerInventory par1InventoryPlayer, TileEntityLaserTurret laserTurret)
     {
         this.tileEntity = laserTurret;
         this.addSlotToContainer(new SlotSpecific(laserTurret, 0, 82, 103, IItemElectric.class));
@@ -39,13 +39,13 @@ public class ContainerLaserTurret extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(PlayerEntity var1)
     {
         return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par1);

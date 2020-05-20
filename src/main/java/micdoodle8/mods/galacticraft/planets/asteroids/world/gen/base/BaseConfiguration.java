@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseDeck.EnumBaseType;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base.BaseRoom.EnumRoomType;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 
 import java.util.Random;
 
@@ -16,7 +16,7 @@ public class BaseConfiguration
     private boolean hangar;
     private int roomHeight;
     private int roomDepth;
-    private IBlockState wallBlock;
+    private BlockState wallBlock;
     private int roomsNo;
     private int[] randomRoomTypes;
     private EnumRoomType[] roomTypes = EnumRoomType.values();
@@ -76,7 +76,7 @@ public class BaseConfiguration
         }
     }
 
-    public void writeToNBT(NBTTagCompound tagCompound)
+    public void writeToNBT(CompoundNBT tagCompound)
     {
         tagCompound.setInteger("yPos", this.yPosition);
         tagCompound.setInteger("dT", this.baseType + (this.hangar ? 16 : 0));
@@ -84,7 +84,7 @@ public class BaseConfiguration
         tagCompound.setInteger("rmN", this.roomsNo);
     }
 
-    public void readFromNBT(NBTTagCompound tagCompound)
+    public void readFromNBT(CompoundNBT tagCompound)
     {
         try
         {
@@ -113,7 +113,7 @@ public class BaseConfiguration
         return this.yPosition;
     }
 
-    public IBlockState getWallBlock()
+    public BlockState getWallBlock()
     {
         return this.wallBlock;
     }

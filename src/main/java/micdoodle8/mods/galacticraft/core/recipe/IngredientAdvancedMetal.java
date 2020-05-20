@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraftforge.common.crafting.IIngredientFactory;
 import net.minecraftforge.common.crafting.JsonContext;
 import javax.annotation.Nonnull;
@@ -20,7 +20,7 @@ public class IngredientAdvancedMetal implements IIngredientFactory
     @Override
     public Ingredient parse(JsonContext context, JsonObject json)
     {
-        String metal = JsonUtils.getString(json, "metal");
+        String metal = JSONUtils.getString(json, "metal");
         if (metal.equals("meteoric_iron_ingot"))
         {
             return Ingredient.fromStacks(new ItemStack(GCItems.itemBasicMoon, 1, 0));// : new OreIngredient("ingotMeteoricIron");

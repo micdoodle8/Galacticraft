@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import net.minecraft.client.model.ModelSkeleton;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderBiped;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
+import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
+public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton>
 {
     private static final ResourceLocation skeletonTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeleton.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
@@ -25,11 +25,11 @@ public class RenderEvolvedSkeleton extends RenderBiped<EntityEvolvedSkeleton>
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private boolean texSwitch;
 
-    public RenderEvolvedSkeleton(RenderManager manager)
+    public RenderEvolvedSkeleton(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedSkeleton(), 0.6F);
-        this.addLayer(new LayerHeldItem(this));
-        this.addLayer(new LayerBipedArmor(this)
+        this.addLayer(new HeldItemLayer(this));
+        this.addLayer(new BipedArmorLayer(this)
         {
             @Override
             protected void initArmor()

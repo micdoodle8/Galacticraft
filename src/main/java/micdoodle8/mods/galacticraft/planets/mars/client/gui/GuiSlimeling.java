@@ -8,14 +8,14 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -24,15 +24,15 @@ import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 
-public class GuiSlimeling extends GuiScreen
+public class GuiSlimeling extends Screen
 {
     private final int xSize;
     private final int ySize;
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel0.png");
     private final EntitySlimeling slimeling;
 
-    public GuiTextField nameField;
-    public GuiButton stayButton;
+    public TextFieldWidget nameField;
+    public Button stayButton;
 
     public static boolean renderingOnGui = false;
 
@@ -56,11 +56,11 @@ public class GuiSlimeling extends GuiScreen
         Keyboard.enableRepeatEvents(true);
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
-        this.stayButton = new GuiButton(0, i + 120, j + 122, 50, 20, "");
+        this.stayButton = new Button(0, i + 120, j + 122, 50, 20, "");
         this.stayButton.enabled = this.slimeling.isOwner(this.mc.player);
         this.stayButton.displayString = this.slimeling.isSitting() ? GCCoreUtil.translate("gui.slimeling.button.follow") : GCCoreUtil.translate("gui.slimeling.button.sit");
         this.buttonList.add(this.stayButton);
-        this.nameField = new GuiTextField(0, this.fontRenderer, i + 44, j + 59, 103, 12);
+        this.nameField = new TextFieldWidget(0, this.fontRenderer, i + 44, j + 59, 103, 12);
         this.nameField.setText(this.slimeling.getName());
         this.nameField.setEnableBackgroundDrawing(false);
         this.nameField.setMaxStringLength(30);
@@ -107,7 +107,7 @@ public class GuiSlimeling extends GuiScreen
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         if (button.enabled)
         {
@@ -143,7 +143,7 @@ public class GuiSlimeling extends GuiScreen
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, 0, -70.0F);
-        Gui.drawRect(i, j, i + this.xSize, j + this.ySize - 20, 0xFF000000);
+        AbstractGui.drawRect(i, j, i + this.xSize, j + this.ySize - 20, 0xFF000000);
         GlStateManager.popMatrix();
 
         int yOffset = (int) Math.floor(30.0D * (1.0F - this.slimeling.getScale()));
@@ -176,8 +176,8 @@ public class GuiSlimeling extends GuiScreen
         int startY = dY + j - 10;
         int width = this.xSize - 60;
         int height = 15;
-        Gui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
-        Gui.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
+        AbstractGui.drawRect(startX, startY, startX + width, startY + height, 0xffA0A0A0);
+        AbstractGui.drawRect(startX + 1, startY + 1, startX + width - 1, startY + height - 1, 0xFF000000);
         this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.name") + ": ", dX + i + 55, dY + j - 6, 0x404040);
         this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.owner") + ": " + this.slimeling.getOwnerUsername(), dX + i + 55, dY + j + 7, 0x404040);
         this.fontRenderer.drawString(GCCoreUtil.translate("gui.slimeling.kills") + ": " + this.slimeling.getKillCount(), dX + i + 55, dY + j + 20, 0x404040);

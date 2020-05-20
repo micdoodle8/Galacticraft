@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -28,7 +28,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
         this.setSize(1.5F, 3.0F);
     }
 
-    public EntityEntryPodVenus(EntityPlayerMP player)
+    public EntityEntryPodVenus(ServerPlayerEntity player)
     {
         super(player, 0.0F);
         this.setSize(1.5F, 3.0F);
@@ -199,7 +199,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     }
 
     @Override
-    public boolean processInitialInteract(EntityPlayer player, EnumHand hand)
+    public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
         if (this.world.isRemote)
         {
@@ -216,12 +216,12 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
             return true;
         }
 
-        if (this.getPassengers().isEmpty() && player instanceof EntityPlayerMP)
+        if (this.getPassengers().isEmpty() && player instanceof ServerPlayerEntity)
         {
-            GCCoreUtil.openParachestInv((EntityPlayerMP) player, this);
+            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
             return true;
         }
-        else if (player instanceof EntityPlayerMP)
+        else if (player instanceof ServerPlayerEntity)
         {
             if (!this.onGround)
             {

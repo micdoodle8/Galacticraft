@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.energy.tile;
 
 import micdoodle8.mods.galacticraft.api.power.IEnergyStorageGC;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class EnergyStorage implements IEnergyStorageGC
 {
@@ -29,13 +29,13 @@ public class EnergyStorage implements IEnergyStorageGC
         this.maxExtractRemaining = maxExtract;
     }
 
-    public EnergyStorage readFromNBT(NBTTagCompound nbt)
+    public EnergyStorage readFromNBT(CompoundNBT nbt)
     {
         this.energy = nbt.getFloat("EnergyF");
         return this;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         if (this.energy < 0)
         {

@@ -6,13 +6,13 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -98,7 +98,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.itemCookTime = nbt.getInteger("itemCookTime");
@@ -106,7 +106,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("itemCookTime", this.itemCookTime);
@@ -134,13 +134,13 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 //    }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing direction)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction direction)
     {
         return slotID == 0;
     }
@@ -158,7 +158,7 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 //    }
 
     @Override
-    public float receiveElectricity(EnumFacing from, float energy, int tier, boolean doReceive)
+    public float receiveElectricity(Direction from, float energy, int tier, boolean doReceive)
     {
         return 0;
     }
@@ -172,30 +172,30 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
 	*/
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
         return EnumSet.of(this.getElectricOutputDirection());
     }
 
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricOutputDirection()
+    public Direction getElectricOutputDirection()
     {
         return getFront().rotateY();
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null || type != NetworkType.POWER)
         {

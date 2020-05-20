@@ -7,15 +7,15 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.network.PacketSimpleVenus;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-public class GuiLaserTurretEditPriority extends GuiScreen implements GuiElementSpinner.ISpinnerCallback
+public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpinner.ISpinnerCallback
 {
     private static final ResourceLocation backgroundTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/laser_turret_edit.png");
 
@@ -33,7 +33,7 @@ public class GuiLaserTurretEditPriority extends GuiScreen implements GuiElementS
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         switch (button.id)
         {
@@ -105,7 +105,7 @@ public class GuiLaserTurretEditPriority extends GuiScreen implements GuiElementS
     @Override
     public void onSelectionChanged(GuiElementSpinner spinner, int newVal)
     {
-        for (GuiButton button : this.buttonList)
+        for (Button button : this.buttonList)
         {
             if (button instanceof GuiElementSpinner)
             {
@@ -132,7 +132,7 @@ public class GuiLaserTurretEditPriority extends GuiScreen implements GuiElementS
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementSpinner spinner, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementSpinner spinner, PlayerEntity player)
     {
         return player.getUniqueID().equals(this.laserTurret.getOwnerUUID());
     }

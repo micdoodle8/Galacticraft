@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerIngotCompressor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -23,7 +23,7 @@ public class GuiIngotCompressor extends GuiContainerGC
 
     private TileEntityIngotCompressor tileEntity;
 
-    public GuiIngotCompressor(InventoryPlayer par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
+    public GuiIngotCompressor(PlayerInventory par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
     {
         super(new ContainerIngotCompressor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;

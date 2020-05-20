@@ -10,14 +10,14 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -79,9 +79,9 @@ public class NetworkUtil
                 buffer.writeFloat(storage.getMaxExtract());
                 buffer.writeFloat(storage.getEnergyStoredGC());
             }
-            else if (dataValue instanceof NBTTagCompound)
+            else if (dataValue instanceof CompoundNBT)
             {
-                NetworkUtil.writeNBTTagCompound((NBTTagCompound) dataValue, buffer);
+                NetworkUtil.writeNBTTagCompound((CompoundNBT) dataValue, buffer);
             }
             else if (dataValue instanceof FluidTankGC)
             {
@@ -182,9 +182,9 @@ public class NetworkUtil
                     ByteBufUtils.writeUTF8String(buffer, array[i].owner);
                 }
             }
-            else if (dataValue instanceof EnumFacing)
+            else if (dataValue instanceof Direction)
             {
-                buffer.writeInt(((EnumFacing) dataValue).getIndex());
+                buffer.writeInt(((Direction) dataValue).getIndex());
             }
             else if (dataValue instanceof BlockPos)
             {
@@ -193,9 +193,9 @@ public class NetworkUtil
                 buffer.writeInt(pos.getY());
                 buffer.writeInt(pos.getZ());
             }
-            else if (dataValue instanceof EnumDyeColor)
+            else if (dataValue instanceof DyeColor)
             {
-                buffer.writeInt(((EnumDyeColor) dataValue).getDyeDamage());
+                buffer.writeInt(((DyeColor) dataValue).getDyeDamage());
             }
             else
             {
@@ -259,7 +259,7 @@ public class NetworkUtil
                 storage.setEnergyStored(buffer.readFloat());
                 objList.add(storage);
             }
-            else if (clazz.equals(NBTTagCompound.class))
+            else if (clazz.equals(CompoundNBT.class))
             {
                 try
                 {
@@ -325,17 +325,17 @@ public class NetworkUtil
                     objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer), -1));
                 }
             }
-            else if (clazz.equals(EnumFacing.class))
+            else if (clazz.equals(Direction.class))
             {
-                objList.add(EnumFacing.getFront(buffer.readInt()));
+                objList.add(Direction.getFront(buffer.readInt()));
             }
             else if (clazz.equals(BlockPos.class))
             {
                 objList.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
             }
-            else if (clazz.equals(EnumDyeColor.class))
+            else if (clazz.equals(DyeColor.class))
             {
-                objList.add(EnumDyeColor.byDyeDamage(buffer.readInt()));
+                objList.add(DyeColor.byDyeDamage(buffer.readInt()));
             }
         }
 
@@ -378,7 +378,7 @@ public class NetworkUtil
         {
             return buffer.readLong();
         }
-        else if (dataValue.equals(NBTTagCompound.class))
+        else if (dataValue.equals(CompoundNBT.class))
         {
             return NetworkUtil.readNBTTagCompound(buffer);
         }
@@ -420,17 +420,17 @@ public class NetworkUtil
             storage.setEnergyStored(buffer.readFloat());
             return storage;
         }
-        else if (dataValue.equals(EnumFacing.class))
+        else if (dataValue.equals(Direction.class))
         {
-            return EnumFacing.getFront(buffer.readInt());
+            return Direction.getFront(buffer.readInt());
         }
         else if (dataValue.equals(BlockPos.class))
         {
             return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
-        else if (dataValue.equals(EnumDyeColor.class))
+        else if (dataValue.equals(DyeColor.class))
         {
-            return EnumDyeColor.byDyeDamage(buffer.readInt());
+            return DyeColor.byDyeDamage(buffer.readInt());
         }
         else
         {
@@ -480,7 +480,7 @@ public class NetworkUtil
             buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
             buffer.writeByte(itemStack.getCount());
             buffer.writeShort(itemStack.getItemDamage());
-            NBTTagCompound nbttagcompound = null;
+            CompoundNBT nbttagcompound = null;
 
             if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
             {
@@ -495,7 +495,7 @@ public class NetworkUtil
         }
     }
 
-    public static NBTTagCompound readNBTTagCompound(ByteBuf buffer) throws IOException
+    public static CompoundNBT readNBTTagCompound(ByteBuf buffer) throws IOException
     {
         try
         {
@@ -512,7 +512,7 @@ public class NetworkUtil
         }
     }
 
-    public static void writeNBTTagCompound(NBTTagCompound nbt, ByteBuf buffer) throws IOException
+    public static void writeNBTTagCompound(CompoundNBT nbt, ByteBuf buffer) throws IOException
     {
         try
         {

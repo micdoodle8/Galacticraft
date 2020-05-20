@@ -7,19 +7,19 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.miccore.Annotations;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -44,13 +44,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
     }
 
     @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
-    public boolean canWrench(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
+    public boolean canWrench(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
     {
         return true;
     }
 
     @Annotations.RuntimeInterface(clazz = "buildcraft.api.tools.IToolWrench", modID = CompatibilityManager.modidBuildcraft)
-    public void wrenchUsed(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult rayTrace)
+    public void wrenchUsed(PlayerEntity player, Hand hand, ItemStack wrench, RayTraceResult rayTrace)
     {
         ItemStack stack = player.inventory.getCurrentItem();
 
@@ -70,73 +70,73 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         }
     }
 
-    public void wrenchUsed(EntityPlayer entityPlayer, BlockPos pos)
+    public void wrenchUsed(PlayerEntity entityPlayer, BlockPos pos)
     {
 
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player)
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    public void onCreated(ItemStack stack, World world, PlayerEntity player)
     {
-        if (world.isRemote && player instanceof EntityPlayerSP)
+        if (world.isRemote && player instanceof ClientPlayerEntity)
         {
-            ClientProxyCore.playerClientHandler.onBuild(3, (EntityPlayerSP) player);
+            ClientProxyCore.playerClientHandler.onBuild(3, (ClientPlayerEntity) player);
         }
     }
 
     @Override
-    public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand)
+    public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
     {
         if (world.isRemote || player.isSneaking())
         {
-            return EnumActionResult.PASS;
+            return ActionResultType.PASS;
         }
 
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
 
         if (state.getBlock() instanceof BlockAdvanced)
         {
             if (((BlockAdvanced) state.getBlock()).onUseWrench(world, pos, player, hand, player.getHeldItem(hand), side, hitX, hitY, hitZ))
             {
-                return EnumActionResult.SUCCESS;
+                return ActionResultType.SUCCESS;
             }
         }
 
         for (Map.Entry<IProperty<?>, Comparable<?>> entry : state.getProperties().entrySet())
         {
             IProperty<?> iProperty = entry.getKey();
-            if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.getValue(iProperty) instanceof EnumFacing)
+            if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.getValue(iProperty) instanceof Direction)
             {
-                PropertyEnum<EnumFacing> property = (PropertyEnum<EnumFacing>) iProperty;
-                Collection<EnumFacing> values = property.getAllowedValues();
+                PropertyEnum<Direction> property = (PropertyEnum<Direction>) iProperty;
+                Collection<Direction> values = property.getAllowedValues();
                 if (values.size() > 0)
                 {
                     boolean done = false;
-                    EnumFacing currentFacing = state.getValue(property);
+                    Direction currentFacing = state.getValue(property);
                     
                     // Special case: horizontal facings should be rotated around the Y axis - this includes most of GC's own blocks
-                    if (values.size() == 4 && !values.contains(EnumFacing.UP) && !values.contains(EnumFacing.DOWN))
+                    if (values.size() == 4 && !values.contains(Direction.UP) && !values.contains(Direction.DOWN))
                     {
-                        EnumFacing newFacing = currentFacing.rotateY();
+                        Direction newFacing = currentFacing.rotateY();
                         if (values.contains(newFacing))
                         {
                             world.setBlockState(pos, state.withProperty(property, newFacing));
@@ -146,9 +146,9 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                     if (!done)
                     {
                         // General case: rotation will follow the order in FACING (may be a bit jumpy)
-                        List<EnumFacing> list = Arrays.asList(values.toArray(new EnumFacing[0]));
+                        List<Direction> list = Arrays.asList(values.toArray(new Direction[0]));
                         int i = list.indexOf(currentFacing) + 1;
-                        EnumFacing newFacing = list.get(i >= list.size() ? 0 : i);
+                        Direction newFacing = list.get(i >= list.size() ? 0 : i);
                         world.setBlockState(pos, state.withProperty(property, newFacing));
                     }
 
@@ -160,13 +160,13 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                     if (tile instanceof TileBaseUniversalElectrical)
                         ((TileBaseUniversalElectrical) tile).updateFacing();
 
-                    return EnumActionResult.SUCCESS;
+                    return ActionResultType.SUCCESS;
                 }
-                return EnumActionResult.PASS;
+                return ActionResultType.PASS;
             }
         }
 
-        return EnumActionResult.PASS;
+        return ActionResultType.PASS;
     }
 
     @Override

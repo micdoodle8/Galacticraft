@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.core.client.render.entities;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -15,19 +15,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier1Rocket extends Render<EntitySpaceshipBase>
+public class RenderTier1Rocket extends EntityRenderer<EntitySpaceshipBase>
 {
     private ResourceLocation spaceshipTexture;
 
     protected ModelBase modelSpaceship;
 
-    public RenderTier1Rocket(RenderManager manager, ModelBase spaceshipModel, String textureDomain, String texture)
+    public RenderTier1Rocket(EntityRendererManager manager, ModelBase spaceshipModel, String textureDomain, String texture)
     {
         this(manager, new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
         this.modelSpaceship = spaceshipModel;
     }
 
-    private RenderTier1Rocket(RenderManager manager, ResourceLocation texture)
+    private RenderTier1Rocket(EntityRendererManager manager, ResourceLocation texture)
     {
         super(manager);
         this.spaceshipTexture = texture;

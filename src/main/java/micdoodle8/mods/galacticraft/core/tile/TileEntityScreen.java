@@ -7,10 +7,10 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.blocks.BlockScreen;
 import micdoodle8.mods.galacticraft.core.client.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,7 +50,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -139,12 +139,12 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         data[1] = connectedFlags;
     }
 
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return this.getFacing(this.world.getBlockState(getPos()));
     }
 
-    private EnumFacing getFacing(IBlockState state)
+    private Direction getFacing(BlockState state)
     {
         return state.getValue(BlockScreen.FACING);
     }
@@ -155,12 +155,12 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
      *
      * @param state The state of the screen prior to breaking or rotation
      */
-    public void breakScreen(IBlockState state)
+    public void breakScreen(BlockState state)
     {
         BlockVec3 vec = new BlockVec3(this);
         int meta = state.getBlock().getMetaFromState(state);
         TileEntity tile;
-        EnumFacing facingRight = getFacing(state).rotateY();
+        Direction facingRight = getFacing(state).rotateY();
 
         int left = this.connectionsLeft;
         int right = this.connectionsRight;
@@ -182,7 +182,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
                 }
                 else
                 {
-                    BlockVec3 newVec = vec.clone().modifyPositionFromSide(facingRight, x).modifyPositionFromSide(EnumFacing.DOWN, z);
+                    BlockVec3 newVec = vec.clone().modifyPositionFromSide(facingRight, x).modifyPositionFromSide(Direction.DOWN, z);
                     tile = newVec.getTileEntity(this.world);
                     if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta)
                     {
@@ -291,8 +291,8 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     {
         if (LOGGING) this.log("Starting connection check");
 
-        IBlockState iblockstate = this.world.getBlockState(this.pos);
-        EnumFacing facing = iblockstate.getValue(BlockScreen.FACING);
+        BlockState iblockstate = this.world.getBlockState(this.pos);
+        Direction facing = iblockstate.getValue(BlockScreen.FACING);
 
         int meta = this.getBlockMetadata() & 7;
         if (meta < 2)
@@ -407,7 +407,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.imageType = nbt.getInteger("type");
@@ -427,7 +427,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("type", this.imageType);
@@ -440,9 +440,9 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     public void checkScreenSize()
@@ -714,13 +714,13 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         ArrayList<TileEntityScreen> screenList = new ArrayList<TileEntityScreen>();
 
 //		int side = this.getRight(meta);
-        EnumFacing side = getFront().rotateY();
+        Direction side = getFront().rotateY();
 
         for (int x = -left; x <= right; x++)
         {
             for (int z = -up; z <= down; z++)
             {
-                BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x).modifyPositionFromSide(EnumFacing.DOWN, z);
+                BlockVec3 newVec = vec.clone().modifyPositionFromSide(side, x).modifyPositionFromSide(Direction.DOWN, z);
                 TileEntity tile = newVec.getTileEntity(this.world);
                 if (tile instanceof TileEntityScreen && tile.getBlockMetadata() == meta && !tile.isInvalid())
                 {
@@ -775,7 +775,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
 
         DrawGameScreen newScreen = null;
         boolean serverside = true;
-        TileEntity bottomLeft = vec.clone().modifyPositionFromSide(side, -left).modifyPositionFromSide(EnumFacing.DOWN, down).getTileEntity(this.world);
+        TileEntity bottomLeft = vec.clone().modifyPositionFromSide(side, -left).modifyPositionFromSide(Direction.DOWN, down).getTileEntity(this.world);
         if (this.world.isRemote)
         {
             if (bottomLeft instanceof TileEntityScreen)  //It always will be if reached this far
@@ -1044,7 +1044,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
         {
             TileEntity tile;
-            BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(Direction.DOWN, z);
             if (z == 0)
             {
                 tile = this;
@@ -1075,7 +1075,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
         for (int z = -this.connectionsUp; z <= this.connectionsDown; z++)
         {
             TileEntity tile;
-            BlockVec3 newVec = vec.clone().modifyPositionFromSide(EnumFacing.DOWN, z);
+            BlockVec3 newVec = vec.clone().modifyPositionFromSide(Direction.DOWN, z);
             if (z == 0)
             {
                 tile = this;
@@ -1102,7 +1102,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     {
         int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
-        EnumFacing side = getFront().rotateY();
+        Direction side = getFront().rotateY();
         BlockVec3 vec = new BlockVec3(this);
         for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
         {
@@ -1134,7 +1134,7 @@ public class TileEntityScreen extends TileEntityAdvanced implements ITileClientU
     {
         int meta = this.getBlockMetadata();
 //    	EnumFacing side = EnumFacing.getFront(this.getRight(meta));
-        EnumFacing side = getFront().rotateY();
+        Direction side = getFront().rotateY();
         BlockVec3 vec = new BlockVec3(this);
         for (int x = -this.connectionsLeft; x <= this.connectionsRight; x++)
         {

@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -40,7 +40,7 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * @return the GUI to be opened with this schematic
      */
     @SideOnly(Side.CLIENT)
-    GuiScreen getResultScreen(EntityPlayer player, BlockPos pos);
+    Screen getResultScreen(PlayerEntity player, BlockPos pos);
 
     /**
      * The resulting container for this page
@@ -49,5 +49,5 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * @param pos    Coordinates of the NASA Workbench
      * @return the container to be opened with this schematic
      */
-    Container getResultContainer(EntityPlayer player, BlockPos pos);
+    Container getResultContainer(PlayerEntity player, BlockPos pos);
 }

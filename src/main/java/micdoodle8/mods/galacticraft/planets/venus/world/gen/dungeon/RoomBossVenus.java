@@ -5,44 +5,44 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.Blocks;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
 public class RoomBossVenus extends SizedPieceVenus
 {
-    private EnumFacing exitDirection;
+    private Direction exitDirection;
     private BlockPos chestPos;
 
     public RoomBossVenus()
     {
     }
 
-    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
         this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(6) + 20, rand.nextInt(2) + 10, rand.nextInt(6) + 20, entranceDir);
     }
 
-    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomBossVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.setCoordBaseMode(EnumFacing.SOUTH);
+        this.setCoordBaseMode(Direction.SOUTH);
         this.sizeX = sizeX;
         this.sizeZ = sizeZ;
         this.sizeY = sizeY;
         int yPos = configuration.getYPosition();
 
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos - 2, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos - 2, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -62,13 +62,13 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         super.readStructureFromNBT(tagCompound, manager);
 
         if (tagCompound.hasKey("direction_exit"))
         {
-            this.exitDirection = EnumFacing.getFront(tagCompound.getInteger("direction_exit"));
+            this.exitDirection = Direction.getFront(tagCompound.getInteger("direction_exit"));
         }
         else
         {
@@ -82,9 +82,9 @@ public class RoomBossVenus extends SizedPieceVenus
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
     {
-        StructureBoundingBox box = new StructureBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
+        MutableBoundingBox box = new MutableBoundingBox(new int[] { Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE });
 
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -157,11 +157,11 @@ public class RoomBossVenus extends SizedPieceVenus
                         int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
                         if (i > start && i <= end && j < 5 && j > 2)
                         {
-                            if ((getDirection() == EnumFacing.SOUTH || (this.exitDirection != null && this.exitDirection == EnumFacing.SOUTH)) && k < 7)
+                            if ((getDirection() == Direction.SOUTH || (this.exitDirection != null && this.exitDirection == Direction.SOUTH)) && k < 7)
                             {
                                 placeBlock = false;
                             }
-                            if ((getDirection() == EnumFacing.NORTH || (this.exitDirection != null && this.exitDirection == EnumFacing.NORTH)) && k > this.sizeZ - 7)
+                            if ((getDirection() == Direction.NORTH || (this.exitDirection != null && this.exitDirection == Direction.NORTH)) && k > this.sizeZ - 7)
                             {
                                 placeBlock = false;
                             }
@@ -171,11 +171,11 @@ public class RoomBossVenus extends SizedPieceVenus
                         end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
                         if (k > start && k <= end && j < 5 && j > 2)
                         {
-                            if ((getDirection() == EnumFacing.EAST || (this.exitDirection != null && this.exitDirection == EnumFacing.EAST)) && i < 7)
+                            if ((getDirection() == Direction.EAST || (this.exitDirection != null && this.exitDirection == Direction.EAST)) && i < 7)
                             {
                                 placeBlock = false;
                             }
-                            if ((getDirection() == EnumFacing.WEST || (this.exitDirection != null && this.exitDirection == EnumFacing.WEST)) && i > this.sizeX - 7)
+                            if ((getDirection() == Direction.WEST || (this.exitDirection != null && this.exitDirection == Direction.WEST)) && i > this.sizeX - 7)
                             {
                                 placeBlock = false;
                             }

@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.planets.venus.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -39,12 +39,12 @@ public class EntityWebShot extends Entity implements IProjectile
         this.setPosition(x, y, z);
     }
 
-    public EntityWebShot(World worldIn, EntityLivingBase shooter, EntityLivingBase target, float p_i1755_4_, float p_i1755_5_)
+    public EntityWebShot(World worldIn, LivingEntity shooter, LivingEntity target, float p_i1755_4_, float p_i1755_5_)
     {
         super(worldIn);
         this.shootingEntity = shooter;
 
-        if (shooter instanceof EntityPlayer)
+        if (shooter instanceof PlayerEntity)
         {
             this.canBePickedUp = 1;
         }
@@ -67,12 +67,12 @@ public class EntityWebShot extends Entity implements IProjectile
         }
     }
 
-    public EntityWebShot(World worldIn, EntityLivingBase shooter, float velocity)
+    public EntityWebShot(World worldIn, LivingEntity shooter, float velocity)
     {
         super(worldIn);
         this.shootingEntity = shooter;
 
-        if (shooter instanceof EntityPlayer)
+        if (shooter instanceof PlayerEntity)
         {
             this.canBePickedUp = 1;
         }
@@ -222,11 +222,11 @@ public class EntityWebShot extends Entity implements IProjectile
             movingobjectposition = new RayTraceResult(entity);
         }
 
-        if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+        if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof PlayerEntity)
         {
-            EntityPlayer entityplayer = (EntityPlayer)movingobjectposition.entityHit;
+            PlayerEntity entityplayer = (PlayerEntity)movingobjectposition.entityHit;
 
-            if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer)this.shootingEntity).canAttackPlayer(entityplayer))
+            if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !((PlayerEntity)this.shootingEntity).canAttackPlayer(entityplayer))
             {
                 movingobjectposition = null;
             }
@@ -238,9 +238,9 @@ public class EntityWebShot extends Entity implements IProjectile
             {
                 if (movingobjectposition.entityHit != this.shootingEntity && !this.world.isRemote)
                 {
-                    if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                    if (movingobjectposition.entityHit instanceof LivingEntity)
                     {
-                        ((EntityLivingBase) movingobjectposition.entityHit).addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 180, 2, true, true));
+                        ((LivingEntity) movingobjectposition.entityHit).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 180, 2, true, true));
                         this.setDead();
                     }
                     else
@@ -315,14 +315,14 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+    public void writeEntityToNBT(CompoundNBT tagCompound)
     {
         tagCompound.setByte("shake", (byte)this.arrowShake);
         tagCompound.setByte("pickup", (byte)this.canBePickedUp);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund)
+    public void readEntityFromNBT(CompoundNBT tagCompund)
     {
         this.arrowShake = tagCompund.getByte("shake") & 255;
 

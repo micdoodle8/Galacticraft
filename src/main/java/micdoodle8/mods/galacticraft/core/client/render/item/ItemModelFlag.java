@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;
@@ -58,7 +58,7 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.rotY((float) -(Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();
-            EntityLivingBase player = Minecraft.getMinecraft().player;
+            LivingEntity player = Minecraft.getMinecraft().player;
             if (player != null && player.isHandActive() && !player.getActiveItemStack().isEmpty())
             {
                 final int useTime = Minecraft.getMinecraft().player.getItemInUseMaxCount();

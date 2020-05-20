@@ -6,19 +6,19 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.io.IOException;
 
-public class GuiSlimelingInventory extends GuiContainer
+public class GuiSlimelingInventory extends ContainerScreen
 {
     private static final ResourceLocation slimelingPanelGui = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/slimeling_panel2.png");
     private final EntitySlimeling slimeling;
@@ -28,7 +28,7 @@ public class GuiSlimelingInventory extends GuiContainer
     private final int invWidth = 18;
     private final int invHeight = 18;
 
-    public GuiSlimelingInventory(EntityPlayer player, EntitySlimeling slimeling)
+    public GuiSlimelingInventory(PlayerEntity player, EntitySlimeling slimeling)
     {
         super(new ContainerSlimeling(player.inventory, slimeling, FMLClientHandler.instance().getClient().player));
         this.slimeling = slimeling;
@@ -54,7 +54,7 @@ public class GuiSlimelingInventory extends GuiContainer
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {
@@ -90,7 +90,7 @@ public class GuiSlimelingInventory extends GuiContainer
         final int var6 = (this.height - this.ySize) / 2;
 
         GlStateManager.pushMatrix();
-        Gui.drawRect(var5, var6, var5 + this.xSize, var6 + this.ySize, 0xFF000000);
+        AbstractGui.drawRect(var5, var6, var5 + this.xSize, var6 + this.ySize, 0xFF000000);
         GlStateManager.popMatrix();
 
         int yOffset = (int) Math.floor(30.0D * (1.0F - this.slimeling.getScale()));

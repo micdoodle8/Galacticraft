@@ -2,36 +2,36 @@ package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHandSide;
+import net.minecraft.util.HandSide;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
+public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayerEntity>
 {
-    protected final RenderLivingBase<?> livingEntityRenderer;
+    protected final LivingRenderer<?> livingEntityRenderer;
 
-    public LayerHeldItemGC(RenderLivingBase<?> livingEntityRendererIn)
+    public LayerHeldItemGC(LivingRenderer<?> livingEntityRendererIn)
     {
         this.livingEntityRenderer = livingEntityRendererIn;
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void doRenderLayer(AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         if (player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             return;
         }
-        boolean flag = player.getPrimaryHand() == EnumHandSide.RIGHT;
+        boolean flag = player.getPrimaryHand() == HandSide.RIGHT;
         ItemStack itemstack = flag ? player.getHeldItemOffhand() : player.getHeldItemMainhand();
         ItemStack itemstack1 = flag ? player.getHeldItemMainhand() : player.getHeldItemOffhand();
 
@@ -46,13 +46,13 @@ public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
                 GlStateManager.scale(0.5F, 0.5F, 0.5F);
             }
 
-            this.renderHeldItem(player, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
-            this.renderHeldItem(player, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, EnumHandSide.LEFT);
+            this.renderHeldItem(player, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT);
+            this.renderHeldItem(player, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT);
             GlStateManager.popMatrix();
         }
     }
 
-    private void renderHeldItem(EntityLivingBase p_188358_1_, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
+    private void renderHeldItem(LivingEntity p_188358_1_, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, HandSide handSide)
     {
         if (!p_188358_2_.isEmpty())
         {
@@ -66,7 +66,7 @@ public class LayerHeldItemGC implements LayerRenderer<AbstractClientPlayer>
             ((ModelBiped)this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F, handSide);
             GlStateManager.rotate(-90.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-            boolean flag = handSide == EnumHandSide.LEFT;
+            boolean flag = handSide == HandSide.LEFT;
             GlStateManager.translate((float)(flag ? -1 : 1) / 16.0F, 0.125F, -0.625F);
             Minecraft.getMinecraft().getItemRenderer().renderItemSide(p_188358_1_, p_188358_2_, p_188358_3_, flag);
             GlStateManager.popMatrix();

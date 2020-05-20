@@ -7,9 +7,9 @@ import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.ConfigManagerMars;
 import micdoodle8.mods.galacticraft.planets.mars.client.gui.GuiSchematicTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerSchematicTier2Rocket;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,13 +37,13 @@ public class SchematicTier2Rocket implements ISchematicPage
 
     @SideOnly(Side.CLIENT)
     @Override
-    public GuiScreen getResultScreen(EntityPlayer player, BlockPos pos)
+    public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {
         return new GuiSchematicTier2Rocket(player.inventory, pos);
     }
 
     @Override
-    public Container getResultContainer(EntityPlayer player, BlockPos pos)
+    public Container getResultContainer(PlayerEntity player, BlockPos pos)
     {
         return new ContainerSchematicTier2Rocket(player.inventory, pos);
     }

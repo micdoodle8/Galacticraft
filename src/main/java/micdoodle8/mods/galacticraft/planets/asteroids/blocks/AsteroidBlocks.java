@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemBlockWalkway;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -39,7 +39,7 @@ public class AsteroidBlocks
         AsteroidBlocks.spaceWart = new BlockSpaceWart("spacewart");
     }
 
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends BlockItem> itemClass)
     {
         GCBlocks.registerBlock(block, itemClass);
     }

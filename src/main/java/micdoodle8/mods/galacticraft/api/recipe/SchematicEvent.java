@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 /**
@@ -20,9 +20,9 @@ public abstract class SchematicEvent extends Event
 
     public static class Unlock extends SchematicEvent
     {
-        public EntityPlayerMP player;
+        public ServerPlayerEntity player;
 
-        public Unlock(EntityPlayerMP player, ISchematicPage page)
+        public Unlock(ServerPlayerEntity player, ISchematicPage page)
         {
             super(page);
             this.player = player;
@@ -33,9 +33,9 @@ public abstract class SchematicEvent extends Event
     {
         public int index;
         public int direction;
-        public GuiScreen currentGui;
+        public Screen currentGui;
 
-        public FlipPage(GuiScreen cs, ISchematicPage page, int index, int direction)
+        public FlipPage(Screen cs, ISchematicPage page, int index, int direction)
         {
             super(page);
             this.currentGui = cs;

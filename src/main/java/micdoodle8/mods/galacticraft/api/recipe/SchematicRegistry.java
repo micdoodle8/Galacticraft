@@ -3,8 +3,8 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -77,7 +77,7 @@ public class SchematicRegistry
      * @param player the player that unlocked the schematic
      * @param page   the schematic page to be unlocked
      */
-    public static void addUnlockedPage(EntityPlayerMP player, ISchematicPage page)
+    public static void addUnlockedPage(ServerPlayerEntity player, ISchematicPage page)
     {
         // Used internally to add page to player's list of unlocked schematics.
         // No need to subscribe to this event
@@ -91,7 +91,7 @@ public class SchematicRegistry
      * @param stack  the itemstack the player has provided
      * @return the schematic page that was unlocked
      */
-    public static ISchematicPage unlockNewPage(EntityPlayerMP player, ItemStack stack)
+    public static ISchematicPage unlockNewPage(ServerPlayerEntity player, ItemStack stack)
     {
         if (stack != null)
         {
@@ -115,7 +115,7 @@ public class SchematicRegistry
      * @return the schematic page that will be shown when the player clicks NEXT
      */
     @SideOnly(Side.CLIENT)
-    public static void flipToNextPage(GuiScreen cs, int currentIndex)
+    public static void flipToNextPage(Screen cs, int currentIndex)
     {
         FMLClientHandler.instance().getClient().currentScreen = null;
 
@@ -131,7 +131,7 @@ public class SchematicRegistry
      * @return the schematic page that will be shown when the player clicks BACK
      */
     @SideOnly(Side.CLIENT)
-    public static void flipToLastPage(GuiScreen cs, int currentIndex)
+    public static void flipToLastPage(Screen cs, int currentIndex)
     {
         FMLClientHandler.instance().getClient().currentScreen = null;
 

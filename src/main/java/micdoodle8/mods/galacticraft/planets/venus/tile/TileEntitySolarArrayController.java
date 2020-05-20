@@ -16,12 +16,12 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockSolarArrayController;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
@@ -69,13 +69,13 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         {
             this.receiveEnergyGC(null, this.generateWatts, false);
 
-            EnumSet<EnumFacing> outputDirections = EnumSet.noneOf(EnumFacing.class);
-            outputDirections.addAll(Arrays.asList(EnumFacing.HORIZONTALS));
+            EnumSet<Direction> outputDirections = EnumSet.noneOf(Direction.class);
+            outputDirections.addAll(Arrays.asList(Direction.HORIZONTALS));
             outputDirections.removeAll(this.getElectricalOutputDirections());
 
             BlockVec3 thisVec = new BlockVec3(this);
             solarArray.clear();
-            for (EnumFacing direction : outputDirections)
+            for (Direction direction : outputDirections)
             {
                 TileEntity tileAdj = thisVec.getTileEntityOnSide(this.world, direction);
 
@@ -135,7 +135,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
                                 for (int y = this.getPos().getY() + 1; y < 256; y++)
                                 {
-                                    IBlockState state = this.world.getBlockState(this.getPos().add(0, y, 0));
+                                    BlockState state = this.world.getBlockState(this.getPos().add(0, y, 0));
 
                                     if (state.getBlock().isOpaqueCube(state))
                                     {
@@ -215,7 +215,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.storage.setCapacity(nbt.getFloat("maxEnergy"));
@@ -226,7 +226,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
@@ -244,29 +244,29 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 	*/
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockSolarArrayController)
         {
             return state.getValue(BlockSolarArrayController.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
         return EnumSet.of(getFront());
     }
 
     @Override
-    public EnumFacing getElectricOutputDirection()
+    public Direction getElectricOutputDirection()
     {
         return getFront();
     }
@@ -305,13 +305,13 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         return slotID == 0;
     }
@@ -323,10 +323,10 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         return type == NetworkType.POWER && direction == this.getElectricOutputDirection() ||
-                type == NetworkType.SOLAR_MODULE && direction != this.getElectricOutputDirection() && direction.getAxis() != EnumFacing.Axis.Y;
+                type == NetworkType.SOLAR_MODULE && direction != this.getElectricOutputDirection() && direction.getAxis() != Direction.Axis.Y;
     }
 
     public int getPossibleArraySize()

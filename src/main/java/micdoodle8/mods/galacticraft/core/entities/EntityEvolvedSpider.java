@@ -7,23 +7,23 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.IEntityLivingData;
+import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.SpiderEntity;
+import net.minecraft.item.Items;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.potion.Effect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
-public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathable
+public class EntityEvolvedSpider extends SpiderEntity implements IEntityBreathable
 {
     public EntityEvolvedSpider(World par1World)
     {
@@ -57,7 +57,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
     }
 
     @Override
-    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
+    public ILivingEntityData onInitialSpawn(DifficultyInstance difficulty, ILivingEntityData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
 
@@ -65,7 +65,7 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         for (Entity entity : getPassengers())
         {
             entity.dismountRidingEntity();
-            if (!(entity instanceof EntitySkeleton))
+            if (!(entity instanceof SkeletonEntity))
             {
                 GCLog.severe("Removed unexpected passenger from spider: " + entity);
             }
@@ -79,28 +79,28 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
         {
             EntityEvolvedSkeleton entityskeleton = new EntityEvolvedSkeleton(this.world);
             entityskeleton.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-            entityskeleton.onInitialSpawn(difficulty, (IEntityLivingData)null);
+            entityskeleton.onInitialSpawn(difficulty, (ILivingEntityData)null);
             this.world.spawnEntity(entityskeleton);
             entityskeleton.startRiding(this);
         }
 
         if (livingdata == null)
         {
-            livingdata = new EntitySpider.GroupData();
+            livingdata = new SpiderEntity.GroupData();
 
-            if (this.world.getDifficulty() == EnumDifficulty.HARD && this.world.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
+            if (this.world.getDifficulty() == Difficulty.HARD && this.world.rand.nextFloat() < 0.1F * difficulty.getClampedAdditionalDifficulty())
             {
-                ((EntitySpider.GroupData)livingdata).setRandomEffect(this.world.rand);
+                ((SpiderEntity.GroupData)livingdata).setRandomEffect(this.world.rand);
             }
         }
 
-        if (livingdata instanceof EntitySpider.GroupData)
+        if (livingdata instanceof SpiderEntity.GroupData)
         {
-            Potion potion = ((EntitySpider.GroupData)livingdata).effect;
+            Effect potion = ((SpiderEntity.GroupData)livingdata).effect;
 
             if (potion != null)
             {
-                this.addPotionEffect(new PotionEffect(potion, Integer.MAX_VALUE));
+                this.addPotionEffect(new EffectInstance(potion, Integer.MAX_VALUE));
             }
         }
 
@@ -117,9 +117,9 @@ public class EntityEvolvedSpider extends EntitySpider implements IEntityBreathab
             this.motionY = 0.26D;
         }
 
-        if (this.isPotionActive(MobEffects.JUMP_BOOST))
+        if (this.isPotionActive(Effects.JUMP_BOOST))
         {
-            this.motionY += (this.getActivePotionEffect(MobEffects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
+            this.motionY += (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
         }
 
         if (this.isSprinting())

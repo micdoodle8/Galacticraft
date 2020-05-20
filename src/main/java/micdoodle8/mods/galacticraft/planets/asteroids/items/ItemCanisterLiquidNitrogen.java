@@ -5,16 +5,16 @@ import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -100,21 +100,21 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
     {
         ItemStack itemStack = playerIn.getHeldItem(hand);
 
         int damage = itemStack.getItemDamage() + 125;
         if (damage > itemStack.getMaxDamage())
         {
-            return new ActionResult<>(EnumActionResult.PASS, itemStack);
+            return new ActionResult<>(ActionResultType.PASS, itemStack);
         }
 
         RayTraceResult movingobjectposition = this.rayTrace(worldIn, playerIn, true);
 
         if (movingobjectposition == null || movingobjectposition.typeOfHit == RayTraceResult.Type.MISS)
         {
-            return new ActionResult<>(EnumActionResult.PASS, itemStack);
+            return new ActionResult<>(ActionResultType.PASS, itemStack);
         }
         else
         {
@@ -124,16 +124,16 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 
                 if (!worldIn.canMineBlockBody(playerIn, pos))
                 {
-                    return new ActionResult<>(EnumActionResult.PASS, itemStack);
+                    return new ActionResult<>(ActionResultType.PASS, itemStack);
                 }
 
                 if (!playerIn.canPlayerEdit(pos, movingobjectposition.sideHit, itemStack))
                 {
-                    return new ActionResult<>(EnumActionResult.PASS, itemStack);
+                    return new ActionResult<>(ActionResultType.PASS, itemStack);
                 }
 
                 //Material material = par2World.getBlock(i, j, k).getMaterial();
-                IBlockState state = worldIn.getBlockState(pos);
+                BlockState state = worldIn.getBlockState(pos);
                 Block b = state.getBlock();
                 int meta = b.getMetaFromState(state);
 
@@ -143,11 +143,11 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
                     this.setNewDamage(itemStack, damage);
                     worldIn.playSound(null, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.NEUTRAL, 1.0F, Item.itemRand.nextFloat() * 0.4F + 0.8F);
                     worldIn.setBlockState(pos, result.getDefaultState(), 3);
-                    return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+                    return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
                 }
             }
 
-            return new ActionResult<>(EnumActionResult.PASS, itemStack);
+            return new ActionResult<>(ActionResultType.PASS, itemStack);
         }
     }
 

@@ -5,14 +5,14 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,7 +26,7 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
     public BlockGlowstoneTorch(String assetName)
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.UP));
         this.setTickRandomly(true);
         this.setUnlocalizedName(assetName);
         this.setLightLevel(0.85F);
@@ -34,19 +34,19 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
@@ -54,7 +54,7 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
     @Override
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing : FACING.getAllowedValues())
+        for (Direction enumfacing : FACING.getAllowedValues())
         {
             if (this.canPlaceAt(worldIn, pos, enumfacing))
             {
@@ -66,13 +66,13 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
     {
         this.checkForDrop(worldIn, pos, state);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         if (!this.checkForDrop(worldIn, pos, state))
         {
@@ -80,9 +80,9 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
         }
         else
         {
-            EnumFacing enumfacing = state.getValue(FACING);
-            EnumFacing.Axis enumfacing$axis = enumfacing.getAxis();
-            EnumFacing enumfacing1 = enumfacing.getOpposite();
+            Direction enumfacing = state.getValue(FACING);
+            Direction.Axis enumfacing$axis = enumfacing.getAxis();
+            Direction enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;
 
             if (enumfacing$axis.isHorizontal() && !worldIn.isSideSolid(pos.offset(enumfacing1), enumfacing, true))
@@ -103,7 +103,7 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
     {
         super.updateTick(worldIn, pos, state, rand);
 

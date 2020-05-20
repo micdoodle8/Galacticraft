@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +18,7 @@ public class GuiEnergyStorageModule extends GuiContainerGC
 
     private TileEntityEnergyStorageModule tileEntity;
 
-    public GuiEnergyStorageModule(InventoryPlayer par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
+    public GuiEnergyStorageModule(PlayerInventory par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
     {
         super(new ContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
         this.tileEntity = batteryBox;

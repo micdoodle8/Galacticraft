@@ -5,19 +5,19 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.client.model.ModelJuicer;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderJuicer extends RenderLiving<EntityJuicer>
+public class RenderJuicer extends MobRenderer<EntityJuicer>
 {
     private static final ResourceLocation juicerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/juicer.png");
     private boolean texSwitch;
 
-    public RenderJuicer(RenderManager renderManager)
+    public RenderJuicer(EntityRendererManager renderManager)
     {
         super(renderManager, new ModelJuicer(), 0.5F);
     }

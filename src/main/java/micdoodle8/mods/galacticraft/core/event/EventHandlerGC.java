@@ -34,29 +34,29 @@ import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockGravel;
+import net.minecraft.block.*;
 import net.minecraft.block.BlockLiquid;
-import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSound;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Biomes;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.MobEffects;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.ServerWorld;
+import net.minecraft.world.biome.Biomes;
+import net.minecraft.block.Blocks;
+import net.minecraft.potion.Effects;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
+import net.minecraft.item.BucketItem;
 import net.minecraft.item.ItemFireball;
-import net.minecraft.item.ItemFlintAndSteel;
+import net.minecraft.item.FlintAndSteelItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
@@ -67,11 +67,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeDesert;
+import net.minecraft.world.biome.DesertBiome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
@@ -137,13 +135,13 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onWorldSave(Save event)
     {
-        ChunkLoadingCallback.save((WorldServer) event.getWorld());
+        ChunkLoadingCallback.save((ServerWorld) event.getWorld());
     }
 
     @SubscribeEvent
     public void onChunkDataLoad(ChunkDataEvent.Load event)
     {
-        ChunkLoadingCallback.load((WorldServer) event.getWorld());
+        ChunkLoadingCallback.load((ServerWorld) event.getWorld());
     }
 
     @SubscribeEvent
@@ -151,7 +149,7 @@ public class EventHandlerGC
     {
         if (!event.getWorld().isRemote)
         {
-            ChunkLoadingCallback.load((WorldServer) event.getWorld());
+            ChunkLoadingCallback.load((ServerWorld) event.getWorld());
         }
     }
 
@@ -167,9 +165,9 @@ public class EventHandlerGC
                     return;
                 }
 
-                if (event.getEntityLiving().world instanceof WorldServer)
+                if (event.getEntityLiving().world instanceof ServerWorld)
                 {
-                    ((WorldServer) event.getEntityLiving().world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, event.getEntityLiving().posX, event.getEntityLiving().posY + event.getEntityLiving().getEntityBoundingBox().maxY - event.getEntityLiving().getEntityBoundingBox().minY, event.getEntityLiving().posZ, 50, 0.0, 0.05, 0.0, 0.001);
+                    ((ServerWorld) event.getEntityLiving().world).spawnParticle(EnumParticleTypes.SMOKE_NORMAL, event.getEntityLiving().posX, event.getEntityLiving().posY + event.getEntityLiving().getEntityBoundingBox().maxY - event.getEntityLiving().getEntityBoundingBox().minY, event.getEntityLiving().posZ, 50, 0.0, 0.05, 0.0, 0.001);
                 }
 
                 event.getEntityLiving().extinguish();
@@ -180,9 +178,9 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onEntityFall(LivingFallEvent event)
     {
-        if (event.getEntityLiving() instanceof EntityPlayer)
+        if (event.getEntityLiving() instanceof PlayerEntity)
         {
-            EntityPlayer player = (EntityPlayer) event.getEntityLiving();
+            PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             if (player.getRidingEntity() instanceof EntityAutoRocket || player.getRidingEntity() instanceof EntityLanderBase)
             {
                 event.setDistance(0.0F);
@@ -200,7 +198,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void blockBreakSpeed(PlayerEvent.BreakSpeed event)
     {
-        EntityPlayer p = event.getEntityPlayer();
+        PlayerEntity p = event.getEntityPlayer();
         if (!p.onGround && p.world.provider instanceof IZeroGDimension && !ConfigManagerCore.hardMode && event.getOriginalSpeed() < 5.0F)
         {
             event.setNewSpeed(event.getOriginalSpeed() * 5.0F);
@@ -262,7 +260,7 @@ public class EventHandlerGC
                 GCPlayerStats stats = GCPlayerStats.get(event.getEntityPlayer());
                 if (!stats.hasReceivedBedWarning())
                 {
-                    event.getEntityPlayer().sendMessage(new TextComponentString(GCCoreUtil.translate("gui.bed_fail.message")));
+                    event.getEntityPlayer().sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.bed_fail.message")));
                     stats.setReceivedBedWarning(true);
                 }
             }
@@ -314,7 +312,7 @@ public class EventHandlerGC
                 }
             }
 
-            if (heldStack.getItem() instanceof ItemFlintAndSteel || heldStack.getItem() instanceof ItemFireball)
+            if (heldStack.getItem() instanceof FlintAndSteelItem || heldStack.getItem() instanceof ItemFireball)
             {
                 if (!worldObj.isRemote)
                 {
@@ -334,13 +332,13 @@ public class EventHandlerGC
     @SubscribeEvent
     public void entityLivingEvent(LivingEvent.LivingUpdateEvent event)
     {
-        final EntityLivingBase entityLiving = event.getEntityLiving();
-        if (entityLiving instanceof EntityPlayerMP)
+        final LivingEntity entityLiving = event.getEntityLiving();
+        if (entityLiving instanceof ServerPlayerEntity)
         {
-            GalacticraftCore.handler.onPlayerUpdate((EntityPlayerMP) entityLiving);
+            GalacticraftCore.handler.onPlayerUpdate((ServerPlayerEntity) entityLiving);
             if (GalacticraftCore.isPlanetsLoaded)
             {
-                AsteroidsModule.playerHandler.onPlayerUpdate((EntityPlayerMP) entityLiving);
+                AsteroidsModule.playerHandler.onPlayerUpdate((ServerPlayerEntity) entityLiving);
             }
             return;
         }
@@ -349,7 +347,7 @@ public class EventHandlerGC
         {
             if (entityLiving.world.provider instanceof IGalacticraftWorldProvider)
             {
-                if (!(entityLiving instanceof EntityPlayer) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider) entityLiving.world.provider).hasBreathableAtmosphere())
+                if (!(entityLiving instanceof PlayerEntity) && (!(entityLiving instanceof IEntityBreathable) || !((IEntityBreathable) entityLiving).canBreath()) && !((IGalacticraftWorldProvider) entityLiving.world.provider).hasBreathableAtmosphere())
                 {
                     if (!OxygenUtil.isAABBInBreathableAirBlock(entityLiving))
                     {
@@ -392,7 +390,7 @@ public class EventHandlerGC
 
     private ItemStack fillBucket(World world, RayTraceResult position)
     {
-        IBlockState state = world.getBlockState(position.getBlockPos());
+        BlockState state = world.getBlockState(position.getBlockPos());
         Block block = state.getBlock();
 
         Item bucket = bucketList.get(block);
@@ -409,7 +407,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onBucketFill(FillBucketEvent event)
     {
-        if (event.getEmptyBucket() == null || !(event.getEmptyBucket().getItem() instanceof ItemBucket))
+        if (event.getEmptyBucket() == null || !(event.getEmptyBucket().getItem() instanceof BucketItem))
         {
             return;
         }
@@ -486,7 +484,7 @@ public class EventHandlerGC
         {
             randMod *= 1.8;
         }
-        if (biome instanceof BiomeDesert)
+        if (biome instanceof DesertBiome)
         {
             randMod *= 1.8;
         }
@@ -530,7 +528,7 @@ public class EventHandlerGC
 
             final int r2 = r * r;
 
-            IBlockState crudeOil = GCBlocks.crudeOil.getDefaultState();
+            BlockState crudeOil = GCBlocks.crudeOil.getDefaultState();
             for (int bx = -r; bx <= r; bx++)
             {
                 for (int by = -r + 2; by <= r - 2; by++)
@@ -633,7 +631,7 @@ public class EventHandlerGC
 
     private static boolean checkBlock(World w, BlockPos pos)
     {
-        IBlockState state = w.getBlockState(pos);
+        BlockState state = w.getBlockState(pos);
         Block b = state.getBlock();
         if (b.getMaterial(state) == Material.AIR)
         {
@@ -645,11 +643,11 @@ public class EventHandlerGC
     private static boolean checkBlockAbove(World w, BlockPos pos)
     {
         Block b = w.getBlockState(pos).getBlock();
-        if (b instanceof BlockSand)
+        if (b instanceof SandBlock)
         {
             return true;
         }
-        if (b instanceof BlockGravel)
+        if (b instanceof GravelBlock)
         {
             return true;
         }
@@ -702,7 +700,7 @@ public class EventHandlerGC
 
         if (page != null)
         {
-            GuiScreen cs = event.currentGui;
+            Screen cs = event.currentGui;
             int benchX = (int) FMLClientHandler.instance().getClient().player.posX;
             int benchY = (int) FMLClientHandler.instance().getClient().player.posY;
             int benchZ = (int) FMLClientHandler.instance().getClient().player.posZ;
@@ -720,7 +718,7 @@ public class EventHandlerGC
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getNextSchematic(int currentIndex)
     {
-        EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().player, false);
+        ClientPlayerEntity player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().player, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         final int size = stats.getUnlockedSchematics().size();
@@ -757,7 +755,7 @@ public class EventHandlerGC
     @SideOnly(Side.CLIENT)
     private static ISchematicPage getLastSchematic(int currentIndex)
     {
-        EntityPlayerSP player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().player, false);
+        ClientPlayerEntity player = PlayerUtil.getPlayerBaseClientFromPlayer(FMLClientHandler.instance().getClient().player, false);
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
         final int size = stats.getUnlockedSchematics().size();
@@ -794,7 +792,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onPlayerDeath(PlayerDropsEvent event)
     {
-        if (event.getEntityLiving() instanceof EntityPlayerMP)
+        if (event.getEntityLiving() instanceof ServerPlayerEntity)
         {
             GCPlayerStats stats = GCPlayerStats.get(event.getEntityPlayer());
             if (!event.getEntityPlayer().world.getGameRules().getBoolean("keepInventory"))
@@ -873,7 +871,7 @@ public class EventHandlerGC
     @SubscribeEvent
     public void onLeaveBedButtonClicked(SleepCancelledEvent event)
     {
-        EntityPlayer player = FMLClientHandler.instance().getClient().player;
+        PlayerEntity player = FMLClientHandler.instance().getClient().player;
 
         BlockPos c = player.bedLocation;
 
@@ -897,7 +895,7 @@ public class EventHandlerGC
         {
             event.setCustomSummonedAid(new EntityEvolvedZombie(event.getWorld()));
 
-            if (((EntityLivingBase) event.getEntity()).getRNG().nextFloat() < ((EntityEvolvedZombie) event.getEntity()).getEntityAttribute(((EntityEvolvedZombie) event.getEntity()).getReinforcementsAttribute()).getAttributeValue())
+            if (((LivingEntity) event.getEntity()).getRNG().nextFloat() < ((EntityEvolvedZombie) event.getEntity()).getEntityAttribute(((EntityEvolvedZombie) event.getEntity()).getReinforcementsAttribute()).getAttributeValue())
             {
                 event.setResult(Result.ALLOW);
             }
@@ -913,9 +911,9 @@ public class EventHandlerGC
     public void overrideSkyColor(EntityViewRenderEvent.FogColors event)
     {
         //Disable any night vision effects on the sky, if the planet has no atmosphere
-        if (event.getEntity() instanceof EntityLivingBase && ((EntityLivingBase) event.getEntity()).isPotionActive(MobEffects.NIGHT_VISION))
+        if (event.getEntity() instanceof LivingEntity && ((LivingEntity) event.getEntity()).isPotionActive(Effects.NIGHT_VISION))
         {
-            WorldClient worldclient = Minecraft.getMinecraft().world;
+            ClientWorld worldclient = Minecraft.getMinecraft().world;
 
             if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.getState().getMaterial() == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {
@@ -952,7 +950,7 @@ public class EventHandlerGC
             return;
         }
 
-        EntityPlayerSP player = FMLClientHandler.instance().getClient().player;
+        ClientPlayerEntity player = FMLClientHandler.instance().getClient().player;
 
         if (player != null && player.world != null && player.world.provider instanceof IGalacticraftWorldProvider)
         {

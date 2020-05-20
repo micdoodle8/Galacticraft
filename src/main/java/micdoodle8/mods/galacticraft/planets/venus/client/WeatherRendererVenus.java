@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -42,7 +42,7 @@ public class WeatherRendererVenus extends IRenderHandler
     }
 
     @Override
-    public void render(float partialTicks, WorldClient world, Minecraft mc)
+    public void render(float partialTicks, ClientWorld world, Minecraft mc)
     {
         float strength = world.getRainStrength(partialTicks);
 

@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.core.recipe.NasaWorkbenchRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.fml.common.Loader;
@@ -52,7 +52,7 @@ public class RecipeUtil
     public static void addRecipe(ItemStack result, Object[] obj)
     {
         CraftingHelper.ShapedPrimer pattern = CraftingHelper.parseShaped(obj);
-        addCustomRecipe(new ShapedRecipes(result.getItem().getRegistryName().toString(), pattern.width, pattern.height, pattern.input, result));
+        addCustomRecipe(new ShapedRecipe(result.getItem().getRegistryName().toString(), pattern.width, pattern.height, pattern.input, result));
     }
 
     public static void addCustomRecipe(IRecipe rec)
@@ -96,7 +96,7 @@ public class RecipeUtil
         if (ItemStack.areItemStackTagsEqual(stackA, stackB))
             return true;
         
-        NBTTagCompound query = null;
+        CompoundNBT query = null;
         if (stackA.getTagCompound() == null && stackB.getTagCompound() != null)
         {
             query = stackB.getTagCompound();

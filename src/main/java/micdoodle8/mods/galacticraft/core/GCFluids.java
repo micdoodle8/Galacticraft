@@ -14,20 +14,19 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemTier3Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemTier2Rocket;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
-import net.minecraft.block.BlockDispenser;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.DispenserBlock;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.dispenser.BehaviorDefaultDispenseItem;
-import net.minecraft.dispenser.BehaviorProjectileDispense;
-import net.minecraft.dispenser.IBehaviorDispenseItem;
-import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
+import net.minecraft.dispenser.*;
+import net.minecraft.dispenser.ProjectileDispenseBehavior;
+import net.minecraft.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.dispenser.IDispenseItemBehavior;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -188,15 +187,15 @@ public class GCFluids
 
     public static void registerDispenserBehaviours()
     {
-        IBehaviorDispenseItem ibehaviordispenseitem = new BehaviorDefaultDispenseItem()
+        IDispenseItemBehavior ibehaviordispenseitem = new DefaultDispenseItemBehavior()
         {
-            private final BehaviorDefaultDispenseItem dispenseBehavior = new BehaviorDefaultDispenseItem();
+            private final DefaultDispenseItemBehavior dispenseBehavior = new DefaultDispenseItemBehavior();
             @Override
             public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
             {
                 ItemBucketGC itembucket = (ItemBucketGC)stack.getItem();
-                BlockPos blockpos = source.getBlockPos().offset((EnumFacing)source.getBlockState().getValue(BlockDispenser.FACING));
-                if (itembucket.tryPlaceContainedLiquid((EntityPlayer)null, source.getWorld(), blockpos))
+                BlockPos blockpos = source.getBlockPos().offset((Direction)source.getBlockState().getValue(DispenserBlock.FACING));
+                if (itembucket.tryPlaceContainedLiquid((PlayerEntity)null, source.getWorld(), blockpos))
                 {
                     return new ItemStack(Items.BUCKET);
                 }
@@ -208,27 +207,27 @@ public class GCFluids
         };
         if (GCItems.bucketFuel != null)
         {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.bucketFuel, ibehaviordispenseitem);
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.bucketFuel, ibehaviordispenseitem);
         }
         if (GCItems.bucketOil != null)
         {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.bucketOil, ibehaviordispenseitem);
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.bucketOil, ibehaviordispenseitem);
         }
         if (GalacticraftCore.isPlanetsLoaded)
         {
             if (MarsItems.bucketSludge != null)
             {
-                BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(MarsItems.bucketSludge, ibehaviordispenseitem);
+                DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(MarsItems.bucketSludge, ibehaviordispenseitem);
             }
             if (VenusItems.bucketSulphuricAcid != null)
             {
-                BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(VenusItems.bucketSulphuricAcid, ibehaviordispenseitem);
+                DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(VenusItems.bucketSulphuricAcid, ibehaviordispenseitem);
             }
         }
 
         // The following code is for other objects, not liquids, but it's convenient to keep it all together
         
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.meteorChunk, new BehaviorProjectileDispense()
+        DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.meteorChunk, new ProjectileDispenseBehavior()
         {
             @Override
             protected IProjectile getProjectileEntity(World worldIn, IPosition position, ItemStack stack)
@@ -250,14 +249,14 @@ public class GCFluids
             }
         });
 
-        BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.rocketTier1, new BehaviorDefaultDispenseItem()
+        DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(GCItems.rocketTier1, new DefaultDispenseItemBehavior()
         {
             @Override
             public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
             {
                 World world = source.getWorld();
-                BlockPos pos = source.getBlockPos().offset((EnumFacing)source.getBlockState().getValue(BlockDispenser.FACING), 2);
-                IBlockState iblockstate = world.getBlockState(pos);
+                BlockPos pos = source.getBlockPos().offset((Direction)source.getBlockState().getValue(DispenserBlock.FACING), 2);
+                BlockState iblockstate = world.getBlockState(pos);
                 boolean rocketPlaced = false;
                 if (iblockstate.getBlock() == GCBlocks.landingPadFull && GCBlocks.landingPadFull.getMetaFromState(iblockstate) == 0)
                 {
@@ -277,14 +276,14 @@ public class GCFluids
 
         if (GalacticraftCore.isPlanetsLoaded)
         {
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(MarsItems.rocketMars, new BehaviorDefaultDispenseItem()
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(MarsItems.rocketMars, new DefaultDispenseItemBehavior()
             {
                 @Override
                 public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
                 {
                     World world = source.getWorld();
-                    BlockPos pos = source.getBlockPos().offset((EnumFacing)source.getBlockState().getValue(BlockDispenser.FACING), 2);
-                    IBlockState iblockstate = world.getBlockState(pos);
+                    BlockPos pos = source.getBlockPos().offset((Direction)source.getBlockState().getValue(DispenserBlock.FACING), 2);
+                    BlockState iblockstate = world.getBlockState(pos);
                     boolean rocketPlaced = false;
                     if (iblockstate.getBlock() == GCBlocks.landingPadFull && GCBlocks.landingPadFull.getMetaFromState(iblockstate) == 0)
                     {
@@ -302,14 +301,14 @@ public class GCFluids
                 }
             });
             
-            BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(AsteroidsItems.tier3Rocket, new BehaviorDefaultDispenseItem()
+            DispenserBlock.DISPENSE_BEHAVIOR_REGISTRY.putObject(AsteroidsItems.tier3Rocket, new DefaultDispenseItemBehavior()
             {
                 @Override
                 public ItemStack dispenseStack(IBlockSource source, ItemStack stack)
                 {
                     World world = source.getWorld();
-                    BlockPos pos = source.getBlockPos().offset((EnumFacing)source.getBlockState().getValue(BlockDispenser.FACING), 2);
-                    IBlockState iblockstate = world.getBlockState(pos);
+                    BlockPos pos = source.getBlockPos().offset((Direction)source.getBlockState().getValue(DispenserBlock.FACING), 2);
+                    BlockState iblockstate = world.getBlockState(pos);
                     boolean rocketPlaced = false;
                     if (iblockstate.getBlock() == GCBlocks.landingPadFull && GCBlocks.landingPadFull.getMetaFromState(iblockstate) == 0)
                     {

@@ -17,19 +17,19 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tick.KeyHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.*;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.SharedConstants;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.BufferUtils;
@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.*;
 
-public class GuiCelestialSelection extends GuiScreen
+public class GuiCelestialSelection extends Screen
 {
     protected enum EnumView
     {
@@ -448,7 +448,7 @@ public class GuiCelestialSelection extends GuiScreen
             }
             else if (keyChar == 22)
             {
-                String pastestring = GuiScreen.getClipboardString();
+                String pastestring = Screen.getClipboardString();
 
                 if (pastestring == null)
                 {
@@ -479,7 +479,7 @@ public class GuiCelestialSelection extends GuiScreen
 
     public boolean isValid(String string)
     {
-        return string.length() > 0 && ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
+        return string.length() > 0 && SharedConstants.isAllowedCharacter(string.charAt(string.length() - 1));
 
     }
 
@@ -608,7 +608,7 @@ public class GuiCelestialSelection extends GuiScreen
                             return;
                         }
                         dimensionID = mapping;
-                        WorldProvider spacestation = WorldUtil.getProviderForDimensionClient(dimensionID);
+                        Dimension spacestation = WorldUtil.getProviderForDimensionClient(dimensionID);
                         if (spacestation != null)
                         {
                             dimension = "Space Station " + mapping;
@@ -1408,14 +1408,14 @@ public class GuiCelestialSelection extends GuiScreen
      */
     public void drawBorder()
     {
-        Gui.drawRect(0, 0, GuiCelestialSelection.BORDER_SIZE, height, GREY2);
-        Gui.drawRect(width - GuiCelestialSelection.BORDER_SIZE, 0, width, height, GREY2);
-        Gui.drawRect(0, 0, width, GuiCelestialSelection.BORDER_SIZE, GREY2);
-        Gui.drawRect(0, height - GuiCelestialSelection.BORDER_SIZE, width, height, GREY2);
-        Gui.drawRect(GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY0);
-        Gui.drawRect(GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE, width - GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, GREY0);
-        Gui.drawRect(width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE, GuiCelestialSelection.BORDER_SIZE, width - GuiCelestialSelection.BORDER_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY1);
-        Gui.drawRect(GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE, width - GuiCelestialSelection.BORDER_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY1);
+        AbstractGui.drawRect(0, 0, GuiCelestialSelection.BORDER_SIZE, height, GREY2);
+        AbstractGui.drawRect(width - GuiCelestialSelection.BORDER_SIZE, 0, width, height, GREY2);
+        AbstractGui.drawRect(0, 0, width, GuiCelestialSelection.BORDER_SIZE, GREY2);
+        AbstractGui.drawRect(0, height - GuiCelestialSelection.BORDER_SIZE, width, height, GREY2);
+        AbstractGui.drawRect(GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY0);
+        AbstractGui.drawRect(GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE, width - GuiCelestialSelection.BORDER_SIZE, GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, GREY0);
+        AbstractGui.drawRect(width - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE, GuiCelestialSelection.BORDER_SIZE, width - GuiCelestialSelection.BORDER_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY1);
+        AbstractGui.drawRect(GuiCelestialSelection.BORDER_SIZE + GuiCelestialSelection.BORDER_EDGE_SIZE, height - GuiCelestialSelection.BORDER_SIZE - GuiCelestialSelection.BORDER_EDGE_SIZE, width - GuiCelestialSelection.BORDER_SIZE, height - GuiCelestialSelection.BORDER_SIZE, GREY1);
     }
 
     public void drawButtons(int mousePosX, int mousePosY)

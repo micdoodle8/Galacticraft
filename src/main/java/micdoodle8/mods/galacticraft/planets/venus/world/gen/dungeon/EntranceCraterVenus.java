@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 import java.util.Random;
 
@@ -22,16 +22,16 @@ public class EntranceCraterVenus extends SizedPieceVenus
 
     public EntranceCraterVenus(DungeonConfigurationVenus configuration, Random rand, int blockPosX, int blockPosZ)
     {
-        super(configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, EnumFacing.Plane.HORIZONTAL.random(rand));
-        this.setCoordBaseMode(EnumFacing.SOUTH);
+        super(configuration, rand.nextInt(4) + 6, 12, rand.nextInt(4) + 6, Direction.Plane.HORIZONTAL.random(rand));
+        this.setCoordBaseMode(Direction.SOUTH);
 
-        this.boundingBox = new StructureBoundingBox(blockPosX - range, configuration.getYPosition() + 11, blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
+        this.boundingBox = new MutableBoundingBox(blockPosX - range, configuration.getYPosition() + 11, blockPosZ - range, blockPosX + range, 150, blockPosZ + range);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
     {
-        IBlockState block1;
+        BlockState block1;
 
         int maxLevel = 0;
 
@@ -97,7 +97,7 @@ public class EntranceCraterVenus extends SizedPieceVenus
 //                    if (block1 == this.configuration.getBrickBlock() || j != this.sizeY)
                     {
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i + range, k + range), this.getYWithOffset(j), this.getZWithOffset(i + range, k + range));
-                        IBlockState state = Blocks.AIR.getDefaultState();
+                        BlockState state = Blocks.AIR.getDefaultState();
 
                         if (mirror != Mirror.NONE)
                         {

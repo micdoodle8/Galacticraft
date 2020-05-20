@@ -6,9 +6,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 public class CommandKeepDim extends CommandBase
 {
@@ -33,7 +33,7 @@ public class CommandKeepDim extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayerMP playerBase;
+        ServerPlayerEntity playerBase;
 
         if (args.length > 1)
         {
@@ -67,17 +67,17 @@ public class CommandKeepDim extends CommandBase
 
                     if (ConfigManagerCore.setLoaded(dimID))
                     {
-                        playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
+                        playerBase.sendMessage(new StringTextComponent("[GCKeepLoaded] Successfully set dimension " + dimID + " to load staticly"));
                     }
                     else
                     {
                         if (ConfigManagerCore.setUnloaded(dimID))
                         {
-                            playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
+                            playerBase.sendMessage(new StringTextComponent("[GCKeepLoaded] Successfully set dimension " + dimID + " to not load staticly"));
                         }
                         else
                         {
-                            playerBase.sendMessage(new TextComponentString("[GCKeepLoaded] Failed to set dimension as not static"));
+                            playerBase.sendMessage(new StringTextComponent("[GCKeepLoaded] Failed to set dimension as not static"));
                         }
                     }
                 }

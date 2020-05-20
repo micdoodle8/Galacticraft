@@ -9,23 +9,23 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -77,7 +77,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         //The plain block variety produces items carrying all variants as damage values
         //Other block varieties have no corresponding ItemBlock (see registration in GCBlocks)
@@ -89,7 +89,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
@@ -101,7 +101,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer)
     {
         //This allows the different item damage values to place different instances of the block - the instances of the block are constructed in GCBlocks
         if (meta >= GlassFrame.values().length) meta = 0;
@@ -127,13 +127,13 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return this.frame.ordinal();
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
         return Item.getItemFromBlock(this.baseBlock);
         //TODO: override getItemDropped() to return null if we make a broken Space Glass variant...
@@ -141,7 +141,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune)
+    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
     {
         ArrayList<ItemStack> ret = new ArrayList<>(1);
         ret.add(new ItemStack(this.getItemDropped(state, null, fortune), 1, this.frame.ordinal()));
@@ -149,37 +149,37 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
     
     @Override
-    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
+    public boolean canSilkHarvest(World world, BlockPos pos, BlockState state, PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
-    public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World world, BlockPos pos, Direction direction)
     {
         return direction.ordinal() > 1;
     }
 
     @Override
-    public Material getMaterial(IBlockState state)
+    public Material getMaterial(BlockState state)
     {
         if (this.isClient && JavaUtil.instance.isCalledBySpecific(clazz))
         {
@@ -190,7 +190,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         return true;
     }
@@ -203,20 +203,20 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
+    public boolean canRenderInLayer(BlockState state, BlockRenderLayer layer)
     {
         return layer == BlockRenderLayer.TRANSLUCENT || layer == BlockRenderLayer.SOLID;
     }
     
     @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
+    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
     {
-        IBlockState above = worldIn.getBlockState(pos.up());
-        IBlockState below = worldIn.getBlockState(pos.down());
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());
+        BlockState above = worldIn.getBlockState(pos.up());
+        BlockState below = worldIn.getBlockState(pos.down());
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
 
         boolean connectN = this.canPaneConnectToBlock(north, state);
         boolean connectS = this.canPaneConnectToBlock(south, state);
@@ -321,21 +321,21 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(BlockState bs, World worldIn, BlockPos pos)
     {
         return this.getBoundingBox(bs, worldIn, pos).offset(pos);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState bs, IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState bs, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState state = worldIn.getBlockState(pos);
-        IBlockState above = worldIn.getBlockState(pos.up());
-        IBlockState below = worldIn.getBlockState(pos.down());
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());
+        BlockState state = worldIn.getBlockState(pos);
+        BlockState above = worldIn.getBlockState(pos.up());
+        BlockState below = worldIn.getBlockState(pos.down());
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
 
         boolean connectedN = this.canPaneConnectToBlock(north, state);
         boolean connectedS = this.canPaneConnectToBlock(south, state);
@@ -450,23 +450,23 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     };
 
     @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing dir)
+    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction dir)
     {
-        IBlockState thisBlock = world.getBlockState(pos);
-        if ((dir == EnumFacing.NORTH || dir == EnumFacing.SOUTH) && this.isConnectedEW(thisBlock, world, pos)) return false;
-        if ((dir == EnumFacing.WEST || dir == EnumFacing.EAST) && this.isConnectedNS(thisBlock, world, pos)) return false;
-        IBlockState otherBlock = world.getBlockState(pos.offset(dir.getOpposite()));
+        BlockState thisBlock = world.getBlockState(pos);
+        if ((dir == Direction.NORTH || dir == Direction.SOUTH) && this.isConnectedEW(thisBlock, world, pos)) return false;
+        if ((dir == Direction.WEST || dir == Direction.EAST) && this.isConnectedNS(thisBlock, world, pos)) return false;
+        BlockState otherBlock = world.getBlockState(pos.offset(dir.getOpposite()));
         return this.buildSolidSide(otherBlock, thisBlock);
     }
 
-    protected boolean isConnectedEW(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    protected boolean isConnectedEW(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());    
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
         return this.canPaneConnectToBlock(west, state) || this.canPaneConnectToBlock(east, state);
     }
 
-    protected boolean isConnectedEWRecursive(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing dir)
+    protected boolean isConnectedEWRecursive(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction dir)
     {
         boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
         boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
@@ -477,22 +477,22 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return (connectW || connectE) && !connectN && !connectS;
         }
         BlockPos next = pos.offset(dir, 1);
-        IBlockState nextState = worldIn.getBlockState(next);
+        BlockState nextState = worldIn.getBlockState(next);
         if (nextState.getBlock() == this)
         {
             return this.isConnectedEWRecursive(nextState, worldIn, next, dir);
         }
-        return dir == EnumFacing.DOWN && this.isPreferenceEW(state, worldIn, pos);
+        return dir == Direction.DOWN && this.isPreferenceEW(state, worldIn, pos);
     }
     
-    protected boolean isConnectedNS(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    protected boolean isConnectedNS(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());    
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
         return this.canPaneConnectToBlock(north, state) || this.canPaneConnectToBlock(south, state);
     }
 
-    protected boolean isConnectedNSRecursive(IBlockState state, IBlockAccess worldIn, BlockPos pos, EnumFacing dir)
+    protected boolean isConnectedNSRecursive(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction dir)
     {
         boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
         boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
@@ -503,39 +503,39 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
             return (connectN || connectS) && !connectW && !connectE;
         }
         BlockPos next = pos.offset(dir, 1);
-        IBlockState nextState = worldIn.getBlockState(next);
+        BlockState nextState = worldIn.getBlockState(next);
         if (nextState.getBlock() == this)
         {
             return this.isConnectedNSRecursive(nextState, worldIn, next, dir);
         }
-        return dir == EnumFacing.DOWN && !this.isPreferenceEW(state, worldIn, pos);
+        return dir == Direction.DOWN && !this.isPreferenceEW(state, worldIn, pos);
     }
     
-    protected boolean isPreferenceEW(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    protected boolean isPreferenceEW(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());
-        int solidsEW = (west.getBlock().isSideSolid(worldIn.getBlockState(pos.west()), worldIn, pos.west(), EnumFacing.EAST) ? 1 : 0) + (east.getBlock().isSideSolid(worldIn.getBlockState(pos.east()), worldIn, pos.east(), EnumFacing.WEST) ? 1 : 0);
-        int solidsNS = (north.getBlock().isSideSolid(worldIn.getBlockState(pos.north()), worldIn, pos.north(), EnumFacing.SOUTH) ? 1 : 0) + (south.getBlock().isSideSolid(worldIn.getBlockState(pos.south()), worldIn, pos.south(), EnumFacing.NORTH) ? 1 : 0);
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
+        int solidsEW = (west.getBlock().isSideSolid(worldIn.getBlockState(pos.west()), worldIn, pos.west(), Direction.EAST) ? 1 : 0) + (east.getBlock().isSideSolid(worldIn.getBlockState(pos.east()), worldIn, pos.east(), Direction.WEST) ? 1 : 0);
+        int solidsNS = (north.getBlock().isSideSolid(worldIn.getBlockState(pos.north()), worldIn, pos.north(), Direction.SOUTH) ? 1 : 0) + (south.getBlock().isSideSolid(worldIn.getBlockState(pos.south()), worldIn, pos.south(), Direction.NORTH) ? 1 : 0);
         return solidsEW > solidsNS;
     }
     
-    protected boolean canPaneConnectToBlock(IBlockState off, IBlockState blockState)
+    protected boolean canPaneConnectToBlock(BlockState off, BlockState blockState)
     {
         return off.getBlock() == this;
     }
 
-    protected boolean buildSolidSide(IBlockState off, IBlockState blockState)
+    protected boolean buildSolidSide(BlockState off, BlockState blockState)
     {
         return !(off.getBlock() == this);
     }
 
-    protected boolean buildSolidSideUD(BlockPos pos, EnumFacing testUD, IBlockAccess worldIn, IBlockState blockState)
+    protected boolean buildSolidSideUD(BlockPos pos, Direction testUD, IBlockAccess worldIn, BlockState blockState)
     {
         BlockPos offPos = pos.offset(testUD, 1);
-        IBlockState off = worldIn.getBlockState(offPos);
+        BlockState off = worldIn.getBlockState(offPos);
         if (off.getBlock() != this) return true;
         int connThis = (isConnectedEW(blockState, worldIn, pos) ? 2 : 0) + (isConnectedNS(blockState, worldIn, pos) ? 1 : 0);
         int connOther = (isConnectedEW(off, worldIn, offPos) ? 2 : 0) + (isConnectedNS(off, worldIn, offPos) ? 1 : 0);
@@ -590,12 +590,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return false;
     }
     
-    private int identifyHorizConnections(IBlockAccess worldIn, BlockPos pos, IBlockState state)
+    private int identifyHorizConnections(IBlockAccess worldIn, BlockPos pos, BlockState state)
     {
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
         
         boolean connectN = this.canPaneConnectToBlock(north, state);
         boolean connectS = this.canPaneConnectToBlock(south, state);
@@ -606,22 +606,22 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
         if (!connectN && !connectS && !connectW && !connectE)
         {
-            IBlockState above = worldIn.getBlockState(pos.up());
-            IBlockState below = worldIn.getBlockState(pos.down());
+            BlockState above = worldIn.getBlockState(pos.up());
+            BlockState below = worldIn.getBlockState(pos.down());
 
-            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), Direction.DOWN))
             {
                 return 3;
             }
-            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), Direction.UP))
             {
                 return 3;
             }
-            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), Direction.DOWN))
             {
                 return 12;
             }
-            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), Direction.UP))
             {
                 return 12;
             }
@@ -635,22 +635,22 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        IBlockState above = worldIn.getBlockState(pos.up());
-        IBlockState below = worldIn.getBlockState(pos.down());
-        IBlockState north = worldIn.getBlockState(pos.north());
-        IBlockState south = worldIn.getBlockState(pos.south());
-        IBlockState west = worldIn.getBlockState(pos.west());
-        IBlockState east = worldIn.getBlockState(pos.east());
+        BlockState above = worldIn.getBlockState(pos.up());
+        BlockState below = worldIn.getBlockState(pos.down());
+        BlockState north = worldIn.getBlockState(pos.north());
+        BlockState south = worldIn.getBlockState(pos.south());
+        BlockState west = worldIn.getBlockState(pos.west());
+        BlockState east = worldIn.getBlockState(pos.east());
         
         boolean connectN = this.canPaneConnectToBlock(north, state);
         boolean connectS = this.canPaneConnectToBlock(south, state);
         boolean connectW = this.canPaneConnectToBlock(west, state);
         boolean connectE = this.canPaneConnectToBlock(east, state);
         
-        boolean plateD = buildSolidSideUD(pos, EnumFacing.DOWN, worldIn, state);
-        boolean plateU = buildSolidSideUD(pos, EnumFacing.UP, worldIn, state);
+        boolean plateD = buildSolidSideUD(pos, Direction.DOWN, worldIn, state);
+        boolean plateU = buildSolidSideUD(pos, Direction.UP, worldIn, state);
         boolean plateN = this.buildSolidSide(north, state);
         boolean plateS = this.buildSolidSide(south, state);
         boolean plateW = this.buildSolidSide(west, state);
@@ -674,18 +674,18 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
         if (connections == 0)
         {
-            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            if (below.getBlock() == this && this.isConnectedEWRecursive(below, worldIn, pos.down(), Direction.DOWN))
             {
                 rot = GlassRotation.E;
             }
-            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            else if (above.getBlock() == this && this.isConnectedEWRecursive(above, worldIn, pos.up(), Direction.UP))
             {
                 rot = GlassRotation.E;
             }
-            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), EnumFacing.DOWN))
+            if (below.getBlock() == this && this.isConnectedNSRecursive(below, worldIn, pos.down(), Direction.DOWN))
             {
             }
-            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), EnumFacing.UP))
+            else if (above.getBlock() == this && this.isConnectedNSRecursive(above, worldIn, pos.up(), Direction.UP))
             {
             }
             else if (this.isPreferenceEW(state, worldIn, pos))
@@ -710,20 +710,20 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         if (connectW && connectE || connections == 1 && (connectW || connectE))
         {
             rot = GlassRotation.E;
-            if (connectW && !plateU && buildSolidSideUD(pos.west(), EnumFacing.UP, worldIn, west))
+            if (connectW && !plateU && buildSolidSideUD(pos.west(), Direction.UP, worldIn, west))
             {
                 cornerPiece++;
             }
-            if (connectW && !plateD && buildSolidSideUD(pos.west(), EnumFacing.DOWN, worldIn, west))
+            if (connectW && !plateD && buildSolidSideUD(pos.west(), Direction.DOWN, worldIn, west))
             {
                 cornerPiece += 5;
             }
-            if (connectE && !plateU && buildSolidSideUD(pos.east(), EnumFacing.UP, worldIn, east))
+            if (connectE && !plateU && buildSolidSideUD(pos.east(), Direction.UP, worldIn, east))
             {
                 cornerPiece++;
                 if (connectW) rot = GlassRotation.W;
             }
-            if (connectE && !plateD && buildSolidSideUD(pos.east(), EnumFacing.DOWN, worldIn, east))
+            if (connectE && !plateD && buildSolidSideUD(pos.east(), Direction.DOWN, worldIn, east))
             {
                 cornerPiece += 5;
                 if (connectW) rot = GlassRotation.W;
@@ -733,7 +733,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
 
         if (connectN && connectS || connections == 1)
         {
-            if (connectN && !plateU && buildSolidSideUD(pos.north(), EnumFacing.UP, worldIn, north))
+            if (connectN && !plateU && buildSolidSideUD(pos.north(), Direction.UP, worldIn, north))
             {
                 if (!connectS)
                 {
@@ -746,12 +746,12 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
                     rot = GlassRotation.S;
                 }
             }
-            if (connectN && !plateD && buildSolidSideUD(pos.north(), EnumFacing.DOWN, worldIn, north))
+            if (connectN && !plateD && buildSolidSideUD(pos.north(), Direction.DOWN, worldIn, north))
             {
                 cornerPiece ++;
                 if (connectS) rot = GlassRotation.S;
             }
-            if (connectS && !plateU && buildSolidSideUD(pos.south(), EnumFacing.UP, worldIn, south))
+            if (connectS && !plateU && buildSolidSideUD(pos.south(), Direction.UP, worldIn, south))
             {
                 if (cornerPiece == 0 && !plateD)
                 {
@@ -763,7 +763,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
                     cornerPiece ++;
                 }
             }
-            if (connectS && !plateD && buildSolidSideUD(pos.south(), EnumFacing.DOWN, worldIn, south))
+            if (connectS && !plateD && buildSolidSideUD(pos.south(), Direction.DOWN, worldIn, south))
             {
                 if ((cornerPiece & 3) < 2)
                 {
@@ -787,7 +787,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         return getModel(state, 2, rot, plateD, false, false, plateU, 0);
     }
 
-    private IBlockState getModel(IBlockState state, int model, GlassRotation rot, boolean plateD, boolean plateL, boolean plateR, boolean plateU, int cornerPiece)
+    private BlockState getModel(BlockState state, int model, GlassRotation rot, boolean plateD, boolean plateL, boolean plateR, boolean plateU, int cornerPiece)
     {
         int x = 0;
         int y = rot.ordinal();
@@ -868,19 +868,19 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState();
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return 0;
     }
 
     @Override
-    public int setColor(int newColor, EntityPlayer p, Side side)
+    public int setColor(int newColor, PlayerEntity p, Side side)
     {
         if (newColor >= 0 && this.color != newColor)
         {

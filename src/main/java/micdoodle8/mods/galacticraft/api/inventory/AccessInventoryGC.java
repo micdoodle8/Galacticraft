@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.inventory;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 import java.lang.reflect.Method;
 
@@ -17,7 +17,7 @@ public class AccessInventoryGC
 	private static Method getStats;
 	private static Method getExtendedInventory;
 
-	public static IInventoryGC getGCInventoryForPlayer(EntityPlayerMP player)
+	public static IInventoryGC getGCInventoryForPlayer(ServerPlayerEntity player)
 	{
 		try
 		{

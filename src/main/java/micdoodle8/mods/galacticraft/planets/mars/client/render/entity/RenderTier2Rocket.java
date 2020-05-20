@@ -9,9 +9,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -22,11 +22,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier2Rocket extends Render<EntityTier2Rocket>
+public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
 {
     private ItemModelRocketT2 rocketModel;
 
-    public RenderTier2Rocket(RenderManager manager)
+    public RenderTier2Rocket(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 2F;
@@ -44,7 +44,7 @@ public class RenderTier2Rocket extends Render<EntityTier2Rocket>
     @Override
     protected ResourceLocation getEntityTexture(EntityTier2Rocket entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 
     @Override

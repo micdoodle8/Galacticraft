@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.network;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public class PacketRotateRocket extends PacketBase
 {
@@ -43,13 +43,13 @@ public class PacketRotateRocket extends PacketBase
     }
 
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
 
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
         Entity entity = player.world.getEntityByID(this.entityID);
 

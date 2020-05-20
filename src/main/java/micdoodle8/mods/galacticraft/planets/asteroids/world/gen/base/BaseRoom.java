@@ -17,22 +17,21 @@ import micdoodle8.mods.galacticraft.planets.mars.MarsModule;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.PotionTypes;
+import net.minecraft.block.*;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.potion.Potions;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionUtils;
+import net.minecraft.tileentity.BrewingStandTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityBrewingStand;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.LinkedList;
@@ -50,7 +49,7 @@ public class BaseRoom extends SizedPiece
     {
     }
 
-    public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir, EnumRoomType roomType, boolean near, boolean far, int deckTier)
+    public BaseRoom(BaseConfiguration configuration, Random rand, int blockPosX, int yPos, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir, EnumRoomType roomType, boolean near, boolean far, int deckTier)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
         this.setCoordBaseMode(this.direction);
@@ -59,11 +58,11 @@ public class BaseRoom extends SizedPiece
         this.farEnd = far;
         this.deckTier = deckTier;
 
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -73,7 +72,7 @@ public class BaseRoom extends SizedPiece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         super.readStructureFromNBT(tagCompound, manager);
         try
@@ -99,12 +98,12 @@ public class BaseRoom extends SizedPiece
     }
     
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBoundary)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBoundary)
     {
-        IBlockState blockAir = Blocks.AIR.getDefaultState();
+        BlockState blockAir = Blocks.AIR.getDefaultState();
         Block blockStair = GCBlocks.moonStoneStairs;
         
-        boolean axisEW = getDirection().getAxis() == EnumFacing.Axis.X;
+        boolean axisEW = getDirection().getAxis() == Direction.Axis.X;
         int maxX = axisEW ? this.sizeZ : this.sizeX;
         int maxZ = axisEW ? this.sizeX : this.sizeZ;
         int randomInt = random.nextInt(99);
@@ -156,15 +155,15 @@ public class BaseRoom extends SizedPiece
                             if (xx == 1) meta = 3;
                             else if (xx == maxX - 1) meta = 2;
                             else if (zz == 0) meta = 0;
-                            if (this.direction == EnumFacing.NORTH)
+                            if (this.direction == Direction.NORTH)
                             {
                                 meta ^= 3 ^ meta / 2;
                             }
-                            else if (this.direction == EnumFacing.SOUTH)
+                            else if (this.direction == Direction.SOUTH)
                             {
                                 meta ^= 2 + meta / 2;
                             }
-                            else if (this.direction == EnumFacing.EAST) 
+                            else if (this.direction == Direction.EAST)
                                 meta ^= 1;
                             meta += (yy == 1) ? 0 : 4;
                             this.setBlockState(worldIn, blockStair.getStateFromMeta(meta), xx, yy, zz, chunkBoundary);
@@ -201,7 +200,7 @@ public class BaseRoom extends SizedPiece
      */
     private void buildRoomContents(World worldIn, int x, int y, int z, int maxX, int maxZ, BlockPos blockpos, int randomInt)
     {
-        IBlockState state = Blocks.AIR.getDefaultState();
+        BlockState state = Blocks.AIR.getDefaultState();
         int semirand = ((blockpos.getY() * 379 +  blockpos.getX()) * 373 + blockpos.getZ()) * 7 & 15;
         
         int facing = 0; 
@@ -572,12 +571,12 @@ public class BaseRoom extends SizedPiece
                     break;
                 }
             }
-            else if (tile instanceof TileEntityBrewingStand)
+            else if (tile instanceof BrewingStandTileEntity)
             {
-                TileEntityBrewingStand stand = (TileEntityBrewingStand) tile;
-                stand.setInventorySlotContents(0, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.POISON));
-                stand.setInventorySlotContents(1, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.WEAKNESS));
-                stand.setInventorySlotContents(2, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), PotionTypes.HARMING));
+                BrewingStandTileEntity stand = (BrewingStandTileEntity) tile;
+                stand.setInventorySlotContents(0, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), Potions.POISON));
+                stand.setInventorySlotContents(1, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), Potions.WEAKNESS));
+                stand.setInventorySlotContents(2, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTIONITEM), Potions.HARMING));
                         }
             else if (tile instanceof TileEntityEnergyStorageModule)
             {
@@ -591,8 +590,8 @@ public class BaseRoom extends SizedPiece
         
         if (this.type == EnumRoomType.ENGINEERING && y == (this.configuration.getRoomHeight() <= 4 ? 2 : 3) && z == maxZ && (x == 3 || x == 6))
         {
-            EnumFacing hangingDirection = this.direction;
-            if (hangingDirection == EnumFacing.WEST || hangingDirection == EnumFacing.EAST)
+            Direction hangingDirection = this.direction;
+            if (hangingDirection == Direction.WEST || hangingDirection == Direction.EAST)
             {
                 //Apparently we have our North and our South reversed ?  So we don't want the opposite for North and South!
                 hangingDirection = hangingDirection.getOpposite();
@@ -618,11 +617,11 @@ public class BaseRoom extends SizedPiece
         CRYO(AsteroidBlocks.blockBasic.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), true),
         CONTROL(GCBlocks.slabGCHalf.getStateFromMeta(6), AsteroidBlocks.blockBasic.getStateFromMeta(6), false);
 
-        public final IBlockState blockFloor;
-        public final IBlockState blockEntrance;
+        public final BlockState blockFloor;
+        public final BlockState blockEntrance;
         public final boolean doEntryWallsToo;
         
-        EnumRoomType(IBlockState floorBlock, IBlockState entrance, boolean doWalls)
+        EnumRoomType(BlockState floorBlock, BlockState entrance, boolean doWalls)
         {
             this.blockFloor = floorBlock;
             this.blockEntrance = entrance;

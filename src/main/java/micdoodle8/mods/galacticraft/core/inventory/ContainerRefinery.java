@@ -5,17 +5,17 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityRefinery;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerRefinery extends Container
 {
     private final TileEntityRefinery tileEntity;
 
-    public ContainerRefinery(InventoryPlayer par1InventoryPlayer, TileEntityRefinery tileEntity, EntityPlayer player)
+    public ContainerRefinery(PlayerInventory par1InventoryPlayer, TileEntityRefinery tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
@@ -46,14 +46,14 @@ public class ContainerRefinery extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
         this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -63,7 +63,7 @@ public class ContainerRefinery extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par1);

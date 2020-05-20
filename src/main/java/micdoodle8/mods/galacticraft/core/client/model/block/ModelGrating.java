@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -34,11 +34,11 @@ public class ModelGrating implements IBakedModel
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+    public List<BakedQuad> getQuads(BlockState state, Direction side, long rand)
     {
-        if (side == EnumFacing.DOWN && state.getBlock() instanceof BlockGrating)
+        if (side == Direction.DOWN && state.getBlock() instanceof BlockGrating)
         {
-            IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
+            BlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
             if (baseState != null)
             {
                 IBlockAccess blockAccess = BlockGrating.savedBlockAccess;

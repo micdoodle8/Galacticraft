@@ -2,19 +2,19 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ContainerPainter extends Container
 {
     private TileEntityPainter tileEntity;
 
-    public ContainerPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter tileEntity2)
+    public ContainerPainter(PlayerInventory par1InventoryPlayer, TileEntityPainter tileEntity2)
     {
         this.tileEntity = tileEntity2;
  
@@ -42,14 +42,14 @@ public class ContainerPainter extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
         this.tileEntity.playersUsing.remove(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -59,7 +59,7 @@ public class ContainerPainter extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int index)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int index)
     {
         ItemStack stackOrig = ItemStack.EMPTY;
         Slot slot = (Slot) this.inventorySlots.get(index);
@@ -81,7 +81,7 @@ public class ContainerPainter extends Container
             else if (index != 1 && index != 0)
             {
                 Item item = stack.getItem();
-                if (item instanceof IPaintable || (item instanceof ItemBlock && ((ItemBlock)item).getBlock() instanceof IPaintable))
+                if (item instanceof IPaintable || (item instanceof BlockItem && ((BlockItem)item).getBlock() instanceof IPaintable))
                 {
                     if (!this.mergeOneItem(stack, 1, 2, false))
                     {

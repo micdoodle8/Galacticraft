@@ -6,22 +6,21 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityGrapple;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
-public class ItemGrappleHook extends ItemBow implements ISortableItem
+public class ItemGrappleHook extends BowItem implements ISortableItem
 {
     private static NonNullList<ItemStack> stringEntries = null;
 
@@ -41,27 +40,27 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft)
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entity, int timeLeft)
     {
-        if (!(entity instanceof EntityPlayer))
+        if (!(entity instanceof PlayerEntity))
         {
             return;
         }
 
-        EntityPlayer player = (EntityPlayer) entity;
+        PlayerEntity player = (PlayerEntity) entity;
 
         boolean canShoot = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack string = ItemStack.EMPTY;
@@ -104,7 +103,7 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
         }
         else if (worldIn.isRemote)
         {
-            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.grapple.fail")));
+            player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.grapple.fail")));
         }
     }
 
@@ -115,16 +114,16 @@ public class ItemGrappleHook extends ItemBow implements ISortableItem
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    public UseAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.BOW;
+        return UseAction.BOW;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
     {
         playerIn.setActiveHand(hand);
-        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
+        return new ActionResult<>(ActionResultType.SUCCESS, playerIn.getHeldItem(hand));
     }
 
     @Override

@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.layer;
 
 import micdoodle8.mods.miccore.IntCache;
-import net.minecraft.world.gen.layer.GenLayer;
+import net.minecraft.world.gen.layer.Layer;
 
-public class GenLayerVenusSurround extends GenLayer
+public class GenLayerVenusSurround extends Layer
 {
-    public GenLayerVenusSurround(long l, GenLayer parent)
+    public GenLayerVenusSurround(long l, Layer parent)
     {
         super(l);
         this.parent = parent;

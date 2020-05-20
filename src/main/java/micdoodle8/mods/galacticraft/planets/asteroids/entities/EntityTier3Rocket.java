@@ -9,11 +9,11 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -158,9 +158,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    public void onTeleport(EntityPlayerMP player)
+    public void onTeleport(ServerPlayerEntity player)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        ServerPlayerEntity playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
         if (playerBase != null)
         {
@@ -212,7 +212,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             Vector3 mv3 = motionVec.clone().translate(d3);
             Vector3 mv4 = motionVec.clone().translate(d4);
             //T3 - Four flameballs which spread
-            EntityLivingBase riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof EntityLivingBase) ? null : (EntityLivingBase) this.getPassengers().get(0);
+            LivingEntity riddenByEntity = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
             Object[] rider = new Object[] { riddenByEntity };
             makeFlame(x2 + d1.x, y2 + d1.y, z2 + d1.z, mv1, this.getLaunched(), rider);
             makeFlame(x2 + d2.x, y2 + d2.y, z2 + d2.z, mv2, this.getLaunched(), rider);
@@ -254,19 +254,19 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return !this.isDead && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    protected void writeEntityToNBT(CompoundNBT par1NBTTagCompound)
     {
         super.writeEntityToNBT(par1NBTTagCompound);
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    protected void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
     {
         super.readEntityFromNBT(par1NBTTagCompound);
     }
@@ -306,7 +306,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         super.getItemsDropped(droppedItems);
         ItemStack rocket = new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
-        rocket.setTagCompound(new NBTTagCompound());
+        rocket.setTagCompound(new CompoundNBT());
         rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItems.add(rocket);
         return droppedItems;

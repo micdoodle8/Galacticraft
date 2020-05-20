@@ -18,14 +18,14 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
@@ -141,8 +141,8 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         if (!this.world.isRemote && !this.isDead)
         {
             Entity e = par1DamageSource.getTrueSource(); 
-			boolean flag = e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode;
-            if (this.isEntityInvulnerable(par1DamageSource) || this.posY > 300 || (e instanceof EntityLivingBase && !(e instanceof EntityPlayer)))
+			boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode;
+            if (this.isEntityInvulnerable(par1DamageSource) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -152,7 +152,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
                 this.markVelocityChanged();
                 this.shipDamage += par2 * 10;
 
-                if (e instanceof EntityPlayer && ((EntityPlayer) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
                 {
                     this.shipDamage = 100;
                 }
@@ -191,11 +191,11 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 
         for (final ItemStack item : this.getItemsDropped(new ArrayList<ItemStack>()))
         {
-            EntityItem entityItem = this.entityDropItem(item, 0);
+            ItemEntity entityItem = this.entityDropItem(item, 0);
 
             if (item.hasTagCompound())
             {
-                entityItem.getItem().setTagCompound((NBTTagCompound) item.getTagCompound().copy());
+                entityItem.getItem().setTagCompound((CompoundNBT) item.getTagCompound().copy());
             }
         }
     }
@@ -274,7 +274,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
 	        {
                 for (Entity e : this.getPassengers())
                 {
-                    if (e instanceof EntityPlayerMP)
+                    if (e instanceof ServerPlayerEntity)
                     {
                         GCPlayerStats stats = GCPlayerStats.get(e);
                         if (stats.isUsingPlanetSelectionGui())
@@ -390,9 +390,9 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         {
             if (getPassengers().size() >= 1) //When the screen changes to the map, the player is not riding the rocket anymore.
             {
-                if (getPassengers().get(0) instanceof EntityPlayerMP)
+                if (getPassengers().get(0) instanceof ServerPlayerEntity)
                 {
-                    GCTriggers.LAUNCH_ROCKET.trigger(((EntityPlayerMP) getPassengers().get(0)));
+                    GCTriggers.LAUNCH_ROCKET.trigger(((ServerPlayerEntity) getPassengers().get(0)));
                 }
             }
         }
@@ -475,7 +475,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.setRotation(yaw, pitch);
         if (this.syncAdjustFlag && this.world.isBlockLoaded(new BlockPos(x, 255D, z)) && this.hasValidFuel())
         {
-            EntityPlayer p = FMLClientHandler.instance().getClientPlayerEntity();
+            PlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
             double dx = x - p.posX;
             double dz = z - p.posZ;
             if (dx * dx + dz * dz < 1024)
@@ -520,16 +520,16 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         nbt.setInteger("launchPhase", this.launchPhase + 1);
         nbt.setInteger("timeUntilLaunch", this.timeUntilLaunch);
         if (telemetryList.size() > 0)
         {
-            NBTTagList teleNBTList = new NBTTagList();
+            ListNBT teleNBTList = new ListNBT();
             for (BlockVec3Dim vec : new ArrayList<BlockVec3Dim>(this.telemetryList))
             {
-                NBTTagCompound tag = new NBTTagCompound();
+                CompoundNBT tag = new CompoundNBT();
                 vec.writeToNBT(tag);
                 teleNBTList.appendTag(tag);
             }
@@ -538,7 +538,7 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         this.timeUntilLaunch = nbt.getInteger("timeUntilLaunch");
 
@@ -587,12 +587,12 @@ public abstract class EntitySpaceshipBase extends Entity implements IPacketRecei
         this.telemetryList.clear();
         if (nbt.hasKey("telemetryList"))
         {
-            NBTTagList teleNBT = nbt.getTagList("telemetryList", 10);
+            ListNBT teleNBT = nbt.getTagList("telemetryList", 10);
             if (teleNBT.tagCount() > 0)
             {
                 for (int j = teleNBT.tagCount() - 1; j >= 0; j--)
                 {
-                    NBTTagCompound tag1 = teleNBT.getCompoundTagAt(j);
+                    CompoundNBT tag1 = teleNBT.getCompoundTagAt(j);
                     if (tag1 != null)
                     {
                         this.telemetryList.add(BlockVec3Dim.readFromNBT(tag1));

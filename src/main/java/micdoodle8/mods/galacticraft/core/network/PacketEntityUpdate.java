@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector2;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 import java.util.UUID;
 
@@ -68,18 +68,18 @@ public class PacketEntityUpdate extends PacketBase
     }
 
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
         this.setEntityData(player);
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
         this.setEntityData(player);
     }
 
-    private void setEntityData(EntityPlayer player)
+    private void setEntityData(PlayerEntity player)
     {
         Entity entity = player.world.getEntityByID(this.entityID);
 

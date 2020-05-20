@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
@@ -139,7 +139,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
     }
 
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
         TileEntity tile = player.world.getTileEntity(this.pos);
 
@@ -187,7 +187,7 @@ public class PacketFluidNetworkUpdate extends PacketBase
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
 
     }

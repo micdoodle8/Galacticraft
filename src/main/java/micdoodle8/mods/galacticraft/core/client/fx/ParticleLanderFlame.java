@@ -7,7 +7,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.BufferBuilder;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -19,9 +19,9 @@ import java.util.List;
 public class ParticleLanderFlame extends Particle
 {
     private float smokeParticleScale;
-    private EntityLivingBase ridingEntity;
+    private LivingEntity ridingEntity;
 
-    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityLivingBase ridingEntity)
+    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, LivingEntity ridingEntity)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX *= 0.10000000149011612D;
@@ -102,7 +102,7 @@ public class ParticleLanderFlame extends Particle
                 {
                     final Entity var5 = (Entity) var3.get(var4);
 
-                    if (var5 instanceof EntityLivingBase && !var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
+                    if (var5 instanceof LivingEntity && !var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
                     {
                         var5.setFire(3);
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[] { var5.getEntityId() }));

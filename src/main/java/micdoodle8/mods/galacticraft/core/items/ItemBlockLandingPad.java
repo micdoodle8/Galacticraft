@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,17 +41,17 @@ public class ItemBlockLandingPad extends ItemBlockDesc
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    public void onCreated(ItemStack stack, World world, PlayerEntity player)
     {
-        if (world.isRemote && stack.getItemDamage() == 0 && player instanceof EntityPlayerSP)
+        if (world.isRemote && stack.getItemDamage() == 0 && player instanceof ClientPlayerEntity)
         {
-            ClientProxyCore.playerClientHandler.onBuild(5, (EntityPlayerSP) player);
+            ClientProxyCore.playerClientHandler.onBuild(5, (ClientPlayerEntity) player);
         }
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }

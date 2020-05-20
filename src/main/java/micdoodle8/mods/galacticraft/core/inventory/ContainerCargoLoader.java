@@ -4,12 +4,12 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.api.tile.ILockable;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ClickType;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.ClickType;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 
 public class ContainerCargoLoader extends Container
@@ -17,7 +17,7 @@ public class ContainerCargoLoader extends Container
     private TileBaseElectricBlock tileEntity;
     private boolean locked;
 
-    public ContainerCargoLoader(InventoryPlayer par1InventoryPlayer, IInventory cargoLoader)
+    public ContainerCargoLoader(PlayerInventory par1InventoryPlayer, IInventory cargoLoader)
     {
         this.tileEntity = (TileBaseElectricBlock) cargoLoader;
         if (tileEntity instanceof ILockable)
@@ -55,7 +55,7 @@ public class ContainerCargoLoader extends Container
     }
 
     @Override
-    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player)
+    public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, PlayerEntity player)
     {
         if (this.locked && slotId > 0 && slotId < 15)
         {
@@ -65,13 +65,13 @@ public class ContainerCargoLoader extends Container
     }
     
     @Override
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(PlayerEntity var1)
     {
         return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par2);

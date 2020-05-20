@@ -8,16 +8,16 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.command.CommandTime;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.VillageCollection;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.biome.BiomeProvider;
+import net.minecraft.world.biome.provider.BiomeProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -25,7 +25,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-public abstract class WorldProviderSpace extends WorldProvider implements IGalacticraftWorldProvider
+public abstract class WorldProviderSpace extends Dimension implements IGalacticraftWorldProvider
 {
     private long timeCurrentOffset = 0L;
     public long preTickTime = Long.MIN_VALUE;
@@ -76,7 +76,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      */
     public abstract long getDayLength();
 
-    public abstract Class<? extends IChunkGenerator> getChunkProviderClass();
+    public abstract Class<? extends ChunkGenerator> getChunkProviderClass();
 
     @Deprecated
     /**
@@ -332,7 +332,7 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
      * in accordance with the 'Force Overworld Respawn' setting on core.conf.
      */
     @Override
-    public int getRespawnDimension(EntityPlayerMP player)
+    public int getRespawnDimension(ServerPlayerEntity player)
     {
         return this.shouldForceRespawn() ? this.getDimension() : 0;
     }
@@ -369,11 +369,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
     }
     
     @Override
-    public IChunkGenerator createChunkGenerator()
+    public ChunkGenerator createChunkGenerator()
     {
         try
         {
-            Class<? extends IChunkGenerator> chunkProviderClass = this.getChunkProviderClass();
+            Class<? extends ChunkGenerator> chunkProviderClass = this.getChunkProviderClass();
 
             Constructor<?>[] constructors = chunkProviderClass.getConstructors();
             for (int i = 0; i < constructors.length; i++)
@@ -381,11 +381,11 @@ public abstract class WorldProviderSpace extends WorldProvider implements IGalac
                 Constructor<?> constr = constructors[i];
                 if (Arrays.equals(constr.getParameterTypes(), new Object[] { World.class, long.class, boolean.class }))
                 {
-                    return (IChunkGenerator) constr.newInstance(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
+                    return (ChunkGenerator) constr.newInstance(this.world, this.world.getSeed(), this.world.getWorldInfo().isMapFeaturesEnabled());
                 }
                 else if (constr.getParameterTypes().length == 0)
                 {
-                    return (IChunkGenerator) constr.newInstance();
+                    return (ChunkGenerator) constr.newInstance();
                 }
             }
         }

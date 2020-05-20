@@ -5,15 +5,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructureIO;
+import net.minecraft.world.gen.feature.StructureStart;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenVillageMoon extends MapGenStructure
+public class MapGenVillageMoon extends Structure
 {
     public static List<Biome> villageSpawnBiomes = Arrays.asList(new Biome[] { BiomeAdaptive.biomeDefault });
     private final int terrainType;
@@ -35,15 +35,15 @@ public class MapGenVillageMoon extends MapGenStructure
     {
         if (!MapGenVillageMoon.initialized)
         {
-            MapGenStructureIO.registerStructure(StructureVillageStartMoon.class, "MoonVillage");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageField.class, "MoonField1");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageField2.class, "MoonField2");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageHouse.class, "MoonHouse");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageRoadPiece.class, "MoonRoadPiece");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillagePathGen.class, "MoonPath");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageTorch.class, "MoonTorch");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageStartPiece.class, "MoonWell");
-            MapGenStructureIO.registerStructureComponent(StructureComponentVillageWoodHut.class, "MoonWoodHut");
+            StructureIO.registerStructure(StructureVillageStartMoon.class, "MoonVillage");
+            StructureIO.registerStructureComponent(StructureComponentVillageField.class, "MoonField1");
+            StructureIO.registerStructureComponent(StructureComponentVillageField2.class, "MoonField2");
+            StructureIO.registerStructureComponent(StructureComponentVillageHouse.class, "MoonHouse");
+            StructureIO.registerStructureComponent(StructureComponentVillageRoadPiece.class, "MoonRoadPiece");
+            StructureIO.registerStructureComponent(StructureComponentVillagePathGen.class, "MoonPath");
+            StructureIO.registerStructureComponent(StructureComponentVillageTorch.class, "MoonTorch");
+            StructureIO.registerStructureComponent(StructureComponentVillageStartPiece.class, "MoonWell");
+            StructureIO.registerStructureComponent(StructureComponentVillageWoodHut.class, "MoonWoodHut");
         }
 
         MapGenVillageMoon.initialized = true;

@@ -12,7 +12,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.ICriterionInstance;
 import net.minecraft.advancements.ICriterionTrigger;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class GCTriggers
 {
@@ -24,13 +24,13 @@ public class GCTriggers
             return new Instance(getId())
             {
                 @Override
-                public boolean test(EntityPlayerMP player)
+                public boolean test(ServerPlayerEntity player)
                 {
                     if (player.getRidingEntity() instanceof EntitySpaceshipBase)
                     {
                         if (((EntitySpaceshipBase) player.getRidingEntity()).launchPhase >= EntitySpaceshipBase.EnumLaunchPhase.LAUNCHED.ordinal())
                         {
-                            return player.getRidingEntity().getPassengers().size() >= 1 && player.getRidingEntity().getPassengers().get(0) instanceof EntityPlayerMP;
+                            return player.getRidingEntity().getPassengers().size() >= 1 && player.getRidingEntity().getPassengers().get(0) instanceof ServerPlayerEntity;
                         }
                     }
                     return false;
@@ -46,7 +46,7 @@ public class GCTriggers
             return new Instance(getId())
             {
                 @Override
-                public boolean test(EntityPlayerMP player)
+                public boolean test(ServerPlayerEntity player)
                 {
                     for (Entity entity : player.world.loadedEntityList)
                     {
@@ -65,7 +65,7 @@ public class GCTriggers
             return new Instance(getId())
             {
                 @Override
-                public boolean test(EntityPlayerMP player)
+                public boolean test(ServerPlayerEntity player)
                 {
                     return !GCPlayerStats.get(player).getSpaceStationDimensionData().isEmpty();
                 }

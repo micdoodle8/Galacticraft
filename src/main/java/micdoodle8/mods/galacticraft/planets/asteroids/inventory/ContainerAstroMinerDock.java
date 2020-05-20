@@ -4,18 +4,18 @@ import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerAstroMinerDock extends Container
 {
     private TileEntityMinerBase tileEntity;
 
-    public ContainerAstroMinerDock(InventoryPlayer par1InventoryPlayer, IInventory tile)
+    public ContainerAstroMinerDock(PlayerInventory par1InventoryPlayer, IInventory tile)
     {
         this.tileEntity = (TileEntityMinerBase) tile;
         this.addSlotToContainer(new SlotSpecific(tile, 0, 230, 108, IItemElectric.class));
@@ -48,13 +48,13 @@ public class ContainerAstroMinerDock extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1)
+    public boolean canInteractWith(PlayerEntity var1)
     {
         return this.tileEntity.isUsableByPlayer(var1);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par2);

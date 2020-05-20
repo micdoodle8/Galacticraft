@@ -2,29 +2,29 @@ package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
 import com.google.common.collect.Lists;
 
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.StructurePiece;
 
 import java.util.List;
 import java.util.Random;
 
 public class BaseStart extends BaseDeck
 {
-    public List<StructureComponent> attachedComponents = Lists.newArrayList();
-    public List<StructureBoundingBox> componentBounds = Lists.newArrayList();
+    public List<StructurePiece> attachedComponents = Lists.newArrayList();
+    public List<MutableBoundingBox> componentBounds = Lists.newArrayList();
 
     public BaseStart()
     {
     }
 
-    public BaseStart(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing direction)
+    public BaseStart(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction direction)
     {
         super(configuration, rand, blockPosX, configuration.getYPosition(), blockPosZ, 1, direction);
     }
 
     @Override
-    public void buildComponent(StructureComponent componentIn, List<StructureComponent> listIn, Random rand)
+    public void buildComponent(StructurePiece componentIn, List<StructurePiece> listIn, Random rand)
     {
         attachedComponents.clear();
         componentBounds.clear();

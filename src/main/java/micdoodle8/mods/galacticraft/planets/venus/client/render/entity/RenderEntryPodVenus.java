@@ -14,10 +14,10 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,13 +26,13 @@ import net.minecraftforge.client.model.obj.OBJModel;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
+public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
 {
     private OBJModel.OBJBakedModel modelEntryPod;
     private OBJModel.OBJBakedModel modelFlame;
     protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
 
-    public RenderEntryPodVenus(RenderManager manager)
+    public RenderEntryPodVenus(EntityRendererManager manager)
     {
         super(manager);
     }
@@ -70,7 +70,7 @@ public class RenderEntryPodVenus extends Render<EntityEntryPodVenus>
         GlStateManager.rotate(-var25, 0.0F, 1.0F, 0.0F);
 
         this.updateModels();
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         GlStateManager.scale(-1.0F, -1.0F, 1.0F);
         GlStateManager.scale(0.65F, 0.6F, 0.65F);

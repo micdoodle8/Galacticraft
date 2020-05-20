@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
-public abstract class Piece extends StructureComponent
+public abstract class Piece extends StructurePiece
 {
     protected BaseConfiguration configuration;
 
@@ -20,13 +20,13 @@ public abstract class Piece extends StructureComponent
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         this.configuration.writeToNBT(tagCompound);
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         if (this.configuration == null)
         {
@@ -35,7 +35,7 @@ public abstract class Piece extends StructureComponent
         }
     }
 
-    protected StructureBoundingBox getExtension(EnumFacing direction, int length, int width)
+    protected MutableBoundingBox getExtension(Direction direction, int length, int width)
     {
         int blockX, blockZ, sizeX, sizeZ;
         switch (direction)
@@ -66,6 +66,6 @@ public abstract class Piece extends StructureComponent
             blockZ = this.boundingBox.minZ + (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - sizeZ / 2;
             break;
         }
-        return new StructureBoundingBox(blockX, blockZ, blockX + sizeX, blockZ + sizeZ);
+        return new MutableBoundingBox(blockX, blockZ, blockX + sizeX, blockZ + sizeZ);
     }
 }

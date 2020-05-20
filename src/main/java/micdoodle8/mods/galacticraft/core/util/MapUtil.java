@@ -8,14 +8,14 @@ import micdoodle8.mods.galacticraft.core.client.screen.DrawGameScreen;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -148,7 +148,7 @@ public class MapUtil
                         for (int x = 0; x < 16; x++)
                         {
                             int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
-                            IBlockState state = Blocks.AIR.getDefaultState();
+                            BlockState state = Blocks.AIR.getDefaultState();
 
                             if (l4 > 1)
                             {
@@ -205,7 +205,7 @@ public class MapUtil
         //MapUtil.getBiomeMapForCoords(overworld, 0, 0, OVERWORLD_MAP_SCALE, OVERWORLD_LARGEMAP_WIDTH, OVERWORLD_LARGEMAP_HEIGHT, baseFolder);
     }
 
-    public static void sendOverworldToClient(EntityPlayerMP client)
+    public static void sendOverworldToClient(ServerPlayerEntity client)
     {
         if (doneOverworldTexture)
         {
@@ -236,7 +236,7 @@ public class MapUtil
         }
     }
 
-    public static void sendOrCreateMap(World world, int cx, int cz, EntityPlayerMP client)
+    public static void sendOrCreateMap(World world, int cx, int cz, ServerPlayerEntity client)
     {
         
         if (world.getWorldType() == WorldType.FLAT  || !(world.provider instanceof WorldProviderSurface))
@@ -268,7 +268,7 @@ public class MapUtil
         }
     }
     
-    public static void sendMapPacket(int cx, int cz, EntityPlayerMP client, byte[] largeMap) throws IOException
+    public static void sendMapPacket(int cx, int cz, ServerPlayerEntity client, byte[] largeMap) throws IOException
     {
         byte[] compressed;
         if (cx == LARGEMAP_MARKER)
@@ -304,7 +304,7 @@ public class MapUtil
         sendMapPacketAllCompressed(cx, cz, compressed);
     }
     
-    private static void sendMapPacketCompressed(int cx, int cz, EntityPlayerMP client, byte[] map) throws IOException
+    private static void sendMapPacketCompressed(int cx, int cz, ServerPlayerEntity client, byte[] map) throws IOException
     {
         if (cx == LARGEMAP_MARKER && map.length < 2080000)
         {
@@ -1241,7 +1241,7 @@ public class MapUtil
                         for (int x = 0; x < 16; x++)
                         {
                             int l4 = chunk.getHeightValue(x, z) + 1;
-                            IBlockState state = Blocks.AIR.getDefaultState();
+                            BlockState state = Blocks.AIR.getDefaultState();
                             BlockPos pos = null;
 
                             if (l4 > 1)

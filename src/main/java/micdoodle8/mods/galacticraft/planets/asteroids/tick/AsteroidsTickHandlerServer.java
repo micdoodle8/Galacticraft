@@ -19,9 +19,9 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -152,11 +152,11 @@ public class AsteroidsTickHandlerServer
                     {
                         if (droppedChunks == null)
                         {
-                            Class clazz = ((WorldServer)miner.world).getChunkProvider().getClass();
+                            Class clazz = ((ServerWorld)miner.world).getChunkProvider().getClass();
                             droppedChunks = clazz.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "droppedChunksSet" : "field_73248_b");
                             droppedChunks.setAccessible(true);
                         }
-                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((WorldServer)miner.world).getChunkProvider());
+                        Set<Long> undrop = (Set<Long>) droppedChunks.get(((ServerWorld)miner.world).getChunkProvider());
                         undrop.remove(ChunkPos.asLong(miner.chunkCoordX, miner.chunkCoordZ));
                     } catch (Exception ignore)
                     {
@@ -206,11 +206,11 @@ public class AsteroidsTickHandlerServer
         {
             for (BlockVec3 data : copyList)
             {
-                WorldProvider p = WorldUtil.getProviderForDimensionServer(data.y);
+                Dimension p = WorldUtil.getProviderForDimensionServer(data.y);
                 if (p != null && p.world != null)
                 {
                     GCLog.debug("Loading chunk " + data.y + ": " + data.x + "," + data.z + " - should contain a miner!");
-                    WorldServer w = (WorldServer)p.world;
+                    ServerWorld w = (ServerWorld)p.world;
                     boolean previous = CompatibilityManager.forceLoadChunks(w);
                     w.getChunkProvider().loadChunk(data.x, data.z);
                     CompatibilityManager.forceLoadChunksEnd(w, previous);

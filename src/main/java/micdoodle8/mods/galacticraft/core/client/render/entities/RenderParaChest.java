@@ -4,15 +4,15 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelParaChest;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderParaChest extends Render<EntityParachest>
+public class RenderParaChest extends EntityRenderer<EntityParachest>
 {
     private static final ResourceLocation[] textures = { new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/plain.png"),
             new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/black.png"),
@@ -34,7 +34,7 @@ public class RenderParaChest extends Render<EntityParachest>
 
     private final ModelParaChest chestModel;
 
-    public RenderParaChest(RenderManager manager)
+    public RenderParaChest(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 1F;

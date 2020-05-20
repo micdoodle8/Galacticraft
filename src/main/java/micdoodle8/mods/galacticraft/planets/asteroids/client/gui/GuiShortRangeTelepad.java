@@ -17,9 +17,9 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerShortRangeTelepad;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityShortRangeTelepad;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -37,14 +37,14 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 
     private TileEntityShortRangeTelepad telepad;
 
-    private GuiButton enableControllerButton;
+    private Button enableControllerButton;
     private GuiElementTextBox address;
     private GuiElementTextBox targetAddress;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 52, 9, null, 0, 0, this);
 
     private Map<Integer, Integer> cannotEditMap = Maps.newHashMap();
 
-    public GuiShortRangeTelepad(InventoryPlayer playerInventory, TileEntityShortRangeTelepad telepad)
+    public GuiShortRangeTelepad(PlayerInventory playerInventory, TileEntityShortRangeTelepad telepad)
     {
         super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
@@ -94,7 +94,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         this.buttonList.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.enableControllerButton = new GuiButton(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
+        this.enableControllerButton = new Button(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
         this.address = new GuiElementTextBox(1, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.targetAddress = new GuiElementTextBox(2, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
         this.buttonList.add(this.enableControllerButton);
@@ -125,7 +125,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 //    }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {
@@ -183,7 +183,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.telepad.getOwner());
     }

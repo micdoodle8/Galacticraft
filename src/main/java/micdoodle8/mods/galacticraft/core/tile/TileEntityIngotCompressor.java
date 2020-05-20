@@ -8,16 +8,16 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,7 +37,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
 
     private ItemStack producingStack = ItemStack.EMPTY;
     public PersistantInventoryCrafting compressingCraftMatrix = new PersistantInventoryCrafting();
-    public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
     private static Random random = new Random();
 
     public TileEntityIngotCompressor()
@@ -64,7 +64,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             if (this.furnaceBurnTime == 0 && this.canSmelt())
             {
                 ItemStack fuel = this.getInventory().get(0);
-                this.currentItemBurnTime = this.furnaceBurnTime = TileEntityFurnace.getItemBurnTime(fuel);
+                this.currentItemBurnTime = this.furnaceBurnTime = FurnaceTileEntity.getItemBurnTime(fuel);
 
                 if (this.furnaceBurnTime > 0)
                 {
@@ -251,19 +251,19 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.processTicks = nbt.getInteger("smeltingTicks");
-        NBTTagList var2 = nbt.getTagList("Items", 10);
+        ListNBT var2 = nbt.getTagList("Items", 10);
 
         this.inventory = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
 
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+        ListNBT nbttaglist = nbt.getTagList("Items", 10);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            CompoundNBT nbttagcompound = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.getInventory().size())
@@ -280,18 +280,18 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        NBTTagList var2 = new NBTTagList();
+        ListNBT var2 = new ListNBT();
         int i;
 
         for (i = 0; i < this.getInventory().size(); ++i)
         {
             if (!this.getInventory().get(i).isEmpty())
             {
-                NBTTagCompound tagCompound = new NBTTagCompound();
+                CompoundNBT tagCompound = new CompoundNBT();
                 tagCompound.setByte("Slot", (byte) i);
                 this.getInventory().get(i).writeToNBT(tagCompound);
                 var2.appendTag(tagCompound);
@@ -302,7 +302,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
         {
             if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
-                NBTTagCompound tagCompound = new NBTTagCompound();
+                CompoundNBT tagCompound = new CompoundNBT();
                 tagCompound.setByte("Slot", (byte) (i + this.getInventory().size()));
                 this.compressingCraftMatrix.getStackInSlot(i).writeToNBT(tagCompound);
                 var2.appendTag(tagCompound);
@@ -443,7 +443,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return this.world.getTileEntity(this.getPos()) == this && par1EntityPlayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
@@ -459,7 +459,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     {
         if (slotID == 0)
         {
-            return TileEntityFurnace.getItemBurnTime(itemStack) > 0;
+            return FurnaceTileEntity.getItemBurnTime(itemStack) > 0;
         }
         else if (slotID >= 2)
         {
@@ -475,9 +475,9 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
-        if (side == EnumFacing.DOWN)
+        if (side == Direction.DOWN)
         {
             return new int[] { 1 };
         }
@@ -544,13 +544,13 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID == 1;
     }

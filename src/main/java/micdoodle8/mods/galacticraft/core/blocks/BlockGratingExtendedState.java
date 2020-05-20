@@ -16,8 +16,8 @@ import com.google.common.collect.Iterables;
 
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -42,10 +42,10 @@ public class BlockGratingExtendedState extends ExtendedBlockState
     protected static class ExtendedStateImplementation extends StateImplementation implements IExtendedBlockState
     {
         private final ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties;
-        private IBlockState cleanState;
+        private BlockState cleanState;
         private final Block blockBase;
 
-        protected ExtendedStateImplementation(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties, @Nullable ImmutableTable<IProperty<?>, Comparable<?>, IBlockState> table, IBlockState clean)
+        protected ExtendedStateImplementation(Block block, ImmutableMap<IProperty<?>, Comparable<?>> properties, ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties, @Nullable ImmutableTable<IProperty<?>, Comparable<?>, BlockState> table, BlockState clean)
         {
             super(block, properties, table);
             this.unlistedProperties = unlistedProperties;
@@ -58,9 +58,9 @@ public class BlockGratingExtendedState extends ExtendedBlockState
          */
         @Override
         @Nonnull
-        public <T extends Comparable<T>, V extends T> IBlockState withProperty(@Nonnull IProperty<T> property, @Nonnull V value)
+        public <T extends Comparable<T>, V extends T> BlockState withProperty(@Nonnull IProperty<T> property, @Nonnull V value)
         {
-            IBlockState clean = super.withProperty(property, value);
+            BlockState clean = super.withProperty(property, value);
             if (clean == this.cleanState) {
                 return this;
             }
@@ -116,7 +116,7 @@ public class BlockGratingExtendedState extends ExtendedBlockState
         }
 
         @Override
-        public IBlockState getClean()
+        public BlockState getClean()
         {
             return cleanState;
         }
@@ -126,7 +126,7 @@ public class BlockGratingExtendedState extends ExtendedBlockState
         {
             if (JavaUtil.instance.isCalledBy(BlockFluidClassic.class, BlockFluidBase.class, BlockFluidGC.class))
             {
-                IBlockState bs = ((BlockGrating)blockBase).getLiquidBlock(this);
+                BlockState bs = ((BlockGrating)blockBase).getLiquidBlock(this);
                 if (bs != null) return bs.getBlock();
             }
             return this.blockBase;

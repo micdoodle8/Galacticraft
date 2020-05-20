@@ -16,20 +16,20 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -159,7 +159,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, EnumEnclosedBlockType.ALUMINUM_WIRE.getMeta()));
         list.add(new ItemStack(this, 1, EnumEnclosedBlockType.ALUMINUM_WIRE_HEAVY.getMeta()));
@@ -215,19 +215,19 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return state.getBlock().getMetaFromState(state);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
 //        int metadata = state.getBlock().getMetaFromState(state);
         EnumEnclosedBlockType type = state.getValue(TYPE);
@@ -420,7 +420,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public boolean isSealed(World world, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World world, BlockPos pos, Direction direction)
     {
         return true;
     }
@@ -438,7 +438,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         int metadata = stack.getItemDamage();
         if (metadata >= EnumEnclosedBlockType.BC_ITEM_STONEPIPE.getMeta() && metadata <= EnumEnclosedBlockType.BC_POWER_GOLDPIPE.getMeta())
@@ -448,7 +448,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         		TileEntity tile = worldIn.getTileEntity(pos);
         		if (CompatibilityManager.classBCTransportPipeTile.isInstance(tile))
         		{
-	        		Method m = CompatibilityManager.classBCTransportPipeTile.getMethod("onPlacedBy", EntityLivingBase.class, ItemStack.class);
+	        		Method m = CompatibilityManager.classBCTransportPipeTile.getMethod("onPlacedBy", LivingEntity.class, ItemStack.class);
 	        		m.invoke(tile, placer, new ItemStack(pipeItemsBC[metadata - 7]));
         		}
         	}
@@ -468,8 +468,8 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
                     {
                         Method get = network.getClass().getMethod("get");
                         Object manager = get.invoke(network);
-                        Method sendMethod = CompatibilityManager.classIc2ClassicNetworkManager.getMethod("sendInitialData", EntityPlayerMP.class, TileEntity.class);
-                        sendMethod.invoke(manager, (EntityPlayerMP) placer, te);
+                        Method sendMethod = CompatibilityManager.classIc2ClassicNetworkManager.getMethod("sendInitialData", ServerPlayerEntity.class, TileEntity.class);
+                        sendMethod.invoke(manager, (ServerPlayerEntity) placer, te);
                     }
                     else
                     {
@@ -488,14 +488,14 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         EnumEnclosedBlockType type = EnumEnclosedBlockType.byMetadata(meta);
         return this.getDefaultState().withProperty(TYPE, type);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumEnclosedBlockType) state.getValue(TYPE)).getMeta();
     }
@@ -513,7 +513,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     }
     
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }

@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
-public abstract class PieceVenus extends StructureComponent
+public abstract class PieceVenus extends StructurePiece
 {
     protected DungeonConfigurationVenus configuration;
 
@@ -22,19 +22,19 @@ public abstract class PieceVenus extends StructureComponent
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         this.configuration.writeToNBT(tagCompound);
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         this.configuration = new DungeonConfigurationVenus();
         this.configuration.readFromNBT(tagCompound);
     }
 
-    protected StructureBoundingBox getExtension(EnumFacing direction, int length, int width)
+    protected MutableBoundingBox getExtension(Direction direction, int length, int width)
     {
         int blockX, blockZ, sizeX, sizeZ;
         switch (direction)
@@ -65,7 +65,7 @@ public abstract class PieceVenus extends StructureComponent
             blockZ = this.boundingBox.minZ + (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 - sizeZ / 2;
             break;
         }
-        return new StructureBoundingBox(blockX, this.configuration.getYPosition(), blockZ, blockX + sizeX, this.configuration.getYPosition() + this.configuration.getHallwayHeight(),blockZ + sizeZ);
+        return new MutableBoundingBox(blockX, this.configuration.getYPosition(), blockZ, blockX + sizeX, this.configuration.getYPosition() + this.configuration.getHallwayHeight(),blockZ + sizeZ);
     }
 
     public PieceVenus getNextPiece(DungeonStartVenus startPiece, Random rand)

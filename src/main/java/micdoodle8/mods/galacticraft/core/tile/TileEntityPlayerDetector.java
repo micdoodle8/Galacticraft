@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockConcealedDetector;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -21,7 +21,7 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickable
         {
             this.ticks = 0;
             int facing = 0;
-            IBlockState state = this.world.getBlockState(this.pos);
+            BlockState state = this.world.getBlockState(this.pos);
             if (state.getBlock() == GCBlocks.concealedDetector)
             {
                 facing = state.getValue(BlockConcealedDetector.FACING);
@@ -46,7 +46,7 @@ public class TileEntityPlayerDetector extends TileEntity implements ITickable
             case 3:
                 this.playerSearch = new AxisAlignedBB(x - range - hysteresis, y - 6 - hysteresis, z - range / 2 + 0.5D - hysteresis, x + hysteresis, y + 2 + hysteresis, z + range / 2 + 0.5D + hysteresis);
             }
-            result = !this.world.getEntitiesWithinAABB(EntityPlayer.class, playerSearch).isEmpty();
+            result = !this.world.getEntitiesWithinAABB(PlayerEntity.class, playerSearch).isEmpty();
             if (this.getBlockType() instanceof BlockConcealedDetector)
             {
                 ((BlockConcealedDetector) this.blockType).updateState(this.world, this.getPos(), result);

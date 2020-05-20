@@ -10,38 +10,38 @@ import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.DungeonConfi
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.MapGenDungeonVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomBossVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.RoomTreasureVenus;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldEntitySpawner;
+import net.minecraft.world.gen.OctavesNoiseGenerator;
+import net.minecraft.world.spawner.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.NoiseGenerator;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.minecraft.world.gen.PerlinNoiseGenerator;
 
 import java.util.List;
 import java.util.Random;
 
 public class ChunkProviderVenus extends ChunkProviderBase
 {
-    public static final IBlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
+    public static final BlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
     private final BiomeDecoratorVenus biomeDecoratorVenus = new BiomeDecoratorVenus();
     private Random rand;
-    private NoiseGeneratorOctaves noiseGen1;
-    private NoiseGeneratorOctaves noiseGen2;
-    private NoiseGeneratorOctaves noiseGen3;
-    private NoiseGeneratorPerlin noiseGen4;
-    private NoiseGeneratorOctaves noiseGen5;
-    private NoiseGeneratorOctaves noiseGen6;
-    private NoiseGeneratorOctaves mobSpawnerNoise;
+    private OctavesNoiseGenerator noiseGen1;
+    private OctavesNoiseGenerator noiseGen2;
+    private OctavesNoiseGenerator noiseGen3;
+    private PerlinNoiseGenerator noiseGen4;
+    private OctavesNoiseGenerator noiseGen5;
+    private OctavesNoiseGenerator noiseGen6;
+    private OctavesNoiseGenerator mobSpawnerNoise;
     private final Gradient noiseGenSmooth1;
     private World world;
     private WorldType worldType;
@@ -64,13 +64,13 @@ public class ChunkProviderVenus extends ChunkProviderBase
         this.world = worldIn;
         this.worldType = worldIn.getWorldInfo().getTerrainType();
         this.rand = new Random(seed);
-        this.noiseGen1 = new NoiseGeneratorOctaves(this.rand, 16);
-        this.noiseGen2 = new NoiseGeneratorOctaves(this.rand, 16);
-        this.noiseGen3 = new NoiseGeneratorOctaves(this.rand, 8);
-        this.noiseGen4 = new NoiseGeneratorPerlin(this.rand, 4);
-        this.noiseGen5 = new NoiseGeneratorOctaves(this.rand, 10);
-        this.noiseGen6 = new NoiseGeneratorOctaves(this.rand, 16);
-        this.mobSpawnerNoise = new NoiseGeneratorOctaves(this.rand, 8);
+        this.noiseGen1 = new OctavesNoiseGenerator(this.rand, 16);
+        this.noiseGen2 = new OctavesNoiseGenerator(this.rand, 16);
+        this.noiseGen3 = new OctavesNoiseGenerator(this.rand, 8);
+        this.noiseGen4 = new PerlinNoiseGenerator(this.rand, 4);
+        this.noiseGen5 = new OctavesNoiseGenerator(this.rand, 10);
+        this.noiseGen6 = new OctavesNoiseGenerator(this.rand, 16);
+        this.mobSpawnerNoise = new OctavesNoiseGenerator(this.rand, 8);
         this.noiseGenSmooth1 = new Gradient(this.rand.nextLong(), 4, 0.25F);
         this.terrainCalcs = new double[825];
         this.parabolicField = new float[25];
@@ -85,13 +85,13 @@ public class ChunkProviderVenus extends ChunkProviderBase
         }
 
         NoiseGenerator[] noiseGens = {noiseGen1, noiseGen2, noiseGen3, noiseGen4, noiseGen5, noiseGen6, mobSpawnerNoise};
-        this.noiseGen1 = (NoiseGeneratorOctaves) noiseGens[0];
-        this.noiseGen2 = (NoiseGeneratorOctaves) noiseGens[1];
-        this.noiseGen3 = (NoiseGeneratorOctaves) noiseGens[2];
-        this.noiseGen4 = (NoiseGeneratorPerlin) noiseGens[3];
-        this.noiseGen5 = (NoiseGeneratorOctaves) noiseGens[4];
-        this.noiseGen6 = (NoiseGeneratorOctaves) noiseGens[5];
-        this.mobSpawnerNoise = (NoiseGeneratorOctaves) noiseGens[6];
+        this.noiseGen1 = (OctavesNoiseGenerator) noiseGens[0];
+        this.noiseGen2 = (OctavesNoiseGenerator) noiseGens[1];
+        this.noiseGen3 = (OctavesNoiseGenerator) noiseGens[2];
+        this.noiseGen4 = (PerlinNoiseGenerator) noiseGens[3];
+        this.noiseGen5 = (OctavesNoiseGenerator) noiseGens[4];
+        this.noiseGen6 = (OctavesNoiseGenerator) noiseGens[5];
+        this.mobSpawnerNoise = (OctavesNoiseGenerator) noiseGens[6];
     }
 
     private void setBlocksInChunk(int chunkX, int chunkZ, ChunkPrimer primer)
@@ -321,7 +321,7 @@ public class ChunkProviderVenus extends ChunkProviderBase
     @Override
     public void populate(int x, int z)
     {
-        BlockFalling.fallInstantly = true;
+        FallingBlock.fallInstantly = true;
         int i = x * 16;
         int j = z * 16;
         BlockPos blockpos = new BlockPos(i, 0, j);
@@ -367,11 +367,11 @@ public class ChunkProviderVenus extends ChunkProviderBase
         biomegenbase.decorate(this.world, this.rand, new BlockPos(i, 0, j));
         WorldEntitySpawner.performWorldGenSpawning(this.world, biomegenbase, i + 8, j + 8, 16, 16, this.rand);
 
-        BlockFalling.fallInstantly = false;
+        FallingBlock.fallInstantly = false;
     }
 
     @Override
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
     {
         Biome biomegenbase = this.world.getBiome(pos);
 

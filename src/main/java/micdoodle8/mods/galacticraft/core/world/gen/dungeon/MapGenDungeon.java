@@ -5,7 +5,12 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.*;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructureIO;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.StructureStart;
 import net.minecraft.world.gen.structure.*;
 
 import javax.swing.*;
@@ -13,7 +18,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-public class MapGenDungeon extends MapGenStructure
+public class MapGenDungeon extends Structure
 {
     private static boolean initialized;
     private DungeonConfiguration configuration;
@@ -39,15 +44,15 @@ public class MapGenDungeon extends MapGenStructure
     {
         if (!MapGenDungeon.initialized)
         {
-            MapGenStructureIO.registerStructure(MapGenDungeon.Start.class, "MoonDungeon");
-            MapGenStructureIO.registerStructureComponent(DungeonStart.class, "MoonDungeonStart");
-            MapGenStructureIO.registerStructureComponent(Corridor.class, "MoonDungeonCorridor");
-            MapGenStructureIO.registerStructureComponent(RoomEmpty.class, "MoonDungeonEmptyRoom");
-            MapGenStructureIO.registerStructureComponent(RoomBoss.class, "MoonDungeonBossRoom");
-            MapGenStructureIO.registerStructureComponent(RoomTreasure.class, "MoonDungeonTreasureRoom");
-            MapGenStructureIO.registerStructureComponent(RoomSpawner.class, "MoonDungeonSpawnerRoom");
-            MapGenStructureIO.registerStructureComponent(RoomChest.class, "MoonDungeonChestRoom");
-            MapGenStructureIO.registerStructureComponent(RoomEntrance.class, "MoonDungeonEntranceRoom");
+            StructureIO.registerStructure(MapGenDungeon.Start.class, "MoonDungeon");
+            StructureIO.registerStructureComponent(DungeonStart.class, "MoonDungeonStart");
+            StructureIO.registerStructureComponent(Corridor.class, "MoonDungeonCorridor");
+            StructureIO.registerStructureComponent(RoomEmpty.class, "MoonDungeonEmptyRoom");
+            StructureIO.registerStructureComponent(RoomBoss.class, "MoonDungeonBossRoom");
+            StructureIO.registerStructureComponent(RoomTreasure.class, "MoonDungeonTreasureRoom");
+            StructureIO.registerStructureComponent(RoomSpawner.class, "MoonDungeonSpawnerRoom");
+            StructureIO.registerStructureComponent(RoomChest.class, "MoonDungeonChestRoom");
+            StructureIO.registerStructureComponent(RoomEntrance.class, "MoonDungeonEntranceRoom");
         }
 
         MapGenDungeon.initialized = true;
@@ -157,12 +162,12 @@ public class MapGenDungeon extends MapGenStructure
             this.configuration = configuration;
             startPiece = new DungeonStart(worldIn, configuration, rand, (chunkX << 4) + 2, (chunkZ << 4) + 2);
             startPiece.buildComponent(startPiece, this.components, rand);
-            List<StructureComponent> list = startPiece.attachedComponents;
+            List<StructurePiece> list = startPiece.attachedComponents;
 
             while (!list.isEmpty())
             {
                 int i = rand.nextInt(list.size());
-                StructureComponent structurecomponent = list.remove(i);
+                StructurePiece structurecomponent = list.remove(i);
                 structurecomponent.buildComponent(startPiece, this.components, rand);
             }
 
@@ -197,13 +202,13 @@ public class MapGenDungeon extends MapGenStructure
 
     public static class DungeonGenPanel extends JPanel
     {
-        DungeonGenPanel(List<StructureBoundingBox> componentBounds)
+        DungeonGenPanel(List<MutableBoundingBox> componentBounds)
         {
             int absMinX = Integer.MAX_VALUE;
             int absMinZ = Integer.MAX_VALUE;
             int absMaxX = Integer.MIN_VALUE;
             int absMaxZ = Integer.MIN_VALUE;
-            for (StructureBoundingBox b : componentBounds)
+            for (MutableBoundingBox b : componentBounds)
             {
                 if (b.minX < absMinX)
                 {
@@ -248,7 +253,7 @@ public class MapGenDungeon extends MapGenStructure
 
             int color = 0;
             // X is rows, Z is cols
-            for (StructureBoundingBox bb : componentBounds)
+            for (MutableBoundingBox bb : componentBounds)
             {
                 color = ++color % colors.length;
 

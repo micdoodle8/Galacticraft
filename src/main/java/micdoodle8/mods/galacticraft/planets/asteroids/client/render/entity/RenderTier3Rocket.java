@@ -14,10 +14,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
@@ -33,13 +33,13 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
-public class RenderTier3Rocket extends Render<EntityTier3Rocket>
+public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 {
     private OBJModel.OBJBakedModel rocketModel;
     private OBJModel.OBJBakedModel coneModel;
     private OBJModel.OBJBakedModel cubeModel;
 
-    public RenderTier3Rocket(RenderManager manager)
+    public RenderTier3Rocket(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 2F;
@@ -78,7 +78,7 @@ public class RenderTier3Rocket extends Render<EntityTier3Rocket>
     @Override
     protected ResourceLocation getEntityTexture(EntityTier3Rocket entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 
     @Override

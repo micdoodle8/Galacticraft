@@ -12,9 +12,9 @@ import micdoodle8.mods.galacticraft.core.energy.grid.EnergyNetwork;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalConductor;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 {
@@ -32,7 +32,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.tier = nbt.getInteger("tier");
@@ -45,7 +45,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("tier", this.tier);
@@ -53,9 +53,9 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             	this.getNetwork().refresh();
 
             	BlockVec3 thisVec = new BlockVec3(this);
-            	for (EnumFacing side : EnumFacing.VALUES)
+            	for (Direction side : Direction.VALUES)
             	{
             		if (this.canConnect(side, NetworkType.POWER))
             		{
@@ -131,7 +131,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
     }
     
 	@Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         return type == NetworkType.POWER && !this.disableConnections();
     }
@@ -161,7 +161,7 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
             	BlockVec3 thisVec = new BlockVec3(this);
             	for (int i = 0; i < 6; i++)
             	{
-            		EnumFacing side = EnumFacing.getFront(i);
+            		Direction side = Direction.getFront(i);
             		if (this.canConnect(side, NetworkType.POWER))
             		{
             			TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
@@ -183,42 +183,42 @@ public class TileEntityAluminumWireSwitch extends TileBaseUniversalConductor
 
     //IC2
     @Override
-    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing side)
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction side)
     {
     	return this.disableConnections() ? false : super.acceptsEnergyFrom(emitter, side);   	
     }
 
     //IC2
     @Override
-    public double injectEnergy(EnumFacing directionFrom, double amount, double voltage)
+    public double injectEnergy(Direction directionFrom, double amount, double voltage)
     {
     	return this.disableConnections ? amount : super.injectEnergy(directionFrom, amount, voltage);   	   	
     }
     
     //IC2
     @Override
-    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing side)
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction side)
     {
     	return this.disableConnections() ? false : super.emitsEnergyTo(receiver, side);
     }
 
     //RF
     @Override
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+    public int receiveEnergy(Direction from, int maxReceive, boolean simulate)
     {
     	return this.disableConnections ? 0 : super.receiveEnergy(from, maxReceive, simulate);
     }
 
     //RF
     @Override
-    public boolean canConnectEnergy(EnumFacing from)
+    public boolean canConnectEnergy(Direction from)
     {
     	return this.disableConnections() ? false : super.canConnectEnergy(from);
     }
 
     //Mekanism
     @Override
-    public boolean canReceiveEnergy(EnumFacing side)
+    public boolean canReceiveEnergy(Direction side)
     {
     	return this.disableConnections() ? false : super.canReceiveEnergy(side);
     }

@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
@@ -67,7 +67,7 @@ public class EnergyNetwork implements IElectricityNetwork
      *         so, an acceptor connected on two sides will be in connectedAcceptors twice
      */
     private List<Object> connectedAcceptors = new LinkedList<Object>();
-    private List<EnumFacing> connectedDirections = new LinkedList<EnumFacing>();
+    private List<Direction> connectedDirections = new LinkedList<Direction>();
 
     /*
      *  availableAcceptors is the acceptors which can receive energy (this tick)
@@ -76,7 +76,7 @@ public class EnergyNetwork implements IElectricityNetwork
      *          (there is no point trying to put power into a machine twice from two different sides)
      */
     private Set<Object> availableAcceptors = new HashSet<Object>();
-    private Map<Object, EnumFacing> availableconnectedDirections = new HashMap<Object, EnumFacing>();
+    private Map<Object, Direction> availableconnectedDirections = new HashMap<Object, Direction>();
 
     private Map<Object, Float> energyRequests = new HashMap<Object, Float>();
     private List<TileEntity> ignoreAcceptors = new LinkedList<TileEntity>();
@@ -248,11 +248,11 @@ public class EnergyNetwork implements IElectricityNetwork
         if (!this.connectedAcceptors.isEmpty())
         {
             float e;
-            final Iterator<EnumFacing> acceptorDirection = this.connectedDirections.iterator();
+            final Iterator<Direction> acceptorDirection = this.connectedDirections.iterator();
             for (Object acceptor : this.connectedAcceptors)
             {
                 //This tries all sides of the acceptor which are connected (see refreshAcceptors())
-                EnumFacing sideFrom = acceptorDirection.next();
+                Direction sideFrom = acceptorDirection.next();
 
                 //But the grid will only put energy into the acceptor from one side - once it's in availableAcceptors
                 if (!this.ignoreAcceptors.contains(acceptor) && !this.availableAcceptors.contains(acceptor))
@@ -388,7 +388,7 @@ public class EnergyNetwork implements IElectricityNetwork
                         currentSending = energyAvailable - sent;
                     }
 
-                    EnumFacing sideFrom = this.availableconnectedDirections.get(tileEntity);
+                    Direction sideFrom = this.availableconnectedDirections.get(tileEntity);
 
                     if (tileEntity instanceof IElectrical)
                     {
@@ -711,7 +711,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             break;
                         }
 
-                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(EnumFacing.getFront(j ^ 1), NetworkType.POWER))
+                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(Direction.getFront(j ^ 1), NetworkType.POWER))
                         {
                             nextToSplit[j] = tileEntity;
                         }

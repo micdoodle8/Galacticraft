@@ -6,18 +6,17 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -27,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public abstract class BlockMachineBase extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
     public static final int METADATA_MASK = 0x0c; //Used to select the machine type from metadata
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
     protected EnumMachineBase[] types;
     protected EnumMachineBase typeBase;
 
@@ -44,18 +43,18 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
 
     @Override
     @SideOnly(Side.CLIENT)
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack)
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         int metadata = getMetaFromState(state);
 
         final int angle = MathHelper.floor(placer.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int change = EnumFacing.getHorizontal(angle).getOpposite().getHorizontalIndex();
+        int change = Direction.getHorizontal(angle).getOpposite().getHorizontalIndex();
 
         worldIn.setBlockState(pos, this.getStateFromMeta((metadata & BlockMachineBase.METADATA_MASK) + change), 3);
     }
@@ -64,7 +63,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         if (!world.isRemote)
         {
@@ -75,7 +74,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     }
     
     @Override
-    public boolean onSneakUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IMachineSides)
@@ -87,7 +86,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     }
    
     @Override
-    public TileEntity createTileEntity(World world, IBlockState state)
+    public TileEntity createTileEntity(World world, BlockState state)
     {
         int meta = getMetaFromState(state);
         EnumMachineBase type = typeBase.fromMetadata(meta);
@@ -95,7 +94,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     }
    
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return getMetaFromState(state) & BlockMachineBase.METADATA_MASK;
     }
@@ -119,13 +118,13 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
         return true;
     }
 
-    public static EnumFacing getFront(IBlockState state)
+    public static Direction getFront(BlockState state)
     {
         if (state.getBlock() instanceof BlockMachineBase)
         {
             return (state.getValue(BlockMachineBase.FACING));
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
@@ -135,7 +134,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     }
 
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         for (EnumMachineBase type : types)
             list.add(new ItemStack(this, 1, type.getMetadata()));

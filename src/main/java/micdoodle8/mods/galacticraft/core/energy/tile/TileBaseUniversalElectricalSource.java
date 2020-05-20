@@ -22,7 +22,7 @@ import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -74,11 +74,11 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
 
         if (!this.world.isRemote)
         {
-            EnumSet<EnumFacing> outputDirections = this.getElectricalOutputDirections();
+            EnumSet<Direction> outputDirections = this.getElectricalOutputDirections();
 //            outputDirections.remove(EnumFacing.UNKNOWN);
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing direction : outputDirections)
+            for (Direction direction : outputDirections)
             {
                 TileEntity tileAdj = thisVec.getTileEntityOnSide(this.world, direction);
 
@@ -171,7 +171,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     }
 
     @Annotations.RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyEmitter", modID = CompatibilityManager.modidIC2)
-    public boolean emitsEnergyTo(IEnergyAcceptor receiver, EnumFacing direction)
+    public boolean emitsEnergyTo(IEnergyAcceptor receiver, Direction direction)
     {
         if (this.tileEntityInvalid) return false;
         
@@ -214,14 +214,14 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
 
     @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
-    public boolean canOutputEnergy(EnumFacing side)
+    public boolean canOutputEnergy(Direction side)
     {
         return this.getElectricalOutputDirections().contains(side);
     }
     
     @Override
     @Annotations.RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
-    public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+    public double pullEnergy(Direction side, double amount, boolean simulate)
     {
         if (this.canOutputEnergy(side))
         {
@@ -252,7 +252,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     }
 
     @Override
-    public boolean hasCapability(Capability<?> cap, EnumFacing side)
+    public boolean hasCapability(Capability<?> cap, Direction side)
     {
         if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return true;
         if (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage)
@@ -267,7 +267,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     }
     
     @Override
-    public <T> T getCapability(Capability<T> cap, EnumFacing side)
+    public <T> T getCapability(Capability<T> cap, Direction side)
     {
         if (cap == CapabilityEnergy.ENERGY && this.canOutputEnergy(side)) return (T) new ForgeEmitter(this);
         if (cap != null && (cap == EnergyUtil.mekCableOutput || cap == EnergyUtil.mekEnergyStorage))
@@ -282,7 +282,7 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
     }
     
     @Override
-    public float getProvide(EnumFacing direction)
+    public float getProvide(Direction direction)
     {
         if (direction == null && EnergyConfigHandler.isIndustrialCraft2Loaded())
         {
@@ -303,13 +303,13 @@ public abstract class TileBaseUniversalElectricalSource extends TileBaseUniversa
         return 0F;
     }
 
-    public EnumFacing getElectricOutputDirection()
+    public Direction getElectricOutputDirection()
     {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyProvider", modID = "")
-    public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate)
+    public int extractEnergy(Direction from, int maxExtract, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFOutput)
         {

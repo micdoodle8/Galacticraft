@@ -1,14 +1,11 @@
 package micdoodle8.mods.galacticraft.core.client.render.tile;
 
-import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 
 import micdoodle8.mods.galacticraft.api.transmission.tile.IBufferTransmitter;
-import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.client.EventHandlerClient;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
-import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidPipe;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
 import micdoodle8.mods.galacticraft.core.util.ClientUtil;
@@ -16,22 +13,19 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraft.util.Direction;
 import net.minecraftforge.fluids.Fluid;
 
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
-public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileEntityFluidPipe>
+public class TileEntityFluidPipeRenderer extends TileEntityRenderer<TileEntityFluidPipe>
 {
     private static HashMap<Integer, HashMap<Fluid, Integer[]>> cache = new HashMap<>();
 
@@ -47,7 +41,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
             GL11.glTranslatef((float) x, (float) y, (float) z);
 
             RenderHelper.disableStandardItemLighting();
-            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
             if (Minecraft.isAmbientOcclusionEnabled())
             {
                 GlStateManager.shadeModel(GL11.GL_SMOOTH);
@@ -61,7 +55,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
             TileEntity[] adj = OxygenUtil.getAdjacentFluidConnections(pipe);
 
-            for (EnumFacing facing : EnumFacing.VALUES)
+            for (Direction facing : Direction.VALUES)
             {
                 TileEntity sideTile = adj[facing.ordinal()];
 
@@ -123,7 +117,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
         if (scale > 0.01)
         {
-            this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+            this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
             GL11.glPushMatrix();
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef((float) x, (float) y + 1.0F, (float) z + 1.0F);
@@ -148,7 +142,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
 
             TileEntity[] connections = OxygenUtil.getAdjacentFluidConnections(pipe);
 
-            for (EnumFacing side : EnumFacing.VALUES)
+            for (Direction side : Direction.VALUES)
             {
                 TileEntity sideTile = connections[side.ordinal()];
                 if (sideTile != null)
@@ -195,7 +189,7 @@ public class TileEntityFluidPipeRenderer extends TileEntitySpecialRenderer<TileE
         }
     }
 
-    private Integer[] getListAndRender(EnumFacing side, Fluid fluid)
+    private Integer[] getListAndRender(Direction side, Fluid fluid)
     {
         if (fluid == null)
         {

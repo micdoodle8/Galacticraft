@@ -6,31 +6,30 @@ import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.EntityMoveHelperCeiling;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.PathNavigateCeiling;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.pathfinding.PathNavigator;
+import net.minecraft.util.*;
 import net.minecraft.item.Item;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.SoundEvent;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class EntityJuicer extends EntityMob implements IEntityBreathable
+public class EntityJuicer extends MonsterEntity implements IEntityBreathable
 {
     private static final DataParameter<Boolean> IS_FALLING = EntityDataManager.createKey(EntityJuicer.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> IS_HANGING = EntityDataManager.createKey(EntityJuicer.class, DataSerializers.BOOLEAN);
@@ -42,12 +41,12 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
         super(world);
         this.moveHelper = new EntityMoveHelperCeiling(this);
         this.setSize(0.95F, 0.6F);
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0, true));
-        this.tasks.addTask(5, new EntityAIWander(this, 0.8D));
-        this.tasks.addTask(6, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(6, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, true));
+        this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0, true));
+        this.tasks.addTask(5, new RandomWalkingGoal(this, 0.8D));
+        this.tasks.addTask(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.tasks.addTask(6, new LookRandomlyGoal(this));
+        this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, true));
         this.timeSinceLastJump = this.rand.nextInt(200) + 50;
     }
 
@@ -151,7 +150,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                 if (this.timeSinceLastJump <= 0)
                 {
                     BlockPos posAbove = new BlockPos(this.posX, this.posY + (this.isHanging() ? 1.0 : -0.5), this.posZ);
-                    IBlockState blockAbove = this.world.getBlockState(posAbove);
+                    BlockState blockAbove = this.world.getBlockState(posAbove);
 
                     if (blockAbove.getBlock() == VenusBlocks.venusBlock && (blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                             blockAbove.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
@@ -160,7 +159,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
 
                         if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK)
                         {
-                            IBlockState blockBelow = this.world.getBlockState(hit.getBlockPos());
+                            BlockState blockBelow = this.world.getBlockState(hit.getBlockPos());
                             if (blockBelow.getBlock() == VenusBlocks.venusBlock && (blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2 ||
                                     blockBelow.getValue(BlockBasicVenus.BASIC_TYPE_VENUS) == BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1))
                             {
@@ -171,7 +170,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
                                 }
                                 else
                                 {
-                                    this.jumpTarget = hit.getBlockPos().offset(EnumFacing.DOWN);
+                                    this.jumpTarget = hit.getBlockPos().offset(Direction.DOWN);
                                     this.setFalling(this.jumpTarget != null);
                                 }
                             }
@@ -266,7 +265,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
+            PlayerEntity var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else
@@ -288,7 +287,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    protected PathNavigate createNavigator(World worldIn)
+    protected PathNavigator createNavigator(World worldIn)
     {
         return new PathNavigateCeiling(this, worldIn);
     }
@@ -299,7 +298,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+    public void writeEntityToNBT(CompoundNBT tagCompound)
     {
         super.writeEntityToNBT(tagCompound);
 
@@ -314,7 +313,7 @@ public class EntityJuicer extends EntityMob implements IEntityBreathable
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tagCompund)
+    public void readEntityFromNBT(CompoundNBT tagCompund)
     {
         super.readEntityFromNBT(tagCompund);
 

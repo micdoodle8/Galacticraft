@@ -12,19 +12,18 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -88,17 +87,17 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
-    private boolean checkAxis(World worldIn, BlockPos pos, Block block, EnumFacing facing)
+    private boolean checkAxis(World worldIn, BlockPos pos, Block block, Direction facing)
     {
         int sameCount = 0;
         for (int i = 1; i <= 2; i++)
         {
-            IBlockState bs = worldIn.getBlockState(pos.offset(facing, i)); 
+            BlockState bs = worldIn.getBlockState(pos.offset(facing, i));
             if (bs.getBlock() == block && bs.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NONE)
             {
                 sameCount++;
@@ -109,19 +108,19 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
     {
         final Block id = GCBlocks.platform;
 
-        if (checkAxis(worldIn, pos, id, EnumFacing.EAST) ||
-                checkAxis(worldIn, pos, id, EnumFacing.WEST) ||
-                checkAxis(worldIn, pos, id, EnumFacing.NORTH) ||
-                checkAxis(worldIn, pos, id, EnumFacing.SOUTH))
+        if (checkAxis(worldIn, pos, id, Direction.EAST) ||
+                checkAxis(worldIn, pos, id, Direction.WEST) ||
+                checkAxis(worldIn, pos, id, Direction.NORTH) ||
+                checkAxis(worldIn, pos, id, Direction.SOUTH))
         {
             return false;
         }
 
-        if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() == GCBlocks.platform && side == EnumFacing.UP)
+        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.platform && side == Direction.UP)
         {
             return false;
         }
@@ -132,26 +131,26 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         return true;
     }
 
     @Override
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
+    public boolean doesSideBlockRendering(BlockState state, IBlockAccess world, BlockPos pos, Direction face)
     {
         return false;
     }
@@ -164,13 +163,13 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state)
+    public BlockRenderType getRenderType(BlockState state)
     {
-        return EnumBlockRenderType.MODEL;
+        return BlockRenderType.MODEL;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
@@ -182,7 +181,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         final TileEntity var9 = worldIn.getTileEntity(pos);
 
@@ -195,13 +194,13 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
     {
-        return direction == EnumFacing.UP;
+        return direction == Direction.UP;
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return 0;
     }
@@ -219,13 +218,13 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(CORNER, EnumCorner.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumCorner) state.getValue(CORNER)).getMeta();
     }
@@ -243,7 +242,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
     
     @Override
-    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
+    public void addCollisionBoxToList(BlockState state, World worldIn, BlockPos pos, AxisAlignedBB mask, List<AxisAlignedBB> list, @Nullable Entity entityIn, boolean p_185477_7_)
     {
         if (ignoreCollisionTests) return;
         TileEntity te = worldIn.getTileEntity(pos);
@@ -260,7 +259,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     }
     
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos)
     {
         if (world instanceof World && ((World) world).provider instanceof IZeroGDimension)
             return BOUNDING_BOX_ZEROG;
@@ -269,7 +268,7 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
 
     @Override
     @SideOnly(Side.CLIENT)
-    public AxisAlignedBB getSelectedBoundingBox(IBlockState bs, World worldIn, BlockPos pos)
+    public AxisAlignedBB getSelectedBoundingBox(BlockState bs, World worldIn, BlockPos pos)
     {
         TileEntity te = worldIn.getTileEntity(pos);
         if (te instanceof TileEntityPlatform)

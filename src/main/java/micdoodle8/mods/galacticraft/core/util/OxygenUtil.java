@@ -20,20 +20,20 @@ import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.gui.screen.ChatScreen;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -47,7 +47,7 @@ public class OxygenUtil
     private static HashSet<BlockPos> checked;
 
     @SideOnly(Side.CLIENT)
-    public static boolean shouldDisplayTankGui(GuiScreen gui)
+    public static boolean shouldDisplayTankGui(Screen gui)
     {
         if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
         {
@@ -59,21 +59,21 @@ public class OxygenUtil
             return true;
         }
 
-        if (gui instanceof GuiInventory)
+        if (gui instanceof InventoryScreen)
         {
             return false;
         }
 
-        return gui instanceof GuiChat;
+        return gui instanceof ChatScreen;
 
     }
 
-    public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity)
+    public static boolean isAABBInBreathableAirBlock(LivingEntity entity)
     {
         return isAABBInBreathableAirBlock(entity, false);
     }
 
-    public static boolean isAABBInBreathableAirBlock(EntityLivingBase entity, boolean testThermal)
+    public static boolean isAABBInBreathableAirBlock(LivingEntity entity, boolean testThermal)
     {
         double y = entity.posY + entity.getEyeHeight();
         double x = entity.posX;
@@ -201,7 +201,7 @@ public class OxygenUtil
         for (int side = 0; side < 6; side++)
         {
             BlockVec3 sidevec = vec.newVecSide(side);
-            IBlockState state = sidevec.getBlockState_noChunkLoad(world);
+            BlockState state = sidevec.getBlockState_noChunkLoad(world);
             if (OxygenUtil.testContactWithBreathableAir(world, state.getBlock(), sidevec.toBlockPos(), 1) >= 0)
             {
                 return true;
@@ -226,7 +226,7 @@ public class OxygenUtil
             return block.getMetaFromState(world.getBlockState(pos));
         }
 
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         if (block == null || block.getMaterial(state) == Material.AIR)
         {
             return -1;
@@ -234,11 +234,11 @@ public class OxygenUtil
 
         //Test for non-sided permeable or solid blocks first
         boolean permeableFlag = false;
-        if (!(block instanceof BlockLeaves))
+        if (!(block instanceof LeavesBlock))
         {
             if (block.isOpaqueCube(state))
             {
-                if (block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge)
+                if (block instanceof GravelBlock || block.getMaterial(state) == Material.CLOTH || block instanceof SpongeBlock)
                 {
                     permeableFlag = true;
                 }
@@ -247,7 +247,7 @@ public class OxygenUtil
                     return -1;
                 }
             }
-            else if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
+            else if (block instanceof GlassBlock || block instanceof StainedGlassBlock)
             {
                 return -1;
             }
@@ -272,7 +272,7 @@ public class OxygenUtil
         //Testing a non-air, permeable block (for example a torch or a ladder)
         if (limitCount < 5)
         {
-            for (EnumFacing side : EnumFacing.VALUES)
+            for (Direction side : Direction.VALUES)
             {
                 if (permeableFlag || OxygenUtil.canBlockPassAirOnSide(world, block, pos, side))
                 {
@@ -295,7 +295,7 @@ public class OxygenUtil
     //TODO - performance, could add a 'safe' version of this code (inside world borders)
 
     //TODO - add more performance increase, these sided checks could be done once only
-    private static boolean canBlockPassAirOnSide(World world, Block block, BlockPos vec, EnumFacing side)
+    private static boolean canBlockPassAirOnSide(World world, Block block, BlockPos vec, Direction side)
     {
         if (block instanceof IPartialSealableBlock)
         {
@@ -303,32 +303,32 @@ public class OxygenUtil
         }
 
         //Half slab seals on the top side or the bottom side according to its metadata
-        if (block instanceof BlockSlab)
+        if (block instanceof SlabBlock)
         {
-            IBlockState state = world.getBlockState(vec);
+            BlockState state = world.getBlockState(vec);
             int meta = state.getBlock().getMetaFromState(state);
-            return !(side == EnumFacing.DOWN && (meta & 8) == 8 || side == EnumFacing.UP && (meta & 8) == 0);
+            return !(side == Direction.DOWN && (meta & 8) == 8 || side == Direction.UP && (meta & 8) == 0);
         }
 
         //Farmland etc only seals on the solid underside
-        if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
+        if (block instanceof FarmlandBlock || block instanceof EnchantingTableBlock || block instanceof BlockLiquid)
         {
-            return side != EnumFacing.UP;
+            return side != Direction.UP;
         }
 
-        if (block instanceof BlockPistonBase)
+        if (block instanceof PistonBlock)
         {
-            IBlockState state = world.getBlockState(vec);
-            if ((Boolean) state.getValue(BlockPistonBase.EXTENDED))
+            BlockState state = world.getBlockState(vec);
+            if ((Boolean) state.getValue(PistonBlock.EXTENDED))
             {
                 int meta0 = state.getBlock().getMetaFromState(state);
-                EnumFacing facing = BlockPistonBase.getFacing(meta0);
+                Direction facing = PistonBlock.getFacing(meta0);
                 return side != facing;
             }
             return false;
         }
 
-        return !block.isSideSolid(world.getBlockState(vec), world, vec, EnumFacing.getFront(side.getIndex() ^ 1));
+        return !block.isSideSolid(world.getBlockState(vec), world, vec, Direction.getFront(side.getIndex() ^ 1));
     }
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)
@@ -344,7 +344,7 @@ public class OxygenUtil
         return 9;
     }
 
-    public static boolean hasValidOxygenSetup(EntityPlayerMP player)
+    public static boolean hasValidOxygenSetup(ServerPlayerEntity player)
     {
         boolean missingComponent = false;
 
@@ -462,7 +462,7 @@ public class OxygenUtil
 
     public static TileEntity[] getAdjacentFluidConnections(TileEntity tile, boolean ignoreConnect)
     {
-        TileEntity[] adjacentConnections = new TileEntity[EnumFacing.VALUES.length];
+        TileEntity[] adjacentConnections = new TileEntity[Direction.VALUES.length];
 
         if (tile == null)
         {
@@ -472,7 +472,7 @@ public class OxygenUtil
         boolean isMekLoaded = EnergyConfigHandler.isMekanismLoaded();
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (EnumFacing direction : EnumFacing.VALUES)
+        for (Direction direction : Direction.VALUES)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(tile.getWorld(), direction);
 
@@ -495,7 +495,7 @@ public class OxygenUtil
         return adjacentConnections;
     }
 
-    public static boolean noAtmosphericCombustion(WorldProvider provider)
+    public static boolean noAtmosphericCombustion(Dimension provider)
     {
         if (provider instanceof IGalacticraftWorldProvider)
         {

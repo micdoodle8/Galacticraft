@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 
 public class CompatModuleIC2
 {
@@ -21,13 +21,13 @@ public class CompatModuleIC2
         Recipes.macerator.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.basicItem, 1, 8), 1), null, false, new ItemStack(GCItems.ic2compat, 1, 0));
         ItemStack dustSmallIron = IC2Items.getItem("dust", "small_iron").copy();
         ItemStack dustStone = IC2Items.getItem("dust", "stone").copy();
-        NBTTagCompound amountTag = new NBTTagCompound();
+        CompoundNBT amountTag = new CompoundNBT();
         amountTag.setInteger("amount", 1000);
         ItemStack dustSmallTitanium = new ItemStack(GCItems.ic2compat, 1, 7);
-        NBTTagCompound heatTag1 = new NBTTagCompound();
+        CompoundNBT heatTag1 = new CompoundNBT();
         heatTag1.setInteger("minHeat", 2000);
         Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 1), 1), heatTag1, false, new ItemStack [] { dustSmallTitanium, new ItemStack(GCItems.ic2compat, 1, 0) });
-        NBTTagCompound heatTag2 = new NBTTagCompound();
+        CompoundNBT heatTag2 = new CompoundNBT();
         heatTag2.setInteger("minHeat", 750);
         Recipes.centrifuge.addRecipe(Recipes.inputFactory.forStack(new ItemStack(GCItems.ic2compat, 1, 2), 1), heatTag1, false, new ItemStack [] { dustSmallIron, new ItemStack(GCItems.ic2compat, 1, 0), dustStone });
         dustSmallIron = dustSmallIron.copy();

@@ -1,22 +1,22 @@
 package micdoodle8.mods.galacticraft.api.client.tabs;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.gui.screen.inventory.InventoryScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
-public abstract class AbstractTab extends GuiButton
+public abstract class AbstractTab extends Button
 {
 	ResourceLocation texture = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
 	ItemStack renderStack;
 	public int potionOffsetLast;
-    protected RenderItem itemRender;
+    protected ItemRenderer itemRender;
 
 	public AbstractTab(int id, int posX, int posY, ItemStack renderStack)
 	{
@@ -29,10 +29,10 @@ public abstract class AbstractTab extends GuiButton
 	public void drawButton(Minecraft mc, int mouseX, int mouseY, float partialTicks)
 	{
 		int newPotionOffset = TabRegistry.getPotionOffsetNEI();
-		GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
-		if (screen instanceof GuiInventory)
+		Screen screen = FMLClientHandler.instance().getClient().currentScreen;
+		if (screen instanceof InventoryScreen)
 		{
-		    newPotionOffset += TabRegistry.getRecipeBookOffset((GuiInventory) screen) - TabRegistry.recipeBookOffset;
+		    newPotionOffset += TabRegistry.getRecipeBookOffset((InventoryScreen) screen) - TabRegistry.recipeBookOffset;
 		}
 		if (newPotionOffset != this.potionOffsetLast)
 		{

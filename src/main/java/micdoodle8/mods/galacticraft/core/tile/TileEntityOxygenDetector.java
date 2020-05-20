@@ -3,9 +3,9 @@ package micdoodle8.mods.galacticraft.core.tile;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -30,10 +30,10 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickable
                 }
                 else
                 {
-                    for (EnumFacing side : EnumFacing.VALUES)
+                    for (Direction side : Direction.VALUES)
                     {
                         BlockPos offset = this.pos.offset(side, 1);
-                        IBlockState bs = this.world.getBlockState(offset);
+                        BlockState bs = this.world.getBlockState(offset);
                         if (!bs.getBlock().isSideSolid(bs, world, offset, side.getOpposite()))
                         {
                             oxygenFound = true;

@@ -8,21 +8,23 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTelemetry;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntityZombie;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.entity.monster.SkeletonEntity;
+import net.minecraft.entity.monster.ZombieEntity;
 import net.minecraft.entity.passive.*;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.entity.passive.horse.HorseEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.DyeColor;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -49,7 +51,7 @@ public class GameScreenText implements IGameScreen
         {
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
             try {
-                Class clazz = RenderLivingBase.class;
+                Class clazz = LivingRenderer.class;
                 int count = 0;
                 for (Method m : clazz.getDeclaredMethods())
                 {
@@ -107,7 +109,7 @@ public class GameScreenText implements IGameScreen
         //of the whole text box are correctly set here.
         String strName = "";
         String[] str = { GCCoreUtil.translate("gui.display.nolink"), "", "", "", "" };
-        Render renderEntity = null;
+        EntityRenderer renderEntity = null;
         Entity entity = null;
         float Xmargin = 0;
 
@@ -115,7 +117,7 @@ public class GameScreenText implements IGameScreen
         {
             if (telemeter.clientClass != null)
             {
-                if (telemeter.clientClass == screen.telemetryLastClass && (telemeter.clientClass != EntityPlayerMP.class || telemeter.clientName.equals(screen.telemetryLastName)))
+                if (telemeter.clientClass == screen.telemetryLastClass && (telemeter.clientClass != ServerPlayerEntity.class || telemeter.clientName.equals(screen.telemetryLastName)))
                 {
                     //Used cached data from last time if possible
                     entity = screen.telemetryLastEntity;
@@ -127,11 +129,11 @@ public class GameScreenText implements IGameScreen
                     //Create an entity to render, based on class, and get its name
                     entity = null;
 
-                    if (telemeter.clientClass == EntityPlayerMP.class)
+                    if (telemeter.clientClass == ServerPlayerEntity.class)
                     {
                         strName = telemeter.clientName;
-                        entity = new EntityOtherPlayerMP(screen.driver.getWorld(), telemeter.clientGameProfile);
-                        renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().getEntityRenderObject(entity);
+                        entity = new RemoteClientPlayerEntity(screen.driver.getWorld(), telemeter.clientGameProfile);
+                        renderEntity = (EntityRenderer) FMLClientHandler.instance().getClient().getRenderManager().getEntityRenderObject(entity);
                     }
                     else
                     {
@@ -146,43 +148,43 @@ public class GameScreenText implements IGameScreen
                         {
                             strName = entity.getName();
                         }
-                        renderEntity = (Render) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
+                        renderEntity = (EntityRenderer) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
                     }
                 }
 
                 //Setup special visual types from data sent by Telemetry
-                if (entity instanceof EntityHorse)
+                if (entity instanceof HorseEntity)
                 {
 //                    ((EntityHorse) entity).setType(HorseType.values()[telemeter.clientData[3]]);
-                    ((EntityHorse) entity).setHorseVariant(telemeter.clientData[4]);
+                    ((HorseEntity) entity).setHorseVariant(telemeter.clientData[4]);
                 }
-                if (entity instanceof EntityVillager)
+                if (entity instanceof VillagerEntity)
                 {
-                    ((EntityVillager) entity).setProfession(telemeter.clientData[3]);
-                    ((EntityVillager) entity).setGrowingAge(telemeter.clientData[4]);
+                    ((VillagerEntity) entity).setProfession(telemeter.clientData[3]);
+                    ((VillagerEntity) entity).setGrowingAge(telemeter.clientData[4]);
                 }
-                else if (entity instanceof EntityWolf)
+                else if (entity instanceof WolfEntity)
                 {
-                    ((EntityWolf) entity).setCollarColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
-                    ((EntityWolf) entity).setBegging(telemeter.clientData[4] == 1);
+                    ((WolfEntity) entity).setCollarColor(DyeColor.byDyeDamage(telemeter.clientData[3]));
+                    ((WolfEntity) entity).setBegging(telemeter.clientData[4] == 1);
                 }
-                else if (entity instanceof EntitySheep)
+                else if (entity instanceof SheepEntity)
                 {
-                    ((EntitySheep) entity).setFleeceColor(EnumDyeColor.byDyeDamage(telemeter.clientData[3]));
-                    ((EntitySheep) entity).setSheared(telemeter.clientData[4] == 1);
+                    ((SheepEntity) entity).setFleeceColor(DyeColor.byDyeDamage(telemeter.clientData[3]));
+                    ((SheepEntity) entity).setSheared(telemeter.clientData[4] == 1);
                 }
-                else if (entity instanceof EntityOcelot)
+                else if (entity instanceof OcelotEntity)
                 {
-                    ((EntityOcelot) entity).setTameSkin(telemeter.clientData[3]);
+                    ((OcelotEntity) entity).setTameSkin(telemeter.clientData[3]);
                 }
-                else if (entity instanceof EntitySkeleton)
+                else if (entity instanceof SkeletonEntity)
                 {
 //                    ((EntitySkeleton) entity).setSkeletonType(SkeletonType.values()[telemeter.clientData[3]]);
                 }
-                else if (entity instanceof EntityZombie)
+                else if (entity instanceof ZombieEntity)
                 {
 //                    ((EntityZombie) entity).setVillager(telemeter.clientData[3] == 1); TODO Fix for MC 1.10
-                    ((EntityZombie) entity).setChild(telemeter.clientData[4] == 1);
+                    ((ZombieEntity) entity).setChild(telemeter.clientData[4] == 1);
                 }
 
             }
@@ -191,7 +193,7 @@ public class GameScreenText implements IGameScreen
             {
                 ((ITelemetry) entity).receiveData(telemeter.clientData, str);
             }
-            else if (entity instanceof EntityLivingBase)
+            else if (entity instanceof LivingEntity)
             {
                 //Living entity:
                 //  data0 = time to show red damage
@@ -308,9 +310,9 @@ public class GameScreenText implements IGameScreen
                 ((ITelemetry) entity).adjustDisplay(telemeter.clientData);
             }
         	RenderPlayerGC.flagThermalOverride = true;
-        	if (entity instanceof EntityLivingBase && renderEntity instanceof RenderLivingBase && renderModelMethod != null)
+        	if (entity instanceof LivingEntity && renderEntity instanceof LivingRenderer && renderModelMethod != null)
         	{
-        	    this.renderLiving((EntityLivingBase) entity, (RenderLivingBase) renderEntity, ticks % 1F);
+        	    this.renderLiving((LivingEntity) entity, (LivingRenderer) renderEntity, ticks % 1F);
         	}
         	else
         	{
@@ -338,7 +340,7 @@ public class GameScreenText implements IGameScreen
 
     // This is a simplified version of doRender() in RenderLivingEntity
     // No lighting adjustment, no sitting, no name text, no sneaking and no Forge events
-    private void renderLiving(EntityLivingBase entity, RenderLivingBase render, float partialTicks)
+    private void renderLiving(LivingEntity entity, LivingRenderer render, float partialTicks)
     {
         GlStateManager.pushMatrix();
         GlStateManager.disableCull();

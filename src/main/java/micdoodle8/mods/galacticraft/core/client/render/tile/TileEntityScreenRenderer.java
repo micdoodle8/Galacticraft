@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityScreen;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityScreenRenderer extends TileEntitySpecialRenderer<TileEntityScreen>
+public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScreen>
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/screen_side.png");
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;

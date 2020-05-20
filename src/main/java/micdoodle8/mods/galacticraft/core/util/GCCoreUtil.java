@@ -13,9 +13,9 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,8 +28,8 @@ import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.ServerWorld;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -84,7 +84,7 @@ public class GCCoreUtil
         return deobfuscated;
     }
 
-    public static void openBuggyInv(EntityPlayerMP player, IInventory buggyInv, int type)
+    public static void openBuggyInv(ServerPlayerEntity player, IInventory buggyInv, int type)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -95,7 +95,7 @@ public class GCCoreUtil
         player.openContainer.addListener(player);
     }
 
-    public static void openParachestInv(EntityPlayerMP player, EntityLanderBase landerInv)
+    public static void openParachestInv(ServerPlayerEntity player, EntityLanderBase landerInv)
     {
         player.getNextWindowId();
         player.closeContainer();
@@ -168,7 +168,7 @@ public class GCCoreUtil
 
     public static String translate(String key)
     {
-        String result = I18n.translateToLocal(key);
+        String result = LanguageMap.getInstance().translateKey(key);
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
@@ -304,7 +304,7 @@ public class GCCoreUtil
         return world.provider.getDimension();
     }
 
-    public static int getDimensionID(WorldProvider provider)
+    public static int getDimensionID(Dimension provider)
     {
         return provider.getDimension();
     }
@@ -314,28 +314,28 @@ public class GCCoreUtil
         return tileEntity.getWorld().provider.getDimension();
     }
 
-    public static WorldServer[] getWorldServerList()
+    public static ServerWorld[] getWorldServerList()
     {
         MinecraftServer server = getServer();
         if (server != null)
         {
             return server.worlds;
         }
-        return new WorldServer[0];
+        return new ServerWorld[0];
     }
     
-    public static WorldServer[] getWorldServerList(World world)
+    public static ServerWorld[] getWorldServerList(World world)
     {
-        if (world instanceof WorldServer)
+        if (world instanceof ServerWorld)
         {
-            return ((WorldServer)world).getMinecraftServer().worlds;
+            return ((ServerWorld)world).getMinecraftServer().worlds;
         }
         return GCCoreUtil.getWorldServerList();
     }
     
     public static void sendToAllDimensions(EnumSimplePacket packetType, Object[] data)
     {
-        for (WorldServer world : GCCoreUtil.getWorldServerList())
+        for (ServerWorld world : GCCoreUtil.getWorldServerList())
         {
             int id = getDimensionID(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
@@ -348,7 +348,7 @@ public class GCCoreUtil
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
         double r2 = radius * radius;
-        for (EntityPlayer playerMP : world.playerEntities)
+        for (PlayerEntity playerMP : world.playerEntities)
         {
             if (playerMP.dimension == dimID)
             {
@@ -358,7 +358,7 @@ public class GCCoreUtil
 
                 if (dx * dx + dy * dy + dz * dz < r2)
                 {
-                    GalacticraftCore.packetPipeline.sendTo(packet, (EntityPlayerMP) playerMP);
+                    GalacticraftCore.packetPipeline.sendTo(packet, (ServerPlayerEntity) playerMP);
                 }
             }
         }
@@ -408,7 +408,7 @@ public class GCCoreUtil
         return server;
     }
 
-    public static ItemStack getMatchingItemEitherHand(EntityPlayer player, Item item)
+    public static ItemStack getMatchingItemEitherHand(PlayerEntity player, Item item)
     {
         ItemStack stack = player.inventory.getStackInSlot(player.inventory.currentItem);
         if (stack != null && stack.getItem() == item)
@@ -489,7 +489,7 @@ public class GCCoreUtil
 	        double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
 	        double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
 	        double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-	        EntityItem entityitem = new EntityItem(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.splitStack(world.rand.nextInt(21) + 10));
+	        ItemEntity entityitem = new ItemEntity(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.splitStack(world.rand.nextInt(21) + 10));
 	
 	        entityitem.setPickupDelay(10);
 	

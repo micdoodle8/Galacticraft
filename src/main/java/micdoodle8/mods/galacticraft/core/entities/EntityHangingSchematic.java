@@ -5,19 +5,19 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityHanging;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityHangingSchematic extends EntityHanging
+public class EntityHangingSchematic extends HangingEntity
 {
     public int schematic;
     private boolean sendToClient;
@@ -27,7 +27,7 @@ public class EntityHangingSchematic extends EntityHanging
         super(worldIn);
     }
 
-    public EntityHangingSchematic(World worldIn, BlockPos pos, EnumFacing facing, int meta)
+    public EntityHangingSchematic(World worldIn, BlockPos pos, Direction facing, int meta)
     {
         super(worldIn, pos);
         this.schematic = meta;
@@ -67,14 +67,14 @@ public class EntityHangingSchematic extends EntityHanging
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound tagCompound)
+    public void writeEntityToNBT(CompoundNBT tagCompound)
     {
         tagCompound.setInteger("schem", this.schematic);
         super.writeEntityToNBT(tagCompound);
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound tag)
+    public void readEntityFromNBT(CompoundNBT tag)
     {
         this.schematic = tag.getInteger("schem");
         super.readEntityFromNBT(tag);
@@ -98,9 +98,9 @@ public class EntityHangingSchematic extends EntityHanging
     {
         if (this.world.getGameRules().getBoolean("doEntityDrops"))
         {
-            if (brokenEntity instanceof EntityPlayer)
+            if (brokenEntity instanceof PlayerEntity)
             {
-                EntityPlayer entityplayer = (EntityPlayer)brokenEntity;
+                PlayerEntity entityplayer = (PlayerEntity)brokenEntity;
 
                 if (entityplayer.capabilities.isCreativeMode)
                 {

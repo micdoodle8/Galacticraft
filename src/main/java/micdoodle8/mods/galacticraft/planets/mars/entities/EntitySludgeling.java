@@ -6,21 +6,21 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.EntityAIAttackMelee;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.MonsterEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class EntitySludgeling extends EntityMob implements IEntityBreathable
+public class EntitySludgeling extends MonsterEntity implements IEntityBreathable
 {
     public EntitySludgeling(World par1World)
     {
@@ -28,14 +28,14 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         this.setSize(0.3F, 0.2F);
         this.tasks.taskEntries.clear();
         this.targetTasks.taskEntries.clear();
-        this.tasks.addTask(1, new EntityAIAttackMelee(this, 0.25F, true));
-        this.tasks.addTask(4, new EntityAIAttackMelee(this, 1.0D, false));
-        this.targetTasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedZombie.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedSkeleton.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedSpider.class, 0, false, true, null));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityEvolvedCreeper.class, 0, false, true, null));
-        this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, EntitySlimeling.class, 200, false, true, null));
+        this.tasks.addTask(1, new MeleeAttackGoal(this, 0.25F, true));
+        this.tasks.addTask(4, new MeleeAttackGoal(this, 1.0D, false));
+        this.targetTasks.addTask(1, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityEvolvedZombie.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityEvolvedSkeleton.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityEvolvedSpider.class, 0, false, true, null));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, EntityEvolvedCreeper.class, 0, false, true, null));
+        this.targetTasks.addTask(3, new NearestAttackableTargetGoal<>(this, EntitySlimeling.class, 200, false, true, null));
     }
 
     @Override
@@ -76,14 +76,14 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
         return SoundEvents.ENTITY_SILVERFISH_DEATH;
     }
 
-    public EntityPlayer getClosestEntityToAttack(double par1, double par3, double par5, double par7)
+    public PlayerEntity getClosestEntityToAttack(double par1, double par3, double par5, double par7)
     {
         double var9 = -1.0D;
-        EntityPlayer var11 = null;
+        PlayerEntity var11 = null;
 
         for (int var12 = 0; var12 < this.world.loadedEntityList.size(); ++var12)
         {
-            EntityPlayer var13 = (EntityPlayer) this.world.loadedEntityList.get(var12);
+            PlayerEntity var13 = (PlayerEntity) this.world.loadedEntityList.get(var12);
             double var14 = var13.getDistanceSq(par1, par3, par5);
 
             if ((par7 < 0.0D || var14 < par7 * par7) && (var9 == -1.0D || var14 < var9))
@@ -126,7 +126,7 @@ public class EntitySludgeling extends EntityMob implements IEntityBreathable
     {
         if (super.getCanSpawnHere())
         {
-            EntityPlayer var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
+            PlayerEntity var1 = this.world.getClosestPlayerToEntity(this, 5.0D);
             return var1 == null;
         }
         else

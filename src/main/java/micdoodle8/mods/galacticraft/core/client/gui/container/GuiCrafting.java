@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,7 +23,7 @@ public class GuiCrafting extends GuiContainerGC
     TileEntityCrafting tile;
     List<String> memorySlotDesc = new ArrayList<String>();
     
-    public GuiCrafting(InventoryPlayer playerInv, TileEntityCrafting tile)
+    public GuiCrafting(PlayerInventory playerInv, TileEntityCrafting tile)
     {
         super(new ContainerCrafting(playerInv, tile));
         this.tile = tile;

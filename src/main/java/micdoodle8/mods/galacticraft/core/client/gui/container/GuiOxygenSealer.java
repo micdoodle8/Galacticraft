@@ -14,11 +14,11 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 //import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -30,12 +30,12 @@ public class GuiOxygenSealer extends GuiContainerGC
     private static final ResourceLocation sealerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_sealer.png");
 
     private final TileEntityOxygenSealer sealer;
-    private GuiButton buttonDisable;
+    private Button buttonDisable;
 
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenSealer(InventoryPlayer par1InventoryPlayer, TileEntityOxygenSealer par2TileEntityAirDistributor)
+    public GuiOxygenSealer(PlayerInventory par1InventoryPlayer, TileEntityOxygenSealer par2TileEntityAirDistributor)
     {
         super(new ContainerOxygenSealer(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.sealer = par2TileEntityAirDistributor;
@@ -43,7 +43,7 @@ public class GuiOxygenSealer extends GuiContainerGC
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         switch (par1GuiButton.id)
         {
@@ -88,7 +88,7 @@ public class GuiOxygenSealer extends GuiContainerGC
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonDisable = new GuiButton(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal.name")));
+        this.buttonList.add(this.buttonDisable = new Button(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal.name")));
     }
 
     @Override
@@ -116,7 +116,7 @@ public class GuiOxygenSealer extends GuiContainerGC
 
     private String getThermalStatus()
     {
-        IBlockState stateAbove = this.sealer.getWorld().getBlockState(this.sealer.getPos().up());
+        BlockState stateAbove = this.sealer.getWorld().getBlockState(this.sealer.getPos().up());
         Block blockAbove = stateAbove.getBlock();
         int metadata = blockAbove.getMetaFromState(stateAbove);
 
@@ -140,9 +140,9 @@ public class GuiOxygenSealer extends GuiContainerGC
     {
         BlockPos blockPosAbove = this.sealer.getPos().up();
         Block blockAbove = this.sealer.getWorld().getBlockState(blockPosAbove).getBlock();
-        IBlockState state = this.sealer.getWorld().getBlockState(blockPosAbove);
+        BlockState state = this.sealer.getWorld().getBlockState(blockPosAbove);
 
-        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), state, blockPosAbove, EnumFacing.UP))
+        if (!(blockAbove.isAir(state, this.sealer.getWorld(), blockPosAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.sealer.getWorld(), state, blockPosAbove, Direction.UP))
         {
             return EnumColor.DARK_RED + GCCoreUtil.translate("gui.status.sealerblocked.name");
         }

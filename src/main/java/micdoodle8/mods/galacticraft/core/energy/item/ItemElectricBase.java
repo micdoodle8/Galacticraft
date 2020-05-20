@@ -10,14 +10,14 @@ import micdoodle8.mods.galacticraft.core.items.ItemBatteryInfinite;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.DoubleNBT;
+import net.minecraft.nbt.FloatNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.versioning.DefaultArtifactVersion;
@@ -94,7 +94,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
      * Change this if you do not want this to happen!
      */
     @Override
-    public void onCreated(ItemStack itemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public void onCreated(ItemStack itemStack, World par2World, PlayerEntity par3EntityPlayer)
     {
         this.setElectricity(itemStack, 0);
     }
@@ -144,7 +144,7 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
         // Saves the frequency in the ItemStack
         if (itemStack.getTagCompound() == null)
         {
-            itemStack.setTagCompound(new NBTTagCompound());
+            itemStack.setTagCompound(new CompoundNBT());
         }
 
         float electricityStored = Math.max(Math.min(joules, this.getMaxElectricityStored(itemStack)), 0);
@@ -171,19 +171,19 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
     {
         if (itemStack.getTagCompound() == null)
         {
-            itemStack.setTagCompound(new NBTTagCompound());
+            itemStack.setTagCompound(new CompoundNBT());
         }
         float energyStored = 0f;
         if (itemStack.getTagCompound().hasKey("electricity"))
         {
             NBTBase obj = itemStack.getTagCompound().getTag("electricity");
-            if (obj instanceof NBTTagDouble)
+            if (obj instanceof DoubleNBT)
             {
-                energyStored = ((NBTTagDouble) obj).getFloat();
+                energyStored = ((DoubleNBT) obj).getFloat();
             }
-            else if (obj instanceof NBTTagFloat)
+            else if (obj instanceof FloatNBT)
             {
-                energyStored = ((NBTTagFloat) obj).getFloat();
+                energyStored = ((FloatNBT) obj).getFloat();
             }
         }
         else //First time check item - maybe from addInformation() in a JEI recipe display?
@@ -201,9 +201,9 @@ public abstract class ItemElectricBase extends Item implements IItemElectricBase
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             list.add(ElectricItemHelper.getUncharged(new ItemStack(this)));
             list.add(ElectricItemHelper.getWithCharge(new ItemStack(this), this.getMaxElectricityStored(new ItemStack(this))));

@@ -7,11 +7,11 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEntityPlatform>
+public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPlatform>
 {
     public class ModelPlatform extends ModelBase
     {
@@ -70,7 +70,7 @@ public class TileEntityPlatformRenderer extends TileEntitySpecialRenderer<TileEn
             lastPartialTicks = f;
             lastYMap.clear();
         }
-        IBlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
+        BlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         float yOffset = tileEntity.getYOffset(f);
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {

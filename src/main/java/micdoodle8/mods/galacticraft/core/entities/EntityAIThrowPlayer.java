@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
 
-public class EntityAIThrowPlayer extends EntityAIBase
+public class EntityAIThrowPlayer extends Goal
 {
     EntitySkeletonBoss skeletonBoss;
 
-    EntityPlayer targetPlayer;
+    PlayerEntity targetPlayer;
 
     public EntityAIThrowPlayer(EntitySkeletonBoss boss)
     {
@@ -19,7 +19,7 @@ public class EntityAIThrowPlayer extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        final EntityPlayer player = this.skeletonBoss.world.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
+        final PlayerEntity player = this.skeletonBoss.world.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
 
         if (player == null)
         {

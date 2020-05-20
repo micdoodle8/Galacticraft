@@ -2,16 +2,16 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 public class InventorySlimeling implements IInventory
 {
@@ -149,7 +149,7 @@ public class InventorySlimeling implements IInventory
         return true;
     }
 
-    public void readFromNBT(NBTTagList tagList)
+    public void readFromNBT(ListNBT tagList)
     {
         if (tagList == null || tagList.tagCount() <= 0)
         {
@@ -160,7 +160,7 @@ public class InventorySlimeling implements IInventory
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = tagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 
@@ -171,15 +171,15 @@ public class InventorySlimeling implements IInventory
         }
     }
 
-    public NBTTagList writeToNBT(NBTTagList tagList)
+    public ListNBT writeToNBT(ListNBT tagList)
     {
-        NBTTagCompound nbttagcompound;
+        CompoundNBT nbttagcompound;
 
         for (int i = 0; i < this.stacks.size(); ++i)
         {
             if (!this.stacks.get(i).isEmpty())
             {
-                nbttagcompound = new NBTTagCompound();
+                nbttagcompound = new CompoundNBT();
                 nbttagcompound.setByte("Slot", (byte) i);
                 this.stacks.get(i).writeToNBT(nbttagcompound);
                 tagList.appendTag(nbttagcompound);
@@ -201,7 +201,7 @@ public class InventorySlimeling implements IInventory
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer par1EntityPlayer)
+    public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
         return !this.slimeling.isDead && par1EntityPlayer.getDistanceSq(this.slimeling) <= 64.0D;
     }
@@ -214,13 +214,13 @@ public class InventorySlimeling implements IInventory
 
     //We don't use these because we use forge containers
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
     }
 
@@ -256,6 +256,6 @@ public class InventorySlimeling implements IInventory
     @Override
     public ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
     }
 }

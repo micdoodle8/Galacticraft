@@ -6,14 +6,14 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.io.IOException;
 
-public class GuiSlimelingFeed extends GuiScreen
+public class GuiSlimelingFeed extends Screen
 {
     private final int xSize;
     private final int ySize;
@@ -27,10 +27,10 @@ public class GuiSlimelingFeed extends GuiScreen
     public int backspacePressed;
     public boolean isTextFocused = false;
 
-    public GuiButton buttonGrowSlimeling;
-    public GuiButton buttonBreedSlimeling;
-    public GuiButton buttonStrengthenSlimeling;
-    public GuiButton buttonHealSlimeling;
+    public Button buttonGrowSlimeling;
+    public Button buttonBreedSlimeling;
+    public Button buttonStrengthenSlimeling;
+    public Button buttonHealSlimeling;
 
     public GuiSlimelingFeed(EntitySlimeling slimeling)
     {
@@ -45,13 +45,13 @@ public class GuiSlimelingFeed extends GuiScreen
         super.initGui();
         this.buttonList.clear();
         final int var6 = (this.height - this.ySize) / 2;
-        this.buttonGrowSlimeling = new GuiButton(0, this.width / 2 - 65, var6 - 15, 64, 20, GCCoreUtil.translate("gui.message.grow.name"));
+        this.buttonGrowSlimeling = new Button(0, this.width / 2 - 65, var6 - 15, 64, 20, GCCoreUtil.translate("gui.message.grow.name"));
         this.buttonList.add(this.buttonGrowSlimeling);
-        this.buttonBreedSlimeling = new GuiButton(1, this.width / 2 + 1, var6 - 15, 64, 20, GCCoreUtil.translate("gui.message.breed.name"));
+        this.buttonBreedSlimeling = new Button(1, this.width / 2 + 1, var6 - 15, 64, 20, GCCoreUtil.translate("gui.message.breed.name"));
         this.buttonList.add(this.buttonBreedSlimeling);
-        this.buttonStrengthenSlimeling = new GuiButton(2, this.width / 2 - 65, var6 + 7, 64, 20, GCCoreUtil.translate("gui.message.strengthen.name"));
+        this.buttonStrengthenSlimeling = new Button(2, this.width / 2 - 65, var6 + 7, 64, 20, GCCoreUtil.translate("gui.message.strengthen.name"));
         this.buttonList.add(this.buttonStrengthenSlimeling);
-        this.buttonHealSlimeling = new GuiButton(3, this.width / 2 + 1, var6 + 7, 64, 20, GCCoreUtil.translate("gui.message.heal.name"));
+        this.buttonHealSlimeling = new Button(3, this.width / 2 + 1, var6 + 7, 64, 20, GCCoreUtil.translate("gui.message.heal.name"));
         this.buttonList.add(this.buttonHealSlimeling);
     }
 
@@ -72,7 +72,7 @@ public class GuiSlimelingFeed extends GuiScreen
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {

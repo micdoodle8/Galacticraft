@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.tile.IMultiBlock;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -50,7 +50,7 @@ public class ChunkProviderOrbit extends ChunkProviderBase
     @Override
     public void populate(int x, int z)
     {
-        BlockFalling.fallInstantly = true;
+        FallingBlock.fallInstantly = true;
         final int k = x * 16;
         final int l = z * 16;
         this.rand.setSeed(this.world.getSeed());
@@ -71,11 +71,11 @@ public class ChunkProviderOrbit extends ChunkProviderBase
 
             new WorldGenSpaceStation().generate(this.world, this.rand, new BlockPos(k - 10, 62, l - 3));
         }
-        BlockFalling.fallInstantly = false;
+        FallingBlock.fallInstantly = false;
     }
 
     @Override
-    public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
     {
         return null;
     }

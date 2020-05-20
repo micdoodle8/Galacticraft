@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.render.tile;
 
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import org.lwjgl.opengl.GL11;
 
 import com.google.common.base.Function;
@@ -14,8 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<TileEntityLaserTurret>
+public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntityLaserTurret>
 {
     public static OBJModel.OBJBakedModel laserBase;
     public static OBJModel.OBJBakedModel laserPhalange;
@@ -69,7 +69,7 @@ public class TileEntityLaserTurretRenderer extends TileEntitySpecialRenderer<Til
         GlStateManager.pushMatrix();
         RenderHelper.disableStandardItemLighting();
 
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -60,7 +60,7 @@ public class SpaceStationRecipe
     }
 
     @SuppressWarnings("unchecked")
-    public boolean matches(EntityPlayer player, boolean remove)
+    public boolean matches(PlayerEntity player, boolean remove)
     {
         final HashMap<Object, Integer> required = new HashMap<Object, Integer>();
         required.putAll(this.input);
@@ -115,7 +115,7 @@ public class SpaceStationRecipe
     }
 
     @SuppressWarnings("unchecked")
-    public void removeItems(EntityPlayer player)
+    public void removeItems(PlayerEntity player)
     {
         final HashMap<Object, Integer> required = new HashMap<Object, Integer>(this.input);
 

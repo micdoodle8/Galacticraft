@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -18,7 +18,7 @@ public class GuiCoalGenerator extends GuiContainerGC
 
     private TileEntityCoalGenerator tileEntity;
 
-    public GuiCoalGenerator(InventoryPlayer playerInventory, TileEntityCoalGenerator tileEntity)
+    public GuiCoalGenerator(PlayerInventory playerInventory, TileEntityCoalGenerator tileEntity)
     {
         super(new ContainerCoalGenerator(playerInventory, tileEntity));
         this.tileEntity = tileEntity;

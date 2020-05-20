@@ -8,16 +8,16 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStatsClient;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.network.PacketSimpleAsteroids;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -44,7 +44,7 @@ public class EntityGrapple extends Entity implements IProjectile
     private boolean inGround;
     public int canBePickedUp;
     public int arrowShake;
-    public EntityPlayer shootingEntity;
+    public PlayerEntity shootingEntity;
     private int ticksInGround;
     private int ticksInAir;
     public float rotationRoll;
@@ -59,7 +59,7 @@ public class EntityGrapple extends Entity implements IProjectile
         this.setSize(0.75F, 0.75F);
     }
 
-    public EntityGrapple(World par1World, EntityPlayer shootingEntity, float par3, ItemStack stringStack)
+    public EntityGrapple(World par1World, PlayerEntity shootingEntity, float par3, ItemStack stringStack)
     {
         super(par1World);
         this.shootingEntity = shootingEntity;
@@ -178,7 +178,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
             if (this.getPullingEntity())
             {
-                EntityPlayer shootingEntity = this.getShootingEntity();
+                PlayerEntity shootingEntity = this.getShootingEntity();
                 if (shootingEntity != null)
                 {
                     double deltaPosition = this.getDistanceSq(shootingEntity);
@@ -203,7 +203,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             if (this.getPullingEntity())
             {
-                EntityPlayer shootingEntity = this.getShootingEntity();
+                PlayerEntity shootingEntity = this.getShootingEntity();
                 if (shootingEntity != null)
                 {
                     shootingEntity.setVelocity((this.posX - shootingEntity.posX) / 12.0F, (this.posY - shootingEntity.posY) / 12.0F, (this.posZ - shootingEntity.posZ) / 12.0F);
@@ -228,7 +228,7 @@ public class EntityGrapple extends Entity implements IProjectile
 
         if (this.hitVec != null)
         {
-            IBlockState state = this.world.getBlockState(this.hitVec);
+            BlockState state = this.world.getBlockState(this.hitVec);
 
             if (state.getMaterial() != Material.AIR)
             {
@@ -250,7 +250,7 @@ public class EntityGrapple extends Entity implements IProjectile
         {
             if (this.hitVec != null)
             {
-                IBlockState state = this.world.getBlockState(this.hitVec);
+                BlockState state = this.world.getBlockState(this.hitVec);
                 Block block = state.getBlock();
                 int j = block.getMetaFromState(state);
 
@@ -261,8 +261,8 @@ public class EntityGrapple extends Entity implements IProjectile
                         this.shootingEntity.motionX = (this.posX - this.shootingEntity.posX) / 16.0F;
                         this.shootingEntity.motionY = (this.posY - this.shootingEntity.posY) / 16.0F;
                         this.shootingEntity.motionZ = (this.posZ - this.shootingEntity.posZ) / 16.0F;
-                        if (this.shootingEntity instanceof EntityPlayerMP)
-                        	GalacticraftCore.handler.preventFlyingKicks((EntityPlayerMP) this.shootingEntity);
+                        if (this.shootingEntity instanceof ServerPlayerEntity)
+                        	GalacticraftCore.handler.preventFlyingKicks((ServerPlayerEntity) this.shootingEntity);
                     }
 
                     if (!this.world.isRemote && this.ticksInGround < 5)
@@ -347,9 +347,9 @@ public class EntityGrapple extends Entity implements IProjectile
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof PlayerEntity)
             {
-                EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
+                PlayerEntity entityplayer = (PlayerEntity) movingobjectposition.entityHit;
 
                 if (entityplayer.capabilities.disableDamage || this.shootingEntity != null && !this.shootingEntity.canAttackPlayer(entityplayer))
                 {
@@ -364,7 +364,7 @@ public class EntityGrapple extends Entity implements IProjectile
                 if (movingobjectposition.entityHit == null)
                 {
                     this.hitVec = movingobjectposition.getBlockPos();
-                    IBlockState state = this.world.getBlockState(this.hitVec);
+                    BlockState state = this.world.getBlockState(this.hitVec);
                     this.hitBlock = state.getBlock();
                     this.inData = state.getBlock().getMetaFromState(state);
                     this.motionX = (float) (movingobjectposition.hitVec.x - this.posX);
@@ -441,7 +441,7 @@ public class EntityGrapple extends Entity implements IProjectile
     }
 
     @Override
-    public void writeEntityToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeEntityToNBT(CompoundNBT par1NBTTagCompound)
     {
         if (this.hitVec != null)
         {
@@ -459,7 +459,7 @@ public class EntityGrapple extends Entity implements IProjectile
     }
 
     @Override
-    public void readEntityFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
     {
         if (par1NBTTagCompound.hasKey("xTile"))
         {
@@ -489,7 +489,7 @@ public class EntityGrapple extends Entity implements IProjectile
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(PlayerEntity par1EntityPlayer)
     {
         if (!this.world.isRemote && this.inGround && this.arrowShake <= 0)
         {
@@ -537,13 +537,13 @@ public class EntityGrapple extends Entity implements IProjectile
         }
     }
 
-    public EntityPlayer getShootingEntity()
+    public PlayerEntity getShootingEntity()
     {
         Entity entity = this.world.getEntityByID(this.dataManager.get(PULLING_ENTITY_ID));
 
-        if (entity instanceof EntityPlayer)
+        if (entity instanceof PlayerEntity)
         {
-            return (EntityPlayer) entity;
+            return (PlayerEntity) entity;
         }
 
         return null;

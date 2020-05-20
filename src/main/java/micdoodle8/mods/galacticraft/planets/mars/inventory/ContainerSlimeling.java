@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.planets.mars.inventory;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class ContainerSlimeling extends Container
 {
     private final InventorySlimeling slimelingInventory;
 
-    public ContainerSlimeling(InventoryPlayer playerInventory, EntitySlimeling slimeling, EntityPlayer player)
+    public ContainerSlimeling(PlayerInventory playerInventory, EntitySlimeling slimeling, PlayerEntity player)
     {
         this.slimelingInventory = slimeling.slimelingInventory;
         this.slimelingInventory.currentContainer = this;
@@ -26,7 +26,7 @@ public class ContainerSlimeling extends Container
         this.slimelingInventory.openInventory(player);
     }
 
-    public static void addSlots(ContainerSlimeling container, InventoryPlayer playerInventory, EntitySlimeling slimeling)
+    public static void addSlots(ContainerSlimeling container, PlayerInventory playerInventory, EntitySlimeling slimeling)
     {
         Slot slot = new SlotSpecific(slimeling.slimelingInventory, 1, 9, 30, new ItemStack(MarsItems.marsItemBasic, 1, 4));
         container.addSlotToContainer(slot);
@@ -77,19 +77,19 @@ public class ContainerSlimeling extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         this.slimelingInventory.closeInventory(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.slimelingInventory.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = (Slot) this.inventorySlots.get(par1);

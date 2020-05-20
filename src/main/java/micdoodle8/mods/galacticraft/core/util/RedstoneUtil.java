@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -22,16 +22,16 @@ public class RedstoneUtil
         }
 
         // Check up/down without chunk load test first
-        if (getStrongPower(w, pos.down(), EnumFacing.DOWN) > 0)
+        if (getStrongPower(w, pos.down(), Direction.DOWN) > 0)
         {
             return true;
         }
-        if (getStrongPower(w, pos.up(), EnumFacing.UP) > 0)
+        if (getStrongPower(w, pos.up(), Direction.UP) > 0)
         {
             return true;
         }
 
-        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        for (Direction facing : Direction.HORIZONTALS)
         {
             if (getStrongPower_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
             {
@@ -45,19 +45,19 @@ public class RedstoneUtil
     /**
      * Is this block powering in the specified direction Args: x, y, z, direction
      */
-    public static int getStrongPower(World w, BlockPos pos, EnumFacing side)
+    public static int getStrongPower(World w, BlockPos pos, Direction side)
     {
-        IBlockState bs = w.getBlockState(pos); 
+        BlockState bs = w.getBlockState(pos);
         return bs.getBlock().getStrongPower(bs, w, pos, side);
     }
 
-    public static int getStrongPower_NoChunkLoad(World w, BlockPos pos, EnumFacing side)
+    public static int getStrongPower_NoChunkLoad(World w, BlockPos pos, Direction side)
     {
         if (!w.isBlockLoaded(pos, false))
         {
             return 0;
         }
-        IBlockState bs = w.getBlockState(pos); 
+        BlockState bs = w.getBlockState(pos);
         return bs.getBlock().getStrongPower(bs, w, pos, side);
     }
 
@@ -77,16 +77,16 @@ public class RedstoneUtil
         }
 
         // Check up/down without chunk load test first
-        if (getRedstonePowerIndirect(w, pos.up(1), EnumFacing.UP) > 0)
+        if (getRedstonePowerIndirect(w, pos.up(1), Direction.UP) > 0)
         {
             return true;
         }
-        if (getRedstonePowerIndirect(w, pos.down(1), EnumFacing.DOWN) > 0)
+        if (getRedstonePowerIndirect(w, pos.down(1), Direction.DOWN) > 0)
         {
             return true;
         }
 
-        for (EnumFacing facing : EnumFacing.HORIZONTALS)
+        for (Direction facing : Direction.HORIZONTALS)
         {
             if (getRedstonePowerIndirect_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
             {
@@ -96,7 +96,7 @@ public class RedstoneUtil
         return false;
     }
 
-    public static int getRedstonePowerIndirect_NoChunkLoad(World w, BlockPos pos, EnumFacing side)
+    public static int getRedstonePowerIndirect_NoChunkLoad(World w, BlockPos pos, Direction side)
     {
         if (!w.isBlockLoaded(pos, false))
         {
@@ -105,11 +105,11 @@ public class RedstoneUtil
         return getRedstonePowerIndirect(w, pos, side);
     }
 
-    public static int getRedstonePowerIndirect(World w, BlockPos pos, EnumFacing facing)
+    public static int getRedstonePowerIndirect(World w, BlockPos pos, Direction facing)
     {
-        IBlockState bs = w.getBlockState(pos);
+        BlockState bs = w.getBlockState(pos);
         Block block = bs.getBlock();
-        if (block instanceof BlockAir)
+        if (block instanceof AirBlock)
         {
             return 0;
         }
@@ -120,29 +120,29 @@ public class RedstoneUtil
      * Similar to the vanilla method getStrongPower(BlockPos pos) but more efficient - doesn't backtrack, so 15% faster
      * (also the low level code here is faster...)
      */
-    public static int getNeighbourPower_NoChunkLoad(World w, BlockPos pos, EnumFacing skip)
+    public static int getNeighbourPower_NoChunkLoad(World w, BlockPos pos, Direction skip)
     {
         int i = 0;
         int p;
-        IBlockState bs;
+        BlockState bs;
         BlockPos sidePos;
         
-        if (skip != EnumFacing.DOWN)
+        if (skip != Direction.DOWN)
         {
             sidePos = pos.add(0, -1, 0);
             bs = w.getBlockState(sidePos); 
-            i = bs.getBlock().getStrongPower(bs, w, sidePos, EnumFacing.DOWN);
+            i = bs.getBlock().getStrongPower(bs, w, sidePos, Direction.DOWN);
             if (i >= 15)
             {
                 return i;
             }
         }
 
-        if (skip != EnumFacing.UP)
+        if (skip != Direction.UP)
         {
             sidePos = pos.add(0, 1, 0);
             bs = w.getBlockState(sidePos); 
-            p = bs.getBlock().getStrongPower(bs, w, sidePos, EnumFacing.UP);
+            p = bs.getBlock().getStrongPower(bs, w, sidePos, Direction.UP);
             if (p >= 15)
             {
                 return p;
@@ -150,7 +150,7 @@ public class RedstoneUtil
             if (p > i) i = p;
         }
 
-        for (EnumFacing side : EnumFacing.HORIZONTALS)
+        for (Direction side : Direction.HORIZONTALS)
         {
             if (side == skip)
             {

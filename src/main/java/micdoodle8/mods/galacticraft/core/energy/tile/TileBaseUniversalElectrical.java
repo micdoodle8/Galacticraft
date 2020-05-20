@@ -19,8 +19,8 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.Capability;
@@ -64,18 +64,18 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
         return true;
     }
 
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
-        return EnumSet.allOf(EnumFacing.class);
+        return EnumSet.allOf(Direction.class);
     }
 
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
-    public float getRequest(EnumFacing direction)
+    public float getRequest(Direction direction)
     {
         if (this.getElectricalInputDirections().contains(direction) || direction == null)
         {
@@ -86,7 +86,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @Override
-    public float receiveElectricity(EnumFacing from, float receive, int tier, boolean doReceive)
+    public float receiveElectricity(Direction from, float receive, int tier, boolean doReceive)
     {
         if (this.getElectricalInputDirections().contains(from) || from == null)
         {
@@ -167,14 +167,14 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     //		return 0.120F;
     //	}
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         //		this.energyStored = nbt.getFloat("energyStored");
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         //		nbt.setFloat("energyStored", this.energyStored);
@@ -387,7 +387,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergySink", modID = CompatibilityManager.modidIC2)
-    public double injectEnergy(EnumFacing direction, double amount, double voltage)
+    public double injectEnergy(Direction direction, double amount, double voltage)
     {
         //IC2 in 1.8.9 seems to have reversed the sense of direction here, but not in acceptsEnergyFrom.  (Seriously?!)
         if (!EnergyConfigHandler.disableIC2Input && (direction == null || this.getElectricalInputDirections().contains(direction.getOpposite())))
@@ -419,7 +419,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "ic2.api.energy.tile.IEnergyAcceptor", modID = CompatibilityManager.modidIC2)
-    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing direction)
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, Direction direction)
     {
         if (this.tileEntityInvalid) return false;
         //Don't add connection to IC2 grid if it's a Galacticraft tile
@@ -471,7 +471,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyReceiver", modID = "")
-    public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate)
+    public int receiveEnergy(Direction from, int maxReceive, boolean simulate)
     {
         if (EnergyConfigHandler.disableRFInput)
         {
@@ -487,25 +487,25 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public boolean canConnectEnergy(EnumFacing from)
+    public boolean canConnectEnergy(Direction from)
     {
         return this.getElectricalInputDirections().contains(from) || this.getElectricalOutputDirections().contains(from);
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public int getEnergyStored(EnumFacing from)
+    public int getEnergyStored(Direction from)
     {
         return MathHelper.floor(this.getEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "cofh.redstoneflux.api.IEnergyHandler", modID = "")
-    public int getMaxEnergyStored(EnumFacing from)
+    public int getMaxEnergyStored(Direction from)
     {
         return MathHelper.floor(this.getMaxEnergyStoredGC() / EnergyConfigHandler.RF_RATIO);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public double transferEnergyToAcceptor(EnumFacing from, double amount)
+    public double transferEnergyToAcceptor(Direction from, double amount)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
@@ -521,13 +521,13 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveEnergy(EnumFacing side)
+    public boolean canReceiveEnergy(Direction side)
     {
         return this.getElectricalInputDirections().contains(side);
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyAcceptor", modID = CompatibilityManager.modidMekanism)
-    public double acceptEnergy(EnumFacing side, double amount, boolean simulate)
+    public double acceptEnergy(Direction side, double amount, boolean simulate)
     {
         if (EnergyConfigHandler.disableMekanismInput)
         {
@@ -565,19 +565,19 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
-    public boolean canOutputEnergy(EnumFacing side)
+    public boolean canOutputEnergy(Direction side)
     {
         return false;
     }
     
     @RuntimeInterface(clazz = "mekanism.api.energy.IStrictEnergyOutputter", modID = CompatibilityManager.modidMekanism)
-	public double pullEnergy(EnumFacing side, double amount, boolean simulate)
+	public double pullEnergy(Direction side, double amount, boolean simulate)
 	{
     	return 0D;
 	}
 
     @Override
-    public ReceiverMode getModeFromDirection(EnumFacing direction)
+    public ReceiverMode getModeFromDirection(Direction direction)
     {
         if (this.getElectricalInputDirections().contains(direction))
         {
@@ -606,7 +606,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
     
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {
@@ -616,7 +616,7 @@ public abstract class TileBaseUniversalElectrical extends EnergyStorageTile
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityEnergy.ENERGY || (EnergyConfigHandler.isBuildcraftLoaded() && (capability == MjAPI.CAP_RECEIVER || capability == MjAPI.CAP_CONNECTOR)))
         {

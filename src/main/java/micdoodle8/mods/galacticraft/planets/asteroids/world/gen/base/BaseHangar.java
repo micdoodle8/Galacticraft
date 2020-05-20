@@ -4,11 +4,11 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
 
 import java.util.Random;
 
@@ -22,10 +22,10 @@ public class BaseHangar extends SizedPiece
     {
     }
 
-    public BaseHangar(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing direction)
+    public BaseHangar(BaseConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction direction)
     {
         super(configuration, HANGARWIDTH, HANGARHEIGHT, HANGARLENGTH, direction);
-        if (direction.getAxis() == EnumFacing.Axis.X)
+        if (direction.getAxis() == Direction.Axis.X)
         {
             int w = this.sizeX;
             this.sizeX = this.sizeZ;
@@ -35,46 +35,46 @@ public class BaseHangar extends SizedPiece
         else
             this.setCoordBaseMode(direction);
         int yPos = configuration.getYPosition();
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
         //TODO check save nbt
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random randomIn, StructureBoundingBox structureBoundingBoxIn)
+    public boolean addComponentParts(World worldIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn)
     {
-        IBlockState blockAir = Blocks.AIR.getDefaultState();
-        IBlockState blockPlain = GCBlocks.basicBlock.getStateFromMeta(4);
-        IBlockState blockPattern = GCBlocks.basicBlock.getStateFromMeta(3);
-        IBlockState blockGrid = AsteroidBlocks.blockWalkway.getDefaultState();
-        IBlockState blockSlab = GCBlocks.slabGCHalf.getStateFromMeta(1);
-        IBlockState upsideSlab = GCBlocks.slabGCHalf.getStateFromMeta(9);
-        IBlockState blockWall = GCBlocks.wallGC.getStateFromMeta(1);
-        IBlockState decoWall = GCBlocks.wallGC.getStateFromMeta(0);
-        IBlockState moonWall = GCBlocks.wallGC.getStateFromMeta(2);
-        IBlockState blockBars = Blocks.IRON_BARS.getDefaultState();
-        IBlockState blockDesh = MarsBlocks.marsBlock.getStateFromMeta(8);
-        IBlockState blockRedstone = GCBlocks.concealedRedstone.getDefaultState();
+        BlockState blockAir = Blocks.AIR.getDefaultState();
+        BlockState blockPlain = GCBlocks.basicBlock.getStateFromMeta(4);
+        BlockState blockPattern = GCBlocks.basicBlock.getStateFromMeta(3);
+        BlockState blockGrid = AsteroidBlocks.blockWalkway.getDefaultState();
+        BlockState blockSlab = GCBlocks.slabGCHalf.getStateFromMeta(1);
+        BlockState upsideSlab = GCBlocks.slabGCHalf.getStateFromMeta(9);
+        BlockState blockWall = GCBlocks.wallGC.getStateFromMeta(1);
+        BlockState decoWall = GCBlocks.wallGC.getStateFromMeta(0);
+        BlockState moonWall = GCBlocks.wallGC.getStateFromMeta(2);
+        BlockState blockBars = Blocks.IRON_BARS.getDefaultState();
+        BlockState blockDesh = MarsBlocks.marsBlock.getStateFromMeta(8);
+        BlockState blockRedstone = GCBlocks.concealedRedstone.getDefaultState();
         Block blockStair = GCBlocks.tinStairs2;
         Block arcLamp = GCBlocks.brightLamp;
         int stairmeta = 1;
         int stairmetaB = 2;
         int lampmeta = 3;
         int lampmeta2 = 5;
-        if (direction == EnumFacing.SOUTH)
+        if (direction == Direction.SOUTH)
         {
             stairmeta ^= 1;
             stairmetaB ^= 1;
             lampmeta ^= 1;
             lampmeta2 ^= 1;
         }
-        else if (direction == EnumFacing.EAST)
+        else if (direction == Direction.EAST)
         {
             stairmeta ^= 2;
             stairmetaB ^= 3;
             lampmeta = 4;
             lampmeta2 = 3;
         }
-        else if (direction == EnumFacing.WEST)
+        else if (direction == Direction.WEST)
         {
             stairmeta ^= 3;
             stairmetaB ^= 2;
@@ -288,7 +288,7 @@ public class BaseHangar extends SizedPiece
                 this.setBlockState(worldIn, blockGrid, 17, maxY, zz, structureBoundingBoxIn);
                 if (zz == HANGARLENGTH - 12)
                 {
-                    IBlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(direction.getAxis() == EnumFacing.Axis.Z ? 0 : 2);  //Rotation will be taken care of by getRotation() but seems to be bugged in vanilla
+                    BlockState repeater = GCBlocks.concealedRepeater_Powered.getStateFromMeta(direction.getAxis() == Direction.Axis.Z ? 0 : 2);  //Rotation will be taken care of by getRotation() but seems to be bugged in vanilla
                     this.setBlockState(worldIn, repeater, 11, maxY, zz, structureBoundingBoxIn);
                     this.setBlockState(worldIn, repeater, 15, maxY, zz, structureBoundingBoxIn);
                 }
@@ -326,7 +326,7 @@ public class BaseHangar extends SizedPiece
             }
             
             //Floor
-            IBlockState blockBeam = (zz % 2 == 0) ? blockPattern : blockPlain;
+            BlockState blockBeam = (zz % 2 == 0) ? blockPattern : blockPlain;
             this.setBlockState(worldIn, blockBeam, 7, 0, zz, structureBoundingBoxIn);
             this.setBlockState(worldIn, blockBeam, 9, 0, zz, structureBoundingBoxIn);
             this.setBlockState(worldIn, blockBeam, 19, 0, zz, structureBoundingBoxIn);
@@ -406,7 +406,7 @@ public class BaseHangar extends SizedPiece
         return true;
     }
     
-    private void floorStrut(World worldIn, IBlockState blockWall, IBlockState decoWall, int zz, StructureBoundingBox structureBoundingBoxIn)
+    private void floorStrut(World worldIn, BlockState blockWall, BlockState decoWall, int zz, MutableBoundingBox structureBoundingBoxIn)
     {
         this.setBlockState(worldIn, blockWall, 1, 0, zz, structureBoundingBoxIn);
         this.setBlockState(worldIn, decoWall, 2, 0, zz, structureBoundingBoxIn);
@@ -422,25 +422,25 @@ public class BaseHangar extends SizedPiece
         this.setBlockState(worldIn, blockWall, 25, 0, zz, structureBoundingBoxIn);
     }
     
-    private void extrude(World worldIn, Random rand, int solid, IBlockState blockstateIn, int x, int y, int z, StructureBoundingBox boundingBoxIn)
+    private void extrude(World worldIn, Random rand, int solid, BlockState blockstateIn, int x, int y, int z, MutableBoundingBox boundingBoxIn)
     {
         for (int zz = z; zz >= rand.nextInt(4 * (4 - solid)); zz--)
             this.setBlockState(worldIn, blockstateIn, x, y, zz, boundingBoxIn);
     }
 
-    private void extrudeDuo(World worldIn, Random rand, int solid, IBlockState blockA, IBlockState blockB, int x, int y, int z, StructureBoundingBox boundingBoxIn)
+    private void extrudeDuo(World worldIn, Random rand, int solid, BlockState blockA, BlockState blockB, int x, int y, int z, MutableBoundingBox boundingBoxIn)
     {
         for (int zz = z; zz >= rand.nextInt(4 * (4 - solid)); zz--)
             this.setBlockState(worldIn, (zz % 2 == 0) ? blockA : blockB, x, y, zz, boundingBoxIn);
     }
 
-    private void extrudeTrio(World worldIn, Random rand, int solid, IBlockState blockA, IBlockState blockB, int x, int y, int z, StructureBoundingBox boundingBoxIn)
+    private void extrudeTrio(World worldIn, Random rand, int solid, BlockState blockA, BlockState blockB, int x, int y, int z, MutableBoundingBox boundingBoxIn)
     {
         for (int zz = z; zz >= rand.nextInt(4 * (4 - solid)); zz--)
             this.setBlockState(worldIn, (zz % 3 == 0) ? blockA : blockB, x, y, zz, boundingBoxIn);
     }
 
-    private void extrudeTrioOff(World worldIn, Random rand, int solid, IBlockState blockA, IBlockState blockB, int x, int y, int z, StructureBoundingBox boundingBoxIn)
+    private void extrudeTrioOff(World worldIn, Random rand, int solid, BlockState blockA, BlockState blockB, int x, int y, int z, MutableBoundingBox boundingBoxIn)
     {
         for (int zz = z; zz >= rand.nextInt(4 * (4 - solid)); zz--)
             this.setBlockState(worldIn, (zz % 3 == 1) ? blockA : blockB, x, y, zz, boundingBoxIn);

@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 
-public class EntityAIArrowAttack extends EntityAIBase
+public class EntityAIArrowAttack extends Goal
 {
-    private final EntityLiving entityHost;
+    private final MobEntity entityHost;
 
     private final IRangedAttackMob rangedAttackEntityHost;
-    private EntityLivingBase attackTarget;
+    private LivingEntity attackTarget;
 
     private int rangedAttackTime;
     private double entityMoveSpeed;
@@ -30,14 +30,14 @@ public class EntityAIArrowAttack extends EntityAIBase
     {
         this.rangedAttackTime = -1;
 
-        if (!(par1IRangedAttackMob instanceof EntityLivingBase))
+        if (!(par1IRangedAttackMob instanceof LivingEntity))
         {
             throw new IllegalArgumentException("ArrowAttackGoal requires Mob implements RangedAttackMob");
         }
         else
         {
             this.rangedAttackEntityHost = par1IRangedAttackMob;
-            this.entityHost = (EntityLiving) par1IRangedAttackMob;
+            this.entityHost = (MobEntity) par1IRangedAttackMob;
             this.entityMoveSpeed = par2;
             this.field_96561_g = par4;
             this.maxRangedAttackTime = par5;
@@ -53,7 +53,7 @@ public class EntityAIArrowAttack extends EntityAIBase
     @Override
     public boolean shouldExecute()
     {
-        EntityLivingBase entitylivingbase = this.entityHost.getAttackTarget();
+        LivingEntity entitylivingbase = this.entityHost.getAttackTarget();
 
         if (entitylivingbase == null)
         {

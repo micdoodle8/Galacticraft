@@ -6,9 +6,9 @@ import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.world.gen.EnumCraterSize;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFalling;
-import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.FallingBlock;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -350,7 +350,7 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
     @Override
     public void populate(int x, int z)
     {
-        BlockFalling.fallInstantly = true;
+        FallingBlock.fallInstantly = true;
         int var4 = x * 16;
         int var5 = z * 16;
         this.world.getBiome(new BlockPos(var4 + 16, 0, var5 + 16));
@@ -361,11 +361,11 @@ public abstract class ChunkProviderSpace extends ChunkProviderBase
         this.decoratePlanet(this.world, this.rand, var4, var5);
         this.onPopulate(x, z);
 
-        BlockFalling.fallInstantly = false;
+        FallingBlock.fallInstantly = false;
     }
 
     @Override
-    public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos)
+    public List<Biome.SpawnListEntry> getPossibleCreatures(EntityClassification creatureType, BlockPos pos)
     {
         Biome biomegenbase = this.world.getBiome(pos);
         return biomegenbase.getSpawnableList(creatureType);

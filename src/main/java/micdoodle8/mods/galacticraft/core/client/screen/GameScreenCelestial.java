@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -84,7 +84,7 @@ public class GameScreenCelestial implements IGameScreen
         switch (type)
         {
         case 2:
-            WorldProvider wp = scr.getWorldProvider();
+            Dimension wp = scr.getWorldProvider();
             CelestialBody body = null;
             if (wp instanceof IGalacticraftWorldProvider)
             {

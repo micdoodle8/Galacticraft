@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -107,13 +107,13 @@ public class PacketSimpleVenus extends PacketBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
-        EntityPlayerSP playerBaseClient = null;
+        ClientPlayerEntity playerBaseClient = null;
 
-        if (player instanceof EntityPlayerSP)
+        if (player instanceof ClientPlayerEntity)
         {
-            playerBaseClient = (EntityPlayerSP) player;
+            playerBaseClient = (ClientPlayerEntity) player;
         }
 
         switch (this.type)
@@ -124,9 +124,9 @@ public class PacketSimpleVenus extends PacketBase
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
-        EntityPlayerMP playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
+        ServerPlayerEntity playerBase = PlayerUtil.getPlayerBaseServerFromPlayer(player, false);
 
         switch (this.type)
         {

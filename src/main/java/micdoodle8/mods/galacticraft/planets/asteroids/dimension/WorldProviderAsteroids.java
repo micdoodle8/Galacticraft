@@ -14,11 +14,11 @@ import micdoodle8.mods.galacticraft.planets.asteroids.AsteroidsModule;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.world.gen.ChunkProviderAsteroids;
 import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -78,7 +78,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    public Class<? extends IChunkGenerator> getChunkProviderClass()
+    public Class<? extends ChunkGenerator> getChunkProviderClass()
     {
         return ChunkProviderAsteroids.class;
     }
@@ -212,14 +212,14 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.dataNotLoaded = false;
     }
 
-    private void readFromNBT(NBTTagCompound nbt)
+    private void readFromNBT(CompoundNBT nbt)
     {
-        NBTTagList coordList = nbt.getTagList("coords", 10);
+        ListNBT coordList = nbt.getTagList("coords", 10);
         if (coordList.tagCount() > 0)
         {
             for (int j = 0; j < coordList.tagCount(); j++)
             {
-                NBTTagCompound tag1 = coordList.getCompoundTagAt(j);
+                CompoundNBT tag1 = coordList.getCompoundTagAt(j);
 
                 if (tag1 != null)
                 {
@@ -229,12 +229,12 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         }
     }
 
-    private void writeToNBT(NBTTagCompound nbt)
+    private void writeToNBT(CompoundNBT nbt)
     {
-        NBTTagList coordList = new NBTTagList();
+        ListNBT coordList = new ListNBT();
         for (AsteroidData coords : this.asteroids)
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             coords.writeToNBT(tag);
             coordList.appendTag(tag);
         }
@@ -242,10 +242,10 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
         this.datafile.markDirty();
     }
 
-    private void addToNBT(NBTTagCompound nbt, AsteroidData coords)
+    private void addToNBT(CompoundNBT nbt, AsteroidData coords)
     {
-        NBTTagList coordList = nbt.getTagList("coords", 10);
-        NBTTagCompound tag = new NBTTagCompound();
+        ListNBT coordList = nbt.getTagList("coords", 10);
+        CompoundNBT tag = new CompoundNBT();
         coords.writeToNBT(tag);
         coordList.appendTag(tag);
         nbt.setTag("coords", coordList);
@@ -476,7 +476,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return false;
         }
 
-        public NBTTagCompound writeToNBT(NBTTagCompound tag)
+        public CompoundNBT writeToNBT(CompoundNBT tag)
         {
             tag.setInteger("x", this.centre.x);
             tag.setInteger("y", this.centre.y);
@@ -486,7 +486,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             return tag;
         }
 
-        public static AsteroidData readFromNBT(NBTTagCompound tag)
+        public static AsteroidData readFromNBT(CompoundNBT tag)
         {
             BlockVec3 tempVector = new BlockVec3();
             tempVector.x = tag.getInteger("x");

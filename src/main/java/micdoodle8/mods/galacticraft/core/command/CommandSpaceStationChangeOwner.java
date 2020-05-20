@@ -12,9 +12,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 
 public class CommandSpaceStationChangeOwner extends CommandBase
 {
@@ -42,7 +42,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
         String oldOwner = null;
         String newOwner = "ERROR";
         int stationID = -1;
-        EntityPlayerMP playerAdmin = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
+        ServerPlayerEntity playerAdmin = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
 
         if (args.length > 1)
         {
@@ -79,8 +79,8 @@ public class CommandSpaceStationChangeOwner extends CommandBase
                 stationData.getAllowedPlayers().add(newOwner);
                 stationData.setOwner(newOwner);
 
-                final EntityPlayerMP oldPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(oldOwner, true);
-                final EntityPlayerMP newPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(newOwner, true);
+                final ServerPlayerEntity oldPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(oldOwner, true);
+                final ServerPlayerEntity newPlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(newOwner, true);
                 if (oldPlayer != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(oldPlayer);
@@ -106,7 +106,7 @@ public class CommandSpaceStationChangeOwner extends CommandBase
 
         if (playerAdmin != null)
         {
-            playerAdmin.sendMessage(new TextComponentString(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
+            playerAdmin.sendMessage(new StringTextComponent(GCCoreUtil.translateWithFormat("gui.spacestation.changesuccess", oldOwner, newOwner)));
         }
         else
         //Console

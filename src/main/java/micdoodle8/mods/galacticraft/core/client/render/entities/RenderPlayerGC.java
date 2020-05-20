@@ -14,19 +14,19 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.RenderLivingBase;
-import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
-import net.minecraft.client.renderer.entity.layers.LayerCustomHead;
-import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.layers.*;
+import net.minecraft.client.renderer.entity.layers.ArmorLayer;
+import net.minecraft.client.renderer.entity.layers.HeadLayer;
+import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,7 +44,7 @@ import org.lwjgl.opengl.GL11;
  *
  * @author User
  */
-public class RenderPlayerGC extends RenderPlayer
+public class RenderPlayerGC extends PlayerRenderer
 {
     public static ResourceLocation thermalPaddingTexture0;
     public static ResourceLocation thermalPaddingTexture1;
@@ -71,7 +71,7 @@ public class RenderPlayerGC extends RenderPlayer
         Field f2 = null;
         Field f3 = null;
         try {
-            f1 = LayerArmorBase.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
+            f1 = ArmorLayer.class.getDeclaredField(GCCoreUtil.isDeobfuscated() ? "renderer" : "field_177190_a");
             f1.setAccessible(true);
         } catch (Exception ignore) {}
         // The following code removes the vanilla skull and item layer renderers and replaces them with the Galacticraft ones
@@ -81,11 +81,11 @@ public class RenderPlayerGC extends RenderPlayer
         for (int i = 0; i < this.layerRenderers.size(); i++)
         {
             LayerRenderer layer = this.layerRenderers.get(i);
-            if (layer instanceof LayerHeldItem)
+            if (layer instanceof HeldItemLayer)
             {
                 itemLayerIndex = i;
             }
-            else if (layer instanceof LayerArmorBase)
+            else if (layer instanceof ArmorLayer)
             {
                 if (f1 != null)
                 {
@@ -94,14 +94,14 @@ public class RenderPlayerGC extends RenderPlayer
                     } catch (Exception ignore) { }
                 }
             }
-            else if (layer instanceof LayerCustomHead)
+            else if (layer instanceof HeadLayer)
             {
                 skullLayerIndex = i;
             }
         }
         if (skullLayerIndex >= 0)
         {
-            this.setLayer(skullLayerIndex, new LayerCustomHead(this.getMainModel().bipedHead));
+            this.setLayer(skullLayerIndex, new HeadLayer(this.getMainModel().bipedHead));
         }
         if (itemLayerIndex >= 0 && !ConfigManagerCore.disableVehicleCameraChanges)
         {
@@ -127,12 +127,12 @@ public class RenderPlayerGC extends RenderPlayer
         }
     }
 
-    private <V extends EntityLivingBase, U extends LayerRenderer<V>> void setLayer(int index, U layer)
+    private <V extends LivingEntity, U extends LayerRenderer<V>> void setLayer(int index, U layer)
     {
-        this.layerRenderers.set(index, (LayerRenderer<AbstractClientPlayer>)layer);
+        this.layerRenderers.set(index, (LayerRenderer<AbstractClientPlayerEntity>)layer);
     }
 
-    public RenderPlayerGC(RenderPlayer old, boolean smallArms)
+    public RenderPlayerGC(PlayerRenderer old, boolean smallArms)
     {
         super(FMLClientHandler.instance().getClient().getRenderManager(), smallArms);
         this.mainModel = new ModelPlayerGC(0.0F, smallArms);
@@ -156,7 +156,7 @@ public class RenderPlayerGC extends RenderPlayer
                 //Specifically fix for compatibility with MetaMorph's non-standard "RenderSubPlayer" class
                 try {
                 Field g = old.getClass().getDeclaredField("original");
-                old = (RenderPlayer) g.get(old);
+                old = (PlayerRenderer) g.get(old);
                 layers = (List<LayerRenderer<?>>) f.get(old);
                 } catch (Exception ignore) { }
             }
@@ -168,13 +168,13 @@ public class RenderPlayerGC extends RenderPlayer
                     {
                         LayerRenderer newInstance = null;
                         try {
-                            newInstance = oldLayer.getClass().getConstructor(RenderLivingBase.class).newInstance(this);
+                            newInstance = oldLayer.getClass().getConstructor(LivingRenderer.class).newInstance(this);
                         }
                         catch (Exception ignore) { }
                         if (newInstance == null)
                         {
                             try {
-                                newInstance = oldLayer.getClass().getConstructor(RenderPlayer.class).newInstance(this);
+                                newInstance = oldLayer.getClass().getConstructor(PlayerRenderer.class).newInstance(this);
                             }
                             catch (Exception ignore) { }
                         }
@@ -211,7 +211,7 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
-    protected void preRenderCallback(AbstractClientPlayer entitylivingbaseIn, float partialTickTime)
+    protected void preRenderCallback(AbstractClientPlayerEntity entitylivingbaseIn, float partialTickTime)
     {
         super.preRenderCallback(entitylivingbaseIn, partialTickTime);
 
@@ -234,7 +234,7 @@ public class RenderPlayerGC extends RenderPlayer
     }
 
     @Override
-    protected void applyRotations(AbstractClientPlayer abstractClientPlayer, float par2, float par3, float par4)
+    protected void applyRotations(AbstractClientPlayerEntity abstractClientPlayer, float par2, float par3, float par4)
     {
         if (abstractClientPlayer.isEntityAlive() && abstractClientPlayer.isPlayerSleeping())
         {
@@ -255,7 +255,7 @@ public class RenderPlayerGC extends RenderPlayer
 
                 if (abstractClientPlayer.bedLocation != null)
                 {
-                    IBlockState bed = abstractClientPlayer.world.getBlockState(abstractClientPlayer.bedLocation);
+                    BlockState bed = abstractClientPlayer.world.getBlockState(abstractClientPlayer.bedLocation);
 
                     if (bed.getBlock().isBed(bed, abstractClientPlayer.world, abstractClientPlayer.bedLocation, abstractClientPlayer))
                     {
@@ -296,7 +296,7 @@ public class RenderPlayerGC extends RenderPlayer
         {
             if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
             {
-                final EntityPlayer player = (EntityPlayer) abstractClientPlayer;
+                final PlayerEntity player = (PlayerEntity) abstractClientPlayer;
 
                 if (player.getRidingEntity() instanceof ICameraZoomEntity)
                 {
@@ -322,7 +322,7 @@ public class RenderPlayerGC extends RenderPlayer
         public Boolean shouldRotate = null;
         public boolean vanillaOverride = false;
 
-        public RotatePlayerEvent(AbstractClientPlayer player)
+        public RotatePlayerEvent(AbstractClientPlayerEntity player)
         {
             super(player);
         }

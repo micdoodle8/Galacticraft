@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.block.Blocks;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.StructurePiece;
 
 import java.util.Random;
 
-public abstract class StructureComponentMoon extends StructureComponent
+public abstract class StructureComponentMoon extends StructurePiece
 {
     public StructureComponentMoon()
     {
@@ -23,30 +23,30 @@ public abstract class StructureComponentMoon extends StructureComponent
         super(var1);
     }
 
-    public static StructureBoundingBox getComponentToAddBoundingBox(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
+    public static MutableBoundingBox getComponentToAddBoundingBox(int var0, int var1, int var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
     {
         switch (var9)
         {
         case 0:
-            return new StructureBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
+            return new MutableBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
 
         case 1:
-            return new StructureBoundingBox(var0 - var8 + var5, var1 + var4, var2 + var3, var0 + var5, var1 + var7 + var4, var2 + var6 + var3);
+            return new MutableBoundingBox(var0 - var8 + var5, var1 + var4, var2 + var3, var0 + var5, var1 + var7 + var4, var2 + var6 + var3);
 
         case 2:
-            return new StructureBoundingBox(var0 - var6 - var3, var1 + var4, var2 - var8 - var5, var0 - var3, var1 + var7 + var4, var2 - var5);
+            return new MutableBoundingBox(var0 - var6 - var3, var1 + var4, var2 - var8 - var5, var0 - var3, var1 + var7 + var4, var2 - var5);
 
         case 3:
-            return new StructureBoundingBox(var0 + var5, var1 + var4, var2 - var6, var0 + var8 + var5, var1 + var7 + var4, var2 + var3);
+            return new MutableBoundingBox(var0 + var5, var1 + var4, var2 - var6, var0 + var8 + var5, var1 + var7 + var4, var2 + var3);
 
         default:
-            return new StructureBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
+            return new MutableBoundingBox(var0 + var3, var1 + var4, var2 + var5, var0 + var6 + var3, var1 + var7 + var4, var2 + var8 + var5);
         }
     }
 
-    protected TileEntityMobSpawner placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, StructureBoundingBox var7)
+    protected MobSpawnerTileEntity placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, MutableBoundingBox var7)
     {
-        TileEntityMobSpawner var8 = null;
+        MobSpawnerTileEntity var8 = null;
         final int var9 = this.getXWithOffset(var3, var5);
         final int var10 = this.getYWithOffset(var4);
         final int var11 = this.getZWithOffset(var3, var5);
@@ -54,7 +54,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         if (var7.isVecInside(new BlockPos(var9, var10, var11)) && var1.getBlockState(new BlockPos(var9, var10, var11)).getBlock() != Blocks.MOB_SPAWNER)
         {
             var1.setBlockState(new BlockPos(var9, var10, var11), Blocks.MOB_SPAWNER.getDefaultState(), 2);
-            var8 = (TileEntityMobSpawner) var1.getTileEntity(new BlockPos(var9, var10, var11));
+            var8 = (MobSpawnerTileEntity) var1.getTileEntity(new BlockPos(var9, var10, var11));
 
             if (var8 != null)
             {
@@ -197,7 +197,7 @@ public abstract class StructureComponentMoon extends StructureComponent
 //        return super.getBlockAtCurrentPosition(var1, var2, var3, var4, var5);
 //    }
 
-    protected void placeBlockRotated(World var1, Block var2, int var3, int var4, int var5, int var6, int var7, StructureBoundingBox var8)
+    protected void placeBlockRotated(World var1, Block var2, int var3, int var4, int var5, int var6, int var7, MutableBoundingBox var8)
     {
         final int var9 = this.getXWithOffsetAsIfRotated(var4, var6, var7);
         final int var10 = this.getYWithOffset(var5);
@@ -209,7 +209,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         }
     }
 
-    protected void fillBlocksRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, Block var9, int var10, int var11)
+    protected void fillBlocksRotated(World var1, MutableBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, Block var9, int var10, int var11)
     {
         for (int var12 = var4; var12 <= var7; ++var12)
         {
@@ -223,7 +223,7 @@ public abstract class StructureComponentMoon extends StructureComponent
         }
     }
 
-    protected void fillAirRotated(World var1, StructureBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
+    protected void fillAirRotated(World var1, MutableBoundingBox var2, int var3, int var4, int var5, int var6, int var7, int var8, int var9)
     {
         this.fillBlocksRotated(var1, var2, var3, var4, var5, var6, var7, var8, Blocks.AIR, 0, var9);
     }
@@ -293,7 +293,7 @@ public abstract class StructureComponentMoon extends StructureComponent
             {
                 for (int var10 = var3; var10 <= var6; ++var10)
                 {
-                    var1.setLightFor(EnumSkyBlock.SKY, new BlockPos(var8, var10, var9), 0);
+                    var1.setLightFor(LightType.SKY, new BlockPos(var8, var10, var9), 0);
                 }
             }
         }

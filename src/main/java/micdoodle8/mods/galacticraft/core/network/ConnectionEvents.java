@@ -13,11 +13,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.*;
 import micdoodle8.mods.galacticraft.core.world.ChunkLoadingCallback;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.network.EnumConnectionState;
-import net.minecraft.network.EnumPacketDirection;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.ProtocolType;
+import net.minecraft.network.PacketDirection;
 import net.minecraft.network.INetHandler;
-import net.minecraft.network.Packet;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -33,18 +33,18 @@ public class ConnectionEvents
 
     static
     {
-        EnumConnectionState.STATES_BY_CLASS.put(PacketSimple.class, EnumConnectionState.PLAY);
-        registerPacket(EnumPacketDirection.CLIENTBOUND, PacketSimple.class);
+        ProtocolType.STATES_BY_CLASS.put(PacketSimple.class, ProtocolType.PLAY);
+        registerPacket(PacketDirection.CLIENTBOUND, PacketSimple.class);
     }
 
-    protected static EnumConnectionState registerPacket(EnumPacketDirection direction, Class<? extends Packet<? extends INetHandler>> packetClass)
+    protected static ProtocolType registerPacket(PacketDirection direction, Class<? extends IPacket<? extends INetHandler>> packetClass)
     {
-        BiMap<Integer, Class<? extends Packet<?>>> bimap = (BiMap<Integer, Class<? extends Packet<?>>>) EnumConnectionState.PLAY.directionMaps.get(direction);
+        BiMap<Integer, Class<? extends IPacket<?>>> bimap = (BiMap<Integer, Class<? extends IPacket<?>>>) ProtocolType.PLAY.directionMaps.get(direction);
 
         if (bimap == null)
         {
             bimap = HashBiMap.create();
-            EnumConnectionState.PLAY.directionMaps.put(direction, bimap);
+            ProtocolType.PLAY.directionMaps.put(direction, bimap);
         }
 
         if (bimap.containsValue(packetClass))
@@ -56,7 +56,7 @@ public class ConnectionEvents
         else
         {
             bimap.put(Integer.valueOf(bimap.size()), packetClass);
-            return EnumConnectionState.PLAY;
+            return ProtocolType.PLAY;
         }
     }
 
@@ -71,9 +71,9 @@ public class ConnectionEvents
     {
         ChunkLoadingCallback.onPlayerLogin(event.player);
 
-        if (event.player instanceof EntityPlayerMP)
+        if (event.player instanceof ServerPlayerEntity)
         {
-            EntityPlayerMP thePlayer = (EntityPlayerMP) event.player;
+            ServerPlayerEntity thePlayer = (ServerPlayerEntity) event.player;
             GCPlayerStats stats = GCPlayerStats.get(thePlayer);
             SpaceStationWorldData.checkAllStations(thePlayer, stats);
             GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACESTATION_CLIENT_ID, GCCoreUtil.getDimensionID(thePlayer.world), new Object[] { WorldUtil.spaceStationDataToString(stats.getSpaceStationDimensionData()) }), thePlayer);
@@ -84,9 +84,9 @@ public class ConnectionEvents
             }
         }
 
-        if (event.player.world.provider instanceof WorldProviderSpaceStation && event.player instanceof EntityPlayerMP)
+        if (event.player.world.provider instanceof WorldProviderSpaceStation && event.player instanceof ServerPlayerEntity)
         {
-            ((WorldProviderSpaceStation) event.player.world.provider).getSpinManager().sendPackets((EntityPlayerMP) event.player);
+            ((WorldProviderSpaceStation) event.player.world.provider).getSpinManager().sendPackets((ServerPlayerEntity) event.player);
         }
     }
 

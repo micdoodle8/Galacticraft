@@ -8,11 +8,11 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,9 +25,9 @@ public class GuiPainter extends GuiContainerGC
     private static final ResourceLocation painterTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/painter.png");
 
     private TileEntityPainter tileEntity;
-    private GuiButton buttonApplyPaint;
+    private Button buttonApplyPaint;
 
-    public GuiPainter(InventoryPlayer par1InventoryPlayer, TileEntityPainter tileEntity)
+    public GuiPainter(PlayerInventory par1InventoryPlayer, TileEntityPainter tileEntity)
     {
         super(new ContainerPainter(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;
@@ -38,13 +38,13 @@ public class GuiPainter extends GuiContainerGC
     public void initGui()
     {
         super.initGui();
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(0, this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name")));
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(1, this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name")));
-        this.buttonList.add(this.buttonApplyPaint = new GuiButton(2, this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name")));
+        this.buttonList.add(this.buttonApplyPaint = new Button(0, this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name")));
+        this.buttonList.add(this.buttonApplyPaint = new Button(1, this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name")));
+        this.buttonList.add(this.buttonApplyPaint = new Button(2, this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name")));
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tileEntity.getPos(), par1GuiButton.id }));
         tileEntity.buttonPressed(par1GuiButton.id, this.mc.player, Side.CLIENT);

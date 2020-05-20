@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
@@ -29,7 +29,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
      *   so: do NOT invalidate old tileEntities before breaking blocks 
      */
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         if (worldIn.getTileEntity(pos) instanceof IInventory)
         {
@@ -46,7 +46,7 @@ public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityPr
      * x, y, z, blockID, EventID, event parameter
      */
     @Override
-    public boolean eventReceived(IBlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
+    public boolean eventReceived(BlockState state, World worldIn, BlockPos pos, int eventID, int eventParam)
     {
         super.eventReceived(state, worldIn, pos, eventID, eventParam);
         TileEntity tileentity = worldIn.getTileEntity(pos);

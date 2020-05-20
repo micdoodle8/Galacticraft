@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -53,7 +53,7 @@ public interface ITileClientUpdates
      * (If overriding this you must override all other methods in
      * ITileClientUpdates as well ... in which case, why are you using it?)
      */
-    default void sendUpdateToClient(EntityPlayerMP player)
+    default void sendUpdateToClient(ServerPlayerEntity player)
     {
         int[] data = new int[4];
         this.buildDataPacket(data);

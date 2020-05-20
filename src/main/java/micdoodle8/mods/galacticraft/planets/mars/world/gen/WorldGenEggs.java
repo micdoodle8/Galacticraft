@@ -3,14 +3,14 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockBasicMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class WorldGenEggs extends WorldGenerator
+public class WorldGenEggs extends Feature
 {
     private Block eggBlock;
 
@@ -31,7 +31,7 @@ public class WorldGenEggs extends WorldGenerator
 
         if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.isNether()))
         {
-            IBlockState below = par1World.getBlockState(newPos.down()); 
+            BlockState below = par1World.getBlockState(newPos.down());
             if (below.getBlock() == MarsBlocks.marsBlock && below.getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)
             {
                 par1World.setBlockState(newPos, this.eggBlock.getStateFromMeta(par2Random.nextInt(3)), 2);

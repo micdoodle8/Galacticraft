@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSpider;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,12 +13,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedSpider extends RenderLiving<EntityEvolvedSpider>
+public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider>
 {
     private static final ResourceLocation spiderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/spider.png");
     private boolean texSwitch;
 
-    public RenderEvolvedSpider(RenderManager manager)
+    public RenderEvolvedSpider(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedSpider(), 1.0F);
     }

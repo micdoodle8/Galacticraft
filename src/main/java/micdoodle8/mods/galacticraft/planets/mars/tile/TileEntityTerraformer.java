@@ -16,15 +16,15 @@ import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerTerraformer;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockSapling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.block.BushBlock;
+import net.minecraft.block.SaplingBlock;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -233,15 +233,15 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                 {
                     Block b = Block.getBlockFromItem(sapling.getItem());
                     this.world.setBlockState(vecSapling, b.getStateFromMeta(sapling.getItemDamage()), 3);
-                    if (b instanceof BlockSapling)
+                    if (b instanceof SaplingBlock)
                     {
                         if (this.world.getLightFromNeighbors(vecSapling) >= 9)
                         {
-                            ((BlockSapling) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
+                            ((SaplingBlock) b).grow(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
                             this.grownTreesList.add(new BlockPos(vecSapling.getX(), vecSapling.getY(), vecSapling.getZ()));
                         }
                     }
-                    else if (b instanceof BlockBush)
+                    else if (b instanceof BushBlock)
                     {
                         if (this.world.getLightFromNeighbors(vecSapling) >= 5)
                         //Hammer the update tick a few times to try to get it to grow - it won't always
@@ -250,7 +250,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
                             {
                                 if (this.world.getBlockState(vecSapling).getBlock() == b)
                                 {
-                                    ((BlockBush) b).updateTick(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
+                                    ((BushBlock) b).updateTick(this.world, vecSapling, this.world.getBlockState(vecSapling), this.world.rand);
                                 }
                                 else
                                 {
@@ -432,7 +432,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -456,7 +456,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setFloat("BubbleSize", this.bubbleSize);
@@ -464,7 +464,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (this.waterTank.getFluid() != null)
         {
-            nbt.setTag("waterTank", this.waterTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
         }
 
         nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
@@ -474,19 +474,19 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         return this.isItemValidForSlot(slotID, itemstack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (slotID == 0)
         {
@@ -600,31 +600,31 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
     //Pipe handling
     @Override
-    public boolean canDrain(EnumFacing from, Fluid fluid)
+    public boolean canDrain(Direction from, Fluid fluid)
     {
         return false;
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain)
+    public FluidStack drain(Direction from, FluidStack resource, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain)
+    public FluidStack drain(Direction from, int maxDrain, boolean doDrain)
     {
         return null;
     }
 
     @Override
-    public boolean canFill(EnumFacing from, Fluid fluid)
+    public boolean canFill(Direction from, Fluid fluid)
     {
         return (fluid == null || "water".equals(fluid.getName())) && from != this.getElectricInputDirection();
     }
 
     @Override
-    public int fill(EnumFacing from, FluidStack resource, boolean doFill)
+    public int fill(Direction from, FluidStack resource, boolean doFill)
     {
         int used = 0;
 
@@ -637,7 +637,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public FluidTankInfo[] getTankInfo(EnumFacing from)
+    public FluidTankInfo[] getTankInfo(Direction from)
     {
         return new FluidTankInfo[] { new FluidTankInfo(this.waterTank) };
     }
@@ -668,31 +668,31 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMars)
         {
             return state.getValue(BlockMachineMars.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, Direction facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {
@@ -702,7 +702,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null)
         {

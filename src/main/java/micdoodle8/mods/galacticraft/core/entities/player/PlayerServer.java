@@ -15,8 +15,8 @@ import micdoodle8.mods.galacticraft.planets.mars.items.ItemArmorMars;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
@@ -26,29 +26,29 @@ import net.minecraftforge.common.MinecraftForge;
 public class PlayerServer implements IPlayerServer
 {
     private boolean updatingRidden = false;
-    static List<EntityPlayer> noClipList = new LinkedList<>();
+    static List<PlayerEntity> noClipList = new LinkedList<>();
 
     @Override
-    public void updateRiddenPre(EntityPlayerMP player)
+    public void updateRiddenPre(ServerPlayerEntity player)
     {
         this.updatingRidden = true;
     }
 
     @Override
-    public void updateRiddenPost(EntityPlayerMP player)
+    public void updateRiddenPost(ServerPlayerEntity player)
     {
         this.updatingRidden = false;
     }
 
     @Override
-    public boolean dismountEntity(EntityPlayerMP player, Entity par1Entity)
+    public boolean dismountEntity(ServerPlayerEntity player, Entity par1Entity)
     {
         return updatingRidden && player.getRidingEntity() instanceof IIgnoreShift && ((IIgnoreShift) player.getRidingEntity()).shouldIgnoreShiftExit();
 
     }
 
     @Override
-    public void move(EntityPlayerMP player, MoverType type, double x, double y, double z)
+    public void move(ServerPlayerEntity player, MoverType type, double x, double y, double z)
     {
         // If the player is on the moon, not airbourne and not riding anything
         if (player.world.provider instanceof WorldProviderMoon && !player.world.isRemote && player.getRidingEntity() == null)
@@ -58,7 +58,7 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerMP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+    public boolean wakeUpPlayer(ServerPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
         BlockPos c = player.bedLocation;
 
@@ -67,7 +67,7 @@ public class PlayerServer implements IPlayerServer
             EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, false);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (event.result == null || event.result == EntityPlayer.SleepResult.OK)
+            if (event.result == null || event.result == PlayerEntity.SleepResult.OK)
             {
                 return false;
             }
@@ -77,7 +77,7 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public float attackEntityFrom(EntityPlayerMP player, DamageSource par1DamageSource, float par2)
+    public float attackEntityFrom(ServerPlayerEntity player, DamageSource par1DamageSource, float par2)
     {
         //No damage while in Celestial Selection screen
         if (player.getRidingEntity() instanceof EntityCelestialFake)
@@ -126,7 +126,7 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public void knockBack(EntityPlayerMP player, Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
+    public void knockBack(ServerPlayerEntity player, Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
         int deshCount = 0;
         if (player.inventory != null && GalacticraftCore.isPlanetsLoaded)
@@ -164,13 +164,13 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public boolean isSpectator(EntityPlayerMP player)
+    public boolean isSpectator(ServerPlayerEntity player)
     {
         return noClipList.contains(player);
     }
 
     @Override
-    public void setNoClip(EntityPlayerMP player, boolean noClip)
+    public void setNoClip(ServerPlayerEntity player, boolean noClip)
     {
         if (noClip)
         {

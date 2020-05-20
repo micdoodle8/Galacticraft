@@ -13,10 +13,10 @@ import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -78,7 +78,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                     //Doing y as the inner loop allows BlockVec3 to cache the chunks more efficiently
                     for (int y = yMin; y < yMax; y++)
                     {
-                        IBlockState state = new BlockVec3(x, y, z).getBlockState(this.world);
+                        BlockState state = new BlockVec3(x, y, z).getBlockState(this.world);
 
                         if (state != null && state.getBlock() instanceof IOxygenReliantBlock && this.getDistanceFromServer(x, y, z) <= bubbleR2)
                         {
@@ -254,7 +254,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                         for (int z = this.getPos().getZ() - bubbleR; z <= this.getPos().getZ() + bubbleR; z++)
                         {
                             BlockPos pos = new BlockPos(x, y, z);
-                            IBlockState state = this.world.getBlockState(pos); 
+                            BlockState state = this.world.getBlockState(pos);
                             Block block = state.getBlock();
 
                             if (block instanceof IOxygenReliantBlock)
@@ -279,7 +279,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -296,7 +296,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
@@ -309,13 +309,13 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0, 1 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -333,7 +333,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         switch (slotID)
         {
@@ -377,18 +377,18 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenDistributor)
         {
             return state.getValue(BlockOxygenDistributor.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
     }
@@ -406,15 +406,15 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenInputDirections()
+    public EnumSet<Direction> getOxygenInputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenOutputDirections()
+    public EnumSet<Direction> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
 //    @Override

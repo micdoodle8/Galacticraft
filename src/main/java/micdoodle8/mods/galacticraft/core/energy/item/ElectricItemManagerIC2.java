@@ -4,7 +4,7 @@ import ic2.api.item.IElectricItem;
 import ic2.api.item.IElectricItemManager;
 import micdoodle8.mods.galacticraft.api.item.IItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 
 /*
@@ -88,7 +88,7 @@ public class ElectricItemManagerIC2 implements IElectricItemManager
     }
 
     @Override
-    public boolean use(ItemStack itemStack, double amount, EntityLivingBase entity)
+    public boolean use(ItemStack itemStack, double amount, LivingEntity entity)
     {
         if (itemStack.getItem() instanceof IItemElectricBase)
         {
@@ -98,7 +98,7 @@ public class ElectricItemManagerIC2 implements IElectricItemManager
     }
 
     @Override
-    public void chargeFromArmor(ItemStack itemStack, EntityLivingBase entity)
+    public void chargeFromArmor(ItemStack itemStack, LivingEntity entity)
     {
     }
 

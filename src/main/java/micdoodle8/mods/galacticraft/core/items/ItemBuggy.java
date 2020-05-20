@@ -9,17 +9,16 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
@@ -41,22 +40,22 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -66,7 +65,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
     {
         ItemStack itemstack = playerIn.getHeldItem(hand);
         final float var4 = 1.0F;
@@ -88,7 +87,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
         if (var24 == null)
         {
-            return new ActionResult<>(EnumActionResult.PASS, itemstack);
+            return new ActionResult<>(ActionResultType.PASS, itemstack);
         }
         else
         {
@@ -116,7 +115,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
             if (var26)
             {
-                return new ActionResult<>(EnumActionResult.PASS, itemstack);
+                return new ActionResult<>(ActionResultType.PASS, itemstack);
             }
             else
             {
@@ -135,7 +134,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 
                     if (!worldIn.getCollisionBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
                     {
-                        return new ActionResult<>(EnumActionResult.PASS, itemstack);
+                        return new ActionResult<>(ActionResultType.PASS, itemstack);
                     }
 
                     if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("BuggyFuel"))
@@ -154,7 +153,7 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
                     }
                 }
 
-                return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
+                return new ActionResult<>(ActionResultType.SUCCESS, itemstack);
             }
         }
     }
@@ -175,19 +174,19 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    public boolean shouldHoldLeftHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    public boolean shouldHoldRightHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldCrouch(EntityPlayer player)
+    public boolean shouldCrouch(PlayerEntity player)
     {
         return true;
     }

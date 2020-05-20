@@ -6,11 +6,11 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityHanging;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderSchematic extends Render<EntityHangingSchematic>
+public class RenderSchematic extends EntityRenderer<EntityHangingSchematic>
 {
-    public RenderSchematic(RenderManager manager)
+    public RenderSchematic(EntityRendererManager manager)
     {
         super(manager);
     }
@@ -110,29 +110,29 @@ public class RenderSchematic extends Render<EntityHangingSchematic>
         }
     }
 
-    private void setLightmap(EntityHanging painting, double p_77008_2_, double p_77008_3_)
+    private void setLightmap(HangingEntity painting, double p_77008_2_, double p_77008_3_)
     {
         int i = MathHelper.floor(painting.posX);
         int j = MathHelper.floor(painting.posY + (double)(p_77008_3_ / 16.0F));
         int k = MathHelper.floor(painting.posZ);
-        EnumFacing enumfacing = painting.facingDirection;
+        Direction enumfacing = painting.facingDirection;
 
-        if (enumfacing == EnumFacing.NORTH)
+        if (enumfacing == Direction.NORTH)
         {
             i = MathHelper.floor(painting.posX + (double)(p_77008_2_ / 16.0F));
         }
 
-        if (enumfacing == EnumFacing.WEST)
+        if (enumfacing == Direction.WEST)
         {
             k = MathHelper.floor(painting.posZ - (double)(p_77008_2_ / 16.0F));
         }
 
-        if (enumfacing == EnumFacing.SOUTH)
+        if (enumfacing == Direction.SOUTH)
         {
             i = MathHelper.floor(painting.posX - (double)(p_77008_2_ / 16.0F));
         }
 
-        if (enumfacing == EnumFacing.EAST)
+        if (enumfacing == Direction.EAST)
         {
             k = MathHelper.floor(painting.posZ + (double)(p_77008_2_ / 16.0F));
         }

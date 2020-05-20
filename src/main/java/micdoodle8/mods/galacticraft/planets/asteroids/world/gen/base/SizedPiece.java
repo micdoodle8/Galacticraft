@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.world.gen.base;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
 public abstract class SizedPiece extends Piece
 {
-    protected EnumFacing direction;
+    protected Direction direction;
     protected int sizeX;
     protected int sizeY;
     protected int sizeZ;
@@ -18,7 +18,7 @@ public abstract class SizedPiece extends Piece
     {
     }
 
-    public SizedPiece(BaseConfiguration configuration, int sizeX, int sizeY, int sizeZ, EnumFacing direction)
+    public SizedPiece(BaseConfiguration configuration, int sizeX, int sizeY, int sizeZ, Direction direction)
     {
         super(configuration);
         this.direction = direction;
@@ -27,18 +27,18 @@ public abstract class SizedPiece extends Piece
         this.sizeZ = sizeZ;
     }
 
-    public EnumFacing getDirection()
+    public Direction getDirection()
     {
         return direction;
     }
 
-    public void setDirection(EnumFacing direction)
+    public void setDirection(Direction direction)
     {
         this.direction = direction;
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -49,7 +49,7 @@ public abstract class SizedPiece extends Piece
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         super.readStructureFromNBT(tagCompound, manager);
 
@@ -59,11 +59,11 @@ public abstract class SizedPiece extends Piece
 
         if (tagCompound.hasKey("dir"))
         {
-            this.direction = EnumFacing.getFront(tagCompound.getInteger("dir"));
+            this.direction = Direction.getFront(tagCompound.getInteger("dir"));
         }
         else
         {
-            this.direction = EnumFacing.NORTH;
+            this.direction = Direction.NORTH;
         }
     }
 
@@ -135,7 +135,7 @@ public abstract class SizedPiece extends Piece
     //Unused currently
     public Piece getDoorway(Random rand, BaseStart startPiece, int maxAttempts, boolean small)
     {
-        EnumFacing randomDir;
+        Direction randomDir;
         int blockX;
         int blockZ;
         int sizeX;
@@ -145,8 +145,8 @@ public abstract class SizedPiece extends Piece
         do
         {
             int randDir = rand.nextInt(4);
-            randomDir = EnumFacing.getHorizontal((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
-            StructureBoundingBox extension = getExtension(randomDir, 1, 3);
+            randomDir = Direction.getHorizontal((randDir == getDirection().getOpposite().getHorizontalIndex() ? randDir + 1 : randDir) % 4);
+            MutableBoundingBox extension = getExtension(randomDir, 1, 3);
             blockX = extension.minX;
             blockZ = extension.minZ;
             sizeX = extension.maxX - extension.minX;

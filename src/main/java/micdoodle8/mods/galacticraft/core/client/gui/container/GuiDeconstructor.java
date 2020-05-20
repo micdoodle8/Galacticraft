@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerDeconstructor;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -25,7 +25,7 @@ public class GuiDeconstructor extends GuiContainerGC
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
-    public GuiDeconstructor(InventoryPlayer par1InventoryPlayer, TileEntityDeconstructor tileEntity)
+    public GuiDeconstructor(PlayerInventory par1InventoryPlayer, TileEntityDeconstructor tileEntity)
     {
         super(new ContainerDeconstructor(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;

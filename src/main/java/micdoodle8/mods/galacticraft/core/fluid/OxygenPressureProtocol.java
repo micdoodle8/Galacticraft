@@ -9,9 +9,9 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -83,12 +83,12 @@ public class OxygenPressureProtocol
     }
 
     @Deprecated
-    public static boolean canBlockPassAir(World world, Block block, BlockPos pos, EnumFacing side)
+    public static boolean canBlockPassAir(World world, Block block, BlockPos pos, Direction side)
     {
         return canBlockPassAir(world, world.getBlockState(pos), pos, side);
     }
 
-    public static boolean canBlockPassAir(World world, IBlockState state, BlockPos pos, EnumFacing side)
+    public static boolean canBlockPassAir(World world, BlockState state, BlockPos pos, Direction side)
     {
         Block block = state.getBlock();
         if (block == null)
@@ -103,18 +103,18 @@ public class OxygenPressureProtocol
 
         //Check leaves first, because their isOpaqueCube() test depends on graphics settings
         //(See net.minecraft.block.BlockLeaves.isOpaqueCube()!)
-        if (block instanceof BlockLeaves)
+        if (block instanceof LeavesBlock)
         {
             return true;
         }
 
         if (block.isOpaqueCube(state))
         {
-            return block instanceof BlockGravel || block.getMaterial(state) == Material.CLOTH || block instanceof BlockSponge;
+            return block instanceof GravelBlock || block.getMaterial(state) == Material.CLOTH || block instanceof SpongeBlock;
 
         }
 
-        if (block instanceof BlockGlass || block instanceof BlockStainedGlass)
+        if (block instanceof GlassBlock || block instanceof StainedGlassBlock)
         {
             return false;
         }
@@ -130,23 +130,23 @@ public class OxygenPressureProtocol
         }
 
         //Half slab seals on the top side or the bottom side according to its metadata
-        if (block instanceof BlockSlab)
+        if (block instanceof SlabBlock)
         {
             int meta = state.getBlock().getMetaFromState(state);
-            return !(side == EnumFacing.DOWN && (meta & 8) == 8 || side == EnumFacing.UP && (meta & 8) == 0);
+            return !(side == Direction.DOWN && (meta & 8) == 8 || side == Direction.UP && (meta & 8) == 0);
         }
 
         //Farmland etc only seals on the solid underside
-        if (block instanceof BlockFarmland || block instanceof BlockEnchantmentTable || block instanceof BlockLiquid)
+        if (block instanceof FarmlandBlock || block instanceof EnchantingTableBlock || block instanceof BlockLiquid)
         {
-            return side != EnumFacing.UP;
+            return side != Direction.UP;
         }
 
-        if (block instanceof BlockPistonBase)
+        if (block instanceof PistonBlock)
         {
-            if (((Boolean) state.getValue(BlockPistonBase.EXTENDED)).booleanValue())
+            if (((Boolean) state.getValue(PistonBlock.EXTENDED)).booleanValue())
             {
-                EnumFacing facing = state.getValue(BlockPistonBase.FACING);
+                Direction facing = state.getValue(PistonBlock.FACING);
                 return side != facing;
             }
             return false;

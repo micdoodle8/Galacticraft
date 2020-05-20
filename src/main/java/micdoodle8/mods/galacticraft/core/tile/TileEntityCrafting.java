@@ -9,18 +9,18 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -48,7 +48,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
     }
@@ -271,7 +271,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
@@ -279,12 +279,12 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             this.craftMatrix.clear();
             for (int i = 0; i < SIZEINVENTORY; ++i)
                 this.memory.set(i, ItemStack.EMPTY);
-            NBTTagList contents = nbt.getTagList("Items", 10);
+            ListNBT contents = nbt.getTagList("Items", 10);
             if (contents != null && contents.tagCount() > 0)
             {
                 for (int i = 0; i < contents.tagCount(); ++i)
                 {
-                    NBTTagCompound var4 = contents.getCompoundTagAt(i);
+                    CompoundNBT var4 = contents.getCompoundTagAt(i);
                     int slot = var4.getByte("Slot") & 255;
 
                     if (slot < SIZEINVENTORY)
@@ -297,7 +297,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                     }
                 }
             }
-            NBTTagCompound buffer = nbt.getCompoundTag("buf");
+            CompoundNBT buffer = nbt.getCompoundTag("buf");
             this.hiddenOutputBuffer = new ItemStack(buffer);
             this.updateMemoryItem();
         }
@@ -305,15 +305,15 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        NBTTagList var2 = new NBTTagList();
+        ListNBT var2 = new ListNBT();
         for (int i = 0; i < SIZEINVENTORY; ++i)
         {
             if (!this.craftMatrix.getStackInSlot(i).isEmpty())
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                CompoundNBT var4 = new CompoundNBT();
                 var4.setByte("Slot", (byte) (i));
                 this.craftMatrix.getStackInSlot(i).writeToNBT(var4);
                 var2.appendTag(var4);
@@ -323,7 +323,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         {
             if (!this.memory.get(i).isEmpty())
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                CompoundNBT var4 = new CompoundNBT();
                 var4.setByte("Slot", (byte) (i + SIZEINVENTORY));
                 this.memory.get(i).writeToNBT(var4);
                 var2.appendTag(var4);
@@ -331,7 +331,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
         }
 
         nbt.setTag("Items", var2);
-        NBTTagCompound buffer = new NBTTagCompound();
+        CompoundNBT buffer = new CompoundNBT();
         this.hiddenOutputBuffer.writeToNBT(buffer);
         nbt.setTag("buf", buffer);
         return nbt;
@@ -344,7 +344,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player)
+    public boolean isUsableByPlayer(PlayerEntity player)
     {
         return this.world.getTileEntity(this.getPos()) == this && player.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
@@ -363,13 +363,13 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction)
+    public boolean canInsertItem(int index, ItemStack stack, Direction direction)
     {
         if (index >= SIZEINVENTORY || stack.isEmpty()) return false;
         boolean override = this.overriddenMemory();
@@ -413,7 +413,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction)
+    public boolean canExtractItem(int index, ItemStack stack, Direction direction)
     {
         return index == SIZEINVENTORY && (!this.hiddenOutputBuffer.isEmpty() || this.stillMatchesRecipe());
     }
@@ -513,7 +513,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
 
             while (!var7.isEmpty())
             {
-                EntityItem var12 = new EntityItem(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
+                ItemEntity var12 = new ItemEntity(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
                 float var13 = 0.05F;
                 var12.motionX = (float) syncRandom.nextGaussian() * var13;
                 var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;

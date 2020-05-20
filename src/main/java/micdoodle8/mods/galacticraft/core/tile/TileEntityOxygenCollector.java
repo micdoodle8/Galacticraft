@@ -6,10 +6,10 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
@@ -153,11 +153,11 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
                                         // chunk.getBlockID is like world.getBlock
                                         // but faster - needs to be given
                                         // intra-chunk coordinates though
-                                        final IBlockState state = chunk.getBlockState(intrachunkx, y, z & 15);
+                                        final BlockState state = chunk.getBlockState(intrachunkx, y, z & 15);
                                         // Test for the two most common blocks (air
                                         // and breatheable air) without looking up
                                         // in the blocksList
-                                        if (!(state.getBlock() instanceof BlockAir))
+                                        if (!(state.getBlock() instanceof AirBlock))
                                         {
                                             BlockPos pos = new BlockPos(x, y, z);
                                             if (state.getBlock().isLeaves(state, this.world, pos) || state.getBlock() instanceof IPlantable && ((IPlantable) state.getBlock()).getPlantType(this.world, pos) == EnumPlantType.Crop)
@@ -192,13 +192,13 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         return slotID == 0;
     }
@@ -216,18 +216,18 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenCollector)
         {
             return state.getValue(BlockOxygenCollector.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
     }
@@ -269,19 +269,19 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenInputDirections()
+    public EnumSet<Direction> getOxygenInputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenOutputDirections()
+    public EnumSet<Direction> getOxygenOutputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public int getOxygenProvide(EnumFacing direction)
+    public int getOxygenProvide(Direction direction)
     {
         return this.getOxygenOutputDirections().contains(direction) ? Math.min(TileEntityOxygenStorageModule.OUTPUT_PER_TICK, this.getOxygenStored()) : 0;
     }

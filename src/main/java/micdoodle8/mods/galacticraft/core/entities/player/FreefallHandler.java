@@ -13,21 +13,21 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.FlyingEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -50,7 +50,7 @@ public class FreefallHandler
         stats = statsClientCapability;
     }
 
-    public boolean testFreefall(EntityPlayer player)
+    public boolean testFreefall(PlayerEntity player)
     {
         ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall(player);
         MinecraftForge.EVENT_BUS.post(zeroGEvent);
@@ -64,7 +64,7 @@ public class FreefallHandler
         int xx = MathHelper.floor(player.posX);
         int zz = MathHelper.floor(player.posZ);
         BlockPos pos = new BlockPos(xx, playerFeetOnY, zz);
-        IBlockState state = player.world.getBlockState(pos);
+        BlockState state = player.world.getBlockState(pos);
         Block b = state.getBlock();
         if (b.getMaterial(state) != Material.AIR && !(b instanceof BlockLiquid))
         {
@@ -98,10 +98,10 @@ public class FreefallHandler
     }
 
     @SideOnly(Side.CLIENT)
-    private boolean testFreefall(EntityPlayerSP p, boolean flag)
+    private boolean testFreefall(ClientPlayerEntity p, boolean flag)
     {
         World world = p.world;
-        WorldProvider worldProvider = world.provider;
+        Dimension worldProvider = world.provider;
         if (!(worldProvider instanceof IZeroGDimension))
         {
             return false;
@@ -274,7 +274,7 @@ public class FreefallHandler
     }
 
     @SideOnly(Side.CLIENT)
-    public void setupFreefallPre(EntityPlayerSP p)
+    public void setupFreefallPre(ClientPlayerEntity p)
     {
         double dY = p.motionY - pPrevMotionY;
         jetpackBoost = 0F;
@@ -285,7 +285,7 @@ public class FreefallHandler
     }
 
     @SideOnly(Side.CLIENT)
-    public void freefallMotion(EntityPlayerSP p)
+    public void freefallMotion(ClientPlayerEntity p)
     {
         boolean jetpackUsed = false;
         double dX = p.motionX - pPrevMotionX;
@@ -412,7 +412,7 @@ public class FreefallHandler
 */
 
 
-    public void updateFreefall(EntityPlayer p)
+    public void updateFreefall(PlayerEntity p)
     {
         pPrevMotionX = p.motionX;
         pPrevMotionY = p.motionY;
@@ -420,17 +420,17 @@ public class FreefallHandler
     }
 
     @SideOnly(Side.CLIENT)
-    public void preVanillaMotion(EntityPlayerSP p)
+    public void preVanillaMotion(ClientPlayerEntity p)
     {
         this.setupFreefallPre(p);
         stats.setSsOnGroundLast(p.onGround);
     }
 
     @SideOnly(Side.CLIENT)
-    public void postVanillaMotion(EntityPlayerSP p)
+    public void postVanillaMotion(ClientPlayerEntity p)
     {
         World world = p.world;
-        WorldProvider worldProvider = world.provider;
+        Dimension worldProvider = world.provider;
         if (!(worldProvider instanceof IZeroGDimension))
         {
             return;
@@ -613,15 +613,15 @@ public class FreefallHandler
         
         //Undo deceleration applied at the end of the previous tick
         boolean warnLog = false;
-        if (e instanceof EntityLivingBase)
+        if (e instanceof LivingEntity)
         {
-            ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall((EntityLivingBase) e);
+            ZeroGravityEvent zeroGEvent = new ZeroGravityEvent.InFreefall((LivingEntity) e);
             MinecraftForge.EVENT_BUS.post(zeroGEvent);
             if (!zeroGEvent.isCanceled())
             {
                 e.motionX /= (double)0.91F; //0.91F;
                 e.motionZ /= (double)0.91F; //0.91F;
-                e.motionY /= (e instanceof EntityFlying) ?  0.91F : 0.9800000190734863D;
+                e.motionY /= (e instanceof FlyingEntity) ?  0.91F : 0.9800000190734863D;
 
                 if (e.motionX > 10D)
                 {
@@ -655,7 +655,7 @@ public class FreefallHandler
                 }
             }
         }
-        else if (e instanceof EntityFallingBlock)
+        else if (e instanceof FallingBlockEntity)
         {
             e.motionY /= 0.9800000190734863D;
             //e.motionY += 0.03999999910593033D;

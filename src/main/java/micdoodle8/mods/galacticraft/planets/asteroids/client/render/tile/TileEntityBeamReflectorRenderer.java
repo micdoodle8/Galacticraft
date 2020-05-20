@@ -10,8 +10,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.IModel;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<TileEntityBeamReflector>
+public class TileEntityBeamReflectorRenderer extends TileEntityRenderer<TileEntityBeamReflector>
 {
     private static OBJModel.OBJBakedModel reflectorModelBase;
     private static OBJModel.OBJBakedModel reflectorModelAxle;
@@ -57,7 +57,7 @@ public class TileEntityBeamReflectorRenderer extends TileEntitySpecialRenderer<T
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
         GlStateManager.scale(0.5F, 0.5F, 0.5F);
-        this.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())
         {

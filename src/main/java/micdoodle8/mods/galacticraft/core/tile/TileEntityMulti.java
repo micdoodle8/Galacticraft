@@ -7,13 +7,13 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAdvanced;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.world.World;
 
 public class TileEntityMulti extends TileEntity
@@ -57,7 +57,7 @@ public class TileEntityMulti extends TileEntity
         }
     }
 
-    public boolean onBlockActivated(World worldIn, BlockPos pos, EntityPlayer player)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, PlayerEntity player)
     {
         if (this.mainBlockPosition != null)
         {
@@ -72,11 +72,11 @@ public class TileEntityMulti extends TileEntity
         return false;
     }
 
-    public boolean onBlockWrenched(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockWrenched(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, Direction side, float hitX, float hitY, float hitZ)
     {
         if (this.mainBlockPosition != null)
         {
-            IBlockState state = this.world.getBlockState(this.mainBlockPosition);
+            BlockState state = this.world.getBlockState(this.mainBlockPosition);
 
             if (state.getBlock() instanceof BlockAdvanced)
             {
@@ -101,10 +101,10 @@ public class TileEntityMulti extends TileEntity
      * Reads a tile entity from NBT.
      */
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        NBTTagCompound tag = nbt.getCompoundTag("mainBlockPosition");
+        CompoundNBT tag = nbt.getCompoundTag("mainBlockPosition");
         this.mainBlockPosition = new BlockPos(tag.getInteger("x"), tag.getInteger("y"), tag.getInteger("z"));
     }
 
@@ -112,13 +112,13 @@ public class TileEntityMulti extends TileEntity
      * Writes a tile entity to NBT.
      */
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
         if (this.mainBlockPosition != null)
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             tag.setInteger("x", this.mainBlockPosition.getX());
             tag.setInteger("y", this.mainBlockPosition.getY());
             tag.setInteger("z", this.mainBlockPosition.getZ());

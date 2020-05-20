@@ -4,17 +4,17 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelMeteorChunk;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderMeteorChunk extends Render<EntityMeteorChunk>
+public class RenderMeteorChunk extends EntityRenderer<EntityMeteorChunk>
 {
     private static final ResourceLocation meteorChunkTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk.png");
     private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk_hot.png");
     private final ModelMeteorChunk modelMeteor;
 
-    public RenderMeteorChunk(RenderManager renderManager)
+    public RenderMeteorChunk(EntityRendererManager renderManager)
     {
         super(renderManager);
         this.shadowSize = 0.1F;

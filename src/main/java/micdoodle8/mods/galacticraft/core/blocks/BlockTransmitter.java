@@ -12,9 +12,9 @@ import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,7 +35,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
@@ -131,7 +131,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
 //        }
 //    }
 
-    public abstract NetworkType getNetworkType(IBlockState state);
+    public abstract NetworkType getNetworkType(BlockState state);
 
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
@@ -198,7 +198,7 @@ public abstract class BlockTransmitter extends BlockAdvanced
 //    }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
 
@@ -217,12 +217,12 @@ public abstract class BlockTransmitter extends BlockAdvanced
                 break;
             }
 
-            return state.withProperty(DOWN, Boolean.valueOf(connectable[EnumFacing.DOWN.ordinal()] != null))
-                    .withProperty(UP, Boolean.valueOf(connectable[EnumFacing.UP.ordinal()] != null))
-                    .withProperty(NORTH, Boolean.valueOf(connectable[EnumFacing.NORTH.ordinal()] != null))
-                    .withProperty(EAST, Boolean.valueOf(connectable[EnumFacing.EAST.ordinal()] != null))
-                    .withProperty(SOUTH, Boolean.valueOf(connectable[EnumFacing.SOUTH.ordinal()] != null))
-                    .withProperty(WEST, Boolean.valueOf(connectable[EnumFacing.WEST.ordinal()] != null));
+            return state.withProperty(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null))
+                    .withProperty(UP, Boolean.valueOf(connectable[Direction.UP.ordinal()] != null))
+                    .withProperty(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
+                    .withProperty(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
+                    .withProperty(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
+                    .withProperty(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null));
         }
 
         return state;

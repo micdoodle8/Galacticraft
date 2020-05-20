@@ -6,16 +6,16 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
+import net.minecraft.util.IndirectEntityDamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -30,7 +30,7 @@ import java.util.List;
 public class EntityMeteor extends Entity implements ILaserTrackableFast
 {
     private static final DataParameter<Integer> SIZE = EntityDataManager.createKey(EntityMeteor.class, DataSerializers.VARINT);
-    public EntityLiving shootingEntity;
+    public MobEntity shootingEntity;
     public int size;
 
     public EntityMeteor(World world)
@@ -152,7 +152,7 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
                     }
                 }
                 BlockPos above = pos.up();
-                if (this.world.getBlockState(above).getBlock() instanceof BlockAir)
+                if (this.world.getBlockState(above).getBlock() instanceof AirBlock)
                 {
                     this.world.setBlockState(above, GCBlocks.fallenMeteor.getDefaultState(), 3);
                 }
@@ -168,18 +168,18 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
     }
 
     @Override
-    public boolean canExplosionDestroyBlock(Explosion explosionIn, World worldIn, BlockPos pos, IBlockState blockStateIn, float p_174816_5_)
+    public boolean canExplosionDestroyBlock(Explosion explosionIn, World worldIn, BlockPos pos, BlockState blockStateIn, float p_174816_5_)
     {
         return ConfigManagerCore.meteorBlockDamageEnabled;
     }
 
     public static DamageSource causeMeteorDamage(EntityMeteor par0EntityMeteor, Entity par1Entity)
     {
-        if (par1Entity != null && par1Entity instanceof EntityPlayer)
+        if (par1Entity != null && par1Entity instanceof PlayerEntity)
         {
-            I18n.translateToLocalFormatted("death." + "meteor", PlayerUtil.getName(((EntityPlayer) par1Entity)) + " was hit by a meteor! That's gotta hurt!");
+            I18n.translateToLocalFormatted("death." + "meteor", PlayerUtil.getName(((PlayerEntity) par1Entity)) + " was hit by a meteor! That's gotta hurt!");
         }
-        return new EntityDamageSourceIndirect("explosion", par0EntityMeteor, par1Entity).setProjectile();
+        return new IndirectEntityDamageSource("explosion", par0EntityMeteor, par1Entity).setProjectile();
     }
 
     @Override
@@ -203,12 +203,12 @@ public class EntityMeteor extends Entity implements ILaserTrackableFast
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound compound)
+    protected void readEntityFromNBT(CompoundNBT compound)
     {
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound compound)
+    protected void writeEntityToNBT(CompoundNBT compound)
     {
     }
 }

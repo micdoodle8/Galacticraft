@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntitySlimeling;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -29,7 +29,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
             }
             else if (this.timeToHatch == 0 && lastTouchedPlayerUUID != null && lastTouchedPlayerUUID.length() > 0)
             {
-                IBlockState state = this.world.getBlockState(this.getPos());
+                BlockState state = this.world.getBlockState(this.getPos());
                 int metadata = state.getBlock().getMetaFromState(state) % 3;
 
                 float colorRed = 0.0F;
@@ -63,7 +63,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 
                 slimeling.setTamed(true);
                 slimeling.getNavigator().clearPath();
-                slimeling.setAttackTarget((EntityLivingBase) null);
+                slimeling.setAttackTarget((LivingEntity) null);
                 slimeling.setHealth(20.0F);
 
                 this.world.setBlockToAir(this.getPos());
@@ -72,7 +72,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.timeToHatch = nbt.getInteger("TimeToHatch");
@@ -96,7 +96,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("TimeToHatch", this.timeToHatch);
@@ -106,7 +106,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
     }

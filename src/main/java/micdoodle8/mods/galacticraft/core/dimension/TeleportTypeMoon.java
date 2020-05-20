@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import java.util.Random;
 
@@ -23,7 +23,7 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player)
+    public Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player)
     {
         if (player != null)
         {
@@ -61,13 +61,13 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public Vector3 getEntitySpawnLocation(WorldServer world, Entity entity)
+    public Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity)
     {
         return new Vector3(entity.posX, ConfigManagerCore.disableLander ? 250.0 : 900.0, entity.posZ);
     }
 
     @Override
-    public Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand)
+    public Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand)
     {
         if (ConfigManagerCore.disableLander)
         {
@@ -80,7 +80,7 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket)
+    public void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket)
     {
         GCPlayerStats stats = GCPlayerStats.get(player);
         if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.getTeleportCooldown() <= 0)
@@ -95,13 +95,13 @@ public class TeleportTypeMoon implements ITeleportType
 
             if (!newWorld.isRemote)
             {
-                boolean previous = CompatibilityManager.forceLoadChunks((WorldServer) newWorld);
+                boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                 lander.forceSpawn = true;
                 newWorld.spawnEntity(lander);
                 lander.setWorld(newWorld);
                 newWorld.updateEntityWithOptionalForce(lander, true);
                 player.startRiding(lander);
-                CompatibilityManager.forceLoadChunksEnd((WorldServer) newWorld, previous);
+                CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);
             }
 
@@ -110,7 +110,7 @@ public class TeleportTypeMoon implements ITeleportType
     }
 
     @Override
-    public void setupAdventureSpawn(EntityPlayerMP player)
+    public void setupAdventureSpawn(ServerPlayerEntity player)
     {
         // TODO Auto-generated method stub
 

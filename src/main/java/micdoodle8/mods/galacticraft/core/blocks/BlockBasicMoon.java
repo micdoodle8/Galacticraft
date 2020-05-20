@@ -12,17 +12,17 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.FlowerBlock;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -99,7 +99,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
@@ -127,7 +127,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
+    public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) worldIn.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 
@@ -155,9 +155,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player)
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, PlayerEntity player)
     {
-        IBlockState bs = world.getBlockState(pos);
+        BlockState bs = world.getBlockState(pos);
         if (bs.getBlock() != this) return false;
         EnumBlockBasicMoon type = (EnumBlockBasicMoon) bs.getValue(BASIC_TYPE_MOON);
         if (type == EnumBlockBasicMoon.MOON_DIRT || type == EnumBlockBasicMoon.MOON_TURF)
@@ -169,7 +169,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune)
+    public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
         switch (type)
@@ -184,7 +184,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
         if (type == EnumBlockBasicMoon.ORE_CHEESE_MOON)
@@ -202,7 +202,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public int quantityDropped(IBlockState state, int fortune, Random random)
+    public int quantityDropped(BlockState state, int fortune, Random random)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
         switch (type)
@@ -220,7 +220,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         for (EnumBlockBasicMoon type : EnumBlockBasicMoon.values())
         {
@@ -229,7 +229,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean isValueable(IBlockState state)
+    public boolean isValueable(BlockState state)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
         switch (type)
@@ -245,7 +245,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean canSustainPlant(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing direction, IPlantable plantable)
+    public boolean canSustainPlant(BlockState state, IBlockAccess world, BlockPos pos, Direction direction, IPlantable plantable)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 
@@ -254,9 +254,9 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
             return false;
         }
 
-        plantable.getPlant(world, pos.offset(EnumFacing.UP));
+        plantable.getPlant(world, pos.offset(Direction.UP));
 
-        return plantable instanceof BlockFlower;
+        return plantable instanceof FlowerBlock;
     }
 
     @Override
@@ -266,7 +266,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean isPlantable(IBlockState state)
+    public boolean isPlantable(BlockState state)
     {
         return state.getValue(BASIC_TYPE_MOON) == EnumBlockBasicMoon.MOON_TURF;
 
@@ -279,8 +279,8 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
 
         if (type == EnumBlockBasicMoon.MOON_TURF)
         {
-            BlockPos above = pos.offset(EnumFacing.UP);
-            IBlockState stateAbove = world.getBlockState(above); 
+            BlockPos above = pos.offset(Direction.UP);
+            BlockState stateAbove = world.getBlockState(above);
             return stateAbove.getBlock().isAir(stateAbove, world, above);
         }
 
@@ -288,13 +288,13 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         super.breakBlock(worldIn, pos, state);
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
@@ -333,20 +333,20 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public boolean isReplaceableOreGen(IBlockState state, IBlockAccess world, BlockPos pos, Predicate<IBlockState> target)
+    public boolean isReplaceableOreGen(BlockState state, IBlockAccess world, BlockPos pos, Predicate<BlockState> target)
     {
         EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
         return type == EnumBlockBasicMoon.MOON_STONE || type == EnumBlockBasicMoon.MOON_DIRT;
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON)).getMeta();
     }
@@ -375,7 +375,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    public int getExpDrop(IBlockState state, IBlockAccess world, BlockPos pos, int fortune)
+    public int getExpDrop(BlockState state, IBlockAccess world, BlockPos pos, int fortune)
     {
         if (state.getBlock() != this) return 0;
 

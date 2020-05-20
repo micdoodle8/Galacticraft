@@ -10,21 +10,21 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.network.play.ClientPlayNetHandler;
+import net.minecraft.client.network.play.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.stats.RecipeBook;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.item.crafting.RecipeBook;
 import net.minecraft.stats.StatisticsManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.EnumDifficulty;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
-public class GCEntityClientPlayerMP extends EntityPlayerSP
+public class GCEntityClientPlayerMP extends ClientPlayerEntity
 {
     private boolean lastIsFlying;
     private boolean sneakLast;
@@ -40,7 +40,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
     private boolean checkedCape = false;
     private ResourceLocation galacticraftCape = null;
 
-    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatisticsManager statFileWriter, RecipeBook book)
+    public GCEntityClientPlayerMP(Minecraft mcIn, World worldIn, ClientPlayNetHandler netHandler, StatisticsManager statFileWriter, RecipeBook book)
     {
         super(mcIn, worldIn, netHandler, statFileWriter, book);
     }
@@ -96,7 +96,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 {
                     if (this.mc.currentScreen != null && !this.mc.currentScreen.doesGuiPauseGame())
                     {
-                        this.mc.displayGuiScreen((GuiScreen)null);
+                        this.mc.displayGuiScreen((Screen)null);
                     }
 
                     if (this.timeInPortal == 0.0F)
@@ -113,7 +113,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                     this.inPortal = false;
                 }
-                else if (this.isPotionActive(MobEffects.NAUSEA) && this.getActivePotionEffect(MobEffects.NAUSEA).getDuration() > 60)
+                else if (this.isPotionActive(Effects.NAUSEA) && this.getActivePotionEffect(Effects.NAUSEA).getDuration() > 60)
                 {
                     this.timeInPortal += 0.006666667F;
 
@@ -167,7 +167,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                 this.pushOutOfBlocks(this.posX + (double)this.width * 0.35D, this.getEntityBoundingBox().minY + 0.5D, this.posZ + (double)this.width * 0.35D);
                 boolean flag4 = (float)this.getFoodStats().getFoodLevel() > 6.0F || this.capabilities.allowFlying;
 
-                if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(MobEffects.BLINDNESS))
+                if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= 0.8F && !this.isSprinting() && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS))
                 {
                     if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown())
                     {
@@ -179,7 +179,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
                     }
                 }
 
-                if (!this.isSprinting() && this.movementInput.moveForward >= sprintlevel && flag4 && !this.isHandActive() && !this.isPotionActive(MobEffects.BLINDNESS) && this.mc.gameSettings.keyBindSprint.isKeyDown())
+                if (!this.isSprinting() && this.movementInput.moveForward >= sprintlevel && flag4 && !this.isHandActive() && !this.isPotionActive(Effects.BLINDNESS) && this.mc.gameSettings.keyBindSprint.isKeyDown())
                 {
                     this.setSprinting(true);
                 }
@@ -210,7 +210,7 @@ public class GCEntityClientPlayerMP extends EntityPlayerSP
 
                 //Omit fly toggle timer
                 
-                if (this.world.getDifficulty() == EnumDifficulty.PEACEFUL && this.world.getGameRules().getBoolean("naturalRegeneration"))
+                if (this.world.getDifficulty() == Difficulty.PEACEFUL && this.world.getGameRules().getBoolean("naturalRegeneration"))
                 {
                     if (this.getHealth() < this.getMaxHealth() && this.ticksExisted % 20 == 0)
                     {

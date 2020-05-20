@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerSchematicTier1Rocket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -17,7 +17,7 @@ public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements I
 
     private int pageIndex;
 
-    public GuiSchematicTier1Rocket(InventoryPlayer par1InventoryPlayer, BlockPos pos)
+    public GuiSchematicTier1Rocket(PlayerInventory par1InventoryPlayer, BlockPos pos)
     {
         super(new ContainerSchematicTier1Rocket(par1InventoryPlayer, pos), pos);
         this.ySize = 221;
@@ -27,14 +27,14 @@ public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements I
     public void initGui()
     {
         super.initGui();
-        GuiButton backButton;
-        this.buttonList.add(backButton = new GuiButton(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
+        Button backButton;
+        this.buttonList.add(backButton = new Button(0, this.width / 2 - 130, this.height / 2 - 110, 40, 20, GCCoreUtil.translate("gui.button.back.name")));
+        this.buttonList.add(new Button(1, this.width / 2 - 130, this.height / 2 - 110 + 25, 40, 20, GCCoreUtil.translate("gui.button.next.name")));
         backButton.enabled = false;
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {

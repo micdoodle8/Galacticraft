@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelAlienVillager;
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -13,14 +13,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderAlienVillager extends RenderLiving<EntityAlienVillager>
+public class RenderAlienVillager extends MobRenderer<EntityAlienVillager>
 {
     private static final ResourceLocation villagerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/villager.png");
     private boolean texSwitch;
     
     protected ModelAlienVillager villagerModel;
 
-    public RenderAlienVillager(RenderManager manager)
+    public RenderAlienVillager(EntityRendererManager manager)
     {
         super(manager, new ModelAlienVillager(0.0F), 0.5F);
         this.villagerModel = (ModelAlienVillager) this.mainModel;

@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -69,7 +69,7 @@ public class OverlayRocket extends Overlay
         {
             headOffset = 5F;
         }
-        Render spaceshipRender = (Render) mc.getRenderManager().entityRenderMap.get(rocket.getClass());
+        EntityRenderer spaceshipRender = (EntityRenderer) mc.getRenderManager().entityRenderMap.get(rocket.getClass());
 
         final int y1 = height / 2 + 60 - (int) Math.floor(Overlay.getPlayerPositionY(mc.player) / 10.5F);
         var1 = 2.5F;

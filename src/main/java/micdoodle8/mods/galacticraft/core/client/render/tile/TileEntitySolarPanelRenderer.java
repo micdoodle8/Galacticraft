@@ -4,13 +4,13 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.block.ModelSolarPanel;
 import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
 import micdoodle8.mods.galacticraft.core.tile.TileEntitySolar;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileEntitySolarPanelRenderer extends TileEntitySpecialRenderer<TileEntitySolar>
+public class TileEntitySolarPanelRenderer extends TileEntityRenderer<TileEntitySolar>
 {
     private static final ResourceLocation solarPanelTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solar_panel_basic.png");
     private static final ResourceLocation solarPanelAdvTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/solar_panel_advanced.png");

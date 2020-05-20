@@ -15,10 +15,10 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -117,8 +117,8 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
             return 0;
         }
         BlockPos posAbove = new BlockPos(this.getPos().getX(), this.getPos().getY() + 1, this.getPos().getZ());
-        IBlockState stateAbove = this.world.getBlockState(posAbove);
-        if (!(stateAbove.getBlock().isAir(stateAbove, this.world, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.world, stateAbove, this.getPos().up(), EnumFacing.UP))
+        BlockState stateAbove = this.world.getBlockState(posAbove);
+        if (!(stateAbove.getBlock().isAir(stateAbove, this.world, posAbove)) && !OxygenPressureProtocol.canBlockPassAir(this.world, stateAbove, this.getPos().up(), Direction.UP))
         {
             // The vent is blocked
             return 0;
@@ -228,13 +228,13 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     // ISidedInventory Implementation:
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0, 1 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (this.isItemValidForSlot(slotID, itemstack))
         {
@@ -254,7 +254,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         switch (slotID)
         {
@@ -302,18 +302,18 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenSealer)
         {
             return state.getValue(BlockOxygenSealer.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
     }
@@ -331,15 +331,15 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenInputDirections()
+    public EnumSet<Direction> getOxygenInputDirections()
     {
         return EnumSet.of(this.getElectricInputDirection().getOpposite());
     }
 
     @Override
-    public EnumSet<EnumFacing> getOxygenOutputDirections()
+    public EnumSet<Direction> getOxygenOutputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
     public static HashMap<BlockVec3, TileEntityOxygenSealer> getSealersAround(World world, BlockPos pos, int rSquared)
@@ -379,7 +379,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
     }
 
     @Override
-    public void sendUpdateToClient(EntityPlayerMP player)
+    public void sendUpdateToClient(ServerPlayerEntity player)
     {
         if (this.sealed || this.threadSeal == null || this.threadSeal.leakTrace == null || this.threadSeal.leakTrace.isEmpty())
         {

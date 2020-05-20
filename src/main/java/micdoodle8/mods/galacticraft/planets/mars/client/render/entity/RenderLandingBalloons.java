@@ -11,9 +11,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.relauncher.Side;
@@ -22,12 +22,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderLandingBalloons extends Render<EntityLandingBalloons>
+public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
 {
     private IBakedModel balloonModel;
     protected ModelBalloonParachute parachuteModel = new ModelBalloonParachute();
 
-    public RenderLandingBalloons(RenderManager manager)
+    public RenderLandingBalloons(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 1.2F;
@@ -51,7 +51,7 @@ public class RenderLandingBalloons extends Render<EntityLandingBalloons>
     @Override
     protected ResourceLocation getEntityTexture(EntityLandingBalloons entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 
     @Override

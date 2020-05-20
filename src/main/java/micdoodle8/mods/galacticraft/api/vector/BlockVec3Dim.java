@@ -3,16 +3,16 @@ package micdoodle8.mods.galacticraft.api.vector;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
+import net.minecraft.crash.ReportedException;
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ReportedException;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -90,7 +90,7 @@ public class BlockVec3Dim implements Cloneable
      * @return the block ID, or null if the y-coordinate is less than 0 or
      * greater than 256 or the x or z is outside the Minecraft worldmap.
      */
-    public IBlockState getBlockState()
+    public BlockState getBlockState()
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -138,7 +138,7 @@ public class BlockVec3Dim implements Cloneable
      * Returns Blocks.BEDROCK if the coordinates being checked are in an
      * unloaded chunk
      */
-    public IBlockState getBlockState_noChunkLoad()
+    public BlockState getBlockState_noChunkLoad()
     {
         if (this.y < 0 || this.y >= 256 || this.x < -30000000 || this.z < -30000000 || this.x >= 30000000 || this.z >= 30000000)
         {
@@ -190,7 +190,7 @@ public class BlockVec3Dim implements Cloneable
         return world.getBlockState(new BlockPos(this.x, this.y, this.z)).getBlock();
     }
     
-    public BlockVec3Dim modifyPositionFromSide(EnumFacing side, int amount)
+    public BlockVec3Dim modifyPositionFromSide(Direction side, int amount)
     {
         switch (side.ordinal())
         {
@@ -243,7 +243,7 @@ public class BlockVec3Dim implements Cloneable
         return vec;
     }
 
-    public BlockVec3Dim modifyPositionFromSide(EnumFacing side)
+    public BlockVec3Dim modifyPositionFromSide(Direction side)
     {
         return this.modifyPositionFromSide(side, 1);
     }
@@ -292,14 +292,14 @@ public class BlockVec3Dim implements Cloneable
         return null;
     }
 
-    public IBlockState getBlockMetadata()
+    public BlockState getBlockMetadata()
     {
    		World world = this.getWorldForId(this.dim);
    		if (world == null) return null;
         return world.getBlockState(new BlockPos(this.x, this.y, this.z));
     }
 
-    public static BlockVec3Dim readFromNBT(NBTTagCompound nbtCompound)
+    public static BlockVec3Dim readFromNBT(CompoundNBT nbtCompound)
     {
         BlockVec3Dim tempVector = new BlockVec3Dim();
         tempVector.x = nbtCompound.getInteger("x");
@@ -309,7 +309,7 @@ public class BlockVec3Dim implements Cloneable
         return tempVector;
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public CompoundNBT writeToNBT(CompoundNBT par1NBTTagCompound)
     {
         par1NBTTagCompound.setInteger("x", this.x);
         par1NBTTagCompound.setInteger("y", this.y);
@@ -318,7 +318,7 @@ public class BlockVec3Dim implements Cloneable
         return par1NBTTagCompound;
     }
 
-    public BlockVec3Dim(NBTTagCompound par1NBTTagCompound)
+    public BlockVec3Dim(CompoundNBT par1NBTTagCompound)
     {
         this.x = par1NBTTagCompound.getInteger("x");
         this.y = par1NBTTagCompound.getInteger("y");
@@ -336,7 +336,7 @@ public class BlockVec3Dim implements Cloneable
         return this.x * this.x + this.y * this.y + this.z * this.z;
     }
 
-    public void setBlock(IBlockState block)
+    public void setBlock(BlockState block)
     {
    		World world = this.getWorldForId(this.dim);
    		if (world == null) return;

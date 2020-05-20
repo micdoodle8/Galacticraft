@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 
 public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
 {
@@ -12,15 +12,15 @@ public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
-        return type == NetworkType.SOLAR_MODULE && direction.getAxis() != EnumFacing.Axis.Y;
+        return type == NetworkType.SOLAR_MODULE && direction.getAxis() != Direction.Axis.Y;
     }
 
     @Override
@@ -30,13 +30,13 @@ public class TileEntitySolarArrayModule extends TileEntitySolarTransmitter
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    public CompoundNBT writeToNBT(CompoundNBT compound)
     {
         return super.writeToNBT(compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
+    public void readFromNBT(CompoundNBT compound)
     {
         super.readFromNBT(compound);
     }

@@ -8,57 +8,37 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.DimensionType;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.DimensionManager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class SpaceStationWorldData extends WorldSavedData
 {
     private String spaceStationName = "NoName";
     private String owner = "NoOwner";
-    private ArrayList<String> allowedPlayers;
+    private ArrayList<UUID> allowedPlayers;
     private boolean allowAllPlayers;
     private int homePlanet;
     private int dimensionIdDynamic;
     private int dimensionIdStatic;
-    private NBTTagCompound dataCompound;
+    private CompoundNBT dataCompound;
 
     public SpaceStationWorldData(String par1Str)
     {
         super(par1Str);
 
-        this.allowedPlayers = new ArrayList<String>()
-        {
-            // Override contains so it ignores case.
-            @Override
-            public boolean contains(Object o)
-            {
-                if (o instanceof String)
-                {
-                    String paramStr = (String) o;
-
-                    for (String s : this)
-                    {
-                        if (paramStr.equalsIgnoreCase(s))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        };
+        this.allowedPlayers = new ArrayList<UUID>();
     }
 
-    public ArrayList<String> getAllowedPlayers()
+    public ArrayList<UUID> getAllowedPlayers()
     {
         return this.allowedPlayers;
     }
@@ -68,7 +48,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return this.allowAllPlayers;
     }
 
-    public void setAllowedAll(boolean b)
+    public void putAllowedAll(boolean b)
     {
         this.allowAllPlayers = b;
         this.markDirty();
@@ -79,7 +59,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return this.owner;
     }
 
-    public void setOwner(String name)
+    public void putOwner(String name)
     {
         this.owner = name.replace(".", "");
         this.markDirty();
@@ -95,7 +75,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return homePlanet;
     }
 
-    public void setSpaceStationName(String string)
+    public void putSpaceStationName(String string)
     {
         this.spaceStationName = string;
     }
@@ -105,7 +85,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return dimensionIdStatic;
     }
 
-    public void setDimensionIdStatic(int dimensionIdStatic)
+    public void putDimensionIdStatic(int dimensionIdStatic)
     {
         this.dimensionIdStatic = dimensionIdStatic;
     }
@@ -115,29 +95,29 @@ public class SpaceStationWorldData extends WorldSavedData
         return dimensionIdDynamic;
     }
 
-    public void setDimensionIdDynamic(int dimensionIdDynamic)
+    public void putDimensionIdDynamic(int dimensionIdDynamic)
     {
         this.dimensionIdDynamic = dimensionIdDynamic;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbttagcompound)
+    public void read(CompoundNBT nbt)
     {
-        this.owner = nbttagcompound.getString("owner").replace(".", "");
-        this.spaceStationName = nbttagcompound.getString("spaceStationName");
+        this.owner = nbt.getString("owner").replace(".", "");
+        this.spaceStationName = nbt.getString("spaceStationName");
 
-        if (nbttagcompound.hasKey("dataCompound"))
+        if (nbt.contains("dataCompound"))
         {
-            this.dataCompound = nbttagcompound.getCompoundTag("dataCompound");
+            this.dataCompound = nbt.getCompound("dataCompound");
         }
         else
         {
-            this.dataCompound = new NBTTagCompound();
+            this.dataCompound = new CompoundNBT();
         }
 
-        if (nbttagcompound.hasKey("homePlanet"))
+        if (nbt.contains("homePlanet"))
         {
-            this.homePlanet = nbttagcompound.getInteger("homePlanet");
+            this.homePlanet = nbt.getInt("homePlanet");
         }
         else
         {
@@ -145,9 +125,9 @@ public class SpaceStationWorldData extends WorldSavedData
             this.homePlanet = 0; // Overworld dimension ID
         }
 
-        if (nbttagcompound.hasKey("dimensionIdStatic"))
+        if (nbt.contains("dimensionIdStatic"))
         {
-            this.dimensionIdStatic = nbttagcompound.getInteger("dimensionIdStatic");
+            this.dimensionIdStatic = nbt.getInt("dimensionIdStatic");
         }
         else
         {
@@ -155,9 +135,9 @@ public class SpaceStationWorldData extends WorldSavedData
             this.dimensionIdStatic = ConfigManagerCore.idDimensionOverworldOrbitStatic;
         }
 
-        if (nbttagcompound.hasKey("dimensionIdDynamic"))
+        if (nbt.contains("dimensionIdDynamic"))
         {
-            this.dimensionIdDynamic = nbttagcompound.getInteger("dimensionIdDynamic");
+            this.dimensionIdDynamic = nbt.getInt("dimensionIdDynamic");
         }
         else
         {
@@ -165,56 +145,56 @@ public class SpaceStationWorldData extends WorldSavedData
             this.dimensionIdDynamic = ConfigManagerCore.idDimensionOverworldOrbit;
         }
 
-        this.allowAllPlayers = nbttagcompound.getBoolean("allowedAll");
+        this.allowAllPlayers = nbt.getBoolean("allowedAll");
 
-        final NBTTagList var2 = nbttagcompound.getTagList("allowedPlayers", 10);
+        ListNBT nbtList = nbt.getList("allowedPlayers", 10);
         this.allowedPlayers.clear();
 
-        for (int var3 = 0; var3 < var2.tagCount(); ++var3)
+        for (int i = 0; i < nbtList.size(); ++i)
         {
-            final NBTTagCompound var4 = var2.getCompoundTagAt(var3);
-            final String var5 = var4.getString("allowedPlayer");
+            CompoundNBT compound = nbtList.getCompound(i);
+            UUID uid = compound.getUniqueId("allowedPlayer");
 
-            if (!this.allowedPlayers.contains(var5))
+            if (!this.allowedPlayers.contains(uid))
             {
-                this.allowedPlayers.add(var5);
+                this.allowedPlayers.add(uid);
             }
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbttagcompound)
+    public CompoundNBT write(CompoundNBT nbt)
     {
-        nbttagcompound.setString("owner", this.owner);
-        nbttagcompound.setString("spaceStationName", this.spaceStationName);
-        nbttagcompound.setInteger("homePlanet", this.homePlanet);
-        nbttagcompound.setInteger("dimensionIdDynamic", this.dimensionIdDynamic);
-        nbttagcompound.setInteger("dimensionIdStatic", this.dimensionIdStatic);
-        nbttagcompound.setTag("dataCompound", this.dataCompound);
-        nbttagcompound.setBoolean("allowedAll", this.allowAllPlayers);
+        nbt.putString("owner", this.owner);
+        nbt.putString("spaceStationName", this.spaceStationName);
+        nbt.putInt("homePlanet", this.homePlanet);
+        nbt.putInt("dimensionIdDynamic", this.dimensionIdDynamic);
+        nbt.putInt("dimensionIdStatic", this.dimensionIdStatic);
+        nbt.put("dataCompound", this.dataCompound);
+        nbt.putBoolean("allowedAll", this.allowAllPlayers);
 
-        final NBTTagList var2 = new NBTTagList();
+        ListNBT nbtList = new ListNBT();
 
-        for (int var3 = 0; var3 < this.allowedPlayers.size(); ++var3)
+        for (int i = 0; i < this.allowedPlayers.size(); ++i)
         {
-            final String player = this.allowedPlayers.get(var3);
+            UUID player = this.allowedPlayers.get(i);
 
             if (player != null)
             {
-                final NBTTagCompound var4 = new NBTTagCompound();
-                var4.setString("allowedPlayer", player);
-                var2.appendTag(var4);
+                CompoundNBT compound = new CompoundNBT();
+                compound.putUniqueId("allowedPlayer", player);
+                nbtList.add(compound);
             }
         }
 
-        nbttagcompound.setTag("allowedPlayers", var2);
-        return nbttagcompound;
+        nbt.put("allowedPlayers", nbtList);
+        return nbt;
     }
 
     /**
      * Retrieve an already created space station date entry
      */
-    public static SpaceStationWorldData getStationData(World world, int stationID, EntityPlayer player)
+    public static SpaceStationWorldData getStationData(World world, int stationID, PlayerEntity player)
     {
         return getStationData(world, stationID, -1, -1, -1, player);
     }
@@ -222,7 +202,7 @@ public class SpaceStationWorldData extends WorldSavedData
     /**
      * Retrieve a space station data entry, creating if necessary (with provided data)
      */
-    public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, EntityPlayer owner)
+    public static SpaceStationWorldData getStationData(World world, int stationID, int homeID, int providerIdDynamic, int providerIdStatic, PlayerEntity owner)
     {
         DimensionType providerType = DimensionManager.getProviderType(stationID);
 
@@ -251,8 +231,8 @@ public class SpaceStationWorldData extends WorldSavedData
             if (stationData == null)
             {
                 stationData = new SpaceStationWorldData(stationIdentifier);
-                world.setData(Constants.GCDATAFOLDER + stationIdentifier, stationData);
-                stationData.dataCompound = new NBTTagCompound();
+                world.putData(Constants.GCDATAFOLDER + stationIdentifier, stationData);
+                stationData.dataCompound = new CompoundNBT();
 
                 if (owner != null)
                 {
@@ -290,7 +270,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
             if (stationData.getSpaceStationName().replace(" ", "").isEmpty())
             {
-                stationData.setSpaceStationName("Station: " + stationData.owner);
+                stationData.putSpaceStationName("Station: " + stationData.owner);
                 stationData.markDirty();
             }
 
@@ -298,7 +278,7 @@ public class SpaceStationWorldData extends WorldSavedData
         }
     }
 
-    public static SpaceStationWorldData getMPSpaceStationData(World var0, int var1, EntityPlayer player)
+    public static SpaceStationWorldData getMPSpaceStationData(World var0, int var1, PlayerEntity player)
     {
         final String var2 = SpaceStationWorldData.getSpaceStationID(var1);
         if (var0 == null)
@@ -319,8 +299,8 @@ public class SpaceStationWorldData extends WorldSavedData
         if (var3 == null)
         {
             var3 = new SpaceStationWorldData(var2);
-            var0.setData(Constants.GCDATAFOLDER + var2, var3);
-            var3.dataCompound = new NBTTagCompound();
+            var0.putData(Constants.GCDATAFOLDER + var2, var3);
+            var3.dataCompound = new CompoundNBT();
 
             if (player != null)
             {
@@ -339,7 +319,7 @@ public class SpaceStationWorldData extends WorldSavedData
 
         if (var3.getSpaceStationName().replace(" ", "").isEmpty())
         {
-            var3.setSpaceStationName("Station: " + var3.owner);
+            var3.putSpaceStationName("Station: " + var3.owner);
             var3.markDirty();
         }
 
@@ -351,7 +331,7 @@ public class SpaceStationWorldData extends WorldSavedData
         return "spacestation_" + dimID;
     }
 
-    public static void updateSSOwnership(EntityPlayerMP player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
+    public static void updateSSOwnership(ServerPlayerEntity player, String playerName, GCPlayerStats stats, int stationID, SpaceStationWorldData stationData)
     {
         if (stationData == null)
         {
@@ -379,10 +359,10 @@ public class SpaceStationWorldData extends WorldSavedData
         }
     }
 
-    public static void checkAllStations(EntityPlayerMP thePlayer, GCPlayerStats stats)
+    public static void checkAllStations(ServerPlayerEntity thePlayer, GCPlayerStats stats)
     {
         String name = PlayerUtil.getName(thePlayer).replace(".", "");
-        for (int id : WorldUtil.registeredSpaceStations.keySet())
+        for (int id : WorldUtil.registeredSpaceStations.keyput())
         {
             SpaceStationWorldData.updateSSOwnership(thePlayer, name, stats, id, null);
         }

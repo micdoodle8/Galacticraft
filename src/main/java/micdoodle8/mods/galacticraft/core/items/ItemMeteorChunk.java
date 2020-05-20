@@ -6,14 +6,14 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -35,13 +35,13 @@ public class ItemMeteorChunk extends Item implements ISortableItem
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.maxStackSize = 16;
-        this.setCreativeTab(CreativeTabs.MATERIALS);
+        this.setCreativeTab(ItemGroup.MATERIALS);
         this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
@@ -68,14 +68,14 @@ public class ItemMeteorChunk extends Item implements ISortableItem
             }
             else
             {
-                itemstack.setTagCompound(new NBTTagCompound());
+                itemstack.setTagCompound(new CompoundNBT());
                 itemstack.getTagCompound().setFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
             }
         }
     }
 
     @Override
-    public void onCreated(ItemStack itemstack, World world, EntityPlayer entityPlayer)
+    public void onCreated(ItemStack itemstack, World world, PlayerEntity entityPlayer)
     {
         super.onCreated(itemstack, world, entityPlayer);
 
@@ -83,7 +83,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
         {
             if (!itemstack.hasTagCompound())
             {
-                itemstack.setTagCompound(new NBTTagCompound());
+                itemstack.setTagCompound(new CompoundNBT());
             }
 
             itemstack.getTagCompound().setFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
@@ -92,9 +92,9 @@ public class ItemMeteorChunk extends Item implements ISortableItem
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             list.add(new ItemStack(this, 1, 0));
             list.add(new ItemStack(this, 1, 1));
@@ -125,7 +125,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -137,7 +137,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
     {
         ItemStack itemStack = player.getHeldItem(hand);
 
@@ -163,7 +163,7 @@ public class ItemMeteorChunk extends Item implements ISortableItem
 
         player.swingArm(hand);
 
-        return new ActionResult<>(EnumActionResult.SUCCESS, itemStack);
+        return new ActionResult<>(ActionResultType.SUCCESS, itemStack);
     }
 
     @Override

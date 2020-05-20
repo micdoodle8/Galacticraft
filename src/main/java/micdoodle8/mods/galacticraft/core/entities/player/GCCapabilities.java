@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.Constants;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
@@ -25,30 +25,30 @@ public class GCCapabilities
         CapabilityManager.INSTANCE.register(GCPlayerStats.class, new Capability.IStorage<GCPlayerStats>()
         {
             @Override
-            public NBTBase writeNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, EnumFacing side)
+            public NBTBase writeNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side)
             {
-                NBTTagCompound nbt = new NBTTagCompound();
+                CompoundNBT nbt = new CompoundNBT();
                 instance.saveNBTData(nbt);
                 return nbt;
             }
 
             @Override
-            public void readNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, EnumFacing side, NBTBase nbt)
+            public void readNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side, NBTBase nbt)
             {
-                instance.loadNBTData((NBTTagCompound) nbt);
+                instance.loadNBTData((CompoundNBT) nbt);
             }
         }, StatsCapability::new);
 
         CapabilityManager.INSTANCE.register(GCPlayerStatsClient.class, new Capability.IStorage<GCPlayerStatsClient>()
         {
             @Override
-            public NBTBase writeNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, EnumFacing side)
+            public NBTBase writeNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side)
             {
                 return null;
             }
 
             @Override
-            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, EnumFacing side, NBTBase nbt) { }
+            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side, NBTBase nbt) { }
         }, StatsClientCapability::new);
     }
 }

@@ -21,17 +21,17 @@ import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityCryogenicChamber
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
 import micdoodle8.mods.galacticraft.planets.mars.world.gen.WorldGenEggs;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.potion.Effects;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.ServerWorld;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -59,7 +59,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(MobEffects.FIRE_RESISTANCE)))
+        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(Effects.FIRE_RESISTANCE)))
         {
             Entity entity = event.getSource().getTrueSource();
 
@@ -79,16 +79,16 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onPlayerWakeUp(EventWakePlayer event)
     {
-        EntityPlayer player = event.getEntityPlayer();
+        PlayerEntity player = event.getEntityPlayer();
         BlockPos c = player.bedLocation;
-        IBlockState state = player.getEntityWorld().getBlockState(c);
+        BlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
 
         if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             if (!event.immediately && event.updateWorld && event.setSpawn)
             {
-                event.result = EntityPlayer.SleepResult.NOT_POSSIBLE_HERE;
+                event.result = PlayerEntity.SleepResult.NOT_POSSIBLE_HERE;
             }
             else if (!event.immediately && !event.updateWorld && event.setSpawn)
             {
@@ -97,7 +97,7 @@ public class EventHandlerMars
                     player.heal(5.0F);
                     GCPlayerStats.get(player).setCryogenicChamberCooldown(6000);
 
-                    WorldServer ws = (WorldServer)player.world;
+                    ServerWorld ws = (ServerWorld)player.world;
                     ws.updateAllPlayersSleepingFlag();
                     if (ws.areAllPlayersAsleep() && ws.getGameRules().getBoolean("doDaylightCycle"))
                     {
@@ -115,7 +115,7 @@ public class EventHandlerMars
         BlockPos blockPos = event.getEntityPlayer().bedLocation;
         if (blockPos != null)
         {
-            IBlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
+            BlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
             if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
                 TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
@@ -133,7 +133,7 @@ public class EventHandlerMars
         }
     }
 
-    private WorldGenerator eggGenerator;
+    private Feature eggGenerator;
 
     @SubscribeEvent
     public void onPlanetDecorated(GCCoreEventPopulate.Post event)
@@ -160,7 +160,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void orientCamera(OrientCameraEvent event)
     {
-        EntityPlayer entity = Minecraft.getMinecraft().player;
+        PlayerEntity entity = Minecraft.getMinecraft().player;
 
         if (entity != null)
         {

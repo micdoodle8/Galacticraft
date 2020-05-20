@@ -11,10 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class RenderBuggy extends Render<EntityBuggy>
+public class RenderBuggy extends EntityRenderer<EntityBuggy>
 {
     private OBJModel.OBJBakedModel mainModel;
     private OBJModel.OBJBakedModel radarDish;
@@ -64,7 +64,7 @@ public class RenderBuggy extends Render<EntityBuggy>
         }
     }
 
-    public RenderBuggy(RenderManager manager)
+    public RenderBuggy(EntityRendererManager manager)
     {
         super(manager);
         this.shadowSize = 1.0F;
@@ -73,7 +73,7 @@ public class RenderBuggy extends Render<EntityBuggy>
     @Override
     protected ResourceLocation getEntityTexture(EntityBuggy entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 
     @Override

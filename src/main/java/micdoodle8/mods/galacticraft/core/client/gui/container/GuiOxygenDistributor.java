@@ -12,8 +12,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -31,7 +31,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private GuiElementCheckbox checkboxRenderBubble;
 
-    public GuiOxygenDistributor(InventoryPlayer par1InventoryPlayer, TileEntityOxygenDistributor par2TileEntityAirDistributor)
+    public GuiOxygenDistributor(PlayerInventory par1InventoryPlayer, TileEntityOxygenDistributor par2TileEntityAirDistributor)
     {
         super(new ContainerOxygenDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.distributor = par2TileEntityAirDistributor;
@@ -150,7 +150,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return true;
     }

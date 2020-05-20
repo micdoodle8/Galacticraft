@@ -2,18 +2,18 @@ package micdoodle8.mods.galacticraft.planets.venus.entities.ai;
 
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityJuicer;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class PathNavigateCeiling extends PathNavigate
+public class PathNavigateCeiling extends PathNavigator
 {
     protected WalkNodeProcessorCeiling nodeProcessor;
 
@@ -32,7 +32,7 @@ public class PathNavigateCeiling extends PathNavigate
     @Override
     protected boolean canNavigate()
     {
-        return this.entity.onGround || this.entity.isRiding() && this.entity instanceof EntityZombie && this.entity.getRidingEntity() instanceof EntityChicken;
+        return this.entity.onGround || this.entity.isRiding() && this.entity instanceof ZombieEntity && this.entity.getRidingEntity() instanceof ChickenEntity;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class PathNavigateCeiling extends PathNavigate
 
                     if (d0 * distanceX + d1 * distanceZ >= 0.0D)
                     {
-                        IBlockState state = this.world.getBlockState(new BlockPos(k, y + 1, l));
+                        BlockState state = this.world.getBlockState(new BlockPos(k, y + 1, l));
                         Material material = state.getMaterial();
 
                         if (material == Material.AIR)

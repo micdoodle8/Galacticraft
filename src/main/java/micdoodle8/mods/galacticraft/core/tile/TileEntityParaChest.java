@@ -9,15 +9,14 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeColor;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.*;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,12 +35,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     public float prevLidAngle;
     public int numUsingPlayers;
     @NetworkedField(targetSide = Side.CLIENT)
-    public EnumDyeColor color = EnumDyeColor.RED;
+    public DyeColor color = DyeColor.RED;
 
     public TileEntityParaChest()
     {
         super("container.parachest.name");
-        this.color = EnumDyeColor.RED;
+        this.color = DyeColor.RED;
         inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
@@ -70,7 +69,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -83,7 +82,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -103,12 +102,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (nbt.hasKey("color"))
         {
-            this.color = EnumDyeColor.byDyeDamage(nbt.getInteger("color"));
+            this.color = DyeColor.byDyeDamage(nbt.getInteger("color"));
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
@@ -117,7 +116,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
 
         nbt.setInteger("color", this.color.getDyeDamage());
@@ -125,9 +124,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override
@@ -147,12 +146,12 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         {
             this.numUsingPlayers = 0;
             f = 5.0F;
-            List<?> list = this.world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
+            List<?> list = this.world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB(this.getPos().getX() - f, this.getPos().getY() - f, this.getPos().getZ() - f, this.getPos().getX() + 1 + f, this.getPos().getY() + 1 + f, this.getPos().getZ() + 1 + f));
             Iterator<?> iterator = list.iterator();
 
             while (iterator.hasNext())
             {
-                EntityPlayer entityplayer = (EntityPlayer) iterator.next();
+                PlayerEntity entityplayer = (PlayerEntity) iterator.next();
 
                 if (entityplayer.openContainer instanceof ContainerParaChest)
                 {
@@ -233,7 +232,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
         if (this.numUsingPlayers < 0)
         {
@@ -247,7 +246,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
         if (this.getBlockType() != null && this.getBlockType() instanceof BlockParaChest)
         {
@@ -292,7 +291,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public void decodePacketdata(ByteBuf buffer)
     {
-        EnumDyeColor color = this.color;
+        DyeColor color = this.color;
 
         super.decodePacketdata(buffer);
 

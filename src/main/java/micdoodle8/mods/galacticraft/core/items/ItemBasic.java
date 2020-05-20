@@ -7,16 +7,16 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumRarity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -43,14 +43,14 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -67,9 +67,9 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
     {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == CreativeTabs.SEARCH)
+        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
         {
             for (int i = 0; i < 15; i++)
             {
@@ -104,12 +104,12 @@ public class ItemBasic extends Item implements ISortableItem
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
     {
         ItemStack itemStackIn = playerIn.getHeldItem(hand);
         if (itemStackIn.getItemDamage() == 19)
         {
-            if (playerIn instanceof EntityPlayerMP)
+            if (playerIn instanceof ServerPlayerEntity)
             {
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
                 ItemStack gear = stats.getExtendedInventory().getStackInSlot(5);
@@ -122,11 +122,11 @@ public class ItemBasic extends Item implements ISortableItem
             }
         }
 
-        return new ActionResult<>(EnumActionResult.FAIL, itemStackIn);
+        return new ActionResult<>(ActionResultType.FAIL, itemStackIn);
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack itemStack, EntityPlayer player, Entity entity)
+    public boolean onLeftClickEntity(ItemStack itemStack, PlayerEntity player, Entity entity)
     {
         if (itemStack.getItemDamage() != 19)
         {
@@ -134,17 +134,17 @@ public class ItemBasic extends Item implements ISortableItem
         }
 
         //Frequency module
-        if (!player.world.isRemote && entity != null && !(entity instanceof EntityPlayer))
+        if (!player.world.isRemote && entity != null && !(entity instanceof PlayerEntity))
         {
             if (itemStack.getTagCompound() == null)
             {
-                itemStack.setTagCompound(new NBTTagCompound());
+                itemStack.setTagCompound(new CompoundNBT());
             }
 
             itemStack.getTagCompound().setLong("linkedUUIDMost", entity.getUniqueID().getMostSignificantBits());
             itemStack.getTagCompound().setLong("linkedUUIDLeast", entity.getUniqueID().getLeastSignificantBits());
 
-            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.tracking.message")));
+            player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.tracking.message")));
             return true;
         }
         return false;

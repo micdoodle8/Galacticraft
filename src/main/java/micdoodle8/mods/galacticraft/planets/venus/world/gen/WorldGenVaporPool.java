@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class WorldGenVaporPool extends WorldGenerator
+public class WorldGenVaporPool extends Feature
 {
     public WorldGenVaporPool()
     {
@@ -24,7 +24,7 @@ public class WorldGenVaporPool extends WorldGenerator
             return false;
         }
 
-        IBlockState venusSoft = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
+        BlockState venusSoft = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
 
         int radius = 5 + rand.nextInt(4);
         int radiusSq = radius * radius;

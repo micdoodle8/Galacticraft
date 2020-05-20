@@ -8,9 +8,9 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -75,7 +75,7 @@ public class CommandGCInv extends CommandBase
         {
             try
             {
-                EntityPlayerMP thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[1], true);
+                ServerPlayerEntity thePlayer = PlayerUtil.getPlayerBaseServerFromPlayerUsername(args[1], true);
                 if (thePlayer != null && !thePlayer.isDead && thePlayer.world != null)
                 {
                     GCPlayerStats stats = GCPlayerStats.get(thePlayer);
@@ -165,7 +165,7 @@ public class CommandGCInv extends CommandBase
         }
     }
 
-    public static void doLoad(EntityPlayerMP thePlayer)
+    public static void doLoad(ServerPlayerEntity thePlayer)
     {
         String theName = PlayerUtil.getName(thePlayer).toLowerCase();
         if (!CommandGCInv.dontload.contains(theName))
@@ -193,7 +193,7 @@ public class CommandGCInv extends CommandBase
 
     private static void writefile()
     {
-        CommandGCInv.savefile.writeToNBT(new NBTTagCompound());
+        CommandGCInv.savefile.writeToNBT(new CompoundNBT());
         CommandGCInv.savefile.markDirty();
     }
 

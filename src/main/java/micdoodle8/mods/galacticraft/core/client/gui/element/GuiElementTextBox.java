@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.SharedConstants;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.input.Keyboard;
 
-public class GuiElementTextBox extends GuiButton
+public class GuiElementTextBox extends Button
 {
     public String text;
     public boolean numericOnly;
@@ -71,7 +71,7 @@ public class GuiElementTextBox extends GuiButton
             }
             else if (keyChar == 22)
             {
-                String pastestring = GuiScreen.getClipboardString();
+                String pastestring = Screen.getClipboardString();
 
                 if (pastestring == null)
                 {
@@ -124,8 +124,8 @@ public class GuiElementTextBox extends GuiButton
 
         if (this.visible)
         {
-            Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, ColorUtil.to32BitColor(140, 140, 140, 140));
-            Gui.drawRect(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+            AbstractGui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, ColorUtil.to32BitColor(140, 140, 140, 140));
+            AbstractGui.drawRect(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
 
             this.cursorPulse++;
 
@@ -195,7 +195,7 @@ public class GuiElementTextBox extends GuiButton
     {
         if (this.numericOnly)
         {
-            if (string.length() > 0 && ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1)))
+            if (string.length() > 0 && SharedConstants.isAllowedCharacter(string.charAt(string.length() - 1)))
             {
                 try
                 {
@@ -219,7 +219,7 @@ public class GuiElementTextBox extends GuiButton
                 return false;
             }
 
-            return ChatAllowedCharacters.isAllowedCharacter(string.charAt(string.length() - 1));
+            return SharedConstants.isAllowedCharacter(string.charAt(string.length() - 1));
         }
     }
 
@@ -228,7 +228,7 @@ public class GuiElementTextBox extends GuiButton
     {
         if (super.mousePressed(par1Minecraft, par2, par3))
         {
-            Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, 0xffA0A0A0);
+            AbstractGui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, 0xffA0A0A0);
             this.isTextFocused = true;
             if (resetOnClick)
             {
@@ -251,7 +251,7 @@ public class GuiElementTextBox extends GuiButton
 
     public interface ITextBoxCallback
     {
-        boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player);
+        boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player);
 
         void onTextChanged(GuiElementTextBox textBox, String newText);
 

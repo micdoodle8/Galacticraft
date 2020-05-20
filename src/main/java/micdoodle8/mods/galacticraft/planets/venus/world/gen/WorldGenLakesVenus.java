@@ -2,18 +2,18 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class WorldGenLakesVenus extends WorldGenerator
+public class WorldGenLakesVenus extends Feature
 {
     public WorldGenLakesVenus()
     {
@@ -76,7 +76,7 @@ public class WorldGenLakesVenus extends WorldGenerator
 
                         if (flag)
                         {
-                            IBlockState state = worldIn.getBlockState(position.add(k1, k, l2));
+                            BlockState state = worldIn.getBlockState(position.add(k1, k, l2));
                             Material material = state.getMaterial();
 
                             if (k >= 4 && material.isLiquid())
@@ -117,7 +117,7 @@ public class WorldGenLakesVenus extends WorldGenerator
                         {
                             BlockPos blockpos = position.add(i2, j4 - 1, j3);
 
-                            if (worldIn.getBlockState(blockpos).getBlock() == Blocks.DIRT && worldIn.getLightFor(EnumSkyBlock.SKY, position.add(i2, j4, j3)) > 0)
+                            if (worldIn.getBlockState(blockpos).getBlock() == Blocks.DIRT && worldIn.getLightFor(LightType.SKY, position.add(i2, j4, j3)) > 0)
                             {
                                 Biome biomegenbase = worldIn.getBiome(blockpos);
 
@@ -143,7 +143,7 @@ public class WorldGenLakesVenus extends WorldGenerator
                     {
                         boolean flag1 = !aboolean[(j2 * 16 + k3) * 8 + k4] && (j2 < 15 && aboolean[((j2 + 1) * 16 + k3) * 8 + k4] || j2 > 0 && aboolean[((j2 - 1) * 16 + k3) * 8 + k4] || k3 < 15 && aboolean[(j2 * 16 + k3 + 1) * 8 + k4] || k3 > 0 && aboolean[(j2 * 16 + (k3 - 1)) * 8 + k4] || k4 < 7 && aboolean[(j2 * 16 + k3) * 8 + k4 + 1] || k4 > 0 && aboolean[(j2 * 16 + k3) * 8 + (k4 - 1)]);
 
-                        IBlockState state = worldIn.getBlockState(position.add(j2, k4, k3));
+                        BlockState state = worldIn.getBlockState(position.add(j2, k4, k3));
                         if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && state.getMaterial().isSolid())
                         {
                             worldIn.setBlockState(position.add(j2, k4, k3), VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA), 2);

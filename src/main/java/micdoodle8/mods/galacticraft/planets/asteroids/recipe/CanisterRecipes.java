@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.planets.asteroids.recipe;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemOxygenTank;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemCanisterLiquidOxygen;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.item.crafting.ShapelessRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
-public class CanisterRecipes extends ShapelessRecipes
+public class CanisterRecipes extends ShapelessRecipe
 {
     public CanisterRecipes(ItemStack stack, NonNullList<Ingredient> list)
     {
@@ -22,7 +22,7 @@ public class CanisterRecipes extends ShapelessRecipes
      * Used to check if a recipe matches current crafting inventory
      */
     @Override
-    public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_)
+    public boolean matches(CraftingInventory p_77569_1_, World p_77569_2_)
     {
         ItemStack itemCanister = ItemStack.EMPTY;
         ItemStack itemTank = ItemStack.EMPTY;
@@ -82,7 +82,7 @@ public class CanisterRecipes extends ShapelessRecipes
      * Returns an Item that is the result of this recipe
      */
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv)
+    public ItemStack getCraftingResult(CraftingInventory inv)
     {
         ItemStack itemTank = null;  //Intentionally null - internal use only
         ItemStack itemCanister = null;  //Intentionally null - internal use only

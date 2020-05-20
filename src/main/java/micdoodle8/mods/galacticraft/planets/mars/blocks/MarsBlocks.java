@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockEgg;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMachine;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemBlockMars;
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -72,7 +72,7 @@ public class MarsBlocks
 //        setHarvestLevel(MarsBlocks.marsBricksStairs, "pickaxe", 3);
     }
 
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass)
+    public static void registerBlock(Block block, Class<? extends BlockItem> itemClass)
     {
         GCBlocks.registerBlock(block, itemClass);
     }

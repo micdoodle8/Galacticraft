@@ -10,14 +10,14 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -41,7 +41,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     @NetworkedField(targetSide = Side.CLIENT)
     public int processTicks = 0;
 
-    public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
 
     private boolean initialised = false;
 
@@ -157,7 +157,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         ItemStack result = FurnaceRecipes.instance().getSmeltingResult(stack);
         if (result.isEmpty())
         {
-            int burnable = TileEntityFurnace.getItemBurnTime(stack);
+            int burnable = FurnaceTileEntity.getItemBurnTime(stack);
             if (burnable >= 200 && burnable < 400) result = new ItemStack(MarsItems.carbonFragments);   //this includes most wooden tools, doors, stairs, boats etc but not saplings and sticks
             else return false;
         }
@@ -255,7 +255,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         if (this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
@@ -273,7 +273,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > EnergyStorageTile.STANDARD_CAPACITY)
         {
@@ -308,7 +308,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         if (this.tierGC == 2)
         {
@@ -318,13 +318,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID == 2 || this.tierGC == 2 && slotID == 3;
     }
@@ -342,13 +342,13 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -357,9 +357,9 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();

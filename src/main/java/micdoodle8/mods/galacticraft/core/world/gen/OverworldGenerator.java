@@ -2,14 +2,14 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockMatcher;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.pattern.BlockMatcher;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.chunk.AbstractChunkProvider;
+import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
 import java.util.Random;
@@ -34,7 +34,7 @@ public class OverworldGenerator implements IWorldGenerator
     }
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider)
+    public void generate(Random random, int chunkX, int chunkZ, World world, ChunkGenerator chunkGenerator, AbstractChunkProvider chunkProvider)
     {
         if (!(world.provider instanceof IGalacticraftWorldProvider))
         {
@@ -90,7 +90,7 @@ public class OverworldGenerator implements IWorldGenerator
                                 double var45 = (var44 + 0.5D - var24) / (var28 / 2.0D);
 
                                 BlockPos pos = new BlockPos(var38, var41, var44);
-                                IBlockState state = par1World.getBlockState(pos);
+                                BlockState state = par1World.getBlockState(pos);
                                 if (var39 * var39 + var42 * var42 + var45 * var45 < 1.0D && state.getBlock().isReplaceableOreGen(state, par1World, pos, BlockMatcher.forBlock(Blocks.STONE)))
                                 {
                                     par1World.setBlockState(new BlockPos(var38, var41, var44), this.oreBlock.getStateFromMeta(this.metadata), 2);

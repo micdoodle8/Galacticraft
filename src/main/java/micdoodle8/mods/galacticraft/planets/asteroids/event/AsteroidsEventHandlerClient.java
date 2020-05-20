@@ -12,8 +12,8 @@ import micdoodle8.mods.galacticraft.planets.asteroids.client.SkyProviderAsteroid
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.NetworkRenderer;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,7 +30,7 @@ public class AsteroidsEventHandlerClient
     public void onClientTick(ClientTickEvent event)
     {
         Minecraft minecraft = Minecraft.getMinecraft();
-        WorldClient world = minecraft.world;
+        ClientWorld world = minecraft.world;
 
         if (world != null)
         {
@@ -56,7 +56,7 @@ public class AsteroidsEventHandlerClient
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
             float alpha = 1.0F;
-            GuiScreen screen = FMLClientHandler.instance().getClient().currentScreen;
+            Screen screen = FMLClientHandler.instance().getClient().currentScreen;
             if (screen instanceof GuiCelestialSelection)
             {
                 alpha = ((GuiCelestialSelection) screen).getAlpha(renderEvent.celestialBody);

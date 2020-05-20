@@ -8,9 +8,9 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.venus.ConfigManagerVenus;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.world.ClientWorld;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -33,8 +33,8 @@ public class TickHandlerClientVenus
     public void onRenderTick(RenderTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
-        final EntityPlayerSP playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
+        final ClientPlayerEntity player = minecraft.player;
+        final ClientPlayerEntity playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
         if (event.phase == Phase.END)
         {
@@ -45,7 +45,7 @@ public class TickHandlerClientVenus
     public void renderLightning(ClientProxyCore.EventSpecialRender event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
+        final ClientPlayerEntity player = minecraft.player;
         if (player != null && !ConfigManagerVenus.disableAmbientLightning)
         {
             Iterator<Map.Entry<BlockPos, Integer>> it = lightning.entrySet().iterator();
@@ -64,7 +64,7 @@ public class TickHandlerClientVenus
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-        final WorldClient world = minecraft.world;
+        final ClientWorld world = minecraft.world;
 
         if (world != null)
         {
@@ -93,7 +93,7 @@ public class TickHandlerClientVenus
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
         final Minecraft minecraft = FMLClientHandler.instance().getClient();
-        final EntityPlayerSP player = minecraft.player;
+        final ClientPlayerEntity player = minecraft.player;
 
         if (player == event.player)
         {

@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockGrating;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -78,7 +78,7 @@ public abstract class EntityFXLaunchParticle extends Particle
         int zs = MathHelper.floor(bb.minZ) - 1;
         int ze = MathHelper.ceil(bb.maxZ);
         BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
-        IBlockState iblockstate1;
+        BlockState iblockstate1;
         boolean xends, xzmiddle;
 
         for (int x = xs; x <= xe; ++x)
@@ -106,7 +106,7 @@ public abstract class EntityFXLaunchParticle extends Particle
                         {
                             mutablePos.setPos(x, y, z);
                             iblockstate1 = w.getBlockState(mutablePos);
-                            if (!(iblockstate1.getBlock() instanceof BlockAir) && !(iblockstate1.getBlock() instanceof BlockGrating))
+                            if (!(iblockstate1.getBlock() instanceof AirBlock) && !(iblockstate1.getBlock() instanceof BlockGrating))
                                 iblockstate1.addCollisionBoxToList(w, mutablePos, bb, list, null, false);
                         }
                     }

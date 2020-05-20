@@ -21,16 +21,16 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.item.crafting.ShapedRecipes;
-import net.minecraft.item.crafting.ShapelessRecipes;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.item.crafting.ShapedRecipe;
+import net.minecraft.item.crafting.ShapelessRecipe;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
@@ -311,13 +311,13 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
             ItemStack test = recipe.getRecipeOutput();
             if (ItemStack.areItemsEqual(test, stack) && test.getCount() == 1)
             {
-                if (recipe instanceof ShapedRecipes)
+                if (recipe instanceof ShapedRecipe)
                 {
-                    return expandRecipeInputs(((ShapedRecipes) recipe).recipeItems);
+                    return expandRecipeInputs(((ShapedRecipe) recipe).recipeItems);
                 }
-                else if (recipe instanceof ShapelessRecipes)
+                else if (recipe instanceof ShapelessRecipe)
                 {
-                    return expandRecipeInputs(((ShapelessRecipes) recipe).recipeItems);
+                    return expandRecipeInputs(((ShapelessRecipe) recipe).recipeItems);
                 }
                 else if (recipe instanceof ShapedOreRecipe)
                 {
@@ -441,7 +441,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(CompoundNBT par1NBTTagCompound)
     {
         super.readFromNBT(par1NBTTagCompound);
         this.processTicks = par1NBTTagCompound.getInteger("smeltingTicks");
@@ -450,7 +450,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("smeltingTicks", this.processTicks);
@@ -471,9 +471,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
-        if (side == EnumFacing.DOWN)
+        if (side == Direction.DOWN)
         {
             return new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10 };
         }
@@ -482,7 +482,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID >= 2;
     }
@@ -494,13 +494,13 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -509,9 +509,9 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();

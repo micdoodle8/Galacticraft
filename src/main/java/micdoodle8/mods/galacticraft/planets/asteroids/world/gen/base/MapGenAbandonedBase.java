@@ -8,16 +8,16 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.structure.MapGenStructure;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.StructureStart;
+import net.minecraft.world.gen.feature.Structure;
+import net.minecraft.world.gen.feature.StructureIO;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.StructureStart;
 
-public class MapGenAbandonedBase extends MapGenStructure
+public class MapGenAbandonedBase extends Structure
 {
     private static boolean initialized;
 
@@ -41,15 +41,15 @@ public class MapGenAbandonedBase extends MapGenStructure
     {
         if (!MapGenAbandonedBase.initialized)
         {
-              MapGenStructureIO.registerStructure(MapGenAbandonedBase.Start.class, "AbandonedBase");
-              MapGenStructureIO.registerStructureComponent(BaseStart.class, "AbandonedBaseStart");
-              MapGenStructureIO.registerStructureComponent(BaseRoom.class, "AbandonedBaseRoom");
-              MapGenStructureIO.registerStructureComponent(BaseDeck.class, "AbandonedBaseDeck");
-              MapGenStructureIO.registerStructureComponent(BasePlate.class, "AbandonedBasePlate");
-              MapGenStructureIO.registerStructureComponent(BaseHangar.class, "AbandonedBaseHangar");
+              StructureIO.registerStructure(MapGenAbandonedBase.Start.class, "AbandonedBase");
+              StructureIO.registerStructureComponent(BaseStart.class, "AbandonedBaseStart");
+              StructureIO.registerStructureComponent(BaseRoom.class, "AbandonedBaseRoom");
+              StructureIO.registerStructureComponent(BaseDeck.class, "AbandonedBaseDeck");
+              StructureIO.registerStructureComponent(BasePlate.class, "AbandonedBasePlate");
+              StructureIO.registerStructureComponent(BaseHangar.class, "AbandonedBaseHangar");
 
               //Currently in fact unused, but just in case...
-              MapGenStructureIO.registerStructureComponent(BaseLinking.class, "AbandonedBaseCorridor");
+              StructureIO.registerStructureComponent(BaseLinking.class, "AbandonedBaseCorridor");
         }
 
         MapGenAbandonedBase.initialized = true;
@@ -130,7 +130,7 @@ public class MapGenAbandonedBase extends MapGenStructure
             if (configuration.isHangarDeck()) size -= 6;
             int xoffset = 0;
             int zoffset = 0;
-            EnumFacing direction = EnumFacing.Plane.HORIZONTAL.random(rand);
+            Direction direction = Direction.Plane.HORIZONTAL.random(rand);
             switch (direction)
             {
             case NORTH:
@@ -148,12 +148,12 @@ public class MapGenAbandonedBase extends MapGenStructure
             }
             BaseStart startPiece = new BaseStart(configuration, rand, posX + xoffset, posZ + zoffset, direction);
             startPiece.buildComponent(startPiece, this.components, rand);
-            List<StructureComponent> list = startPiece.attachedComponents;
+            List<StructurePiece> list = startPiece.attachedComponents;
 
             while (!list.isEmpty())
             {
                 int i = rand.nextInt(list.size());
-                StructureComponent structurecomponent = list.remove(i);
+                StructurePiece structurecomponent = list.remove(i);
                 structurecomponent.buildComponent(startPiece, this.components, rand);
             }
 

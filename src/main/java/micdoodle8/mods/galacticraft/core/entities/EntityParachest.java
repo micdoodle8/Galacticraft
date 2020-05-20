@@ -9,14 +9,14 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
-import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -33,7 +33,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     public NonNullList<ItemStack> cargo;
     public int fuelLevel;
     private boolean placedChest;
-    public EnumDyeColor color = EnumDyeColor.WHITE;
+    public DyeColor color = DyeColor.WHITE;
 
     public EntityParachest(World world, NonNullList<ItemStack> cargo, int fuelLevel)
     {
@@ -56,7 +56,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         int size = 56;
         if (nbt.hasKey("CargoLength"))
@@ -72,12 +72,12 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
         if (nbt.hasKey("color"))
         {
-            this.color = EnumDyeColor.byDyeDamage(nbt.getInteger("color"));
+            this.color = DyeColor.byDyeDamage(nbt.getInteger("color"));
         }
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         if (world.isRemote) return;
         nbt.setInteger("CargoLength", this.cargo.size());
@@ -132,7 +132,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                 {
                     for (final ItemStack stack : this.cargo)
                     {
-                        final EntityItem e = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+                        final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
                         this.world.spawnEntity(e);
                     }
                 }
@@ -156,7 +156,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
     private boolean tryPlaceAtPos(BlockPos pos)
     {
-        IBlockState state = this.world.getBlockState(pos);
+        BlockState state = this.world.getBlockState(pos);
         Block block = state.getBlock();
 
         if (block.getMaterial(state).isReplaceable())
@@ -194,7 +194,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
                 {
                     for (ItemStack stack : this.cargo)
                     {
-                        final EntityItem e = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+                        final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
                         this.world.spawnEntity(e);
                     }
                 }
@@ -219,7 +219,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     {
         if (this.world.isRemote)
         {
-            this.color = EnumDyeColor.byDyeDamage(buffer.readInt());
+            this.color = DyeColor.byDyeDamage(buffer.readInt());
         }
     }
 }

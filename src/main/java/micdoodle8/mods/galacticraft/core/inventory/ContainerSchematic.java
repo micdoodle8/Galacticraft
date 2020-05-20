@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -14,10 +14,10 @@ import net.minecraft.world.World;
 public class ContainerSchematic extends Container
 {
     public InventorySchematic craftMatrix = new InventorySchematic(this);
-    public IInventory craftResult = new InventoryCraftResult();
+    public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerSchematic(InventoryPlayer par1InventoryPlayer, BlockPos pos)
+    public ContainerSchematic(PlayerInventory par1InventoryPlayer, BlockPos pos)
     {
         this.world = par1InventoryPlayer.player.world;
         this.addSlotToContainer(new SlotSpecific(this.craftMatrix, 0, 80, 1, ISchematicItem.class));
@@ -43,7 +43,7 @@ public class ContainerSchematic extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
 
@@ -62,13 +62,13 @@ public class ContainerSchematic extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer entityplayer)
+    public boolean canInteractWith(PlayerEntity entityplayer)
     {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par2)
     {
         ItemStack var3 = ItemStack.EMPTY;
         final Slot var4 = (Slot) this.inventorySlots.get(par2);

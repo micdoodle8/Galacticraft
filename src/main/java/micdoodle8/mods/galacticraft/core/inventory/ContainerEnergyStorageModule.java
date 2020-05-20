@@ -3,17 +3,17 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ContainerEnergyStorageModule extends Container
 {
     private TileEntityEnergyStorageModule tileEntity;
 
-    public ContainerEnergyStorageModule(InventoryPlayer par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
+    public ContainerEnergyStorageModule(PlayerInventory par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
     {
         this.tileEntity = batteryBox;
         // Top slot for battery output
@@ -39,14 +39,14 @@ public class ContainerEnergyStorageModule extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
         this.tileEntity.playersUsing.remove(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -56,7 +56,7 @@ public class ContainerEnergyStorageModule extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotID)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int slotID)
     {
         ItemStack returnStack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(slotID);

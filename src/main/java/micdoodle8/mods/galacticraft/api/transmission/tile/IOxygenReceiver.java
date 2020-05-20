@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.transmission.tile;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 /**
  * Applied to all TileEntities that can interact with oxygen.
@@ -19,7 +19,7 @@ public interface IOxygenReceiver extends IConnector
      * @param doReceive If false, the transfer will only be simulated.
      * @return Amount of oxygen that was accepted by the block.
      */
-    int receiveOxygen(EnumFacing from, int receive, boolean doReceive);
+    int receiveOxygen(Direction from, int receive, boolean doReceive);
 
     /**
      * Adds oxygen provision to a block. Returns the quantity of oxygen
@@ -31,16 +31,16 @@ public interface IOxygenReceiver extends IConnector
      * @param doProvide If false, the transfer will only be simulated.
      * @return Amount of oxygen that was given out by the block.
      */
-    int provideOxygen(EnumFacing from, int request, boolean doProvide);
+    int provideOxygen(Direction from, int request, boolean doProvide);
 
     /**
      * @return How much oxygen does this TileEntity want?
      */
-    int getOxygenRequest(EnumFacing direction);
+    int getOxygenRequest(Direction direction);
 
     /**
      * @return How much oxygen does this TileEntity want to provide?
      */
-    int getOxygenProvide(EnumFacing direction);
+    int getOxygenProvide(Direction direction);
 
 }

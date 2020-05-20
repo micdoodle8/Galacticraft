@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.api.event.oxygen;
 
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
 
@@ -13,9 +13,9 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
  */
 public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
 {
-    public final WorldProvider provider;
+    public final Dimension provider;
 
-    public GCCoreOxygenSuffocationEvent(EntityLivingBase entity)
+    public GCCoreOxygenSuffocationEvent(LivingEntity entity)
     {
         super(entity);
         this.provider = entity.world.provider;
@@ -31,7 +31,7 @@ public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
     @Cancelable
     public static class Pre extends GCCoreOxygenSuffocationEvent
     {
-        public Pre(EntityLivingBase entity)
+        public Pre(LivingEntity entity)
         {
             super(entity);
         }
@@ -45,7 +45,7 @@ public abstract class GCCoreOxygenSuffocationEvent extends LivingEvent
      */
     public static class Post extends GCCoreOxygenSuffocationEvent
     {
-        public Post(EntityLivingBase entity)
+        public Post(LivingEntity entity)
         {
             super(entity);
         }

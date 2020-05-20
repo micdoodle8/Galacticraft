@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 
 public class Satellite extends CelestialBody implements IChildBody
 {
@@ -26,13 +26,13 @@ public class Satellite extends CelestialBody implements IChildBody
 
     @Override
     @Deprecated
-    public CelestialBody setDimensionInfo(int providerId, Class<? extends WorldProvider> providerClass, boolean autoRegister)
+    public CelestialBody setDimensionInfo(int providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
     {
         // Since satellites need a static ID, the subclass method will not work correctly.
         throw new UnsupportedOperationException("Satellite registered using an outdated method (setDimensionInfo)! Tell Galacticraft addon authors to update to the latest API.");
     }
 
-    public CelestialBody setDimensionInfo(int providerIdDynamic, int providerIdStatic, Class<? extends WorldProvider> providerClass)
+    public CelestialBody setDimensionInfo(int providerIdDynamic, int providerIdStatic, Class<? extends Dimension> providerClass)
     {
         this.dimensionID = providerIdDynamic;
         this.dimensionIdStatic = providerIdStatic;

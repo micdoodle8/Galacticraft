@@ -5,14 +5,14 @@ import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -49,24 +49,24 @@ public class BlockFluidGC extends BlockFluidClassic
 
     @Override
     @Nullable
-    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, IBlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
+    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, BlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
     {
         return true;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
     {
-        if (worldIn.isRemote && this.fluidName.startsWith("oil") && playerIn instanceof EntityPlayerSP)
+        if (worldIn.isRemote && this.fluidName.startsWith("oil") && playerIn instanceof ClientPlayerEntity)
         {
-            ClientProxyCore.playerClientHandler.onBuild(7, (EntityPlayerSP) playerIn);
+            ClientProxyCore.playerClientHandler.onBuild(7, (ClientPlayerEntity) playerIn);
         }
 
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ);
     }
 
     @Override
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         super.randomDisplayTick(stateIn, worldIn, pos, rand);
 
@@ -77,8 +77,8 @@ public class BlockFluidGC extends BlockFluidClassic
         if (this.fluidName.equals("oil") && rand.nextInt(10) == 0)
         {
             BlockPos below = pos.down();
-            IBlockState state = worldIn.getBlockState(below);
-            if (state.getBlock().isSideSolid(state, worldIn, below, EnumFacing.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
+            BlockState state = worldIn.getBlockState(below);
+            if (state.getBlock().isSideSolid(state, worldIn, below, Direction.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
             {
                 GalacticraftCore.proxy.spawnParticle("oilDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
             }
@@ -108,7 +108,7 @@ public class BlockFluidGC extends BlockFluidClassic
     }
 
     @Override
-    public boolean isFlammable(IBlockAccess world, BlockPos pos, EnumFacing face)
+    public boolean isFlammable(IBlockAccess world, BlockPos pos, Direction face)
     {
         if (this.fluidName.startsWith("fuel"))
         {
@@ -119,11 +119,11 @@ public class BlockFluidGC extends BlockFluidClassic
     }
     
     @Override
-    public IBlockState getExtendedState(IBlockState oldState, IBlockAccess world, BlockPos pos)
+    public BlockState getExtendedState(BlockState oldState, IBlockAccess world, BlockPos pos)
     {
         IExtendedBlockState state = (IExtendedBlockState)oldState;
         state = state.withProperty(FLOW_DIRECTION, (float)getFlowDirection(state, world, pos));
-        IBlockState[][] upBlockState = new IBlockState[3][3];
+        BlockState[][] upBlockState = new BlockState[3][3];
         float[][] height = new float[3][3];
         float[][] corner = new float[2][2];
         upBlockState[1][1] = world.getBlockState(pos.down(this.densityDir));
@@ -193,7 +193,7 @@ public class BlockFluidGC extends BlockFluidClassic
         return state;
     }
 
-    public static double getFlowDirection(IBlockState state, IBlockAccess world, BlockPos pos)
+    public static double getFlowDirection(BlockState state, IBlockAccess world, BlockPos pos)
     {
         if (!state.getMaterial().isLiquid())
         {
@@ -203,15 +203,15 @@ public class BlockFluidGC extends BlockFluidClassic
         return vec.x == 0.0D && vec.z == 0.0D ? -1000.0D : Math.atan2(vec.z, vec.x) - Math.PI / 2D;
     }
     
-    private boolean isFluid(IBlockState state)
+    private boolean isFluid(BlockState state)
     {
         return state.getMaterial().isLiquid() || state.getBlock() instanceof IFluidBlock;
     }
 
     @Override
-    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos, IBlockState up)
+    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos, BlockState up)
     {
-        IBlockState here = world.getBlockState(pos);
+        BlockState here = world.getBlockState(pos);
 
         if (here.getBlock() == this)
         {

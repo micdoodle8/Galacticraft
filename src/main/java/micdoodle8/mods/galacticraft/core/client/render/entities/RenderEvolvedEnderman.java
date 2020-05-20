@@ -8,22 +8,22 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedEnderman;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanEyes;
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanHeldBlock;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.entity.RenderLiving;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
+public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman>
 {
     private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_enderman.png");
     private ModelEvolvedEnderman endermanModel;
     private Random rnd = new Random();
     private boolean texSwitch;
 
-    public RenderEvolvedEnderman(RenderManager manager)
+    public RenderEvolvedEnderman(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedEnderman(), 0.5F);
         this.endermanModel = (ModelEvolvedEnderman)super.mainModel;
@@ -40,7 +40,7 @@ public class RenderEvolvedEnderman extends RenderLiving<EntityEvolvedEnderman>
     @Override
     public void doRender(EntityEvolvedEnderman entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
-        IBlockState iblockstate = entity.getHeldBlockState();
+        BlockState iblockstate = entity.getHeldBlockState();
         this.endermanModel.isCarrying = iblockstate != null;
         this.endermanModel.isAttacking = entity.isScreaming();
 

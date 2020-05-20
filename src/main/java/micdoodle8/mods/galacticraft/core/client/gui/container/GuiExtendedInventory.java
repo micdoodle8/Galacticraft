@@ -7,23 +7,23 @@ import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticr
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.InventoryEffectRenderer;
+import net.minecraft.client.gui.DisplayEffectsScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiExtendedInventory extends InventoryEffectRenderer
+public class GuiExtendedInventory extends DisplayEffectsScreen
 {
     private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/inventory.png");
     private int potionOffsetLast;
     private static float rotation = 0.0F;
     private boolean initWithPotion;
 
-    public GuiExtendedInventory(EntityPlayer player, InventoryExtended inventory)
+    public GuiExtendedInventory(PlayerEntity player, InventoryExtended inventory)
     {
         super(new ContainerExtendedInventory(player, inventory));
     }
@@ -49,12 +49,12 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
         TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
         TabRegistry.addTabsToList(this.buttonList);
 
-        this.buttonList.add(new GuiButton(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
-        this.buttonList.add(new GuiButton(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
+        this.buttonList.add(new Button(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
+        this.buttonList.add(new Button(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         switch (button.id)
         {
@@ -88,7 +88,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
             for (int k = 0; k < this.buttonList.size(); ++k)
             {
-                GuiButton button = this.buttonList.get(k);
+                Button button = this.buttonList.get(k);
 
                 if (!(button instanceof AbstractTab))
                 {
@@ -103,7 +103,7 @@ public class GuiExtendedInventory extends InventoryEffectRenderer
 
     public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        EntityRendererManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F);

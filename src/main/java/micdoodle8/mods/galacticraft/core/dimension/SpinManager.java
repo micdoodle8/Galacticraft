@@ -16,17 +16,17 @@ import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDynamicLiquid;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityFallingBlock;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityTNTPrimed;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.item.TNTEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -203,7 +203,7 @@ public class SpinManager
         this.checked.clear();
         currentLayer.add(new BlockVec3(this.oneSSBlock));
         this.checked.add(new BlockVec3(this.oneSSBlock));
-        IBlockState bsStart = this.worldProvider.world.getBlockState(this.oneSSBlock);
+        BlockState bsStart = this.worldProvider.world.getBlockState(this.oneSSBlock);
         Block bStart = bsStart.getBlock();
         if (bStart instanceof BlockSpinThruster)
         {
@@ -264,7 +264,7 @@ public class SpinManager
                     if (sideVec != null && !this.checked.contains(sideVec))
                     {
                         this.checked.add(sideVec);
-                        IBlockState state = sideVec.getBlockState(this.worldProvider.world);
+                        BlockState state = sideVec.getBlockState(this.worldProvider.world);
                         if (state == null)
                         {
                         	continue;
@@ -337,7 +337,7 @@ public class SpinManager
             if (!this.oneSSBlock.equals(baseBlock))
             {
                 this.oneSSBlock = baseBlock;
-                IBlockState state = this.worldProvider.world.getBlockState(this.oneSSBlock);
+                BlockState state = this.worldProvider.world.getBlockState(this.oneSSBlock);
                 if (state.getMaterial() != Material.AIR)
                 {
                     return this.refresh(baseBlock, true);
@@ -353,7 +353,7 @@ public class SpinManager
         this.thrustersMinus.clear();
         for (BlockPos thruster : foundThrusters)
         {
-            IBlockState state = this.worldProvider.world.getBlockState(thruster);
+            BlockState state = this.worldProvider.world.getBlockState(thruster);
             boolean reversed = state.getValue(BlockSpinThruster.ORIENTATION);
             if (reversed)
             {
@@ -555,7 +555,7 @@ public class SpinManager
             for (Entity e : this.loadedEntities)
             {
                 //TODO: What about vehicles from GC (buggies) and other mods?
-                if ((e instanceof EntityItem || e instanceof EntityLivingBase && !(e instanceof EntityPlayer) || e instanceof EntityTNTPrimed || e instanceof EntityFallingBlock) && !e.onGround)
+                if ((e instanceof ItemEntity || e instanceof LivingEntity && !(e instanceof PlayerEntity) || e instanceof TNTEntity || e instanceof FallingBlockEntity) && !e.onGround)
                 {
                     AxisAlignedBB entityBoundingBox = e.getEntityBoundingBox();
                     boolean outsideStation = entityBoundingBox.maxX < this.ssBoundsMinX || entityBoundingBox.minX > this.ssBoundsMaxX || entityBoundingBox.maxY < this.ssBoundsMinY ||
@@ -652,7 +652,7 @@ public class SpinManager
     }
     
     @SideOnly(Side.CLIENT)
-    public boolean updatePlayerForSpin(EntityPlayerSP p, float partial)
+    public boolean updatePlayerForSpin(ClientPlayerEntity p, float partial)
     {
         float angleDelta = partial * this.angularVelocityRadians;
         if (this.doSpinning && angleDelta != 0F)
@@ -739,7 +739,7 @@ public class SpinManager
     }
     
     @SideOnly(Side.CLIENT)
-    public void applyCentrifugalForce(EntityPlayerSP p)
+    public void applyCentrifugalForce(ClientPlayerEntity p)
     {
         int quadrant = 0;
         double xd = p.posX - this.spinCentreX;
@@ -791,7 +791,7 @@ public class SpinManager
      *
      * @param player
      */
-    public void sendPackets(EntityPlayerMP player)
+    public void sendPackets(ServerPlayerEntity player)
     {
         List<Object> objList = new ArrayList<Object>();
         objList.add(this.angularVelocityRadians);
@@ -848,7 +848,7 @@ public class SpinManager
         }
     }
 
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         this.doSpinning = true;//nbt.getBoolean("doSpinning");
         this.angularVelocityRadians = nbt.getFloat("omegaRad");
@@ -856,7 +856,7 @@ public class SpinManager
         this.angularVelocityTarget = nbt.getFloat("omegaTarget");
         this.angularVelocityAccel = nbt.getFloat("omegaAcc");
 
-        NBTTagCompound oneBlock = (NBTTagCompound) nbt.getTag("oneBlock");
+        CompoundNBT oneBlock = (CompoundNBT) nbt.getTag("oneBlock");
         if (oneBlock != null)
         {
 //            this.oneSSBlock = BlockVec3.readFromNBT(oneBlock);
@@ -873,7 +873,7 @@ public class SpinManager
         this.sendPackets(null);
     }
 
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         nbt.setBoolean("doSpinning", this.doSpinning);
         nbt.setFloat("omegaRad", this.angularVelocityRadians);
@@ -882,7 +882,7 @@ public class SpinManager
         nbt.setFloat("omegaAcc", this.angularVelocityAccel);
         if (this.oneSSBlock != null)
         {
-            NBTTagCompound oneBlock = new NBTTagCompound();
+            CompoundNBT oneBlock = new CompoundNBT();
             oneBlock.setInteger("x", this.oneSSBlock.getX());
             oneBlock.setInteger("y", this.oneSSBlock.getY());
             oneBlock.setInteger("z", this.oneSSBlock.getZ());

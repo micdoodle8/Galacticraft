@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -22,7 +22,7 @@ import java.util.HashMap;
 public abstract class TileEntityInventory extends TileEntity implements ISidedInventory
 {
     public NonNullList<ItemStack> inventory;
-    private HashMap<EnumFacing, IItemHandler> itemHandlers = new HashMap<>();
+    private HashMap<Direction, IItemHandler> itemHandlers = new HashMap<>();
     private String tileName;
 
     public TileEntityInventory(String tileName)
@@ -55,7 +55,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tags)
+    public void readFromNBT(CompoundNBT tags)
     {
         super.readFromNBT(tags);
 
@@ -68,7 +68,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tags)
+    public CompoundNBT writeToNBT(CompoundNBT tags)
     {
         super.writeToNBT(tags);
 
@@ -126,7 +126,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player)
+    public boolean isUsableByPlayer(PlayerEntity player)
     {
         return !isInvalid() && this.world.isBlockLoaded(this.pos);
     }
@@ -144,25 +144,25 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side)
+    public boolean canInsertItem(int slot, ItemStack stack, Direction side)
     {
         return isItemValidForSlot(slot, stack);
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side)
+    public boolean canExtractItem(int slot, ItemStack stack, Direction side)
     {
         return true;
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing side)
+    public boolean hasCapability(Capability<?> capability, Direction side)
     {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, side);
     }
 
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing side)
+    public <T> T getCapability(Capability<T> capability, Direction side)
     {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
         {
@@ -181,13 +181,13 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
 
     //We don't use these because we use forge containers
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
     }
 
@@ -231,7 +231,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     @Override
     public ITextComponent getDisplayName()
     {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(this.getName(), new Object[0]);
+        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
     }
 
     @Override
@@ -241,7 +241,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     }
     
     @Override
-    public synchronized void handleUpdateTag(NBTTagCompound tag)
+    public synchronized void handleUpdateTag(CompoundNBT tag)
     {
         this.readFromNBT(tag);
     }

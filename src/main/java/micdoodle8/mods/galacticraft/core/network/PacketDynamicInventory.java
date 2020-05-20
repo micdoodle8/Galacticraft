@@ -6,8 +6,8 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -128,7 +128,7 @@ public class PacketDynamicInventory extends PacketBase
     }
 
     @Override
-    public void handleClientSide(EntityPlayer player)
+    public void handleClientSide(PlayerEntity player)
     {
         if (player.world == null)
         {
@@ -163,7 +163,7 @@ public class PacketDynamicInventory extends PacketBase
     }
 
     @Override
-    public void handleServerSide(EntityPlayer player)
+    public void handleServerSide(PlayerEntity player)
     {
         switch (this.type)
         {
@@ -172,7 +172,7 @@ public class PacketDynamicInventory extends PacketBase
 
             if (entity instanceof IInventorySettable)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(entity), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(entity), (ServerPlayerEntity) player);
             }
 
             break;
@@ -181,7 +181,7 @@ public class PacketDynamicInventory extends PacketBase
 
             if (tile instanceof IInventorySettable)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(tile), (EntityPlayerMP) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketDynamicInventory(tile), (ServerPlayerEntity) player);
             }
 
             break;

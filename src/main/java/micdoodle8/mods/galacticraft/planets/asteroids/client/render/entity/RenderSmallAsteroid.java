@@ -5,18 +5,18 @@ import micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockBasicAsteroids
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import static micdoodle8.mods.galacticraft.planets.asteroids.blocks.BlockBasicAsteroids.EnumBlockBasic.ASTEROID_0;
 
-public class RenderSmallAsteroid extends Render<EntitySmallAsteroid>
+public class RenderSmallAsteroid extends EntityRenderer<EntitySmallAsteroid>
 {
-    public RenderSmallAsteroid(RenderManager manager)
+    public RenderSmallAsteroid(EntityRendererManager manager)
     {
         super(manager);
     }
@@ -41,6 +41,6 @@ public class RenderSmallAsteroid extends Render<EntitySmallAsteroid>
     @Override
     protected ResourceLocation getEntityTexture(EntitySmallAsteroid entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 }

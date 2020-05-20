@@ -15,16 +15,16 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Keyboard;
 
 import java.io.IOException;
 
-public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback, IDropboxCallback, ITextBoxCallback
+public class GuiAirLockController extends Screen implements ICheckBoxCallback, IDropboxCallback, ITextBoxCallback
 {
     private final int xSize;
     private final int ySize;
@@ -91,7 +91,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         if (par1GuiButton.enabled)
         {
@@ -194,7 +194,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }
@@ -227,7 +227,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     }
 
     @Override
-    public boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player)
+    public boolean canBeClickedBy(GuiElementDropdown dropdown, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }
@@ -249,7 +249,7 @@ public class GuiAirLockController extends GuiScreen implements ICheckBoxCallback
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementTextBox textBox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementTextBox textBox, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.controller.ownerName);
     }

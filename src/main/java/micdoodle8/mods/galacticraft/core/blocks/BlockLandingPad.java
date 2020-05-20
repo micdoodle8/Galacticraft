@@ -14,11 +14,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.block.BlockState;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -75,20 +75,20 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         return AABB;
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list)
+    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         for (int i = 0; i < 2; i++)
         {
@@ -96,7 +96,7 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         }
     }
 
-    private boolean checkAxis(World worldIn, BlockPos pos, Block block, EnumFacing facing)
+    private boolean checkAxis(World worldIn, BlockPos pos, Block block, Direction facing)
     {
         int sameCount = 0;
         for (int i = 1; i <= 3; i++)
@@ -111,19 +111,19 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, EnumFacing side)
+    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side)
     {
         final Block id = GCBlocks.landingPad;
 
-        if (!checkAxis(worldIn, pos, id, EnumFacing.EAST) ||
-                !checkAxis(worldIn, pos, id, EnumFacing.WEST) ||
-                !checkAxis(worldIn, pos, id, EnumFacing.NORTH) ||
-                !checkAxis(worldIn, pos, id, EnumFacing.SOUTH))
+        if (!checkAxis(worldIn, pos, id, Direction.EAST) ||
+                !checkAxis(worldIn, pos, id, Direction.WEST) ||
+                !checkAxis(worldIn, pos, id, Direction.NORTH) ||
+                !checkAxis(worldIn, pos, id, Direction.SOUTH))
         {
             return false;
         }
 
-        if (worldIn.getBlockState(pos.offset(EnumFacing.DOWN)).getBlock() == GCBlocks.landingPad && side == EnumFacing.UP)
+        if (worldIn.getBlockState(pos.offset(Direction.DOWN)).getBlock() == GCBlocks.landingPad && side == Direction.UP)
         {
             return false;
         }
@@ -134,19 +134,19 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
@@ -166,13 +166,13 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
     {
-        return direction == EnumFacing.UP;
+        return direction == Direction.UP;
     }
 
     @Override
-    public int damageDropped(IBlockState state)
+    public int damageDropped(BlockState state)
     {
         return getMetaFromState(state);
     }
@@ -194,13 +194,13 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadType.byMetadata(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return ((EnumLandingPadType) state.getValue(PAD_TYPE)).getMeta();
     }

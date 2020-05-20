@@ -1,11 +1,11 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.api.inventory.IInventoryGC;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
@@ -99,19 +99,19 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
         return true;
     }
 
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
 
     }
 
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
 
     }
@@ -123,7 +123,7 @@ public class InventoryExtended implements IInventoryGC
     }
 
     @Override
-    public void dropExtendedItems(EntityPlayer player)
+    public void dropExtendedItems(PlayerEntity player)
     {
         for (int i = 0; i < this.stacks.size(); i++)
         {
@@ -139,13 +139,13 @@ public class InventoryExtended implements IInventoryGC
     }
 
     // Backwards compatibility for old inventory
-    public void readFromNBTOld(NBTTagList par1NBTTagList)
+    public void readFromNBTOld(ListNBT par1NBTTagList)
     {
         this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
         for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 
@@ -159,13 +159,13 @@ public class InventoryExtended implements IInventoryGC
         }
     }
 
-    public void readFromNBT(NBTTagList tagList)
+    public void readFromNBT(ListNBT tagList)
     {
         this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
         for (int i = 0; i < tagList.tagCount(); ++i)
         {
-            final NBTTagCompound nbttagcompound = tagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = tagList.getCompoundTagAt(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 
@@ -176,15 +176,15 @@ public class InventoryExtended implements IInventoryGC
         }
     }
 
-    public NBTTagList writeToNBT(NBTTagList tagList)
+    public ListNBT writeToNBT(ListNBT tagList)
     {
-        NBTTagCompound nbttagcompound;
+        CompoundNBT nbttagcompound;
 
         for (int i = 0; i < this.stacks.size(); ++i)
         {
             if (!this.stacks.get(i).isEmpty())
             {
-                nbttagcompound = new NBTTagCompound();
+                nbttagcompound = new CompoundNBT();
                 nbttagcompound.setByte("Slot", (byte) i);
                 this.stacks.get(i).writeToNBT(nbttagcompound);
                 tagList.appendTag(nbttagcompound);

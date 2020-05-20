@@ -15,12 +15,12 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.galacticraft.planets.asteroids.blocks.AsteroidBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -30,8 +30,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
 {
     public int meta;
-    private IBlockState superState;
-    private static IBlockState defaultLook = GalacticraftCore.isPlanetsLoaded ? AsteroidBlocks.blockBasic.getStateFromMeta(6) : GCBlocks.basicBlock.getStateFromMeta(4);
+    private BlockState superState;
+    private static BlockState defaultLook = GalacticraftCore.isPlanetsLoaded ? AsteroidBlocks.blockBasic.getStateFromMeta(6) : GCBlocks.basicBlock.getStateFromMeta(4);
     public int color = 0xf0f0e0;
     @SideOnly(Side.CLIENT)
     private AxisAlignedBB renderAABB;
@@ -40,7 +40,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
     }
 
-    public void initialise(int type, EnumFacing facing, EntityPlayer player, boolean isRemote, IBlockState superStateClient)
+    public void initialise(int type, Direction facing, PlayerEntity player, boolean isRemote, BlockState superStateClient)
     {
         this.meta = facing.ordinal();
         if (isRemote)
@@ -57,7 +57,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     
-    public IBlockState getBaseBlock()
+    public BlockState getBaseBlock()
     {
         if (this.superState != null && this.superState.getBlock() == Blocks.AIR)
         {
@@ -70,7 +70,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
         if (this.world != null)
         {
-            IBlockState b = this.world.getBlockState(this.pos);
+            BlockState b = this.world.getBlockState(this.pos);
             if (b.getBlock() instanceof BlockPanelLighting)
             {
                 return (PanelType) b.getValue(BlockPanelLighting.TYPE);
@@ -98,7 +98,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -107,7 +107,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
         {
             this.color = nbt.getInteger("col");
         }
-        NBTTagCompound tag = nbt.getCompoundTag("sust");
+        CompoundNBT tag = nbt.getCompoundTag("sust");
         if (!tag.hasNoTags())
         {
             this.superState = readBlockState(tag);
@@ -115,14 +115,14 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setInteger("meta", this.meta);
         nbt.setInteger("col", this.color);
         if (this.superState != null)
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             writeBlockState(tag, this.superState);
             nbt.setTag("sust", tag);
         }
@@ -130,15 +130,15 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     /**
      * Reads a blockstate from the given tag.  In MC1.10+ use NBTUtil instead!
      */
-    public static IBlockState readBlockState(NBTTagCompound tag)
+    public static BlockState readBlockState(CompoundNBT tag)
     {
         if (!tag.hasKey("Name", 8))
         {
@@ -164,14 +164,14 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     /**
      * Writes the given blockstate to the given tag.  In MC1.10+ use NBTUtil instead!
      */
-    public static NBTTagCompound writeBlockState(NBTTagCompound tag, IBlockState state)
+    public static CompoundNBT writeBlockState(CompoundNBT tag, BlockState state)
     {
         tag.setString("Name", ((ResourceLocation)Block.REGISTRY.getNameForObject(state.getBlock())).toString());
         tag.setInteger("Meta", state.getBlock().getMetaFromState(state));
         return tag;
     }
 
-    public static IBlockState readBlockState(String name, Integer meta)
+    public static BlockState readBlockState(String name, Integer meta)
     {
         Block block = (Block)Block.REGISTRY.getObject(new ResourceLocation(name));
         if (block == null)

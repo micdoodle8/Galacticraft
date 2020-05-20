@@ -13,10 +13,10 @@ import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusModule;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockGeothermalGenerator;
 import micdoodle8.mods.miccore.Annotations;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
@@ -59,7 +59,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         if (this.ticks % 20 == 0)
         {
             BlockPos below = this.getPos().down();
-            IBlockState stateBelow = this.world.getBlockState(below);
+            BlockState stateBelow = this.world.getBlockState(below);
 
             boolean lastValidSpout = this.validSpout;
             this.validSpout = false;
@@ -68,7 +68,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
                 BlockPos pos1 = below.down();
                 for (; this.getPos().getY() - pos1.getY() < 20; pos1 = pos1.down())
                 {
-                    IBlockState state = this.world.getBlockState(pos1);
+                    BlockState state = this.world.getBlockState(pos1);
                     if (state.getBlock() == VenusModule.sulphuricAcid.getBlock())
                     {
                         this.validSpout = true;
@@ -85,7 +85,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.world.isRemote && this.validSpout != lastValidSpout)
             {
                 // Update active texture
-                IBlockState state = this.world.getBlockState(this.getPos());
+                BlockState state = this.world.getBlockState(this.getPos());
                 this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
         }
@@ -140,7 +140,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null || type != NetworkType.POWER)
         {
@@ -151,29 +151,29 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
-        return EnumSet.noneOf(EnumFacing.class);
+        return EnumSet.noneOf(Direction.class);
     }
 
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockGeothermalGenerator)
         {
             return state.getValue(BlockGeothermalGenerator.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
         return EnumSet.of(getFront().rotateY());
     }
 
     @Override
-    public EnumFacing getElectricOutputDirection()
+    public Direction getElectricOutputDirection()
     {
         return getFront().rotateY();
     }
@@ -192,7 +192,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
             if (this.disabled != disabled && this.world.isRemote)
             {
                 // Update active texture
-                IBlockState state = this.world.getBlockState(this.getPos());
+                BlockState state = this.world.getBlockState(this.getPos());
                 this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
             }
 
@@ -219,13 +219,13 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         return slotID == 0;
     }

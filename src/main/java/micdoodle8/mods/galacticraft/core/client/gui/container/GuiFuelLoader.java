@@ -10,8 +10,8 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFuelLoader;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -24,10 +24,10 @@ public class GuiFuelLoader extends GuiContainerGC
 
     private final TileEntityFuelLoader fuelLoader;
 
-    private GuiButton buttonLoadFuel;
+    private Button buttonLoadFuel;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 65, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiFuelLoader(InventoryPlayer par1InventoryPlayer, TileEntityFuelLoader par2TileEntityAirDistributor)
+    public GuiFuelLoader(PlayerInventory par1InventoryPlayer, TileEntityFuelLoader par2TileEntityAirDistributor)
     {
         super(new ContainerFuelLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
         this.fuelLoader = par2TileEntityAirDistributor;
@@ -35,7 +35,7 @@ public class GuiFuelLoader extends GuiContainerGC
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         switch (par1GuiButton.id)
         {
@@ -66,7 +66,7 @@ public class GuiFuelLoader extends GuiContainerGC
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonLoadFuel = new GuiButton(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, GCCoreUtil.translate("gui.button.loadfuel.name")));
+        this.buttonList.add(this.buttonLoadFuel = new Button(0, this.width / 2 + 2, this.height / 2 - 49, 76, 20, GCCoreUtil.translate("gui.button.loadfuel.name")));
     }
 
     @Override

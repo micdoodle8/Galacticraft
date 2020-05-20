@@ -3,15 +3,15 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
 import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 
 import java.util.Random;
 
-public class WorldGenCrashedProbe extends WorldGenerator
+public class WorldGenCrashedProbe extends Feature
 {
     public WorldGenCrashedProbe()
     {

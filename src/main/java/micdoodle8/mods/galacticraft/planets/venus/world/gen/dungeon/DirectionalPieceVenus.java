@@ -1,38 +1,38 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.Random;
 
 public abstract class DirectionalPieceVenus extends PieceVenus
 {
-    private EnumFacing direction;
+    private Direction direction;
 
     public DirectionalPieceVenus()
     {
     }
 
-    public DirectionalPieceVenus(DungeonConfigurationVenus configuration, EnumFacing direction)
+    public DirectionalPieceVenus(DungeonConfigurationVenus configuration, Direction direction)
     {
         super(configuration);
         this.direction = direction;
     }
 
-    public EnumFacing getDirection()
+    public Direction getDirection()
     {
         return direction;
     }
 
-    public void setDirection(EnumFacing direction)
+    public void setDirection(Direction direction)
     {
         this.direction = direction;
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound tagCompound)
+    protected void writeStructureToNBT(CompoundNBT tagCompound)
     {
         super.writeStructureToNBT(tagCompound);
 
@@ -40,23 +40,23 @@ public abstract class DirectionalPieceVenus extends PieceVenus
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound tagCompound, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT tagCompound, TemplateManager manager)
     {
         super.readStructureFromNBT(tagCompound, manager);
 
         if (tagCompound.hasKey("direction"))
         {
-            this.direction = EnumFacing.getFront(tagCompound.getInteger("direction"));
+            this.direction = Direction.getFront(tagCompound.getInteger("direction"));
         }
         else
         {
-            this.direction = EnumFacing.NORTH;
+            this.direction = Direction.NORTH;
         }
     }
 
     public PieceVenus getCorridor(Random rand, DungeonStartVenus startPiece, int maxAttempts, boolean small)
     {
-        EnumFacing randomDir;
+        Direction randomDir;
         int blockX;
         int blockZ;
         int sizeX;
@@ -66,8 +66,8 @@ public abstract class DirectionalPieceVenus extends PieceVenus
         int randDir = rand.nextInt(3);
         do
         {
-            randomDir = EnumFacing.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
-            StructureBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 5);
+            randomDir = Direction.getHorizontal((getDirection().getOpposite().getHorizontalIndex() + 1 + randDir) % 4);
+            MutableBoundingBox extension = getExtension(randomDir, this.configuration.getHallwayLengthMin() + rand.nextInt(this.configuration.getHallwayLengthMax() - this.configuration.getHallwayLengthMin()), 5);
             blockX = extension.minX;
             blockZ = extension.minZ;
             sizeX = extension.maxX - extension.minX;

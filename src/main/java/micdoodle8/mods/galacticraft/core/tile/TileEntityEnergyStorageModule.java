@@ -10,11 +10,11 @@ import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 
 import java.util.EnumSet;
@@ -26,7 +26,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     private final static float BASE_CAPACITY = 500000;
     private final static float TIER2_CAPACITY = 2500000;
 
-    public final Set<EntityPlayer> playersUsing = new HashSet<EntityPlayer>();
+    public final Set<PlayerEntity> playersUsing = new HashSet<PlayerEntity>();
     public int scaledEnergyLevel;
     public int lastScaledEnergyLevel;
     private float lastEnergy = 0;
@@ -119,7 +119,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         if (this.storage.getEnergyStoredGC() > BASE_CAPACITY)
@@ -136,7 +136,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         if (this.tierGC == 1 && this.storage.getEnergyStoredGC() > BASE_CAPACITY)
         {
@@ -157,7 +157,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -175,7 +175,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
 //    }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canInsertItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (itemstack.getItem() instanceof IItemElectricBase)
         {
@@ -192,7 +192,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack itemstack, EnumFacing side)
+    public boolean canExtractItem(int slotID, ItemStack itemstack, Direction side)
     {
         if (itemstack.getItem() instanceof IItemElectricBase)
         {
@@ -211,19 +211,19 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
         return EnumSet.of(getElectricInputDirection());
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalOutputDirections()
+    public EnumSet<Direction> getElectricalOutputDirections()
     {
         return EnumSet.of(getElectricOutputDirection());
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null || type != NetworkType.POWER)
         {
@@ -234,13 +234,13 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
     
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -249,9 +249,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case RIGHT:
         default:
             return getFront().rotateYCCW();
@@ -259,7 +259,7 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
     }
 
     @Override
-    public EnumFacing getElectricOutputDirection()
+    public Direction getElectricOutputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_OUT))
         {
@@ -268,9 +268,9 @@ public class TileEntityEnergyStorageModule extends TileBaseUniversalElectricalSo
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();

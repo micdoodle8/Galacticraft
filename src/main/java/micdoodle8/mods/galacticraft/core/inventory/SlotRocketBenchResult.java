@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class SlotRocketBenchResult extends Slot
 {
     private final IInventory craftMatrix;
-    private final EntityPlayer thePlayer;
+    private final PlayerEntity thePlayer;
 
-    public SlotRocketBenchResult(EntityPlayer par1EntityPlayer, IInventory par2IInventory, IInventory par3IInventory, int par4, int par5, int par6)
+    public SlotRocketBenchResult(PlayerEntity par1EntityPlayer, IInventory par2IInventory, IInventory par3IInventory, int par4, int par5, int par6)
     {
         super(par3IInventory, par4, par5, par6);
         this.thePlayer = par1EntityPlayer;
@@ -26,7 +26,7 @@ public class SlotRocketBenchResult extends Slot
 
 
     @Override
-    public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack stack)
+    public ItemStack onTake(PlayerEntity par1EntityPlayer, ItemStack stack)
     {
         for (int var2 = 0; var2 < this.craftMatrix.getSizeInventory(); ++var2)
         {

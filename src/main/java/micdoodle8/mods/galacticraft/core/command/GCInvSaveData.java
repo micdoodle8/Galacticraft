@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.core.command;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.storage.WorldSavedData;
 
 public class GCInvSaveData extends WorldSavedData
@@ -21,20 +21,20 @@ public class GCInvSaveData extends WorldSavedData
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound filedata)
+    public void readFromNBT(CompoundNBT filedata)
     {
         for (Object obj : filedata.getKeySet())
         {
-            if (obj instanceof NBTTagList)
+            if (obj instanceof ListNBT)
             {
-                NBTTagList entry = (NBTTagList) obj;
+                ListNBT entry = (ListNBT) obj;
                 String name = entry.toString(); // TODO See if this is equivilent to 1.6's getName function
                 ItemStack[] saveinv = new ItemStack[6];
                 if (entry.tagCount() > 0)
                 {
                     for (int j = 0; j < entry.tagCount(); j++)
                     {
-                        NBTTagCompound obj1 = entry.getCompoundTagAt(j);
+                        CompoundNBT obj1 = entry.getCompoundTagAt(j);
 
                         if (obj1 != null)
                         {
@@ -54,18 +54,18 @@ public class GCInvSaveData extends WorldSavedData
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound toSave)
+    public CompoundNBT writeToNBT(CompoundNBT toSave)
     {
         for (String name : CommandGCInv.savedata.keySet())
         {
-            NBTTagList par1NBTTagList = new NBTTagList();
+            ListNBT par1NBTTagList = new ListNBT();
             ItemStack[] saveinv = CommandGCInv.savedata.get(name);
 
             for (int i = 0; i < 6; i++)
             {
                 if (saveinv[i] != null)
                 {
-                    NBTTagCompound nbttagcompound = new NBTTagCompound();
+                    CompoundNBT nbttagcompound = new CompoundNBT();
                     nbttagcompound.setByte("Slot", (byte) (i + 200));
                     saveinv[i].writeToNBT(nbttagcompound);
                     par1NBTTagList.appendTag(nbttagcompound);

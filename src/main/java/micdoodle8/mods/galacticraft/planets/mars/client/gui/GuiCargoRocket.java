@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -39,7 +39,7 @@ public class GuiCargoRocket extends GuiContainerGC
     private final IInventory upperChestInventory;
     private final EnumRocketType rocketType;
     private EntityCargoRocket rocket;
-    private GuiButton launchButton;
+    private Button launchButton;
 
     public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket)
     {
@@ -57,7 +57,7 @@ public class GuiCargoRocket extends GuiContainerGC
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         switch (button.id)
         {
@@ -75,7 +75,7 @@ public class GuiCargoRocket extends GuiContainerGC
         super.initGui();
         final int var6 = (this.height - this.ySize) / 2;
         final int var7 = (this.width - this.xSize) / 2;
-        this.launchButton = new GuiButton(0, var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"));
+        this.launchButton = new Button(0, var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"));
         this.buttonList.add(this.launchButton);
         List<String> fuelTankDesc = new ArrayList<String>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));

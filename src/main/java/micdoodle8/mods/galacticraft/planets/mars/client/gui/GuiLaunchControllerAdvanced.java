@@ -16,11 +16,11 @@ import micdoodle8.mods.galacticraft.planets.mars.inventory.ContainerLaunchContro
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityLaunchController;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.GuiLabel;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -39,11 +39,11 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     private GuiElementCheckbox enablePadRemovalButton;
     private GuiElementCheckbox launchWhenCheckbox;
     private GuiElementDropdown dropdownTest;
-    private GuiButton closeAdvancedConfig;
+    private Button closeAdvancedConfig;
 
     private int cannotEditTimer;
 
-    public GuiLaunchControllerAdvanced(InventoryPlayer playerInventory, TileEntityLaunchController launchController)
+    public GuiLaunchControllerAdvanced(PlayerInventory playerInventory, TileEntityLaunchController launchController)
     {
         super(new ContainerLaunchController(playerInventory, launchController, FMLClientHandler.instance().getClient().player));
         this.ySize = 209;
@@ -64,7 +64,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         }
 
         // Hacky way of rendering buttons properly, possibly bugs here:
-        List<GuiButton> buttonList = new ArrayList<>(this.buttonList);
+        List<Button> buttonList = new ArrayList<>(this.buttonList);
         List<GuiLabel> labelList = new ArrayList<>(this.labelList);
         List<GuiElementInfoRegion> infoRegions = new ArrayList<>(this.infoRegions);
         this.buttonList.clear();
@@ -81,7 +81,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         int k;
         for (k = 0; k < buttonList.size(); ++k)
         {
-            ((GuiButton) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
+            ((Button) buttonList.get(k)).drawButton(this.mc, par1, par2, par3);
         }
 
         for (k = 0; k < labelList.size(); ++k)
@@ -114,7 +114,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
         this.enablePadRemovalButton = new GuiElementCheckbox(1, this, this.width / 2 - 61, yTop + 20, GCCoreUtil.translate("gui.message.remove_pad.name"));
         this.launchWhenCheckbox = new GuiElementCheckbox(2, this, this.width / 2 - 61, yTop + 38, GCCoreUtil.translate("gui.message.launch_when.name") + ": ");
         this.dropdownTest = new GuiElementDropdown(3, this, xLeft + 52, yTop + 52, EnumAutoLaunch.CARGO_IS_UNLOADED.getTitle(), EnumAutoLaunch.CARGO_IS_FULL.getTitle(), EnumAutoLaunch.ROCKET_IS_FUELED.getTitle(), EnumAutoLaunch.INSTANT.getTitle(), EnumAutoLaunch.TIME_10_SECONDS.getTitle(), EnumAutoLaunch.TIME_30_SECONDS.getTitle(), EnumAutoLaunch.TIME_1_MINUTE.getTitle(), EnumAutoLaunch.REDSTONE_SIGNAL.getTitle());
-        this.closeAdvancedConfig = new GuiButton(4, xLeft + 5, yTop + 5, 20, 20, "<");
+        this.closeAdvancedConfig = new Button(4, xLeft + 5, yTop + 5, 20, 20, "<");
         this.buttonList.add(this.enablePadRemovalButton);
         this.buttonList.add(this.launchWhenCheckbox);
         this.buttonList.add(this.dropdownTest);
@@ -132,7 +132,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
+    protected void actionPerformed(Button button)
     {
         if (!PlayerUtil.getName(this.mc.player).equals(this.launchController.getOwnerName()))
         {
@@ -190,7 +190,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     }
 
     @Override
-    public boolean canBeClickedBy(GuiElementDropdown dropdown, EntityPlayer player)
+    public boolean canBeClickedBy(GuiElementDropdown dropdown, PlayerEntity player)
     {
         if (dropdown.equals(this.dropdownTest))
         {
@@ -237,7 +237,7 @@ public class GuiLaunchControllerAdvanced extends GuiContainerGC implements IDrop
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player)
     {
         return PlayerUtil.getName(player).equals(this.launchController.getOwnerName());
     }

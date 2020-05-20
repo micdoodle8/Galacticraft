@@ -11,8 +11,8 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.inventory.ContainerSolarArrayController;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySolarArrayController;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
@@ -25,10 +25,10 @@ public class GuiSolarArrayController extends GuiContainerGC
 
     private final TileEntitySolarArrayController solarController;
 
-    private GuiButton buttonEnableSolar;
+    private Button buttonEnableSolar;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiSolarArrayController(InventoryPlayer par1InventoryPlayer, TileEntitySolarArrayController solarController)
+    public GuiSolarArrayController(PlayerInventory par1InventoryPlayer, TileEntitySolarArrayController solarController)
     {
         super(new ContainerSolarArrayController(par1InventoryPlayer, solarController));
         this.solarController = solarController;
@@ -37,7 +37,7 @@ public class GuiSolarArrayController extends GuiContainerGC
     }
 
     @Override
-    protected void actionPerformed(GuiButton par1GuiButton)
+    protected void actionPerformed(Button par1GuiButton)
     {
         switch (par1GuiButton.id)
         {
@@ -68,7 +68,7 @@ public class GuiSolarArrayController extends GuiContainerGC
         float sunVisible = Math.round((this.solarController.getActualArraySize() / (float)this.solarController.getPossibleArraySize()) * 1000) / 10.0F;
         sunGenDesc.add(sunVisible > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttonList.add(this.buttonEnableSolar = new GuiButton(0, this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name")));
+        this.buttonList.add(this.buttonEnableSolar = new Button(0, this.width / 2 - 36, this.height / 2 - 11, 72, 20, GCCoreUtil.translate("gui.button.enable.name")));
     }
 
     @Override

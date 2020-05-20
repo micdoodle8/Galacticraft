@@ -14,17 +14,17 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityTippedArrow;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.ai.goal.*;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.entity.projectile.ArrowEntity;
+import net.minecraft.item.Items;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.EntityPredicates;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.BossInfo;
@@ -50,13 +50,13 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
         super(par1World);
         this.setSize(1.5F, 4.0F);
         this.isImmuneToFire = true;
-        this.tasks.addTask(1, new EntityAISwimming(this));
+        this.tasks.addTask(1, new SwimGoal(this));
         this.tasks.addTask(2, new EntityAIArrowAttack(this, 1.0D, 25, 10.0F));
-        this.tasks.addTask(2, new EntityAIWander(this, 1.0D));
-        this.tasks.addTask(3, new EntityAIWatchClosest(this, EntityPlayer.class, 8.0F));
-        this.tasks.addTask(3, new EntityAILookIdle(this));
-        this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-        this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityPlayer.class, false, true));
+        this.tasks.addTask(2, new RandomWalkingGoal(this, 1.0D));
+        this.tasks.addTask(3, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.tasks.addTask(3, new LookRandomlyGoal(this));
+        this.targetTasks.addTask(1, new HurtByTargetGoal(this, false));
+        this.targetTasks.addTask(2, new NearestAttackableTargetGoal<>(this, PlayerEntity.class, false, true));
     }
 
     @Override
@@ -120,7 +120,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(PlayerEntity par1EntityPlayer)
     {
         if (!this.isAIDisabled() && this.getPassengers().isEmpty() && this.postThrowDelay == 0 && this.throwTimer == 0 && par1EntityPlayer.equals(this.targetEntity) && this.deathTicks == 0)
         {
@@ -175,15 +175,15 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
 
         for (int j2 = 0; j2 < world.playerEntities.size(); ++j2) //World#isAnyPlayerWithinRangeAt
         {
-            EntityPlayer entityplayer = world.playerEntities.get(j2);
+            PlayerEntity entityplayer = world.playerEntities.get(j2);
 
-            if (EntitySelectors.NOT_SPECTATING.apply(entityplayer) && entityplayer instanceof EntityPlayerMP)
+            if (EntityPredicates.NOT_SPECTATING.apply(entityplayer) && entityplayer instanceof ServerPlayerEntity)
             {
                 double d0 = entityplayer.getDistanceSq(this.posX, this.posY, this.posZ);
 
                 if (d0 < 20 * 20)
                 {
-                    GCTriggers.FIND_MOON_BOSS.trigger(((EntityPlayerMP) entityplayer));
+                    GCTriggers.FIND_MOON_BOSS.trigger(((ServerPlayerEntity) entityplayer));
 
                 }
             }
@@ -194,7 +194,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED);
         }
 
-        final EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
+        final PlayerEntity player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 20.0, false);
 
         if (player != null && !player.equals(this.targetEntity))
         {
@@ -246,7 +246,7 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
             {
                 GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_PLAY_SOUND_BOW, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
             }
-            ((EntityPlayer) this.thrownEntity).attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.rotationYaw;
+            ((PlayerEntity) this.thrownEntity).attackedAtYaw = (float) Math.atan2(d1, d0) * Constants.RADIANS_TO_DEGREES - this.rotationYaw;
 
             this.thrownEntity.isAirBorne = true;
             final float f = MathHelper.sqrt(d0 * d0 + d1 * d1);
@@ -274,9 +274,9 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     }
 
     @Override
-    public EntityItem entityDropItem(ItemStack par1ItemStack, float par2)
+    public ItemEntity entityDropItem(ItemStack par1ItemStack, float par2)
     {
-        final EntityItem entityitem = new EntityItem(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
+        final ItemEntity entityitem = new ItemEntity(this.world, this.posX, this.posY + par2, this.posZ, par1ItemStack);
         entityitem.motionY = -2.0D;
         entityitem.setDefaultPickupDelay();
         if (this.captureDrops)
@@ -317,14 +317,14 @@ public class EntitySkeletonBoss extends EntityBossBase implements IEntityBreatha
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float f)
+    public void attackEntityWithRangedAttack(LivingEntity target, float f)
     {
         if (!this.getPassengers().isEmpty())
         {
             return;
         }
 
-        EntityTippedArrow arrow = new EntityTippedArrow(this.world, this);
+        ArrowEntity arrow = new ArrowEntity(this.world, this);
         double d0 = target.posX - this.posX;
         double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - arrow.posY;
         double d2 = target.posZ - this.posZ;

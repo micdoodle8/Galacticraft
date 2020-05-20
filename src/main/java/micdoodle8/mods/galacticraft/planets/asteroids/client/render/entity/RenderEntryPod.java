@@ -10,19 +10,19 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.culling.ICamera;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderEntryPod extends Render<EntityEntryPod>
+public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
 {
     private IBakedModel modelEntryPod;
 
-    public RenderEntryPod(RenderManager manager)
+    public RenderEntryPod(EntityRendererManager manager)
     {
         super(manager);
     }
@@ -76,7 +76,7 @@ public class RenderEntryPod extends Render<EntityEntryPod>
     @Override
     protected ResourceLocation getEntityTexture(EntityEntryPod entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
     
     @Override

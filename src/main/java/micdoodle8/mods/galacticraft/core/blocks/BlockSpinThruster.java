@@ -7,6 +7,7 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityThruster;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -14,14 +15,13 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
     public static final PropertyBool ORIENTATION = PropertyBool.create("rev");
 
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
@@ -48,11 +48,11 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         this.setHardness(0.1F);
         this.setSoundType(SoundType.METAL);
         this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(ORIENTATION, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH).withProperty(ORIENTATION, false));
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (state.getValue(FACING))
         {
@@ -69,19 +69,19 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
@@ -89,11 +89,11 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public boolean canPlaceBlockAt(World world, BlockPos pos)
     {
-        return world.isSideSolid(pos.west(), EnumFacing.EAST, true) || world.isSideSolid(pos.east(), EnumFacing.WEST, true) || world.isSideSolid(pos.north(), EnumFacing.SOUTH, true) || world.isSideSolid(pos.south(), EnumFacing.NORTH, true);
+        return world.isSideSolid(pos.west(), Direction.EAST, true) || world.isSideSolid(pos.east(), Direction.WEST, true) || world.isSideSolid(pos.north(), Direction.SOUTH, true) || world.isSideSolid(pos.south(), Direction.NORTH, true);
     }
 
     @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand)
+    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
     {
         if (facing.getAxis().isHorizontal() && this.canBlockStay(world, pos, facing))
         {
@@ -101,7 +101,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
         else
         {
-            for (EnumFacing enumfacing : EnumFacing.Plane.HORIZONTAL)
+            for (Direction enumfacing : Direction.Plane.HORIZONTAL)
             {
                 if (this.canBlockStay(world, pos, enumfacing))
                 {
@@ -113,7 +113,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
+    public void updateTick(World worldIn, BlockPos pos, BlockState state, Random rand)
     {
         if (this.getMetaFromState(state) == 0)
         {
@@ -122,7 +122,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
     {
         int metadata = this.getMetaFromState(state);
 
@@ -130,16 +130,16 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         switch (metadata)
         {
         case 1:
-            baseBlock = pos.offset(EnumFacing.WEST);
+            baseBlock = pos.offset(Direction.WEST);
             break;
         case 2:
-            baseBlock = pos.offset(EnumFacing.EAST);
+            baseBlock = pos.offset(Direction.EAST);
             break;
         case 3:
-            baseBlock = pos.offset(EnumFacing.NORTH);
+            baseBlock = pos.offset(Direction.NORTH);
             break;
         case 4:
-            baseBlock = pos.offset(EnumFacing.SOUTH);
+            baseBlock = pos.offset(Direction.SOUTH);
             break;
         default:
             return;
@@ -155,9 +155,9 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        EnumFacing enumfacing = state.getValue(FACING);
+        Direction enumfacing = state.getValue(FACING);
 
         if (!this.canBlockStay(worldIn, pos, enumfacing))
         {
@@ -173,7 +173,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
         }
     }
 
-    protected boolean canBlockStay(World world, BlockPos pos, EnumFacing facing)
+    protected boolean canBlockStay(World world, BlockPos pos, Direction facing)
     {
         return world.isSideSolid(pos.offset(facing.getOpposite()), facing, true);
     }
@@ -206,7 +206,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
+    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
         //Also make small thrust sounds
@@ -242,12 +242,12 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, EntityPlayer entityPlayer, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
     {
-        IBlockState state = world.getBlockState(pos);
+        BlockState state = world.getBlockState(pos);
         boolean orientation = state.getValue(ORIENTATION);
 
-        EnumFacing currentFacing = state.getValue(FACING);
+        Direction currentFacing = state.getValue(FACING);
 //        if (this.canBlockStay(world, pos.offset(currentFacing.getOpposite()), currentFacing))
 //        {
             world.setBlockState(pos, state.withProperty(ORIENTATION, !orientation), 2);
@@ -269,7 +269,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
+    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         if (!worldIn.isRemote)
         {
@@ -284,7 +284,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public CreativeTabs getCreativeTabToDisplayOn()
+    public ItemGroup getCreativeTabToDisplayOn()
     {
         return GalacticraftCore.galacticraftBlocksTab;
     }
@@ -302,14 +302,14 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
-        EnumFacing enumfacing = EnumFacing.getHorizontal(meta % 4);
+        Direction enumfacing = Direction.getHorizontal(meta % 4);
         return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ORIENTATION, meta >= 8);
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return state.getValue(FACING).getHorizontalIndex() + (state.getValue(ORIENTATION) ? 8 : 0);
     }

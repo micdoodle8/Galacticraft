@@ -5,20 +5,20 @@ import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
-import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.Rarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ItemArmorMars extends ItemArmor implements ISortableItem
+public class ItemArmorMars extends ArmorItem implements ISortableItem
 {
     private final ArmorMaterial material;
 
-    public ItemArmorMars(ArmorMaterial par2EnumArmorMaterial, int par3, EntityEquipmentSlot par4)
+    public ItemArmorMars(ArmorMaterial par2EnumArmorMaterial, int par3, EquipmentSlotType par4)
     {
         super(par2EnumArmorMaterial, par3, par4);
         this.material = par2EnumArmorMaterial;
@@ -33,7 +33,7 @@ public class ItemArmorMars extends ItemArmor implements ISortableItem
     }*/
 
     @Override
-    public String getArmorTexture(ItemStack stack, Entity entity, EntityEquipmentSlot slot, String type)
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
     {
         if (this.material == MarsItems.ARMORDESH)
         {
@@ -56,14 +56,14 @@ public class ItemArmorMars extends ItemArmor implements ISortableItem
 
     @SideOnly(Side.CLIENT)
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }

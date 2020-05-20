@@ -15,26 +15,26 @@ import micdoodle8.mods.galacticraft.core.items.ItemEmergencyKit;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -141,8 +141,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.north(1);
-                IBlockState bs = this.world.getBlockState(testPos);
-                if (!(bs.getBlock() instanceof BlockAir))
+                BlockState bs = this.world.getBlockState(testPos);
+                if (!(bs.getBlock() instanceof AirBlock))
                 {
                     if (bs.isFullBlock())
                     {
@@ -168,8 +168,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.south(1);
-                IBlockState bs = this.world.getBlockState(testPos);
-                if (!(bs.getBlock() instanceof BlockAir))
+                BlockState bs = this.world.getBlockState(testPos);
+                if (!(bs.getBlock() instanceof AirBlock))
                 {
                     if (bs.isFullBlock())
                     {
@@ -195,8 +195,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.west(1);
-                IBlockState bs = this.world.getBlockState(testPos);
-                if (!(bs.getBlock() instanceof BlockAir))
+                BlockState bs = this.world.getBlockState(testPos);
+                if (!(bs.getBlock() instanceof AirBlock))
                 {
                     if (bs.isFullBlock())
                     {
@@ -222,8 +222,8 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             {
                 boolean clash = false;
                 BlockPos testPos = this.pos.east(1);
-                IBlockState bs = this.world.getBlockState(testPos);
-                if (!(bs.getBlock() instanceof BlockAir))
+                BlockState bs = this.world.getBlockState(testPos);
+                if (!(bs.getBlock() instanceof AirBlock))
                 {
                     if (bs.isFullBlock())
                     {
@@ -265,12 +265,12 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         {
             for (Entity entry : moblist)
             {
-                if (!(entry instanceof EntityCreature && entry instanceof IEntityBreathable))
+                if (!(entry instanceof CreatureEntity && entry instanceof IEntityBreathable))
                 {
                     continue;
                 }
-                EntityCreature mob = (EntityCreature) entry;
-                PathNavigate nav = mob.getNavigator();
+                CreatureEntity mob = (CreatureEntity) entry;
+                PathNavigator nav = mob.getNavigator();
                 if (nav == null)
                 {
                     continue;
@@ -332,7 +332,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         return result;
     }
 
-    public void click(EntityPlayer player, EnumFacing side, boolean kitted)
+    public void click(PlayerEntity player, Direction side, boolean kitted)
     {
         switch (side)
         {
@@ -445,7 +445,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         int data = nbt.getInteger("open");
@@ -456,12 +456,12 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.airToRestore.clear();
-            NBTTagList airBlocks = nbt.getTagList("air", 10);
+            ListNBT airBlocks = nbt.getTagList("air", 10);
             if (airBlocks.tagCount() > 0)
             {
                 for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
                 {
-                    NBTTagCompound tag1 = airBlocks.getCompoundTagAt(j);
+                    CompoundNBT tag1 = airBlocks.getCompoundTagAt(j);
                     if (tag1 != null)
                     {
                         this.airToRestore.add(BlockVec3.readFromNBT(tag1));
@@ -472,16 +472,16 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         int data = (this.openN ? 1 : 0) + (this.openW ? 2 : 0) + (this.openS ? 4 : 0) + (this.openE ? 8 : 0);
         nbt.setInteger("open", data);
 
-        NBTTagList airBlocks = new NBTTagList();
+        ListNBT airBlocks = new ListNBT();
         for (BlockVec3 vec : this.airToRestore)
         {
-            NBTTagCompound tag = new NBTTagCompound();
+            CompoundNBT tag = new CompoundNBT();
             vec.writeToNBT(tag);
             airBlocks.appendTag(tag);
         }
@@ -548,22 +548,22 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newState)
     {
         return oldState.getBlock() != newState.getBlock();
     }
     
-    private void brightenAir(BlockPos blockpos, IBlockState newState)
+    private void brightenAir(BlockPos blockpos, BlockState newState)
     {
         Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
-        IBlockState oldState = chunk.setBlockState(blockpos, newState);
+        BlockState oldState = chunk.setBlockState(blockpos, newState);
         if (this.world.isRemote && oldState != null)
         {
             this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
         }
         //No block update on server - not necessary for changing air to air (also must not trigger a sealer edge check!)
         this.airToRestore.add(new BlockVec3(blockpos));
-        this.world.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
+        this.world.checkLightFor(LightType.BLOCK, blockpos);
         this.markDirty();
     }
     
@@ -571,7 +571,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     {
         BlockPos blockpos = vec.toBlockPos();
         Block b = this.world.getBlockState(blockpos).getBlock();
-        IBlockState newState;
+        BlockState newState;
         if (b == GCBlocks.brightAir)
         {
             newState = Blocks.AIR.getDefaultState();
@@ -586,9 +586,9 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         }
             
         Chunk chunk = this.world.getChunkFromBlockCoords(blockpos);
-        IBlockState oldState = chunk.setBlockState(blockpos, newState);
+        BlockState oldState = chunk.setBlockState(blockpos, newState);
         if (this.world.isRemote && oldState != null) this.world.markAndNotifyBlock(blockpos, chunk, oldState, newState, 2);
-        this.world.checkLightFor(EnumSkyBlock.BLOCK, blockpos);
+        this.world.checkLightFor(LightType.BLOCK, blockpos);
     }
 
     private void revertAir()
@@ -626,7 +626,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
 
     private boolean setLightBlock(BlockPos blockPos)
     {
-        IBlockState bs = this.world.getBlockState(blockPos);
+        BlockState bs = this.world.getBlockState(blockPos);
         if (bs.getBlock() == Blocks.AIR)
         {
             this.brightenAir(blockPos, GCBlocks.brightAir.getDefaultState());

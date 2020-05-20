@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraftforge.fml.client.config.GuiConfig;
 
@@ -14,7 +14,7 @@ public class ConfigGuiFactoryCore implements IModGuiFactory
 {
     public static class CoreConfigGUI extends GuiConfig
     {
-        public CoreConfigGUI(GuiScreen parent)
+        public CoreConfigGUI(Screen parent)
         {
             super(parent, ConfigManagerCore.getConfigElements(), Constants.MOD_ID_CORE, false, false, GCCoreUtil.translate("gc.configgui.title"));
         }
@@ -32,7 +32,7 @@ public class ConfigGuiFactoryCore implements IModGuiFactory
         return null;
     }
 
-	public GuiScreen createConfigGui(GuiScreen arg0)
+	public Screen createConfigGui(Screen arg0)
 	{
 		// TODO  Forge 2282 addition!
 		return new CoreConfigGUI(arg0);

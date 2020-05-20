@@ -14,8 +14,8 @@ import micdoodle8.mods.galacticraft.planets.mars.dimension.WorldProviderMars;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldProvider;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class OreGenOtherMods
 
     private BlockPos pos;
 
-    private WorldGenerator oreGen;
+    private Feature oreGen;
     public static ArrayList<OreGenData> data = new ArrayList<OreGenData>();
 
     static
@@ -219,7 +219,7 @@ public class OreGenOtherMods
 
         int dimDetected = 0;
 
-        WorldProvider prov = world.provider;
+        Dimension prov = world.provider;
         if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderSpaceStation))
         {
             return;
@@ -256,7 +256,7 @@ public class OreGenOtherMods
         }
     }
 
-    void genStandardOre1(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY)
+    void genStandardOre1(int amountPerChunk, Feature worldGenerator, int minY, int maxY)
     {
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {

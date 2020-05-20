@@ -20,17 +20,17 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 
 public class CommandGCHouston extends CommandBase
 {
-    private static List<EntityPlayerMP> timerList = new LinkedList<>();
+    private static List<ServerPlayerEntity> timerList = new LinkedList<>();
 
     public static void reset()
     {
@@ -84,9 +84,9 @@ public class CommandGCHouston extends CommandBase
         {
             return true;
         }
-        else if (entitySender instanceof EntityPlayer)
+        else if (entitySender instanceof PlayerEntity)
         {
-            GameProfile prof = ((EntityPlayer) entitySender).getGameProfile();
+            GameProfile prof = ((PlayerEntity) entitySender).getGameProfile();
             return server.getPlayerList().canSendCommands(prof);
         }
         return false;
@@ -95,7 +95,7 @@ public class CommandGCHouston extends CommandBase
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException
     {
-        EntityPlayerMP playerBase = null;
+        ServerPlayerEntity playerBase = null;
         boolean isOp = this.isOp(server, sender);
 
         if (args.length < 2)
@@ -141,7 +141,7 @@ public class CommandGCHouston extends CommandBase
                 if (playerBase != null)
                 {
                     int dimID = ConfigManagerCore.idDimensionOverworld;
-                    WorldServer worldserver = server.getWorld(dimID);
+                    ServerWorld worldserver = server.getWorld(dimID);
                     if (worldserver == null)
                     {
                         worldserver = server.getWorld(0);
@@ -155,7 +155,7 @@ public class CommandGCHouston extends CommandBase
                     BlockPos bedPos = playerBase.getBedLocation(dimID);
                     if (bedPos != null)
                     {
-                        spawnPoint = EntityPlayer.getBedSpawnLocation(worldserver, bedPos, false);
+                        spawnPoint = PlayerEntity.getBedSpawnLocation(worldserver, bedPos, false);
                     }
                     if (spawnPoint == null)
                     {

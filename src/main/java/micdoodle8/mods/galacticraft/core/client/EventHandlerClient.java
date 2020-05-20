@@ -10,14 +10,14 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -40,7 +40,7 @@ public class EventHandlerClient
     {
         GL11.glPushMatrix();
 
-        final EntityPlayer player = event.getEntityPlayer();
+        final PlayerEntity player = event.getEntityPlayer();
 
         if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getMinecraft().player
                 && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
@@ -59,7 +59,7 @@ public class EventHandlerClient
             }
         }
 
-        if (player instanceof EntityPlayerSP)
+        if (player instanceof ClientPlayerEntity)
         {
             sneakRenderOverride = true;
         }
@@ -72,7 +72,7 @@ public class EventHandlerClient
     {
         GL11.glPopMatrix();
 
-        if (event.getEntityPlayer() instanceof EntityPlayerSP)
+        if (event.getEntityPlayer() instanceof ClientPlayerEntity)
             sneakRenderOverride = false;
     }
 
@@ -118,7 +118,7 @@ public class EventHandlerClient
     @SubscribeEvent
     public void onTextureStitch(TextureStitchEvent.Post event)
     {
-        for (EnumFacing facing : EnumFacing.VALUES)
+        for (Direction facing : Direction.VALUES)
         {
             try
             {

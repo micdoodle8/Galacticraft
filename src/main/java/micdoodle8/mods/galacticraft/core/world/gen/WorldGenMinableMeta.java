@@ -1,16 +1,16 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.block.state.pattern.BlockMatcher;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.pattern.BlockMatcher;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenMinable;
+import net.minecraft.world.gen.feature.OreFeature;
 
 import java.util.Random;
 
-public class WorldGenMinableMeta extends WorldGenMinable
+public class WorldGenMinableMeta extends OreFeature
 {
     private final Block minableBlockId;
 
@@ -50,7 +50,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
         double clumpYa = (double) (position.getY() + rand.nextInt(3) - 2);
         double clumpYb = (double) (position.getY() + rand.nextInt(3) - 2) - clumpYa;
 
-        final IBlockState oreState = this.minableBlockId.getStateFromMeta(this.usingMetadata ? this.metadata : 0);
+        final BlockState oreState = this.minableBlockId.getStateFromMeta(this.usingMetadata ? this.metadata : 0);
         float concentricRadius = this.numberOfBlocks;
         double size = (rand.nextDouble() * (double) this.numberOfBlocks + 1D) / 16.0D;
         
@@ -92,7 +92,7 @@ public class WorldGenMinableMeta extends WorldGenMinable
                                 if (xySquared + dz * dz < 1.0D)
                                 {
                                     BlockPos blockpos = new BlockPos(x, y, z);
-                                    IBlockState state = worldIn.getBlockState(blockpos);
+                                    BlockState state = worldIn.getBlockState(blockpos);
 
                                     if (state.getBlock() == this.fillerID && state.getBlock().getMetaFromState(state) == this.fillerMetadata)
                                     {

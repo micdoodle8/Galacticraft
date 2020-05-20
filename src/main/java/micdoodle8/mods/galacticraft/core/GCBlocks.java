@@ -17,12 +17,12 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
@@ -352,7 +352,7 @@ public class GCBlocks
         setHarvestLevel(GCBlocks.blockMoon, "pickaxe", 3, 14); //Moon dungeon brick (actually unharvestable)
     }
 
-    public static void registerBlock(Block block, Class<? extends ItemBlock> itemClass, Object... itemCtorArgs)
+    public static void registerBlock(Block block, Class<? extends BlockItem> itemClass, Object... itemCtorArgs)
     {
         String name = block.getUnlocalizedName().substring(5);
         if (block.getRegistryName() == null)
@@ -363,7 +363,7 @@ public class GCBlocks
 
         if (itemClass != null)
         {
-            ItemBlock item = null;
+            BlockItem item = null;
             Class<?>[] ctorArgClasses = new Class<?>[itemCtorArgs.length + 1];
             ctorArgClasses[0] = Block.class;
             for (int idx = 1; idx < ctorArgClasses.length; idx++)
@@ -373,7 +373,7 @@ public class GCBlocks
 
             try
             {
-                Constructor<? extends ItemBlock> constructor = itemClass.getConstructor(ctorArgClasses);
+                Constructor<? extends BlockItem> constructor = itemClass.getConstructor(ctorArgClasses);
                 item = constructor.newInstance(ObjectArrays.concat(block, itemCtorArgs));
             }
             catch (Exception e)

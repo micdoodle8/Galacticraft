@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 
 public class TileEntityAirLock extends TileEntityAdvanced
 {
@@ -34,7 +34,7 @@ public class TileEntityAirLock extends TileEntityAdvanced
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }

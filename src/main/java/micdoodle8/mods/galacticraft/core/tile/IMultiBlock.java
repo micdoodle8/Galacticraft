@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 import java.util.List;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.ITickable;
@@ -14,7 +14,7 @@ public interface IMultiBlock extends ITickable
     /**
      * Called when activated
      */
-    boolean onActivated(EntityPlayer entityPlayer);
+    boolean onActivated(PlayerEntity entityPlayer);
 
     /**
      * Called when this multiblock is created

@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import net.minecraft.block.Block;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.WorldProvider;
+import net.minecraft.world.dimension.Dimension;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 
@@ -31,7 +31,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected float relativeOrbitTime = 1.0F;
     protected float phaseShift = 0.0F;
     protected int dimensionID = -1;
-    protected Class<? extends WorldProvider> providerClass;
+    protected Class<? extends Dimension> providerClass;
     protected String dimensionSuffix;
     protected boolean autoRegisterDimension = false;
     protected boolean isReachable = false;
@@ -178,12 +178,12 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this;
     }
 
-    public CelestialBody setDimensionInfo(int dimID, Class<? extends WorldProvider> providerClass)
+    public CelestialBody setDimensionInfo(int dimID, Class<? extends Dimension> providerClass)
     {
         return this.setDimensionInfo(dimID, providerClass, true);
     }
 
-    public CelestialBody setDimensionInfo(int providerId, Class<? extends WorldProvider> providerClass, boolean autoRegister)
+    public CelestialBody setDimensionInfo(int providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
     {
         this.dimensionID = providerId;
         this.providerClass = providerClass;
@@ -202,7 +202,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this.dimensionID;
     }
 
-    public Class<? extends WorldProvider> getWorldProvider()
+    public Class<? extends Dimension> getWorldProvider()
     {
         return this.providerClass;
     }

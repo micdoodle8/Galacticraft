@@ -4,14 +4,14 @@ import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBreakable;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.BreakableBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockAirLockWall extends BlockBreakable implements IPartialSealableBlock, ISortableBlock
+public class BlockAirLockWall extends BreakableBlock implements IPartialSealableBlock, ISortableBlock
 {
     public static final PropertyEnum<EnumAirLockSealConnection> CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
     protected static final AxisAlignedBB AABB_X = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
@@ -59,7 +59,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
         switch (getConnection(source, pos))
         {
@@ -106,26 +106,26 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
 
 
     @Override
-    public boolean isOpaqueCube(IBlockState state)
+    public boolean isOpaqueCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state)
+    public boolean isFullCube(BlockState state)
     {
         return false;
     }
 
     @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face)
+    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
         return BlockFaceShape.UNDEFINED;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side)
+    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
         return true;
     }
@@ -137,7 +137,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    public boolean isSealed(World worldIn, BlockPos pos, EnumFacing direction)
+    public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
     {
         return true;
     }
@@ -161,7 +161,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         return state.withProperty(CONNECTION_TYPE, getConnection(worldIn, pos));
     }
@@ -173,8 +173,8 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
         Block frameID = GCBlocks.airLockFrame;
         Block sealID = GCBlocks.airLockSeal;
 
-        Block idXMin = worldIn.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
-        Block idXMax = worldIn.getBlockState(pos.offset(EnumFacing.WEST)).getBlock();
+        Block idXMin = worldIn.getBlockState(pos.offset(Direction.WEST)).getBlock();
+        Block idXMax = worldIn.getBlockState(pos.offset(Direction.WEST)).getBlock();
 
         if (idXMin != frameID && idXMax != frameID && idXMin != sealID && idXMax != sealID)
         {
@@ -184,7 +184,7 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
         {
             int adjacentCount = 0;
 
-            for (EnumFacing dir : EnumFacing.HORIZONTALS)
+            for (Direction dir : Direction.HORIZONTALS)
             {
                 Block blockID = worldIn.getBlockState(pos.offset(dir)).getBlock();
 
@@ -208,13 +208,13 @@ public class BlockAirLockWall extends BlockBreakable implements IPartialSealable
     }
 
     @Override
-    public int getMetaFromState(IBlockState state)
+    public int getMetaFromState(BlockState state)
     {
         return 0;
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta)
+    public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState();
     }

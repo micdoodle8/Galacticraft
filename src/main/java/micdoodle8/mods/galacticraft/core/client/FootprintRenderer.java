@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -28,7 +28,7 @@ public class FootprintRenderer
     public static Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
     private static final ResourceLocation footprintTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/footprint.png");
 
-    public static void renderFootprints(EntityPlayer player, float partialTicks)
+    public static void renderFootprints(PlayerEntity player, float partialTicks)
     {
         int dimActive = GCCoreUtil.getDimensionID(player.world);
         List<Footprint> footprintsToDraw = new LinkedList<>();

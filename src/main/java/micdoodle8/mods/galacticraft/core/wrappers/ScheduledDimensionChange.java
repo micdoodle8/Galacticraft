@@ -1,19 +1,19 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class ScheduledDimensionChange
 {
-    private EntityPlayerMP player;
+    private ServerPlayerEntity player;
     private int dimensionName;
 
-    public ScheduledDimensionChange(EntityPlayerMP player, int dimensionName)
+    public ScheduledDimensionChange(ServerPlayerEntity player, int dimensionName)
     {
         this.player = player;
         this.dimensionName = dimensionName;
     }
 
-    public EntityPlayerMP getPlayer()
+    public ServerPlayerEntity getPlayer()
     {
         return player;
     }
@@ -23,7 +23,7 @@ public class ScheduledDimensionChange
         return dimensionName;
     }
 
-    public void setPlayer(EntityPlayerMP player)
+    public void setPlayer(ServerPlayerEntity player)
     {
         this.player = player;
     }

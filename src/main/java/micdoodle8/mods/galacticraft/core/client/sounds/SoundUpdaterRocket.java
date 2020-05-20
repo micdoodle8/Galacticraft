@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.MovingSound;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.audio.TickableSound;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.SoundCategory;
 
@@ -14,14 +14,14 @@ import net.minecraft.util.SoundCategory;
  *
  * @author micdoodle8
  */
-public class SoundUpdaterRocket extends MovingSound
+public class SoundUpdaterRocket extends TickableSound
 {
-    private final EntityPlayerSP thePlayer;
+    private final ClientPlayerEntity thePlayer;
     private final EntityAutoRocket theRocket;
     private boolean soundStopped;
     private boolean ignition = false;
 
-    public SoundUpdaterRocket(EntityPlayerSP par1EntityPlayerSP, EntityAutoRocket par2Entity)
+    public SoundUpdaterRocket(ClientPlayerEntity par1EntityPlayerSP, EntityAutoRocket par2Entity)
     {
         super(GCSounds.shuttle, SoundCategory.NEUTRAL);
         this.theRocket = par2Entity;

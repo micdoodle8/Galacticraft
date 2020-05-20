@@ -1,17 +1,17 @@
 package micdoodle8.mods.galacticraft.planets.venus.tile;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityInventory;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 
@@ -29,7 +29,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
         inventory = NonNullList.withSize(6, ItemStack.EMPTY);
     }
 
-    protected void fillWithLoot(EntityPlayer player)
+    protected void fillWithLoot(PlayerEntity player)
     {
         if (this.lootTable != null)
         {
@@ -46,7 +46,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
                 random = new Random(this.lootTableSeed);
             }
 
-            LootContext.Builder lootcontext$builder = new LootContext.Builder((WorldServer)this.world);
+            LootContext.Builder lootcontext$builder = new LootContext.Builder((ServerWorld)this.world);
 
             if (player != null)
             {
@@ -64,7 +64,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         if (nbt.hasKey("ctd"))
@@ -84,7 +84,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("ctd", this.hasCoreToDrop);
@@ -97,7 +97,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -137,7 +137,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate)
+    public boolean shouldRefresh(World world, BlockPos pos, BlockState oldState, BlockState newSate)
     {
         return oldState.getBlock() != newSate.getBlock();
     }
@@ -152,7 +152,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
         return this.hasCoreToDrop;
     }
 
-    protected boolean checkLootAndRead(NBTTagCompound compound)
+    protected boolean checkLootAndRead(CompoundNBT compound)
     {
         if (compound.hasKey("LootTable", 8))
         {
@@ -166,7 +166,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
         }
     }
 
-    protected boolean checkLootAndWrite(NBTTagCompound compound)
+    protected boolean checkLootAndWrite(CompoundNBT compound)
     {
         if (this.lootTable != null)
         {

@@ -7,37 +7,37 @@ import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.RoomTreasure;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockTier2TreasureChest;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.util.math.MutableBoundingBox;
+import net.minecraft.world.storage.loot.LootTables;
 
 import java.util.Random;
 
 public class RoomTreasureMars extends RoomTreasure
 {
     public static ResourceLocation MARSCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_2");
-    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTableList.register(MARSCHEST);
+    public static final ResourceLocation TABLE_TIER_2_DUNGEON = LootTables.register(MARSCHEST);
 
     public RoomTreasureMars()
     {
     }
 
-    public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
         super(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
     }
 
-    public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomTreasureMars(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
         super(configuration, rand, blockPosX, blockPosZ, sizeX, sizeY, sizeZ, entranceDir);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox boundingBox)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox boundingBox)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -48,17 +48,17 @@ public class RoomTreasureMars extends RoomTreasure
                     if (i == 0 || i == this.sizeX || j == 0 || j == this.sizeY || k == 0 || k == this.sizeZ)
                     {
                         boolean placeBlock = true;
-                        if (getDirection().getAxis() == EnumFacing.Axis.Z)
+                        if (getDirection().getAxis() == Direction.Axis.Z)
                         {
                             int start = (this.boundingBox.maxX - this.boundingBox.minX) / 2 - 1;
                             int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
                             if (i > start && i <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.SOUTH && k == 0)
+                                if (getDirection() == Direction.SOUTH && k == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.NORTH && k == this.sizeZ)
+                                else if (getDirection() == Direction.NORTH && k == this.sizeZ)
                                 {
                                     placeBlock = false;
                                 }
@@ -70,11 +70,11 @@ public class RoomTreasureMars extends RoomTreasure
                             int end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
                             if (k > start && k <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.EAST && i == 0)
+                                if (getDirection() == Direction.EAST && i == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.WEST && i == this.sizeX)
+                                else if (getDirection() == Direction.WEST && i == this.sizeX)
                                 {
                                     placeBlock = false;
                                 }

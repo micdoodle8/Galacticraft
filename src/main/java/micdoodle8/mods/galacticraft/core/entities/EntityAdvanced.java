@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
 import net.minecraftforge.fml.relauncher.Side;
@@ -79,14 +79,14 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
      *
      * @param player The player associated with the received packet
      */
-    public abstract void onPacketClient(EntityPlayer player);
+    public abstract void onPacketClient(PlayerEntity player);
 
     /**
      * Called after a packet is read, only on server side.
      *
      * @param player The player associated with the received packet
      */
-    public abstract void onPacketServer(EntityPlayer player);
+    public abstract void onPacketServer(PlayerEntity player);
 
     /**
      * Packets will be sent to all (client-side) players within this range

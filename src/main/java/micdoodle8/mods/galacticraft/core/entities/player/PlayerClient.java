@@ -23,18 +23,18 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.MoverType;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
@@ -45,19 +45,19 @@ public class PlayerClient implements IPlayerClient
 	public static boolean startup;
 
     @Override
-    public void move(EntityPlayerSP player, MoverType type, double x, double y, double z)
+    public void move(ClientPlayerEntity player, MoverType type, double x, double y, double z)
     {
         this.updateFeet(player, x, z);
     }
 
     @Override
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+    public boolean wakeUpPlayer(ClientPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
         return this.wakeUpPlayer(player, immediately, updateWorldFlag, setSpawn, false);
     }
 
     @Override
-    public void onUpdate(EntityPlayerSP player)
+    public void onUpdate(ClientPlayerEntity player)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         stats.setTick(stats.getTick() + 1);
@@ -71,7 +71,7 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public boolean isEntityInsideOpaqueBlock(EntityPlayerSP player, boolean vanillaInside)
+    public boolean isEntityInsideOpaqueBlock(ClientPlayerEntity player, boolean vanillaInside)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         if (vanillaInside && stats.isInFreefall())
@@ -83,7 +83,7 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public void onLivingUpdatePre(EntityPlayerSP player)
+    public void onLivingUpdatePre(ClientPlayerEntity player)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
 
@@ -125,7 +125,7 @@ public class PlayerClient implements IPlayerClient
 //        }
     }
     
-    public void cancelLimbSwing(EntityPlayerSP player)
+    public void cancelLimbSwing(ClientPlayerEntity player)
     {
         player.limbSwing -= player.limbSwingAmount;
         player.limbSwingAmount = player.prevLimbSwingAmount;
@@ -142,7 +142,7 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public void onLivingUpdatePost(EntityPlayerSP player)
+    public void onLivingUpdatePost(ClientPlayerEntity player)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         boolean ridingThirdPersonEntity = player.getRidingEntity() instanceof ICameraZoomEntity && ((ICameraZoomEntity) player.getRidingEntity()).defaultThirdPerson();
@@ -263,14 +263,14 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public float getBedOrientationInDegrees(EntityPlayerSP player, float vanillaDegrees)
+    public float getBedOrientationInDegrees(ClientPlayerEntity player, float vanillaDegrees)
     {
         if (player.bedLocation != null)
         {
             if (player.world.getTileEntity(player.bedLocation) instanceof TileEntityAdvanced)
             {
 //                int j = player.world.getBlock(x, y, z).getBedDirection(player.world, x, y, z);
-                IBlockState state = player.world.getBlockState(player.bedLocation);
+                BlockState state = player.world.getBlockState(player.bedLocation);
                 switch (state.getBlock().getMetaFromState(state) - 4)
                 {
                 case 0:
@@ -292,7 +292,7 @@ public class PlayerClient implements IPlayerClient
         return vanillaDegrees;
     }
 
-    private void updateFeet(EntityPlayerSP player, double motionX, double motionZ)
+    private void updateFeet(ClientPlayerEntity player, double motionX, double motionZ)
     {
         GCPlayerStatsClient stats = GCPlayerStatsClient.get(player);
         double motionSqrd = motionX * motionX + motionZ * motionZ;
@@ -304,7 +304,7 @@ public class PlayerClient implements IPlayerClient
             int iPosY = MathHelper.floor(player.posY - 0.05);
             int iPosZ = MathHelper.floor(player.posZ);
             BlockPos pos1 = new BlockPos(iPosX, iPosY, iPosZ);
-            IBlockState state = player.world.getBlockState(pos1);
+            BlockState state = player.world.getBlockState(pos1);
 
             // If the block below is the moon block
             if (state.getBlock() == GCBlocks.blockMoon)
@@ -349,7 +349,7 @@ public class PlayerClient implements IPlayerClient
         }
     }
 
-    public boolean wakeUpPlayer(EntityPlayerSP player, boolean immediately, boolean updateWorldFlag, boolean setSpawn, boolean bypass)
+    public boolean wakeUpPlayer(ClientPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn, boolean bypass)
     {
         BlockPos c = player.bedLocation;
 
@@ -358,7 +358,7 @@ public class PlayerClient implements IPlayerClient
             EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, bypass);
             MinecraftForge.EVENT_BUS.post(event);
 
-            if (bypass || event.result == null || event.result == EntityPlayer.SleepResult.OK)
+            if (bypass || event.result == null || event.result == PlayerEntity.SleepResult.OK)
             {
                 return false;
             }
@@ -368,7 +368,7 @@ public class PlayerClient implements IPlayerClient
     }
 
     @Override
-    public void onBuild(int i, EntityPlayerSP player)
+    public void onBuild(int i, ClientPlayerEntity player)
     {
         // 0 : opened GC inventory tab
         // 1,2,3 : Compressor, CF, Standard Wrench
@@ -400,7 +400,7 @@ public class PlayerClient implements IPlayerClient
         case 2:
         case 3:
             player.sendMessage(ITextComponent.Serializer.jsonToComponent("[{\"text\":\"" + GCCoreUtil.translate("gui.message.help1") + ": \",\"color\":\"white\"}," + "{\"text\":\" " + EnumColor.BRIGHT_GREEN + "wiki." + Constants.PREFIX + "com/wiki/1" + "\"," + "\"color\":\"green\",\"hoverEvent\":{\"action\":\"show_text\",\"value\":" + "{\"text\":\"" + GCCoreUtil.translate("gui.message.clicklink") + "\",\"color\":\"yellow\"}}," + "\"clickEvent\":{\"action\":\"open_url\",\"value\":\"" + "http://wiki." + Constants.PREFIX + "com/wiki/1" + "\"}}]"));
-            player.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
+            player.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.help1a") + EnumColor.AQUA + " /gchelp"));
             break;
         case 4:
         case 5:

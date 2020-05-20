@@ -21,25 +21,25 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.audio.ISound;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
@@ -190,7 +190,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        WorldServer[] servers = GCCoreUtil.getWorldServerList(this.world);
+        ServerWorld[] servers = GCCoreUtil.getWorldServerList(this.world);
         if (!GalacticraftCore.isPlanetsLoaded || controllerClass == null)
         {
             return false;
@@ -198,7 +198,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         for (int i = 0; i < servers.length; i++)
         {
-            WorldServer world = servers[i];
+            ServerWorld world = servers[i];
 
             try
             {
@@ -757,9 +757,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	        		 {
 	        			 if (e.dimension != this.dimension)
 	        			 {
-	        				 if (e instanceof EntityPlayer)
+	        				 if (e instanceof PlayerEntity)
 	        				 {
-	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP)e).interactionManager.getGameType().getID());
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity)e).interactionManager.getGameType().getID());
 	        					 e.startRiding(this);
 	        				 }
 	        			 }
@@ -781,9 +781,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	       		 	{
 	       		 		if (e.dimension != this.dimension)
 	       		 		{
-	       		 			if (e instanceof EntityPlayer)
+	       		 			if (e instanceof PlayerEntity)
 	       		 			{
-	       		 				e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((EntityPlayerMP)e).interactionManager.getGameType().getID());
+	       		 				e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity)e).interactionManager.getGameType().getID());
 	       		 				e.startRiding(this);
 	       		 			}
 	       		 		}
@@ -901,25 +901,25 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         this.setLaunchPhase(EnumLaunchPhase.UNIGNITED);
         this.timeUntilLaunch = 0;
-        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
+        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof ServerPlayerEntity)
         {
-            this.getPassengers().get(0).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
+            this.getPassengers().get(0).sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.rocket.warning.nogyroscope")));
         }
     }
     
     public void failMessageLaunchController()
     {
-        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
+        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof ServerPlayerEntity)
         {
-            ((EntityPlayerMP) this.getPassengers().get(0)).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.launchcontroller")));
+            ((ServerPlayerEntity) this.getPassengers().get(0)).sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.rocket.warning.launchcontroller")));
         }
     }
 
     public void failMessageInsufficientFuel()
     {
-        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof EntityPlayerMP)
+        if (!this.world.isRemote && !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof ServerPlayerEntity)
         {
-            ((EntityPlayerMP) this.getPassengers().get(0)).sendMessage(new TextComponentString(GCCoreUtil.translate("gui.rocket.warning.fuelinsufficient")));
+            ((ServerPlayerEntity) this.getPassengers().get(0)).sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.rocket.warning.fuelinsufficient")));
         }
     }
 
@@ -956,7 +956,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         	{
         	    for (Entity player : this.getPassengers())
         	    {
-        	        if (player instanceof EntityPlayerMP)
+        	        if (player instanceof ServerPlayerEntity)
         	        {
         	            stats = GCPlayerStats.get(player);
                         stats.setLaunchpadStack(null);
@@ -970,7 +970,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         	    }
 
         	    Entity playerMain = this.getPassengers().get(0);
-        	    if (playerMain instanceof EntityPlayerMP)
+        	    if (playerMain instanceof ServerPlayerEntity)
         	        stats = GCPlayerStats.get(playerMain);
         	}
 
@@ -1016,13 +1016,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbt)
+    protected void writeEntityToNBT(CompoundNBT nbt)
     {
         super.writeEntityToNBT(nbt);
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new NBTTagCompound()));
+            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.getSizeInventory() > 0)
@@ -1048,7 +1048,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbt)
+    protected void readEntityFromNBT(CompoundNBT nbt)
     {
         super.readEntityFromNBT(nbt);
 
@@ -1300,7 +1300,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
         return !this.isDead && entityplayer.getDistanceSq(this) <= 64.0D;
     }
@@ -1332,13 +1332,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     //We don't use these because we use forge containers
     @Override
-    public void openInventory(EntityPlayer player)
+    public void openInventory(PlayerEntity player)
     {
     }
 
     //We don't use these because we use forge containers
     @Override
-    public void closeInventory(EntityPlayer player)
+    public void closeInventory(PlayerEntity player)
     {
     }
 
@@ -1442,7 +1442,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     @Override
     @SideOnly(Side.CLIENT)
-    public ISound setSoundUpdater(EntityPlayerSP player)
+    public ISound setSoundUpdater(ClientPlayerEntity player)
     {
     	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
     	return (ISound) this.rocketSoundUpdater;

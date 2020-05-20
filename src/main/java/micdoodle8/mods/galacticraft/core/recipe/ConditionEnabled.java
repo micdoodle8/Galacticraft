@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.util.JsonUtils;
+import net.minecraft.util.JSONUtils;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IConditionFactory;
 import net.minecraftforge.common.crafting.JsonContext;
@@ -17,9 +17,9 @@ public class ConditionEnabled implements IConditionFactory
     @Override
     public BooleanSupplier parse(JsonContext context, JsonObject json)
     {
-        if(JsonUtils.hasField(json, "data"))
+        if(JSONUtils.hasField(json, "data"))
         {
-            String data = JsonUtils.getString(json, "data");
+            String data = JSONUtils.getString(json, "data");
             if (data.equals("can_default"))
             {
                 return () -> !ConfigManagerCore.alternateCanisterRecipe;

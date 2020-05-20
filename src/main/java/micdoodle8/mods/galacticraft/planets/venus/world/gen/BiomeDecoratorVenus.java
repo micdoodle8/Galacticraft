@@ -8,20 +8,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.gen.feature.Feature;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Random;
 
 public class BiomeDecoratorVenus extends BiomeDecorator
 {
-    private WorldGenerator aluminumGen;
-    private WorldGenerator copperGen;
-    private WorldGenerator galenaGen;
-    private WorldGenerator quartzGen;
-    private WorldGenerator siliconGen;
-    private WorldGenerator tinGen;
-    private WorldGenerator solarGen;
+    private Feature aluminumGen;
+    private Feature copperGen;
+    private Feature galenaGen;
+    private Feature quartzGen;
+    private Feature siliconGen;
+    private Feature tinGen;
+    private Feature solarGen;
     private World world;
 
     public BiomeDecoratorVenus()
@@ -51,7 +51,7 @@ public class BiomeDecoratorVenus extends BiomeDecorator
         }
     }
 
-    private void genStandardOre(int amountPerChunk, WorldGenerator worldGenerator, int minY, int maxY, Random random)
+    private void genStandardOre(int amountPerChunk, Feature worldGenerator, int minY, int maxY, Random random)
     {
         for (int var5 = 0; var5 < amountPerChunk; ++var5)
         {
@@ -63,13 +63,13 @@ public class BiomeDecoratorVenus extends BiomeDecorator
     private void generateVenus(Random random)
     {
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Pre(this.world, random, chunkPos));
-        if (!ConfigManagerVenus.disableAluminumGen) this.genStandardOre(18, this.aluminumGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableCopperGen) this.genStandardOre(24, this.copperGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableGalenaGen) this.genStandardOre(18, this.galenaGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableQuartzGen) this.genStandardOre(26, this.quartzGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableSiliconGen) this.genStandardOre(4, this.siliconGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableTinGen) this.genStandardOre(22, this.tinGen, 0, 60, random);
-        if (!ConfigManagerVenus.disableSolarGen) this.genStandardOre(6, this.solarGen, 0, 50, random);
+        if (!ConfigManagerVenus.disableAluminumGenVenus) this.genStandardOre(18, this.aluminumGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableCopperGenVenus) this.genStandardOre(24, this.copperGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableGalenaGenVenus) this.genStandardOre(18, this.galenaGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableQuartzGenVenus) this.genStandardOre(26, this.quartzGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableSiliconGenVenus) this.genStandardOre(4, this.siliconGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableTinGenVenus) this.genStandardOre(22, this.tinGen, 0, 60, random);
+        if (!ConfigManagerVenus.disableSolarGenVenus) this.genStandardOre(6, this.solarGen, 0, 50, random);
         MinecraftForge.EVENT_BUS.post(new GCCoreEventPopulate.Post(this.world, random, chunkPos));
     }
 }

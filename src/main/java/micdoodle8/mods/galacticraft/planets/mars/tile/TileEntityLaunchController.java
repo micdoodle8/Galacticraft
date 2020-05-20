@@ -22,17 +22,17 @@ import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars;
 import micdoodle8.mods.galacticraft.planets.mars.network.PacketSimpleMars.EnumSimplePacketMars;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.WorldServer;
+import net.minecraft.world.ServerWorld;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.fml.relauncher.Side;
@@ -173,7 +173,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
                 this.chunkLoadTicket = ticket;
             }
 
-            NBTTagCompound nbt = this.chunkLoadTicket.getModData();
+            CompoundNBT nbt = this.chunkLoadTicket.getModData();
             nbt.setInteger("ChunkLoaderTileX", this.getPos().getX());
             nbt.setInteger("ChunkLoaderTileY", this.getPos().getY());
             nbt.setInteger("ChunkLoaderTileZ", this.getPos().getZ());
@@ -220,7 +220,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -236,7 +236,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setString("OwnerName", this.ownerName);
@@ -262,19 +262,19 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[] { 0 };
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID == 0;
     }
@@ -338,12 +338,12 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         if (this.frequency >= 0)
         {
             this.frequencyValid = true;
-            WorldServer[] servers = GCCoreUtil.getWorldServerList(this.world);
+            ServerWorld[] servers = GCCoreUtil.getWorldServerList(this.world);
 
             worldLoop:
             for (int i = 0; i < servers.length; i++)
             {
-                WorldServer world = servers[i];
+                ServerWorld world = servers[i];
 
                 for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
                 {
@@ -393,10 +393,10 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             this.destFrequencyValid = false;
             if (this.destFrequency >= 0)
             {
-                WorldServer[] servers = GCCoreUtil.getWorldServerList(this.world);
+                ServerWorld[] servers = GCCoreUtil.getWorldServerList(this.world);
                 for (int i = 0; i < servers.length; i++)
                 {
-                    WorldServer world = servers[i];
+                    ServerWorld world = servers[i];
 
                     for (TileEntity tile2 : new ArrayList<TileEntity>(world.loadedTileEntityList))
                     {
@@ -470,18 +470,18 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        IBlockState state = this.world.getBlockState(getPos()); 
+        BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMars)
         {
             return state.getValue(BlockMachineMars.FACING);
         }
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         return getFront().rotateY();
     }

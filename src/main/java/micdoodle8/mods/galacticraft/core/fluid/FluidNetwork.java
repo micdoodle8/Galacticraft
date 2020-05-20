@@ -18,10 +18,10 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacket;
 import micdoodle8.mods.galacticraft.core.network.PacketFluidNetworkUpdate;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -43,7 +43,7 @@ import java.util.*;
 public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitter<FluidStack>, TileEntity>
 {
     public Map<BlockPos, IFluidHandler> acceptors = Maps.newHashMap();
-    public Map<BlockPos, EnumSet<EnumFacing>> acceptorDirections = Maps.newHashMap();
+    public Map<BlockPos, EnumSet<Direction>> acceptorDirections = Maps.newHashMap();
     public final Set<IBufferTransmitter<FluidStack>> pipes = Sets.newHashSet();
     private Set<IBufferTransmitter<FluidStack>> pipesAdded = Sets.newHashSet();
     private Set<DelayQueue> updateQueue = Sets.newLinkedHashSet();
@@ -112,7 +112,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
         this.acceptors.putAll(network.acceptors);
 
-        for (Map.Entry<BlockPos, EnumSet<EnumFacing>> e : network.acceptorDirections.entrySet())
+        for (Map.Entry<BlockPos, EnumSet<Direction>> e : network.acceptorDirections.entrySet())
         {
             BlockPos pos = e.getKey();
 
@@ -208,7 +208,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     private int emitToAcceptors(FluidStack toSend, boolean doTransfer)
     {
-        List<Pair<BlockPos, Map<EnumFacing, IFluidHandler>>> available = new ArrayList<>();
+        List<Pair<BlockPos, Map<Direction, IFluidHandler>>> available = new ArrayList<>();
         available.addAll(this.getAcceptors(toSend));
 
         Collections.shuffle(available);
@@ -221,11 +221,11 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             int remainder = toSend.amount % divider;
             int each = (toSend.amount - remainder) / divider;
 
-            for (Pair<BlockPos, Map<EnumFacing, IFluidHandler>> pair : available)
+            for (Pair<BlockPos, Map<Direction, IFluidHandler>> pair : available)
             {
                 int currentSend = each;
-                Map<EnumFacing, IFluidHandler> acceptors = pair.getRight();
-                EnumSet<EnumFacing> sides = acceptorDirections.get(pair.getLeft());
+                Map<Direction, IFluidHandler> acceptors = pair.getRight();
+                EnumSet<Direction> sides = acceptorDirections.get(pair.getLeft());
 
                 if (remainder > 0)
                 {
@@ -233,7 +233,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                     remainder--;
                 }
 
-                for (EnumFacing side : sides)
+                for (Direction side : sides)
                 {
                     int prev = totalSend;
                     IFluidHandler acceptor = acceptors.get(side);
@@ -295,7 +295,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         this.onUpdate();
     }
 
-    public void addUpdate(EntityPlayerMP player)
+    public void addUpdate(ServerPlayerEntity player)
     {
         this.updateQueue.add(new DelayQueue(player));
     }
@@ -424,9 +424,9 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
         return Math.min(1.0F, this.buffer.amount / (float) this.getCapacity());
     }
 
-    public List<Pair<BlockPos, Map<EnumFacing, IFluidHandler>>> getAcceptors(FluidStack toSend)
+    public List<Pair<BlockPos, Map<Direction, IFluidHandler>>> getAcceptors(FluidStack toSend)
     {
-        List<Pair<BlockPos, Map<EnumFacing, IFluidHandler>>> toReturn = new LinkedList<>();
+        List<Pair<BlockPos, Map<Direction, IFluidHandler>>> toReturn = new LinkedList<>();
 
         if (GCCoreUtil.getEffectiveSide() == Side.CLIENT)
         {
@@ -443,7 +443,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
         for (BlockPos coords : acceptorsCopy)
         {
-            EnumSet<EnumFacing> sides = acceptorDirections.get(coords);
+            EnumSet<Direction> sides = acceptorDirections.get(coords);
             if (sides == null || sides.isEmpty())
             {
                 continue;
@@ -456,11 +456,11 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 continue;
             }
 
-            Map<EnumFacing, IFluidHandler> handlers = Maps.newHashMap();
+            Map<Direction, IFluidHandler> handlers = Maps.newHashMap();
 
             IFluidHandler handler;
             Fluid fluidToSend = toSend.getFluid();
-            for (EnumFacing side : sides)
+            for (Direction side : sides)
             {
                 handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
                 if (handler != null && handler.fill(new FluidStack(fluidToSend, 1), false) > 0)
@@ -562,12 +562,12 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 {
                     if (!(acceptor instanceof IBufferTransmitter) && acceptor != null)
                     {
-                        EnumFacing facing = EnumFacing.getFront(i).getOpposite();
+                        Direction facing = Direction.getFront(i).getOpposite();
                         IFluidHandler handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
                         if (handler != null)
                         {
                             BlockPos acceptorPos = tile.getPos().offset(facing.getOpposite());
-                            EnumSet<EnumFacing> facingSet = this.acceptorDirections.get(acceptorPos);
+                            EnumSet<Direction> facingSet = this.acceptorDirections.get(acceptorPos);
                             if (facingSet != null)
                             {
                                 facingSet.add(facing);
@@ -706,10 +706,10 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
     public static class DelayQueue
     {
-        public EntityPlayerMP player;
+        public ServerPlayerEntity player;
         public int delay;
 
-        public DelayQueue(EntityPlayerMP player)
+        public DelayQueue(ServerPlayerEntity player)
         {
             this.player = player;
             this.delay = 5;

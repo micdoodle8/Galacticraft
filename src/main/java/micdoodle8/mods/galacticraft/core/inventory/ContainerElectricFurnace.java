@@ -3,11 +3,11 @@ package micdoodle8.mods.galacticraft.core.inventory;
 import micdoodle8.mods.galacticraft.api.item.IItemElectric;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
@@ -15,7 +15,7 @@ public class ContainerElectricFurnace extends Container
 {
     private TileEntityElectricFurnace tileEntity;
 
-    public ContainerElectricFurnace(InventoryPlayer par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
+    public ContainerElectricFurnace(PlayerInventory par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
     {
         this.tileEntity = tileEntity;
 
@@ -26,10 +26,10 @@ public class ContainerElectricFurnace extends Container
         this.addSlotToContainer(new Slot(tileEntity, 1, 56, 25));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
+        this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 2, 109, 25));
         if (tileEntity.tierGC == 2)
         {
-            this.addSlotToContainer(new SlotFurnaceOutput(par1InventoryPlayer.player, tileEntity, 3, 127, 25));
+            this.addSlotToContainer(new FurnaceResultSlot(par1InventoryPlayer.player, tileEntity, 3, 127, 25));
         }
         int var3;
 
@@ -50,14 +50,14 @@ public class ContainerElectricFurnace extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
         this.tileEntity.playersUsing.remove(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -67,7 +67,7 @@ public class ContainerElectricFurnace extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         Slot var3 = this.inventorySlots.get(par1);

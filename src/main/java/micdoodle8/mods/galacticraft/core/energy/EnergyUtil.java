@@ -29,12 +29,12 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.init.Items;
+import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -83,7 +83,7 @@ public class EnergyUtil
         final TileEntity[] adjacentConnections = new TileEntity[6];
 
         BlockVec3 thisVec = new BlockVec3(tile);
-        for (EnumFacing direction : EnumFacing.VALUES)
+        for (Direction direction : Direction.VALUES)
         {
             if (tile instanceof IConductor && !((IConductor)tile).canConnect(direction, NetworkType.POWER))
             {
@@ -231,10 +231,10 @@ public class EnergyUtil
                             }
                             energyField.setAccessible(true);
                             Object energy = energyField.get(tileEntity);
-                            Set <EnumFacing> connections;
+                            Set <Direction> connections;
                             if (tile instanceof IEnergyEmitter)
                             {
-                                connections = (Set<EnumFacing>) energy.getClass().getMethod("getSinkDirs").invoke(energy);
+                                connections = (Set<Direction>) energy.getClass().getMethod("getSinkDirs").invoke(energy);
                                 if (connections.contains(direction.getOpposite()))
                                 {
                                     adjacentConnections[direction.ordinal()] = tileEntity;
@@ -243,7 +243,7 @@ public class EnergyUtil
                             }
                             if (tile instanceof IEnergyAcceptor)
                             {
-                                connections = (Set<EnumFacing>) energy.getClass().getMethod("getSourceDirs").invoke(energy);
+                                connections = (Set<Direction>) energy.getClass().getMethod("getSourceDirs").invoke(energy);
                                 if (connections.contains(direction.getOpposite()))
                                 {
                                     adjacentConnections[direction.ordinal()] = tileEntity;
@@ -284,11 +284,11 @@ public class EnergyUtil
      * @param directions
      * @throws Exception
      */
-    public static void setAdjacentPowerConnections(TileEntity conductor, List<Object> connectedAcceptors, List <EnumFacing> directions) throws Exception
+    public static void setAdjacentPowerConnections(TileEntity conductor, List<Object> connectedAcceptors, List <Direction> directions) throws Exception
     {
         final BlockVec3 thisVec = new BlockVec3(conductor);
         final World world = conductor.getWorld(); 
-        for (EnumFacing direction : EnumFacing.VALUES)
+        for (Direction direction : Direction.VALUES)
         {
             TileEntity tileEntity = thisVec.getTileEntityOnSide(world, direction);
             
@@ -297,7 +297,7 @@ public class EnergyUtil
                 continue;
             }
             
-            EnumFacing sideFrom = direction.getOpposite();
+            Direction sideFrom = direction.getOpposite();
 
             if (tileEntity instanceof IElectrical)
             {
@@ -395,7 +395,7 @@ public class EnergyUtil
         return;
     }
     
-    public static float otherModsEnergyTransfer(TileEntity tileAdj, EnumFacing inputAdj, float toSend, boolean simulate)
+    public static float otherModsEnergyTransfer(TileEntity tileAdj, Direction inputAdj, float toSend, boolean simulate)
     {
         if (isMekLoaded && !EnergyConfigHandler.disableMekanismOutput)
         {
@@ -496,7 +496,7 @@ public class EnergyUtil
         return 0F;
     }
 
-    public static float otherModsEnergyExtract(TileEntity tileAdj, EnumFacing inputAdj, float toPull, boolean simulate)
+    public static float otherModsEnergyExtract(TileEntity tileAdj, Direction inputAdj, float toPull, boolean simulate)
     {
         if (isIC2Loaded && !EnergyConfigHandler.disableIC2Input && tileAdj instanceof IEnergySource)
         {
@@ -574,7 +574,7 @@ public class EnergyUtil
      * @param tileAdj  - the tile under test, it might be an energy tile from another mod
      * @param inputAdj - the energy input side for that tile which is under test
      */
-    public static boolean otherModCanReceive(TileEntity tileAdj, EnumFacing inputAdj)
+    public static boolean otherModCanReceive(TileEntity tileAdj, Direction inputAdj)
     {
         if (tileAdj instanceof TileBaseConductor || tileAdj instanceof EnergyStorageTile)
         {
@@ -615,7 +615,7 @@ public class EnergyUtil
      * @param tileAdj - the tile under test, it might be an energy tile from another mod
      * @param side    - the energy output side for that tile which is under test
      */
-    public static boolean otherModCanProduce(TileEntity tileAdj, EnumFacing side)
+    public static boolean otherModCanProduce(TileEntity tileAdj, Direction side)
     {
         if (tileAdj instanceof TileBaseConductor || tileAdj instanceof EnergyStorageTile)
         {
@@ -732,7 +732,7 @@ public class EnergyUtil
 
                 try
                 {
-                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", EnumFacing.class, double.class, double.class);
+                    EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergy", Direction.class, double.class, double.class);
                     EnergyUtil.voltageParameterIC2 = true;
                     GCLog.debug("Set IC2 injectEnergy method OK");
                 }
@@ -741,7 +741,7 @@ public class EnergyUtil
                     //if that fails, try legacy version
                     try
                     {
-                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", EnumFacing.class, double.class);
+                        EnergyUtil.injectEnergyIC2 = clazz.getMethod("injectEnergyUnits", Direction.class, double.class);
                         GCLog.debug("IC2 inject 1.7.2 succeeded");
                     }
                     catch (Exception ee)
@@ -881,12 +881,12 @@ public class EnergyUtil
         return false;
     }
     
-    public static boolean hasCapability(ICapabilityProvider provider, Capability<?> capability, EnumFacing side)
+    public static boolean hasCapability(ICapabilityProvider provider, Capability<?> capability, Direction side)
     {
         return (provider == null || capability == null) ? false : provider.hasCapability(capability, side);
     }
 
-    public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability, EnumFacing side)
+    public static <T> T getCapability(ICapabilityProvider provider, Capability<T> capability, Direction side)
     {
         return (provider == null || capability == null) ? null : provider.getCapability(capability, side);
     }

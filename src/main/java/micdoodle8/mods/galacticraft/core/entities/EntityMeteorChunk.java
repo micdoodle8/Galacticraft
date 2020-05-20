@@ -5,23 +5,23 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.TransformerHooks;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.IProjectile;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.monster.EndermanEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.IndirectEntityDamageSource;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.network.play.server.SPacketChangeGameState;
+import net.minecraft.network.play.server.SChangeGameStatePacket;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntityDamageSourceIndirect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
@@ -59,14 +59,14 @@ public class EntityMeteorChunk extends Entity implements IProjectile
         this.randYawInc = rand.nextFloat() * 20 - 10;
     }
 
-    public EntityMeteorChunk(World par1World, EntityLivingBase par2EntityLivingBase, float speed)
+    public EntityMeteorChunk(World par1World, LivingEntity par2EntityLivingBase, float speed)
     {
         super(par1World);
         this.randPitchInc = rand.nextFloat() * 20 - 10;
         this.randYawInc = rand.nextFloat() * 20 - 10;
         this.shootingEntity = par2EntityLivingBase;
 
-        if (par2EntityLivingBase instanceof EntityPlayer)
+        if (par2EntityLivingBase instanceof PlayerEntity)
         {
             this.canBePickedUp = 1;
         }
@@ -151,7 +151,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
         }
 
         BlockPos pos = new BlockPos(this.xTile, this.yTile, this.zTile);
-        IBlockState stateIn = this.world.getBlockState(pos);
+        BlockState stateIn = this.world.getBlockState(pos);
 
         if (!stateIn.getBlock().isAir(this.world.getBlockState(pos), this.world, pos))
         {
@@ -237,11 +237,11 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                 movingobjectposition = new RayTraceResult(entity);
             }
 
-            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof EntityPlayer)
+            if (movingobjectposition != null && movingobjectposition.entityHit != null && movingobjectposition.entityHit instanceof PlayerEntity)
             {
-                EntityPlayer entityplayer = (EntityPlayer) movingobjectposition.entityHit;
+                PlayerEntity entityplayer = (PlayerEntity) movingobjectposition.entityHit;
 
-                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer))
+                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !((PlayerEntity) this.shootingEntity).canAttackPlayer(entityplayer))
                 {
                     movingobjectposition = null;
                 }
@@ -262,23 +262,23 @@ public class EntityMeteorChunk extends Entity implements IProjectile
 
                     if (this.shootingEntity == null)
                     {
-                        damagesource = new EntityDamageSourceIndirect("meteor_chunk", this, this).setProjectile();
+                        damagesource = new IndirectEntityDamageSource("meteor_chunk", this, this).setProjectile();
                     }
                     else
                     {
-                        damagesource = new EntityDamageSourceIndirect("meteor_chunk", this, this.shootingEntity).setProjectile();
+                        damagesource = new IndirectEntityDamageSource("meteor_chunk", this, this.shootingEntity).setProjectile();
                     }
 
-                    if (this.isBurning() && !(movingobjectposition.entityHit instanceof EntityEnderman))
+                    if (this.isBurning() && !(movingobjectposition.entityHit instanceof EndermanEntity))
                     {
                         movingobjectposition.entityHit.setFire(2);
                     }
 
                     if (movingobjectposition.entityHit.attackEntityFrom(damagesource, i1))
                     {
-                        if (movingobjectposition.entityHit instanceof EntityLivingBase)
+                        if (movingobjectposition.entityHit instanceof LivingEntity)
                         {
-                            EntityLivingBase entitylivingbase = (EntityLivingBase) movingobjectposition.entityHit;
+                            LivingEntity entitylivingbase = (LivingEntity) movingobjectposition.entityHit;
 
                             if (!this.world.isRemote)
                             {
@@ -298,16 +298,16 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                             if (this.shootingEntity != null)
                             {
                                 EnchantmentHelper.applyThornEnchantments(entitylivingbase, this.shootingEntity);
-                                EnchantmentHelper.applyArthropodEnchantments((EntityLivingBase) this.shootingEntity, entitylivingbase);
+                                EnchantmentHelper.applyArthropodEnchantments((LivingEntity) this.shootingEntity, entitylivingbase);
                             }
 
-                            if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof EntityPlayer && this.shootingEntity instanceof EntityPlayerMP)
+                            if (this.shootingEntity != null && movingobjectposition.entityHit != this.shootingEntity && movingobjectposition.entityHit instanceof PlayerEntity && this.shootingEntity instanceof ServerPlayerEntity)
                             {
-                                ((EntityPlayerMP) this.shootingEntity).connection.sendPacket(new SPacketChangeGameState(6, 0.0F));
+                                ((ServerPlayerEntity) this.shootingEntity).connection.sendPacket(new SChangeGameStatePacket(6, 0.0F));
                             }
                         }
 
-                        if (!(movingobjectposition.entityHit instanceof EntityEnderman))
+                        if (!(movingobjectposition.entityHit instanceof EndermanEntity))
                         {
                             this.setDead();
                         }
@@ -327,7 +327,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                     this.xTile = movingobjectposition.getBlockPos().getX();
                     this.yTile = movingobjectposition.getBlockPos().getY();
                     this.zTile = movingobjectposition.getBlockPos().getZ();
-                    IBlockState state = this.world.getBlockState(movingobjectposition.getBlockPos());
+                    BlockState state = this.world.getBlockState(movingobjectposition.getBlockPos());
                     this.inTile = state.getBlock();
                     this.inData = this.inTile.getMetaFromState(state);
                     this.motionX = (float) (movingobjectposition.hitVec.x - this.posX);
@@ -339,7 +339,7 @@ public class EntityMeteorChunk extends Entity implements IProjectile
                     this.posZ -= this.motionZ / f2 * 0.05000000074505806D;
                     this.inGround = true;
 
-                    IBlockState hitState = this.world.getBlockState(movingobjectposition.getBlockPos());
+                    BlockState hitState = this.world.getBlockState(movingobjectposition.getBlockPos());
                     if (!this.inTile.isAir(hitState, this.world, movingobjectposition.getBlockPos()))
                     {
                         this.inTile.onEntityCollidedWithBlock(this.world, movingobjectposition.getBlockPos(), hitState, this);
@@ -398,19 +398,19 @@ public class EntityMeteorChunk extends Entity implements IProjectile
     }
 
     @Override
-    protected void readEntityFromNBT(NBTTagCompound nbttagcompound)
+    protected void readEntityFromNBT(CompoundNBT nbttagcompound)
     {
 
     }
 
     @Override
-    protected void writeEntityToNBT(NBTTagCompound nbttagcompound)
+    protected void writeEntityToNBT(CompoundNBT nbttagcompound)
     {
 
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer par1EntityPlayer)
+    public void onCollideWithPlayer(PlayerEntity par1EntityPlayer)
     {
         if (!this.world.isRemote && this.inGround)
         {

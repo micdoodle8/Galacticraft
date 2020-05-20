@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.ContainerElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -26,7 +26,7 @@ public class GuiElectricFurnace extends GuiContainerGC
     private TileEntityElectricFurnace tileEntity;
     private ResourceLocation texture;
 
-    public GuiElectricFurnace(InventoryPlayer par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
+    public GuiElectricFurnace(PlayerInventory par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
     {
         super(new ContainerElectricFurnace(par1InventoryPlayer, tileEntity));
         this.tileEntity = tileEntity;

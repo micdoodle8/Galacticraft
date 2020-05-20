@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,7 +57,7 @@ public abstract class KeyHandler
 
     public void keyTick(Type type, boolean tickEnd)
     {
-        boolean inChat = FMLClientHandler.instance().getClient().currentScreen instanceof GuiChat;
+        boolean inChat = FMLClientHandler.instance().getClient().currentScreen instanceof ChatScreen;
 
         for (int i = 0; i < this.keyBindings.length; i++)
         {

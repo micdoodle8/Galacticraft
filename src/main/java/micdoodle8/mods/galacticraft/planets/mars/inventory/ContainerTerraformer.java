@@ -5,12 +5,12 @@ import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.inventory.SlotSpecific;
 import micdoodle8.mods.galacticraft.planets.mars.tile.TileEntityTerraformer;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.Slot;
+import net.minecraft.block.BushBlock;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.item.Items;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -23,7 +23,7 @@ public class ContainerTerraformer extends Container
     private final TileEntityTerraformer tileEntity;
     private static LinkedList<ItemStack> saplingList = null;
 
-    public ContainerTerraformer(InventoryPlayer par1InventoryPlayer, TileEntityTerraformer tileEntity, EntityPlayer player)
+    public ContainerTerraformer(PlayerInventory par1InventoryPlayer, TileEntityTerraformer tileEntity, PlayerEntity player)
     {
         this.tileEntity = tileEntity;
 
@@ -79,20 +79,20 @@ public class ContainerTerraformer extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer entityplayer)
+    public void onContainerClosed(PlayerEntity entityplayer)
     {
         super.onContainerClosed(entityplayer);
         this.tileEntity.closeInventory(entityplayer);
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = this.inventorySlots.get(par1);
@@ -204,7 +204,7 @@ public class ContainerTerraformer extends Container
 
         for (Block b : Block.REGISTRY)
         {
-            if (b instanceof BlockBush)
+            if (b instanceof BushBlock)
             {
                 try
                 {

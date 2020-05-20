@@ -19,7 +19,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -117,7 +117,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
             {
                 TileEntity[] tiles = OxygenUtil.getAdjacentFluidConnections(this);
 
-                for (EnumFacing side : EnumFacing.VALUES)
+                for (Direction side : Direction.VALUES)
                 {
                     TileEntity sideTile = tiles[side.ordinal()];
 
@@ -131,7 +131,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
 
                             if (received != null && received.amount != 0)
                             {
-                                handler.drain(this.fill(EnumFacing.DOWN, received, true), true);
+                                handler.drain(this.fill(Direction.DOWN, received, true), true);
                             }
                         }
                     }
@@ -185,7 +185,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
             this.adjacentConnections = null;
 
             BlockVec3 thisVec = new BlockVec3(this);
-            for (EnumFacing side : EnumFacing.VALUES)
+            for (Direction side : Direction.VALUES)
             {
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
@@ -229,7 +229,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         return type == NetworkType.FLUID;
     }
@@ -266,7 +266,7 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(EnumFacing side, GasStack stack, boolean doTransfer)
+    public int receiveGas(Direction side, GasStack stack, boolean doTransfer)
     {
         if (!stack.getGas().getName().equals("oxygen"))
         {
@@ -276,50 +276,50 @@ public abstract class TileEntityFluidTransmitter extends TileEntityAdvanced impl
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public int receiveGas(EnumFacing side, GasStack stack)
+    public int receiveGas(Direction side, GasStack stack)
     {
         return this.receiveGas(side, stack, true);
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(EnumFacing side, int amount, boolean doTransfer)
+    public GasStack drawGas(Direction side, int amount, boolean doTransfer)
     {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public GasStack drawGas(EnumFacing side, int amount)
+    public GasStack drawGas(Direction side, int amount)
     {
         return null;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canDrawGas(EnumFacing side, Gas type)
+    public boolean canDrawGas(Direction side, Gas type)
     {
         return false;
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.IGasHandler", modID = CompatibilityManager.modidMekanism)
-    public boolean canReceiveGas(EnumFacing side, Gas type)
+    public boolean canReceiveGas(Direction side, Gas type)
     {
         return type.getName().equals("oxygen");
     }
 
     @Annotations.RuntimeInterface(clazz = "mekanism.api.gas.ITubeConnection", modID = CompatibilityManager.modidMekanism)
-    public boolean canTubeConnect(EnumFacing side)
+    public boolean canTubeConnect(Direction side)
     {
         return this.canConnect(side, NetworkType.FLUID);
     }
 
     @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+    public boolean hasCapability(Capability<?> capability, @Nullable Direction facing)
     {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @Nullable
     @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+    public <T> T getCapability(Capability<T> capability, @Nullable Direction facing)
     {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
         {

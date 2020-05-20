@@ -9,21 +9,19 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.block.SoundType;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.item.Rarity;
+import net.minecraft.item.UseAction;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,24 +40,24 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public CreativeTabs getCreativeTab()
+    public ItemGroup getCreativeTab()
     {
         return GalacticraftCore.galacticraftItemsTab;
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entity, int timeLeft)
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entity, int timeLeft)
     {
         final int useTime = this.getMaxItemUseDuration(stack) - timeLeft;
 
         boolean placed = false;
 
-        if (!(entity instanceof EntityPlayer))
+        if (!(entity instanceof PlayerEntity))
         {
             return;
         }
 
-        EntityPlayer player = (EntityPlayer) entity;
+        PlayerEntity player = (PlayerEntity) entity;
 
         final RayTraceResult var12 = this.rayTrace(worldIn, player, true);
 
@@ -89,7 +87,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
                 }
                 else
                 {
-                    entity.sendMessage(new TextComponentString(GCCoreUtil.translate("gui.flag.already_placed")));
+                    entity.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.flag.already_placed")));
                 }
             }
 
@@ -105,7 +103,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
         }
     }
 
-    private int getInventorySlotContainItem(EntityPlayer player, ItemStack stack)
+    private int getInventorySlotContainItem(PlayerEntity player, ItemStack stack)
     {
         for (int var2 = 0; var2 < player.inventory.mainInventory.size(); ++var2)
         {
@@ -125,21 +123,21 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    public UseAction getItemUseAction(ItemStack par1ItemStack)
     {
-        return EnumAction.NONE;
+        return UseAction.NONE;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand hand)
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
     {
         playerIn.setActiveHand(hand);
-        return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(hand));
+        return new ActionResult<>(ActionResultType.SUCCESS, playerIn.getHeldItem(hand));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public EnumRarity getRarity(ItemStack par1ItemStack)
+    public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
@@ -157,31 +155,31 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }*/
 
     @Override
-    public boolean shouldHoldLeftHandUp(EntityPlayer player)
+    public boolean shouldHoldLeftHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public boolean shouldHoldRightHandUp(EntityPlayer player)
+    public boolean shouldHoldRightHandUp(PlayerEntity player)
     {
         return true;
     }
 
     @Override
-    public Vector3 getLeftHandRotation(EntityPlayer player)
+    public Vector3 getLeftHandRotation(PlayerEntity player)
     {
         return new Vector3((float) Math.PI + 1.3F, 0.5F, (float) Math.PI / 5.0F);
     }
 
     @Override
-    public Vector3 getRightHandRotation(EntityPlayer player)
+    public Vector3 getRightHandRotation(PlayerEntity player)
     {
         return new Vector3((float) Math.PI + 1.3F, -0.5F, (float) Math.PI / 5.0F);
     }
 
     @Override
-    public boolean shouldCrouch(EntityPlayer player)
+    public boolean shouldCrouch(PlayerEntity player)
     {
         return false;
     }

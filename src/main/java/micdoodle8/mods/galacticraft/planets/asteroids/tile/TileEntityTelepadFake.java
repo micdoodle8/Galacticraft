@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.planets.asteroids.tile;
 
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -29,7 +29,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
         return new int[0];
     }
@@ -46,7 +46,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
 
         if (!this.world.isRemote)
         {
-            IBlockState state = this.world.getBlockState(this.getPos());
+            BlockState state = this.world.getBlockState(this.getPos());
             this.world.notifyBlockUpdate(this.getPos(), state, state, 3);
         }
     }
@@ -67,7 +67,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
         }
     }
 
-    public boolean onActivated(EntityPlayer par5EntityPlayer)
+    public boolean onActivated(PlayerEntity par5EntityPlayer)
     {
         TileEntityShortRangeTelepad telepad = this.getBaseTelepad();
         return telepad != null && telepad.onActivated(par5EntityPlayer);
@@ -131,21 +131,21 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        NBTTagCompound tagCompound = nbt.getCompoundTag("mainBlockPosition");
+        CompoundNBT tagCompound = nbt.getCompoundTag("mainBlockPosition");
         this.setMainBlockInternal(new BlockPos(tagCompound.getInteger("x"), tagCompound.getInteger("y"), tagCompound.getInteger("z")));
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
         if (this.mainBlockPosition != null)
         {
-            NBTTagCompound tagCompound = new NBTTagCompound();
+            CompoundNBT tagCompound = new CompoundNBT();
             tagCompound.setInteger("x", this.mainBlockPosition.getX());
             tagCompound.setInteger("y", this.mainBlockPosition.getY());
             tagCompound.setInteger("z", this.mainBlockPosition.getZ());
@@ -213,20 +213,20 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         if (!this.canConnect)
         {
             return null;
         }
 
-        return EnumFacing.UP;
+        return Direction.UP;
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
-        return EnumFacing.NORTH;
+        return Direction.NORTH;
     }
 
     @Override

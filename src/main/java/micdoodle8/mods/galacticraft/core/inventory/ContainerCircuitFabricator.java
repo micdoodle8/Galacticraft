@@ -5,14 +5,14 @@ import micdoodle8.mods.galacticraft.api.recipe.CircuitFabricatorRecipes;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
+import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.item.Items;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
+import net.minecraft.inventory.container.FurnaceResultSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -24,7 +24,7 @@ public class ContainerCircuitFabricator extends Container
 {
     private TileEntityCircuitFabricator tileEntity;
 
-    public ContainerCircuitFabricator(InventoryPlayer playerInv, TileEntityCircuitFabricator tileEntity)
+    public ContainerCircuitFabricator(PlayerInventory playerInv, TileEntityCircuitFabricator tileEntity)
     {
         this.tileEntity = tileEntity;
 
@@ -50,7 +50,7 @@ public class ContainerCircuitFabricator extends Container
         this.addSlotToContainer(new SlotSpecific(tileEntity, 5, 145, 20, slotContentsList.toArray(new ItemStack[slotContentsList.size()])));
 
         // Smelting result
-        this.addSlotToContainer(new SlotFurnaceOutput(playerInv.player, tileEntity, 6, 152, 86));
+        this.addSlotToContainer(new FurnaceResultSlot(playerInv.player, tileEntity, 6, 152, 86));
 
         int slot;
 
@@ -69,7 +69,7 @@ public class ContainerCircuitFabricator extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return this.tileEntity.isUsableByPlayer(par1EntityPlayer);
     }
@@ -85,7 +85,7 @@ public class ContainerCircuitFabricator extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(par1);

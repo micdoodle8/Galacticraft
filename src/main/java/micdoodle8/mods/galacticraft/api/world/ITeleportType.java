@@ -2,9 +2,9 @@ package micdoodle8.mods.galacticraft.api.world;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with
      */
-    Vector3 getPlayerSpawnLocation(WorldServer world, EntityPlayerMP player);
+    Vector3 getPlayerSpawnLocation(ServerWorld world, ServerPlayerEntity player);
 
     /**
      * Gets the entity (non-player) spawn location when entering this dimension
@@ -43,7 +43,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with
      */
-    Vector3 getEntitySpawnLocation(WorldServer world, Entity entity);
+    Vector3 getEntitySpawnLocation(ServerWorld world, Entity entity);
 
     /**
      * Gets the parachest spawn location when entering this dimension. Return
@@ -55,7 +55,7 @@ public interface ITeleportType
      * @return a vector3 object containing the coordinates to be spawned into
      * the world with. Return null for no spawn
      */
-    Vector3 getParaChestSpawnLocation(WorldServer world, EntityPlayerMP player, Random rand);
+    Vector3 getParaChestSpawnLocation(ServerWorld world, ServerPlayerEntity player, Random rand);
 
     /**
      * Called when player is transferred to a space dimension
@@ -65,7 +65,7 @@ public interface ITeleportType
      * @param ridingAutoRocket If the player is riding an auto rocket. Do not spawn in
      *                         landers if so.
      */
-    void onSpaceDimensionChanged(World newWorld, EntityPlayerMP player, boolean ridingAutoRocket);
+    void onSpaceDimensionChanged(World newWorld, ServerPlayerEntity player, boolean ridingAutoRocket);
     
     
     /**
@@ -73,5 +73,5 @@ public interface ITeleportType
      * 
      * @param player
      */
-    void setupAdventureSpawn(EntityPlayerMP player);
+    void setupAdventureSpawn(ServerPlayerEntity player);
 }

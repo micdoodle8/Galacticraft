@@ -4,8 +4,8 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
-import net.minecraft.world.gen.ChunkProviderServer;
+import net.minecraft.world.ServerWorld;
+import net.minecraft.world.chunk.ServerChunkProvider;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.common.Loader;
 
@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import net.minecraft.entity.Entity;
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 
 public class CompatibilityManager
@@ -390,16 +390,16 @@ public class CompatibilityManager
         return CompatibilityManager.wailaLoaded;
     }
         
-    public static void spongeOverrideStart(WorldServer w)
+    public static void spongeOverrideStart(ServerWorld w)
     {
     }
 
-    public static boolean forceLoadChunks(WorldServer w)
+    public static boolean forceLoadChunks(ServerWorld w)
     {
         Boolean spongeForceChunksPrevious = null;
         if (spongeLoaded)
         {   
-            ChunkProviderServer cps = w.getChunkProvider();
+            ServerChunkProvider cps = w.getChunkProvider();
             try
             {
                 spongeForceChunksPrevious = (Boolean) spongeOverrideGet.invoke(cps);
@@ -411,7 +411,7 @@ public class CompatibilityManager
         return Boolean.TRUE.equals(spongeForceChunksPrevious);
     }
 
-    public static void forceLoadChunksEnd(WorldServer w, boolean previous)
+    public static void forceLoadChunksEnd(ServerWorld w, boolean previous)
     {
         if (spongeLoaded)
         {   
@@ -460,7 +460,7 @@ public class CompatibilityManager
         }
     }
 
-    public static boolean isAndroid(EntityPlayer player)
+    public static boolean isAndroid(PlayerEntity player)
     {
         if (CompatibilityManager.modMatterOverdriveLoaded)
         {

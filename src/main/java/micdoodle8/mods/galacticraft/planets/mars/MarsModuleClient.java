@@ -26,15 +26,15 @@ import micdoodle8.mods.galacticraft.planets.mars.entities.*;
 import micdoodle8.mods.galacticraft.planets.mars.items.ItemSchematicTier2;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
 import micdoodle8.mods.galacticraft.planets.mars.tile.*;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -69,13 +69,13 @@ public class MarsModuleClient implements IPlanetsModuleClient
     {
         MinecraftForge.EVENT_BUS.register(this);
 
-        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, (RenderManager manager) -> new RenderSludgeling(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, (RenderManager manager) -> new RenderSlimeling(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, (RenderManager manager) -> new RenderCreeperBoss(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (RenderManager manager) -> new RenderProjectileTNT(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (RenderManager manager) -> new RenderCargoRocket(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (RenderManager manager) -> new RenderLandingBalloons(manager));
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (RenderManager manager) -> new RenderTier2Rocket(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySludgeling.class, (EntityRendererManager manager) -> new RenderSludgeling(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntitySlimeling.class, (EntityRendererManager manager) -> new RenderSlimeling(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCreeperBoss.class, (EntityRendererManager manager) -> new RenderCreeperBoss(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityProjectileTNT.class, (EntityRendererManager manager) -> new RenderProjectileTNT(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityCargoRocket.class, (EntityRendererManager manager) -> new RenderCargoRocket(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityLandingBalloons.class, (EntityRendererManager manager) -> new RenderLandingBalloons(manager));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier2Rocket.class, (EntityRendererManager manager) -> new RenderTier2Rocket(manager));
     }
 
     private void addPlanetVariants(String name, String... variants)
@@ -106,7 +106,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
         ModelLoader.setCustomStateMapper(MarsBlocks.blockSludge, new StateMapperBase()
         {
             @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state)
+            protected ModelResourceLocation getModelResourceLocation(BlockState state)
             {
                 return sludgeLocation;
             }
@@ -218,7 +218,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     }
 
     @Override
-    public Object getGuiElement(Side side, int ID, EntityPlayer player, World world, int x, int y, int z)
+    public Object getGuiElement(Side side, int ID, PlayerEntity player, World world, int x, int y, int z)
     {
         if (side == Side.CLIENT)
         {
@@ -311,7 +311,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
         {
             final Minecraft minecraft = FMLClientHandler.instance().getClient();
 
-            final WorldClient world = minecraft.world;
+            final ClientWorld world = minecraft.world;
 
             if (world != null)
             {

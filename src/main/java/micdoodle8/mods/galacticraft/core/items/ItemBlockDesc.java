@@ -8,10 +8,10 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.GameSettings;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.text.TextFormatting;
@@ -34,7 +34,7 @@ public class ItemBlockDesc extends ItemBlockGC
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
+    public void onCreated(ItemStack stack, World world, PlayerEntity player)
     {
         if (!world.isRemote)
         {
@@ -42,15 +42,15 @@ public class ItemBlockDesc extends ItemBlockGC
         }
 
         //The player could be a FakePlayer made by another mod e.g. LogisticsPipes
-        if (player instanceof EntityPlayerSP)
+        if (player instanceof ClientPlayerEntity)
         {
             if (this.getBlock() == GCBlocks.fuelLoader)
             {
-                ClientProxyCore.playerClientHandler.onBuild(4, (EntityPlayerSP) player);
+                ClientProxyCore.playerClientHandler.onBuild(4, (ClientPlayerEntity) player);
             }
             else if (this.getBlock() == GCBlocks.fuelLoader)
             {
-                ClientProxyCore.playerClientHandler.onBuild(6, (EntityPlayerSP) player);
+                ClientProxyCore.playerClientHandler.onBuild(6, (ClientPlayerEntity) player);
             }
         }
     }

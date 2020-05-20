@@ -2,8 +2,8 @@ package micdoodle8.mods.galacticraft.planets.asteroids.client.sounds;
 
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
-import net.minecraft.client.audio.MovingSound;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.audio.TickableSound;
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.SoundCategory;
 
@@ -12,15 +12,15 @@ import net.minecraft.util.SoundCategory;
  *
  * @author micdoodle8, radfast
  */
-public class SoundUpdaterMiner extends MovingSound
+public class SoundUpdaterMiner extends TickableSound
 {
-    private final EntityPlayerSP thePlayer;
+    private final ClientPlayerEntity thePlayer;
     private final EntityAstroMiner theRocket;
     private boolean soundStopped;
     private float targetVolume;
     private float targetPitch;
 
-    public SoundUpdaterMiner(EntityPlayerSP par1EntityPlayerSP, EntityAstroMiner par2Entity)
+    public SoundUpdaterMiner(ClientPlayerEntity par1EntityPlayerSP, EntityAstroMiner par2Entity)
     {
         super(GCSounds.astroMiner, SoundCategory.AMBIENT);
         this.theRocket = par2Entity;

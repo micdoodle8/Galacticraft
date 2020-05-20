@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.fx;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -41,11 +41,11 @@ public class EffectHandler
             }
             else if (particleID.equals("launchFlameIdle"))
             {
-                particle = new ParticleLaunchFlame(mc.world, position, motion, false, (EntityLivingBase) otherInfo[0]);
+                particle = new ParticleLaunchFlame(mc.world, position, motion, false, (LivingEntity) otherInfo[0]);
             }
             else if (particleID.equals("launchFlameLaunched"))
             {
-                particle = new ParticleLaunchFlame(mc.world, position, motion, true, (EntityLivingBase) otherInfo[0]);
+                particle = new ParticleLaunchFlame(mc.world, position, motion, true, (LivingEntity) otherInfo[0]);
             }
             else if (particleID.equals("whiteSmokeTiny"))
             {

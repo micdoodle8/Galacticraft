@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.world.gen;
 
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.DungeonConfiguration;
 import micdoodle8.mods.galacticraft.core.world.gen.dungeon.MapGenDungeon;
-import net.minecraft.world.gen.structure.MapGenStructureIO;
+import net.minecraft.world.gen.feature.StructureIO;
 
 public class MapGenDungeonMars extends MapGenDungeon
 {
@@ -29,8 +29,8 @@ public class MapGenDungeonMars extends MapGenDungeon
     {
         if (!MapGenDungeonMars.initialized)
         {
-            MapGenStructureIO.registerStructureComponent(RoomBossMars.class, "MarsDungeonBossRoom");
-            MapGenStructureIO.registerStructureComponent(RoomTreasureMars.class, "MarsDungeonTreasureRoom");
+            StructureIO.registerStructureComponent(RoomBossMars.class, "MarsDungeonBossRoom");
+            StructureIO.registerStructureComponent(RoomTreasureMars.class, "MarsDungeonTreasureRoom");
         }
 
         MapGenDungeonMars.initialized = true;

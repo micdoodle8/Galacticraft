@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.item;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 
 public interface IArmorGravity
 {
@@ -14,7 +14,7 @@ public interface IArmorGravity
 	 *  
 	 *  The total effect will be cumulative for all pieces of IArmorGravity armor worn. 
 	 */
-	int gravityOverrideIfLow(EntityPlayer p);
+	int gravityOverrideIfLow(PlayerEntity p);
 	
 	/**
 	 * Effective on worlds where the Galacticraft gravity is higher than Overworld normal.
@@ -26,5 +26,5 @@ public interface IArmorGravity
 	 *  
 	 *  The total effect will be cumulative for all pieces of IArmorGravity armor worn. 
 	 */
-	int gravityOverrideIfHigh(EntityPlayer p);
+	int gravityOverrideIfHigh(PlayerEntity p);
 }

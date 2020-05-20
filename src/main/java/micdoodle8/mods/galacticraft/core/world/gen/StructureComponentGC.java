@@ -1,43 +1,43 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntityMobSpawner;
+import net.minecraft.block.Blocks;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
+import net.minecraft.world.gen.feature.StructurePiece;
 
 import java.util.Random;
 
-public abstract class StructureComponentGC extends StructureComponent
+public abstract class StructureComponentGC extends StructurePiece
 {
     public StructureComponentGC(int var1)
     {
         super(var1);
     }
 
-    public static StructureBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int lengthOffset, int heightOffset, int widthOffset, int length, int height, int width, EnumFacing coordBaseMode)
+    public static MutableBoundingBox getComponentToAddBoundingBox(int x, int y, int z, int lengthOffset, int heightOffset, int widthOffset, int length, int height, int width, Direction coordBaseMode)
     {
         if (coordBaseMode != null)
         {
             switch (SwitchEnumFacing.field_176064_a[coordBaseMode.ordinal()])
             {
             case 0:
-                return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
+                return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
             case 1:
-                return new StructureBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
+                return new MutableBoundingBox(x - width + widthOffset, y + heightOffset, z + lengthOffset, x + widthOffset, y + height + heightOffset, z + length + lengthOffset);
             case 2:
-                return new StructureBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
+                return new MutableBoundingBox(x - length - lengthOffset, y + heightOffset, z - width - widthOffset, x - lengthOffset, y + height + heightOffset, z - widthOffset);
             case 3:
-                return new StructureBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
+                return new MutableBoundingBox(x + widthOffset, y + heightOffset, z - length, x + width + widthOffset, y + height + heightOffset, z + lengthOffset);
             }
         }
-        return new StructureBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
+        return new MutableBoundingBox(x + lengthOffset, y + heightOffset, z + widthOffset, x + length + lengthOffset, y + height + heightOffset, z + width + widthOffset);
     }
 
-    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, StructureBoundingBox var7)
+    protected void placeSpawnerAtCurrentPosition(World var1, Random var2, int var3, int var4, int var5, ResourceLocation var6, MutableBoundingBox var7)
     {
         final int var8 = this.getXWithOffset(var3, var5);
         final int var9 = this.getYWithOffset(var4);
@@ -47,7 +47,7 @@ public abstract class StructureComponentGC extends StructureComponent
         if (var7.isVecInside(pos) && var1.getBlockState(pos).getBlock() != Blocks.MOB_SPAWNER)
         {
             var1.setBlockState(pos, Blocks.MOB_SPAWNER.getDefaultState(), 2);
-            final TileEntityMobSpawner var11 = (TileEntityMobSpawner) var1.getTileEntity(pos);
+            final MobSpawnerTileEntity var11 = (MobSpawnerTileEntity) var1.getTileEntity(pos);
 
             if (var11 != null)
             {
@@ -64,9 +64,9 @@ public abstract class StructureComponentGC extends StructureComponent
         return var5 == 0 ? new int[] { var6 + 1, var7 - 1, var8 - var4 / 2 } : var5 == 1 ? new int[] { var6 + var4 / 2, var7 - 1, var8 + 1 } : var5 == 2 ? new int[] { var6 - 1, var7 - 1, var8 + var4 / 2 } : var5 == 3 ? new int[] { var6 - var4 / 2, var7 - 1, var8 - 1 } : new int[] { var1, var2, var3 };
     }
 
-    public int[] getOffsetAsIfRotated(int[] var1, EnumFacing var2)
+    public int[] getOffsetAsIfRotated(int[] var1, Direction var2)
     {
-        final EnumFacing var3 = getCoordBaseMode();
+        final Direction var3 = getCoordBaseMode();
         final int[] var4 = new int[3];
         this.setCoordBaseMode(var2);
         var4[0] = this.getXWithOffset(var1[0], var1[2]);
@@ -128,13 +128,13 @@ public abstract class StructureComponentGC extends StructureComponent
 
     protected static class SwitchEnumFacing
     {
-        protected static int[] field_176064_a = new int[EnumFacing.VALUES.length];
+        protected static int[] field_176064_a = new int[Direction.VALUES.length];
 
         static
         {
             try
             {
-                field_176064_a[EnumFacing.NORTH.ordinal()] = 1;
+                field_176064_a[Direction.NORTH.ordinal()] = 1;
             }
             catch (NoSuchFieldError var4)
             {
@@ -142,7 +142,7 @@ public abstract class StructureComponentGC extends StructureComponent
 
             try
             {
-                field_176064_a[EnumFacing.SOUTH.ordinal()] = 2;
+                field_176064_a[Direction.SOUTH.ordinal()] = 2;
             }
             catch (NoSuchFieldError var3)
             {
@@ -150,7 +150,7 @@ public abstract class StructureComponentGC extends StructureComponent
 
             try
             {
-                field_176064_a[EnumFacing.WEST.ordinal()] = 3;
+                field_176064_a[Direction.WEST.ordinal()] = 3;
             }
             catch (NoSuchFieldError var2)
             {
@@ -158,7 +158,7 @@ public abstract class StructureComponentGC extends StructureComponent
 
             try
             {
-                field_176064_a[EnumFacing.EAST.ordinal()] = 4;
+                field_176064_a[Direction.EAST.ordinal()] = 4;
             }
             catch (NoSuchFieldError var1)
             {

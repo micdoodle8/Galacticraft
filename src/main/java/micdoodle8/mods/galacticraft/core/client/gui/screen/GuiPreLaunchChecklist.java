@@ -7,13 +7,13 @@ import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementCheckboxPr
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumHand;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import java.util.Map;
 
-public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckboxPreLaunch.ICheckBoxCallback
+public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxPreLaunch.ICheckBoxCallback
 {
     private static final ResourceLocation bookGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/checklist_book.png");
     private int bookImageWidth = 192;
@@ -31,12 +31,12 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
     private int bookTotalPages;
     private NextPageButton buttonNextPage;
     private NextPageButton buttonPreviousPage;
-    private NBTTagCompound tagCompound;
+    private CompoundNBT tagCompound;
     private Map<Integer, String> checkboxToKeyMap = Maps.newHashMap();
 
-    public GuiPreLaunchChecklist(List<List<String>> checklistKeys, NBTTagCompound tagCompound)
+    public GuiPreLaunchChecklist(List<List<String>> checklistKeys, CompoundNBT tagCompound)
     {
-        this.tagCompound = tagCompound != null ? tagCompound : new NBTTagCompound();
+        this.tagCompound = tagCompound != null ? tagCompound : new CompoundNBT();
         this.checklistKeys = checklistKeys;
     }
 
@@ -135,7 +135,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
 
     private void onDataChange()
     {
-        for (GuiButton button : this.buttonList)
+        for (Button button : this.buttonList)
         {
             if (button instanceof GuiElementCheckboxPreLaunch)
             {
@@ -147,18 +147,18 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_UPDATE_CHECKLIST, GCCoreUtil.getDimensionID(mc.player.world), new Object[] { this.tagCompound }));
 
         // Update client item
-        ItemStack stack = mc.player.getHeldItem(EnumHand.MAIN_HAND /* TODO Support off-hand use */);
-        NBTTagCompound tagCompound = stack.getTagCompound();
+        ItemStack stack = mc.player.getHeldItem(Hand.MAIN_HAND /* TODO Support off-hand use */);
+        CompoundNBT tagCompound = stack.getTagCompound();
         if (tagCompound == null)
         {
-            tagCompound = new NBTTagCompound();
+            tagCompound = new CompoundNBT();
         }
         tagCompound.setTag("checklistData", this.tagCompound);
         stack.setTagCompound(tagCompound);
     }
 
     @Override
-    protected void actionPerformed(GuiButton buttonClicked)
+    protected void actionPerformed(Button buttonClicked)
     {
         if (buttonClicked == this.buttonNextPage)
         {
@@ -197,7 +197,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
         boolean started = false;
         for (int i = 2; i < this.buttonList.size(); ++i)
         {
-            GuiButton button = this.buttonList.get(i);
+            Button button = this.buttonList.get(i);
             if (started)
             {
                 if (button.x > element.x)
@@ -219,7 +219,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
     }
 
     @Override
-    public boolean canPlayerEdit(GuiElementCheckboxPreLaunch checkbox, EntityPlayer player)
+    public boolean canPlayerEdit(GuiElementCheckboxPreLaunch checkbox, PlayerEntity player)
     {
         return true;
     }
@@ -236,7 +236,7 @@ public class GuiPreLaunchChecklist extends GuiScreen implements GuiElementCheckb
     }
 
     @SideOnly(Side.CLIENT)
-    static class NextPageButton extends GuiButton
+    static class NextPageButton extends Button
     {
         private final boolean forward;
 

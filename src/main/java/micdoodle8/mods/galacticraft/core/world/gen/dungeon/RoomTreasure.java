@@ -5,42 +5,42 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockTier1TreasureChest;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.storage.loot.LootTables;
 
 import java.util.Random;
 
 public class RoomTreasure extends SizedPiece
 {
     public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_1");
-    public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTableList.register(MOONCHEST);
+    public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTables.register(MOONCHEST);
 
     public RoomTreasure()
     {
     }
 
-    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, EnumFacing entranceDir)
+    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, Direction entranceDir)
     {
         this(configuration, rand, blockPosX, blockPosZ, rand.nextInt(4) + 6, configuration.getRoomHeight(), rand.nextInt(4) + 6, entranceDir);
     }
 
-    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, EnumFacing entranceDir)
+    public RoomTreasure(DungeonConfiguration configuration, Random rand, int blockPosX, int blockPosZ, int sizeX, int sizeY, int sizeZ, Direction entranceDir)
     {
         super(configuration, sizeX, sizeY, sizeZ, entranceDir.getOpposite());
-        this.setCoordBaseMode(EnumFacing.SOUTH);
+        this.setCoordBaseMode(Direction.SOUTH);
         int yPos = configuration.getYPosition();
 
-        this.boundingBox = new StructureBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
+        this.boundingBox = new MutableBoundingBox(blockPosX, yPos, blockPosZ, blockPosX + this.sizeX, yPos + this.sizeY, blockPosZ + this.sizeZ);
     }
 
     @Override
-    public boolean addComponentParts(World worldIn, Random random, StructureBoundingBox chunkBox)
+    public boolean addComponentParts(World worldIn, Random random, MutableBoundingBox chunkBox)
     {
         for (int i = 0; i <= this.sizeX; i++)
         {
@@ -51,17 +51,17 @@ public class RoomTreasure extends SizedPiece
                     if (i == 0 || i == this.sizeX || j == 0 || j == this.sizeY || k == 0 || k == this.sizeZ)
                     {
                         boolean placeBlock = true;
-                        if (getDirection().getAxis() == EnumFacing.Axis.Z)
+                        if (getDirection().getAxis() == Direction.Axis.Z)
                         {
                             int start = (this.boundingBox.maxX - this.boundingBox.minX) / 2 - 1;
                             int end = (this.boundingBox.maxX - this.boundingBox.minX) / 2 + 1;
                             if (i > start && i <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.SOUTH && k == 0)
+                                if (getDirection() == Direction.SOUTH && k == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.NORTH && k == this.sizeZ)
+                                else if (getDirection() == Direction.NORTH && k == this.sizeZ)
                                 {
                                     placeBlock = false;
                                 }
@@ -73,11 +73,11 @@ public class RoomTreasure extends SizedPiece
                             int end = (this.boundingBox.maxZ - this.boundingBox.minZ) / 2 + 1;
                             if (k > start && k <= end && j < 3 && j > 0)
                             {
-                                if (getDirection() == EnumFacing.EAST && i == 0)
+                                if (getDirection() == Direction.EAST && i == 0)
                                 {
                                     placeBlock = false;
                                 }
-                                else if (getDirection() == EnumFacing.WEST && i == this.sizeX)
+                                else if (getDirection() == Direction.WEST && i == this.sizeX)
                                 {
                                     placeBlock = false;
                                 }
@@ -130,7 +130,7 @@ public class RoomTreasure extends SizedPiece
     {
         if (startPiece.attachedComponents.size() > 2)
         {
-            StructureComponent component = startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 3);
+            StructurePiece component = startPiece.attachedComponents.get(startPiece.attachedComponents.size() - 3);
             if (component instanceof RoomBoss)
             {
                 BlockPos blockpos = new BlockPos(this.getXWithOffset(this.sizeX / 2, this.sizeZ / 2), this.getYWithOffset(1), this.getZWithOffset(this.sizeX / 2, this.sizeZ / 2));

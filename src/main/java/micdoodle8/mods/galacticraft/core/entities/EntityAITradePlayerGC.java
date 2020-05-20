@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.container.Container;
 
-public class EntityAITradePlayerGC extends EntityAIBase
+public class EntityAITradePlayerGC extends Goal
 {
     private EntityAlienVillager villager;
 
@@ -35,7 +35,7 @@ public class EntityAITradePlayerGC extends EntityAIBase
         }
         else
         {
-            EntityPlayer entityplayer = this.villager.getCustomer();
+            PlayerEntity entityplayer = this.villager.getCustomer();
             return entityplayer == null ? false : (this.villager.getDistanceSq(entityplayer) > 16.0D ? false : entityplayer.openContainer instanceof Container);
         }
     }
@@ -49,6 +49,6 @@ public class EntityAITradePlayerGC extends EntityAIBase
     @Override
     public void resetTask()
     {
-        this.villager.setCustomer((EntityPlayer) null);
+        this.villager.setCustomer((PlayerEntity) null);
     }
 }

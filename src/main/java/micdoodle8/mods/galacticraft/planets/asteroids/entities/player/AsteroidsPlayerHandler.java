@@ -1,10 +1,9 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.entities.player;
 
-import micdoodle8.mods.galacticraft.planets.asteroids.ConfigManagerAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntitySmallAsteroid;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -15,27 +14,27 @@ public class AsteroidsPlayerHandler
     @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent event)
     {
-        if (event.player instanceof EntityPlayerMP)
+        if (event.player instanceof ServerPlayerEntity)
         {
-            this.onPlayerLogin((EntityPlayerMP) event.player);
+            this.onPlayerLogin((ServerPlayerEntity) event.player);
         }
     }
 
     @SubscribeEvent
     public void onPlayerLogout(PlayerLoggedOutEvent event)
     {
-        if (event.player instanceof EntityPlayerMP)
+        if (event.player instanceof ServerPlayerEntity)
         {
-            this.onPlayerLogout((EntityPlayerMP) event.player);
+            this.onPlayerLogout((ServerPlayerEntity) event.player);
         }
     }
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerRespawnEvent event)
     {
-        if (event.player instanceof EntityPlayerMP)
+        if (event.player instanceof ServerPlayerEntity)
         {
-            this.onPlayerRespawn((EntityPlayerMP) event.player);
+            this.onPlayerRespawn((ServerPlayerEntity) event.player);
         }
     }
 
@@ -48,27 +47,27 @@ public class AsteroidsPlayerHandler
 //        }
 //    }
 
-    private void onPlayerLogin(EntityPlayerMP player)
+    private void onPlayerLogin(ServerPlayerEntity player)
     {
     }
 
-    private void onPlayerLogout(EntityPlayerMP player)
+    private void onPlayerLogout(ServerPlayerEntity player)
     {
 
     }
 
-    private void onPlayerRespawn(EntityPlayerMP player)
+    private void onPlayerRespawn(ServerPlayerEntity player)
     {
     }
 
-    public void onPlayerUpdate(EntityPlayerMP player)
+    public void onPlayerUpdate(ServerPlayerEntity player)
     {
         if (!ConfigManagerAsteroids.disableSmallAsteroids) {
             if (!player.world.isRemote && player.world.provider instanceof WorldProviderAsteroids) {
                 final int f = 50;
 
                 if (player.world.rand.nextInt(f) == 0 && player.posY < 260D) {
-                    final EntityPlayer closestPlayer = player.world.getClosestPlayerToEntity(player, 100);
+                    final PlayerEntity closestPlayer = player.world.getClosestPlayerToEntity(player, 100);
 
                     if (closestPlayer == null || closestPlayer.getEntityId() <= player.getEntityId()) {
                         double x, y, z;

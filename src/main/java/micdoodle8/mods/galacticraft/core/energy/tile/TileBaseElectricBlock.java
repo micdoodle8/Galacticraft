@@ -11,13 +11,13 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import micdoodle8.mods.miccore.Annotations.RuntimeInterface;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -49,7 +49,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
 
     public abstract boolean shouldUseEnergy();
 
-    public abstract EnumFacing getElectricInputDirection();
+    public abstract Direction getElectricInputDirection();
 
     public abstract ItemStack getBatteryInSlot();
 
@@ -148,7 +148,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
 
@@ -157,13 +157,13 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public NBTTagCompound getUpdateTag()
+    public CompoundNBT getUpdateTag()
     {
-        return this.writeToNBT(new NBTTagCompound());
+        return this.writeToNBT(new CompoundNBT());
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
 
@@ -180,7 +180,7 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
         }
     }
 
-    public abstract EnumFacing getFront();
+    public abstract Direction getFront();
 
     @Override
     public boolean getDisabled(int index)
@@ -189,25 +189,25 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public EnumFacing getFacing(World world, BlockPos pos)
+    public Direction getFacing(World world, BlockPos pos)
     {
         return this.getFront();
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public boolean setFacing(World world, BlockPos pos, EnumFacing newDirection, EntityPlayer player)
+    public boolean setFacing(World world, BlockPos pos, Direction newDirection, PlayerEntity player)
     {
         return false;
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public boolean wrenchCanRemove(World world, BlockPos pos, EntityPlayer player)
+    public boolean wrenchCanRemove(World world, BlockPos pos, PlayerEntity player)
     {
         return false;
     }
 
     @RuntimeInterface(clazz = "ic2.api.tile.IWrenchable", modID = CompatibilityManager.modidIC2)
-    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, IBlockState state, TileEntity te, EntityPlayer player, int fortune)
+    public List<ItemStack> getWrenchDrops(World world, BlockPos pos, BlockState state, TileEntity te, PlayerEntity player, int fortune)
     {
         List<ItemStack> drops = Lists.newArrayList();
         drops.add(this.getBlockType().getPickBlock(state, null, this.world, this.getPos(), player));
@@ -215,23 +215,23 @@ public abstract class TileBaseElectricBlock extends TileBaseUniversalElectrical 
     }
 
     @Override
-    public EnumSet<EnumFacing> getElectricalInputDirections()
+    public EnumSet<Direction> getElectricalInputDirections()
     {
         if (this.getElectricInputDirection() == null)
         {
-            return EnumSet.noneOf(EnumFacing.class);
+            return EnumSet.noneOf(Direction.class);
         }
 
         return EnumSet.of(this.getElectricInputDirection());
     }
 
-    public boolean isUsableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
         return this.getWorld().getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
     @Override
-    public boolean canConnect(EnumFacing direction, NetworkType type)
+    public boolean canConnect(Direction direction, NetworkType type)
     {
         if (direction == null || type != NetworkType.POWER)
         {

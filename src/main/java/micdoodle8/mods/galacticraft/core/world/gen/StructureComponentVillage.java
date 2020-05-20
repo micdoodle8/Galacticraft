@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.world.gen;
 
 import micdoodle8.mods.galacticraft.core.entities.EntityAlienVillager;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.structure.StructureBoundingBox;
-import net.minecraft.world.gen.structure.StructureComponent;
-import net.minecraft.world.gen.structure.template.TemplateManager;
+import net.minecraft.world.gen.feature.StructurePiece;
+import net.minecraft.world.gen.feature.template.TemplateManager;
 
 import java.util.List;
 import java.util.Random;
 
-public abstract class StructureComponentVillage extends StructureComponent
+public abstract class StructureComponentVillage extends StructurePiece
 {
     static
     {
@@ -40,52 +40,52 @@ public abstract class StructureComponentVillage extends StructureComponent
     }
 
     @Override
-    protected void writeStructureToNBT(NBTTagCompound nbttagcompound)
+    protected void writeStructureToNBT(CompoundNBT nbttagcompound)
     {
         nbttagcompound.setInteger("VCount", this.villagersSpawned);
     }
 
     @Override
-    protected void readStructureFromNBT(NBTTagCompound nbt, TemplateManager manager)
+    protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
     {
         this.villagersSpawned = nbt.getInteger("VCount");
     }
 
-    protected StructureComponent getNextComponentNN(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructureComponent> par2List, Random par3Random, int par4, int par5)
+    protected StructurePiece getNextComponentNN(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructurePiece> par2List, Random par3Random, int par4, int par5)
     {
         switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(1), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(1), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, EnumFacing.getHorizontal(2), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.getHorizontal(2), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(1), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX - 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(1), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, EnumFacing.getHorizontal(2), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.minZ - 1, Direction.getHorizontal(2), this.getComponentType());
         default:
             return null;
         }
     }
 
-    protected StructureComponent getNextComponentPP(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructureComponent> par2List, Random par3Random, int par4, int par5)
+    protected StructurePiece getNextComponentPP(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, List<StructurePiece> par2List, Random par3Random, int par4, int par5)
     {
         switch (this.getCoordBaseMode().getHorizontalIndex())
         {
         case 0:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(3), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(3), this.getComponentType());
         case 1:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, EnumFacing.getHorizontal(0), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.getHorizontal(0), this.getComponentType());
         case 2:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, EnumFacing.getHorizontal(3), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.maxX + 1, this.boundingBox.minY + par4, this.boundingBox.minZ + par5, Direction.getHorizontal(3), this.getComponentType());
         case 3:
-            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, EnumFacing.getHorizontal(0), this.getComponentType());
+            return StructureVillagePiecesMoon.getNextStructureComponent(par1ComponentVillageStartPiece, par2List, par3Random, this.boundingBox.minX + par5, this.boundingBox.minY + par4, this.boundingBox.maxZ + 1, Direction.getHorizontal(0), this.getComponentType());
         default:
             return null;
         }
     }
 
-    protected int getAverageGroundLevel(World world, StructureBoundingBox boundingBox)
+    protected int getAverageGroundLevel(World world, MutableBoundingBox boundingBox)
     {
         int i = 0;
         int j = 0;
@@ -115,12 +115,12 @@ public abstract class StructureComponentVillage extends StructureComponent
         }
     }
 
-    protected static boolean canVillageGoDeeper(StructureBoundingBox par0StructureBoundingBox)
+    protected static boolean canVillageGoDeeper(MutableBoundingBox par0StructureBoundingBox)
     {
         return par0StructureBoundingBox != null && par0StructureBoundingBox.minY > 10;
     }
 
-    protected void spawnVillagers(World par1World, StructureBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6)
+    protected void spawnVillagers(World par1World, MutableBoundingBox par2StructureBoundingBox, int par3, int par4, int par5, int par6)
     {
         if (this.villagersSpawned < par6)
         {

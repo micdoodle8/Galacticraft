@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.api.recipe;
 
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
@@ -28,7 +28,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
+    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
     {
         NonNullList<ItemStack> aitemstack = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
 
@@ -42,7 +42,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
     }
 
     @Override
-    public boolean matches(InventoryCrafting inv, World worldIn)
+    public boolean matches(CraftingInventory inv, World worldIn)
     {
         for (int i = 0; i <= 3 - this.recipeWidth; ++i)
         {
@@ -63,7 +63,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
         return false;
     }
 
-    private boolean checkMatch(InventoryCrafting p_77573_1_, int p_77573_2_, int p_77573_3_, boolean p_77573_4_)
+    private boolean checkMatch(CraftingInventory p_77573_1_, int p_77573_2_, int p_77573_3_, boolean p_77573_4_)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -111,7 +111,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
     }
 
     @Override
-    public ItemStack getCraftingResult(InventoryCrafting inv)
+    public ItemStack getCraftingResult(CraftingInventory inv)
     {
         return this.getRecipeOutput().copy();
     }

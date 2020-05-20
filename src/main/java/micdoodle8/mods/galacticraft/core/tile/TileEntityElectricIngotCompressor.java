@@ -14,15 +14,15 @@ import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.util.Direction;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraftforge.fml.relauncher.Side;
@@ -217,7 +217,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt)
+    public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
         this.advanced = nbt.getBoolean("adv");
@@ -229,11 +229,11 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         this.processTicks = nbt.getInteger("smeltingTicks");
 
         this.inventory = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
-        NBTTagList nbttaglist = nbt.getTagList("Items", 10);
+        ListNBT nbttaglist = nbt.getTagList("Items", 10);
 
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            CompoundNBT nbttagcompound = nbttaglist.getCompoundTagAt(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.inventory.size())
@@ -250,19 +250,19 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+    public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("adv", this.advanced);
         nbt.setInteger("smeltingTicks", this.processTicks);
-        NBTTagList items = new NBTTagList();
+        ListNBT items = new ListNBT();
         int i;
 
         for (i = 0; i < this.inventory.size(); ++i)
         {
             if (!this.inventory.get(i).isEmpty())
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                CompoundNBT var4 = new CompoundNBT();
                 var4.setByte("Slot", (byte) i);
                 this.inventory.get(i).writeToNBT(var4);
                 items.appendTag(var4);
@@ -273,7 +273,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         {
             if (!this.compressingCraftMatrix.getStackInSlot(i).isEmpty())
             {
-                NBTTagCompound var4 = new NBTTagCompound();
+                CompoundNBT var4 = new CompoundNBT();
                 var4.setByte("Slot", (byte) (i + this.inventory.size()));
                 this.compressingCraftMatrix.getStackInSlot(i).writeToNBT(var4);
                 items.appendTag(var4);
@@ -395,7 +395,7 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer entityplayer)
+    public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
         return this.world.getTileEntity(this.getPos()) == this && entityplayer.getDistanceSq(this.getPos().getX() + 0.5D, this.getPos().getY() + 0.5D, this.getPos().getZ() + 0.5D) <= 64.0D;
     }
@@ -505,9 +505,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side)
+    public int[] getSlotsForFace(Direction side)
     {
-        if (side == EnumFacing.DOWN)
+        if (side == Direction.DOWN)
         {
             return new int[] { 1, 2 };
         }
@@ -583,13 +583,13 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canInsertItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return this.isItemValidForSlot(slotID, par2ItemStack);
     }
 
     @Override
-    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, EnumFacing par3)
+    public boolean canExtractItem(int slotID, ItemStack par2ItemStack, Direction par3)
     {
         return slotID == 1 || slotID == 2;
     }
@@ -601,13 +601,13 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
     }
 
     @Override
-    public EnumFacing getFront()
+    public Direction getFront()
     {
         return BlockMachineBase.getFront(this.world.getBlockState(getPos())); 
     }
 
     @Override
-    public EnumFacing getElectricInputDirection()
+    public Direction getElectricInputDirection()
     {
         switch (this.getSide(MachineSide.ELECTRIC_IN))
         {
@@ -616,9 +616,9 @@ public class TileEntityElectricIngotCompressor extends TileBaseElectricBlock imp
         case REAR:
             return getFront().getOpposite();
         case TOP:
-            return EnumFacing.UP;
+            return Direction.UP;
         case BOTTOM:
-            return EnumFacing.DOWN;
+            return Direction.DOWN;
         case LEFT:
         default:
             return getFront().rotateY();

@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.planets.mars.client.render.entity;
 
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityProjectileTNT;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.init.Blocks;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class RenderProjectileTNT extends Render<EntityProjectileTNT>
+public class RenderProjectileTNT extends EntityRenderer<EntityProjectileTNT>
 {
-    public RenderProjectileTNT(RenderManager renderManager)
+    public RenderProjectileTNT(EntityRendererManager renderManager)
     {
         super(renderManager);
         this.shadowSize = 0.5F;
@@ -59,6 +59,6 @@ public class RenderProjectileTNT extends Render<EntityProjectileTNT>
     @Override
     protected ResourceLocation getEntityTexture(EntityProjectileTNT entity)
     {
-        return TextureMap.LOCATION_BLOCKS_TEXTURE;
+        return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
     }
 }

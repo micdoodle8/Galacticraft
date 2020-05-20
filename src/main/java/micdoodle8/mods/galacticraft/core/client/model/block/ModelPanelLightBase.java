@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.model.block;
 import com.google.common.collect.ImmutableList;
 
 import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
@@ -28,11 +28,11 @@ public class ModelPanelLightBase implements IBakedModel
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+    public List<BakedQuad> getQuads(BlockState state, Direction side, long rand)
     {
         if (state.getBlock() instanceof BlockPanelLighting)
         {
-            IBlockState baseState = ((IExtendedBlockState) state).getValue(BlockPanelLighting.BASE_STATE);
+            BlockState baseState = ((IExtendedBlockState) state).getValue(BlockPanelLighting.BASE_STATE);
             BlockRenderLayer layer = MinecraftForgeClient.getRenderLayer();
             if (baseState == null)
             {

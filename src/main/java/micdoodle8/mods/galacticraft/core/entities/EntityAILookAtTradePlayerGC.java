@@ -1,15 +1,15 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.player.PlayerEntity;
 
-public class EntityAILookAtTradePlayerGC extends EntityAIWatchClosest
+public class EntityAILookAtTradePlayerGC extends LookAtGoal
 {
     private final EntityAlienVillager theMerchant;
 
     public EntityAILookAtTradePlayerGC(EntityAlienVillager theMerchantIn)
     {
-        super(theMerchantIn, EntityPlayer.class, 8.0F);
+        super(theMerchantIn, PlayerEntity.class, 8.0F);
         this.theMerchant = theMerchantIn;
     }
 

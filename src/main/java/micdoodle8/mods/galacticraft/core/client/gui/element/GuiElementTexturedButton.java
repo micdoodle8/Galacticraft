@@ -2,11 +2,11 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiElementTexturedButton extends GuiButton
+public class GuiElementTexturedButton extends Button
 {
     private final ResourceLocation texture;
     private final int bWidth, bHeight;

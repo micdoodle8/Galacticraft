@@ -2,16 +2,16 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiElementCheckbox extends GuiButton
+public class GuiElementCheckbox extends Button
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
     public Boolean isSelected;
@@ -108,7 +108,7 @@ public class GuiElementCheckbox extends GuiButton
     {
         void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected);
 
-        boolean canPlayerEdit(GuiElementCheckbox checkbox, EntityPlayer player);
+        boolean canPlayerEdit(GuiElementCheckbox checkbox, PlayerEntity player);
 
         boolean getInitiallySelected(GuiElementCheckbox checkbox);
 

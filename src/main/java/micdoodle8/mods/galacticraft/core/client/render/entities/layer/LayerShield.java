@@ -8,19 +8,19 @@ import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 
 import org.lwjgl.opengl.GL11;
 
-public class LayerShield implements LayerRenderer<EntityLivingBase>
+public class LayerShield implements LayerRenderer<LivingEntity>
 {
-    private final RenderPlayer renderer;
+    private final PlayerRenderer renderer;
     private ModelBiped shieldModel;
 
-    public LayerShield(RenderPlayer playerRendererIn)
+    public LayerShield(PlayerRenderer playerRendererIn)
     {
         this.renderer = playerRendererIn;
         this.initModel();
@@ -33,11 +33,11 @@ public class LayerShield implements LayerRenderer<EntityLivingBase>
     }
 
     @Override
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float f2, float f3, float partialTicks, float f5, float f6, float f7, float scale)
+    public void doRenderLayer(LivingEntity entitylivingbaseIn, float f2, float f3, float partialTicks, float f5, float f6, float f7, float scale)
     {
         if (!entitylivingbaseIn.isInvisible())
         {
-            PlayerGearData gearData = GalacticraftCore.proxy.getGearData((EntityPlayer) entitylivingbaseIn);
+            PlayerGearData gearData = GalacticraftCore.proxy.getGearData((PlayerEntity) entitylivingbaseIn);
 
             if (gearData != null)
             {

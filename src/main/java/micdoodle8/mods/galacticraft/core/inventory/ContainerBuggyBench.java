@@ -2,12 +2,12 @@ package micdoodle8.mods.galacticraft.core.inventory;
 
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.CraftResultInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
@@ -16,10 +16,10 @@ import net.minecraft.world.World;
 public class ContainerBuggyBench extends Container
 {
     public InventoryBuggyBench craftMatrix = new InventoryBuggyBench(this);
-    public IInventory craftResult = new InventoryCraftResult();
+    public IInventory craftResult = new CraftResultInventory();
     private final World world;
 
-    public ContainerBuggyBench(InventoryPlayer par1InventoryPlayer, BlockPos pos, EntityPlayer player)
+    public ContainerBuggyBench(PlayerInventory par1InventoryPlayer, BlockPos pos, PlayerEntity player)
     {
         final int change = 27;
         this.world = par1InventoryPlayer.player.world;
@@ -69,7 +69,7 @@ public class ContainerBuggyBench extends Container
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer)
+    public void onContainerClosed(PlayerEntity par1EntityPlayer)
     {
         super.onContainerClosed(par1EntityPlayer);
 
@@ -94,7 +94,7 @@ public class ContainerBuggyBench extends Container
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer par1EntityPlayer)
+    public boolean canInteractWith(PlayerEntity par1EntityPlayer)
     {
         return true;
     }
@@ -104,7 +104,7 @@ public class ContainerBuggyBench extends Container
      * clicking.
      */
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par1)
+    public ItemStack transferStackInSlot(PlayerEntity par1EntityPlayer, int par1)
     {
         ItemStack var2 = ItemStack.EMPTY;
         final Slot slot = (Slot) this.inventorySlots.get(par1);
