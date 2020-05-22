@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class BlockMinerBase extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
-    public BlockMinerBase(String assetName)
+    public BlockMinerBase(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 3.0F;

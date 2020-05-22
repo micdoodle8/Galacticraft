@@ -26,7 +26,7 @@ import java.util.Random;
 
 public class BlockSpout extends Block implements ISortableBlock, ITileEntityProvider
 {
-    public BlockSpout(String assetName)
+    public BlockSpout(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 4.5F;

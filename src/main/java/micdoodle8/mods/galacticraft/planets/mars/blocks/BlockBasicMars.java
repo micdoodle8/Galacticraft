@@ -83,7 +83,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         }
     }
 
-    public BlockBasicMars(String assetName)
+    public BlockBasicMars(Properties builder)
     {
         super(Material.ROCK);
         this.setUnlocalizedName(assetName);

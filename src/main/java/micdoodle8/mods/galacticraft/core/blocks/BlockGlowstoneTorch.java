@@ -23,14 +23,10 @@ import java.util.Random;
 public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescription, ISortableBlock
 {
 
-    public BlockGlowstoneTorch(String assetName)
+    public BlockGlowstoneTorch(Properties builder)
     {
-        super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.UP));
-        this.setTickRandomly(true);
-        this.setUnlocalizedName(assetName);
-        this.setLightLevel(0.85F);
-        this.setSoundType(SoundType.WOOD);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
     }
 
     @Override

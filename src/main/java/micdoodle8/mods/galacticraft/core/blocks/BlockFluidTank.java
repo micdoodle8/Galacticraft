@@ -36,13 +36,9 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     public static final PropertyBool DOWN = PropertyBool.create("down");
     private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.05F, 0.0F, 0.05F, 0.95F, 1.0F, 0.95F);
 
-    public BlockFluidTank(String assetName)
+    public BlockFluidTank(Properties builder)
     {
-        super(Material.GLASS);
-        this.setHardness(3.0F);
-        this.setResistance(8.0F);
-        this.setSoundType(SoundType.GLASS);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

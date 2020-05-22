@@ -61,13 +61,10 @@ public class BlockAirLockFrame extends BlockAdvancedTile implements IShiftDescri
 
     public static final PropertyEnum<EnumAirLockType> AIR_LOCK_TYPE = PropertyEnum.create("airlocktype", EnumAirLockType.class);
 
-    public BlockAirLockFrame(String assetName)
+    public BlockAirLockFrame(Properties builder)
     {
-        super(Material.ROCK);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(AIR_LOCK_TYPE, EnumAirLockType.AIR_LOCK_FRAME));
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(AIR_LOCK_TYPE, EnumAirLockType.AIR_LOCK_FRAME));
     }
 
     @Override

@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 public class BlockSulphuricAcid extends BlockFluidClassic
 {
-    public BlockSulphuricAcid(String assetName)
+    public BlockSulphuricAcid(Properties builder)
     {
         super(VenusModule.sulphuricAcid, VenusModule.acidMaterial);
         this.setQuantaPerBlock(9);

@@ -23,12 +23,9 @@ public class BlockOxygenDetector extends ContainerBlock implements ITileEntityPr
 {
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
     
-    public BlockOxygenDetector(String assetName)
+    public BlockOxygenDetector(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

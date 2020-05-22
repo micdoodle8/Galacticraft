@@ -17,7 +17,7 @@ import java.util.Random;
 
 public class BlockScorchedRock extends Block implements ISortableBlock
 {
-    public BlockScorchedRock(String assetName)
+    public BlockScorchedRock(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 0.9F;

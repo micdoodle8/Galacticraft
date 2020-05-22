@@ -32,7 +32,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockLaserTurret(String assetName)
+    public BlockLaserTurret(Properties builder)
     {
         super(Material.IRON);
         this.setHardness(2.5F);

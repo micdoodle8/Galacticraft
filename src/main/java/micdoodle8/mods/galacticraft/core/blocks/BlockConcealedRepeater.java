@@ -23,14 +23,9 @@ public class BlockConcealedRepeater extends RepeaterBlock implements ISortableBl
 {
     protected static final AxisAlignedBB CUBE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
-    public BlockConcealedRepeater(String assetName, boolean powered)
+    public BlockConcealedRepeater(Properties builder)
     {
-        super(powered);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.blockResistance = 15F;
-        this.setUnlocalizedName(assetName);
-        this.setCreativeTab(powered ? null : GalacticraftCore.galacticraftBlocksTab);
+        super(builder);
     }
 
     @Override

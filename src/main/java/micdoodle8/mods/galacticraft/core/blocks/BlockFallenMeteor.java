@@ -36,7 +36,7 @@ public class BlockFallenMeteor extends Block implements ITileEntityProvider, ISh
 {
     private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.15, 0.05, 0.15, 0.85, 0.75, 0.85);
     
-    public BlockFallenMeteor(String assetName)
+    public BlockFallenMeteor(Properties builder)
     {
         super(Material.ROCK);
         this.setHardness(40.0F);

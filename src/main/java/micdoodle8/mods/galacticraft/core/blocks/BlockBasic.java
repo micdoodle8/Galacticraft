@@ -82,12 +82,12 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
         }
     }
 
-    public BlockBasic(String assetName)
+    public BlockBasic(Properties builder)
     {
         super(Material.ROCK);
         this.setHardness(1.0F);
         this.blockResistance = 15F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
+        this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
         this.setUnlocalizedName(assetName);
     }
 

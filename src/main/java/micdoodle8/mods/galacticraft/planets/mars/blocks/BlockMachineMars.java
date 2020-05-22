@@ -87,7 +87,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         }
     }
 
-    public BlockMachineMars(String assetName)
+    public BlockMachineMars((Properties builder))
     {
         super(GCBlocks.machine);
         this.setSoundType(SoundType.METAL);

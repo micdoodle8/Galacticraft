@@ -30,7 +30,7 @@ public abstract class BlockMachineBase extends BlockTileGC implements IShiftDesc
     protected EnumMachineBase[] types;
     protected EnumMachineBase typeBase;
 
-    public BlockMachineBase(String assetName)
+    public BlockMachineBase(Properties builder)
     {
         super(GCBlocks.machine);
         this.setHardness(1.0F);

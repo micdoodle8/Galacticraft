@@ -30,12 +30,9 @@ public class BlockRefinery extends BlockAdvancedTile implements IShiftDescriptio
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockRefinery(String assetName)
+    public BlockRefinery(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

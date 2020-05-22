@@ -82,9 +82,9 @@ public class BlockMachine3 extends BlockMachineBase
         }
     }
 
-    public BlockMachine3(String assetName)
+    public BlockMachine3(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 {
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.0, 0.25, 0.75, 0.8, 0.75);
 
-    public BlockBeamReflector(String assetName)
+    public BlockBeamReflector(Properties builder)
     {
         super(Material.IRON);
         this.setUnlocalizedName(assetName);

@@ -29,14 +29,10 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     private boolean canProvidePower = true;
     private final Set<BlockPos> blocksNeedingUpdate = Sets.<BlockPos>newHashSet();
 
-    public BlockConcealedRedstone(String assetName)
+    public BlockConcealedRedstone(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.blockResistance = 15F;
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(POWER, Integer.valueOf(0)));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(POWER, Integer.valueOf(0)));
     }
 
     @Override

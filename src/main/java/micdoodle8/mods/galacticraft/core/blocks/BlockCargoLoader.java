@@ -61,12 +61,9 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     public static final int METADATA_CARGO_LOADER = 0;
     public static final int METADATA_CARGO_UNLOADER = 4;
 
-    public BlockCargoLoader(String assetName)
+    public BlockCargoLoader(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @SideOnly(Side.CLIENT)

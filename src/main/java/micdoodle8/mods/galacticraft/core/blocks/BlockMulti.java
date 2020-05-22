@@ -91,13 +91,9 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
         }
     }
 
-    public BlockMulti(String assetName)
+    public BlockMulti(Properties builder)
     {
         super(GCBlocks.machine);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setResistance(1000000000000000.0F);
     }
 
     @Override

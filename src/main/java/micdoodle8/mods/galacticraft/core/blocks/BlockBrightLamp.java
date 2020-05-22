@@ -39,14 +39,10 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 
     //Metadata: bits 0-2 are the side of the base plate using standard side convention (0-5)
 
-    public BlockBrightLamp(String assetName)
+    public BlockBrightLamp(Properties builder)
     {
-        super(Material.GLASS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.UP));  //.withProperty(ACTIVE, true));
-        this.setHardness(0.1F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setLightLevel(0.9F);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));  //.withProperty(ACTIVE, true));
     }
 
     @Override

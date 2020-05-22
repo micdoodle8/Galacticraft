@@ -65,12 +65,9 @@ public class BlockOxygenCompressor extends BlockAdvancedTile implements IShiftDe
         }
     }
 
-    public BlockOxygenCompressor(boolean isActive, String assetName)
+    public BlockOxygenCompressor(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

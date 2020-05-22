@@ -22,9 +22,9 @@ public class BlockTorchBase extends Block
     protected static final AxisAlignedBB TORCH_WEST_AABB = new AxisAlignedBB(0.699999988079071D, 0.20000000298023224D, 0.3499999940395355D, 1.0D, 0.800000011920929D, 0.6499999761581421D);
     protected static final AxisAlignedBB TORCH_EAST_AABB = new AxisAlignedBB(0.0D, 0.20000000298023224D, 0.3499999940395355D, 0.30000001192092896D, 0.800000011920929D, 0.6499999761581421D);
 
-    public BlockTorchBase(Material materialIn)
+    public BlockTorchBase(Properties builder)
     {
-        super(materialIn);
+        super(builder);
     }
 
     @Override

@@ -4,7 +4,7 @@ import net.minecraft.block.NetherWartBlock;
 
 public class BlockSpaceWart extends NetherWartBlock
 {
-    public BlockSpaceWart(String assetName)
+    public BlockSpaceWart(Properties builder)
     {
         super();
         this.setTickRandomly(false);

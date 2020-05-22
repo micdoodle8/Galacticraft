@@ -34,7 +34,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     protected static final AxisAlignedBB AABB_TOP = new AxisAlignedBB(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
     protected static final AxisAlignedBB AABB_BOTTOM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
-    public BlockTelepadFake(String assetName)
+    public BlockTelepadFake(Properties builder)
     {
         super(GCBlocks.machine);
         this.setSoundType(SoundType.METAL);

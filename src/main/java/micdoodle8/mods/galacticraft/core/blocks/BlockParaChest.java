@@ -40,14 +40,10 @@ public class BlockParaChest extends ContainerBlock implements ITileEntityProvide
     public static final PropertyEnum<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class);
     protected static final AxisAlignedBB NOT_CONNECTED_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 
-    public BlockParaChest(String assetName)
+    public BlockParaChest(Properties builder)
     {
-        super(Material.WOOD);
-        this.setHardness(3.0F);
-        this.setSoundType(SoundType.WOOD);
-//        this.setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }
 
     @Override

@@ -67,7 +67,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         }
     }
 
-    public BlockTorchWeb(String assetName)
+    public BlockTorchWeb(Properties builder)
     {
         super(Material.CIRCUITS);
         this.setLightLevel(1.0F);

@@ -43,7 +43,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
 //        net.minecraftforge.common.ChestGenHooks.init(CRASHED_PROBE, CONTENTS, 4, 6);
 //    }
 
-    public BlockCrashedProbe(String assetName)
+    public BlockCrashedProbe(Properties builder)
     {
         super(Material.IRON);
         this.blockHardness = 4.5F;

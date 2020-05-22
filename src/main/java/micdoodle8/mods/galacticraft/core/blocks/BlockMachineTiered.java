@@ -89,9 +89,9 @@ public class BlockMachineTiered extends BlockMachineBase
         }
     }
 
-    public BlockMachineTiered(String assetName)
+    public BlockMachineTiered(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

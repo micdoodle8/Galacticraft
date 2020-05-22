@@ -14,10 +14,10 @@ import net.minecraft.world.World;
  */
 public abstract class BlockTileGC extends BlockAdvanced implements ITileEntityProvider
 {
-    public BlockTileGC(Material material)
+    public BlockTileGC(Properties builder)
     {
-        super(material);
-        this.hasTileEntity = true;
+        super(builder);
+//        this.hasTileEntity = true;
     }
 
     /**

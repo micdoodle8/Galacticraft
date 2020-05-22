@@ -17,11 +17,9 @@ import net.minecraft.world.World;
 public class BlockSpaceStationBase extends ContainerBlock implements ITileEntityProvider
 {
 
-    public BlockSpaceStationBase(String assetName)
+    public BlockSpaceStationBase(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(-1);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

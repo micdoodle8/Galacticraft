@@ -35,7 +35,7 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
     public static final PropertyBool ACTIVE = PropertyBool.create("active");
 
-    public BlockGeothermalGenerator(String assetName)
+    public BlockGeothermalGenerator(Properties builder)
     {
         super(Material.IRON);
         this.setHardness(2.5F);

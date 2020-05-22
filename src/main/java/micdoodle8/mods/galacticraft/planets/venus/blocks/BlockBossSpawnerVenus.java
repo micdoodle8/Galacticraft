@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 
 public class BlockBossSpawnerVenus extends BlockBossSpawner
 {
-    public BlockBossSpawnerVenus(String assetName)
+    public BlockBossSpawnerVenus(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

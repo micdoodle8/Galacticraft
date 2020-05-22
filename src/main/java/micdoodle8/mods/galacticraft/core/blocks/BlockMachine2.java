@@ -86,9 +86,9 @@ public class BlockMachine2 extends BlockMachineBase
         }
     }
 
-    public BlockMachine2(String assetName)
+    public BlockMachine2(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

@@ -41,15 +41,10 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
             new AxisAlignedBB(0.8125, 0.0, 0.0625, 0.9375, 0.5, 0.9375)
     };
 
-    public BlockCheese(String assetName)
+    public BlockCheese(Properties builder)
     {
-        super(Material.CAKE);
-        this.setTickRandomly(true);
-        this.disableStats();
-        this.setHardness(0.5F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BITES, Integer.valueOf(0)));
-        this.setSoundType(SoundType.CLOTH);
-        this.setUnlocalizedName(assetName);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(BITES, Integer.valueOf(0)));
     }
 
     @Override

@@ -62,7 +62,7 @@ public class BlockSludge extends BlockFluidClassic
         return true;
     }
 
-    public BlockSludge(String assetName)
+    public BlockSludge(Properties builder)
     {
         super(MarsModule.sludge, MarsModule.sludgeMaterial);
         this.setQuantaPerBlock(9);

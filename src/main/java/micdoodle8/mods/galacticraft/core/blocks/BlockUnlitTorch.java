@@ -37,16 +37,16 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     public Block fallback;
     public static HashMap<Block, Block> registeredTorches = new HashMap<>();
 
-    public BlockUnlitTorch(boolean lit, String assetName)
+    public BlockUnlitTorch(boolean lit, Properties builder)
     {
-        super(Material.CIRCUITS);
+        super(builder);
         this.setTickRandomly(true);
         this.lit = lit;
         this.setLightLevel(lit ? 0.9375F : 0.2F);
         this.setHardness(0.0F);
         this.setSoundType(SoundType.WOOD);
         this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.UP));
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
     }
 
     public static void register(BlockUnlitTorch unlittorch, BlockUnlitTorch littorch, Block vanillatorch)

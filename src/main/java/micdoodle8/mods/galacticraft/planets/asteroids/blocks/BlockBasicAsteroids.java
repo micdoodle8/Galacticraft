@@ -74,7 +74,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
     }
 
-    public BlockBasicAsteroids(String assetName)
+    public BlockBasicAsteroids(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 3.0F;

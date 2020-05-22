@@ -65,7 +65,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         }
     }
 
-    public BlockLandingPadFull(String assetName)
+    public BlockLandingPadFull(Properties builder)
     {
         super(Material.ROCK);
         this.setHardness(1.0F);

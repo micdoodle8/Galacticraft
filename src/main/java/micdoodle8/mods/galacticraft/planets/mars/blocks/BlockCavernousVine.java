@@ -73,7 +73,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         }
     }
 
-    public BlockCavernousVine(String assetName)
+    public BlockCavernousVine(Properties builder)
     {
         super(Material.VINE);
         this.setLightLevel(1.0F);

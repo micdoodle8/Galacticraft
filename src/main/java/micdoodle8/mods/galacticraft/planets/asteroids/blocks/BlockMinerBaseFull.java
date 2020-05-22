@@ -28,7 +28,7 @@ import java.util.Random;
 
 public class BlockMinerBaseFull extends BlockTileGC
 {
-    public BlockMinerBaseFull(String assetName)
+    public BlockMinerBaseFull(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 3.0F;

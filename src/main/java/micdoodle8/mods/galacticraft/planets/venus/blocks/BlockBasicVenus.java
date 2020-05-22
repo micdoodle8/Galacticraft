@@ -96,12 +96,12 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         }
     }
 
-    public BlockBasicVenus(String assetName)
+    public BlockBasicVenus(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 2.2F;
         this.blockResistance = 2.5F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_VENUS, EnumBlockBasicVenus.ROCK_SOFT));
+        this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_VENUS, EnumBlockBasicVenus.ROCK_SOFT));
         this.setUnlocalizedName(assetName);
     }
 

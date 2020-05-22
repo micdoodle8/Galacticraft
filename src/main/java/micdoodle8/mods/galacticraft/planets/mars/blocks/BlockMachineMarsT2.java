@@ -94,9 +94,9 @@ public class BlockMachineMarsT2 extends BlockMachineBase
         }
     }
 
-    public BlockMachineMarsT2(String assetName)
+    public BlockMachineMarsT2(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

@@ -37,13 +37,10 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375);
 
-    public BlockTier1TreasureChest(String assetName)
+    public BlockTier1TreasureChest(Properties builder)
     {
-        super(Material.ROCK);
-        this.setSoundType(SoundType.STONE);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH));
-        this.setHardness(100000.0F);
-        this.setUnlocalizedName(assetName);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }
 
     @Override

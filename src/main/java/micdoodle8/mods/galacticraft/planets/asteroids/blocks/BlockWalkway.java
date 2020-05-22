@@ -82,7 +82,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.METAL);
         this.hasTileEntity = true;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
+        this.setDefaultState(stateContainer.getBaseState().with(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
 
     @Override

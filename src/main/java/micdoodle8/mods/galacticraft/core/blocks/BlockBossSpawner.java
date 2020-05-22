@@ -23,7 +23,7 @@ import java.util.Random;
 
 public class BlockBossSpawner extends Block implements ITileEntityProvider
 {
-    public BlockBossSpawner(String assetName)
+    public BlockBossSpawner(Properties builder)
     {
         super(Material.ROCK);
         this.blockHardness = 1000000.0F;

@@ -20,12 +20,10 @@ public class BlockBreathableAir extends AirBlock
 {
     public static final PropertyBool THERMAL = PropertyBool.create("thermal");
     
-    public BlockBreathableAir(String assetName)
+    public BlockBreathableAir(Properties builder)
     {
-        this.setResistance(1000.0F);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(THERMAL, false));
-        this.setHardness(0.0F);
-        this.setUnlocalizedName(assetName);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(THERMAL, false));
     }
 
     @Override

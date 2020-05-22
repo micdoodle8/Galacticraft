@@ -117,12 +117,12 @@ public class BlockFluidPipe extends BlockTransmitter implements ITileEntityProvi
             new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    111110
             new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)}; // Up Down North South East West            111111
 
-    public BlockFluidPipe(String assetName, EnumPipeMode mode)
+    public BlockFluidPipe(Properties builder, EnumPipeMode mode)
     {
-        super(Material.GLASS);
+        super(builder);
         this.setHardness(0.3F);
         this.setSoundType(SoundType.GLASS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(COLOR, DyeColor.WHITE));
+        this.setDefaultState(stateContainer.getBaseState().with(COLOR, DyeColor.WHITE));
         this.setUnlocalizedName(assetName);
         this.mode = mode;
     }

@@ -68,12 +68,9 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         }
     }
 
-    public BlockSolar(String assetName)
+    public BlockSolar(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

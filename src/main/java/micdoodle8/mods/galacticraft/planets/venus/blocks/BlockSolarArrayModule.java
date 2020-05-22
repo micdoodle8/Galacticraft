@@ -28,7 +28,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
 {
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
 
-    public BlockSolarArrayModule(String assetName)
+    public BlockSolarArrayModule(Properties builder)
     {
         super(Material.IRON);
         this.setHardness(2.5F);

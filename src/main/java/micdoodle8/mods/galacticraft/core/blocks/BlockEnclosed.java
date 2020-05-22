@@ -148,7 +148,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
         }
     }
 
-    public BlockEnclosed(String assetName)
+    public BlockEnclosed(Properties builder)
     {
         super(Material.CLAY);
         this.setResistance(0.2F);

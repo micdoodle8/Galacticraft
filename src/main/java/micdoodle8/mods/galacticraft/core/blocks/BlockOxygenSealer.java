@@ -28,12 +28,9 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockOxygenSealer(String assetName)
+    public BlockOxygenSealer(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

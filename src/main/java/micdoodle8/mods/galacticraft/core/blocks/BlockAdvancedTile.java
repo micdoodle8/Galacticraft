@@ -16,9 +16,9 @@ import java.util.Random;
 
 public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEntityProvider
 {
-    public BlockAdvancedTile(Material par3Material)
+    public BlockAdvancedTile(Properties builder)
     {
-        super(par3Material);
+        super(builder);
         this.hasTileEntity = true;
     }
 

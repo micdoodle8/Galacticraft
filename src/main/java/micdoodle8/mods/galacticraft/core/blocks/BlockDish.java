@@ -24,12 +24,9 @@ import net.minecraft.world.World;
 
 public class BlockDish extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-    public BlockDish(String assetName)
+    public BlockDish(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

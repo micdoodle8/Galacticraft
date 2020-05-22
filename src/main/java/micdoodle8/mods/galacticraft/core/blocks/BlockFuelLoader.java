@@ -32,7 +32,7 @@ public class BlockFuelLoader extends BlockAdvancedTile implements IShiftDescript
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
-    public BlockFuelLoader(String assetName)
+    public BlockFuelLoader(Properties builder)
     {
         super(Material.ROCK);
         this.setHardness(1.0F);

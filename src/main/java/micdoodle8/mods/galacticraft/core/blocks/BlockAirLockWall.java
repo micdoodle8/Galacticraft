@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockAirLockWall extends BreakableBlock implements IPartialSealableBlock, ISortableBlock
+public class BlockAirLockWall extends Block implements IPartialSealableBlock, ISortableBlock
 {
     public static final PropertyEnum<EnumAirLockSealConnection> CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
     protected static final AxisAlignedBB AABB_X = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
@@ -49,9 +49,9 @@ public class BlockAirLockWall extends BreakableBlock implements IPartialSealable
         }
     }
 
-    public BlockAirLockWall(String assetName)
+    public BlockAirLockWall(Properties builder)
     {
-        super(Material.IRON, false);
+        super(builder);
         this.setTickRandomly(true);
         this.setHardness(1000.0F);
         this.setSoundType(SoundType.METAL);

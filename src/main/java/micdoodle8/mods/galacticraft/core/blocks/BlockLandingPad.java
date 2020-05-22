@@ -65,13 +65,9 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
         }
     }
 
-    public BlockLandingPad(String assetName)
+    public BlockLandingPad(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setResistance(10.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

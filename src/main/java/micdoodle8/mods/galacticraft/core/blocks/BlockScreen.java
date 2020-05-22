@@ -46,10 +46,10 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0F, 0F, 0F, boundsBack, 1.0F, 1.0F);
     
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
-    public BlockScreen(String assetName)
+    public BlockScreen(Properties builder)
     {
         super(Material.CIRCUITS);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH).withProperty(LEFT, false).withProperty(RIGHT, false).withProperty(UP, false).withProperty(DOWN, false));
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LEFT, false).with(RIGHT, false).with(UP, false).with(DOWN, false));
         this.setHardness(0.1F);
         this.setSoundType(SoundType.GLASS);
         this.setUnlocalizedName(assetName);

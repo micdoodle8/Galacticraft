@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 
 public class BlockTier2TreasureChest extends BlockTier1TreasureChest
 {
-    public BlockTier2TreasureChest(String assetName)
+    public BlockTier2TreasureChest(Properties builder)
     {
-        super(assetName);
+        super(builder);
     }
 
     @Override

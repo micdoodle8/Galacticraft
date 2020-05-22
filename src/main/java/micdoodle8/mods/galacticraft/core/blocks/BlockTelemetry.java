@@ -28,12 +28,9 @@ import java.util.UUID;
 public class BlockTelemetry extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
     //Metadata: 0-3 = orientation;  bits 2,3 = reserved for future use
-    public BlockTelemetry(String assetName)
+    public BlockTelemetry(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

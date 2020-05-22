@@ -78,13 +78,9 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
     public static final int PANELTYPES_LENGTH = PanelType.values().length;
     private static BlockState[] superState = new BlockState[PANELTYPES_LENGTH]; // - only used clientSide
     
-    public BlockPanelLighting(String assetName)
+    public BlockPanelLighting(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState());
+        super(builder);
     }
 
     @Override

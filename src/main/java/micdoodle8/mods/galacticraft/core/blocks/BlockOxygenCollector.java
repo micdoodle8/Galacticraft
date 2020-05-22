@@ -30,12 +30,9 @@ public class BlockOxygenCollector extends BlockAdvancedTile implements IShiftDes
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockOxygenCollector(String assetName)
+    public BlockOxygenCollector(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

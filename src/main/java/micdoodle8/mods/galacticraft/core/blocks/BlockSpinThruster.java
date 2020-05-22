@@ -42,13 +42,10 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.4F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.6F, 0.8F, 0.8F);
 
-    public BlockSpinThruster(String assetName)
+    public BlockSpinThruster(Properties builder)
     {
-        super(Material.CIRCUITS);
-        this.setHardness(0.1F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH).withProperty(ORIENTATION, false));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(ORIENTATION, false));
     }
 
     @Override

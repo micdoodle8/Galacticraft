@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
 {
-    public BlockIceAsteroids(String assetName)
+    public BlockIceAsteroids(Properties builder)
     {
         super(Material.ICE, false);
         this.slipperiness = 0.98F;

@@ -72,12 +72,12 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         }
     }
 
-    public BlockSlimelingEgg(String assetName)
+    public BlockSlimelingEgg(Properties builder)
     {
         super(Material.ROCK);
 //        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
         this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
+        this.setDefaultState(stateContainer.getBaseState().with(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
     }
 
     @Override

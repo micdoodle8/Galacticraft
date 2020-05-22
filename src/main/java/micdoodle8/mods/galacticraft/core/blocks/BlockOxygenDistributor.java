@@ -28,13 +28,10 @@ public class BlockOxygenDistributor extends BlockAdvancedTile implements IShiftD
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
 
-    public BlockOxygenDistributor(String assetName)
+    public BlockOxygenDistributor(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Direction.NORTH));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH));
     }
 
     @Override

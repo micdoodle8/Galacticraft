@@ -21,11 +21,11 @@ import java.lang.reflect.Method;
  */
 public abstract class BlockAdvanced extends Block
 {
-    public BlockAdvanced(Material material)
+    public BlockAdvanced(Properties builder)
     {
-        super(material);
-        this.setHardness(0.6f);
-        this.setResistance(2.5F);
+        super(builder);
+//        this.setHardness(0.6f);
+//        this.setResistance(2.5F);
         //A default blast resistance for GC machines and tiles, similar to a bookshelf
     }
 

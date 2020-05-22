@@ -28,7 +28,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 {
     protected static final AxisAlignedBB DRAGON_EGG_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
-    public BlockCreeperEgg(String assetName)
+    public BlockCreeperEgg(Properties builder)
     {
         super();
         this.setUnlocalizedName(assetName);

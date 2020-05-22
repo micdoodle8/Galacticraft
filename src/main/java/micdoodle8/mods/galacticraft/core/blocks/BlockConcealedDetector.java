@@ -29,14 +29,10 @@ public class BlockConcealedDetector extends Block implements ISortableBlock, ITi
     public static final PropertyInteger FACING = PropertyInteger.create("facing", 0, 3);
     public static final PropertyBool DETECTED = PropertyBool.create("det");
 
-    public BlockConcealedDetector(String assetName)
+    public BlockConcealedDetector(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setSoundType(SoundType.METAL);
-        this.blockResistance = 15F;
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, Integer.valueOf(0)).withProperty(VARIANT, Integer.valueOf(0)).withProperty(DETECTED, false));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, 0).with(VARIANT, 0).with(DETECTED, false));
     }
 
     @Override

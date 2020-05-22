@@ -32,7 +32,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 {
     public static final PropertyBool KIT = PropertyBool.create("kit");
     
-    public BlockEmergencyBox(String assetName)
+    public BlockEmergencyBox(Properties builder)
     {
         super(Material.IRON);
         this.setHardness(4.0F);
@@ -40,7 +40,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
         this.setSoundType(SoundType.METAL);
         this.setLightLevel(1.0F);
         this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(KIT, false));
+        this.setDefaultState(stateContainer.getBaseState().with(KIT, false));
     }
 
     @Override

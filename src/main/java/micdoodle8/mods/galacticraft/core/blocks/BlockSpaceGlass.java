@@ -55,9 +55,9 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
     private boolean isClient; 
     private static Class clazz = Blocks.WATER.getClass().getSuperclass();
     
-    public BlockSpaceGlass(String assetName, GlassType newType, GlassFrame newFrame, Block base)
+    public BlockSpaceGlass(Properties builder, GlassType newType, GlassFrame newFrame, Block base)
     {
-        super(Material.GLASS);
+        super(builder);
         this.isClient = GalacticraftCore.proxy.getClass().getName().equals("micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore");
         this.type = newType;
         this.frame = newFrame;
@@ -66,7 +66,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         this.setUnlocalizedName(assetName);
         this.setSoundType(SoundType.GLASS);
         this.hasTileEntity = true;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
+        this.setDefaultState(stateContainer.getBaseState().with(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
     }
 
     @Override

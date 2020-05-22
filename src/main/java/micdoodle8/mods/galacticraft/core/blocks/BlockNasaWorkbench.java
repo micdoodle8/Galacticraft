@@ -28,13 +28,9 @@ import net.minecraft.world.World;
 
 public class BlockNasaWorkbench extends ContainerBlock implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-    public BlockNasaWorkbench(String assetName)
+    public BlockNasaWorkbench(Properties builder)
     {
-        super(Material.IRON);
-//        this.setBlockBounds(-0.3F, 0.0F, -0.3F, 1.3F, 0.5F, 1.3F);
-        this.setHardness(2.5F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override

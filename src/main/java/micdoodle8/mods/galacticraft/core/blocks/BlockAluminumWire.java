@@ -206,7 +206,7 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         }
     }
 
-    public BlockAluminumWire(String assetName)
+    public BlockAluminumWire(Properties builder)
     {
         super(Material.CLOTH);
         this.setSoundType(SoundType.CLOTH);

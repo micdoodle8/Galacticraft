@@ -14,12 +14,9 @@ import java.util.Random;
 
 public class BlockBrightAir extends AirBlock
 {
-    public BlockBrightAir(String assetName)
+    public BlockBrightAir(Properties builder)
     {
-        this.setResistance(1000.0F);
-        this.setHardness(0.0F);
-        this.setUnlocalizedName(assetName);
-        this.setLightLevel(1.0F);
+        super(builder);
     }
 
     @Override

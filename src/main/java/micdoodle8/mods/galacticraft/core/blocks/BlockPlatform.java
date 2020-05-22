@@ -76,14 +76,10 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
         }
     }
 
-    public BlockPlatform(String assetName)
+    public BlockPlatform(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setResistance(10.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CORNER, EnumCorner.NONE));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(CORNER, EnumCorner.NONE));
     }
 
     @Override

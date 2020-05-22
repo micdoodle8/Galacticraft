@@ -46,7 +46,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
 
-    public BlockBeamReceiver(String assetName)
+    public BlockBeamReceiver(Properties builder)
     {
         super(Material.IRON);
         this.setUnlocalizedName(assetName);

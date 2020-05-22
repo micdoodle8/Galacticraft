@@ -21,8 +21,10 @@ import net.minecraft.item.ArmorItem.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.ObjectHolder;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,6 +33,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID_CORE, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Constants.MOD_ID_CORE)
 public class GCItems
 {
     public static Item oxTankLight;

@@ -88,13 +88,10 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         }
     }
 
-    public BlockBasicMoon(String assetName)
+    public BlockBasicMoon(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 1.5F;
-        this.blockResistance = 2.5F;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
-        this.setUnlocalizedName(assetName);
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
     }
 
     @SideOnly(Side.CLIENT)

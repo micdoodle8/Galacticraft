@@ -25,10 +25,9 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 {
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
-    public BlockCrafting(String assetName)
+    public BlockCrafting(Properties builder)
     {
-        super(Material.IRON);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
