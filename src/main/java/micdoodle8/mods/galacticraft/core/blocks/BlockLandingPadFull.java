@@ -7,9 +7,6 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityBuggyFueler;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,15 +19,17 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSealableBlock
 {
-    public static final PropertyEnum<EnumLandingPadFullType> PAD_TYPE = PropertyEnum.create("type", EnumLandingPadFullType.class);
+    public static final EnumProperty<EnumLandingPadFullType> PAD_TYPE = EnumProperty.create("type", EnumLandingPadFullType.class);
     private final AxisAlignedBB AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.1875D, 1.0D);
 
     public enum EnumLandingPadFullType implements IStringSerializable
@@ -67,11 +66,7 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
 
     public BlockLandingPadFull(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.setResistance(10.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
 //        this.maxY = 0.25F;
     }
 
@@ -146,8 +141,9 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
         return true;
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         switch (getMetaFromState(state))
         {
@@ -209,13 +205,13 @@ public class BlockLandingPadFull extends BlockAdvancedTile implements IPartialSe
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadFullType.byMetadata(meta));
+        return this.getDefaultState().with(PAD_TYPE, EnumLandingPadFullType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumLandingPadFullType) state.getValue(PAD_TYPE)).getMeta();
+        return ((EnumLandingPadFullType) state.get(PAD_TYPE)).getMeta();
     }
 
     @Override

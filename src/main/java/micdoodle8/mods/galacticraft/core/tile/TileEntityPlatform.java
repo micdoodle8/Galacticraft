@@ -262,7 +262,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     private void setWhole(int index)
     {
         this.corner = index;
-        this.world.setBlockState(this.getPos(), GCBlocks.platform.getDefaultState().withProperty(BlockPlatform.CORNER, EnumCorner.byMetadata(index)));
+        this.world.setBlockState(this.getPos(), GCBlocks.platform.getDefaultState().with(BlockPlatform.CORNER, EnumCorner.byMetadata(index)));
     }
 
     public void onDestroy(TileEntity callingBlock)

@@ -101,7 +101,7 @@ public class RoomTreasure extends SizedPiece
                         BlockPos blockpos = new BlockPos(this.getXWithOffset(i, k), this.getYWithOffset(j), this.getZWithOffset(i, k));
                         if (chunkBox.isVecInside(blockpos))
                         {
-                            worldIn.setBlockState(blockpos, GCBlocks.treasureChestTier1.getDefaultState().withProperty(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), 2);
+                            worldIn.setBlockState(blockpos, GCBlocks.treasureChestTier1.getDefaultState().with(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), 2);
                             TileEntityTreasureChest treasureChest = (TileEntityTreasureChest) worldIn.getTileEntity(blockpos);
                             if (treasureChest != null)
                             {

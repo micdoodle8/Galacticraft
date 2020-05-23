@@ -190,7 +190,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         if (tagCompound.hasKey("pipeColor"))
         {
             // Backwards compatibility
-            this.world.setBlockState(getPos(), this.world.getBlockState(getPos()).withProperty(BlockFluidPipe.COLOR, DyeColor.byDyeDamage(tagCompound.getByte("pipeColor"))));
+            this.world.setBlockState(getPos(), this.world.getBlockState(getPos()).with(BlockFluidPipe.COLOR, DyeColor.byDyeDamage(tagCompound.getByte("pipeColor"))));
         }
         
         if (tagCompound.hasKey("buff"))

@@ -31,7 +31,7 @@ public class RoomChestVenus extends RoomEmptyVenus
             int chestX = this.sizeX / 2;
             int chestY = 1;
             int chestZ = this.sizeZ / 2;
-            this.setBlockState(worldIn, Blocks.CHEST.getDefaultState().withProperty(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), chestX, chestY, chestZ, boundingBox);
+            this.setBlockState(worldIn, Blocks.CHEST.getDefaultState().with(BlockTier1TreasureChest.FACING, this.getDirection().getOpposite()), chestX, chestY, chestZ, boundingBox);
 
             BlockPos blockpos = new BlockPos(this.getXWithOffset(chestX, chestZ), this.getYWithOffset(chestY), this.getZWithOffset(chestX, chestZ));
             ChestTileEntity chest = (ChestTileEntity) worldIn.getTileEntity(blockpos);

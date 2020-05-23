@@ -1,15 +1,11 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RepeaterBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.item.Item;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -18,6 +14,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockConcealedRepeater extends RepeaterBlock implements ISortableBlock
 {
@@ -86,19 +84,19 @@ public class BlockConcealedRepeater extends RepeaterBlock implements ISortableBl
     @Override
     protected BlockState getPoweredState(BlockState unpoweredState)
     {
-        Integer integer = (Integer)unpoweredState.getValue(DELAY);
-        Boolean obool = (Boolean)unpoweredState.getValue(LOCKED);
-        Direction enumfacing = (Direction)unpoweredState.getValue(FACING);
-        return GCBlocks.concealedRepeater_Powered.getDefaultState().withProperty(FACING, enumfacing).withProperty(DELAY, integer).withProperty(LOCKED, obool);
+        Integer integer = (Integer)unpoweredstate.get(DELAY);
+        Boolean obool = (Boolean)unpoweredstate.get(LOCKED);
+        Direction enumfacing = (Direction)unpoweredstate.get(FACING);
+        return GCBlocks.concealedRepeater_Powered.getDefaultState().with(FACING, enumfacing).with(DELAY, integer).with(LOCKED, obool);
     }
 
     @Override
     protected BlockState getUnpoweredState(BlockState poweredState)
     {
-        Integer integer = (Integer)poweredState.getValue(DELAY);
-        Boolean obool = (Boolean)poweredState.getValue(LOCKED);
-        Direction enumfacing = (Direction)poweredState.getValue(FACING);
-        return GCBlocks.concealedRepeater_Unpowered.getDefaultState().withProperty(FACING, enumfacing).withProperty(DELAY, integer).withProperty(LOCKED, obool);
+        Integer integer = (Integer)poweredstate.get(DELAY);
+        Boolean obool = (Boolean)poweredstate.get(LOCKED);
+        Direction enumfacing = (Direction)poweredstate.get(FACING);
+        return GCBlocks.concealedRepeater_Unpowered.getDefaultState().with(FACING, enumfacing).with(DELAY, integer).with(LOCKED, obool);
     }
     
     @Override

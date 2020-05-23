@@ -38,12 +38,14 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockMachineMars extends BlockTileGC implements IShiftDescription, ISortableBlock, IPartialSealableBlock
@@ -52,8 +54,8 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     public static final int CRYOGENIC_CHAMBER_METADATA = 4;
     public static final int LAUNCH_CONTROLLER_METADATA = 8;
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-    public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<EnumMachineType> TYPE = EnumProperty.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements IStringSerializable
     {
@@ -87,11 +89,9 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         }
     }
 
-    public BlockMachineMars((Properties builder))
+    public BlockMachineMars(Properties builder)
     {
-        super(GCBlocks.machine);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -107,12 +107,12 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         super.breakBlock(worldIn, pos, state);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
@@ -148,9 +148,9 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        EnumMachineType type = state.getValue(TYPE);
+        EnumMachineType type = state.get(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
@@ -183,14 +183,15 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
     {
-        EnumMachineType type = state.getValue(TYPE);
+        EnumMachineType type = state.get(TYPE);
         return type == EnumMachineType.CRYOGENIC_CHAMBER ? BlockFaceShape.UNDEFINED : BlockFaceShape.SOLID;
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        EnumMachineType type = state.getValue(TYPE);
+        EnumMachineType type = state.get(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return new TileEntityLaunchController();
@@ -242,7 +243,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public int damageDropped(BlockState state)
     {
-        EnumMachineType type = state.getValue(TYPE);
+        EnumMachineType type = state.get(TYPE);
         if (type == EnumMachineType.LAUNCH_CONTROLLER)
         {
             return BlockMachineMars.LAUNCH_CONTROLLER_METADATA;
@@ -283,7 +284,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @Override
     public Direction getBedDirection(BlockState state, IBlockAccess world, BlockPos pos)
     {
-        return state.getValue(FACING);
+        return state.get(FACING);
     }
 
     @Override
@@ -319,13 +320,13 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumMachineType type = EnumMachineType.byMetadata((int) Math.floor(meta / 4.0));
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + state.getValue(TYPE).getMeta() * 4;
+        return (state.get(FACING)).getHorizontalIndex() + state.get(TYPE).getMeta() * 4;
     }
 
     @Override
@@ -338,7 +339,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(BlockState state, World worldIn, BlockPos pos, Random rand)
     {
-        if (state.getValue(TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
+        if (state.get(TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             GalacticraftPlanets.spawnParticle("cryoFreeze", new Vector3(pos.getX() + 0.3 + rand.nextDouble() * 0.4, pos.getY(), pos.getZ() + 0.3 + rand.nextDouble() * 0.4), new Vector3(0.0, 0.05 + rand.nextDouble() * 0.01, 0.0));
             GalacticraftPlanets.spawnParticle("cryoFreeze", new Vector3(pos.getX() + 0.3 + rand.nextDouble() * 0.4, pos.getY(), pos.getZ() + 0.3 + rand.nextDouble() * 0.4), new Vector3(0.0, 0.05 + rand.nextDouble() * 0.01, 0.0));

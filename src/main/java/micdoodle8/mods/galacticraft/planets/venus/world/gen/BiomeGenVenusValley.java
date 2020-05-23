@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -28,10 +28,10 @@ public class BiomeGenVenusValley extends BiomeVenus
     @Override
     public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int p_180622_4_, int p_180622_5_, double p_180622_6_)
     {
-        this.topBlock = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
-        this.fillerBlock = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
-        BlockState stoneBlock = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
-        BlockState gravelBlock = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_VOLCANIC_DEPOSIT);
+        this.topBlock = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
+        this.fillerBlock = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
+        BlockState stoneBlock = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
+        BlockState gravelBlock = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_VOLCANIC_DEPOSIT);
 
         int i = worldIn.getSeaLevel();
         BlockState topBlock = this.topBlock;

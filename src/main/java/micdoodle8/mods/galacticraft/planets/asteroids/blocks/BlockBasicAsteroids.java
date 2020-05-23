@@ -34,7 +34,7 @@ import java.util.Random;
 
 public class BlockBasicAsteroids extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum<EnumBlockBasic> BASIC_TYPE = PropertyEnum.create("basictypeasteroids", EnumBlockBasic.class);
+    public static final EnumProperty<EnumBlockBasic> BASIC_TYPE = EnumProperty.create("basictypeasteroids", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {
@@ -76,22 +76,20 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
 
     public BlockBasicAsteroids(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 3.0F;
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE && world instanceof World)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE && world instanceof World)
         {
             ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
@@ -192,7 +190,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_ILMENITE)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, getMetaFromState(state));
         }
@@ -203,13 +201,13 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
+        return this.getDefaultState().with(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.get(BASIC_TYPE)).getMeta();
     }
 
     @Override

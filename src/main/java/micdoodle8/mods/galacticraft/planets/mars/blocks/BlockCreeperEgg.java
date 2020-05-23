@@ -30,8 +30,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
 
     public BlockCreeperEgg(Properties builder)
     {
-        super();
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -46,12 +45,12 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isFullCube(BlockState state)
@@ -66,7 +65,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         return false;
     }

@@ -9,7 +9,6 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -45,7 +44,7 @@ import java.util.Random;
 
 public class BlockBasicVenus extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum<EnumBlockBasicVenus> BASIC_TYPE_VENUS = PropertyEnum.create("basictypevenus", EnumBlockBasicVenus.class);
+    public static final EnumProperty<EnumBlockBasicVenus> BASIC_TYPE_VENUS = EnumProperty.create("basictypevenus", EnumBlockBasicVenus.class);
 
     public enum EnumBlockBasicVenus implements IStringSerializable
     {
@@ -98,19 +97,16 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
 
     public BlockBasicVenus(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 2.2F;
-        this.blockResistance = 2.5F;
+        super(builder);
         this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_VENUS, EnumBlockBasicVenus.ROCK_SOFT));
-        this.setUnlocalizedName(assetName);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack tool)
@@ -136,7 +132,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
             harvesters.set(player);
             this.dropBlockAsItem(worldIn, pos, state, i);
             harvesters.set(null);
-            if ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS) == EnumBlockBasicVenus.ROCK_MAGMA)
+            if ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS) == EnumBlockBasicVenus.ROCK_MAGMA)
             {
                 worldIn.setBlockState(pos, Blocks.FLOWING_LAVA.getDefaultState());
             }
@@ -201,7 +197,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS));
         switch (type)
         {
         case ORE_SILICON:
@@ -218,7 +214,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public int damageDropped(BlockState state)
     {
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS));
         switch (type)
         {
         case ORE_SILICON:
@@ -235,7 +231,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public int quantityDropped(BlockState state, int fortune, Random random)
     {
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS));
         switch (type)
         {
         case ORE_SILICON:
@@ -258,7 +254,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public int getExpDrop(BlockState state, IBlockAccess world, BlockPos pos, int fortune)
     {
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS));
         Random rand = world instanceof World ? ((World)world).rand : new Random();
         if (this.getItemDropped(state, rand, fortune) != Item.getItemFromBlock(this))
         {
@@ -299,7 +295,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public boolean isValueable(BlockState state)
     {
-        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS));
+        EnumBlockBasicVenus type = ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS));
         switch (type)
         {
         case ORE_ALUMINUM:
@@ -358,13 +354,13 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BASIC_TYPE_VENUS, EnumBlockBasicVenus.byMetadata(meta));
+        return this.getDefaultState().with(BASIC_TYPE_VENUS, EnumBlockBasicVenus.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumBlockBasicVenus) state.getValue(BASIC_TYPE_VENUS)).getMeta();
+        return ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS)).getMeta();
     }
 
     @Override

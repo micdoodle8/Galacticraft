@@ -1,9 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.world.IZeroGDimension;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
@@ -12,17 +8,15 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -32,9 +26,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
+import java.util.List;
+
 public class BlockPlatform extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumCorner> CORNER = PropertyEnum.create("type", EnumCorner.class);
+    public static final EnumProperty<EnumCorner> CORNER = EnumProperty.create("type", EnumCorner.class);
     public static final float HEIGHT = 0.875F;
     protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, HEIGHT, 1.0D);
     protected static final AxisAlignedBB BOUNDING_BOX_ZEROG = new AxisAlignedBB(0.0D, 6 / 16.0D, 0.0D, 1.0D, 1.0D, 1.0D);;
@@ -216,13 +213,13 @@ public class BlockPlatform extends BlockAdvancedTile implements IPartialSealable
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(CORNER, EnumCorner.byMetadata(meta));
+        return this.getDefaultState().with(CORNER, EnumCorner.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumCorner) state.getValue(CORNER)).getMeta();
+        return ((EnumCorner) state.get(CORNER)).getMeta();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class RenderSmallAsteroid extends EntityRenderer<EntitySmallAsteroid>
         GL11.glRotatef(asteroid.rotationYaw, 0, 1, 0);
 
         this.bindEntityTexture(asteroid);
-        dispatcher.renderBlockBrightness(AsteroidBlocks.blockBasic.getDefaultState().withProperty(BlockBasicAsteroids.BASIC_TYPE, ASTEROID_0), 1.0F);
+        dispatcher.renderBlockBrightness(AsteroidBlocks.blockBasic.getDefaultState().with(BlockBasicAsteroids.BASIC_TYPE, ASTEROID_0), 1.0F);
 
         GL11.glPopMatrix();
     }

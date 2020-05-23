@@ -40,20 +40,17 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
 {
     protected static final AxisAlignedBB AABB_TELEPAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
 
-    protected BlockShortRangeTelepad(String assetName)
+    protected BlockShortRangeTelepad(Properties builder)
     {
-        super(Material.IRON);
-        this.blockHardness = 3.0F;
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public BlockRenderType getRenderType(BlockState state)
@@ -156,7 +153,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         return ((IMultiBlock) worldIn.getTileEntity(pos)).onActivated(playerIn);
     }

@@ -6,23 +6,20 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEmergencyBox;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,16 +27,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescription, ISortableBlock, IPartialSealableBlock
 {
-    public static final PropertyBool KIT = PropertyBool.create("kit");
+    public static final BooleanProperty KIT = BooleanProperty.create("kit");
     
     public BlockEmergencyBox(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(4.0F);
-        this.setResistance(70F);
-        this.setSoundType(SoundType.METAL);
-        this.setLightLevel(1.0F);
-        this.setUnlocalizedName(assetName);
+        super(builder);
         this.setDefaultState(stateContainer.getBaseState().with(KIT, false));
     }
 
@@ -52,13 +44,13 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(KIT, meta % 2 == 1);
+        return this.getDefaultState().with(KIT, meta % 2 == 1);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(KIT) ? 1 : 0);
+        return (state.get(KIT) ? 1 : 0);
     }
 
     @SideOnly(Side.CLIENT)
@@ -125,14 +117,14 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity player, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityEmergencyBox)
         {
             if (!world.isRemote)
             {
-                ((TileEntityEmergencyBox)tile).click(player, side, state.getValue(KIT));
+                ((TileEntityEmergencyBox)tile).click(player, side, state.get(KIT));
             }
             return true;
         }

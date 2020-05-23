@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.core.event.LootHandlerGC;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityCrashedProbe;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;

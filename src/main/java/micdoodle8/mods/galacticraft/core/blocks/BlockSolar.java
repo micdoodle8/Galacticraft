@@ -8,10 +8,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,17 +21,20 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockSolar extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
     public static final int BASIC_METADATA = 0;
     public static final int ADVANCED_METADATA = 4;
 
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-    public static final PropertyEnum<EnumSolarType> TYPE = PropertyEnum.create("type", EnumSolarType.class);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<EnumSolarType> TYPE = EnumProperty.create("type", EnumSolarType.class);
 
     public enum EnumSolarType implements IStringSerializable
     {
@@ -159,7 +159,7 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -178,8 +178,9 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
         }
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         if (getMetaFromState(state) >= BlockSolar.ADVANCED_METADATA)
         {
@@ -233,13 +234,13 @@ public class BlockSolar extends BlockTileGC implements IShiftDescription, IParti
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumSolarType type = EnumSolarType.byMetadata((int) Math.floor(meta / 4.0));
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex() + state.getValue(TYPE).getMeta() * 4;
+        return state.get(FACING).getHorizontalIndex() + state.get(TYPE).getMeta() * 4;
     }
 
     @Override

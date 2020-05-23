@@ -1,22 +1,18 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
-import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityCircuitFabricator;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityDeconstructor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricIngotCompressor;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
+import micdoodle8.mods.galacticraft.core.tile.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
 public class BlockMachine2 extends BlockMachineBase
 {
-    public static final PropertyEnum<EnumMachineExtendedType> TYPE = PropertyEnum.create("type", EnumMachineExtendedType.class);
+    public static final EnumProperty<EnumMachineExtendedType> TYPE = EnumProperty.create("type", EnumMachineExtendedType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
 
@@ -103,13 +99,13 @@ public class BlockMachine2 extends BlockMachineBase
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumMachineExtendedType type = (EnumMachineExtendedType) typeBase.fromMetadata(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType) state.getValue(TYPE)).getMetadata();
+        return (state.get(FACING)).getHorizontalIndex() + ((EnumMachineExtendedType) state.get(TYPE)).getMetadata();
     }
 
     @Override

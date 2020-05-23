@@ -10,19 +10,18 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.Entity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
@@ -35,17 +34,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.annotation.Nullable;
-
 public class BlockSpaceGlass extends Block implements IPartialSealableBlock, IShiftDescription, ISortableBlock, IPaintable
 {
-    public static final PropertyEnum MODEL = PropertyEnum.create("modeltype", GlassModel.class);
-    public static final PropertyEnum<GlassRotation> ROTATION  = PropertyEnum.create("rot", GlassRotation.class);
-    //public static final PropertyInteger PLACING  = PropertyInteger.create("placing", 0, 2);
+    public static final PropertyEnum MODEL = EnumProperty.create("modeltype", GlassModel.class);
+    public static final EnumProperty<GlassRotation> ROTATION  = EnumProperty.create("rot", GlassRotation.class);
+    //public static final IntegerProperty PLACING  = IntegerProperty.create("placing", 0, 2);
     //This will define whether originally placed by the player facing NS - EW - or UD
 
     public final GlassType type;
@@ -63,10 +61,7 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         this.frame = newFrame;
         this.baseBlock = base == null ? this : base;
         this.color = frame.getDefaultColor();
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.GLASS);
-        this.hasTileEntity = true;
-        this.setDefaultState(stateContainer.getBaseState().with(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, GlassRotation.N));
+        this.setDefaultState(stateContainer.getBaseState().with(MODEL, GlassModel.STANDARD_PANE).with(ROTATION, GlassRotation.N));
     }
 
     @Override
@@ -797,66 +792,66 @@ public class BlockSpaceGlass extends Block implements IPartialSealableBlock, ISh
         {
         case 1:
             if (solids == 4)
-                return state.withProperty(MODEL, GlassModel.STANDARD_S4).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.STANDARD_S4).with(ROTATION, rot.get(y, 0));
 
             if (solids == 3)
             {
                 if (!plateD) x = ( y % 2 == 1) ? 3 : 1; 
                 else if (!plateR) { x = 2; y = y ^ 2; }
                 else if (!plateU) x = ( y % 2 == 1) ? 1 :3;
-                return state.withProperty(MODEL, GlassModel.STANDARD_S3).withProperty(ROTATION, rot.get(y, x));
+                return state.with(MODEL, GlassModel.STANDARD_S3).with(ROTATION, rot.get(y, x));
             }
 
             if (plateD && plateU)
-                return state.withProperty(MODEL, GlassModel.STANDARD_S2A).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.STANDARD_S2A).with(ROTATION, rot.get(y, 0));
 
             if (plateL && plateR)
-                return state.withProperty(MODEL, GlassModel.STANDARD_S2A).withProperty(ROTATION, rot.get(y, 1));
+                return state.with(MODEL, GlassModel.STANDARD_S2A).with(ROTATION, rot.get(y, 1));
 
             if (plateD && (plateR || plateL))
             {
-                return state.withProperty(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S2B : GlassModel.STANDARD_S2).withProperty(ROTATION, rot.get(plateL ? (y ^ 2) : y, 0));
+                return state.with(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S2B : GlassModel.STANDARD_S2).with(ROTATION, rot.get(plateL ? (y ^ 2) : y, 0));
             }
 
             if (plateU && (plateR || plateL))
             {
-                return state.withProperty(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S2B : GlassModel.STANDARD_S2).withProperty(ROTATION, rot.get(plateL ? (y ^ 2) : y, 2));
+                return state.with(MODEL, cornerPiece > 0 ? GlassModel.STANDARD_S2B : GlassModel.STANDARD_S2).with(ROTATION, rot.get(plateL ? (y ^ 2) : y, 2));
             }
 
             if (plateU || plateD)
-                return state.withProperty(MODEL, getCornerModel(cornerPiece)).withProperty(ROTATION, rot.get(y, (plateU || cornerPiece > 4) ? 2 : 0));
+                return state.with(MODEL, getCornerModel(cornerPiece)).with(ROTATION, rot.get(y, (plateU || cornerPiece > 4) ? 2 : 0));
 
             if (plateR || plateL)
-                return state.withProperty(MODEL, getCornerModel(cornerPiece)).withProperty(ROTATION, rot.get(plateL ? (y ^ 2) : y, 1 + ( cornerPiece > 4 ? 2 : 0)));
+                return state.with(MODEL, getCornerModel(cornerPiece)).with(ROTATION, rot.get(plateL ? (y ^ 2) : y, 1 + ( cornerPiece > 4 ? 2 : 0)));
             
-            return state.withProperty(MODEL, GlassModel.STANDARD_PANE).withProperty(ROTATION, rot.get(y, 0));
+            return state.with(MODEL, GlassModel.STANDARD_PANE).with(ROTATION, rot.get(y, 0));
         case 2:
             if (plateU && plateD)
-                return state.withProperty(MODEL, GlassModel.CORNER_S2).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.CORNER_S2).with(ROTATION, rot.get(y, 0));
             if (plateD)
-                return state.withProperty(MODEL, GlassModel.CORNER_S).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.CORNER_S).with(ROTATION, rot.get(y, 0));
             if (plateU)
-                return state.withProperty(MODEL, GlassModel.CORNER_S).withProperty(ROTATION, rot.get((y + 3) % 4, 2));
+                return state.with(MODEL, GlassModel.CORNER_S).with(ROTATION, rot.get((y + 3) % 4, 2));
             
-            return state.withProperty(MODEL, GlassModel.CORNER).withProperty(ROTATION, rot.get(y, 0));
+            return state.with(MODEL, GlassModel.CORNER).with(ROTATION, rot.get(y, 0));
         case 3:
             if (plateD && plateU)
-                return state.withProperty(MODEL, GlassModel.T_JUNCTION_S2).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.T_JUNCTION_S2).with(ROTATION, rot.get(y, 0));
             if (plateD)
-                return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.T_JUNCTION_S).with(ROTATION, rot.get(y, 0));
             if (plateU)
-                return state.withProperty(MODEL, GlassModel.T_JUNCTION_S).withProperty(ROTATION, rot.get(y ^ 2, 2));
+                return state.with(MODEL, GlassModel.T_JUNCTION_S).with(ROTATION, rot.get(y ^ 2, 2));
                 
-            return state.withProperty(MODEL, GlassModel.T_JUNCTION).withProperty(ROTATION, rot.get(y, x));
+            return state.with(MODEL, GlassModel.T_JUNCTION).with(ROTATION, rot.get(y, x));
         case 4:
             if (plateD && plateU)
-                return state.withProperty(MODEL, GlassModel.CROSSROADS_S2).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.CROSSROADS_S2).with(ROTATION, rot.get(y, 0));
             if (plateD)
-                return state.withProperty(MODEL, GlassModel.CROSSROADS_S).withProperty(ROTATION, rot.get(y, 0));
+                return state.with(MODEL, GlassModel.CROSSROADS_S).with(ROTATION, rot.get(y, 0));
             if (plateU)
-                return state.withProperty(MODEL, GlassModel.CROSSROADS_S).withProperty(ROTATION, rot.get(y ^ 2, 2));
+                return state.with(MODEL, GlassModel.CROSSROADS_S).with(ROTATION, rot.get(y ^ 2, 2));
         default:
-            return state.withProperty(MODEL, GlassModel.CROSSROADS).withProperty(ROTATION, rot.get(y, x));
+            return state.with(MODEL, GlassModel.CROSSROADS).with(ROTATION, rot.get(y, x));
         }
     }
     

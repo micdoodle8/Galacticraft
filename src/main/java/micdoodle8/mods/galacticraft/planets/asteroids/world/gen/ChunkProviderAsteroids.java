@@ -732,8 +732,8 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
                     {
                         treeType = 0;
                     }
-                    BlockState log = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
-                    BlockState leaves = Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).withProperty(LeavesBlock.CHECK_DECAY, Boolean.valueOf(false));
+                    BlockState log = Blocks.LOG.getDefaultState().with(BlockOldLog.VARIANT, BlockPlanks.EnumType.OAK);
+                    BlockState leaves = Blocks.LEAVES.getDefaultState().with(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.OAK).with(LeavesBlock.CHECK_DECAY, Boolean.valueOf(false));
                     TreeFeature wg = new TreeFeature(false, 2, log, leaves, false);
                     for (int tries = 0; tries < 5; tries++)
                     {

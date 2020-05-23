@@ -1,21 +1,19 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
+import javafx.beans.property.IntegerProperty;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -30,7 +28,7 @@ import java.util.Random;
 
 public class BlockCheese extends Block implements IShiftDescription, ISortableBlock
 {
-    public static final PropertyInteger BITES = PropertyInteger.create("bites", 0, 6);
+    public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 6);
     protected static final AxisAlignedBB[] CHEESE_AABB = new AxisAlignedBB[] {
             new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
             new AxisAlignedBB(0.1875, 0.0, 0.0625, 0.9375, 0.5, 0.9375),
@@ -53,7 +51,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
         int bites = 0;
         if (state.getBlock() instanceof BlockCheese)
         {
-            bites = ((Integer)state.getValue(BITES)).intValue();
+            bites = ((Integer)state.get(BITES)).intValue();
         }
         return CHEESE_AABB[bites];
     }
@@ -77,7 +75,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         this.eatCheeseSlice(worldIn, pos, worldIn.getBlockState(pos), playerIn);
         return true;
@@ -94,11 +92,11 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
         if (playerIn.canEat(false))
         {
             playerIn.getFoodStats().addStats(2, 0.1F);
-            int i = ((Integer) state.getValue(BITES)).intValue();
+            int i = ((Integer) state.get(BITES)).intValue();
 
             if (i < 6)
             {
-                worldIn.setBlockState(pos, state.withProperty(BITES, Integer.valueOf(i + 1)), 3);
+                worldIn.setBlockState(pos, state.with(BITES, Integer.valueOf(i + 1)), 3);
             }
             else
             {
@@ -154,7 +152,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BITES, Integer.valueOf(meta));
+        return this.getDefaultState().with(BITES, Integer.valueOf(meta));
     }
 
     @Override
@@ -173,7 +171,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((Integer) state.getValue(BITES)).intValue();
+        return ((Integer) state.get(BITES)).intValue();
     }
 
     @Override

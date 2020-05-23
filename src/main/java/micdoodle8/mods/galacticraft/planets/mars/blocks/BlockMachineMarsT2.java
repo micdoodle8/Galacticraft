@@ -27,7 +27,7 @@ import java.util.Random;
 
 public class BlockMachineMarsT2 extends BlockMachineBase
 {
-    public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
+    public static final EnumProperty<EnumMachineType> TYPE = EnumProperty.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements EnumMachineBase, IStringSerializable
     {
@@ -110,7 +110,7 @@ public class BlockMachineMarsT2 extends BlockMachineBase
      * Called when the block is right clicked by the player
      */
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_MARS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -167,13 +167,13 @@ public class BlockMachineMarsT2 extends BlockMachineBase
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumMachineType type = (EnumMachineType) typeBase.fromMetadata(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMetadata();
+        return (state.get(FACING)).getHorizontalIndex() + ((EnumMachineType) state.get(TYPE)).getMetadata();
     }
 
     @Override

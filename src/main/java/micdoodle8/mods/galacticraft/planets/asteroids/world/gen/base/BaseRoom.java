@@ -519,7 +519,7 @@ public class BaseRoom extends SizedPiece
                 ((IMultiBlock)tile).getPositions(blockpos, positions);
                 for (BlockPos pos : positions)
                 {
-                    worldIn.setBlockState(pos, GCBlocks.fakeBlock.getDefaultState().withProperty(BlockMulti.MULTI_TYPE, ((IMultiBlock)tile).getMultiType()), 2);
+                    worldIn.setBlockState(pos, GCBlocks.fakeBlock.getDefaultState().with(BlockMulti.MULTI_TYPE, ((IMultiBlock)tile).getMultiType()), 2);
                 }
             }
             

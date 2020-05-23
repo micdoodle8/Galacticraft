@@ -22,13 +22,13 @@ public class IMachineSidesProperties
     public static IMachineSidesProperties TWOFACES_HORIZ = new IMachineSidesProperties(MachineSidesModel.twoFacedHoriz(), Face.Horizontals);
     public static IMachineSidesProperties TWOFACES_ALL = new IMachineSidesProperties(MachineSidesModel.twoFacedAll(), Face.AllAvailable);
 
-    public PropertyEnum<MachineSidesModel> asProperty;
+    public EnumProperty<MachineSidesModel> asProperty;
     private Predicate<MachineSidesModel> filter;
     private Face[] toFaces;
     
     public IMachineSidesProperties(Predicate<MachineSidesModel> theFilter, Face[] faces)
     {
-        this.asProperty = PropertyEnum.create("msm", MachineSidesModel.class, theFilter);
+        this.asProperty = EnumProperty.create("msm", MachineSidesModel.class, theFilter);
         this.filter = theFilter;
         this.toFaces = faces;
     }

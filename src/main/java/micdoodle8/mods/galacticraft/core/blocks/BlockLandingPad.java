@@ -9,12 +9,9 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPadSingle;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -30,7 +27,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealableBlock, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumLandingPadType> PAD_TYPE = PropertyEnum.create("type", EnumLandingPadType.class);
+    public static final EnumProperty<EnumLandingPadType> PAD_TYPE = EnumProperty.create("type", EnumLandingPadType.class);
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 0.1875, 1.0);
 
     public enum EnumLandingPadType implements IStringSerializable
@@ -192,13 +189,13 @@ public class BlockLandingPad extends BlockAdvancedTile implements IPartialSealab
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(PAD_TYPE, EnumLandingPadType.byMetadata(meta));
+        return this.getDefaultState().with(PAD_TYPE, EnumLandingPadType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumLandingPadType) state.getValue(PAD_TYPE)).getMeta();
+        return ((EnumLandingPadType) state.get(PAD_TYPE)).getMeta();
     }
 
     @Override

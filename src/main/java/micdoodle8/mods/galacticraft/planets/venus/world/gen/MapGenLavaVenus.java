@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -175,7 +175,7 @@ public class MapGenLavaVenus extends MapGenBaseMeta
                                                     BlockState below = localY == 0 ? Blocks.AIR.getDefaultState() : primer.getBlockState(localX, localY - 1, localZ);
                                                     if (north.getBlock() == Blocks.AIR || south.getBlock() == Blocks.AIR || east.getBlock() == Blocks.AIR || west.getBlock() == Blocks.AIR || below.getBlock() == Blocks.AIR)
                                                     {
-                                                        primer.setBlockState(localX, localY, localZ, VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA));
+                                                        primer.setBlockState(localX, localY, localZ, VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA));
                                                     }
                                                     else
                                                     {

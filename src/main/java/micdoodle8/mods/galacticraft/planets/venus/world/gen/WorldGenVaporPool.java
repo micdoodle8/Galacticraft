@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -24,7 +24,7 @@ public class WorldGenVaporPool extends Feature
             return false;
         }
 
-        BlockState venusSoft = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
+        BlockState venusSoft = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_SOFT);
 
         int radius = 5 + rand.nextInt(4);
         int radiusSq = radius * radius;

@@ -7,14 +7,13 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -35,7 +34,7 @@ import java.util.Random;
  */
 public class BlockBasic extends Block implements IDetectableResource, ISortableBlock
 {
-    public static final PropertyEnum<EnumBlockBasic> BASIC_TYPE = PropertyEnum.create("basictype", EnumBlockBasic.class);
+    public static final EnumProperty<EnumBlockBasic> BASIC_TYPE = EnumProperty.create("basictype", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {
@@ -84,11 +83,8 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
 
     public BlockBasic(Properties builder)
     {
-        super(Material.ROCK);
-        this.setHardness(1.0F);
-        this.blockResistance = 15F;
+        super(builder);
         this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE, EnumBlockBasic.ALUMINUM_DECORATION_BLOCK_0));
-        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -206,7 +202,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public boolean isValueable(BlockState state)
     {
-        EnumBlockBasic type = state.getValue(BASIC_TYPE);
+        EnumBlockBasic type = state.get(BASIC_TYPE);
         switch (type)
         {
         case ORE_COPPER:
@@ -221,7 +217,7 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_SILICON)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_SILICON)
         {
             return new ItemStack(Item.getItemFromBlock(this), 1, EnumBlockBasic.ORE_SILICON.getMeta());
         }
@@ -232,13 +228,13 @@ public class BlockBasic extends Block implements IDetectableResource, ISortableB
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
+        return this.getDefaultState().with(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.get(BASIC_TYPE)).getMeta();
     }
 
     @Override

@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockWalkway extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumWalkwayType> WALKWAY_TYPE = PropertyEnum.create("type", EnumWalkwayType.class);
+    public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
     protected static final AxisAlignedBB AABB_UNCONNECTED = new AxisAlignedBB(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
@@ -75,13 +75,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         }
     }
 
-    protected BlockWalkway(String assetName)
+    protected BlockWalkway(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(1.0F);
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
-        this.hasTileEntity = true;
+        super(builder);
         this.setDefaultState(stateContainer.getBaseState().with(WALKWAY_TYPE, EnumWalkwayType.WALKWAY));
     }
 
@@ -90,7 +86,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     {
         state = this.getActualState(state, source, pos);
 
-        if (state.getValue(DOWN))
+        if (state.get(DOWN))
         {
             return AABB_CONNECTED_DOWN;
         }
@@ -105,12 +101,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isOpaqueCube(BlockState state)
@@ -161,12 +157,12 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     @Override
     public NetworkType getNetworkType(BlockState state)
     {
-        if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+        if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
         {
             return NetworkType.FLUID;
         }
 
-        if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+        if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
         {
             return NetworkType.POWER;
         }
@@ -328,7 +324,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
 
         TileEntity tileEntity = null;
         
-        if (state.getValue(WALKWAY_TYPE) != EnumWalkwayType.WALKWAY)
+        if (state.get(WALKWAY_TYPE) != EnumWalkwayType.WALKWAY)
         {
             tileEntity = worldIn.getTileEntity(pos);
         }
@@ -339,7 +335,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                 continue;
             }
 
-            if (state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
+            if (state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY)
             {
                 BlockPos neighbour = pos.offset(direction);
                 Block block = worldIn.getBlockState(neighbour).getBlock();
@@ -349,33 +345,33 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
                     connectable[direction.ordinal()] = block;
                 }
             }
-            else if (tileEntity !=null && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
+            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_PIPE)
             {
                 connectable = OxygenUtil.getAdjacentFluidConnections(tileEntity);
             }
-            else if (tileEntity !=null && state.getValue(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
+            else if (tileEntity !=null && state.get(WALKWAY_TYPE) == EnumWalkwayType.WALKWAY_WIRE)
             {
                 connectable = EnergyUtil.getAdjacentPowerConnections(tileEntity);
             }
         }
 
-        return state.withProperty(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
-                .withProperty(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
-                .withProperty(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
-                .withProperty(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null))
-                .withProperty(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null));
+        return state.with(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
+                .with(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
+                .with(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
+                .with(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null))
+                .with(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null));
     }
 
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
+        return this.getDefaultState().with(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumWalkwayType) state.getValue(WALKWAY_TYPE)).getMeta();
+        return ((EnumWalkwayType) state.get(WALKWAY_TYPE)).getMeta();
     }
 
     @Override

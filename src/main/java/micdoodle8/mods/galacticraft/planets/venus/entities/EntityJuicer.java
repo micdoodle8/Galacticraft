@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.entities;
 
 import micdoodle8.mods.galacticraft.api.entity.IEntityBreathable;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.EntityMoveHelperCeiling;
 import micdoodle8.mods.galacticraft.planets.venus.entities.ai.PathNavigateCeiling;

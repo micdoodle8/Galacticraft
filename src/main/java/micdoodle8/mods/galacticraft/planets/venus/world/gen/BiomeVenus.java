@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -46,7 +46,7 @@ public class BiomeVenus extends BiomeGenBaseGC
         int i = worldIn.getSeaLevel();
         BlockState topBlock = this.topBlock;
         BlockState fillerBlock = this.fillerBlock;
-        BlockState stoneBlock = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
+        BlockState stoneBlock = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
         int j = -1;
         int k = (int)(p_180628_6_ / 3.0D + 3.0D + rand.nextDouble() * 0.25D);
         int l = p_180628_4_ & 15;

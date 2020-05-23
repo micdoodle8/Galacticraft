@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.planets.venus.world.gen;
 
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -146,7 +146,7 @@ public class WorldGenLakesVenus extends Feature
                         BlockState state = worldIn.getBlockState(position.add(j2, k4, k3));
                         if (flag1 && (k4 < 4 || rand.nextInt(2) != 0) && state.getMaterial().isSolid())
                         {
-                            worldIn.setBlockState(position.add(j2, k4, k3), VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA), 2);
+                            worldIn.setBlockState(position.add(j2, k4, k3), VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_MAGMA), 2);
                         }
                     }
                 }

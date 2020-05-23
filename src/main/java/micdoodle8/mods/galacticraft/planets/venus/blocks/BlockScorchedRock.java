@@ -19,19 +19,15 @@ public class BlockScorchedRock extends Block implements ISortableBlock
 {
     public BlockScorchedRock(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 0.9F;
-        this.blockResistance = 2.5F;
-        this.setTickRandomly(true);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)

@@ -38,7 +38,7 @@ import java.util.Random;
 
 public class BlockCavernousVine extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumVineType> VINE_TYPE = PropertyEnum.create("vinetype", EnumVineType.class);
+    public static final EnumProperty<EnumVineType> VINE_TYPE = EnumProperty.create("vinetype", EnumVineType.class);
 
     public enum EnumVineType implements IStringSerializable
     {
@@ -75,11 +75,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
 
     public BlockCavernousVine(Properties builder)
     {
-        super(Material.VINE);
-        this.setLightLevel(1.0F);
-        this.setTickRandomly(true);
-        this.setSoundType(SoundType.PLANT);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -140,12 +136,12 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
         return this.getVineLight(world, pos);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isOpaqueCube(BlockState state)
@@ -297,13 +293,13 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(VINE_TYPE, EnumVineType.byMetadata(meta));
+        return this.getDefaultState().with(VINE_TYPE, EnumVineType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumVineType) state.getValue(VINE_TYPE)).getMeta();
+        return ((EnumVineType) state.get(VINE_TYPE)).getMeta();
     }
 
     @Override

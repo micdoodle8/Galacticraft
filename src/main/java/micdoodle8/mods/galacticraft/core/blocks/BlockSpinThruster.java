@@ -9,20 +9,16 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -34,8 +30,8 @@ import java.util.Random;
 
 public class BlockSpinThruster extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-    public static final PropertyBool ORIENTATION = PropertyBool.create("rev");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final BooleanProperty ORIENTATION = BooleanProperty.create("rev");
 
     protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.4F, 0.8F, 0.8F, 1.0F);
     protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.6F);
@@ -51,7 +47,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
         case EAST:
             return EAST_AABB;
@@ -94,7 +90,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     {
         if (facing.getAxis().isHorizontal() && this.canBlockStay(world, pos, facing))
         {
-            return this.getDefaultState().withProperty(FACING, facing);
+            return this.getDefaultState().with(FACING, facing);
         }
         else
         {
@@ -102,7 +98,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
             {
                 if (this.canBlockStay(world, pos, enumfacing))
                 {
-                    return this.getDefaultState().withProperty(FACING, enumfacing);
+                    return this.getDefaultState().with(FACING, enumfacing);
                 }
             }
             return this.getDefaultState();
@@ -154,7 +150,7 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        Direction enumfacing = state.getValue(FACING);
+        Direction enumfacing = state.get(FACING);
 
         if (!this.canBlockStay(worldIn, pos, enumfacing))
         {
@@ -239,15 +235,15 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         BlockState state = world.getBlockState(pos);
-        boolean orientation = state.getValue(ORIENTATION);
+        boolean orientation = state.get(ORIENTATION);
 
-        Direction currentFacing = state.getValue(FACING);
+        Direction currentFacing = state.get(FACING);
 //        if (this.canBlockStay(world, pos.offset(currentFacing.getOpposite()), currentFacing))
 //        {
-            world.setBlockState(pos, state.withProperty(ORIENTATION, !orientation), 2);
+            world.setBlockState(pos, state.with(ORIENTATION, !orientation), 2);
 //        }
         //TODO  else
 
@@ -302,13 +298,13 @@ public class BlockSpinThruster extends BlockAdvanced implements IShiftDescriptio
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(ORIENTATION, meta >= 8);
+        return this.getDefaultState().with(FACING, enumfacing).with(ORIENTATION, meta >= 8);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex() + (state.getValue(ORIENTATION) ? 8 : 0);
+        return state.get(FACING).getHorizontalIndex() + (state.get(ORIENTATION) ? 8 : 0);
     }
 
     @Override

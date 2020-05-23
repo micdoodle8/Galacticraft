@@ -3,7 +3,6 @@ package micdoodle8.mods.galacticraft.planets.venus.blocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.ISortableBlock;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntitySpout;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -28,18 +27,15 @@ public class BlockSpout extends Block implements ISortableBlock, ITileEntityProv
 {
     public BlockSpout(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 4.5F;
-        this.blockResistance = 2.5F;
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)

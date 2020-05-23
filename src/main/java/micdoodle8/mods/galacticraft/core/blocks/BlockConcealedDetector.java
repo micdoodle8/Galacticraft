@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlayerDetector;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
@@ -9,25 +7,22 @@ import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.Random;
 
 public class BlockConcealedDetector extends Block implements ISortableBlock, ITileEntityProvider
 {
-    public static final PropertyInteger VARIANT = PropertyInteger.create("var", 0, 1);
-    public static final PropertyInteger FACING = PropertyInteger.create("facing", 0, 3);
-    public static final PropertyBool DETECTED = PropertyBool.create("det");
+    public static final IntegerProperty VARIANT = IntegerProperty.create("var", 0, 1);
+    public static final IntegerProperty FACING = IntegerProperty.create("facing", 0, 3);
+    public static final BooleanProperty DETECTED = BooleanProperty.create("det");
 
     public BlockConcealedDetector(Properties builder)
     {
@@ -50,7 +45,7 @@ public class BlockConcealedDetector extends Block implements ISortableBlock, ITi
     @Override
     public BlockState getStateForPlacement(World worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int damage, LivingEntity placer)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getHorizontalIndex());
+        return this.getDefaultState().with(FACING, placer.getHorizontalFacing().getHorizontalIndex());
     }
 
     @Override
@@ -58,13 +53,13 @@ public class BlockConcealedDetector extends Block implements ISortableBlock, ITi
     {
         int facing = meta & 3;
         int var = (meta >> 2) & 1;
-        return this.getDefaultState().withProperty(FACING, Integer.valueOf(facing)).withProperty(VARIANT, Integer.valueOf(var)).withProperty(DETECTED, Boolean.valueOf(meta >= 8));
+        return this.getDefaultState().with(FACING, Integer.valueOf(facing)).with(VARIANT, Integer.valueOf(var)).with(DETECTED, Boolean.valueOf(meta >= 8));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).intValue() + state.getValue(VARIANT).intValue() * 4 + (state.getValue(DETECTED) ? 8 : 0);
+        return state.get(FACING).intValue() + state.get(VARIANT).intValue() * 4 + (state.get(DETECTED) ? 8 : 0);
     }
 
     @Override
@@ -123,7 +118,7 @@ public class BlockConcealedDetector extends Block implements ISortableBlock, ITi
         BlockState bs = worldObj.getBlockState(pos);
         if (result != (boolean) bs.getValue(DETECTED))
         {
-            worldObj.setBlockState(pos, bs.withProperty(DETECTED, result), 3);
+            worldObj.setBlockState(pos, bs.with(DETECTED, result), 3);
         }
     }
 

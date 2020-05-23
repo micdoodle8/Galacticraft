@@ -28,9 +28,9 @@ import java.util.Random;
 
 public class ChunkProviderMoon extends ChunkProviderBase
 {
-    public static final BlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
-    public static final BlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
-    public static final BlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
+    public static final BlockState BLOCK_TOP = GCBlocks.blockMoon.getDefaultState().with(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_TURF);
+    public static final BlockState BLOCK_FILL = GCBlocks.blockMoon.getDefaultState().with(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DIRT);
+    public static final BlockState BLOCK_LOWER = GCBlocks.blockMoon.getDefaultState().with(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_STONE);
 
     private final Random rand;
 
@@ -42,7 +42,7 @@ public class ChunkProviderMoon extends ChunkProviderBase
     private final World world;
     private final MapGenVillageMoon villageGenerator = new MapGenVillageMoon();
 
-    private final MapGenDungeon dungeonGeneratorMoon = new MapGenDungeon(new DungeonConfiguration(GCBlocks.blockMoon.getDefaultState().withProperty(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class));
+    private final MapGenDungeon dungeonGeneratorMoon = new MapGenDungeon(new DungeonConfiguration(GCBlocks.blockMoon.getDefaultState().with(BlockBasicMoon.BASIC_TYPE_MOON, BlockBasicMoon.EnumBlockBasicMoon.MOON_DUNGEON_BRICK), 25, 8, 16, 5, 6, RoomBoss.class, RoomTreasure.class));
 
     private Biome[] biomesForGeneration = { BiomeAdaptive.biomeDefault };
 

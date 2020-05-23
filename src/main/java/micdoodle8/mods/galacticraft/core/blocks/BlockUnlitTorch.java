@@ -6,10 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
@@ -29,7 +26,7 @@ import java.util.Random;
 
 public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != Direction.DOWN);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.DOWN);
 
     public boolean lit;
     public Block litVersion;
@@ -40,12 +37,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     public BlockUnlitTorch(boolean lit, Properties builder)
     {
         super(builder);
-        this.setTickRandomly(true);
         this.lit = lit;
-        this.setLightLevel(lit ? 0.9375F : 0.2F);
-        this.setHardness(0.0F);
-        this.setSoundType(SoundType.WOOD);
-        this.setUnlocalizedName(assetName);
         this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));
     }
 
@@ -120,7 +112,7 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (this.checkForDrop(worldIn, pos, state))
         {
-            Direction enumfacing = state.getValue(FACING);
+            Direction enumfacing = state.get(FACING);
             Direction.Axis enumfacingAxis = enumfacing.getAxis();
             Direction enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;
@@ -161,8 +153,8 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
         }
         else
         {
-            Direction enumfacing = state.getValue(FACING);
-            world.setBlockState(pos, this.fallback.getDefaultState().withProperty(FACING, enumfacing), 2);
+            Direction enumfacing = state.get(FACING);
+            world.setBlockState(pos, this.fallback.getDefaultState().with(FACING, enumfacing), 2);
         }
     }
 
@@ -201,8 +193,8 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            Direction enumfacing = state.getValue(FACING);
-            world.setBlockState(pos, this.unlitVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
+            Direction enumfacing = state.get(FACING);
+            world.setBlockState(pos, this.unlitVersion.getDefaultState().with(FACING, enumfacing), 2);
         }
     }
 
@@ -211,8 +203,8 @@ public class BlockUnlitTorch extends BlockTorchBase implements IOxygenReliantBlo
     {
         if (world.provider instanceof IGalacticraftWorldProvider)
         {
-            Direction enumfacing = state.getValue(FACING);
-            world.setBlockState(pos, this.litVersion.getDefaultState().withProperty(FACING, enumfacing), 2);
+            Direction enumfacing = state.get(FACING);
+            world.setBlockState(pos, this.litVersion.getDefaultState().with(FACING, enumfacing), 2);
         }
     }
 

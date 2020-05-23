@@ -126,7 +126,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
             IProperty<?> iProperty = entry.getKey();
             if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.getValue(iProperty) instanceof Direction)
             {
-                PropertyEnum<Direction> property = (PropertyEnum<Direction>) iProperty;
+                EnumProperty<Direction> property = (EnumProperty<Direction>) iProperty;
                 Collection<Direction> values = property.getAllowedValues();
                 if (values.size() > 0)
                 {
@@ -139,7 +139,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                         Direction newFacing = currentFacing.rotateY();
                         if (values.contains(newFacing))
                         {
-                            world.setBlockState(pos, state.withProperty(property, newFacing));
+                            world.setBlockState(pos, state.with(property, newFacing));
                             done = true;
                         }
                     }
@@ -149,7 +149,7 @@ public class ItemUniversalWrench extends Item implements ISortableItem
                         List<Direction> list = Arrays.asList(values.toArray(new Direction[0]));
                         int i = list.indexOf(currentFacing) + 1;
                         Direction newFacing = list.get(i >= list.size() ? 0 : i);
-                        world.setBlockState(pos, state.withProperty(property, newFacing));
+                        world.setBlockState(pos, state.with(property, newFacing));
                     }
 
                     ItemStack stack = player.getHeldItem(hand).copy();

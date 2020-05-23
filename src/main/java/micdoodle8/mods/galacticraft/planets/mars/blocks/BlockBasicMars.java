@@ -41,7 +41,7 @@ import java.util.Random;
 
 public class BlockBasicMars extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum<EnumBlockBasic> BASIC_TYPE = PropertyEnum.create("basictypemars", EnumBlockBasic.class);
+    public static final EnumProperty<EnumBlockBasic> BASIC_TYPE = EnumProperty.create("basictypemars", EnumBlockBasic.class);
 
     public enum EnumBlockBasic implements IStringSerializable
     {
@@ -85,18 +85,17 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
 
     public BlockBasicMars(Properties builder)
     {
-        super(Material.ROCK);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
     public MapColor getMapColor(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
         {
             return MapColor.GREEN;
         }
-        else if (state.getValue(BASIC_TYPE) == EnumBlockBasic.SURFACE)
+        else if (state.get(BASIC_TYPE) == EnumBlockBasic.SURFACE)
         {
             return MapColor.DIRT;
         }
@@ -121,19 +120,19 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public float getBlockHardness(BlockState blockState, World worldIn, BlockPos pos)
     {
         BlockState state = worldIn.getBlockState(pos);
 
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
         {
             return 4.0F;
         }
@@ -144,7 +143,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
         {
             return MarsItems.marsItemBasic;
         }
@@ -156,11 +155,11 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     public int damageDropped(BlockState state)
     {
         int meta = state.getBlock().getMetaFromState(state);
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.MARS_STONE)
         {
             return 4;
         }
-        else if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
+        else if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_DESH)
         {
             return 0;
         }
@@ -173,7 +172,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public int quantityDropped(BlockState state, int fortune, Random random)
     {
-        if (state.getValue(BASIC_TYPE) == EnumBlockBasic.ORE_DESH && fortune >= 1)
+        if (state.get(BASIC_TYPE) == EnumBlockBasic.ORE_DESH && fortune >= 1)
         {
             return (random.nextFloat() < fortune * 0.29F - 0.25F) ? 2 : 1;
         }
@@ -230,7 +229,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         if (rand.nextInt(10) == 0)
         {
-            if (state.getBlock() == this && state.getValue(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
+            if (state.getBlock() == this && state.get(BASIC_TYPE) == EnumBlockBasic.DUNGEON_BRICK)
             {
                 GalacticraftPlanets.spawnParticle("sludgeDrip", new Vector3(pos.getX() + rand.nextDouble(), pos.getY(), pos.getZ() + rand.nextDouble()), new Vector3(0, 0, 0));
 
@@ -247,7 +246,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     {
         BlockState state = world.getBlockState(pos);
         BlockState stateAbove = world.getBlockState(pos.up());
-        return state.getValue(BASIC_TYPE) == EnumBlockBasic.SURFACE && !stateAbove.getBlock().isFullCube(stateAbove);
+        return state.get(BASIC_TYPE) == EnumBlockBasic.SURFACE && !stateAbove.getBlock().isFullCube(stateAbove);
     }
 
     @Override
@@ -259,7 +258,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isReplaceableOreGen(BlockState state, IBlockAccess world, BlockPos pos, Predicate<BlockState> target)
     {
-        return (state.getValue(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.getValue(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
+        return (state.get(BASIC_TYPE) == EnumBlockBasic.MIDDLE || state.get(BASIC_TYPE) == EnumBlockBasic.MARS_STONE);
     }
 
     @Override
@@ -271,13 +270,13 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
+        return this.getDefaultState().with(BASIC_TYPE, EnumBlockBasic.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumBlockBasic) state.getValue(BASIC_TYPE)).getMeta();
+        return ((EnumBlockBasic) state.get(BASIC_TYPE)).getMeta();
     }
 
     @Override

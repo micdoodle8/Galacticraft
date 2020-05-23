@@ -4,23 +4,24 @@ import micdoodle8.mods.galacticraft.core.tile.IMachineSides;
 import micdoodle8.mods.galacticraft.core.tile.IMachineSidesProperties;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityElectricFurnace;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.IBlockReader;
+
+import javax.annotation.Nullable;
 
 public class BlockMachineTiered extends BlockMachineBase
 {
-    public static final PropertyEnum<EnumTieredMachineType> TYPE = PropertyEnum.create("type", EnumTieredMachineType.class);
+    public static final EnumProperty<EnumTieredMachineType> TYPE = EnumProperty.create("type", EnumTieredMachineType.class);
     public static IMachineSidesProperties MACHINESIDES_RENDERTYPE = IMachineSidesProperties.TWOFACES_HORIZ;
     public static final PropertyEnum SIDES = MACHINESIDES_RENDERTYPE.asProperty;
-    public static final PropertyInteger FILL_VALUE = PropertyInteger.create("fill_value", 0, 33);
+    public static final IntegerProperty FILL_VALUE = IntegerProperty.create("fill_value", 0, 33);
 
     public enum EnumTieredMachineType implements EnumMachineBase, IStringSerializable
     {
@@ -101,12 +102,13 @@ public class BlockMachineTiered extends BlockMachineBase
         this.typeBase = EnumTieredMachineType.values[0];
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        TileEntity tile = super.createTileEntity(world, state);
-        tile.setWorld(world);
-        return tile;
+//        TileEntity tile = super.createTileEntity(state, world);
+//        tile.setWorld(world); TODO Needed?
+        return super.createTileEntity(state, world);
     }
 
     @Override
@@ -114,13 +116,13 @@ public class BlockMachineTiered extends BlockMachineBase
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumTieredMachineType type = (EnumTieredMachineType) typeBase.fromMetadata(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((Direction) state.getValue(FACING)).getHorizontalIndex() + ((EnumTieredMachineType) state.getValue(TYPE)).getMetadata();
+        return ((Direction) state.get(FACING)).getHorizontalIndex() + ((EnumTieredMachineType) state.get(TYPE)).getMetadata();
     }
 
     @Override
@@ -137,10 +139,10 @@ public class BlockMachineTiered extends BlockMachineBase
 
         if (!(tile instanceof TileEntityEnergyStorageModule))
         {
-            return state.withProperty(FILL_VALUE, 0);
+            return state.with(FILL_VALUE, 0);
         }
         int energyLevel = ((TileEntityEnergyStorageModule) tile).scaledEnergyLevel;
-        if (state.getValue(TYPE) == EnumTieredMachineType.STORAGE_CLUSTER) energyLevel += 17;
-        return state.withProperty(FILL_VALUE, energyLevel);
+        if (state.get(TYPE) == EnumTieredMachineType.STORAGE_CLUSTER) energyLevel += 17;
+        return state.with(FILL_VALUE, energyLevel);
     }
 }

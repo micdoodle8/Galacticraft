@@ -6,8 +6,6 @@ public class BlockSpaceWart extends NetherWartBlock
 {
     public BlockSpaceWart(Properties builder)
     {
-        super();
-        this.setTickRandomly(false);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 }

@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import appeng.api.AEApi;
 import appeng.api.parts.IPartHelper;
+import ic2.api.network.INetworkManager;
 import micdoodle8.mods.galacticraft.api.block.IPartialSealableBlock;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IConductor;
 import micdoodle8.mods.galacticraft.api.transmission.tile.INetworkConnection;
@@ -18,15 +19,12 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -37,7 +35,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import ic2.api.network.INetworkManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -55,7 +52,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     private static Method icContainerGetMethod;
     private static Constructor icTileCableConstuctor;
 
-    public static final PropertyEnum<EnumEnclosedBlockType> TYPE = PropertyEnum.create("type", EnumEnclosedBlockType.class);
+    public static final EnumProperty<EnumEnclosedBlockType> TYPE = EnumProperty.create("type", EnumEnclosedBlockType.class);
 
     public enum EnumEnclosedBlockType implements IStringSerializable
     {
@@ -150,11 +147,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
 
     public BlockEnclosed(Properties builder)
     {
-        super(Material.CLAY);
-        this.setResistance(0.2F);
-        this.setHardness(0.4f);
-        this.setSoundType(SoundType.STONE);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @SideOnly(Side.CLIENT)
@@ -230,7 +223,7 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
 //        int metadata = state.getBlock().getMetaFromState(state);
-        EnumEnclosedBlockType type = state.getValue(TYPE);
+        EnumEnclosedBlockType type = state.get(TYPE);
         final TileEntity tileEntity = worldIn.getTileEntity(pos);
 
         if (type == EnumEnclosedBlockType.TE_CONDUIT)
@@ -491,13 +484,13 @@ public class BlockEnclosed extends Block implements IPartialSealableBlock, ITile
     public BlockState getStateFromMeta(int meta)
     {
         EnumEnclosedBlockType type = EnumEnclosedBlockType.byMetadata(meta);
-        return this.getDefaultState().withProperty(TYPE, type);
+        return this.getDefaultState().with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumEnclosedBlockType) state.getValue(TYPE)).getMeta();
+        return ((EnumEnclosedBlockType) state.get(TYPE)).getMeta();
     }
 
     @Override

@@ -10,21 +10,16 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.BlockMachineMars;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
 import net.minecraft.block.*;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.IStringSerializable;
@@ -43,8 +38,8 @@ import java.util.Random;
 
 public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, ITileEntityProvider
 {
-    public static final PropertyEnum<EnumBlockMultiType> MULTI_TYPE = PropertyEnum.create("type", EnumBlockMultiType.class);
-    public static final PropertyInteger RENDER_TYPE = PropertyInteger.create("rendertype", 0, 7);
+    public static final EnumProperty<EnumBlockMultiType> MULTI_TYPE = EnumProperty.create("type", EnumBlockMultiType.class);
+    public static final IntegerProperty RENDER_TYPE = IntegerProperty.create("rendertype", 0, 7);
 
     protected static final AxisAlignedBB AABB_PAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.1875F, 1.0F);
     protected static final AxisAlignedBB AABB_SOLAR = new AxisAlignedBB(0.0F, 0.2F, 0.0F, 1.0F, 0.8F, 1.0F);
@@ -99,7 +94,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch ((EnumBlockMultiType)state.getValue(MULTI_TYPE))
+        switch ((EnumBlockMultiType)state.get(MULTI_TYPE))
         {
         case SOLAR_PANEL_0:
         case SOLAR_PANEL_1:
@@ -207,7 +202,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     {
         for (BlockPos pos : posList)
         {
-            worldObj.setBlockState(pos, this.getDefaultState().withProperty(MULTI_TYPE, type), type == EnumBlockMultiType.CRYO_CHAMBER ? 3 : 0);
+            worldObj.setBlockState(pos, this.getDefaultState().with(MULTI_TYPE, type), type == EnumBlockMultiType.CRYO_CHAMBER ? 3 : 0);
             worldObj.setTileEntity(pos, new TileEntityMulti(mainBlock));
         }
     }
@@ -264,7 +259,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) worldIn.getTileEntity(pos);
         if (tileEntity == null)
@@ -275,7 +270,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntityMulti tileEntity = (TileEntityMulti) world.getTileEntity(pos);
         return tileEntity.onBlockWrenched(world, pos, entityPlayer, hand, side, hitX, hitY, hitZ);
@@ -458,13 +453,13 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(MULTI_TYPE, EnumBlockMultiType.byMetadata(meta));
+        return this.getDefaultState().with(MULTI_TYPE, EnumBlockMultiType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(MULTI_TYPE).getMeta();
+        return state.get(MULTI_TYPE).getMeta();
     }
 
     @Override
@@ -476,7 +471,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
     @Override
     public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
-        EnumBlockMultiType type = state.getValue(MULTI_TYPE);
+        EnumBlockMultiType type = state.get(MULTI_TYPE);
         int renderType = 0;
 
         switch (type)
@@ -506,7 +501,7 @@ public class BlockMulti extends BlockAdvanced implements IPartialSealableBlock, 
             break;
         }
 
-        return state.withProperty(RENDER_TYPE, renderType);
+        return state.with(RENDER_TYPE, renderType);
     }
     
     public static void onPlacement(World worldIn, BlockPos pos, LivingEntity placer, Block callingBlock)

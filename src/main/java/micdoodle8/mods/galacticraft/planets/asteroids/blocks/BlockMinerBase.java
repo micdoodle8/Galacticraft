@@ -30,18 +30,15 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
 {
     public BlockMinerBase(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 3.0F;
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public Item getItemDropped(BlockState state, Random random, int par3)

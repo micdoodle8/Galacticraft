@@ -6,24 +6,18 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.*;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -36,8 +30,8 @@ import java.util.Random;
 
 public class BlockParaChest extends ContainerBlock implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-    public static final PropertyEnum<DyeColor> COLOR = PropertyEnum.create("color", DyeColor.class);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<DyeColor> COLOR = EnumProperty.create("color", DyeColor.class);
     protected static final AxisAlignedBB NOT_CONNECTED_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 0.875D, 0.9375D);
 
     public BlockParaChest(Properties builder)
@@ -61,7 +55,7 @@ public class BlockParaChest extends ContainerBlock implements ITileEntityProvide
     @Override
     public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+        return this.getDefaultState().with(FACING, placer.getHorizontalFacing());
     }
 
     @Override
@@ -95,7 +89,7 @@ public class BlockParaChest extends ContainerBlock implements ITileEntityProvide
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         if (worldIn.isRemote)
         {
@@ -236,13 +230,13 @@ public class BlockParaChest extends ContainerBlock implements ITileEntityProvide
             enumfacing = Direction.NORTH;
         }
 
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override
@@ -260,7 +254,7 @@ public class BlockParaChest extends ContainerBlock implements ITileEntityProvide
             return state;
         }
         TileEntityParaChest chest = (TileEntityParaChest) tile;
-        return state.withProperty(COLOR, chest.color);
+        return state.with(COLOR, chest.color);
     }
 
     @Override

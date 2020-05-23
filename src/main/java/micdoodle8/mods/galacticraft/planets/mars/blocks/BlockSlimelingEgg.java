@@ -41,8 +41,8 @@ import javax.annotation.Nullable;
 public class BlockSlimelingEgg extends Block implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
     //    private IIcon[] icons;
-    public static final PropertyEnum<EnumEggColor> EGG_COLOR = PropertyEnum.create("eggcolor", EnumEggColor.class);
-    public static final PropertyBool BROKEN = PropertyBool.create("broken");
+    public static final EnumProperty<EnumEggColor> EGG_COLOR = EnumProperty.create("eggcolor", EnumEggColor.class);
+    public static final BooleanProperty BROKEN = BooleanProperty.create("broken");
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
 
     public enum EnumEggColor implements IStringSerializable
@@ -74,10 +74,8 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
 
     public BlockSlimelingEgg(Properties builder)
     {
-        super(Material.ROCK);
-//        this.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 0.625F, 0.75F);
-        this.setUnlocalizedName(assetName);
-        this.setDefaultState(stateContainer.getBaseState().with(EGG_COLOR, EnumEggColor.RED).withProperty(BROKEN, false));
+        super(builder);
+        this.setDefaultState(stateContainer.getBaseState().with(EGG_COLOR, EnumEggColor.RED).with(BROKEN, false));
     }
 
     @Override
@@ -160,7 +158,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         return beginHatch(worldIn, pos, playerIn, 20);
     }
@@ -192,12 +190,12 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         return this.icons[metadata % 6];
     }*/
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isOpaqueCube(BlockState state)
@@ -273,13 +271,13 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(EGG_COLOR, EnumEggColor.values()[meta % 3]).withProperty(BROKEN, meta - 3 >= 0);
+        return this.getDefaultState().with(EGG_COLOR, EnumEggColor.values()[meta % 3]).with(BROKEN, meta - 3 >= 0);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumEggColor) state.getValue(EGG_COLOR)).getMeta() + (state.getValue(BROKEN) ? 3 : 0);
+        return ((EnumEggColor) state.get(EGG_COLOR)).getMeta() + (state.get(BROKEN) ? 3 : 0);
     }
 
     @Override

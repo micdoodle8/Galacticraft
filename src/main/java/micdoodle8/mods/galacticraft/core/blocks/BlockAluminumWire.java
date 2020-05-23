@@ -1,176 +1,169 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWire;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityAluminumWireSwitch;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-public class BlockAluminumWire extends BlockTransmitter implements ITileEntityProvider, IShiftDescription, ISortableBlock
+import javax.annotation.Nullable;
+
+public class BlockAluminumWire extends BlockTransmitter implements IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumWireType> WIRE_TYPE = PropertyEnum.create("wiretype", EnumWireType.class);
+    public static final EnumProperty<EnumWireType> WIRE_TYPE = EnumProperty.create("wiretype", EnumWireType.class);
     private static final float MIN = 0.38F;
     private static final float MINH = 0.3F;
     private static final float MAX = 0.62F;
     private static final float MAXH = 0.7F;
-    protected static final AxisAlignedBB[] BOUNDING_BOXES = new AxisAlignedBB[] {
+    protected static final VoxelShape[] BOUNDING_BOXES = new VoxelShape[] {
 
-            new AxisAlignedBB(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  0000000
-            new AxisAlignedBB(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          0000001
-            new AxisAlignedBB(0.0D, MIN, MIN, MAX, MAX, MAX), // West                                           0000010
-            new AxisAlignedBB(0.0D, MIN, MIN, MAX, MAX, 1.0D), // South West                                    0000011
-            new AxisAlignedBB(MIN, MIN, 0.0D, MAX, MAX, MAX), // North                                          0000100
-            new AxisAlignedBB(MIN, MIN, 0.0D, MAX, MAX, 1.0D), // North South                                   0000101
-            new AxisAlignedBB(0.0D, MIN, 0.0D, MAX, MAX, MAX), // North West                                    0000110
-            new AxisAlignedBB(0.0D, MIN, 0.0D, MAX, MAX, 1.0D), // North South West                             0000111
-            new AxisAlignedBB(MIN, MIN, MIN, 1.0D, MAX, MAX), // East                                           0001000
-            new AxisAlignedBB(MIN, MIN, MIN, 1.0D, MAX, 1.0D), // East South                                    0001001
-            new AxisAlignedBB(0.0D, MIN, MIN, 1.0D, MAX, MAX), // West East                                     0001010
-            new AxisAlignedBB(0.0D, MIN, MIN, 1.0D, MAX, 1.0D), // South West East                              0001011
-            new AxisAlignedBB(MIN, MIN, 0.0D, 1.0D, MAX, MAX), // North East                                    0001100
-            new AxisAlignedBB(MIN, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East                             0001101
-            new AxisAlignedBB(0.0D, MIN, 0.0D, 1.0D, MAX, MAX), // North East West                              0001110
-            new AxisAlignedBB(0.0D, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East West                       0001111
+            Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, MAX),  // No connection                                  0000000
+            Block.makeCuboidShape(MIN, MIN, MIN, MAX, MAX, 1.0D), // South                                          0000001
+            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, MAX, MAX), // West                                           0000010
+            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, MAX, 1.0D), // South West                                    0000011
+            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, MAX, MAX), // North                                          0000100
+            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, MAX, 1.0D), // North South                                   0000101
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, MAX, MAX), // North West                                    0000110
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, MAX, 1.0D), // North South West                             0000111
+            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, MAX, MAX), // East                                           0001000
+            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, MAX, 1.0D), // East South                                    0001001
+            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, MAX, MAX), // West East                                     0001010
+            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, MAX, 1.0D), // South West East                              0001011
+            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, MAX, MAX), // North East                                    0001100
+            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East                             0001101
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, MAX, MAX), // North East West                              0001110
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, MAX, 1.0D), // North South East West                       0001111
 
-            new AxisAlignedBB(MIN, 0.0D, MIN, MAX, MAX, MAX),  // Down                                          0010000
-            new AxisAlignedBB(MIN, 0.0D, MIN, MAX, MAX, 1.0D), // Down South                                    0010001
-            new AxisAlignedBB(0.0D, 0.0D, MIN, MAX, MAX, MAX), // Down West                                     0010010
-            new AxisAlignedBB(0.0D, 0.0D, MIN, MAX, MAX, 1.0D), // Down South West                              0010011
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, MAX, MAX, MAX), // Down North                                    0010100
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South                             0010101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAX, MAX, MAX), // Down North West                              0010110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South West                       0010111
-            new AxisAlignedBB(MIN, 0.0D, MIN, 1.0D, MAX, MAX), // Down East                                     0011000
-            new AxisAlignedBB(MIN, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down East South                              0011001
-            new AxisAlignedBB(0.0D, 0.0D, MIN, 1.0D, MAX, MAX), // Down West East                               0011010
-            new AxisAlignedBB(0.0D, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down South West East                        0011011
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East                              0011100
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East                       0011101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East West                        0011110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East West                 0011111
+            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, MAX, MAX),  // Down                                          0010000
+            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, MAX, 1.0D), // Down South                                    0010001
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, MAX, MAX), // Down West                                     0010010
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, MAX, 1.0D), // Down South West                              0010011
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, MAX, MAX), // Down North                                    0010100
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South                             0010101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, MAX, MAX), // Down North West                              0010110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, MAX, 1.0D), // Down North South West                       0010111
+            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, MAX, MAX), // Down East                                     0011000
+            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down East South                              0011001
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, MAX, MAX), // Down West East                               0011010
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, MAX, 1.0D), // Down South West East                        0011011
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East                              0011100
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East                       0011101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, MAX), // Down North East West                        0011110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAX, 1.0D), // Down North South East West                 0011111
     
-            new AxisAlignedBB(MIN, MIN, MIN, MAX, 1.0D, MAX),  // Up                                            0100000
-            new AxisAlignedBB(MIN, MIN, MIN, MAX, 1.0D, 1.0D), // Up South                                      0100001
-            new AxisAlignedBB(0.0D, MIN, MIN, MAX, 1.0D, MAX), // Up West                                       0100010
-            new AxisAlignedBB(0.0D, MIN, MIN, MAX, 1.0D, 1.0D), // Up South West                                0100011
-            new AxisAlignedBB(MIN, MIN, 0.0D, MAX, 1.0D, MAX), // Up North                                      0100100
-            new AxisAlignedBB(MIN, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South                               0100101
-            new AxisAlignedBB(0.0D, MIN, 0.0D, MAX, 1.0D, MAX), // Up North West                                0100110
-            new AxisAlignedBB(0.0D, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South West                         0100111
-            new AxisAlignedBB(MIN, MIN, MIN, 1.0D, 1.0D, MAX), // Up East                                       0101000
-            new AxisAlignedBB(MIN, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up East South                                0101001
-            new AxisAlignedBB(0.0D, MIN, MIN, 1.0D, 1.0D, MAX), // Up West East                                 0101010
-            new AxisAlignedBB(0.0D, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up South West East                          0101011
-            new AxisAlignedBB(MIN, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East                                0101100
-            new AxisAlignedBB(MIN, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                         0101101
-            new AxisAlignedBB(0.0D, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East West                          0101110
-            new AxisAlignedBB(0.0D, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                   0101111
+            Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, MAX),  // Up                                            0100000
+            Block.makeCuboidShape(MIN, MIN, MIN, MAX, 1.0D, 1.0D), // Up South                                      0100001
+            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, 1.0D, MAX), // Up West                                       0100010
+            Block.makeCuboidShape(0.0D, MIN, MIN, MAX, 1.0D, 1.0D), // Up South West                                0100011
+            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, 1.0D, MAX), // Up North                                      0100100
+            Block.makeCuboidShape(MIN, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South                               0100101
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, 1.0D, MAX), // Up North West                                0100110
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, MAX, 1.0D, 1.0D), // Up North South West                         0100111
+            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, 1.0D, MAX), // Up East                                       0101000
+            Block.makeCuboidShape(MIN, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up East South                                0101001
+            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, 1.0D, MAX), // Up West East                                 0101010
+            Block.makeCuboidShape(0.0D, MIN, MIN, 1.0D, 1.0D, 1.0D), // Up South West East                          0101011
+            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East                                0101100
+            Block.makeCuboidShape(MIN, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                         0101101
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, 1.0D, MAX), // Up North East West                          0101110
+            Block.makeCuboidShape(0.0D, MIN, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                   0101111
 
-            new AxisAlignedBB(MIN, 0.0D, MIN, MAX, 1.0D, MAX),  // Up Down                                      0110000
-            new AxisAlignedBB(MIN, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South                                0110001
-            new AxisAlignedBB(0.0D, 0.0D, MIN, MAX, 1.0D, MAX), // Up Down West                                 0110010
-            new AxisAlignedBB(0.0D, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South West                          0110011
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North                                0110100
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South                         0110101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North West                          0110110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South West                   0110111
-            new AxisAlignedBB(MIN, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down East                                 0111000
-            new AxisAlignedBB(MIN, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down East South                          0111001
-            new AxisAlignedBB(0.0D, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down West East                           0111010
-            new AxisAlignedBB(0.0D, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down South West East                    0111011
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East                          0111100
-            new AxisAlignedBB(MIN, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                   0111101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    0111110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East West             0111111
+            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, 1.0D, MAX),  // Up Down                                      0110000
+            Block.makeCuboidShape(MIN, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South                                0110001
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, 1.0D, MAX), // Up Down West                                 0110010
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, MAX, 1.0D, 1.0D), // Up Down South West                          0110011
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North                                0110100
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South                         0110101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, 1.0D, MAX), // Up Down North West                          0110110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAX, 1.0D, 1.0D), // Up Down North South West                   0110111
+            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down East                                 0111000
+            Block.makeCuboidShape(MIN, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down East South                          0111001
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, 1.0D, MAX), // Up Down West East                           0111010
+            Block.makeCuboidShape(0.0D, 0.0D, MIN, 1.0D, 1.0D, 1.0D), // Up Down South West East                    0111011
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East                          0111100
+            Block.makeCuboidShape(MIN, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                   0111101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAX), // Up Down North East West                    0111110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East West             0111111
     
-            new AxisAlignedBB(MINH, MINH, MINH, MAXH, MAXH, MAXH),  // No connection                            1000000
-            new AxisAlignedBB(MINH, MINH, MINH, MAXH, MAXH, 1.0D), // South                                     1000001
-            new AxisAlignedBB(0.0D, MINH, MINH, MAXH, MAXH, MAXH), // West                                      1000010
-            new AxisAlignedBB(0.0D, MINH, MINH, MAXH, MAXH, 1.0D), // South West                                1000011
-            new AxisAlignedBB(MINH, MINH, 0.0D, MAXH, MAXH, MAXH), // North                                     1000100
-            new AxisAlignedBB(MINH, MINH, 0.0D, MAXH, MAXH, 1.0D), // North South                               1000101
-            new AxisAlignedBB(0.0D, MINH, 0.0D, MAXH, MAXH, MAXH), // North West                                1000110
-            new AxisAlignedBB(0.0D, MINH, 0.0D, MAXH, MAXH, 1.0D), // North South West                          1000111
-            new AxisAlignedBB(MINH, MINH, MINH, 1.0D, MAXH, MAXH), // East                                      1001000
-            new AxisAlignedBB(MINH, MINH, MINH, 1.0D, MAXH, 1.0D), // East South                                1001001
-            new AxisAlignedBB(0.0D, MINH, MINH, 1.0D, MAXH, MAXH), // West East                                 1001010
-            new AxisAlignedBB(0.0D, MINH, MINH, 1.0D, MAXH, 1.0D), // South West East                           1001011
-            new AxisAlignedBB(MINH, MINH, 0.0D, 1.0D, MAXH, MAXH), // North East                                1001100
-            new AxisAlignedBB(MINH, MINH, 0.0D, 1.0D, MAXH, 1.0D), // North South East                          1001101
-            new AxisAlignedBB(0.0D, MINH, 0.0D, 1.0D, MAXH, MAXH), // North East West                           1001110
-            new AxisAlignedBB(0.0D, MINH, 0.0D, 1.0D, MAXH, 1.0D), // North South East West                     1001111
+            Block.makeCuboidShape(MINH, MINH, MINH, MAXH, MAXH, MAXH),  // No connection                            1000000
+            Block.makeCuboidShape(MINH, MINH, MINH, MAXH, MAXH, 1.0D), // South                                     1000001
+            Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, MAXH, MAXH), // West                                      1000010
+            Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, MAXH, 1.0D), // South West                                1000011
+            Block.makeCuboidShape(MINH, MINH, 0.0D, MAXH, MAXH, MAXH), // North                                     1000100
+            Block.makeCuboidShape(MINH, MINH, 0.0D, MAXH, MAXH, 1.0D), // North South                               1000101
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, MAXH, MAXH, MAXH), // North West                                1000110
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, MAXH, MAXH, 1.0D), // North South West                          1000111
+            Block.makeCuboidShape(MINH, MINH, MINH, 1.0D, MAXH, MAXH), // East                                      1001000
+            Block.makeCuboidShape(MINH, MINH, MINH, 1.0D, MAXH, 1.0D), // East South                                1001001
+            Block.makeCuboidShape(0.0D, MINH, MINH, 1.0D, MAXH, MAXH), // West East                                 1001010
+            Block.makeCuboidShape(0.0D, MINH, MINH, 1.0D, MAXH, 1.0D), // South West East                           1001011
+            Block.makeCuboidShape(MINH, MINH, 0.0D, 1.0D, MAXH, MAXH), // North East                                1001100
+            Block.makeCuboidShape(MINH, MINH, 0.0D, 1.0D, MAXH, 1.0D), // North South East                          1001101
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, 1.0D, MAXH, MAXH), // North East West                           1001110
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, 1.0D, MAXH, 1.0D), // North South East West                     1001111
 
-            new AxisAlignedBB(MINH, 0.0D, MINH, MAXH, MAXH, MAXH),  // Down                                     1010000
-            new AxisAlignedBB(MINH, 0.0D, MINH, MAXH, MAXH, 1.0D), // Down South                                1010001
-            new AxisAlignedBB(0.0D, 0.0D, MINH, MAXH, MAXH, MAXH), // Down West                                 1010010
-            new AxisAlignedBB(0.0D, 0.0D, MINH, MAXH, MAXH, 1.0D), // Down South West                           1010011
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, MAXH, MAXH, MAXH), // Down North                                1010100
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, MAXH, MAXH, 1.0D), // Down North South                          1010101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAXH, MAXH, MAXH), // Down North West                           1010110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAXH, MAXH, 1.0D), // Down North South West                     1010111
-            new AxisAlignedBB(MINH, 0.0D, MINH, 1.0D, MAXH, MAXH), // Down East                                 1011000
-            new AxisAlignedBB(MINH, 0.0D, MINH, 1.0D, MAXH, 1.0D), // Down East South                           1011001
-            new AxisAlignedBB(0.0D, 0.0D, MINH, 1.0D, MAXH, MAXH), // Down West East                            1011010
-            new AxisAlignedBB(0.0D, 0.0D, MINH, 1.0D, MAXH, 1.0D), // Down South West East                      1011011
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, 1.0D, MAXH, MAXH), // Down North East                           1011100
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East                     1011101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, MAXH, MAXH), // Down North East West                      1011110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East West                1011111
+            Block.makeCuboidShape(MINH, 0.0D, MINH, MAXH, MAXH, MAXH),  // Down                                     1010000
+            Block.makeCuboidShape(MINH, 0.0D, MINH, MAXH, MAXH, 1.0D), // Down South                                1010001
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, MAXH, MAXH, MAXH), // Down West                                 1010010
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, MAXH, MAXH, 1.0D), // Down South West                           1010011
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, MAXH, MAXH, MAXH), // Down North                                1010100
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, MAXH, MAXH, 1.0D), // Down North South                          1010101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAXH, MAXH, MAXH), // Down North West                           1010110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAXH, MAXH, 1.0D), // Down North South West                     1010111
+            Block.makeCuboidShape(MINH, 0.0D, MINH, 1.0D, MAXH, MAXH), // Down East                                 1011000
+            Block.makeCuboidShape(MINH, 0.0D, MINH, 1.0D, MAXH, 1.0D), // Down East South                           1011001
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, 1.0D, MAXH, MAXH), // Down West East                            1011010
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, 1.0D, MAXH, 1.0D), // Down South West East                      1011011
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, 1.0D, MAXH, MAXH), // Down North East                           1011100
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East                     1011101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAXH, MAXH), // Down North East West                      1011110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, MAXH, 1.0D), // Down North South East West                1011111
     
-            new AxisAlignedBB(MINH, MINH, MINH, MAXH, 1.0D, MAXH),  // Up                                       1100000
-            new AxisAlignedBB(MINH, MINH, MINH, MAXH, 1.0D, 1.0D), // Up South                                  1100001
-            new AxisAlignedBB(0.0D, MINH, MINH, MAXH, 1.0D, MAXH), // Up West                                   1100010
-            new AxisAlignedBB(0.0D, MINH, MINH, MAXH, 1.0D, 1.0D), // Up South West                             1100011
-            new AxisAlignedBB(MINH, MINH, 0.0D, MAXH, 1.0D, MAXH), // Up North                                  1100100
-            new AxisAlignedBB(MINH, MINH, 0.0D, MAXH, 1.0D, 1.0D), // Up North South                            1100101
-            new AxisAlignedBB(0.0D, MINH, 0.0D, MAXH, 1.0D, MAXH), // Up North West                             1100110
-            new AxisAlignedBB(0.0D, MINH, 0.0D, MAXH, 1.0D, 1.0D), // Up North South West                       1100111
-            new AxisAlignedBB(MINH, MINH, MINH, 1.0D, 1.0D, MAXH), // Up East                                   1101000
-            new AxisAlignedBB(MINH, MINH, MINH, 1.0D, 1.0D, 1.0D), // Up East South                             1101001
-            new AxisAlignedBB(0.0D, MINH, MINH, 1.0D, 1.0D, MAXH), // Up West East                              1101010
-            new AxisAlignedBB(0.0D, MINH, MINH, 1.0D, 1.0D, 1.0D), // Up South West East                        1101011
-            new AxisAlignedBB(MINH, MINH, 0.0D, 1.0D, 1.0D, MAXH), // Up North East                             1101100
-            new AxisAlignedBB(MINH, MINH, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                       1101101
-            new AxisAlignedBB(0.0D, MINH, 0.0D, 1.0D, 1.0D, MAXH), // Up North East West                        1101110
-            new AxisAlignedBB(0.0D, MINH, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                  1101111
+            Block.makeCuboidShape(MINH, MINH, MINH, MAXH, 1.0D, MAXH),  // Up                                       1100000
+            Block.makeCuboidShape(MINH, MINH, MINH, MAXH, 1.0D, 1.0D), // Up South                                  1100001
+            Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, 1.0D, MAXH), // Up West                                   1100010
+            Block.makeCuboidShape(0.0D, MINH, MINH, MAXH, 1.0D, 1.0D), // Up South West                             1100011
+            Block.makeCuboidShape(MINH, MINH, 0.0D, MAXH, 1.0D, MAXH), // Up North                                  1100100
+            Block.makeCuboidShape(MINH, MINH, 0.0D, MAXH, 1.0D, 1.0D), // Up North South                            1100101
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, MAXH, 1.0D, MAXH), // Up North West                             1100110
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, MAXH, 1.0D, 1.0D), // Up North South West                       1100111
+            Block.makeCuboidShape(MINH, MINH, MINH, 1.0D, 1.0D, MAXH), // Up East                                   1101000
+            Block.makeCuboidShape(MINH, MINH, MINH, 1.0D, 1.0D, 1.0D), // Up East South                             1101001
+            Block.makeCuboidShape(0.0D, MINH, MINH, 1.0D, 1.0D, MAXH), // Up West East                              1101010
+            Block.makeCuboidShape(0.0D, MINH, MINH, 1.0D, 1.0D, 1.0D), // Up South West East                        1101011
+            Block.makeCuboidShape(MINH, MINH, 0.0D, 1.0D, 1.0D, MAXH), // Up North East                             1101100
+            Block.makeCuboidShape(MINH, MINH, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East                       1101101
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, 1.0D, 1.0D, MAXH), // Up North East West                        1101110
+            Block.makeCuboidShape(0.0D, MINH, 0.0D, 1.0D, 1.0D, 1.0D), // Up North South East West                  1101111
 
-            new AxisAlignedBB(MINH, 0.0D, MINH, MAXH, 1.0D, MAXH),  // Up Down                                  1110000
-            new AxisAlignedBB(MINH, 0.0D, MINH, MAXH, 1.0D, 1.0D), // Up Down South                             1110001
-            new AxisAlignedBB(0.0D, 0.0D, MINH, MAXH, 1.0D, MAXH), // Up Down West                              1110010
-            new AxisAlignedBB(0.0D, 0.0D, MINH, MAXH, 1.0D, 1.0D), // Up Down South West                        1110011
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, MAXH, 1.0D, MAXH), // Up Down North                             1110100
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, MAXH, 1.0D, 1.0D), // Up Down North South                       1110101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAXH, 1.0D, MAXH), // Up Down North West                        1110110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, MAXH, 1.0D, 1.0D), // Up Down North South West                  1110111
-            new AxisAlignedBB(MINH, 0.0D, MINH, 1.0D, 1.0D, MAXH), // Up Down East                              1111000
-            new AxisAlignedBB(MINH, 0.0D, MINH, 1.0D, 1.0D, 1.0D), // Up Down East South                        1111001
-            new AxisAlignedBB(0.0D, 0.0D, MINH, 1.0D, 1.0D, MAXH), // Up Down West East                         1111010
-            new AxisAlignedBB(0.0D, 0.0D, MINH, 1.0D, 1.0D, 1.0D), // Up Down South West East                   1111011
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, 1.0D, 1.0D, MAXH), // Up Down North East                        1111100
-            new AxisAlignedBB(MINH, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                  1111101
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAXH), // Up Down North East West                   1111110
-            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)}; // Up Down North South East West            1111111
+            Block.makeCuboidShape(MINH, 0.0D, MINH, MAXH, 1.0D, MAXH),  // Up Down                                  1110000
+            Block.makeCuboidShape(MINH, 0.0D, MINH, MAXH, 1.0D, 1.0D), // Up Down South                             1110001
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, MAXH, 1.0D, MAXH), // Up Down West                              1110010
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, MAXH, 1.0D, 1.0D), // Up Down South West                        1110011
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, MAXH, 1.0D, MAXH), // Up Down North                             1110100
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, MAXH, 1.0D, 1.0D), // Up Down North South                       1110101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAXH, 1.0D, MAXH), // Up Down North West                        1110110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, MAXH, 1.0D, 1.0D), // Up Down North South West                  1110111
+            Block.makeCuboidShape(MINH, 0.0D, MINH, 1.0D, 1.0D, MAXH), // Up Down East                              1111000
+            Block.makeCuboidShape(MINH, 0.0D, MINH, 1.0D, 1.0D, 1.0D), // Up Down East South                        1111001
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, 1.0D, 1.0D, MAXH), // Up Down West East                         1111010
+            Block.makeCuboidShape(0.0D, 0.0D, MINH, 1.0D, 1.0D, 1.0D), // Up Down South West East                   1111011
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, 1.0D, 1.0D, MAXH), // Up Down North East                        1111100
+            Block.makeCuboidShape(MINH, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D), // Up Down North South East                  1111101
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, MAXH), // Up Down North East West                   1111110
+            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)}; // Up Down North South East West            1111111
 
     public enum EnumWireType implements IStringSerializable
     {
@@ -208,17 +201,13 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
 
     public BlockAluminumWire(Properties builder)
     {
-        super(Material.CLOTH);
-        this.setSoundType(SoundType.CLOTH);
-        this.setResistance(0.2F);
-        this.setHardness(0.075F);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        state = this.getActualState(state, source, pos);
+//        state = this.getActualState(state, source, pos);
         return BOUNDING_BOXES[getBoundingBoxIdx(state)];
     }
 
@@ -226,38 +215,38 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     {
         int i = 0;
 
-        if (state.getValue(NORTH).booleanValue())
+        if (state.get(NORTH))
         {
             i |= 1 << Direction.NORTH.getHorizontalIndex();
         }
 
-        if (state.getValue(EAST).booleanValue())
+        if (state.get(EAST))
         {
             i |= 1 << Direction.EAST.getHorizontalIndex();
         }
 
-        if (state.getValue(SOUTH).booleanValue())
+        if (state.get(SOUTH))
         {
             i |= 1 << Direction.SOUTH.getHorizontalIndex();
         }
 
-        if (state.getValue(WEST).booleanValue())
+        if (state.get(WEST))
         {
             i |= 1 << Direction.WEST.getHorizontalIndex();
         }
 
-        if (state.getValue(DOWN).booleanValue())
+        if (state.get(DOWN))
         {
             i |= 1 << 4;
         }
 
-        if (state.getValue(UP).booleanValue())
+        if (state.get(UP))
         {
             i |= 1 << 5;
         }
 
         // Is heavy:
-        if (((EnumWireType) state.getValue(WIRE_TYPE)).ordinal() % 2 == 1)
+        if (state.get(WIRE_TYPE).ordinal() % 2 == 1)
         {
             i |= 1 << 6;
         }
@@ -265,70 +254,51 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
         return i;
     }
 
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
+//
+//    @Override
+//    public boolean isOpaqueCube(BlockState state)
+//    {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isFullCube(BlockState state)
+//    {
+//        return false;
+//    }
 
+    @Nullable
     @Override
-    public boolean isOpaqueCube(BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    public int damageDropped(BlockState state)
-    {
-        return getMetaFromState(state);
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata)
-    {
-        TileEntity tile;
-        switch (metadata)
+        switch (state.get(WIRE_TYPE))
         {
-        case 0:
-            tile = new TileEntityAluminumWire(1);
-            break;
-        case 1:
-            tile = new TileEntityAluminumWire(2);
-            break;
-        case 2:
-            tile = new TileEntityAluminumWireSwitch(1);
-            break;
-        case 3:
-            tile = new TileEntityAluminumWireSwitch(2);
-            break;
         default:
-            return null;
+        case ALUMINUM_WIRE:
+            return new TileEntityAluminumWire(1);
+        case ALUMINUM_WIRE_HEAVY:
+            return new TileEntityAluminumWire(2);
+        case ALUMINUM_WIRE_SWITCHED:
+            return new TileEntityAluminumWireSwitch(1);
+        case ALUMINUM_WIRE_SWITCHED_HEAVY:
+            return new TileEntityAluminumWireSwitch(2);
         }
-
-        return tile;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, 1));
-        list.add(new ItemStack(this, 1, 2));
-        list.add(new ItemStack(this, 1, 3));
-    }
+    //    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        list.add(new ItemStack(this, 1, 0));
+//        list.add(new ItemStack(this, 1, 1));
+//        list.add(new ItemStack(this, 1, 2));
+//        list.add(new ItemStack(this, 1, 3));
+//    }
 
     @Override
     public NetworkType getNetworkType(BlockState state)
@@ -354,21 +324,9 @@ public class BlockAluminumWire extends BlockTransmitter implements ITileEntityPr
     }
 
     @Override
-    public BlockState getStateFromMeta(int meta)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return this.getDefaultState().withProperty(WIRE_TYPE, EnumWireType.byMetadata(meta));
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        return ((EnumWireType) state.getValue(WIRE_TYPE)).getMeta();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
+        builder.add(WIRE_TYPE, UP, DOWN, NORTH, EAST, SOUTH, WEST);
     }
 
     @Override

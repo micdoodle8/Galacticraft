@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Direction;
@@ -15,7 +13,7 @@ import net.minecraft.world.World;
 
 public class BlockTorchBase extends Block
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", facing -> facing != Direction.DOWN);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", facing -> facing != Direction.DOWN);
     protected static final AxisAlignedBB STANDING_AABB = new AxisAlignedBB(0.4000000059604645D, 0.0D, 0.4000000059604645D, 0.6000000238418579D, 0.6000000238418579D, 0.6000000238418579D);
     protected static final AxisAlignedBB TORCH_NORTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.699999988079071D, 0.6499999761581421D, 0.800000011920929D, 1.0D);
     protected static final AxisAlignedBB TORCH_SOUTH_AABB = new AxisAlignedBB(0.3499999940395355D, 0.20000000298023224D, 0.0D, 0.6499999761581421D, 0.800000011920929D, 0.30000001192092896D);
@@ -30,7 +28,7 @@ public class BlockTorchBase extends Block
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
         case EAST:
             return TORCH_EAST_AABB;
@@ -56,7 +54,7 @@ public class BlockTorchBase extends Block
     {
         if (this.canPlaceAt(worldIn, pos, facing))
         {
-            return this.getDefaultState().withProperty(FACING, facing);
+            return this.getDefaultState().with(FACING, facing);
         }
         else
         {
@@ -64,7 +62,7 @@ public class BlockTorchBase extends Block
             {
                 if (worldIn.isSideSolid(pos.offset(enumfacing.getOpposite()), enumfacing, true))
                 {
-                    return this.getDefaultState().withProperty(FACING, enumfacing);
+                    return this.getDefaultState().with(FACING, enumfacing);
                 }
             }
 
@@ -95,7 +93,7 @@ public class BlockTorchBase extends Block
 
     protected boolean checkForDrop(World worldIn, BlockPos pos, BlockState state)
     {
-        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (Direction) state.getValue(FACING)))
+        if (state.getBlock() == this && this.canPlaceAt(worldIn, pos, (Direction) state.get(FACING)))
         {
             return true;
         }
@@ -119,20 +117,20 @@ public class BlockTorchBase extends Block
         switch (meta)
         {
         case 1:
-            iblockstate = iblockstate.withProperty(FACING, Direction.EAST);
+            iblockstate = iblockstate.with(FACING, Direction.EAST);
             break;
         case 2:
-            iblockstate = iblockstate.withProperty(FACING, Direction.WEST);
+            iblockstate = iblockstate.with(FACING, Direction.WEST);
             break;
         case 3:
-            iblockstate = iblockstate.withProperty(FACING, Direction.SOUTH);
+            iblockstate = iblockstate.with(FACING, Direction.SOUTH);
             break;
         case 4:
-            iblockstate = iblockstate.withProperty(FACING, Direction.NORTH);
+            iblockstate = iblockstate.with(FACING, Direction.NORTH);
             break;
         case 5:
         default:
-            iblockstate = iblockstate.withProperty(FACING, Direction.UP);
+            iblockstate = iblockstate.with(FACING, Direction.UP);
         }
 
         return iblockstate;
@@ -143,7 +141,7 @@ public class BlockTorchBase extends Block
     {
         int i = 0;
 
-        switch ((Direction) state.getValue(FACING))
+        switch ((Direction) state.get(FACING))
         {
         case EAST:
             i = i | 1;

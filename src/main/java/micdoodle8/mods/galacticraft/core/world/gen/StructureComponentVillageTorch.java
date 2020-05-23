@@ -75,10 +75,10 @@ public class StructureComponentVillageTorch extends StructureComponentVillage
         this.setBlockState(par1World, Blocks.DARK_OAK_FENCE.getDefaultState(), 1, 2, 0, par3StructureBoundingBox);
         this.setBlockState(par1World, Blocks.WOOL.getStateFromMeta(15), 1, 3, 0, par3StructureBoundingBox);
         boolean flag = this.getCoordBaseMode() == Direction.EAST || this.getCoordBaseMode() == Direction.NORTH;
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateY()), flag ? 2 : 0, 3, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode()), 1, 3, 1, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateYCCW()), flag ? 0 : 2, 3, 0, par3StructureBoundingBox);
-        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().withProperty(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().getOpposite()), 1, 3, -1, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().with(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateY()), flag ? 2 : 0, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().with(BlockGlowstoneTorch.FACING, this.getCoordBaseMode()), 1, 3, 1, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().with(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().rotateYCCW()), flag ? 0 : 2, 3, 0, par3StructureBoundingBox);
+        this.setBlockState(par1World, GCBlocks.glowstoneTorch.getDefaultState().with(BlockGlowstoneTorch.FACING, this.getCoordBaseMode().getOpposite()), 1, 3, -1, par3StructureBoundingBox);
         return true;
     }
 }

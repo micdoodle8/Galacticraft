@@ -1,37 +1,26 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.item.IPaintable;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
-import micdoodle8.mods.galacticraft.core.util.ColorUtil;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.galacticraft.core.util.PropertyObject;
-import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
+import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.LightType;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -39,9 +28,12 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription, IPaintable
 {
-    public static final PropertyEnum<PanelType> TYPE = PropertyEnum.create("type", PanelType.class);
+    public static final EnumProperty<PanelType> TYPE = EnumProperty.create("type", PanelType.class);
     public static final PropertyObject<BlockState> BASE_STATE = new PropertyObject<>("held_state", BlockState.class);
     
     public static int color = 0xf0f0e0;
@@ -132,7 +124,7 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos); 
         if (!(tile instanceof TileEntityPanelLight))
@@ -219,13 +211,13 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
     public BlockState getStateFromMeta(int meta)
     {
         if (meta >= PANELTYPES_LENGTH) meta = 0;
-        return this.getDefaultState().withProperty(TYPE, PanelType.values()[meta]);
+        return this.getDefaultState().with(TYPE, PanelType.values()[meta]);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((PanelType) state.getValue(BlockPanelLighting.TYPE)).ordinal();
+        return ((PanelType) state.get(BlockPanelLighting.TYPE)).ordinal();
     }
   
     @Override
@@ -234,7 +226,7 @@ public class BlockPanelLighting extends BlockAdvancedTile implements ISortableBl
         TileEntity tile = world.getTileEntity(pos); 
         if (tile instanceof TileEntityPanelLight)
         {
-            state = ((IExtendedBlockState) state).withProperty(BASE_STATE, ((TileEntityPanelLight)tile).getBaseBlock());
+            state = ((IExtendedBlockState) state).with(BASE_STATE, ((TileEntityPanelLight)tile).getBaseBlock());
         }
         
         return state;

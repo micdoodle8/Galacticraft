@@ -6,22 +6,18 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.OcelotEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.Entity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -34,7 +30,7 @@ import java.util.Iterator;
 
 public class BlockTier1TreasureChest extends ContainerBlock implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
     protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 0.875, 0.9375);
 
     public BlockTier1TreasureChest(Properties builder)
@@ -126,14 +122,14 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
     @Override
     public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
     {
-        return this.getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+        return this.getDefaultState().with(FACING, placer.getHorizontalFacing());
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
         Direction enumfacing = Direction.getHorizontal(MathHelper.floor((double) (placer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3).getOpposite();
-        state = state.withProperty(FACING, enumfacing);
+        state = state.with(FACING, enumfacing);
         BlockPos blockpos1 = pos.north();
         BlockPos blockpos2 = pos.south();
         BlockPos blockpos3 = pos.west();
@@ -187,7 +183,7 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
             BlockState iblockstate2 = worldIn.getBlockState(pos.south());
             BlockState iblockstate3 = worldIn.getBlockState(pos.west());
             BlockState iblockstate4 = worldIn.getBlockState(pos.east());
-            Direction enumfacing = (Direction) state.getValue(FACING);
+            Direction enumfacing = (Direction) state.get(FACING);
             Block block = iblockstate1.getBlock();
             Block block1 = iblockstate2.getBlock();
             Block block2 = iblockstate3.getBlock();
@@ -270,7 +266,7 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
                 }
             }
 
-            state = state.withProperty(FACING, enumfacing);
+            state = state.with(FACING, enumfacing);
             worldIn.setBlockState(pos, state, 3);
             return state;
         }
@@ -305,11 +301,11 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
 
         if (enumfacing != null)
         {
-            return state.withProperty(FACING, enumfacing.getOpposite());
+            return state.with(FACING, enumfacing.getOpposite());
         }
         else
         {
-            Direction enumfacing2 = (Direction) state.getValue(FACING);
+            Direction enumfacing2 = (Direction) state.get(FACING);
             BlockState state1 = worldIn.getBlockState(pos.offset(enumfacing2));
 
             if (state1.getBlock().isFullBlock(state1))
@@ -329,7 +325,7 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
                 enumfacing2 = enumfacing2.getOpposite();
             }
 
-            return state.withProperty(FACING, enumfacing2);
+            return state.with(FACING, enumfacing2);
         }
     }
 
@@ -438,7 +434,7 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         if (worldIn.isRemote)
         {
@@ -529,13 +525,13 @@ public class BlockTier1TreasureChest extends ContainerBlock implements ITileEnti
             enumfacing = Direction.NORTH;
         }
 
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override

@@ -284,7 +284,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         List<BlockPos> positions = new LinkedList<>();
         this.getPositions(placedPosition, positions);
         for (BlockPos vecToAdd : positions)
-            ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().withProperty(BlockTelepadFake.TOP, vecToAdd.getY() == placedPosition.getY() + 2));
+            ((BlockTelepadFake) AsteroidBlocks.fakeTelepad).makeFakeBlock(world, vecToAdd, placedPosition, AsteroidBlocks.fakeTelepad.getDefaultState().with(BlockTelepadFake.TOP, vecToAdd.getY() == placedPosition.getY() + 2));
     }
 
     @Override

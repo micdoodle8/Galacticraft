@@ -245,7 +245,7 @@ public class WorldGenTerraformTree extends Feature
 
     private void func_181647_a(World world, BlockPos pos, PropertyBool facing)
     {
-        BlockState iblockstate = Blocks.VINE.getDefaultState().withProperty(facing, Boolean.valueOf(true));
+        BlockState iblockstate = Blocks.VINE.getDefaultState().with(facing, Boolean.valueOf(true));
         this.setBlockAndNotifyAdequately(world, pos, iblockstate);
         int i = 4;
 
@@ -258,7 +258,7 @@ public class WorldGenTerraformTree extends Feature
 
     private void func_181652_a(World p_181652_1_, int p_181652_2_, BlockPos p_181652_3_, Direction p_181652_4_)
     {
-        this.setBlockAndNotifyAdequately(p_181652_1_, p_181652_3_, Blocks.COCOA.getDefaultState().withProperty(CocoaBlock.AGE, Integer.valueOf(p_181652_2_)).withProperty(CocoaBlock.FACING, p_181652_4_));
+        this.setBlockAndNotifyAdequately(p_181652_1_, p_181652_3_, Blocks.COCOA.getDefaultState().with(CocoaBlock.AGE, Integer.valueOf(p_181652_2_)).with(CocoaBlock.FACING, p_181652_4_));
     }
 
     protected boolean func_150523_a(BlockState state)

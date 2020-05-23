@@ -6,8 +6,6 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.item.ItemGroup;
@@ -76,7 +74,7 @@ public class BlockGlowstoneTorch extends BlockTorchBase implements IShiftDescrip
         }
         else
         {
-            Direction enumfacing = state.getValue(FACING);
+            Direction enumfacing = state.get(FACING);
             Direction.Axis enumfacing$axis = enumfacing.getAxis();
             Direction enumfacing1 = enumfacing.getOpposite();
             boolean flag = false;

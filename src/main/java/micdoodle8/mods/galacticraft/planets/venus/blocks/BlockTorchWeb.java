@@ -20,6 +20,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -31,7 +32,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
-    public static final PropertyEnum<EnumWebType> WEB_TYPE = PropertyEnum.create("webtype", EnumWebType.class);
+    public static final EnumProperty<EnumWebType> WEB_TYPE = EnumProperty.create("webtype", EnumWebType.class);
     protected static final AxisAlignedBB AABB_WEB = new AxisAlignedBB(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
     protected static final AxisAlignedBB AABB_WEB_TORCH = new AxisAlignedBB(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
@@ -69,9 +70,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
 
     public BlockTorchWeb(Properties builder)
     {
-        super(Material.CIRCUITS);
-        this.setLightLevel(1.0F);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -84,7 +83,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
         {
             return AABB_WEB_TORCH;
         }
@@ -95,7 +94,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos)
     {
-        if (state.getValue(WEB_TYPE) == EnumWebType.WEB_1)
+        if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
         {
             return 15;
         }
@@ -103,12 +102,12 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
         return 0;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isOpaqueCube(BlockState state)
@@ -219,13 +218,13 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(WEB_TYPE, EnumWebType.byMetadata(meta));
+        return this.getDefaultState().with(WEB_TYPE, EnumWebType.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumWebType) state.getValue(WEB_TYPE)).getMeta();
+        return ((EnumWebType) state.get(WEB_TYPE)).getMeta();
     }
 
     @Override

@@ -70,8 +70,15 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
             this.receiveEnergyGC(null, this.generateWatts, false);
 
             EnumSet<Direction> outputDirections = EnumSet.noneOf(Direction.class);
-            outputDirections.addAll(Arrays.asList(Direction.HORIZONTALS));
-            outputDirections.removeAll(this.getElectricalOutputDirections());
+            for (Direction dir : Direction.values())
+            {
+                if (dir.getAxis().isHorizontal() && !this.getElectricalOutputDirections().contains(dir))
+                {
+                    outputDirections.add(dir);
+                }
+            }
+//            outputDirections.addAll(Arrays.asList(Direction.HORIZONTALS));
+//            outputDirections.removeAll(this.getElectricalOutputDirections());
 
             BlockVec3 thisVec = new BlockVec3(this);
             solarArray.clear();

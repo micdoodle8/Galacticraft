@@ -3,10 +3,10 @@ package micdoodle8.mods.galacticraft.core.blocks;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCoalGenerator;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityIngotCompressor;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -16,7 +16,7 @@ import java.util.Random;
 
 public class BlockMachine extends BlockMachineBase
 {
-    public static final PropertyEnum<EnumMachineType> TYPE = PropertyEnum.create("type", EnumMachineType.class);
+    public static final EnumProperty<EnumMachineType> TYPE = EnumProperty.create("type", EnumMachineType.class);
 
     public enum EnumMachineType implements EnumMachineBase, IStringSerializable
     {
@@ -145,13 +145,13 @@ public class BlockMachine extends BlockMachineBase
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumMachineType type = (EnumMachineType) typeBase.fromMetadata(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineType) state.getValue(TYPE)).getMetadata();
+        return (state.get(FACING)).getHorizontalIndex() + ((EnumMachineType) state.get(TYPE)).getMetadata();
     }
 
     @Override

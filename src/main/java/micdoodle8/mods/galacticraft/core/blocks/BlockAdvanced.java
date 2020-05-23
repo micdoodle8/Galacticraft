@@ -4,14 +4,12 @@ import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
 
 import java.lang.reflect.Method;
@@ -30,7 +28,7 @@ public abstract class BlockAdvanced extends Block
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         if (hand != Hand.MAIN_HAND)
         {
@@ -39,29 +37,29 @@ public abstract class BlockAdvanced extends Block
 
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
-        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit))
         {
             return true;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit))
             {
                 return true;
             }
         }
 
-        return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+        return this.onMachineActivated(worldIn, pos, state, playerIn, hand, heldItem, hit);
     }
 
-    protected boolean useWrench(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    protected boolean useWrench(World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (heldItem.getItem() == GCItems.wrench)
         {
             if (playerIn.isSneaking())
             {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
                 {
                     playerIn.swingArm(hand);
                     return true;
@@ -82,14 +80,14 @@ public abstract class BlockAdvanced extends Block
 
             if (playerIn.isSneaking())
             {
-                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+                if (this.onSneakUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
                 {
                     playerIn.swingArm(hand);
                     return true;
                 }
             }
 
-            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            if (this.onUseWrench(worldIn, pos, playerIn, hand, heldItem, hit))
             {
                 playerIn.swingArm(hand);
                 return true;
@@ -138,7 +136,7 @@ public abstract class BlockAdvanced extends Block
              */
                 if (wrenchClass == CompatibilityManager.classIC2wrench || wrenchClass == CompatibilityManager.classIC2wrenchElectric )
                 {
-                    return itemStack.getItemDamage() < itemStack.getMaxDamage();
+                    return itemStack.getDamage() < itemStack.getMaxDamage();
                 }
             }
         }
@@ -196,7 +194,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         return false;
     }
@@ -206,7 +204,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if something happens
      */
-    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         return false;
     }
@@ -216,7 +214,7 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         return false;
     }
@@ -227,14 +225,8 @@ public abstract class BlockAdvanced extends Block
      *
      * @return True if some happens
      */
-    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onSneakUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
-        return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, side, hitX, hitY, hitZ);
-    }
-
-    @Override
-    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction side)
-    {
-        return this.isNormalCube(base_state, world, pos);
+        return this.onUseWrench(world, pos, entityPlayer, hand, heldItem, hit);
     }
 }

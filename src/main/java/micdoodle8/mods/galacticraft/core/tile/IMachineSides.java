@@ -9,6 +9,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -370,15 +371,15 @@ public interface IMachineSides extends ITileClientUpdates
      * 
      * @return   A blockstate with the property added
      */
-    public static BlockState addPropertyForTile(BlockState state, TileEntity tile, IMachineSidesProperties renderType, PropertyEnum<MachineSidesModel> key)
+    public static BlockState addPropertyForTile(BlockState state, TileEntity tile, IMachineSidesProperties renderType, EnumProperty<MachineSidesModel> key)
     {
         if (tile instanceof IMachineSides)
         {
             IMachineSides tileSides = (IMachineSides) tile;
-            return state.withProperty(key, tileSides.buildBlockStateProperty());
+            return state.with(key, tileSides.buildBlockStateProperty());
         }
         else
-            return state.withProperty(key, renderType.getDefault());
+            return state.with(key, renderType.getDefault());
     }
     
     /**

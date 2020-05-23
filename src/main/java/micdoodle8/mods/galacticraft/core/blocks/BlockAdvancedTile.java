@@ -1,84 +1,42 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.api.tile.ILockable;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
-public abstract class BlockAdvancedTile extends BlockAdvanced implements ITileEntityProvider
+public abstract class BlockAdvancedTile extends BlockAdvanced
 {
     public BlockAdvancedTile(Properties builder)
     {
         super(builder);
-        this.hasTileEntity = true;
     }
 
+    @Nullable
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return null;
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        super.onBlockAdded(worldIn, pos, state);
-    }
-
-    @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
-    {
-        this.dropEntireInventory(worldIn, pos, state);
-        super.breakBlock(worldIn, pos, state);
-    }
-
-    public void dropEntireInventory(World worldIn, BlockPos pos, BlockState state)
-    {
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof ILockable)
+        if (state.getBlock() != newState.getBlock())
         {
-            ((ILockable)tileEntity).clearLockedInventory();
-        }
-
-        if (tileEntity != null)
-        {
-            if (tileEntity instanceof IInventory)
+            TileEntity tileentity = worldIn.getTileEntity(pos);
+            if (tileentity instanceof IInventory)
             {
-                IInventory inventory = (IInventory) tileEntity;
-
-                Random syncRandom = GCCoreUtil.getRandom(pos);
-
-                for (int var6 = 0; var6 < inventory.getSizeInventory(); ++var6)
-                {
-                    ItemStack var7 = inventory.getStackInSlot(var6);
-
-                    if (var7 != null && !var7.isEmpty())
-                    {
-                        float var8 = syncRandom.nextFloat() * 0.8F + 0.1F;
-                        float var9 = syncRandom.nextFloat() * 0.8F + 0.1F;
-                        float var10 = syncRandom.nextFloat() * 0.8F + 0.1F;
-
-                        while (!var7.isEmpty())
-                        {
-                            ItemEntity var12 = new ItemEntity(worldIn, pos.getX() + var8, pos.getY() + var9, pos.getZ() + var10, var7.splitStack(syncRandom.nextInt(21) + 10));
-                            float var13 = 0.05F;
-                            var12.motionX = (float) syncRandom.nextGaussian() * var13;
-                            var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;
-                            var12.motionZ = (float) syncRandom.nextGaussian() * var13;
-                            worldIn.spawnEntity(var12);
-                        }
-                    }
-                }
+                InventoryHelper.dropInventoryItems(worldIn, pos, (IInventory)tileentity);
+                worldIn.updateComparatorOutputLevel(pos, this);
             }
+
+            super.onReplaced(state, worldIn, pos, newState, isMoving);
         }
     }
 }

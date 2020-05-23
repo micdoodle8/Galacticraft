@@ -35,12 +35,7 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
 {
     public BlockIceAsteroids(Properties builder)
     {
-        super(Material.ICE, false);
-        this.slipperiness = 0.98F;
-        this.setTickRandomly(true);
-        this.setHardness(0.5F);
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.GLASS);
+        super(builder, false);
     }
 
     @Override
@@ -50,12 +45,12 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
         return BlockRenderLayer.TRANSLUCENT;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public void harvestBlock(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, TileEntity te, ItemStack tool)

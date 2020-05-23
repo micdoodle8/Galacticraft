@@ -1,31 +1,29 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.List;
-import java.util.Set;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import net.minecraft.block.*;
-import net.minecraft.block.RepeaterBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.properties.PropertyInteger;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.RepeaterBlock;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.state.IntegerProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+import java.util.List;
+import java.util.Set;
+
 public class BlockConcealedRedstone extends Block implements ISortableBlock
 {
-    public static final PropertyInteger POWER = PropertyInteger.create("power", 0, 15);
+    public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 15);
     private boolean canProvidePower = true;
     private final Set<BlockPos> blocksNeedingUpdate = Sets.<BlockPos>newHashSet();
 
@@ -50,13 +48,13 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(POWER, Integer.valueOf(meta));
+        return this.getDefaultState().with(POWER, Integer.valueOf(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((Integer)state.getValue(POWER)).intValue();
+        return ((Integer)state.get(POWER)).intValue();
     }
 
     @Override
@@ -82,7 +80,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
     private BlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, BlockState state)
     {
         BlockState iblockstate = state;
-        int currentPower = ((Integer)state.getValue(POWER)).intValue();
+        int currentPower = ((Integer)state.get(POWER)).intValue();
         int maxPower = 0;
         maxPower = this.getMaxCurrentStrength(worldIn, pos2, maxPower);
         this.canProvidePower = false;
@@ -141,7 +139,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
 
         if (currentPower != maxPower)
         {
-            state = state.withProperty(POWER, Integer.valueOf(maxPower));
+            state = state.with(POWER, Integer.valueOf(maxPower));
 
             if (worldIn.getBlockState(pos1) == iblockstate)
             {
@@ -272,7 +270,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         }
         else
         {
-            return ((Integer)state.getValue(POWER)).intValue();
+            return ((Integer)state.get(POWER)).intValue();
         }
     }
 
@@ -285,7 +283,7 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         }
         else if (Blocks.UNPOWERED_REPEATER.isAssociatedBlock(state.getBlock()))
         {
-            Direction direction = (Direction)state.getValue(RepeaterBlock.FACING);
+            Direction direction = (Direction)state.get(RepeaterBlock.FACING);
             return direction == side || direction.getOpposite() == side;
         }
         else

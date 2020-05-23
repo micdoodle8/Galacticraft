@@ -6,18 +6,18 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityArclamp;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.RedstoneUtil;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,8 +27,8 @@ import net.minecraft.world.World;
 
 public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription, ITileEntityProvider, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-//    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+//    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.6F, 0.8F);
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.2F, 0.4F, 0.2F, 0.8F, 1.0F, 0.8F);
@@ -42,13 +42,13 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     public BlockBrightLamp(Properties builder)
     {
         super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));  //.withProperty(ACTIVE, true));
+        this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.UP));  //.with(ACTIVE, true));
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
         case EAST:
             return EAST_AABB;
@@ -147,10 +147,10 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
         BlockState state = world.getBlockState(offsetPos);
         if (state.getBlock().isSideSolid(state, world, offsetPos, facing))
         {
-            return this.getDefaultState().withProperty(FACING, opposite);
+            return this.getDefaultState().with(FACING, opposite);
         }
 
-        return this.getDefaultState().withProperty(FACING, facing);
+        return this.getDefaultState().with(FACING, facing);
     }
 
     /**
@@ -161,7 +161,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
     {
-        Direction side = state.getValue(FACING);
+        Direction side = state.get(FACING);
 
         BlockPos offsetPos = pos.offset(side);
         BlockState state1 = worldIn.getBlockState(offsetPos);
@@ -209,7 +209,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         if (!world.isRemote)
         {
@@ -250,13 +250,13 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getFront(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override
@@ -268,7 +268,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    @Override
 //    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
 //    {
-//        return state.withProperty(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
+//        return state.with(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
 //    }
 //
     @Override

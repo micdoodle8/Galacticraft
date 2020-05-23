@@ -45,20 +45,15 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
 
     public BlockCrashedProbe(Properties builder)
     {
-        super(Material.IRON);
-        this.blockHardness = 4.5F;
-        this.blockResistance = 2.5F;
-        this.setSoundType(SoundType.METAL);
-        this.setTickRandomly(true);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public EnumSortCategoryBlock getCategory(int meta)
@@ -81,7 +76,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;

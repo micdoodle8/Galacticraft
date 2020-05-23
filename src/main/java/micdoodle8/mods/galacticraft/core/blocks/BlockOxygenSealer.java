@@ -8,25 +8,25 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenSealer;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockOxygenSealer(Properties builder)
     {
@@ -40,7 +40,7 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         entityPlayer.openGui(GalacticraftCore.instance, -1, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -53,8 +53,9 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
         worldIn.setBlockState(pos, getStateFromMeta(Direction.getHorizontal(angle).getOpposite().getHorizontalIndex()), 3);
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityOxygenSealer();
     }
@@ -89,13 +90,13 @@ public class BlockOxygenSealer extends BlockAdvancedTile implements IShiftDescri
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getHorizontal(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.get(FACING).getHorizontalIndex();
     }
 
     @Override

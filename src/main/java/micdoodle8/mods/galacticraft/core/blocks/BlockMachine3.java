@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -17,7 +16,7 @@ import net.minecraft.util.IStringSerializable;
  */
 public class BlockMachine3 extends BlockMachineBase
 {
-    public static final PropertyEnum<EnumMachineBuildingType> TYPE = PropertyEnum.create("type", EnumMachineBuildingType.class);
+    public static final EnumProperty<EnumMachineBuildingType> TYPE = EnumProperty.create("type", EnumMachineBuildingType.class);
 
     public enum EnumMachineBuildingType implements EnumMachineBase, IStringSerializable
     {
@@ -99,13 +98,13 @@ public class BlockMachine3 extends BlockMachineBase
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumMachineBuildingType type = (EnumMachineBuildingType) typeBase.fromMetadata(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.getValue(TYPE)).getMetadata();
+        return (state.get(FACING)).getHorizontalIndex() + ((EnumMachineBuildingType) state.get(TYPE)).getMetadata();
     }
 
     @Override

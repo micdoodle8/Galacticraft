@@ -2,13 +2,14 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
-import net.minecraft.block.*;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.AirBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.material.PushReaction;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.item.Item;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -18,7 +19,7 @@ import java.util.Random;
 
 public class BlockBreathableAir extends AirBlock
 {
-    public static final PropertyBool THERMAL = PropertyBool.create("thermal");
+    public static final BooleanProperty THERMAL = BooleanProperty.create("thermal");
     
     public BlockBreathableAir(Properties builder)
     {
@@ -90,13 +91,13 @@ public class BlockBreathableAir extends AirBlock
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(THERMAL, meta % 2 == 1);
+        return this.getDefaultState().with(THERMAL, meta % 2 == 1);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(THERMAL) ? 1 : 0);
+        return (state.get(THERMAL) ? 1 : 0);
     }
     
     @Override

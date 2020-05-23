@@ -1,19 +1,9 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.google.common.base.Predicates;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableTable;
 import com.google.common.collect.Iterables;
-
 import micdoodle8.mods.galacticraft.core.util.JavaUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -23,6 +13,10 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fluids.BlockFluidBase;
 import net.minecraftforge.fluids.BlockFluidClassic;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class BlockGratingExtendedState extends ExtendedBlockState
 {
@@ -58,9 +52,9 @@ public class BlockGratingExtendedState extends ExtendedBlockState
          */
         @Override
         @Nonnull
-        public <T extends Comparable<T>, V extends T> BlockState withProperty(@Nonnull IProperty<T> property, @Nonnull V value)
+        public <T extends Comparable<T>, V extends T> BlockState with(@Nonnull IProperty<T> property, @Nonnull V value)
         {
-            BlockState clean = super.withProperty(property, value);
+            BlockState clean = super.with(property, value);
             if (clean == this.cleanState) {
                 return this;
             }
@@ -74,7 +68,7 @@ public class BlockGratingExtendedState extends ExtendedBlockState
         }
 
         @Override
-        public <V> IExtendedBlockState withProperty(IUnlistedProperty<V> property, V value)
+        public <V> IExtendedBlockState with(IUnlistedProperty<V> property, V value)
         {
             if(!this.unlistedProperties.containsKey(property))
             {

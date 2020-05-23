@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
+import micdoodle8.mods.galacticraft.core.blocks.BlockAirLockWall;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.miccore.Annotations.NetworkedField;
@@ -184,7 +185,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         BlockPos pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock().isAir(this.world.getBlockState(pos), this.world, pos))
                         {
-                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState().with(BlockAirLockWall.CONNECTION_TYPE, BlockAirLockWall.getConnection(world, pos)), 3);
                         }
                     }
                 }
@@ -201,7 +202,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         BlockPos pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock().isAir(this.world.getBlockState(pos), this.world, pos))
                         {
-                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState().with(BlockAirLockWall.CONNECTION_TYPE, BlockAirLockWall.getConnection(world, pos)), 3);
                         }
                     }
                 }
@@ -215,7 +216,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
                         BlockPos pos = new BlockPos(x, y, z);
                         if (this.world.getBlockState(pos).getBlock().isAir(this.world.getBlockState(pos), this.world, pos))
                         {
-                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState(), 3);
+                            this.world.setBlockState(pos, GCBlocks.airLockSeal.getDefaultState().with(BlockAirLockWall.CONNECTION_TYPE, BlockAirLockWall.getConnection(world, pos)), 3);
                         }
                     }
                 }

@@ -30,14 +30,11 @@ import net.minecraft.world.World;
 
 public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public BlockLaserTurret(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(2.5F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -53,7 +50,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -88,7 +85,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
         world.setBlockState(pos, this.getStateFromMeta(change), 3);
@@ -135,13 +132,13 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.get(FACING).getHorizontalIndex();
     }
 
     @Override

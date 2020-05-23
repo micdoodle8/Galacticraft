@@ -2,16 +2,11 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.*;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -25,10 +20,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
 {
     public BlockBossSpawner(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 1000000.0F;
-        this.blockResistance = 1000000.0F;
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
 //    @Override

@@ -5,15 +5,13 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenDetector;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.*;
-import net.minecraft.block.ContainerBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ContainerBlock;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -21,7 +19,7 @@ import net.minecraft.world.World;
 
 public class BlockOxygenDetector extends ContainerBlock implements ITileEntityProvider, IShiftDescription, ISortableBlock
 {
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     
     public BlockOxygenDetector(Properties builder)
     {
@@ -73,13 +71,13 @@ public class BlockOxygenDetector extends ContainerBlock implements ITileEntityPr
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(ACTIVE, meta > 0);
+        return this.getDefaultState().with(ACTIVE, meta > 0);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(ACTIVE) ? 1 : 0;
+        return state.get(ACTIVE) ? 1 : 0;
     }
 
     @Override

@@ -10,28 +10,25 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.OxygenUtil;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.BlockState;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public abstract class BlockTransmitter extends BlockAdvanced
 {
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
-    public static final PropertyBool NORTH = PropertyBool.create("north");
-    public static final PropertyBool EAST = PropertyBool.create("east");
-    public static final PropertyBool SOUTH = PropertyBool.create("south");
-    public static final PropertyBool WEST = PropertyBool.create("west");
+    public static final BooleanProperty UP = BooleanProperty.create("up");
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
+    public static final BooleanProperty NORTH = BooleanProperty.create("north");
+    public static final BooleanProperty EAST = BooleanProperty.create("east");
+    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+    public static final BooleanProperty WEST = BooleanProperty.create("west");
 
-    public BlockTransmitter(Material material)
+    public BlockTransmitter(Properties builder)
     {
-        super(material);
+        super(builder);
     }
 
     @Override
@@ -217,12 +214,12 @@ public abstract class BlockTransmitter extends BlockAdvanced
                 break;
             }
 
-            return state.withProperty(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null))
-                    .withProperty(UP, Boolean.valueOf(connectable[Direction.UP.ordinal()] != null))
-                    .withProperty(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
-                    .withProperty(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
-                    .withProperty(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
-                    .withProperty(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null));
+            return state.with(DOWN, Boolean.valueOf(connectable[Direction.DOWN.ordinal()] != null))
+                    .with(UP, Boolean.valueOf(connectable[Direction.UP.ordinal()] != null))
+                    .with(NORTH, Boolean.valueOf(connectable[Direction.NORTH.ordinal()] != null))
+                    .with(EAST, Boolean.valueOf(connectable[Direction.EAST.ordinal()] != null))
+                    .with(SOUTH, Boolean.valueOf(connectable[Direction.SOUTH.ordinal()] != null))
+                    .with(WEST, Boolean.valueOf(connectable[Direction.WEST.ordinal()] != null));
         }
 
         return state;

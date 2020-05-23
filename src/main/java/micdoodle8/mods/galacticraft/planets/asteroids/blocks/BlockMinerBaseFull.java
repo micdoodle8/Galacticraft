@@ -18,10 +18,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -30,11 +32,7 @@ public class BlockMinerBaseFull extends BlockTileGC
 {
     public BlockMinerBaseFull(Properties builder)
     {
-        super(Material.ROCK);
-        this.blockHardness = 3.0F;
-        this.setResistance(35F);
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
+        super(builder);
     }
 
     @Override
@@ -67,8 +65,9 @@ public class BlockMinerBaseFull extends BlockTileGC
         return BlockFaceShape.UNDEFINED;
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityMinerBase();
     }
@@ -109,7 +108,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tileEntity = worldIn.getTileEntity(pos);
         if (tileEntity instanceof TileEntityMinerBase)
@@ -143,7 +142,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityMinerBase)

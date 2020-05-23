@@ -30,10 +30,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
 
     public BlockSolarArrayModule(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(2.5F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -102,12 +99,12 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public String getShiftDescription(int meta)

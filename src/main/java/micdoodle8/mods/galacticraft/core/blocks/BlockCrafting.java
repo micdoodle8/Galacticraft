@@ -5,15 +5,14 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
@@ -23,7 +22,7 @@ import net.minecraft.world.World;
 
 public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock, IShiftDescription
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
 
     public BlockCrafting(Properties builder)
     {
@@ -37,7 +36,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
@@ -62,7 +61,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         this.rotate6Ways(world, pos);
         return true;
@@ -71,7 +70,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     private void rotate6Ways(World world, BlockPos pos)
     {
         BlockState state = world.getBlockState(pos);
-        Direction facing = state.getValue(FACING);
+        Direction facing = state.get(FACING);
         if (facing == Direction.DOWN)
         {
             facing = Direction.UP;
@@ -105,7 +104,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 //            metaDir = 0;
 //        }
 
-        world.setBlockState(pos, state.withProperty(FACING, facing), 3);
+        world.setBlockState(pos, state.with(FACING, facing), 3);
     }
 
     @Override
@@ -117,7 +116,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack)
     {
-        worldIn.setBlockState(pos, state.withProperty(FACING, getFacingFromEntity(worldIn, pos, placer)), 2);
+        worldIn.setBlockState(pos, state.with(FACING, getFacingFromEntity(worldIn, pos, placer)), 2);
     }
 
     public static Direction getFacingFromEntity(World worldIn, BlockPos clickedBlock, LivingEntity entityIn)
@@ -161,13 +160,13 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(FACING, Direction.getFront(meta));
+        return this.getDefaultState().with(FACING, Direction.getFront(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override

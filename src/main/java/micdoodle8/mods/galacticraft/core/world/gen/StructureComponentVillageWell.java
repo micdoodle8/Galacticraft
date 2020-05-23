@@ -98,7 +98,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
             {
                 if (var5 == 0 || var5 == 5 || var4 == 0 || var4 == 5)
                 {
-                    this.setBlockState(par1World, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE), var5, 11, var4, par3StructureBoundingBox);
+                    this.setBlockState(par1World, Blocks.PLANKS.getDefaultState().with(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE), var5, 11, var4, par3StructureBoundingBox);
                     this.clearCurrentPositionBlocksUpwards(par1World, var5, 12, var4, par3StructureBoundingBox);
                 }
             }

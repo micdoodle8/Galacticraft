@@ -7,13 +7,10 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -32,8 +29,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockFluidTank extends Block implements IShiftDescription, ISortableBlock, ITileEntityProvider
 {
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final BooleanProperty UP = BooleanProperty.create("up");
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
     private static final AxisAlignedBB BOUNDS = new AxisAlignedBB(0.05F, 0.0F, 0.05F, 0.95F, 1.0F, 0.95F);
 
     public BlockFluidTank(Properties builder)
@@ -119,7 +116,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
     {
         BlockState stateAbove = worldIn.getBlockState(pos.up());
         BlockState stateBelow = worldIn.getBlockState(pos.down());
-        return state.withProperty(UP, stateAbove.getBlock() == this).withProperty(DOWN, stateBelow.getBlock() == this);
+        return state.with(UP, stateAbove.getBlock() == this).with(DOWN, stateBelow.getBlock() == this);
     }
 
     @Override
@@ -168,7 +165,7 @@ public class BlockFluidTank extends Block implements IShiftDescription, ISortabl
 //    }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         if (super.onBlockActivated(worldIn, pos, state, playerIn, hand, side, hitX, hitY, hitZ))
         {

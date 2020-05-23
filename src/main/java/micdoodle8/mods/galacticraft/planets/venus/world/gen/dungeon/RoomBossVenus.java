@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockTorchWeb;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
@@ -120,7 +120,7 @@ public class RoomBossVenus extends SizedPieceVenus
                                 {
                                     webType = BlockTorchWeb.EnumWebType.WEB_0;
                                 }
-                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().withProperty(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, chunkBox);
+                                this.setBlockState(worldIn, VenusBlocks.torchWeb.getDefaultState().with(BlockTorchWeb.WEB_TYPE, webType), i, j0, k, chunkBox);
                             }
                         }
 

@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.block.IPlantableBlock;
 import micdoodle8.mods.galacticraft.api.block.ITerraformableBlock;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerServer;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
@@ -14,14 +13,13 @@ import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
@@ -43,7 +41,7 @@ import java.util.Random;
 
 public class BlockBasicMoon extends Block implements IDetectableResource, IPlantableBlock, ITerraformableBlock, ISortableBlock
 {
-    public static final PropertyEnum<EnumBlockBasicMoon> BASIC_TYPE_MOON = PropertyEnum.create("basictypemoon", EnumBlockBasicMoon.class);
+    public static final EnumProperty<EnumBlockBasicMoon> BASIC_TYPE_MOON = EnumProperty.create("basictypemoon", EnumBlockBasicMoon.class);
 
     public enum EnumBlockBasicMoon implements IStringSerializable
     {
@@ -94,12 +92,12 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
         this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion)
@@ -168,7 +166,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public Item getItemDropped(BlockState state, Random rand, int fortune)
     {
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
+        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
         switch (type)
         {
         case ORE_CHEESE_MOON:
@@ -183,7 +181,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public int damageDropped(BlockState state)
     {
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
+        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
         if (type == EnumBlockBasicMoon.ORE_CHEESE_MOON)
         {
             return 0;
@@ -201,7 +199,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public int quantityDropped(BlockState state, int fortune, Random random)
     {
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
+        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
         switch (type)
         {
         case ORE_CHEESE_MOON:
@@ -228,7 +226,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isValueable(BlockState state)
     {
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
+        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
         switch (type)
         {
         case ORE_CHEESE_MOON:
@@ -265,7 +263,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public boolean isPlantable(BlockState state)
     {
-        return state.getValue(BASIC_TYPE_MOON) == EnumBlockBasicMoon.MOON_TURF;
+        return state.get(BASIC_TYPE_MOON) == EnumBlockBasicMoon.MOON_TURF;
 
     }
 
@@ -294,7 +292,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     public void breakBlock(World worldIn, BlockPos pos, BlockState state)
     {
         super.breakBlock(worldIn, pos, state);
-        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON));
+        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON));
 
         if (!worldIn.isRemote && type == EnumBlockBasicMoon.MOON_TURF)
         {
@@ -339,13 +337,13 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(BASIC_TYPE_MOON, EnumBlockBasicMoon.byMetadata(meta));
+        return this.getDefaultState().with(BASIC_TYPE_MOON, EnumBlockBasicMoon.byMetadata(meta));
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return ((EnumBlockBasicMoon) state.getValue(BASIC_TYPE_MOON)).getMeta();
+        return ((EnumBlockBasicMoon) state.get(BASIC_TYPE_MOON)).getMeta();
     }
 
     @Override
@@ -376,7 +374,7 @@ public class BlockBasicMoon extends Block implements IDetectableResource, IPlant
     {
         if (state.getBlock() != this) return 0;
 
-        EnumBlockBasicMoon type = state.getValue(BASIC_TYPE_MOON);
+        EnumBlockBasicMoon type = state.get(BASIC_TYPE_MOON);
         if (type == EnumBlockBasicMoon.ORE_CHEESE_MOON || type == EnumBlockBasicMoon.ORE_SAPPHIRE)
         {
             Random rand = world instanceof World ? ((World)world).rand : new Random();

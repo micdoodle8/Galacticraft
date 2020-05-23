@@ -5,29 +5,22 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BreakableBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockFaceShape;
-import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.state.EnumProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Random;
 
 public class BlockAirLockWall extends Block implements IPartialSealableBlock, ISortableBlock
 {
-    public static final PropertyEnum<EnumAirLockSealConnection> CONNECTION_TYPE = PropertyEnum.create("connection", EnumAirLockSealConnection.class);
-    protected static final AxisAlignedBB AABB_X = new AxisAlignedBB(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
-    protected static final AxisAlignedBB AABB_Z = new AxisAlignedBB(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
-    protected static final AxisAlignedBB AABB_FLAT = new AxisAlignedBB(0.0, 0.25, 0.0, 1.0, 0.75, 1.0);
+    public static final EnumProperty<EnumAirLockSealConnection> CONNECTION_TYPE = EnumProperty.create("connection", EnumAirLockSealConnection.class);
+    protected static final VoxelShape AABB_X = Block.makeCuboidShape(0.25, 0.0, 0.0, 0.75, 1.0, 1.0);
+    protected static final VoxelShape AABB_Z = Block.makeCuboidShape(0.0, 0.0, 0.25, 1.0, 1.0, 0.75);
+    protected static final VoxelShape AABB_FLAT = Block.makeCuboidShape(0.0, 0.25, 0.0, 1.0, 0.75, 1.0);
 
     public enum EnumAirLockSealConnection implements IStringSerializable
     {
@@ -52,16 +45,12 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
     public BlockAirLockWall(Properties builder)
     {
         super(builder);
-        this.setTickRandomly(true);
-        this.setHardness(1000.0F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        this.setDefaultState(this.stateContainer.getBaseState().with(CONNECTION_TYPE, EnumAirLockSealConnection.X));
     }
 
-    @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        switch (getConnection(source, pos))
+        switch(getConnection(worldIn, pos))
         {
         case X:
             return AABB_X;
@@ -74,67 +63,35 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
     }
 
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public boolean isOpaqueCube(BlockState state)
 //    {
-//        this.setBlockBoundsBasedOnState(worldIn, pos);
-//        return super.getCollisionBoundingBox(worldIn, pos, state);
+//        return false;
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
+//    public boolean isFullCube(BlockState state)
 //    {
-//        this.setBlockBoundsBasedOnState(worldIn, pos);
-//        return super.getSelectedBoundingBox(worldIn, pos);
+//        return false;
 //    }
-//
+
 //    @Override
-//    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
-//        switch (getConnection(worldIn, pos))
-//        {
-//        case FLAT:
-//            this.setBlockBounds(0.0F, 0.25F, 0.0F, 1.0F, 0.75F, 1.0F);
-//            break;
-//        case X:
-//            this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
-//            break;
-//        case Z:
-//            this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
-//            break;
-//        }
+//        return BlockFaceShape.UNDEFINED;
 //    }
 
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    {
+//        return true;
+//    }
 
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
-    {
-        return BlockFaceShape.UNDEFINED;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
-    {
-        return true;
-    }
-
-    @Override
-    public int quantityDropped(Random par1Random)
-    {
-        return 0;
-    }
+//    @Override
+//    public int quantityDropped(Random par1Random)
+//    {
+//        return 0;
+//    }
 
     @Override
     public boolean isSealed(World worldIn, BlockPos pos, Direction direction)
@@ -154,19 +111,7 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
         return EnumSortCategoryBlock.MACHINE;
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, CONNECTION_TYPE);
-    }
-
-    @Override
-    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
-    {
-        return state.withProperty(CONNECTION_TYPE, getConnection(worldIn, pos));
-    }
-
-    private EnumAirLockSealConnection getConnection(IBlockAccess worldIn, BlockPos pos)
+    public static EnumAirLockSealConnection getConnection(IBlockReader worldIn, BlockPos pos)
     {
         EnumAirLockSealConnection connection;
 
@@ -184,13 +129,16 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
         {
             int adjacentCount = 0;
 
-            for (Direction dir : Direction.HORIZONTALS)
+            for (Direction dir : Direction.values())
             {
-                Block blockID = worldIn.getBlockState(pos.offset(dir)).getBlock();
-
-                if (blockID == GCBlocks.airLockFrame || blockID == GCBlocks.airLockSeal)
+                if (dir.getAxis().isHorizontal())
                 {
-                    adjacentCount++;
+                    Block blockID = worldIn.getBlockState(pos.offset(dir)).getBlock();
+
+                    if (blockID == GCBlocks.airLockFrame || blockID == GCBlocks.airLockSeal)
+                    {
+                        adjacentCount++;
+                    }
                 }
             }
 
@@ -208,14 +156,8 @@ public class BlockAirLockWall extends Block implements IPartialSealableBlock, IS
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return 0;
-    }
-
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState();
+        builder.add(CONNECTION_TYPE);
     }
 }

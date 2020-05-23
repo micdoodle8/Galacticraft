@@ -32,15 +32,12 @@ import net.minecraft.world.World;
 
 public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
-    public static final PropertyBool ACTIVE = PropertyBool.create("active");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
+    public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
 
     public BlockGeothermalGenerator(Properties builder)
     {
-        super(Material.IRON);
-        this.setHardness(2.5F);
-        this.setSoundType(SoundType.METAL);
-        this.setUnlocalizedName(assetName);
+        super(builder);
     }
 
     @Override
@@ -56,7 +53,7 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         playerIn.openGui(GalacticraftPlanets.instance, GuiIdsPlanets.MACHINE_VENUS, world, pos.getX(), pos.getY(), pos.getZ());
         return true;
@@ -71,7 +68,7 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getHorizontalIndex();
         world.setBlockState(pos, this.getStateFromMeta(change), 3);
@@ -118,13 +115,13 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getHorizontal(meta % 4);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.get(FACING).getHorizontalIndex();
     }
 
     @Override
@@ -142,6 +139,6 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
             return state;
         }
         TileEntityGeothermalGenerator generator = (TileEntityGeothermalGenerator) tile;
-        return state.withProperty(ACTIVE, generator.hasValidSpout() && !generator.getDisabled(0));
+        return state.with(ACTIVE, generator.hasValidSpout() && !generator.getDisabled(0));
     }
 }

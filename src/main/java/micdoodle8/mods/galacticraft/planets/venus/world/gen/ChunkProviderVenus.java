@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.MapGenBaseMeta;
 import micdoodle8.mods.galacticraft.api.world.ChunkProviderBase;
 import micdoodle8.mods.galacticraft.core.perlin.generator.Gradient;
-import micdoodle8.mods.galacticraft.planets.venus.VenusBlocks;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.blocks.BlockBasicVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.DungeonConfigurationVenus;
 import micdoodle8.mods.galacticraft.planets.venus.world.gen.dungeon.MapGenDungeonVenus;
@@ -31,7 +31,7 @@ import java.util.Random;
 
 public class ChunkProviderVenus extends ChunkProviderBase
 {
-    public static final BlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
+    public static final BlockState BLOCK_FILL = VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.ROCK_HARD);
 
     private final BiomeDecoratorVenus biomeDecoratorVenus = new BiomeDecoratorVenus();
     private Random rand;
@@ -55,8 +55,8 @@ public class ChunkProviderVenus extends ChunkProviderBase
     private double[] octaves2;
     private double[] octaves3;
     private double[] octaves4;
-    private final MapGenDungeonVenus dungeonGenerator = new MapGenDungeonVenus(new DungeonConfigurationVenus(VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1),
-            VenusBlocks.venusBlock.getDefaultState().withProperty(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2),
+    private final MapGenDungeonVenus dungeonGenerator = new MapGenDungeonVenus(new DungeonConfigurationVenus(VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_1),
+            VenusBlocks.venusBlock.getDefaultState().with(BlockBasicVenus.BASIC_TYPE_VENUS, BlockBasicVenus.EnumBlockBasicVenus.DUNGEON_BRICK_2),
             30, 8, 16, 7, 7, RoomBossVenus.class, RoomTreasureVenus.class));
 
     public ChunkProviderVenus(World worldIn, long seed, boolean mapFeaturesEnabled)

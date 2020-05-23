@@ -8,6 +8,7 @@ import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.GuiIdsPlanets;
 import micdoodle8.mods.galacticraft.planets.IPlanetsModuleClient;
+import micdoodle8.mods.galacticraft.planets.venus.blocks.VenusBlocks;
 import micdoodle8.mods.galacticraft.planets.venus.client.TickHandlerClientVenus;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidExhaust;
 import micdoodle8.mods.galacticraft.planets.venus.client.fx.ParticleAcidVapor;

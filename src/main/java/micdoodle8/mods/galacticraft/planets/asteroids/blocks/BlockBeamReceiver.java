@@ -38,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
     protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
     protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
     protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
@@ -48,15 +48,13 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 
     public BlockBeamReceiver(Properties builder)
     {
-        super(Material.IRON);
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
+        super(builder);
     }
 
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
         case UP:
             return UP_AABB;
@@ -74,12 +72,12 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
@@ -281,7 +279,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = worldIn.getTileEntity(pos);
 
@@ -309,13 +307,13 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getFront(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override

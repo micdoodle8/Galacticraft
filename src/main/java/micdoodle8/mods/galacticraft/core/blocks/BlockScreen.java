@@ -9,10 +9,6 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
@@ -30,11 +26,11 @@ import net.minecraft.world.World;
 
 public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ITileEntityProvider, ISortableBlock
 {
-    public static final PropertyDirection FACING = PropertyDirection.create("facing");
-    public static final PropertyBool LEFT = PropertyBool.create("left");
-    public static final PropertyBool RIGHT = PropertyBool.create("right");
-    public static final PropertyBool UP = PropertyBool.create("up");
-    public static final PropertyBool DOWN = PropertyBool.create("down");
+    public static final DirectionProperty FACING = DirectionProperty.create("facing");
+    public static final BooleanProperty LEFT = BooleanProperty.create("left");
+    public static final BooleanProperty RIGHT = BooleanProperty.create("right");
+    public static final BooleanProperty UP = BooleanProperty.create("up");
+    public static final BooleanProperty DOWN = BooleanProperty.create("down");
 
     protected static final float boundsFront = 0.094F;
     protected static final float boundsBack = 1.0F - boundsFront;
@@ -48,11 +44,8 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     //Metadata: 0-5 = direction of screen back;  bit 3 = reserved for future use
     public BlockScreen(Properties builder)
     {
-        super(Material.CIRCUITS);
+        super(builder);
         this.setDefaultState(stateContainer.getBaseState().with(FACING, Direction.NORTH).with(LEFT, false).with(RIGHT, false).with(UP, false).with(DOWN, false));
-        this.setHardness(0.1F);
-        this.setSoundType(SoundType.GLASS);
-        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -95,7 +88,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onUseWrench(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         int change = world.getBlockState(pos).getValue(FACING).rotateY().getIndex();
         world.setBlockState(pos, this.getStateFromMeta(change), 3);
@@ -115,7 +108,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     }
 
     @Override
-    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World world, BlockPos pos, BlockState state, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof TileEntityScreen)
@@ -157,7 +150,7 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        switch (state.getValue(FACING))
+        switch (state.get(FACING))
         {
         case EAST:
             return EAST_AABB;
@@ -179,13 +172,13 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public BlockState getStateFromMeta(int meta)
     {
         Direction enumfacing = Direction.getFront(meta);
-        return this.getDefaultState().withProperty(FACING, enumfacing);
+        return this.getDefaultState().with(FACING, enumfacing);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(FACING)).getIndex();
+        return (state.get(FACING)).getIndex();
     }
 
     @Override
@@ -198,10 +191,10 @@ public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPa
     public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
     {
         TileEntityScreen screen = (TileEntityScreen) worldIn.getTileEntity(pos);
-        return state.withProperty(LEFT, screen.connectedLeft)
-                .withProperty(RIGHT, screen.connectedRight)
-                .withProperty(UP, screen.connectedUp)
-                .withProperty(DOWN, screen.connectedDown);
+        return state.with(LEFT, screen.connectedLeft)
+                .with(RIGHT, screen.connectedRight)
+                .with(UP, screen.connectedUp)
+                .with(DOWN, screen.connectedDown);
     }
 
     @Override

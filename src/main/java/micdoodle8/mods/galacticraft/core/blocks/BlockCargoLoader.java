@@ -7,25 +7,27 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityCargoUnloader;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.EnumProperty;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescription, ISortableBlock
 {
@@ -55,8 +57,8 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         }
     }
 
-    public static final PropertyEnum<EnumLoaderType> TYPE = PropertyEnum.create("type", EnumLoaderType.class);
-    public static final PropertyDirection FACING = PropertyDirection.create("facing", Direction.Plane.HORIZONTAL);
+    public static final EnumProperty<EnumLoaderType> TYPE = EnumProperty.create("type", EnumLoaderType.class);
+    public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
 
     public static final int METADATA_CARGO_LOADER = 0;
     public static final int METADATA_CARGO_UNLOADER = 4;
@@ -101,16 +103,17 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     }
 
     @Override
-    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onMachineActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
         return true;
     }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
-        if (state.getValue(TYPE) == EnumLoaderType.CARGO_LOADER)
+        if (state.get(TYPE) == EnumLoaderType.CARGO_LOADER)
         {
             return new TileEntityCargoLoader();
         }
@@ -135,7 +138,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
 //            change += METADATA_CARGO_LOADER;
 //        }
 
-        worldIn.setBlockState(pos, state.withProperty(FACING, Direction.getHorizontal(angle).getOpposite()), 3);
+        worldIn.setBlockState(pos, state.with(FACING, Direction.getHorizontal(angle).getOpposite()), 3);
         WorldUtil.markAdjacentPadForUpdate(worldIn, pos);
     }
 
@@ -149,7 +152,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     @Override
     public int damageDropped(BlockState state)
     {
-        return state.getValue(TYPE).getMeta();
+        return state.get(TYPE).getMeta();
     }
 
     @Override
@@ -177,13 +180,13 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         Direction enumfacing = Direction.getHorizontal(meta % 4);
         EnumLoaderType type = meta >= METADATA_CARGO_UNLOADER ? EnumLoaderType.CARGO_UNLOADER : EnumLoaderType.CARGO_LOADER;
 
-        return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(TYPE, type);
+        return this.getDefaultState().with(FACING, enumfacing).with(TYPE, type);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return state.getValue(FACING).getHorizontalIndex() + state.getValue(TYPE).getMeta();
+        return state.get(FACING).getHorizontalIndex() + state.get(TYPE).getMeta();
     }
 
     @Override

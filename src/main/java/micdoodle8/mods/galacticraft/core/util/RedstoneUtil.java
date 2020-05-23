@@ -31,11 +31,14 @@ public class RedstoneUtil
             return true;
         }
 
-        for (Direction facing : Direction.HORIZONTALS)
+        for (Direction dir : Direction.values())
         {
-            if (getStrongPower_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
+            if (dir.getAxis().isHorizontal())
             {
-                return true;
+                if (getStrongPower_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
+                {
+                    return true;
+                }
             }
         }
 
@@ -86,11 +89,14 @@ public class RedstoneUtil
             return true;
         }
 
-        for (Direction facing : Direction.HORIZONTALS)
+        for (Direction dir : Direction.values())
         {
-            if (getRedstonePowerIndirect_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
+            if (dir.getAxis().isHorizontal())
             {
-                return true;
+                if (getRedstonePowerIndirect_NoChunkLoad(w, pos.offset(facing, 1), facing) > 0)
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -150,26 +156,29 @@ public class RedstoneUtil
             if (p > i) i = p;
         }
 
-        for (Direction side : Direction.HORIZONTALS)
+        for (Direction side : Direction.values())
         {
-            if (side == skip)
+            if (side.getAxis().isHorizontal())
             {
-                continue;
+                if (side == skip)
+                {
+                    continue;
+                }
+                //This is a slightly faster pos.offset(side)
+                sidePos = pos.add(side.getXOffset(), 0, side.getZOffset());
+                if (!w.isBlockLoaded(sidePos, false))
+                {
+                    continue;
+                }
+
+                bs = w.getBlockState(sidePos);
+                p = bs.getBlock().getStrongPower(bs, w, sidePos, side);
+                if (p >= 15)
+                {
+                    return p;
+                }
+                if (p > i) i = p;
             }
-            //This is a slightly faster pos.offset(side)
-            sidePos = pos.add(side.getFrontOffsetX(), 0, side.getFrontOffsetZ());
-            if (!w.isBlockLoaded(sidePos, false))
-            {
-                continue;
-            }
-            
-            bs = w.getBlockState(sidePos); 
-            p = bs.getBlock().getStrongPower(bs, w, sidePos, side);
-            if (p >= 15)
-            {
-                return p;
-            }
-            if (p > i) i = p;
         }
         
         return i;

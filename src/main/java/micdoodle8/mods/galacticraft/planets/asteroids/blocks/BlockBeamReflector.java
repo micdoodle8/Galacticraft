@@ -22,9 +22,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import javax.annotation.Nullable;
 
 public class BlockBeamReflector extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
@@ -32,9 +35,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 
     public BlockBeamReflector(Properties builder)
     {
-        super(Material.IRON);
-        this.setUnlocalizedName(assetName);
-        this.setSoundType(SoundType.METAL);
+        super(builder);
     }
 
     @Override
@@ -43,12 +44,12 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
         return AABB;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @SideOnly(Side.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean isOpaqueCube(BlockState state)
@@ -87,8 +88,9 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
 //        super.addCollisionBoxesToList(worldIn, pos, state, mask, list, collidingEntity);
 //    }
 
+    @Nullable
     @Override
-    public TileEntity createTileEntity(World world, BlockState state)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityBeamReflector();
     }
@@ -101,7 +103,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onSneakMachineActivated(World world, BlockPos pos, PlayerEntity entityPlayer, Hand hand, ItemStack heldItem, BlockRayTraceResult hit)
     {
         TileEntity tile = world.getTileEntity(pos);
 

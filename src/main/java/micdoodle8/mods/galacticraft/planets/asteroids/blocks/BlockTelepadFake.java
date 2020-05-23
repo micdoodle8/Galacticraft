@@ -29,19 +29,14 @@ import java.util.Random;
 
 public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityProvider
 {
-    public static final PropertyBool TOP = PropertyBool.create("top");
-    public static final PropertyBool CONNECTABLE = PropertyBool.create("connectable");
+    public static final BooleanProperty TOP = BooleanProperty.create("top");
+    public static final BooleanProperty CONNECTABLE = BooleanProperty.create("connectable");
     protected static final AxisAlignedBB AABB_TOP = new AxisAlignedBB(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
     protected static final AxisAlignedBB AABB_BOTTOM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
     public BlockTelepadFake(Properties builder)
     {
-        super(GCBlocks.machine);
-        this.setSoundType(SoundType.METAL);
-//        this.setBlockTextureName(Constants.TEXTURE_PREFIX + assetName);
-        this.setUnlocalizedName(assetName);
-//        this.setBlockTextureName(Constants.TEXTURE_PREFIX + "launch_pad");
-        this.setResistance(1000000000000000.0F);
+        super(builder);
     }
 
     @Override
@@ -53,14 +48,14 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     @Override
     public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
     {
-        return state.getValue(TOP) ? AABB_TOP : AABB_BOTTOM;
+        return state.get(TOP) ? AABB_TOP : AABB_BOTTOM;
     }
 
 //    @Override
 //    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
 //    {
 //        IBlockState state = world.getBlockState(pos);
-//        boolean top = state.getValue(TOP);
+//        boolean top = state.get(TOP);
 //
 //        if (top)
 //        {
@@ -75,7 +70,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 //    @Override
 //    public void addCollisionBoxesToList(World worldIn, BlockPos pos, IBlockState state, AxisAlignedBB mask, List<AxisAlignedBB> list, Entity collidingEntity)
 //    {
-//        boolean top = state.getValue(TOP);
+//        boolean top = state.get(TOP);
 //
 //        if (top)
 //        {
@@ -148,7 +143,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, BlockState state, PlayerEntity playerIn, Hand hand, Direction side, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         TileEntityTelepadFake tileEntity = (TileEntityTelepadFake) worldIn.getTileEntity(pos);
         return tileEntity.onActivated(playerIn);
@@ -279,12 +274,12 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        return this.getDefaultState().withProperty(TOP, meta % 2 == 1).withProperty(CONNECTABLE, meta > 1);
+        return this.getDefaultState().with(TOP, meta % 2 == 1).with(CONNECTABLE, meta > 1);
     }
 
     @Override
     public int getMetaFromState(BlockState state)
     {
-        return (state.getValue(TOP) ? 1 : 0) + (state.getValue(CONNECTABLE) ? 2 : 0);
+        return (state.get(TOP) ? 1 : 0) + (state.get(CONNECTABLE) ? 2 : 0);
     }
 }
