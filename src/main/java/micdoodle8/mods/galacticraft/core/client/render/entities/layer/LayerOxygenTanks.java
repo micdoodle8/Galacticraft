@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -18,9 +18,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntity>
 {
     private final PlayerRenderer playerRenderer;
-    public ModelRenderer[] greenOxygenTanks = new ModelRenderer[2];
-    public ModelRenderer[] orangeOxygenTanks = new ModelRenderer[2];
-    public ModelRenderer[] redOxygenTanks = new ModelRenderer[2];
+    public RendererModel[] greenOxygenTanks = new RendererModel[2];
+    public RendererModel[] orangeOxygenTanks = new RendererModel[2];
+    public RendererModel[] redOxygenTanks = new RendererModel[2];
 
     public LayerOxygenTanks(PlayerRenderer playerRendererIn)
     {
@@ -28,29 +28,29 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
         float scaleFactor = 0.0F;
         ModelPlayer modelPlayer = playerRendererIn.getMainModel();
 
-        this.greenOxygenTanks[0] = new ModelRenderer(modelPlayer, 4, 0).setTextureSize(128, 64);
+        this.greenOxygenTanks[0] = new RendererModel(modelPlayer, 4, 0).setTextureSize(128, 64);
         this.greenOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.greenOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
         this.greenOxygenTanks[0].mirror = true;
-        this.greenOxygenTanks[1] = new ModelRenderer(modelPlayer, 4, 0).setTextureSize(128, 64);
+        this.greenOxygenTanks[1] = new RendererModel(modelPlayer, 4, 0).setTextureSize(128, 64);
         this.greenOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.greenOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.greenOxygenTanks[1].mirror = true;
 
-        this.orangeOxygenTanks[0] = new ModelRenderer(modelPlayer, 16, 0).setTextureSize(128, 64);
+        this.orangeOxygenTanks[0] = new RendererModel(modelPlayer, 16, 0).setTextureSize(128, 64);
         this.orangeOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.orangeOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
         this.orangeOxygenTanks[0].mirror = true;
-        this.orangeOxygenTanks[1] = new ModelRenderer(modelPlayer, 16, 0).setTextureSize(128, 64);
+        this.orangeOxygenTanks[1] = new RendererModel(modelPlayer, 16, 0).setTextureSize(128, 64);
         this.orangeOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.orangeOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.orangeOxygenTanks[1].mirror = true;
 
-        this.redOxygenTanks[0] = new ModelRenderer(modelPlayer, 28, 0).setTextureSize(128, 64);
+        this.redOxygenTanks[0] = new RendererModel(modelPlayer, 28, 0).setTextureSize(128, 64);
         this.redOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.redOxygenTanks[0].setRotationPoint(2F, 2F, 3.8F);
         this.redOxygenTanks[0].mirror = true;
-        this.redOxygenTanks[1] = new ModelRenderer(modelPlayer, 28, 0).setTextureSize(128, 64);
+        this.redOxygenTanks[1] = new RendererModel(modelPlayer, 28, 0).setTextureSize(128, 64);
         this.redOxygenTanks[1].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
         this.redOxygenTanks[1].setRotationPoint(-2F, 2F, 3.8F);
         this.redOxygenTanks[1].mirror = true;
@@ -72,7 +72,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
                 boolean wearingRightTankOrange = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_MEDIUM;
                 boolean wearingRightTankRed = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_HEAVY || gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_INFINITE;
 
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
+                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
 
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.greenOxygenTanks[0]);
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.greenOxygenTanks[1]);

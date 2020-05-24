@@ -24,7 +24,7 @@ public class RenderProjectileTNT extends EntityRenderer<EntityProjectileTNT>
     @Override
     public void doRender(EntityProjectileTNT entity, double x, double y, double z, float par8, float partialTicks)
     {
-        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
 

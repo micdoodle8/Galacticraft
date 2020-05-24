@@ -31,8 +31,8 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 {
     public static final BooleanProperty TOP = BooleanProperty.create("top");
     public static final BooleanProperty CONNECTABLE = BooleanProperty.create("connectable");
-    protected static final AxisAlignedBB AABB_TOP = new AxisAlignedBB(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
-    protected static final AxisAlignedBB AABB_BOTTOM = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
+    protected static final VoxelShape AABB_TOP = Block.makeCuboidShape(0.0F, 0.55F, 0.0F, 1.0F, 1.0F, 1.0F);
+    protected static final VoxelShape AABB_BOTTOM = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.2F, 1.0F);
 
     public BlockTelepadFake(Properties builder)
     {
@@ -46,7 +46,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return state.get(TOP) ? AABB_TOP : AABB_BOTTOM;
     }
@@ -266,9 +266,9 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, TOP, CONNECTABLE);
+        builder.add(TOP, CONNECTABLE);
     }
 
     @Override
@@ -277,9 +277,4 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
         return this.getDefaultState().with(TOP, meta % 2 == 1).with(CONNECTABLE, meta > 1);
     }
 
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        return (state.get(TOP) ? 1 : 0) + (state.get(CONNECTABLE) ? 2 : 0);
     }
-}

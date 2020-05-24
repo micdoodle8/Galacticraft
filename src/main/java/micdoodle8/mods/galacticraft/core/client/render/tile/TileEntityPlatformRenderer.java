@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockPlatform;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityPlatform;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -24,7 +24,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
 {
     public class ModelPlatform extends ModelBase
     {
-        ModelRenderer panelMain;
+        RendererModel panelMain;
 
         public ModelPlatform()
         {
@@ -35,7 +35,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
         {
             this.textureWidth = 128;
             this.textureHeight = 128;
-            this.panelMain = new ModelRenderer(this, 0, 0);
+            this.panelMain = new RendererModel(this, 0, 0);
             this.panelMain.addBox(-22F, -3.5F, -22F, 44, 7, 44);
             this.panelMain.setRotationPoint(0F, 0F, 0F);
             this.panelMain.setTextureSize(128, 128);
@@ -43,7 +43,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
             this.setRotation(this.panelMain, 0F, 0F, 0F);
         }
 
-        private void setRotation(ModelRenderer model, float x, float y, float z)
+        private void setRotation(RendererModel model, float x, float y, float z)
         {
             model.rotateAngleX = x;
             model.rotateAngleY = y;
@@ -56,8 +56,8 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
         }
     }
 
-    public static final ResourceLocation platformTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/platform_moving.png");
-    public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
+    public static final ResourceLocation platformTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/platform_moving.png");
+    public static final ResourceLocation lightTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/light.png");
     private ModelPlatform platform = new ModelPlatform();
     private static Map<Integer, Float> lastYMap = new HashMap<>();
     private static float lastPartialTicks = -1F;

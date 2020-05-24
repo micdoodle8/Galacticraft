@@ -2,267 +2,310 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.RepeaterBlock;
-import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.block.*;
+import net.minecraft.particles.RedstoneParticleData;
 import net.minecraft.state.IntegerProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
+import net.minecraft.state.properties.RedstoneSide;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
-public class BlockConcealedRedstone extends Block implements ISortableBlock
+public class BlockConcealedRedstone extends Block
 {
-    public static final IntegerProperty POWER = IntegerProperty.create("power", 0, 15);
+    public static final IntegerProperty POWER = BlockStateProperties.POWER_0_15;
+    private final Set<BlockPos> blocksNeedingUpdate = Sets.newHashSet();
     private boolean canProvidePower = true;
-    private final Set<BlockPos> blocksNeedingUpdate = Sets.<BlockPos>newHashSet();
 
-    public BlockConcealedRedstone(Properties builder)
+    public BlockConcealedRedstone(Block.Properties properties)
     {
-        super(builder);
-        this.setDefaultState(stateContainer.getBaseState().with(POWER, Integer.valueOf(0)));
+        super(properties);
+        this.setDefaultState(this.stateContainer.getBaseState().with(POWER, Integer.valueOf(0)));
+    }
+
+    protected static boolean canConnectTo(BlockState blockState, IBlockReader world, BlockPos pos, @Nullable Direction side)
+    {
+        Block block = blockState.getBlock();
+        if (block == Blocks.REDSTONE_WIRE)
+        {
+            return true;
+        }
+        else if (blockState.getBlock() == Blocks.REPEATER)
+        {
+            Direction direction = blockState.get(RepeaterBlock.HORIZONTAL_FACING);
+            return direction == side || direction.getOpposite() == side;
+        }
+        else if (Blocks.OBSERVER == blockState.getBlock())
+        {
+            return side == blockState.get(ObserverBlock.FACING);
+        }
+        else
+        {
+            return blockState.canConnectRedstone(world, pos, side) && side != null;
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static int colorMultiplier(int p_176337_0_)
+    {
+        float f = (float) p_176337_0_ / 15.0F;
+        float f1 = f * 0.6F + 0.4F;
+        if (p_176337_0_ == 0)
+        {
+            f1 = 0.3F;
+        }
+
+        float f2 = f * f * 0.7F - 0.5F;
+        float f3 = f * f * 0.6F - 0.7F;
+        if (f2 < 0.0F)
+        {
+            f2 = 0.0F;
+        }
+
+        if (f3 < 0.0F)
+        {
+            f3 = 0.0F;
+        }
+
+        int i = MathHelper.clamp((int) (f1 * 255.0F), 0, 255);
+        int j = MathHelper.clamp((int) (f2 * 255.0F), 0, 255);
+        int k = MathHelper.clamp((int) (f3 * 255.0F), 0, 255);
+        return -16777216 | i << 16 | j << 8 | k;
+    }
+
+    private RedstoneSide getSide(IBlockReader worldIn, BlockPos pos, Direction face)
+    {
+        BlockPos blockpos = pos.offset(face);
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+        BlockPos blockpos1 = pos.up();
+        BlockState blockstate1 = worldIn.getBlockState(blockpos1);
+        if (!blockstate1.isNormalCube(worldIn, blockpos1))
+        {
+            boolean flag = blockstate.func_224755_d(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
+            if (flag && canConnectTo(worldIn.getBlockState(blockpos.up()), worldIn, blockpos.up(), null))
+            {
+                if (blockstate.func_224756_o(worldIn, blockpos))
+                {
+                    return RedstoneSide.UP;
+                }
+
+                return RedstoneSide.SIDE;
+            }
+        }
+
+        return !canConnectTo(blockstate, worldIn, blockpos, face) && (blockstate.isNormalCube(worldIn, blockpos) || !canConnectTo(worldIn.getBlockState(blockpos.down()), worldIn, blockpos.down(), null)) ? RedstoneSide.NONE : RedstoneSide.SIDE;
     }
 
     @Override
-    public ItemGroup getCreativeTabToDisplayOn()
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos)
     {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-         return EnumSortCategoryBlock.DECORATION;
-    }
-
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(POWER, Integer.valueOf(meta));
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        return ((Integer)state.get(POWER)).intValue();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, new IProperty[] {POWER});
+        BlockPos blockpos = pos.down();
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+        return blockstate.func_224755_d(worldIn, blockpos, Direction.UP) || blockstate.getBlock() == Blocks.HOPPER;
     }
 
     private BlockState updateSurroundingRedstone(World worldIn, BlockPos pos, BlockState state)
     {
-        state = this.calculateCurrentChanges(worldIn, pos, pos, state);
+        state = this.func_212568_b(worldIn, pos, state);
         List<BlockPos> list = Lists.newArrayList(this.blocksNeedingUpdate);
         this.blocksNeedingUpdate.clear();
 
         for (BlockPos blockpos : list)
         {
-            worldIn.notifyNeighborsOfStateChange(blockpos, this, false);
+            worldIn.notifyNeighborsOfStateChange(blockpos, this);
         }
 
         return state;
     }
 
-    private BlockState calculateCurrentChanges(World worldIn, BlockPos pos1, BlockPos pos2, BlockState state)
+    private BlockState func_212568_b(World p_212568_1_, BlockPos p_212568_2_, BlockState p_212568_3_)
     {
-        BlockState iblockstate = state;
-        int currentPower = ((Integer)state.get(POWER)).intValue();
-        int maxPower = 0;
-        maxPower = this.getMaxCurrentStrength(worldIn, pos2, maxPower);
+        BlockState blockstate = p_212568_3_;
+        int i = p_212568_3_.get(POWER);
         this.canProvidePower = false;
-        int k = worldIn.isBlockIndirectlyGettingPowered(pos1);
+        int j = p_212568_1_.getRedstonePowerFromNeighbors(p_212568_2_);
         this.canProvidePower = true;
-
-        if (k > 0 && k > maxPower - 1)
+        int k = 0;
+        if (j < 15)
         {
-            maxPower = k;
-        }
-
-        int l = 0;
-
-        for (Direction enumfacing : Direction.Plane.HORIZONTAL)
-        {
-            BlockPos blockpos = pos1.offset(enumfacing);
-            boolean flag = blockpos.getX() != pos2.getX() || blockpos.getZ() != pos2.getZ();
-
-            if (flag)
+            for (Direction direction : Direction.Plane.HORIZONTAL)
             {
-                l = this.getMaxCurrentStrength(worldIn, blockpos, l);
-            }
-
-            BlockState bs = worldIn.getBlockState(blockpos);
-            BlockState bsUp = worldIn.getBlockState(pos1.up());
-            if (bs.getBlock().isNormalCube(bs) && !bsUp.getBlock().isNormalCube(bsUp))
-            {
-                if (flag && pos1.getY() >= pos2.getY())
+                BlockPos blockpos = p_212568_2_.offset(direction);
+                BlockState blockstate1 = p_212568_1_.getBlockState(blockpos);
+                k = this.maxSignal(k, blockstate1);
+                BlockPos blockpos1 = p_212568_2_.up();
+                if (blockstate1.isNormalCube(p_212568_1_, blockpos) && !p_212568_1_.getBlockState(blockpos1).isNormalCube(p_212568_1_, blockpos1))
                 {
-                    l = this.getMaxCurrentStrength(worldIn, blockpos.up(), l);
+                    k = this.maxSignal(k, p_212568_1_.getBlockState(blockpos.up()));
+                }
+                else if (!blockstate1.isNormalCube(p_212568_1_, blockpos))
+                {
+                    k = this.maxSignal(k, p_212568_1_.getBlockState(blockpos.down()));
                 }
             }
-            else if (!bs.getBlock().isNormalCube(bs) && flag && pos1.getY() <= pos2.getY())
+        }
+
+        int l = k - 1;
+        if (j > l)
+        {
+            l = j;
+        }
+
+        if (i != l)
+        {
+            p_212568_3_ = p_212568_3_.with(POWER, Integer.valueOf(l));
+            if (p_212568_1_.getBlockState(p_212568_2_) == blockstate)
             {
-                l = this.getMaxCurrentStrength(worldIn, blockpos.down(), l);
+                p_212568_1_.setBlockState(p_212568_2_, p_212568_3_, 2);
+            }
+
+            this.blocksNeedingUpdate.add(p_212568_2_);
+
+            for (Direction direction1 : Direction.values())
+            {
+                this.blocksNeedingUpdate.add(p_212568_2_.offset(direction1));
             }
         }
 
-        if (l > maxPower)
-        {
-            maxPower = l - 1;
-        }
-        else if (maxPower > 0)
-        {
-            maxPower--;
-        }
-        else
-        {
-            maxPower = 0;
-        }
-
-        if (k > maxPower - 1)
-        {
-            maxPower = k;
-        }
-
-        if (currentPower != maxPower)
-        {
-            state = state.with(POWER, Integer.valueOf(maxPower));
-
-            if (worldIn.getBlockState(pos1) == iblockstate)
-            {
-                worldIn.setBlockState(pos1, state, 2);
-            }
-
-            this.blocksNeedingUpdate.add(pos1);
-
-            for (Direction enumfacing1 : Direction.VALUES)
-            {
-                this.blocksNeedingUpdate.add(pos1.offset(enumfacing1));
-            }
-        }
-
-        return state;
+        return p_212568_3_;
     }
 
     private void notifyWireNeighborsOfStateChange(World worldIn, BlockPos pos)
     {
-        Block b = worldIn.getBlockState(pos).getBlock(); 
-        if (b == this || b == Blocks.REDSTONE_WIRE)
+        if (worldIn.getBlockState(pos).getBlock() == this)
         {
-            worldIn.notifyNeighborsOfStateChange(pos, this, false);
+            worldIn.notifyNeighborsOfStateChange(pos, this);
 
-            for (Direction enumfacing : Direction.VALUES)
+            for (Direction direction : Direction.values())
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
             }
+
         }
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state)
+    public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving)
     {
-        if (!worldIn.isRemote)
+        if (oldState.getBlock() != state.getBlock() && !worldIn.isRemote)
         {
             this.updateSurroundingRedstone(worldIn, pos, state);
 
-            for (Direction enumfacing : Direction.Plane.VERTICAL)
+            for (Direction direction : Direction.Plane.VERTICAL)
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
             }
 
-            for (Direction enumfacing1 : Direction.Plane.HORIZONTAL)
+            for (Direction direction1 : Direction.Plane.HORIZONTAL)
             {
-                this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
+                this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(direction1));
             }
 
-            this.notifyNeighbors(worldIn, pos);
-        }
-    }
-
-    private void notifyNeighbors(World worldIn, BlockPos pos)
-    {
-        for (Direction enumfacing2 : Direction.Plane.HORIZONTAL)
-        {
-            BlockPos blockpos = pos.offset(enumfacing2);
-
-            BlockState bs = worldIn.getBlockState(blockpos);
-            if (bs.getBlock().isNormalCube(bs))
+            for (Direction direction2 : Direction.Plane.HORIZONTAL)
             {
-                this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
+                BlockPos blockpos = pos.offset(direction2);
+                if (worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos))
+                {
+                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
+                }
+                else
+                {
+                    this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
+                }
             }
-            else
-            {
-                this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
-            }
+
         }
     }
 
     @Override
-    public void breakBlock(World worldIn, BlockPos pos, BlockState state)
+    public void onReplaced(BlockState state, World worldIn, BlockPos pos, BlockState newState, boolean isMoving)
     {
-        super.breakBlock(worldIn, pos, state);
-
-        if (!worldIn.isRemote)
+        if (!isMoving && state.getBlock() != newState.getBlock())
         {
-            for (Direction enumfacing : Direction.VALUES)
+            super.onReplaced(state, worldIn, pos, newState, isMoving);
+            if (!worldIn.isRemote)
             {
-                worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this, false);
+                for (Direction direction : Direction.values())
+                {
+                    worldIn.notifyNeighborsOfStateChange(pos.offset(direction), this);
+                }
+
+                this.updateSurroundingRedstone(worldIn, pos, state);
+
+                for (Direction direction1 : Direction.Plane.HORIZONTAL)
+                {
+                    this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(direction1));
+                }
+
+                for (Direction direction2 : Direction.Plane.HORIZONTAL)
+                {
+                    BlockPos blockpos = pos.offset(direction2);
+                    if (worldIn.getBlockState(blockpos).isNormalCube(worldIn, blockpos))
+                    {
+                        this.notifyWireNeighborsOfStateChange(worldIn, blockpos.up());
+                    }
+                    else
+                    {
+                        this.notifyWireNeighborsOfStateChange(worldIn, blockpos.down());
+                    }
+                }
+
             }
-
-            this.updateSurroundingRedstone(worldIn, pos, state);
-
-            for (Direction enumfacing1 : Direction.Plane.HORIZONTAL)
-            {
-                this.notifyWireNeighborsOfStateChange(worldIn, pos.offset(enumfacing1));
-            }
-
-            this.notifyNeighbors(worldIn, pos);
         }
     }
 
-    private int getMaxCurrentStrength(World worldIn, BlockPos pos, int strength)
+    private int maxSignal(int existingSignal, BlockState neighbor)
     {
-        if (worldIn.getBlockState(pos).getBlock() != this)
+        if (neighbor.getBlock() != this)
         {
-            return strength;
+            return existingSignal;
         }
         else
         {
-            int i = (Integer) worldIn.getBlockState(pos).getValue(POWER);
-            return i > strength ? i : strength;
+            int i = neighbor.get(POWER);
+            return i > existingSignal ? i : existingSignal;
         }
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         if (!worldIn.isRemote)
         {
-            this.updateSurroundingRedstone(worldIn, pos, state);
+            if (state.isValidPosition(worldIn, pos))
+            {
+                this.updateSurroundingRedstone(worldIn, pos, state);
+            }
+            else
+            {
+                spawnDrops(state, worldIn, pos);
+                worldIn.removeBlock(pos, false);
+            }
+
         }
     }
 
     @Override
-    public int getStrongPower(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction side)
+    public int getStrongPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
     {
-        return !this.canProvidePower ? 0 : this.getWeakPower(state, worldIn, pos, side);
+        return !this.canProvidePower ? 0 : blockState.getWeakPower(blockAccess, pos, side);
     }
 
     @Override
-    public int getWeakPower(BlockState state, IBlockAccess blockAccess, BlockPos pos, Direction side)
+    public int getWeakPower(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
     {
         if (!this.canProvidePower)
         {
@@ -270,55 +313,99 @@ public class BlockConcealedRedstone extends Block implements ISortableBlock
         }
         else
         {
-            return ((Integer)state.get(POWER)).intValue();
+            int i = blockState.get(POWER);
+            if (i == 0)
+            {
+                return 0;
+            }
+            else if (side == Direction.UP)
+            {
+                return i;
+            }
+            else
+            {
+                EnumSet<Direction> enumset = EnumSet.noneOf(Direction.class);
+
+                for (Direction direction : Direction.Plane.HORIZONTAL)
+                {
+                    if (this.isPowerSourceAt(blockAccess, pos, direction))
+                    {
+                        enumset.add(direction);
+                    }
+                }
+
+                if (side.getAxis().isHorizontal() && enumset.isEmpty())
+                {
+                    return i;
+                }
+                else if (enumset.contains(side) && !enumset.contains(side.rotateYCCW()) && !enumset.contains(side.rotateY()))
+                {
+                    return i;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
     }
 
-    protected static boolean canRedstoneConnect(IBlockAccess world, BlockPos pos, Direction side)
+    private boolean isPowerSourceAt(IBlockReader worldIn, BlockPos pos, Direction side)
     {
-        BlockState state = world.getBlockState(pos);
-        if (state.getBlock() == Blocks.REDSTONE_WIRE || state.getBlock() == GCBlocks.concealedRedstone)
+        BlockPos blockpos = pos.offset(side);
+        BlockState blockstate = worldIn.getBlockState(blockpos);
+        boolean flag = blockstate.isNormalCube(worldIn, blockpos);
+        BlockPos blockpos1 = pos.up();
+        boolean flag1 = worldIn.getBlockState(blockpos1).isNormalCube(worldIn, blockpos1);
+        if (!flag1 && flag && canConnectTo(worldIn.getBlockState(blockpos.up()), worldIn, blockpos.up(), null))
         {
             return true;
         }
-        else if (Blocks.UNPOWERED_REPEATER.isAssociatedBlock(state.getBlock()))
+        else if (canConnectTo(blockstate, worldIn, blockpos, side))
         {
-            Direction direction = (Direction)state.get(RepeaterBlock.FACING);
-            return direction == side || direction.getOpposite() == side;
+            return true;
+        }
+        else if (blockstate.getBlock() == Blocks.REPEATER && blockstate.get(RedstoneDiodeBlock.POWERED) && blockstate.get(RedstoneDiodeBlock.HORIZONTAL_FACING) == side)
+        {
+            return true;
         }
         else
         {
-            return state.getBlock().canConnectRedstone(state, world, pos, side);
+            return !flag && canConnectTo(worldIn.getBlockState(blockpos.down()), worldIn, blockpos.down(), null);
         }
     }
 
-    @Override
     public boolean canProvidePower(BlockState state)
     {
         return this.canProvidePower;
     }
-    
+
     @Override
-    public int getLightOpacity(BlockState state)
+    @OnlyIn(Dist.CLIENT)
+    public void animateTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
-        return 0;
-    }
-    
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return true;
+        int i = stateIn.get(POWER);
+        if (i != 0)
+        {
+            double d0 = (double) pos.getX() + 0.5D + ((double) rand.nextFloat() - 0.5D) * 0.2D;
+            double d1 = (float) pos.getY() + 0.0625F;
+            double d2 = (double) pos.getZ() + 0.5D + ((double) rand.nextFloat() - 0.5D) * 0.2D;
+            float f = (float) i / 15.0F;
+            float f1 = f * 0.6F + 0.4F;
+            float f2 = Math.max(0.0F, f * f * 0.7F - 0.5F);
+            float f3 = Math.max(0.0F, f * f * 0.6F - 0.7F);
+            worldIn.addParticle(new RedstoneParticleData(f1, f2, f3, 1.0F), d0, d1, d2, 0.0D, 0.0D, 0.0D);
+        }
     }
 
     @Override
-    public boolean isFullCube(BlockState state)
+    public BlockRenderLayer getRenderLayer()
     {
-        return true;
+        return BlockRenderLayer.CUTOUT;
     }
 
-    @Override
-    public boolean isSideSolid(BlockState state, IBlockAccess world, BlockPos pos, Direction side)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return true;
+        builder.add(POWER);
     }
 }

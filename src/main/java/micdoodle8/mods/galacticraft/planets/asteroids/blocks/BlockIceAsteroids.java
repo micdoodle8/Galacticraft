@@ -73,7 +73,7 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
         {
             if (worldIn.provider.getDimension() == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
-                worldIn.setBlockToAir(pos);
+                worldIn.removeBlock(pos, false);
                 return;
             }
 
@@ -104,7 +104,7 @@ public class BlockIceAsteroids extends BreakableBlock implements ISortableBlock
         {
             if (GCCoreUtil.getDimensionID(worldIn) == -1 || worldIn.provider instanceof IGalacticraftWorldProvider)
             {
-                worldIn.setBlockToAir(pos);
+                worldIn.removeBlock(pos, false);
                 return;
             }
 

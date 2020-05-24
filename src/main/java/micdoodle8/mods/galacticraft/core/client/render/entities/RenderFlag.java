@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderFlag extends EntityRenderer<EntityFlag>
 {
-    public static ResourceLocation flagTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/flag.png");
+    public static ResourceLocation flagTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/flag.png");
 
     protected ModelFlag modelFlag;
 

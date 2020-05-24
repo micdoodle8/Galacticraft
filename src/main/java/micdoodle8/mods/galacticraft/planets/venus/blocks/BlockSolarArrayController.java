@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 public class BlockSolarArrayController extends BlockTileGC implements IShiftDescription, IPartialSealableBlock, ISortableBlock, ITileEntityProvider
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing", Direction.Plane.HORIZONTAL);
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.25, 0.0, 1.0, 0.78125, 1.0);
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0, 0.25, 0.0, 1.0, 0.78125, 1.0);
 
     public BlockSolarArrayController(Properties builder)
     {
@@ -43,7 +43,7 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return AABB;
     }
@@ -114,15 +114,9 @@ public class BlockSolarArrayController extends BlockTileGC implements IShiftDesc
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return state.get(FACING).getHorizontalIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
+        builder.add(FACING);
     }
 
     @Override

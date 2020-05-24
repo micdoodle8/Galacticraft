@@ -25,7 +25,7 @@ public class RenderWebShot extends EntityRenderer<EntityWebShot>
     @Override
     public void doRender(EntityWebShot entity, double x, double y, double z, float par8, float partialTicks)
     {
-        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);

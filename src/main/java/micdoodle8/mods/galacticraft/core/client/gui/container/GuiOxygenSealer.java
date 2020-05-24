@@ -27,7 +27,7 @@ import java.util.List;
 
 public class GuiOxygenSealer extends GuiContainerGC
 {
-    private static final ResourceLocation sealerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_sealer.png");
+    private static final ResourceLocation sealerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_sealer.png");
 
     private final TileEntityOxygenSealer sealer;
     private Button buttonDisable;

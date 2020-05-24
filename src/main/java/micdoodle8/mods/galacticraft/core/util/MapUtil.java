@@ -890,11 +890,11 @@ public class MapUtil
                 }
             }
 
-            IResourceManager rm = Minecraft.getMinecraft().getResourceManager();
+            IResourceManager rm = Minecraft.getInstance().getResourceManager();
             BufferedImage paletteImage = null;
             try
             {
-                InputStream in = rm.getResource(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png")).getInputStream();
+                InputStream in = rm.getResource(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png")).getInputStream();
                 paletteImage = ImageIO.read(in);
                 in.close();
                 paletteImage.getHeight();

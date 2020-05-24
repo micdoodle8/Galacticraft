@@ -2,43 +2,43 @@ package micdoodle8.mods.galacticraft.core.client.model.block;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelLargeChest;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 
 public class ModelTreasureChestLarge extends ModelLargeChest
 {
-    public ModelRenderer keyParts[] = new ModelRenderer[6];
+    public RendererModel keyParts[] = new RendererModel[6];
 
     public ModelTreasureChestLarge()
     {
         super();
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.keyParts[4] = new ModelRenderer(this, 50, 43);
+        this.keyParts[4] = new RendererModel(this, 50, 43);
         this.keyParts[4].addBox(7F, 2F, -0.5F, 3, 1, 1);
         this.keyParts[4].setRotationPoint(0F, 0F, 0F);
         this.keyParts[4].setTextureSize(128, 64);
         this.keyParts[4].mirror = true;
-        this.keyParts[3] = new ModelRenderer(this, 39, 43);
+        this.keyParts[3] = new RendererModel(this, 39, 43);
         this.keyParts[3].addBox(6F, 1F, -0.5F, 4, 1, 1);
         this.keyParts[3].setRotationPoint(0F, 0F, 0F);
         this.keyParts[3].setTextureSize(128, 64);
         this.keyParts[3].mirror = true;
-        this.keyParts[2] = new ModelRenderer(this, 14, 43);
+        this.keyParts[2] = new RendererModel(this, 14, 43);
         this.keyParts[2].addBox(-0.5F, 0F, -0.5F, 11, 1, 1);
         this.keyParts[2].setRotationPoint(0F, 0F, 0F);
         this.keyParts[2].setTextureSize(128, 64);
         this.keyParts[2].mirror = true;
-        this.keyParts[1] = new ModelRenderer(this, 9, 43);
+        this.keyParts[1] = new RendererModel(this, 9, 43);
         this.keyParts[1].addBox(-1.5F, -0.5F, -0.5F, 1, 2, 1);
         this.keyParts[1].setRotationPoint(0F, 0F, 0F);
         this.keyParts[1].setTextureSize(128, 64);
         this.keyParts[1].mirror = true;
-        this.keyParts[0] = new ModelRenderer(this, 0, 43);
+        this.keyParts[0] = new RendererModel(this, 0, 43);
         this.keyParts[0].addBox(-4.5F, -1F, -0.5F, 3, 3, 1);
         this.keyParts[0].setRotationPoint(0F, 0F, 0F);
         this.keyParts[0].setTextureSize(128, 64);
         this.keyParts[0].mirror = true;
-        this.keyParts[5] = new ModelRenderer(this, 0, 0).setTextureSize(128, 64);
+        this.keyParts[5] = new RendererModel(this, 0, 0).setTextureSize(128, 64);
         this.keyParts[5].addBox(-2.0F, -2.05F, -15.1F, 4, 4, 1, 0.0F);
         this.keyParts[5].rotationPointX = 8.0F;
         this.keyParts[5].rotationPointY = 7.0F;
@@ -49,7 +49,7 @@ public class ModelTreasureChestLarge extends ModelLargeChest
     {
         if (withKey)
         {
-            for (final ModelRenderer nmtmr : this.keyParts)
+            for (final RendererModel nmtmr : this.keyParts)
             {
                 if (!nmtmr.equals(this.keyParts[5]))
                 {

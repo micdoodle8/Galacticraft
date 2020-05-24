@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -20,7 +20,7 @@ import org.lwjgl.opengl.GL11;
 public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity>
 {
     private final PlayerRenderer playerRenderer;
-    public ModelRenderer oxygenMask;
+    public RendererModel oxygenMask;
 
     public LayerOxygenMask(PlayerRenderer playerRendererIn)
     {
@@ -28,7 +28,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity
         float scaleFactor = 1.0F;
         ModelPlayer modelPlayer = playerRendererIn.getMainModel();
 
-        this.oxygenMask = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.oxygenMask = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.oxygenMask.addBox(-8.0F, -16.0F, -8.0F, 16, 16, 16, scaleFactor);
         this.oxygenMask.setRotationPoint(0.0F, 0.0F, 0.0F);
     }
@@ -43,7 +43,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity
             if (gearData != null)
             {
                 boolean wearingMask = gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT;
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.oxygenMaskTexture);
+                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.oxygenMaskTexture);
 
                 ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedHeadwear, this.oxygenMask);
                 this.oxygenMask.rotationPointY = this.playerRenderer.getMainModel().bipedHeadwear.rotationPointY * 8.0F;

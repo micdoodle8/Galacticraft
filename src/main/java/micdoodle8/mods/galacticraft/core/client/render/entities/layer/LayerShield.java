@@ -61,7 +61,7 @@ public class LayerShield implements LayerRenderer<LivingEntity>
                     GlStateManager.matrixMode(5888);
 
                     GL11.glDisable(GL11.GL_LIGHTING);
-                    Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.heatShieldTexture);
+                    Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.heatShieldTexture);
                     GL11.glEnable(GL11.GL_BLEND);
                     float sTime = (float) ((1.0F - Math.sin((entitylivingbaseIn.ticksExisted + partialTicks) / 10.0F)) * 0.1F + 0.0F);
 

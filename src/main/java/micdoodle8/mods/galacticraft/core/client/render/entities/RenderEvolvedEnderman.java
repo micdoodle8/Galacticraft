@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman>
 {
-    private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_enderman.png");
+    private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_enderman.png");
     private ModelEvolvedEnderman endermanModel;
     private Random rnd = new Random();
     private boolean texSwitch;

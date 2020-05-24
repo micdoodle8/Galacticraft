@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class RoomTreasure extends SizedPiece
 {
-    public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_1");
+    public static ResourceLocation MOONCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_1");
     public static final ResourceLocation TABLE_TIER_1_DUNGEON = LootTables.register(MOONCHEST);
 
     public RoomTreasure()

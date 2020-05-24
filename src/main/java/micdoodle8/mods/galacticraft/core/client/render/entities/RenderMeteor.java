@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderMeteor extends EntityRenderer<EntityMeteor>
 {
-    private static final ResourceLocation meteorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/meteor.png");
+    private static final ResourceLocation meteorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/meteor.png");
 
     private final ModelMeteor modelMeteor;
 

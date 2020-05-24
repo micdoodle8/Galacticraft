@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedWitch extends MobRenderer<EntityEvolvedWitch>
 {
-    private static final ResourceLocation witchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_witch.png");
+    private static final ResourceLocation witchTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_witch.png");
     private boolean texSwitch;
 
     public RenderEvolvedWitch(EntityRendererManager manager)

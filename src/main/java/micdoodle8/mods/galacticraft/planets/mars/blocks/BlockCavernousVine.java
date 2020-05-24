@@ -103,13 +103,13 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
         if (!this.canBlockStay(worldIn, pos))
         {
-            worldIn.setBlockToAir(pos);
+            worldIn.removeBlock(pos, false);
         }
     }
 
@@ -131,7 +131,7 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos)
+    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
     {
         return this.getVineLight(world, pos);
     }
@@ -297,15 +297,9 @@ public class BlockCavernousVine extends Block implements IShearable, IShiftDescr
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return ((EnumVineType) state.get(VINE_TYPE)).getMeta();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, VINE_TYPE);
+        builder.add(VINE_TYPE);
     }
 
     @Override

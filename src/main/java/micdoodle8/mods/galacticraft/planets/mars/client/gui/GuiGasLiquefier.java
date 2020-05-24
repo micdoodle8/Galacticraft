@@ -157,7 +157,7 @@ public class GuiGasLiquefier extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiGasLiquefier.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiGasLiquefier.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
@@ -180,7 +180,7 @@ public class GuiGasLiquefier extends GuiContainerGC
             this.drawTexturedModalRect(edgeLeft + 153, edgeTop + 17 + 49 - displayInt, 176 + 16, 38 - displayInt, 16, displayInt);
         }
 
-        this.mc.renderEngine.bindTexture(GuiGasLiquefier.gasTextures);
+        this.mc.textureManager.bindTexture(GuiGasLiquefier.gasTextures);
         int displayInt = this.tileEntity.getScaledGasLevel(38);
         int gasType = this.tileEntity.gasTankType;  //0 for methane, 1 for oxygen, 2 for atmospheric gases
         if (gasType > 2)
@@ -204,7 +204,7 @@ public class GuiGasLiquefier extends GuiContainerGC
 
         this.addToolTips();
 
-        this.mc.renderEngine.bindTexture(GuiGasLiquefier.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiGasLiquefier.refineryTexture);
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedCreeper extends MobRenderer<EntityEvolvedCreeper>
 {
-    private static final ResourceLocation creeperTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/creeper.png");
+    private static final ResourceLocation creeperTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/creeper.png");
     private boolean texSwitch;
 
     public RenderEvolvedCreeper(EntityRendererManager manager)

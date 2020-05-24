@@ -234,7 +234,7 @@ public class WorldProviderOverworldOrbit extends WorldProviderSpaceStation imple
     @SideOnly(Side.CLIENT)
     public void createSkyProvider()
     {
-        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png"), true, true));
+        this.setSkyRenderer(new SkyProviderOrbit(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"), true, true));
         this.setSpinDeltaPerTick(this.getSpinManager().getSpinRate());
         
         if (this.getCloudRenderer() == null)

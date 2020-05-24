@@ -26,9 +26,9 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class SkyProviderAsteroids extends IRenderHandler
 {
-    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
+    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
     private static final ResourceLocation galaxyTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/planets/galaxy.png");
-    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/planets/orbitalsun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
@@ -134,7 +134,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = this.sunSize / 1.2F;
         //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.sunTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderAsteroids.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, 90.0D, -var12).tex(0.0D, 0.0D).endVertex();
         worldRenderer.pos(var12, 90.0D, -var12).tex(1.0D, 0.0D).endVertex();
@@ -152,7 +152,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderAsteroids.overworldTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderAsteroids.overworldTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, -100.0D, var12).tex(0, 1.0).endVertex();
         worldRenderer.pos(var12, -100.0D, var12).tex(1.0, 1.0).endVertex();

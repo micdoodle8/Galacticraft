@@ -22,7 +22,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiPainter extends GuiContainerGC
 {
-    private static final ResourceLocation painterTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/painter.png");
+    private static final ResourceLocation painterTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/painter.png");
 
     private TileEntityPainter tileEntity;
     private Button buttonApplyPaint;
@@ -70,7 +70,7 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiPainter.painterTexture);
+        this.mc.textureManager.bindTexture(GuiPainter.painterTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int guiLeft = (this.width - this.xSize) / 2;

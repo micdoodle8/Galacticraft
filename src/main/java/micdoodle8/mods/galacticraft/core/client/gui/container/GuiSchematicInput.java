@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiSchematicInput extends GuiPositionedContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation schematicInputTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/schematicpage.png");
+    private static final ResourceLocation schematicInputTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/schematicpage.png");
 
     private int pageIndex;
 
@@ -77,7 +77,7 @@ public class GuiSchematicInput extends GuiPositionedContainer implements ISchema
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(GuiSchematicInput.schematicInputTexture);
+        this.mc.textureManager.bindTexture(GuiSchematicInput.schematicInputTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - 220) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, 220);

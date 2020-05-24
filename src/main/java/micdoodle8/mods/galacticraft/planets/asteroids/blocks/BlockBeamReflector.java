@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class BlockBeamReflector extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.0, 0.25, 0.75, 0.8, 0.75);
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.25, 0.0, 0.25, 0.75, 0.8, 0.75);
 
     public BlockBeamReflector(Properties builder)
     {
@@ -39,7 +39,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return AABB;
     }

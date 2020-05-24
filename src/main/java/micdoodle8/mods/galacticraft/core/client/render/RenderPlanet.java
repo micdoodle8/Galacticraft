@@ -14,12 +14,12 @@ public class RenderPlanet
 {
     private static TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
 
-    private static ResourceLocation textureEuropa = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/europa.png");
-    private static ResourceLocation textureGanymede = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/ganymede.png");
-    private static ResourceLocation textureIo = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/io.png");
-    private static ResourceLocation textureSaturn = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/saturn.png");
-    private static ResourceLocation textureJupiterInner = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiter_inner.png");
-    private static ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/planets/jupiter_upper.png");
+    private static ResourceLocation textureEuropa = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/europa.png");
+    private static ResourceLocation textureGanymede = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/ganymede.png");
+    private static ResourceLocation textureIo = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/io.png");
+    private static ResourceLocation textureSaturn = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/saturn.png");
+    private static ResourceLocation textureJupiterInner = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_inner.png");
+    private static ResourceLocation textureJupiterUpper = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/jupiter_upper.png");
 
     public static void renderPlanet(int textureId, float scale, float ticks, float relSize)
     {
@@ -31,7 +31,7 @@ public class RenderPlanet
 
     public static void renderPlanet(ResourceLocation texture, float scale, float ticks, float relSize)
     {
-        RenderPlanet.renderEngine.bindTexture(texture);
+        RenderPlanet.textureManager.bindTexture(texture);
         float size = relSize / 70 * scale;
         ticks = ((float) System.nanoTime()) / 50000000F;
         RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks);
@@ -64,11 +64,11 @@ public class RenderPlanet
         {
             float relSize = 48F;
             float size = relSize / 70 * scale;
-            RenderPlanet.renderEngine.bindTexture(texture);
+            RenderPlanet.textureManager.bindTexture(texture);
             RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             GL11.glTranslatef(0, 0, -0.001F);
-            RenderPlanet.renderEngine.bindTexture(textureJupiterUpper);
+            RenderPlanet.textureManager.bindTexture(textureJupiterUpper);
             size *= 1.001F;
             RenderPlanet.drawTexturedRectUV(-size / 2, -size / 2, size, size, ticks * 0.85F);
         }

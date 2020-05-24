@@ -12,7 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -42,8 +42,8 @@ public class EventHandlerClient
 
         final PlayerEntity player = event.getEntityPlayer();
 
-        if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getMinecraft().player
-                && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0)
+        if (player.getRidingEntity() instanceof ICameraZoomEntity && player == Minecraft.getInstance().player
+                && Minecraft.getInstance().gameSettings.thirdPersonView == 0)
         {
             Entity entity = player.getRidingEntity();
             float rotateOffset = ((ICameraZoomEntity)entity).getRotateOffset();
@@ -102,13 +102,13 @@ public class EventHandlerClient
         {
             if (event.celestialBody == GalacticraftCore.planetSaturn)
             {
-                mc.renderEngine.bindTexture(ClientProxyCore.saturnRingTexture);
+                mc.textureManager.bindTexture(ClientProxyCore.saturnRingTexture);
                 float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
                 ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 32, 32);
             }
             else if (event.celestialBody == GalacticraftCore.planetUranus)
             {
-                mc.renderEngine.bindTexture(ClientProxyCore.uranusRingTexture);
+                mc.textureManager.bindTexture(ClientProxyCore.uranusRingTexture);
                 float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
                 ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
             }
@@ -127,9 +127,9 @@ public class EventHandlerClient
                 IModel model;
                 synchronized (ModelLoaderRegistry.class)
                 {
-                    model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.ASSET_PREFIX, "block/fluid_pipe_pull_" + c));
+                    model = ModelLoaderRegistry.getModel(new ResourceLocation(Constants.MOD_ID_CORE, "block/fluid_pipe_pull_" + c));
                 }
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = (ResourceLocation location) -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
                 fluidPipeModels[facing.ordinal()] = model.bake(model.getDefaultState(), DefaultVertexFormats.ITEM, spriteFunction);
             }
             catch (Exception e)

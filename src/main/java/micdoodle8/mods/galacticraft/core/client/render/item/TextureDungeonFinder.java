@@ -35,7 +35,7 @@ public class TextureDungeonFinder extends TextureAtlasSprite
     @Override
     public void updateAnimation()
     {
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
 
         if (minecraft.world != null && minecraft.player != null)
         {

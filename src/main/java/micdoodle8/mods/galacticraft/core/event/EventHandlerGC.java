@@ -913,7 +913,7 @@ public class EventHandlerGC
         //Disable any night vision effects on the sky, if the planet has no atmosphere
         if (event.getEntity() instanceof LivingEntity && ((LivingEntity) event.getEntity()).isPotionActive(Effects.NIGHT_VISION))
         {
-            ClientWorld worldclient = Minecraft.getMinecraft().world;
+            ClientWorld worldclient = Minecraft.getInstance().world;
 
             if (worldclient.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) worldclient.provider).hasNoAtmosphere() && event.getState().getMaterial() == Material.AIR && !((IGalacticraftWorldProvider) worldclient.provider).hasBreathableAtmosphere())
             {

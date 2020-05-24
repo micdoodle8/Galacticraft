@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderEvolvedEnderman;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class LayerEvolvedEndermanEyes implements LayerRenderer<EntityEvolvedEnderman>
 {
-    private static final ResourceLocation eyesTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/evolved_enderman_eyes.png");
+    private static final ResourceLocation eyesTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_enderman_eyes.png");
     
     private RenderEvolvedEnderman render;
 

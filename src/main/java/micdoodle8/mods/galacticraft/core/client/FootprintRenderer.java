@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class FootprintRenderer
 {
     public static Map<Long, List<Footprint>> footprints = new ConcurrentHashMap<Long, List<Footprint>>();
-    private static final ResourceLocation footprintTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/footprint.png");
+    private static final ResourceLocation footprintTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/footprint.png");
 
     public static void renderFootprints(PlayerEntity player, float partialTicks)
     {
@@ -53,7 +53,7 @@ public class FootprintRenderer
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
         double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(FootprintRenderer.footprintTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(FootprintRenderer.footprintTexture);
 
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();

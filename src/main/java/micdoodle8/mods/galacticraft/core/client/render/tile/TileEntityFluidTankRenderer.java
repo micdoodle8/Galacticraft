@@ -36,7 +36,7 @@ public class TileEntityFluidTankRenderer extends TileEntityRenderer<TileEntityFl
         TileEntityFluidTank tankBelow = tank.getPreviousTank(tank.getPos());
 
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
-        TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(tankFluid.getFluid().getStill().toString());
+        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(tankFluid.getFluid().getStill().toString());
         final double uMin = sprite.getMinU();
         final double uMax = sprite.getMaxU();
         final double vMin = sprite.getMinV();

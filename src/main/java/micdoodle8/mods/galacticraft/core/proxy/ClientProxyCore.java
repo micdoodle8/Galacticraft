@@ -154,8 +154,8 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     public static boolean overworldTexturesValid;
     public static float PLAYER_Y_OFFSET = 1.6200000047683716F;
     public static ResourceLocation playerHead = null;
-    public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/saturn_rings.png");
-    public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/uranus_rings.png");
+    public static final ResourceLocation saturnRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/saturn_rings.png");
+    public static final ResourceLocation uranusRingTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/uranus_rings.png");
     private static List<Item> itemsToRegisterJson = Lists.newArrayList();
     private static ModelResourceLocation fuelLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "fuel", "fluid");
     private static ModelResourceLocation oilLocation = new ModelResourceLocation(Constants.TEXTURE_PREFIX + "oil", "fluid");
@@ -166,7 +166,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
     {
         ClientProxyCore.registerEntityRenderers();
         ModelLoaderRegistry.registerLoader(OBJLoaderGC.instance);
-        OBJLoaderGC.instance.addDomain(Constants.ASSET_PREFIX);
+        OBJLoaderGC.instance.addDomain(Constants.MOD_ID_CORE);
 
         if (CompatibilityManager.PlayerAPILoaded)
         {
@@ -182,18 +182,18 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         ClientProxyCore.updateCapeList();
         ClientProxyCore.registerInventoryJsons();
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(
             (state, world, pos, tintIndex) -> {
                 return BlockFallenMeteor.colorMultiplier(world, pos);
             }, GCBlocks.fallenMeteor);
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(
             (state, world, pos, tintIndex) -> {
                 Block b = state.getBlock();
                 return (b instanceof BlockSpaceGlass) ? ((BlockSpaceGlass)b).color : 0xFFFFFF;
             }, new Block[] { GCBlocks.spaceGlassVanilla, GCBlocks.spaceGlassClear, GCBlocks.spaceGlassStrong });
 
-        Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(
+        Minecraft.getInstance().getBlockColors().registerBlockColorHandler(
             (state, world, pos, tintIndex) -> {
                 if (world != null && pos != null)
                 {
@@ -201,7 +201,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
                     if (tile instanceof TileEntityPanelLight)
                     {
                         BlockState baseState = ((TileEntityPanelLight)tile).getBaseBlock();
-                        return Minecraft.getMinecraft().getBlockColors().colorMultiplier(baseState, world, pos, tintIndex);
+                        return Minecraft.getInstance().getBlockColors().colorMultiplier(baseState, world, pos, tintIndex);
                     }
                 }
                 return 0xFFFFFF;
@@ -234,19 +234,19 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
             }
         }
         
-        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(this);
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(this);
 
         try {
-            Field ftc = Minecraft.getMinecraft().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
+            Field ftc = Minecraft.getInstance().getClass().getDeclaredField(GCCoreUtil.isDeobfuscated() ? "mcMusicTicker" : "field_147126_aw");
             ftc.setAccessible(true);
-            ftc.set(Minecraft.getMinecraft(), new MusicTickerGC(Minecraft.getMinecraft()));
+            ftc.set(Minecraft.getInstance(), new MusicTickerGC(Minecraft.getMinecraft()));
         } catch (Exception e) {e.printStackTrace();} 
     }
 
     @Override
     public void onResourceManagerReload(IResourceManager resourceManager)
     {
-        String lang = net.minecraft.client.Minecraft.getMinecraft().gameSettings.language;
+        String lang = net.minecraft.client.Minecraft.getInstance().gameSettings.language;
         GCLog.debug("Reloading entity names for language " + lang);
         if (lang == null)
         {
@@ -462,7 +462,7 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
 
         replaceModelDefault(event, "flag", "flag.obj", ImmutableList.of("Flag", "Pole"), ItemModelFlag.class, TRSRTransformation.identity());
-        ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":panel_lighting", "normal");
+        ModelResourceLocation blockLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":panel_lighting", "normal");
         ModelResourceLocation defaultLoc;
         if (GalacticraftCore.isPlanetsLoaded)
         {
@@ -470,14 +470,14 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
         }
         else
         {
-            defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":basic_block_core", "basictype=deco_block_1");
+            defaultLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":basic_block_core", "basictype=deco_block_1");
         }
         event.getModelRegistry().putObject(blockLoc, new ModelPanelLightBase(defaultLoc));
-        defaultLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating", "normal");
+        defaultLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":grating", "normal");
         event.getModelRegistry().putObject(defaultLoc, new ModelGrating(defaultLoc, event.getModelManager()));
         for (int i = 1; i < BlockGrating.number; i++)
         {
-            blockLoc = new ModelResourceLocation(Constants.ASSET_PREFIX + ":grating" + i, "normal");
+            blockLoc = new ModelResourceLocation(Constants.MOD_ID_CORE + ":grating" + i, "normal");
             event.getModelRegistry().putObject(blockLoc, new ModelGrating(defaultLoc, event.getModelManager()));
         }
 //
@@ -500,12 +500,12 @@ public class ClientProxyCore extends CommonProxyCore implements IResourceManager
      */
     private void replaceModelDefault(ModelBakeEvent event, String resLoc, String objLoc, List<String> visibleGroups, Class<? extends ModelTransformWrapper> clazz, IModelState parentState, String... variants)
     {
-        ClientUtil.replaceModel(Constants.ASSET_PREFIX, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
+        ClientUtil.replaceModel(Constants.MOD_ID_CORE, event, resLoc, objLoc, visibleGroups, clazz, parentState, variants);
     }
 
     public static void registerEntityRenderers()
     {
-        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.ASSET_PREFIX, "rocket_t1"));
+        RenderingRegistry.registerEntityRenderingHandler(EntityTier1Rocket.class, (EntityRendererManager manager) -> new RenderTier1Rocket(manager, new ModelRocketTier1(), Constants.MOD_ID_CORE, "rocket_t1"));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedSpider.class, (EntityRendererManager manager) -> new RenderEvolvedSpider(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedZombie.class, (EntityRendererManager manager) -> new RenderEvolvedZombie(manager));
         RenderingRegistry.registerEntityRenderingHandler(EntityEvolvedCreeper.class, (EntityRendererManager manager) -> new RenderEvolvedCreeper(manager));

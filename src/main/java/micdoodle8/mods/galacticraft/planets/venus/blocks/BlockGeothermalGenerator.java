@@ -76,7 +76,7 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityGeothermalGenerator();
     }
@@ -119,15 +119,9 @@ public class BlockGeothermalGenerator extends BlockTileGC implements ITileEntity
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return state.get(FACING).getHorizontalIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, ACTIVE);
+        builder.add(FACING, ACTIVE);
     }
 
     @Override

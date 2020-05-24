@@ -49,7 +49,7 @@ public class SkyProviderOverworld extends IRenderHandler
     private int starGLCallList = GLAllocation.generateDisplayLists(7);
     private int glSkyList;
     private int glSkyList2;
-    private final ResourceLocation planetToRender = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
+    private final ResourceLocation planetToRender = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
 
     public SkyProviderOverworld()
     {
@@ -309,7 +309,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         r = 30.0F;
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.sunTexture);
+        this.minecraft.textureManager.bindTexture(SkyProviderOverworld.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-r, 100.0D, -r).tex(0.0D, 0.0D).endVertex();
         worldRenderer.pos(r, 100.0D, -r).tex(1.0D, 0.0D).endVertex();
@@ -319,7 +319,7 @@ public class SkyProviderOverworld extends IRenderHandler
 
         //Draw moon
         r = 40.0F;
-        this.minecraft.renderEngine.bindTexture(SkyProviderOverworld.moonTexture);
+        this.minecraft.textureManager.bindTexture(SkyProviderOverworld.moonTexture);
         float sinphi = this.minecraft.world.getMoonPhase();
         final int cosphi = (int) (sinphi % 4);
         final int var29 = (int) (sinphi / 4 % 2);
@@ -365,7 +365,7 @@ public class SkyProviderOverworld extends IRenderHandler
 //	        }
 //	        else
             {
-                this.minecraft.renderEngine.bindTexture(this.planetToRender);
+                this.minecraft.textureManager.bindTexture(this.planetToRender);
             }
 
             size = 1.0F;

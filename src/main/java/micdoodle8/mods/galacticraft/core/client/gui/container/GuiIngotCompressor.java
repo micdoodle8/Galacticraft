@@ -18,7 +18,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiIngotCompressor extends GuiContainerGC
 {
-    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
+    private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/ingot_compressor.png");
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
     private TileEntityIngotCompressor tileEntity;
@@ -76,7 +76,7 @@ public class GuiIngotCompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
+        this.mc.textureManager.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int process;

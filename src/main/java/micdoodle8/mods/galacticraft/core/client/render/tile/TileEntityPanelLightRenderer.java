@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityPanelLightRenderer extends TileEntityRenderer<TileEntityPanelLight>
 {
-    public static final ResourceLocation lightTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/misc/light.png");
+    public static final ResourceLocation lightTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/light.png");
 
     @Override
     public void render(TileEntityPanelLight tileEntity, double d, double d1, double d2, float f, int par9, float alpha)

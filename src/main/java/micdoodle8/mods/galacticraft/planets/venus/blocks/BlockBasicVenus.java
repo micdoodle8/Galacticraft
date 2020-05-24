@@ -358,15 +358,9 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return ((EnumBlockBasicVenus) state.get(BASIC_TYPE_VENUS)).getMeta();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, BASIC_TYPE_VENUS);
+        builder.add(BASIC_TYPE_VENUS);
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.nio.FloatBuffer;
 @SideOnly(Side.CLIENT)
 public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScreen>
 {
-    public static final ResourceLocation blockTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/screen_side.png");
+    public static final ResourceLocation blockTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/screen_side.png");
     private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
@@ -28,7 +28,7 @@ public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScree
     {
         GL11.glPushMatrix();
         // Texture file
-        this.renderEngine.bindTexture(TileEntityScreenRenderer.blockTexture);
+        this.textureManager.bindTexture(TileEntityScreenRenderer.blockTexture);
         GL11.glTranslatef((float) par2, (float) par4, (float) par6);
 
         int meta = screen.getBlockMetadata();

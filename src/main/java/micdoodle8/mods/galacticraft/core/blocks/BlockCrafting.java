@@ -5,22 +5,24 @@ import micdoodle8.mods.galacticraft.core.items.IShiftDescription;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityCrafting;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ITileEntityProvider;
-import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
-public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvider, ISortableBlock, IShiftDescription
+public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, IShiftDescription
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
 
@@ -29,25 +31,25 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
         super(builder);
     }
 
-    @Override
-    public ItemGroup getCreativeTabToDisplayOn()
-    {
-        return GalacticraftCore.galacticraftBlocksTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTabToDisplayOn()
+//    {
+//        return GalacticraftCore.galacticraftBlocksTab;
+//    }
 
     @Override
     public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult hit)
     {
         ItemStack heldItem = playerIn.getHeldItem(hand);
 
-        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+        if (this.useWrench(worldIn, pos, playerIn, hand, heldItem, hit))
         {
             return true;
         }
 
         if (playerIn.isSneaking())
         {
-            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, side, hitX, hitY, hitZ))
+            if (this.onSneakMachineActivated(worldIn, pos, playerIn, hand, heldItem, hit))
             {
                 return true;
             }
@@ -55,7 +57,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
 
         if (!worldIn.isRemote)
         {
-            playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ());
+//            playerIn.openGui(GalacticraftCore.instance, -1, worldIn, pos.getX(), pos.getY(), pos.getZ()); TODO
         }
         return true;
     }
@@ -108,7 +110,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityCrafting();
     }
@@ -148,7 +150,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
     @Override
     public String getShiftDescription(int meta)
     {
-        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
+        return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
@@ -157,33 +159,26 @@ public class BlockCrafting extends BlockAdvancedTile implements ITileEntityProvi
         return true;
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(FACING, Direction.getFront(meta));
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(FACING, Direction.getFront(meta));
+//    }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return (state.get(FACING)).getIndex();
+        builder.add(FACING);
     }
 
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
-    }
-    
-    @Override
-    public void dropEntireInventory(World worldIn, BlockPos pos, BlockState state)
-    {
-        super.dropEntireInventory(worldIn, pos, state);
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
-        if (tileEntity instanceof TileEntityCrafting)
-        {
-            ((TileEntityCrafting)tileEntity).dropHiddenOutputBuffer(worldIn, pos);
-        }
-    }
-
+//    @Override
+//    public void dropEntireInventory(World worldIn, BlockPos pos, BlockState state)
+//    {
+//        super.dropEntireInventory(worldIn, pos, state);
+//        TileEntity tileEntity = worldIn.getTileEntity(pos);
+//        if (tileEntity instanceof TileEntityCrafting)
+//        {
+//            ((TileEntityCrafting)tileEntity).dropHiddenOutputBuffer(worldIn, pos);
+//        }
+//    } TODO
 }

@@ -22,7 +22,7 @@ public abstract class GenericTrigger implements ICriterionTrigger
     public GenericTrigger(String id)
     {
         super();
-        this.id = new ResourceLocation(Constants.ASSET_PREFIX, id);
+        this.id = new ResourceLocation(Constants.MOD_ID_CORE, id);
     }
 
     @Override

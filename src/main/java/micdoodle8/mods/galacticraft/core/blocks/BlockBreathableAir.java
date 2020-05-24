@@ -6,16 +6,11 @@ import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.item.Item;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.StateContainer;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.util.Random;
 
 public class BlockBreathableAir extends AirBlock
 {
@@ -27,40 +22,20 @@ public class BlockBreathableAir extends AirBlock
         this.setDefaultState(stateContainer.getBaseState().with(THERMAL, false));
     }
 
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return true;
-    }
+//    @Override
+//    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+//    {
+//        return true;
+//    }
+//
+//    @Override
+//    public PushReaction getMobilityFlag(BlockState state)
+//    {
+//        return PushReaction.DESTROY;
+//    }
 
     @Override
-    public PushReaction getMobilityFlag(BlockState state)
-    {
-        return PushReaction.DESTROY;
-    }
-
-    @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
-
-    @Override
-    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
-    {
-        final Block block = blockAccess.getBlockState(pos).getBlock();
-        if (block == this || block == GCBlocks.brightBreatheableAir)
-        {
-            return false;
-        }
-        else
-        {
-            return block instanceof AirBlock;
-        }
-    }
-
-    @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block oldBlock, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block oldBlock, BlockPos fromPos, boolean isMoving)
     {
         if (Blocks.AIR != oldBlock)
         //Do no check if replacing breatheableAir with a solid block, although that could be dividing a sealed space
@@ -83,31 +58,25 @@ public class BlockBreathableAir extends AirBlock
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, THERMAL);
+        builder.add(THERMAL);
     }
 
-    @Override
-    public BlockState getStateFromMeta(int meta)
-    {
-        return this.getDefaultState().with(THERMAL, meta % 2 == 1);
-    }
+//    @Override
+//    public BlockState getStateFromMeta(int meta)
+//    {
+//        return this.getDefaultState().with(THERMAL, meta % 2 == 1);
+//    }
 
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        return (state.get(THERMAL) ? 1 : 0);
-    }
-    
-    @Override
-    public int getLightOpacity(BlockState state)
-    {
-        return 0;
-    }
+//    @Override
+//    public int getLightOpacity(BlockState state)
+//    {
+//        return 0;
+//    }
 
-    @Override
-    public void breakBlock(World worldIn, BlockPos vec, BlockState state)
-    {
-    }
+//    @Override
+//    public void breakBlock(World worldIn, BlockPos vec, BlockState state)
+//    {
+//    }
 }

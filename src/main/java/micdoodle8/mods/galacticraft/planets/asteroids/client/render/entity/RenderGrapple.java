@@ -35,7 +35,7 @@ public class RenderGrapple extends EntityRenderer<EntityGrapple>
     {
         if (grappleModel == null)
         {
-            Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER = input -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
+            Function<ResourceLocation, TextureAtlasSprite> TEXTUREGETTER = input -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(input.toString());
 
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "grapple", "inventory");
             grappleModel = (ItemModelGrapple) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);

@@ -1,25 +1,16 @@
 package micdoodle8.mods.galacticraft.core.blocks;
 
-import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.RepeaterBlock;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 
-import java.util.Random;
-
-public class BlockConcealedRepeater extends RepeaterBlock implements ISortableBlock
+public class BlockConcealedRepeater extends RepeaterBlock
 {
-    protected static final AxisAlignedBB CUBE_AABB = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+    protected static final VoxelShape CUBE_AABB = Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
 
     public BlockConcealedRepeater(Properties builder)
     {
@@ -27,94 +18,8 @@ public class BlockConcealedRepeater extends RepeaterBlock implements ISortableBl
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return CUBE_AABB;
-    }
-
-    @Override
-    public EnumSortCategoryBlock getCategory(int meta)
-    {
-         return EnumSortCategoryBlock.DECORATION;
-    }
-
-    @Override
-    public int getLightOpacity(BlockState state)
-    {
-        return 0;
-    }
-    
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return true;
-    }
-
-    @Override
-    public boolean isSideSolid(BlockState state, IBlockAccess world, BlockPos pos, Direction side)
-    {
-        return true;
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction side)
-    {
-        return true;
-    }
-  
-    @Override
-    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
-    {
-        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
-    }
-
-    @Override
-    public boolean canBlockStay(World worldIn, BlockPos pos)
-    {
-        return true;
-    }
-    
-    @Override
-    protected BlockState getPoweredState(BlockState unpoweredState)
-    {
-        Integer integer = (Integer)unpoweredstate.get(DELAY);
-        Boolean obool = (Boolean)unpoweredstate.get(LOCKED);
-        Direction enumfacing = (Direction)unpoweredstate.get(FACING);
-        return GCBlocks.concealedRepeater_Powered.getDefaultState().with(FACING, enumfacing).with(DELAY, integer).with(LOCKED, obool);
-    }
-
-    @Override
-    protected BlockState getUnpoweredState(BlockState poweredState)
-    {
-        Integer integer = (Integer)poweredstate.get(DELAY);
-        Boolean obool = (Boolean)poweredstate.get(LOCKED);
-        Direction enumfacing = (Direction)poweredstate.get(FACING);
-        return GCBlocks.concealedRepeater_Unpowered.getDefaultState().with(FACING, enumfacing).with(DELAY, integer).with(LOCKED, obool);
-    }
-    
-    @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return BlockItem.getItemFromBlock(GCBlocks.concealedRepeater_Unpowered);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public ItemStack getItem(World worldIn, BlockPos pos, BlockState state)
-    {
-        return new ItemStack(GCBlocks.concealedRepeater_Unpowered);
-    }
-    
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
     }
 }

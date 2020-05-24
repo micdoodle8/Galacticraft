@@ -18,7 +18,7 @@ import java.util.Random;
 
 public class RoomTreasureVenus extends SizedPieceVenus
 {
-    public static ResourceLocation VENUSCHEST = new ResourceLocation(Constants.ASSET_PREFIX, "dungeon_tier_3");
+    public static ResourceLocation VENUSCHEST = new ResourceLocation(Constants.MOD_ID_CORE, "dungeon_tier_3");
     public static final ResourceLocation TABLE_TIER_3_DUNGEON = LootTables.register(VENUSCHEST);
     
     public RoomTreasureVenus()

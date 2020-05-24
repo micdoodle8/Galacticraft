@@ -13,7 +13,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.venus.tile.TileEntityLaserTurret;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -43,7 +43,7 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
             {
                 IModel model0 = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "laser.obj"));
                 IModel model1 = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "orb.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
 
                 laserBase = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("baseConnector0", "baseConnector1"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 laserPhalange = (OBJModel.OBJBakedModel) model0.bake(new OBJModel.OBJState(ImmutableList.of("phalange"), false), DefaultVertexFormats.ITEM, spriteFunction);

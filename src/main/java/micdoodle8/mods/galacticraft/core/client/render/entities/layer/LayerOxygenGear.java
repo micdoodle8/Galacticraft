@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity>
 {
     private final PlayerRenderer playerRenderer;
-    public ModelRenderer[][] tubes = new ModelRenderer[2][7];
+    public RendererModel[][] tubes = new RendererModel[2][7];
 
     public LayerOxygenGear(PlayerRenderer playerRendererIn)
     {
@@ -26,73 +26,73 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity
         float scaleFactor = 0.0F;
         ModelPlayer modelPlayer = playerRendererIn.getMainModel();
 
-        this.tubes[0][0] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][0] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][0].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][0].setRotationPoint(2F, 3F, 5.8F);
         this.tubes[0][0].setTextureSize(128, 64);
         this.tubes[0][0].mirror = true;
-        this.tubes[0][1] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][1] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][1].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][1].setRotationPoint(2F, 2F, 6.8F);
         this.tubes[0][1].setTextureSize(128, 64);
         this.tubes[0][1].mirror = true;
-        this.tubes[0][2] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][2] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][2].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][2].setRotationPoint(2F, 1F, 6.8F);
         this.tubes[0][2].setTextureSize(128, 64);
         this.tubes[0][2].mirror = true;
-        this.tubes[0][3] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][3] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][3].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][3].setRotationPoint(2F, 0F, 6.8F);
         this.tubes[0][3].setTextureSize(128, 64);
         this.tubes[0][3].mirror = true;
-        this.tubes[0][4] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][4] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][4].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][4].setRotationPoint(2F, -1F, 6.8F);
         this.tubes[0][4].setTextureSize(128, 64);
         this.tubes[0][4].mirror = true;
-        this.tubes[0][5] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][5] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][5].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][5].setRotationPoint(2F, -2F, 5.8F);
         this.tubes[0][5].setTextureSize(128, 64);
         this.tubes[0][5].mirror = true;
-        this.tubes[0][6] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[0][6] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][6].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[0][6].setRotationPoint(2F, -3F, 4.8F);
         this.tubes[0][6].setTextureSize(128, 64);
         this.tubes[0][6].mirror = true;
 
-        this.tubes[1][0] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][0] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][0].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][0].setRotationPoint(-2F, 3F, 5.8F);
         this.tubes[1][0].setTextureSize(128, 64);
         this.tubes[1][0].mirror = true;
-        this.tubes[1][1] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][1] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][1].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][1].setRotationPoint(-2F, 2F, 6.8F);
         this.tubes[1][1].setTextureSize(128, 64);
         this.tubes[1][1].mirror = true;
-        this.tubes[1][2] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][2] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][2].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][2].setRotationPoint(-2F, 1F, 6.8F);
         this.tubes[1][2].setTextureSize(128, 64);
         this.tubes[1][2].mirror = true;
-        this.tubes[1][3] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][3] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][3].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][3].setRotationPoint(-2F, 0F, 6.8F);
         this.tubes[1][3].setTextureSize(128, 64);
         this.tubes[1][3].mirror = true;
-        this.tubes[1][4] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][4] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][4].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][4].setRotationPoint(-2F, -1F, 6.8F);
         this.tubes[1][4].setTextureSize(128, 64);
         this.tubes[1][4].mirror = true;
-        this.tubes[1][5] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][5] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][5].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][5].setRotationPoint(-2F, -2F, 5.8F);
         this.tubes[1][5].setTextureSize(128, 64);
         this.tubes[1][5].mirror = true;
-        this.tubes[1][6] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(128, 64);
+        this.tubes[1][6] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[1][6].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
         this.tubes[1][6].setRotationPoint(-2F, -3F, 4.8F);
         this.tubes[1][6].setTextureSize(128, 64);
@@ -109,7 +109,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity
             if (gearData != null)
             {
                 boolean wearingGear = gearData.getGear() == Constants.GEAR_ID_OXYGEN_GEAR;
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
+                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
 
                 if (wearingGear && !playerRenderer.getMainModel().isSneak)
                 {

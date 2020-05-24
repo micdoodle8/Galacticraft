@@ -20,7 +20,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -63,7 +63,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
             try
             {
                 IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "astro_miner_full.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
                 this.mainModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Hull", "Lasers"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 this.hoverPadMain = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("HoverPad"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 this.hoverPadGlow = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Glow"), false), DefaultVertexFormats.ITEM, spriteFunction);
@@ -221,7 +221,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
             if (ais < EntityAstroMiner.AISTATE_DOCKING)
             {
                 //This is the scanning lasers:
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(scanTexture);
+                FMLClientHandler.instance().getClient().textureManager.bindTexture(scanTexture);
                 final Tessellator tess = Tessellator.getInstance();
                 GlStateManager.color(0, 0.6F, 1.0F, 0.2F);
                 BufferBuilder worldRenderer = tess.getBuffer();

@@ -19,8 +19,8 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton>
 {
-    private static final ResourceLocation skeletonTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeleton.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
+    private static final ResourceLocation skeletonTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/skeleton.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/power.png");
 
     private final ModelEvolvedSkeleton model = new ModelEvolvedSkeleton(0.2F);
     private boolean texSwitch;

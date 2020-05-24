@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiElementTurnPageButton extends Button
 {
     private final boolean nextPage;
-    private static final ResourceLocation background = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/bookleft.png");
+    private static final ResourceLocation background = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/bookleft.png");
 
     public GuiElementTurnPageButton(int par1, int par2, int par3, boolean par4)
     {

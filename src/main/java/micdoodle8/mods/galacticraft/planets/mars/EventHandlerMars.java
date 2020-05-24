@@ -160,14 +160,14 @@ public class EventHandlerMars
     @SubscribeEvent
     public void orientCamera(OrientCameraEvent event)
     {
-        PlayerEntity entity = Minecraft.getMinecraft().player;
+        PlayerEntity entity = Minecraft.getInstance().player;
 
         if (entity != null)
         {
             int x = MathHelper.floor(entity.posX);
             int y = MathHelper.floor(entity.posY);
             int z = MathHelper.floor(entity.posZ);
-            TileEntity tile = Minecraft.getMinecraft().world.getTileEntity(new BlockPos(x, y - 1, z));
+            TileEntity tile = Minecraft.getInstance().world.getTileEntity(new BlockPos(x, y - 1, z));
 
             if (tile instanceof TileEntityMulti)
             {

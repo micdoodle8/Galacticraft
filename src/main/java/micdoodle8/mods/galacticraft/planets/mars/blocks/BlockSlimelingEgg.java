@@ -43,7 +43,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     //    private IIcon[] icons;
     public static final EnumProperty<EnumEggColor> EGG_COLOR = EnumProperty.create("eggcolor", EnumEggColor.class);
     public static final BooleanProperty BROKEN = BooleanProperty.create("broken");
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.25, 0.0, 0.25, 0.75, 0.625, 0.75);
 
     public enum EnumEggColor implements IStringSerializable
     {
@@ -79,7 +79,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return AABB;
     }
@@ -231,7 +231,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntitySlimelingEgg();
     }
@@ -275,15 +275,9 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return ((EnumEggColor) state.get(EGG_COLOR)).getMeta() + (state.get(BROKEN) ? 3 : 0);
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, EGG_COLOR, BROKEN);
+        builder.add(EGG_COLOR, BROKEN);
     }
 
     @Override

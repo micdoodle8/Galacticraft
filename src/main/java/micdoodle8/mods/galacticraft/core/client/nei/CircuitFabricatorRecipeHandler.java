@@ -17,7 +17,7 @@
 //
 //public class CircuitFabricatorRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuit_fabricator.png");
+//    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/circuit_fabricator.png");
 //    int ticksPassed;
 //
 //    public String getRecipeId()

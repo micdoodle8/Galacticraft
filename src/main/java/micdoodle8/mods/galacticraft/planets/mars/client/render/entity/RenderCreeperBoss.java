@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderCreeperBoss extends MobRenderer<EntityCreeperBoss>
 {
     private static final ResourceLocation creeperTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/creeper.png");
-    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/power.png");
+    private static final ResourceLocation powerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/power.png");
     private final ModelBase creeperModel = new ModelCreeperBoss(2.0F);
 
     public RenderCreeperBoss(EntityRendererManager renderManager)

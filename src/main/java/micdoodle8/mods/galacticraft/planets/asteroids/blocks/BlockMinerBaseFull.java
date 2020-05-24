@@ -73,7 +73,7 @@ public class BlockMinerBaseFull extends BlockTileGC
     }
 
     @Override
-    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return this.getStateFromMeta(0);
         //TODO

@@ -590,7 +590,7 @@ public class TransformerHooks
             return previous;
         }
 
-        PlayerEntity player = Minecraft.getMinecraft().player;
+        PlayerEntity player = Minecraft.getInstance().player;
         if (player.getRidingEntity() != null && player.getRidingEntity() instanceof ICameraZoomEntity)
         {
             return ((ICameraZoomEntity) player.getRidingEntity()).getCameraZoom();
@@ -634,7 +634,7 @@ public class TransformerHooks
     @SideOnly(Side.CLIENT)
     public static int addRainParticles(int result, int rendererUpdateCount, float f)
     {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         World world = mc.world;
         if (result == 0 || !(world.provider instanceof IWeatherProvider))
         {

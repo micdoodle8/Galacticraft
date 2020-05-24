@@ -2,16 +2,16 @@ package micdoodle8.mods.galacticraft.planets.mars.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.FMLClientHandler;
 
 public class ModelBalloonParachute extends ModelBase
 {
-    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/gray.png");
+    private static final ResourceLocation grayParachuteTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/gray.png");
 
-    public ModelRenderer[] parachute = new ModelRenderer[3];
-    public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
+    public RendererModel[] parachute = new RendererModel[3];
+    public RendererModel[] parachuteStrings = new RendererModel[4];
 
     public ModelBalloonParachute()
     {
@@ -22,33 +22,33 @@ public class ModelBalloonParachute extends ModelBase
     {
         super();
 
-        this.parachute[0] = new ModelRenderer(this, 0, 0).setTextureSize(512, 256);
+        this.parachute[0] = new RendererModel(this, 0, 0).setTextureSize(512, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, par1);
         this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
-        this.parachute[1] = new ModelRenderer(this, 0, 42).setTextureSize(512, 256);
+        this.parachute[1] = new RendererModel(this, 0, 42).setTextureSize(512, 256);
         this.parachute[1].addBox(-20.0F, -45.0F, -20.0F, 40, 2, 40, par1);
         this.parachute[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachute[2] = new ModelRenderer(this, 0, 0).setTextureSize(512, 256);
+        this.parachute[2] = new RendererModel(this, 0, 0).setTextureSize(512, 256);
         this.parachute[2].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, par1);
         this.parachute[2].setRotationPoint(11F, -11, 0.0F);
 
-        this.parachuteStrings[0] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
+        this.parachuteStrings[0] = new RendererModel(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[0].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
         this.parachuteStrings[0].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[1] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
+        this.parachuteStrings[1] = new RendererModel(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[1].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
         this.parachuteStrings[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[2] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
+        this.parachuteStrings[2] = new RendererModel(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[2].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
         this.parachuteStrings[2].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[3] = new ModelRenderer(this, 100, 0).setTextureSize(512, 256);
+        this.parachuteStrings[3] = new RendererModel(this, 100, 0).setTextureSize(512, 256);
         this.parachuteStrings[3].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, par1);
         this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
     }
 
     public void renderAll()
     {
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelBalloonParachute.grayParachuteTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelBalloonParachute.grayParachuteTexture);
 
         int i;
 

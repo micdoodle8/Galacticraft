@@ -171,14 +171,8 @@ public class BlockMachineMarsT2 extends BlockMachineBase
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return (state.get(FACING)).getHorizontalIndex() + ((EnumMachineType) state.get(TYPE)).getMetadata();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, TYPE);
+        builder.add(FACING, TYPE);
     }
 }

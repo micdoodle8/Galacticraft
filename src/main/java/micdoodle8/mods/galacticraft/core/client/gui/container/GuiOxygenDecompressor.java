@@ -18,7 +18,7 @@ import java.util.List;
 
 public class GuiOxygenDecompressor extends GuiContainerGC
 {
-    private static final ResourceLocation compressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/decompressor.png");
+    private static final ResourceLocation compressorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/decompressor.png");
 
     private final TileEntityOxygenDecompressor decompressor;
 

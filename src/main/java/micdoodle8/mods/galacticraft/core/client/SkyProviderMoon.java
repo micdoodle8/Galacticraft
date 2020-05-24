@@ -26,8 +26,8 @@ import java.util.Random;
 
 public class SkyProviderMoon extends IRenderHandler
 {
-    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
-    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/orbitalsun.png");
+    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/planets/orbitalsun.png");
 
     public int starGLCallList = GLAllocation.generateDisplayLists(3);
     public int glSkyList;
@@ -159,7 +159,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = 20.0F;
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.sunTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderMoon.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
         worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
@@ -188,7 +188,7 @@ public class SkyProviderMoon extends IRenderHandler
         else
         {
             // Overworld texture is 48x48 in a 64x64 .png file
-            FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMoon.overworldTexture);
+            FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderMoon.overworldTexture);
         }
 
         world.getMoonPhase();

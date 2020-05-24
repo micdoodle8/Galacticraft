@@ -29,7 +29,7 @@ public class AsteroidsEventHandlerClient
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
     {
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
         ClientWorld world = minecraft.world;
 
         if (world != null)

@@ -189,7 +189,7 @@ public class EntityFlag extends Entity
 
         if ((this.ticksExisted - 1) % 20 == 0 && this.world.isRemote)
         {
-            this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getMinecraft().player.getDistance(this) < 50.0D);
+            this.flagData = ClientUtil.updateFlagData(this.getOwner(), Minecraft.getInstance().player.getDistance(this) < 50.0D);
         }
 
         Vector3 vec = new Vector3(this.posX, this.posY, this.posZ);

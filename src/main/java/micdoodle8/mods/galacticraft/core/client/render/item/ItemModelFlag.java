@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.LivingEntity;
 
@@ -58,10 +58,10 @@ public class ItemModelFlag extends ModelTransformWrapper
             mul.rotY((float) -(Math.PI / 3.0F));
             ret.mul(mul);
             mul.setIdentity();
-            LivingEntity player = Minecraft.getMinecraft().player;
+            LivingEntity player = Minecraft.getInstance().player;
             if (player != null && player.isHandActive() && !player.getActiveItemStack().isEmpty())
             {
-                final int useTime = Minecraft.getMinecraft().player.getItemInUseMaxCount();
+                final int useTime = Minecraft.getInstance().player.getItemInUseMaxCount();
                 float interpolate0 = useTime / 20.0F;
                 interpolate0 = (interpolate0 * interpolate0 + interpolate0 * 2.0F) / 3.0F;
 
@@ -69,7 +69,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                 {
                     interpolate0 = 1.0F;
                 }
-                final int useTimeFuture = Minecraft.getMinecraft().player.getItemInUseMaxCount() + 1;
+                final int useTimeFuture = Minecraft.getInstance().player.getItemInUseMaxCount() + 1;
                 float interpolate1 = useTimeFuture / 20.0F;
                 interpolate1 = (interpolate1 * interpolate1 + interpolate1 * 2.0F) / 3.0F;
 
@@ -77,7 +77,7 @@ public class ItemModelFlag extends ModelTransformWrapper
                 {
                     interpolate1 = 1.0F;
                 }
-                mul.rotX(((interpolate0 + (interpolate1 - interpolate0) * Minecraft.getMinecraft().getRenderPartialTicks()) * 75.0F) / Constants.RADIANS_TO_DEGREES);
+                mul.rotX(((interpolate0 + (interpolate1 - interpolate0) * Minecraft.getInstance().getRenderPartialTicks()) * 75.0F) / Constants.RADIANS_TO_DEGREES);
             }
             ret.mul(mul);
             mul.setIdentity();

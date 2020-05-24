@@ -39,8 +39,8 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     public static final EnumProperty<EnumWalkwayType> WALKWAY_TYPE = EnumProperty.create("type", EnumWalkwayType.class);
 //    private Vector3 minVector = new Vector3(0.0, 0.32, 0.0);
 //    private Vector3 maxVector = new Vector3(1.0, 1.0, 1.0);
-    protected static final AxisAlignedBB AABB_UNCONNECTED = new AxisAlignedBB(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
-    protected static final AxisAlignedBB AABB_CONNECTED_DOWN = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
+    protected static final VoxelShape AABB_UNCONNECTED = Block.makeCuboidShape(0.0, 0.32, 0.0, 1.0, 1.0, 1.0);
+    protected static final VoxelShape AABB_CONNECTED_DOWN = Block.makeCuboidShape(0.0, 0.0, 0.0, 1.0, 1.0, 1.0);
 
     public enum EnumWalkwayType implements IStringSerializable
     {
@@ -82,7 +82,7 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         state = this.getActualState(state, source, pos);
 
@@ -312,9 +312,9 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     }
 
     @Override
-    protected BlockStateContainer createBlockState()
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return new BlockStateContainer(this, WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
+        builder.add(WALKWAY_TYPE, NORTH, EAST, SOUTH, WEST, DOWN);
     }
 
     @Override
@@ -366,12 +366,6 @@ public class BlockWalkway extends BlockTransmitter implements ITileEntityProvide
     public BlockState getStateFromMeta(int meta)
     {
         return this.getDefaultState().with(WALKWAY_TYPE, EnumWalkwayType.byMetadata(meta));
-    }
-
-    @Override
-    public int getMetaFromState(BlockState state)
-    {
-        return ((EnumWalkwayType) state.get(WALKWAY_TYPE)).getMeta();
     }
 
     @Override

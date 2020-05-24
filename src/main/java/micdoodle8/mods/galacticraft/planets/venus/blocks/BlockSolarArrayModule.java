@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ISortableBlock, ITileEntityProvider
 {
-    protected static final AxisAlignedBB AABB = new AxisAlignedBB(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
+    protected static final VoxelShape AABB = Block.makeCuboidShape(0.0, 0.375, 0.0, 1.0, 0.625, 1.0);
 
     public BlockSolarArrayModule(Properties builder)
     {
@@ -34,13 +34,13 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return AABB;
     }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
 
@@ -53,7 +53,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntitySolarArrayModule();
     }

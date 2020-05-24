@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -433,7 +433,7 @@ public class GameScreenText implements IGameScreen
 
     private void drawText(String str, int colour)
     {
-        Minecraft.getMinecraft().fontRenderer.drawString(str, 0, yPos, colour, false);
+        Minecraft.getInstance().fontRenderer.drawString(str, 0, yPos, colour, false);
         yPos += 10;
     }
 

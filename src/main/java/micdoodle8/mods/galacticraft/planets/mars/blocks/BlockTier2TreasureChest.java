@@ -13,7 +13,7 @@ public class BlockTier2TreasureChest extends BlockTier1TreasureChest
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityTreasureChestMars();
     }

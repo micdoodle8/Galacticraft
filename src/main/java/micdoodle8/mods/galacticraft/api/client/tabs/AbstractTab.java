@@ -48,7 +48,7 @@ public abstract class AbstractTab extends Button
 			int xOffset = this.id == 2 ? 0 : 1;
 			int yPos = this.y + (this.enabled ? 3 : 0);
 
-			mc.renderEngine.bindTexture(this.texture);
+			mc.textureManager.bindTexture(this.texture);
 			this.drawTexturedModalRect(this.x, yPos, xOffset * 28, yTexPos, 28, ySize);
 
 			RenderHelper.enableGUIStandardItemLighting();

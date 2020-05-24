@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.model;
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.fml.relauncher.Side;
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-public class ModelRendererGC extends ModelRenderer
+public class ModelRendererGC extends RendererModel
 {
     private boolean compiled;
     private int displayList;
@@ -47,7 +47,7 @@ public class ModelRendererGC extends ModelRenderer
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((ModelRenderer) this.childModels.get(i)).render(par1);
+                                ((RendererModel) this.childModels.get(i)).render(par1);
                             }
                         }
                     }
@@ -60,7 +60,7 @@ public class ModelRendererGC extends ModelRenderer
                         {
                             for (i = 0; i < this.childModels.size(); ++i)
                             {
-                                ((ModelRenderer) this.childModels.get(i)).render(par1);
+                                ((RendererModel) this.childModels.get(i)).render(par1);
                             }
                         }
 
@@ -93,7 +93,7 @@ public class ModelRendererGC extends ModelRenderer
                     {
                         for (i = 0; i < this.childModels.size(); ++i)
                         {
-                            ((ModelRenderer) this.childModels.get(i)).render(par1);
+                            ((RendererModel) this.childModels.get(i)).render(par1);
                         }
                     }
 

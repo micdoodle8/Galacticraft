@@ -28,7 +28,7 @@ public class GuiElementTexturedButton extends Button
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
             this.getHoverState(this.hovered);
-            par1Minecraft.renderEngine.bindTexture(this.texture);
+            par1Minecraft.textureManager.bindTexture(this.texture);
             this.drawTexturedModalRect(this.x, this.y, 0, 0, this.bWidth, this.bHeight);
             this.mouseDragged(par1Minecraft, par2, par3);
             int var6 = 14737632;

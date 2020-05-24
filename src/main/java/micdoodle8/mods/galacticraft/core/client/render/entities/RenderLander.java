@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderLander extends EntityRenderer<EntityLander>
 {
-    private static final ResourceLocation landerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/lander.png");
+    private static final ResourceLocation landerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/lander.png");
 
     protected ModelLander landerModel;
 

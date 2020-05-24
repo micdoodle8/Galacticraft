@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -30,9 +30,9 @@ import java.util.Iterator;
 @SideOnly(Side.CLIENT)
 public class OverlaySensorGlasses extends Overlay
 {
-    private static final ResourceLocation hudTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/hud.png");
-    private static final ResourceLocation indicatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/indicator.png");
-    public static final ResourceLocation altTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/sensor_mobs.png");
+    private static final ResourceLocation hudTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/hud.png");
+    private static final ResourceLocation indicatorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/indicator.png");
+    public static final ResourceLocation altTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/sensor_mobs.png");
 
     private static Minecraft minecraft = FMLClientHandler.instance().getClient();
 
@@ -57,7 +57,7 @@ public class OverlaySensorGlasses extends Overlay
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.hudTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(OverlaySensorGlasses.hudTexture);
         final Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
@@ -117,7 +117,7 @@ public class OverlaySensorGlasses extends Overlay
                 if (var20 < 4.0D)
                 {
                     GL11.glColor4f(0.0F, 255F / 255F, 198F / 255F, (float) Math.min(1.0D, Math.max(0.2D, (var20 - 1.0D) * 0.1D)));
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(OverlaySensorGlasses.indicatorTexture);
+                    FMLClientHandler.instance().getClient().textureManager.bindTexture(OverlaySensorGlasses.indicatorTexture);
                     GL11.glRotatef(-var60 - ClientProxyCore.playerRotationYaw + 180.0F, 0.0F, 0.0F, 1.0F);
                     GL11.glTranslated(0.0D, var2 ? -var20 * 16 : -var21 * 16, 0.0D);
                     GL11.glRotatef(-(-var60 - ClientProxyCore.playerRotationYaw + 180.0F), 0.0F, 0.0F, 1.0F);
@@ -157,7 +157,7 @@ public class OverlaySensorGlasses extends Overlay
     
     public static boolean overrideMobTexture()
     {
-        PlayerEntity player = Minecraft.getMinecraft().player;
+        PlayerEntity player = Minecraft.getInstance().player;
         return (player != null && player.inventory.armorItemInSlot(3) != null && player.inventory.armorItemInSlot(3).getItem() instanceof ISensorGlassesArmor);
     }
 }

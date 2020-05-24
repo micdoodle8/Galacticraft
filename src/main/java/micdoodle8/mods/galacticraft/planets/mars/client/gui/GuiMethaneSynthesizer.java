@@ -174,14 +174,14 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiMethaneSynthesizer.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
         int edgeTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(edgeLeft, edgeTop, 0, 0, this.xSize, this.ySize);
 
-        this.mc.renderEngine.bindTexture(GuiMethaneSynthesizer.gasTextures);
+        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.gasTextures);
         int displayInt = this.tileEntity.getScaledGasLevel(38);
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - displayInt, 1 + 17, 38 - displayInt, 16, displayInt);
         displayInt = this.tileEntity.getScaledGasLevel2(20);
@@ -191,7 +191,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.mc.renderEngine.bindTexture(GuiMethaneSynthesizer.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {

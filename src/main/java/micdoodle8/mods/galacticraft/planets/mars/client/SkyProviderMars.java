@@ -28,8 +28,8 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class SkyProviderMars extends IRenderHandler
 {
-    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/celestialbodies/earth.png");
-    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/planets/atmosphericsun.png");
+    private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
+    private static final ResourceLocation sunTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/planets/atmosphericsun.png");
 
     public int starList;
     public int glSkyList;
@@ -245,7 +245,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         f10 = this.sunSize;
-        mc.renderEngine.bindTexture(SkyProviderMars.sunTexture);
+        mc.textureManager.bindTexture(SkyProviderMars.sunTexture);
         worldRenderer1.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer1.pos(-f10, 100.0D, -f10).tex(0.0D, 0.0D).endVertex();
         worldRenderer1.pos(f10, 100.0D, -f10).tex(1.0D, 0.0D).endVertex();
@@ -259,7 +259,7 @@ public class SkyProviderMars extends IRenderHandler
         GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(SkyProviderMars.overworldTexture);
+        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderMars.overworldTexture);
         worldRenderer1.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer1.pos(-f10, -100.0D, f10).tex(0, 1.0).endVertex();
         worldRenderer1.pos(f10, -100.0D, f10).tex(1.0, 1.0).endVertex();

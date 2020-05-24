@@ -22,7 +22,7 @@ import java.util.List;
 
 public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCallback
 {
-    private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_distributor.png");
+    private static final ResourceLocation distributorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_distributor.png");
 
     private final TileEntityOxygenDistributor distributor;
 

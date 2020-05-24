@@ -13,7 +13,7 @@ public class BlockBossSpawnerVenus extends BlockBossSpawner
     }
 
     @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityDungeonSpawnerVenus();
     }

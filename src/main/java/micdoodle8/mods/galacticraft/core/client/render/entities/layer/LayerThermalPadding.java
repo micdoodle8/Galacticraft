@@ -118,7 +118,7 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
 
             // Start alpha render
             GlStateManager.disableLighting();
-            Minecraft.getMinecraft().renderEngine.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
+            Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);

@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSkeletonBoss extends MobRenderer<EntitySkeletonBoss>
 {
-    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/skeletonboss.png");
+    private static final ResourceLocation skeletonBossTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/skeletonboss.png");
 
     public RenderEvolvedSkeletonBoss(EntityRendererManager manager)
     {

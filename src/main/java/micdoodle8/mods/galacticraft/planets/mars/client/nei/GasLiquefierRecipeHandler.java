@@ -29,7 +29,7 @@
 //    int inputGas = 0;  //0 is methane   1 is oxygen   2 is atmosphere or nitrogen
 //    int outputGas = 0;  //0 is fuel   1 is oxygen   2 is nitrogen
 //    boolean fillAtmos = false;
-//    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRenderer;
+//    protected FontRenderer fontRendererObj = Minecraft.getInstance().fontRenderer;
 //
 //    public String getRecipeId()
 //    {

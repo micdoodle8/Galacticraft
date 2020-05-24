@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderAlienVillager extends MobRenderer<EntityAlienVillager>
 {
-    private static final ResourceLocation villagerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/villager.png");
+    private static final ResourceLocation villagerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/villager.png");
     private boolean texSwitch;
     
     protected ModelAlienVillager villagerModel;

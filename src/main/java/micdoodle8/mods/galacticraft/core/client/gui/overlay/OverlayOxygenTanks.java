@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class OverlayOxygenTanks extends Overlay
 {
-    private final static ResourceLocation guiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
+    private final static ResourceLocation guiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     /**
      * Render the GUI that displays oxygen level in tanks
@@ -35,7 +35,7 @@ public class OverlayOxygenTanks extends Overlay
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
-        mc.renderEngine.bindTexture(OverlayOxygenTanks.guiTexture);
+        mc.textureManager.bindTexture(OverlayOxygenTanks.guiTexture);
         final Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         GlStateManager.enableDepth();

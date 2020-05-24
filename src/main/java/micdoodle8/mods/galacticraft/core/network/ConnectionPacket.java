@@ -130,7 +130,7 @@
 //    {
 //        FMLProxyPacket pkt = event.getPacket();
 //
-//        onFMLProxyPacketData(event.getManager(), pkt, Minecraft.getMinecraft().player);
+//        onFMLProxyPacketData(event.getManager(), pkt, Minecraft.getInstance().player);
 //    }
 //
 //    @SubscribeEvent

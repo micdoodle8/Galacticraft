@@ -19,7 +19,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiCircuitFabricator extends GuiContainerGC
 {
-    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/circuit_fabricator.png");
+    private static final ResourceLocation circuitFabricatorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/circuit_fabricator.png");
     private TileEntityCircuitFabricator tileEntity;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 53, 12, null, 0, 0, this);
@@ -82,7 +82,7 @@ public class GuiCircuitFabricator extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiCircuitFabricator.circuitFabricatorTexture);
+        this.mc.textureManager.bindTexture(GuiCircuitFabricator.circuitFabricatorTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;

@@ -57,7 +57,7 @@
 //public class BlockGrating extends Block implements ISortableBlock, IPartialSealableBlock
 //{
 //    public static final PropertyObject<BlockState> BASE_STATE = new PropertyObject<>("held_state", BlockState.class);
-//    protected static final AxisAlignedBB BOUNDING_BOX = new AxisAlignedBB(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
+//    protected static final VoxelShape BOUNDING_BOX = Block.makeCuboidShape(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
 //    public static IBlockAccess savedBlockAccess;
 //    public static BlockPos savedPos;
 //
@@ -375,7 +375,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
+//    public BlockState getStateForPlacement(BlockItemUseContext context)
 //    {
 //        BlockState oldBlock = world.getBlockState(pos);
 //        if (oldBlock.getBlock() instanceof BlockGrating)
@@ -744,7 +744,7 @@
 //    }
 //    
 //    @Override
-//    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+//    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
 //    {
 //        if (this.blockMaterial.isLiquid())
 //        {

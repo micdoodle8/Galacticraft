@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementCheckboxPreLaunch extends Button
 {
-    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/checklist_book.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/checklist_book.png");
     public Boolean isSelected;
     private ICheckBoxCallback parentGui;
     private int textColor;
@@ -102,7 +102,7 @@ public class GuiElementCheckboxPreLaunch extends Button
 
     public int willFit(int max)
     {
-        int size = Minecraft.getMinecraft().fontRenderer.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getMinecraft().fontRenderer.FONT_HEIGHT;
+        int size = Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(this.displayString, 100).size() * Minecraft.getInstance().fontRenderer.FONT_HEIGHT;
         GCLog.debug(displayString + " " + size + " " + max);
         if (size > max)
         {

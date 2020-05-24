@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementCheckbox extends Button
 {
-    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
     public Boolean isSelected;
     private ICheckBoxCallback parentGui;
     private int textColor;

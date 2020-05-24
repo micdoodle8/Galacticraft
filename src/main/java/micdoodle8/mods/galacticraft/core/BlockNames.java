@@ -71,4 +71,23 @@ public class BlockNames
     public static final String landingPad = "landing_pad";
     public static final String brightBreatheableAir = "bright_breathable_air";
     public static final String machineTiered = "machine_tiered";
+    public static final String decoBlock0 = "deco_block_0";
+    public static final String decoBlock1 = "deco_block_1";
+    public static final String oreCopper = "ore_copper_gc";
+    public static final String oreTin = "ore_tin_gc";
+    public static final String oreAluminum = "ore_aluminum_gc";
+    public static final String oreSilicon = "ore_silicon";
+    public static final String decoBlockCopper = "block_copper_gc";
+    public static final String decoBlockTin = "block_tin_gc";
+    public static final String decoBlockAluminum = "block_aluminum_gc";
+    public static final String decoBlockMeteorIron = "block_meteoric_iron_gc";
+    public static final String decoBlockSilicon = "block_silicon_gc";
+    public static final String oreCopperMoon = "ore_copper_moon";
+    public static final String oreTinMoon = "ore_tin_moon";
+    public static final String oreCheeseMoon = "ore_cheese_moon";
+    public static final String oreSapphire = "ore_sapphire_moon";
+    public static final String moonDirt = "moon_dirt_moon";
+    public static final String moonStone = "moon_stone";
+    public static final String moonTurf = "moon_turf";
+    public static final String moonDungeonBrick = "moon_dungeon_brick";
 }

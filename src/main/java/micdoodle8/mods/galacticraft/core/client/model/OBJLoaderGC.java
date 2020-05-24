@@ -30,7 +30,7 @@ public class OBJLoaderGC implements ICustomModelLoader {
 
     static
     {
-        ((IReloadableResourceManager) Minecraft.getMinecraft().getResourceManager()).registerReloadListener(instance);
+        ((IReloadableResourceManager) Minecraft.getInstance().getResourceManager()).registerReloadListener(instance);
     }
     
     public void addDomain(String domain)

@@ -22,7 +22,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -42,7 +42,7 @@ import java.util.Map.Entry;
 
 public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextBoxCallback
 {
-    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     public enum EnumSpaceRaceGui
     {
@@ -1097,7 +1097,7 @@ public class GuiNewSpaceRace extends Screen implements ICheckBoxCallback, ITextB
     {
         try
         {
-            String dirName = Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+            String dirName = Minecraft.getInstance().mcDataDir.getAbsolutePath();
             File directory = new File(dirName, "assets");
             boolean success = true;
             if (!directory.exists())

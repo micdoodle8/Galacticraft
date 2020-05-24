@@ -25,25 +25,25 @@
 //
 //public class BlockWallGC extends Block /* Do not extend BlockWall */ implements ISortableBlock
 //{
-//    protected static final AxisAlignedBB[] AABB_BY_INDEX = new AxisAlignedBB[] {
-//            new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.3125D, 0.0D, 0.0D, 0.6875D, 0.875D, 1.0D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.3125D, 1.0D, 0.875D, 0.6875D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
-//            new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
+//    protected static final AxisAlignedBB[] AABB_BY_INDEX = Block.makeCuboidShape[] {
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 0.75D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.3125D, 0.0D, 0.0D, 0.6875D, 0.875D, 1.0D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 0.75D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.3125D, 1.0D, 0.875D, 0.6875D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.25D, 1.0D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.25D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 0.75D),
+//            Block.makeCuboidShape(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D)
 //    };
-//    protected static final AxisAlignedBB[] CLIP_AABB_BY_INDEX = new AxisAlignedBB[] {
+//    protected static final AxisAlignedBB[] CLIP_AABB_BY_INDEX = Block.makeCuboidShape[] {
 //            AABB_BY_INDEX[0].setMaxY(1.5D),
 //            AABB_BY_INDEX[1].setMaxY(1.5D),
 //            AABB_BY_INDEX[2].setMaxY(1.5D),
@@ -109,7 +109,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+//    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
 //    {
 //        state = this.getActualState(state, source, pos);
 //        return AABB_BY_INDEX[getAABBIndex(state)];

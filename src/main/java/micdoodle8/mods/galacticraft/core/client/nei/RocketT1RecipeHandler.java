@@ -18,7 +18,7 @@
 //
 //public class RocketT1RecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");
+//    private static final ResourceLocation rocketGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/rocketbench.png");
 //
 //    public String getRecipeId()
 //    {

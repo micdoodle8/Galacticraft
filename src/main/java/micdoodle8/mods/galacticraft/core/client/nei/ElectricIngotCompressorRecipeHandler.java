@@ -17,7 +17,7 @@
 //
 //public class ElectricIngotCompressorRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/electric_ingot_compressor.png");
+//    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_ingot_compressor.png");
 //    public static int ticksPassed;
 //    private int alternate = 0;
 //

@@ -34,7 +34,7 @@ import java.util.List;
 
 public class GuiJoinSpaceRace extends Screen implements ICheckBoxCallback, ITextBoxCallback
 {
-    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     private int ticksPassed;
     private PlayerEntity thePlayer;

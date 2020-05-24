@@ -17,8 +17,8 @@ public class GCCapabilities
     @CapabilityInject(GCPlayerStatsClient.class)
     public static Capability<GCPlayerStatsClient> GC_STATS_CLIENT_CAPABILITY = null;
 
-    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats");
-    public static final ResourceLocation GC_PLAYER_CLIENT_PROP = new ResourceLocation(Constants.ASSET_PREFIX, "player_stats_client");
+    public static final ResourceLocation GC_PLAYER_PROP = new ResourceLocation(Constants.MOD_ID_CORE, "player_stats");
+    public static final ResourceLocation GC_PLAYER_CLIENT_PROP = new ResourceLocation(Constants.MOD_ID_CORE, "player_stats_client");
 
     public static void register()
     {

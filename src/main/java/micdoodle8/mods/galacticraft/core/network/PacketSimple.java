@@ -383,7 +383,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>
             break;
         case C_SPAWN_SPARK_PARTICLES:
             BlockPos pos = (BlockPos) this.data.get(0);
-            Minecraft mc = Minecraft.getMinecraft();
+            Minecraft mc = Minecraft.getInstance();
 
             for (int i = 0; i < 4; i++)
             {
@@ -445,7 +445,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>
                         if (subtype != -1)
                         {
                             name = ItemParaChute.names[subtype];
-                            gearData.setParachute(new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/parachute/" + name + ".png"));
+                            gearData.setParachute(new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/" + name + ".png"));
                         }
                     }
                     else
@@ -574,7 +574,7 @@ public class PacketSimple extends PacketBase implements IPacket<INetHandler>
             }
             break;
         case C_OPEN_SPACE_RACE_GUI:
-            if (Minecraft.getMinecraft().currentScreen == null)
+            if (Minecraft.getInstance().currentScreen == null)
             {
                 TickHandlerClient.spaceRaceGuiScheduled = false;
                 player.openGui(GalacticraftCore.instance, GuiIdsCore.SPACE_RACE_START, player.world, (int) player.posX, (int) player.posY, (int) player.posZ);

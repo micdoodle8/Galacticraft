@@ -28,7 +28,7 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
 {
     private final int xSize;
     private final int ySize;
-    private static final ResourceLocation airLockControllerGui = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/air_lock_controller.png");
+    private static final ResourceLocation airLockControllerGui = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/air_lock_controller.png");
     private final TileEntityAirLockController controller;
     private GuiElementCheckbox checkboxRedstoneSignal;
     private GuiElementCheckbox checkboxPlayerDistance;
@@ -109,7 +109,7 @@ public class GuiAirLockController extends Screen implements ICheckBoxCallback, I
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
 
-        this.mc.renderEngine.bindTexture(GuiAirLockController.airLockControllerGui);
+        this.mc.textureManager.bindTexture(GuiAirLockController.airLockControllerGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
 
         this.drawTexturedModalRect(var5 + 11, var6 + 51, 181, 0, 7, 9);

@@ -10,7 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.gui.DisplayEffectsScreen;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.player.PlayerEntity;
@@ -18,7 +18,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiExtendedInventory extends DisplayEffectsScreen
 {
-    private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/inventory.png");
+    private static final ResourceLocation inventoryTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/inventory.png");
     private int potionOffsetLast;
     private static float rotation = 0.0F;
     private boolean initWithPotion;
@@ -103,7 +103,7 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
 
     public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale)
     {
-        EntityRendererManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        EntityRendererManager rendermanager = Minecraft.getInstance().getRenderManager();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 50.0F);

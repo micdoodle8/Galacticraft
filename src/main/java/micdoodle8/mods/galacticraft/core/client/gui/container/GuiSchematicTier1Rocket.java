@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements ISchematicResultPage
 {
-    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocketbench.png");
+    private static final ResourceLocation rocketBenchTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/rocketbench.png");
 
     private int pageIndex;
 
@@ -61,7 +61,7 @@ public class GuiSchematicTier1Rocket extends GuiPositionedContainer implements I
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(GuiSchematicTier1Rocket.rocketBenchTexture);
+        this.mc.textureManager.bindTexture(GuiSchematicTier1Rocket.rocketBenchTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

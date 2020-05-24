@@ -27,7 +27,7 @@ public class GuiRocketInventory extends GuiContainerGC
     {
         for (int i = 0; i < 4; i++)
         {
-            GuiRocketInventory.rocketTextures[i] = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/rocket_" + i * 18 + ".png");
+            GuiRocketInventory.rocketTextures[i] = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/rocket_" + i * 18 + ".png");
         }
     }
 

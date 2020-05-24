@@ -101,7 +101,7 @@ public class GuiSlimelingInventory extends ContainerScreen
         GlStateManager.translate(0, 0, 100);
 
         GlStateManager.pushMatrix();
-        this.mc.renderEngine.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
+        this.mc.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 9, 176, 0, 9, 9);
         this.drawTexturedModalRect(var5 + this.xSize - 15, var6 + 22, 185, 0, 9, 9);
@@ -113,7 +113,7 @@ public class GuiSlimelingInventory extends ContainerScreen
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
         this.drawString(this.fontRenderer, str, var5 + this.xSize - 15 - this.fontRenderer.getStringWidth(str), var6 + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
-        this.mc.renderEngine.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
+        this.mc.textureManager.bindTexture(GuiSlimelingInventory.slimelingPanelGui);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.invX, this.invY, 176, 27, this.invWidth, this.invHeight);
         this.drawTexturedModalRect(var5 + 8, var6 + 8, 176, 9, 18, 18);

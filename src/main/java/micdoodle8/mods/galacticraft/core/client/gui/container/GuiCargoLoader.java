@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiCargoLoader extends GuiContainerGC
 {
-    public static final ResourceLocation loaderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/cargo_loader.png");
+    public static final ResourceLocation loaderTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/cargo_loader.png");
 
     private final TileEntityCargoLoader cargoLoader;
 

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class GuiCrafting extends GuiContainerGC
 {
-    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/crafting_table.png");
+    private static final ResourceLocation craftingTableGuiTextures = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/crafting_table.png");
     TileEntityCrafting tile;
     List<String> memorySlotDesc = new ArrayList<String>();
     

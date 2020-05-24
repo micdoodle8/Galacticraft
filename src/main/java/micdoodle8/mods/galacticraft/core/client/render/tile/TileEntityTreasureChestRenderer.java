@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL12;
 @SideOnly(Side.CLIENT)
 public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEntityTreasureChest>
 {
-    private static final ResourceLocation treasureChestTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/treasure.png");
+    private static final ResourceLocation treasureChestTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/treasure.png");
 
     private final ModelTreasureChest chestModel = new ModelTreasureChest();
 

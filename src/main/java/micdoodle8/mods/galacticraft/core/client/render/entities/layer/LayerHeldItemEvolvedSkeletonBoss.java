@@ -58,7 +58,7 @@ public class LayerHeldItemEvolvedSkeletonBoss implements LayerRenderer<EntitySke
                 GlStateManager.translate(0.025F, 1.525F, -0.125F);
             }
 
-            Minecraft.getMinecraft().getItemRenderer().renderItemSide(entity, bow, type, false);
+            Minecraft.getInstance().getItemRenderer().renderItemSide(entity, bow, type, false);
             GlStateManager.popMatrix();
         }
     }

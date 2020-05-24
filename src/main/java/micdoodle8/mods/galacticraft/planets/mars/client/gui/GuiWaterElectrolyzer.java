@@ -152,7 +152,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiWaterElectrolyzer.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
@@ -161,7 +161,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         int waterLevel = this.tileEntity.getScaledGasLevel(38);
         //Water
-        this.mc.renderEngine.bindTexture(GuiWaterElectrolyzer.gasTextures);
+        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.gasTextures);
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
         //Oxygen
         int displayInt = this.tileEntity.getScaledFuelLevel(38);
@@ -172,7 +172,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.mc.renderEngine.bindTexture(GuiWaterElectrolyzer.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {

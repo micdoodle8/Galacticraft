@@ -18,7 +18,7 @@
 //
 //public class RefineryRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/refinery.png");
+//    private static final ResourceLocation refineryGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/refinery.png");
 //    int ticksPassed;
 //
 //    public String getRecipeId()

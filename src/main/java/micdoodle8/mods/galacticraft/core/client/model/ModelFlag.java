@@ -4,7 +4,7 @@ import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
 import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -13,20 +13,20 @@ import org.lwjgl.opengl.GL11;
 
 public class ModelFlag extends ModelBase
 {
-    ModelRenderer base;
-    ModelRenderer pole;
+    RendererModel base;
+    RendererModel pole;
 
     public ModelFlag()
     {
         this.textureWidth = 128;
         this.textureHeight = 64;
-        this.base = new ModelRenderer(this, 4, 0);
+        this.base = new RendererModel(this, 4, 0);
         this.base.addBox(-1.5F, 0F, -1.5F, 3, 1, 3);
         this.base.setRotationPoint(0F, 23F, 0F);
         this.base.setTextureSize(128, 64);
         this.base.mirror = true;
         this.setRotation(this.base, 0F, 0F, 0F);
-        this.pole = new ModelRenderer(this, 0, 0);
+        this.pole = new RendererModel(this, 0, 0);
         this.pole.addBox(-0.5F, -40F, -0.5F, 1, 40, 1);
         this.pole.setRotationPoint(0F, 23F, 0F);
         this.pole.setTextureSize(128, 64);
@@ -118,7 +118,7 @@ public class ModelFlag extends ModelBase
         }
     }
 
-    private void setRotation(ModelRenderer model, float x, float y, float z)
+    private void setRotation(RendererModel model, float x, float y, float z)
     {
         model.rotateAngleX = x;
         model.rotateAngleY = y;

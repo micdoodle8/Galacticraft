@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiCoalGenerator extends GuiContainerGC
 {
-    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/coal_generator.png");
+    private static final ResourceLocation coalGeneratorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/coal_generator.png");
 
     private TileEntityCoalGenerator tileEntity;
 
@@ -53,7 +53,7 @@ public class GuiCoalGenerator extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        this.mc.renderEngine.bindTexture(GuiCoalGenerator.coalGeneratorTexture);
+        this.mc.textureManager.bindTexture(GuiCoalGenerator.coalGeneratorTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;

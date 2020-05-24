@@ -49,7 +49,7 @@ public class GCSounds
 
     private static SoundEvent registerSound(String soundName, IForgeRegistry<SoundEvent> registry)
     {
-        ResourceLocation soundID = new ResourceLocation(Constants.ASSET_PREFIX, soundName);
+        ResourceLocation soundID = new ResourceLocation(Constants.MOD_ID_CORE, soundName);
         SoundEvent result = new SoundEvent(soundID).setRegistryName(soundID);
         registry.register(result);
         return result;

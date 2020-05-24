@@ -294,7 +294,7 @@ public class RenderPlayerGC extends PlayerRenderer
         }
         else
         {
-            if (Minecraft.getMinecraft().gameSettings.thirdPersonView != 0)
+            if (Minecraft.getInstance().gameSettings.thirdPersonView != 0)
             {
                 final PlayerEntity player = (PlayerEntity) abstractClientPlayer;
 

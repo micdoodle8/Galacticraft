@@ -193,7 +193,7 @@ public class GCPlayerHandler
 //                GCPlayerStatsClient.register((EntityPlayerSP) event.getEntity());
 //            }
 //
-//            Minecraft.getMinecraft().gameSettings.sendSettingsToServer();
+//            Minecraft.getInstance().gameSettings.sendSettingsToServer();
 //        }
 //    }
 

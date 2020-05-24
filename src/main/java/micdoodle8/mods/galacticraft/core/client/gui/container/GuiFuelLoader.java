@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiFuelLoader extends GuiContainerGC
 {
-    private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/fuel_loader.png");
+    private static final ResourceLocation fuelLoaderTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/fuel_loader.png");
 
     private final TileEntityFuelLoader fuelLoader;
 

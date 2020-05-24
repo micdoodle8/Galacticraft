@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -39,7 +39,7 @@ public class OverlayRocket extends Overlay
         GlStateManager.depthMask(true);
         GlStateManager.enableTexture2D();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        mc.renderEngine.bindTexture(guiTexture);
+        mc.textureManager.bindTexture(guiTexture);
 
         float var1 = 0F;
         float var2 = height / 2 - 170 / 2;
@@ -105,7 +105,7 @@ public class OverlayRocket extends Overlay
 
         GlStateManager.popMatrix();
 
-        mc.renderEngine.bindTexture(ClientProxyCore.playerHead);
+        mc.textureManager.bindTexture(ClientProxyCore.playerHead);
 
         GlStateManager.disableLighting();
         GlStateManager.enableBlend();

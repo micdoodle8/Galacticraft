@@ -96,6 +96,17 @@ public class GCBlocks
     @ObjectHolder(BlockNames.grating) public static Block grating;
     @ObjectHolder(BlockNames.gratingWater) public static Block gratingWater;
     @ObjectHolder(BlockNames.gratingLava) public static Block gratingLava;
+    @ObjectHolder(BlockNames.decoBlock0) public static Block decoBlock0;
+    @ObjectHolder(BlockNames.decoBlock1) public static Block decoBlock1;
+    @ObjectHolder(BlockNames.oreCopper) public static Block oreCopper;
+    @ObjectHolder(BlockNames.oreTin) public static Block oreTin;
+    @ObjectHolder(BlockNames.oreAluminum) public static Block oreAluminum;
+    @ObjectHolder(BlockNames.oreSilicon) public static Block oreSilicon;
+    @ObjectHolder(BlockNames.decoBlockCopper) public static Block decoBlockCopper;
+    @ObjectHolder(BlockNames.decoBlockTin) public static Block decoBlockTin;
+    @ObjectHolder(BlockNames.decoBlockAluminum) public static Block decoBlockAluminum;
+    @ObjectHolder(BlockNames.decoBlockMeteorIron) public static Block decoBlockMeteorIron;
+    @ObjectHolder(BlockNames.decoBlockSilicon) public static Block decoBlockSilicon;
 
 //    public static Block breatheableAir;
 //    public static Block brightAir;
@@ -250,8 +261,8 @@ public class GCBlocks
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(40.0F).sound(SoundType.STONE);
         register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
 
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.STONE);
-        register(r, new BlockBasic(builder), BlockNames.basicBlock);
+//        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.STONE);
+//        register(r, new BlockBasic(builder), BlockNames.basicBlock);
 
         //These glass types have to be registered as 6 separate blocks, (a) to allow different coloring of each one and (b) because the Forge MultiLayer custom model does not allow for different textures to be set for different variants
         builder = Block.Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(0.3F, 3.0F);
@@ -279,8 +290,8 @@ public class GCBlocks
         builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH);
         register(r, new BlockAluminumWire(builder), BlockNames.aluminumWire);
 
-        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 2.5F).sound(SoundType.STONE);
-        register(r, new BlockBasicMoon(builder), BlockNames.blockMoon);
+//        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.5F, 2.5F).sound(SoundType.STONE);
+//        register(r, new BlockBasicMoon(builder), BlockNames.blockMoon);
 
         builder = Block.Properties.create(Material.CAKE).hardnessAndResistance(0.5F).sound(SoundType.CLOTH);
         register(r, new BlockCheese(builder), BlockNames.cheeseBlock);
@@ -307,6 +318,31 @@ public class GCBlocks
 
         builder = Block.Properties.create(Material.IRON).hardnessAndResistance(4.0F, 70.0F).lightValue(15).sound(SoundType.METAL);
         register(r, new BlockEmergencyBox(builder), BlockNames.emergencyBox);
+
+        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
+        register(r, new OreBlock(builder), BlockNames.oreCopper);
+        register(r, new OreBlock(builder), BlockNames.oreTin);
+        register(r, new OreBlock(builder), BlockNames.oreAluminum);
+        register(r, new OreBlock(builder), BlockNames.oreSilicon);
+        register(r, new OreBlock(builder), BlockNames.oreCopperMoon);
+        register(r, new OreBlock(builder), BlockNames.oreTinMoon);
+        register(r, new OreBlock(builder), BlockNames.oreCheeseMoon);
+        register(r, new OreBlock(builder), BlockNames.oreSapphire);
+
+        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
+        register(r, new OreBlock(builder), BlockNames.moonDirt);
+        register(r, new OreBlock(builder), BlockNames.moonStone);
+        register(r, new OreBlock(builder), BlockNames.moonTurf);
+        register(r, new OreBlock(builder), BlockNames.moonDungeonBrick);
+
+        builder = Block.Properties.create(Material.ROCK).sound(SoundType.STONE);
+        register(r, new DecoBlock(builder), BlockNames.decoBlock0);
+        register(r, new DecoBlock(builder), BlockNames.decoBlock1);
+        register(r, new DecoBlock(builder), BlockNames.decoBlockCopper);
+        register(r, new DecoBlock(builder), BlockNames.decoBlockTin);
+        register(r, new DecoBlock(builder), BlockNames.decoBlockAluminum);
+        register(r, new DecoBlock(builder), BlockNames.decoBlockMeteorIron);
+        register(r, new DecoBlock(builder), BlockNames.decoBlockSilicon);
 
 //        register(r, new BlockGrating(builder), BlockNames.grating); TODO
 //        register(r, new BlockGrating(builder), BlockNames.gratingWater);

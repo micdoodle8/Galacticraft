@@ -10,8 +10,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderMeteorChunk extends EntityRenderer<EntityMeteorChunk>
 {
-    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk.png");
-    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/blocks/meteor_chunk_hot.png");
+    private static final ResourceLocation meteorChunkTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/meteor_chunk.png");
+    private static final ResourceLocation meteorChunkHotTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/meteor_chunk_hot.png");
     private final ModelMeteorChunk modelMeteor;
 
     public RenderMeteorChunk(EntityRendererManager renderManager)

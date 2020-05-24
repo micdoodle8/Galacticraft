@@ -24,7 +24,7 @@ public class RenderSmallAsteroid extends EntityRenderer<EntitySmallAsteroid>
     @Override
     public void doRender(EntitySmallAsteroid asteroid, double x, double y, double z, float f, float partialTickTime)
     {
-        BlockRendererDispatcher dispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        BlockRendererDispatcher dispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 
         GL11.glPushMatrix();

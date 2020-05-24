@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -38,12 +38,12 @@ public class ModelPanelLightBase implements IBakedModel
             {
                 if (layer == null || layer == BlockRenderLayer.SOLID)
                 {
-                    return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, side, rand);
+                    return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelManager().getModel(this.callingBlock).getQuads(state, side, rand);
                 }
             }
             else if (layer == null || baseState.getBlock().canRenderInLayer(baseState, layer))
             {
-                return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(baseState, side, rand);
+                return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getModelForState(baseState).getQuads(baseState, side, rand);
             }
         }
         return ImmutableList.of();
@@ -70,7 +70,7 @@ public class ModelPanelLightBase implements IBakedModel
     @Override
     public TextureAtlasSprite getParticleTexture()
     {
-        return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/glass");
+        return Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite("minecraft:blocks/glass");
     }
 
     @Override

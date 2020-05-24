@@ -42,8 +42,8 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayerE
         {
             try
             {
-                IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(Constants.ASSET_PREFIX, "frequency_module.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(Constants.MOD_ID_CORE, "frequency_module.obj"));
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
                 this.moduleModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Main"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 this.radarModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Radar"), false), DefaultVertexFormats.ITEM, spriteFunction);
             }
@@ -65,14 +65,14 @@ public class LayerFrequencyModule implements LayerRenderer<AbstractClientPlayerE
             {
                 boolean wearingModule = gearData.getFrequencyModule() != GCPlayerHandler.GEAR_NOT_PRESENT;
                 boolean wearingHelmet = gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT;
-                FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
+                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
 
                 if (wearingModule)
                 {
                     this.updateModels();
                     GlStateManager.enableRescaleNormal();
                     GlStateManager.pushMatrix();
-                    Minecraft.getMinecraft().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
+                    Minecraft.getInstance().getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
                     GlStateManager.rotate(180, 1, 0, 0);
                     GlStateManager.pushMatrix();

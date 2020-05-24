@@ -21,7 +21,7 @@
 //
 //public class IngotCompressorRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/ingot_compressor.png");
+//    private static final ResourceLocation ingotCompressorTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/ingot_compressor.png");
 //    private static int ticksPassed;
 //    public static ArrayList<FuelPair> afuels;
 //    public static TreeSet<Integer> efuels;

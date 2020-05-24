@@ -20,7 +20,7 @@ import java.util.List;
 
 public class GuiSolar extends GuiContainerGC
 {
-    private static final ResourceLocation solarGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/solar.png");
+    private static final ResourceLocation solarGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/solar.png");
 
     private final TileEntitySolar solarPanel;
 

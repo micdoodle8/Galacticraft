@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class GuiEnergyStorageModule extends GuiContainerGC
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/energy_storage_module.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/energy_storage_module.png");
 
     private TileEntityEnergyStorageModule tileEntity;
 
@@ -53,7 +53,7 @@ public class GuiEnergyStorageModule extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiEnergyStorageModule.batteryBoxTexture);
+        this.mc.textureManager.bindTexture(GuiEnergyStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;

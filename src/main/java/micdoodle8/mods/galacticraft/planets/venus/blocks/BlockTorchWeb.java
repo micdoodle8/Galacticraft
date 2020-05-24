@@ -33,8 +33,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockTorchWeb extends Block implements IShearable, IShiftDescription, ISortableBlock
 {
     public static final EnumProperty<EnumWebType> WEB_TYPE = EnumProperty.create("webtype", EnumWebType.class);
-    protected static final AxisAlignedBB AABB_WEB = new AxisAlignedBB(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
-    protected static final AxisAlignedBB AABB_WEB_TORCH = new AxisAlignedBB(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
+    protected static final VoxelShape AABB_WEB = Block.makeCuboidShape(0.35, 0.0, 0.35, 0.65, 1.0, 0.65);
+    protected static final VoxelShape AABB_WEB_TORCH = Block.makeCuboidShape(0.35, 0.25, 0.35, 0.65, 1.0, 0.65);
 
     public enum EnumWebType implements IStringSerializable
     {
@@ -81,7 +81,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
         {
@@ -92,7 +92,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public int getLightValue(BlockState state, IBlockAccess world, BlockPos pos)
+    public int getLightValue(BlockState state, IEnviromentBlockReader world, BlockPos pos)
     {
         if (state.get(WEB_TYPE) == EnumWebType.WEB_1)
         {
@@ -134,7 +134,7 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         if (world.getBlockState(pos).getBlock().isReplaceable(world, pos) && this.canBlockStay(world, pos, this.getStateFromMeta(meta)))
         {
@@ -222,15 +222,9 @@ public class BlockTorchWeb extends Block implements IShearable, IShiftDescriptio
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return ((EnumWebType) state.get(WEB_TYPE)).getMeta();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, WEB_TYPE);
+        builder.add(WEB_TYPE);
     }
 
     @Override

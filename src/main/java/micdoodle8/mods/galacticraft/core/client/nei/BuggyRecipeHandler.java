@@ -18,7 +18,7 @@
 //
 //public class BuggyRecipeHandler extends TemplateRecipeHandler
 //{
-//    private static final ResourceLocation buggyGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/buggybench.png");
+//    private static final ResourceLocation buggyGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/buggybench.png");
 //
 //    public String getRecipeId()
 //    {

@@ -93,7 +93,7 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityLaserTurret();
     }
@@ -136,14 +136,8 @@ public class BlockLaserTurret extends BlockTileGC implements ITileEntityProvider
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return state.get(FACING).getHorizontalIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
+        builder.add(FACING);
     }
 }

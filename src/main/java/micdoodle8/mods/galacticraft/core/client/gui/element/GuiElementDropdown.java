@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiElementDropdown extends Button
 {
-    protected static final ResourceLocation texture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/gui.png");
+    protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
 
     public boolean dropdownClicked;
     public String[] optionStrings;
@@ -84,7 +84,7 @@ public class GuiElementDropdown extends Button
                 this.font.drawStringWithShadow(this.optionStrings[this.selectedOption], this.x + this.width / 2 - 7 - this.font.getStringWidth(this.optionStrings[this.selectedOption]) / 2, this.y + (this.height - 6) / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
             }
 
-            par1Minecraft.renderEngine.bindTexture(this.texture);
+            par1Minecraft.textureManager.bindTexture(this.texture);
             this.drawTexturedModalRect(this.x + this.width - 12, this.y + 5, 185, 0, 7, 4);
 
             GL11.glPopMatrix();

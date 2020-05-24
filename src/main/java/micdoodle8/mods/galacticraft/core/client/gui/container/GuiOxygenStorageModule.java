@@ -17,7 +17,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiOxygenStorageModule extends GuiContainerGC
 {
-    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/oxygen_storage_module.png");
+    private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_storage_module.png");
 
     private TileEntityOxygenStorageModule tileEntity;
 
@@ -63,7 +63,7 @@ public class GuiOxygenStorageModule extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiOxygenStorageModule.batteryBoxTexture);
+        this.mc.textureManager.bindTexture(GuiOxygenStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;

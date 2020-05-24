@@ -15,8 +15,8 @@ import org.lwjgl.util.glu.GLU;
 
 public abstract class GuiStarBackground extends Screen
 {
-    private static final ResourceLocation backgroundTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/stars.png");
-    private static final ResourceLocation blackTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/black.png");
+    private static final ResourceLocation backgroundTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/stars.png");
+    private static final ResourceLocation blackTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/black.png");
 
     public void drawBlackBackground()
     {

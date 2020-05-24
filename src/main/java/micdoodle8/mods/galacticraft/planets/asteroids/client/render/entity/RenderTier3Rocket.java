@@ -52,7 +52,7 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
             try
             {
                 IModel model = OBJLoaderGC.instance.loadModel(new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "tier3rocket.obj"));
-                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(location.toString());
+                Function<ResourceLocation, TextureAtlasSprite> spriteFunction = location -> Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(location.toString());
                 this.rocketModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Boosters", "Rocket"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 this.coneModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("NoseCone"), false), DefaultVertexFormats.ITEM, spriteFunction);
                 this.cubeModel = (OBJModel.OBJBakedModel) model.bake(new OBJModel.OBJState(ImmutableList.of("Cube"), false), DefaultVertexFormats.ITEM, spriteFunction);
@@ -66,7 +66,7 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 //                @Override
 //                public TextureAtlasSprite apply(ResourceLocation input)
 //                {
-//                    return Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(input.toString());
+//                    return Minecraft.getInstance().getTextureMapBlocks().getAtlasSprite(input.toString());
 //                }
 //            };
 //

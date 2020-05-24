@@ -24,7 +24,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class GuiRefinery extends GuiContainerGC
 {
-    private static final ResourceLocation refineryTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/refinery.png");
+    private static final ResourceLocation refineryTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/refinery.png");
 
     private final TileEntityRefinery tileEntity;
 
@@ -127,7 +127,7 @@ public class GuiRefinery extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.renderEngine.bindTexture(GuiRefinery.refineryTexture);
+        this.mc.textureManager.bindTexture(GuiRefinery.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;

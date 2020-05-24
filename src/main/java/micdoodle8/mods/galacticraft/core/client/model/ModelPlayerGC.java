@@ -2,15 +2,15 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 
 public class ModelPlayerGC extends ModelPlayer
 {
-    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/oxygen.png");
-    public static final ResourceLocation playerTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/player.png");
+    public static final ResourceLocation oxygenMaskTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/oxygen.png");
+    public static final ResourceLocation playerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/player.png");
 
     public ModelPlayerGC(float var1, boolean smallArms)
     {
@@ -18,19 +18,19 @@ public class ModelPlayerGC extends ModelPlayer
 
         if (smallArms)
         {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
+            this.bipedLeftArm = new RendererModel(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 3, 12, 4, var1);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.5F, 0.0F);
-            this.bipedRightArm = new ModelRenderer(this, 40, 16);
+            this.bipedRightArm = new RendererModel(this, 40, 16);
             this.bipedRightArm.addBox(-2.0F, -2.0F, -2.0F, 3, 12, 4, var1);
             this.bipedRightArm.setRotationPoint(-5.0F, 2.5F, 0.0F);
         }
         else
         {
-            this.bipedLeftArm = new ModelRenderer(this, 32, 48);
+            this.bipedLeftArm = new RendererModel(this, 32, 48);
             this.bipedLeftArm.addBox(-1.0F, -2.0F, -2.0F, 4, 12, 4, var1);
             this.bipedLeftArm.setRotationPoint(5.0F, 2.0F, 0.0F);
-            this.bipedRightArm = new ModelRenderer(this, 40, 16);
+            this.bipedRightArm = new RendererModel(this, 40, 16);
             this.bipedRightArm.addBox(-3.0F, -2.0F, -2.0F, 4, 12, 4, var1);
             this.bipedRightArm.setRotationPoint(-5.0F, 2.0F, 0.0F);
         }

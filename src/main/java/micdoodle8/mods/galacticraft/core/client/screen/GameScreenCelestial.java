@@ -231,7 +231,7 @@ public class GameScreenCelestial implements IGameScreen
         GL11.glColor4f(1, 1, 1, alpha);
         if (preEvent.celestialBodyTexture != null)
         {
-            this.renderEngine.bindTexture(preEvent.celestialBodyTexture);
+            this.textureManager.bindTexture(preEvent.celestialBodyTexture);
         }
 
         if (!preEvent.isCanceled())

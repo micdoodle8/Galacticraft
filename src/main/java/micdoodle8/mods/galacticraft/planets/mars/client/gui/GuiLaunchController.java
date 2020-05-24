@@ -297,7 +297,7 @@ public class GuiLaunchController extends GuiContainerGC implements ITextBoxCallb
     {
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(GuiLaunchController.launchControllerGui);
+        this.mc.textureManager.bindTexture(GuiLaunchController.launchControllerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

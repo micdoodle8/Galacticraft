@@ -155,7 +155,7 @@ public class ItemSchematic extends HangingEntityItem implements ISchematicItem, 
     @SideOnly(value=Side.CLIENT)
     public static void registerTextures()
     {
-        SchematicRegistry.registerTexture(new ResourceLocation(Constants.ASSET_PREFIX, "textures/items/schematic_buggy.png"));
-        SchematicRegistry.registerTexture(new ResourceLocation(Constants.ASSET_PREFIX, "textures/items/schematic_rocket_t2.png"));
+        SchematicRegistry.registerTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/items/schematic_buggy.png"));
+        SchematicRegistry.registerTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/items/schematic_rocket_t2.png"));
     }
 }

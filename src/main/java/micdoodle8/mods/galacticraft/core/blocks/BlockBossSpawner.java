@@ -2,21 +2,22 @@ package micdoodle8.mods.galacticraft.core.blocks;
 
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.math.shapes.VoxelShapes;
+import net.minecraft.world.IBlockReader;
 
-import java.util.Random;
+import javax.annotation.Nullable;
 
-public class BlockBossSpawner extends Block implements ITileEntityProvider
+public class BlockBossSpawner extends Block
 {
     public BlockBossSpawner(Properties builder)
     {
@@ -26,7 +27,7 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
 //    @Override
 //    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 //    {
-//        return new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
+//        return Block.makeCuboidShape(pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ());
 //    }
 
     @Override
@@ -36,56 +37,21 @@ public class BlockBossSpawner extends Block implements ITileEntityProvider
     }
 
     @Override
-    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
-        return false;
+        return VoxelShapes.empty();
     }
 
+    @Nullable
     @Override
-    public Item getItemDropped(BlockState state, Random rand, int fortune)
-    {
-        return Item.getItemFromBlock(Blocks.AIR);
-    }
-
-    @Override
-    public int quantityDropped(BlockState state, int fortune, Random random)
-    {
-        return 0;
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityDungeonSpawner<>(EntitySkeletonBoss.class);
     }
 
     @Override
-    public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
+    public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public boolean isOpaqueCube(BlockState state)
-    {
-        return false;
-    }
-
-    @Override
-    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
-    {
-        return null;
-    }
-
-    @Override
-    public boolean isCollidable()
-    {
-        return false;
-    }
-
-    @Override
-    public boolean isFullCube(BlockState state)
-    {
-        return false;
     }
 }

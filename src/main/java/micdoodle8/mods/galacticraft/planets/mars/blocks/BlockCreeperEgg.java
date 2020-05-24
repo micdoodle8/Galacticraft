@@ -26,7 +26,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription, ISortableBlock
 {
-    protected static final AxisAlignedBB DRAGON_EGG_AABB = new AxisAlignedBB(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
+    protected static final VoxelShape DRAGON_EGG_AABB = Block.makeCuboidShape(0.0625D, 0.0D, 0.0625D, 0.9375D, 1.0D, 0.9375D);
 
     public BlockCreeperEgg(Properties builder)
     {
@@ -34,7 +34,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return DRAGON_EGG_AABB;
     }

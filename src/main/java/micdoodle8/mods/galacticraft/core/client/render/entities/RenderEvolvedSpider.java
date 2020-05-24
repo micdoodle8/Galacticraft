@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider>
 {
-    private static final ResourceLocation spiderTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/model/spider.png");
+    private static final ResourceLocation spiderTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/spider.png");
     private boolean texSwitch;
 
     public RenderEvolvedSpider(EntityRendererManager manager)

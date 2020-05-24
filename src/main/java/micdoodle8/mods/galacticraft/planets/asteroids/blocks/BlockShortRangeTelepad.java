@@ -38,7 +38,7 @@ import java.util.Random;
 
 public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
-    protected static final AxisAlignedBB AABB_TELEPAD = new AxisAlignedBB(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
+    protected static final VoxelShape AABB_TELEPAD = Block.makeCuboidShape(0.0F, 0.0F, 0.0F, 1.0F, 0.45F, 1.0F);
 
     protected BlockShortRangeTelepad(Properties builder)
     {
@@ -77,13 +77,13 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     }
 
     @Override
-    public TileEntity createNewTileEntity(World world, int meta)
+    public TileEntity createTileEntity(BlockState state, IBlockReader world)
     {
         return new TileEntityShortRangeTelepad();
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         return AABB_TELEPAD;
     }
@@ -131,7 +131,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
 
         if (!validSpot)
         {
-            worldIn.setBlockToAir(pos);
+            worldIn.removeBlock(pos, false);
 
             if (placer instanceof PlayerEntity)
             {

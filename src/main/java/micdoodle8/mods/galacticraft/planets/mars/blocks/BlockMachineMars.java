@@ -324,15 +324,9 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return (state.get(FACING)).getHorizontalIndex() + state.get(TYPE).getMeta() * 4;
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING, TYPE);
+        builder.add(FACING, TYPE);
     }
 
     @Override

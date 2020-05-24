@@ -39,12 +39,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription, ISortableBlock
 {
     public static final DirectionProperty FACING = DirectionProperty.create("facing");
-    protected static final AxisAlignedBB UP_AABB = new AxisAlignedBB(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
-    protected static final AxisAlignedBB DOWN_AABB = new AxisAlignedBB(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
-    protected static final AxisAlignedBB EAST_AABB = new AxisAlignedBB(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
-    protected static final AxisAlignedBB WEST_AABB = new AxisAlignedBB(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
-    protected static final AxisAlignedBB NORTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
-    protected static final AxisAlignedBB SOUTH_AABB = new AxisAlignedBB(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
+    protected static final VoxelShape UP_AABB = Block.makeCuboidShape(0.3F, 0.3F, 0.3F, 0.7F, 1.0F, 0.7F);
+    protected static final VoxelShape DOWN_AABB = Block.makeCuboidShape(0.2F, 0.0F, 0.2F, 0.8F, 0.42F, 0.8F);
+    protected static final VoxelShape EAST_AABB = Block.makeCuboidShape(0.58F, 0.2F, 0.2F, 1.0F, 0.8F, 0.8F);
+    protected static final VoxelShape WEST_AABB = Block.makeCuboidShape(0.0F, 0.2F, 0.2F, 0.42F, 0.8F, 0.8F);
+    protected static final VoxelShape NORTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.0F, 0.8F, 0.8F, 0.42F);
+    protected static final VoxelShape SOUTH_AABB = Block.makeCuboidShape(0.2F, 0.2F, 0.58F, 0.8F, 0.8F, 1.0F);
 
     public BlockBeamReceiver(Properties builder)
     {
@@ -52,7 +52,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos)
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context)
     {
         switch (state.get(FACING))
         {
@@ -80,7 +80,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
 //    }
 
     @Override
-    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos)
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
         int meta = this.getMetadataFromAngle(worldIn, pos, Direction.getFront(oldMeta).getOpposite());
@@ -208,7 +208,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer, Hand hand)
+    public BlockState getStateForPlacement(BlockItemUseContext context)
     {
         return getStateFromMeta(this.getMetadataFromAngle(world, pos, facing));
     }
@@ -311,15 +311,9 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    public int getMetaFromState(BlockState state)
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder)
     {
-        return (state.get(FACING)).getIndex();
-    }
-
-    @Override
-    protected BlockStateContainer createBlockState()
-    {
-        return new BlockStateContainer(this, FACING);
+        builder.add(FACING);
     }
 
     @Override

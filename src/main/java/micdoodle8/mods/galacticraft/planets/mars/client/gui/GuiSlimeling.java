@@ -13,7 +13,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -152,7 +152,7 @@ public class GuiSlimeling extends Screen
 
         GlStateManager.pushMatrix();
         GlStateManager.translate(0, 0, 150.0F);
-        this.mc.renderEngine.bindTexture(GuiSlimeling.slimelingPanelGui);
+        this.mc.textureManager.bindTexture(GuiSlimeling.slimelingPanelGui);
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
         this.drawTexturedModalRect(i + this.xSize - 15, j + 9, 176, 0, 9, 9);
         this.drawTexturedModalRect(i + this.xSize - 15, j + 22, 185, 0, 9, 9);
@@ -164,7 +164,7 @@ public class GuiSlimeling extends Screen
         str = "" + Math.round(this.slimeling.getColorBlue() * 1000) / 10.0F + "% ";
         this.drawString(this.fontRenderer, str, i + this.xSize - 15 - this.fontRenderer.getStringWidth(str), j + 36, ColorUtil.to32BitColor(255, 0, 0, 255));
 
-        this.mc.renderEngine.bindTexture(GuiSlimeling.slimelingPanelGui);
+        this.mc.textureManager.bindTexture(GuiSlimeling.slimelingPanelGui);
         GlStateManager.color(1.0F, 1.0F, 1.0F);
         this.drawTexturedModalRect(this.invX, this.invY, 176, 9, this.invWidth, this.invHeight);
 

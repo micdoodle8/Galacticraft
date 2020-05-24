@@ -34,7 +34,7 @@
 //    int extra = 0;
 //
 //    boolean fillAtmos = false;
-//    protected FontRenderer fontRendererObj = Minecraft.getMinecraft().fontRenderer;
+//    protected FontRenderer fontRendererObj = Minecraft.getInstance().fontRenderer;
 //
 //    public String getRecipeId()
 //    {

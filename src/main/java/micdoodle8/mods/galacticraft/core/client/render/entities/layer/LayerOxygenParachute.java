@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -18,8 +18,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerEntity>
 {
     private final PlayerRenderer playerRenderer;
-    public ModelRenderer[] parachute = new ModelRenderer[3];
-    public ModelRenderer[] parachuteStrings = new ModelRenderer[4];
+    public RendererModel[] parachute = new RendererModel[3];
+    public RendererModel[] parachuteStrings = new RendererModel[4];
 
     public LayerOxygenParachute(PlayerRenderer playerRendererIn)
     {
@@ -27,26 +27,26 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
         float scaleFactor = 0.0F;
         ModelPlayer modelPlayer = playerRendererIn.getMainModel();
 
-        this.parachute[0] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(256, 256);
+        this.parachute[0] = new RendererModel(modelPlayer, 0, 0).setTextureSize(256, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, scaleFactor);
         this.parachute[0].setRotationPoint(15.0F, 4.0F, 0.0F);
-        this.parachute[1] = new ModelRenderer(modelPlayer, 0, 42).setTextureSize(256, 256);
+        this.parachute[1] = new RendererModel(modelPlayer, 0, 42).setTextureSize(256, 256);
         this.parachute[1].addBox(-20.0F, -45.0F, -20.0F, 40, 2, 40, scaleFactor);
         this.parachute[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachute[2] = new ModelRenderer(modelPlayer, 0, 0).setTextureSize(256, 256);
+        this.parachute[2] = new RendererModel(modelPlayer, 0, 0).setTextureSize(256, 256);
         this.parachute[2].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, scaleFactor);
         this.parachute[2].setRotationPoint(11F, -11, 0.0F);
 
-        this.parachuteStrings[0] = new ModelRenderer(modelPlayer, 100, 0).setTextureSize(256, 256);
+        this.parachuteStrings[0] = new RendererModel(modelPlayer, 100, 0).setTextureSize(256, 256);
         this.parachuteStrings[0].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, scaleFactor);
         this.parachuteStrings[0].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[1] = new ModelRenderer(modelPlayer, 100, 0).setTextureSize(256, 256);
+        this.parachuteStrings[1] = new RendererModel(modelPlayer, 100, 0).setTextureSize(256, 256);
         this.parachuteStrings[1].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, scaleFactor);
         this.parachuteStrings[1].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[2] = new ModelRenderer(modelPlayer, 100, 0).setTextureSize(256, 256);
+        this.parachuteStrings[2] = new RendererModel(modelPlayer, 100, 0).setTextureSize(256, 256);
         this.parachuteStrings[2].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, scaleFactor);
         this.parachuteStrings[2].setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.parachuteStrings[3] = new ModelRenderer(modelPlayer, 100, 0).setTextureSize(256, 256);
+        this.parachuteStrings[3] = new RendererModel(modelPlayer, 100, 0).setTextureSize(256, 256);
         this.parachuteStrings[3].addBox(-0.5F, 0.0F, -0.5F, 1, 40, 1, scaleFactor);
         this.parachuteStrings[3].setRotationPoint(0.0F, 0.0F, 0.0F);
     }
@@ -64,7 +64,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
 
                 if (usingParachute)
                 {
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(ModelPlayerGC.playerTexture);
+                    FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
 
                     this.parachute[0].rotateAngleZ = (float) (30F / Constants.RADIANS_TO_DEGREES);
                     this.parachute[2].rotateAngleZ = (float) -(30F / Constants.RADIANS_TO_DEGREES);
@@ -83,7 +83,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
 
                     GlStateManager.pushMatrix();
 
-                    FMLClientHandler.instance().getClient().renderEngine.bindTexture(gearData.getParachute());
+                    FMLClientHandler.instance().getClient().textureManager.bindTexture(gearData.getParachute());
 
                     this.parachute[0].render(scale);
                     this.parachute[1].render(scale);

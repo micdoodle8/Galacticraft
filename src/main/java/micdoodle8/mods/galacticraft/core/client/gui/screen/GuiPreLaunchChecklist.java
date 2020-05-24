@@ -23,7 +23,7 @@ import java.util.Map;
 
 public class GuiPreLaunchChecklist extends Screen implements GuiElementCheckboxPreLaunch.ICheckBoxCallback
 {
-    private static final ResourceLocation bookGuiTexture = new ResourceLocation(Constants.ASSET_PREFIX, "textures/gui/checklist_book.png");
+    private static final ResourceLocation bookGuiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/checklist_book.png");
     private int bookImageWidth = 192;
     private int bookImageHeight = 192;
     private List<List<String>> checklistKeys;

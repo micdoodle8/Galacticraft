@@ -64,7 +64,7 @@ public class GuiSchematicTier3Rocket extends GuiPositionedContainer implements I
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(GuiSchematicTier3Rocket.tier2SchematicTexture);
+        this.mc.textureManager.bindTexture(GuiSchematicTier3Rocket.tier2SchematicTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
