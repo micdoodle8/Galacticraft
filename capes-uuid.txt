@@ -102,3 +102,4 @@ c8911f8ae1ec4e83afb712fcc1734285:capeLime gerrie333
 8ae2e45ab8c64671bc5dd1f329e9b812:capeRainbow Opossum_
 6f0350f653724cddaa0b0381753da000:capeDarkGray TeenSarlacc
 a147419403074a7ba7ebef52c90b6fbb:capeMagenta chemf
+c33b625f83cd47af89c17ba657d35dbf:capeYellow ROMVoid
