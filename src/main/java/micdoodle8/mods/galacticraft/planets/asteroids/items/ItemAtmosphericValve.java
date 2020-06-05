@@ -13,23 +13,23 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemAtmosphericValve extends Item implements ISortableItem
 {
-    public ItemAtmosphericValve(String assetName)
+    public ItemAtmosphericValve(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setMaxDamage(0);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(64);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

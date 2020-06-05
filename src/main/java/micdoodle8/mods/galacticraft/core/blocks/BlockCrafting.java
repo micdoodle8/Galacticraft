@@ -148,13 +148,13 @@ public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, 
     }
     
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -162,7 +162,7 @@ public class BlockCrafting extends BlockAdvancedTile implements ISortableBlock, 
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        return this.getDefaultState().with(FACING, Direction.getFront(meta));
+//        return this.getDefaultState().with(FACING, Direction.byIndex(meta));
 //    }
 
     @Override

@@ -46,7 +46,7 @@ public class GameScreenCelestial implements IGameScreen
     {
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
-            renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+            renderEngine = Minecraft.getInstance().renderEngine;
             planes = BufferUtils.createDoubleBuffer(4 * Double.SIZE);
         }
     }

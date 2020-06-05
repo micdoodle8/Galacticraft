@@ -5,8 +5,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Schematic page to be added to NASA Workbench
@@ -39,7 +39,7 @@ public interface ISchematicPage extends Comparable<ISchematicPage>
      * @param pos    Coordinates of the NASA Workbench
      * @return the GUI to be opened with this schematic
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     Screen getResultScreen(PlayerEntity player, BlockPos pos);
 
     /**

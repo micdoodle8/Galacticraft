@@ -34,7 +34,7 @@ public class StructureComponentVillageStartPiece extends StructureComponentVilla
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("TerrainType", this.terrainType);
+        nbt.putInt("TerrainType", this.terrainType);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class StructureComponentVillageStartPiece extends StructureComponentVilla
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.terrainType = nbt.getInteger("TerrainType");
+        this.terrainType = nbt.getInt("TerrainType");
     }
 
     public BiomeProvider getBiomeProvider()

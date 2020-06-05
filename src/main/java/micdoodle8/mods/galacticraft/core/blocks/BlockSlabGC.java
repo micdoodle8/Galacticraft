@@ -41,7 +41,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
 //        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 7 : 4); ++i)

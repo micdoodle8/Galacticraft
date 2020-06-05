@@ -5,6 +5,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.monster.ZombieEntity;
@@ -28,17 +29,16 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
 
-    public EntityEvolvedZombie(World par1World)
+    public EntityEvolvedZombie(EntityType<? extends EntityEvolvedZombie> type, World worldIn)
     {
-        super(par1World);
-        this.setSize(0.6F, 1.95F);
+        super(type, worldIn);
     }
 
     @Override
-    protected void applyEntityAttributes()
+    protected void registerAttributes()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(30.0D);
         double difficulty = 0;
         switch (this.world.getDifficulty())
         {
@@ -47,9 +47,9 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
         case NORMAL : difficulty = 1D;
             break;
         }
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D + 0.04D * difficulty);
-        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3D + difficulty);
-        this.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D + difficulty * 2D);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.26D + 0.04D * difficulty);
+        this.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3D + difficulty);
+        this.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(16D + difficulty * 2D);
     }
 
     @Override
@@ -63,111 +63,86 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
         return ZombieEntity.SPAWN_REINFORCEMENTS_CHANCE;
     }
 
-    @Override
-    protected void jump()
-    {
-        this.motionY = 0.48D / WorldUtil.getGravityFactor(this);
-        if (this.motionY < 0.24D)
-        {
-            this.motionY = 0.24D;
-        }
-
-        if (this.isPotionActive(Effects.JUMP_BOOST))
-        {
-            this.motionY += (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
-        }
-
-        if (this.isSprinting())
-        {
-            float f = this.rotationYaw / Constants.RADIANS_TO_DEGREES;
-            this.motionX -= MathHelper.sin(f) * 0.2F;
-            this.motionZ += MathHelper.cos(f) * 0.2F;
-        }
-
-        this.isAirBorne = true;
-        ForgeHooks.onLivingJump(this);
-    }
-
-    protected void addRandomDrop()
-    {
-        switch (this.rand.nextInt(16))
-        {
-        case 0:
-        case 1:
-        case 2:
-            //Dehydrated carrot
-            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 1), 0.0F);
-            break;
-        case 3:
-        case 4:
-            this.dropItem(GCItems.meteoricIronRaw, 1);
-            break;
-        case 5:
-        case 6:
-            //Dehydrated potato
-            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 3), 0.0F);
-            break;
-        case 7:
-        case 8:
-            //Oxygen tank half empty or less
-            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
-            break;
-        case 9:
-            this.dropItem(GCItems.oxMask, 1);
-            break;
-        case 10:
-            this.dropItem(GCItems.oxygenVent, 1);
-            break;
-        case 11:
-        case 12:
-            this.dropItem(Items.CARROT, 1);
-            break;
-        case 13:
-        case 14:
-        case 15:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.MELON_SEEDS, 1);
-            break;
-        }
-    }
-
-    @Override
-    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
-    {
-        // No loot table
-        this.dropFewItems(wasRecentlyHit, lootingModifier);
-        this.dropEquipment(wasRecentlyHit, lootingModifier);
-    }
-
-    @Override
-    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
-    {
-        Item item = Items.ROTTEN_FLESH;
-
-        //Less rotten flesh than vanilla
-        int j = this.rand.nextInt(2);
-
-        if (item != null)
-        {
-            if (lootingModifier > 0)
-            {
-                j += this.rand.nextInt(lootingModifier + 1);
-            }
-
-            for (int k = 0; k < j; ++k)
-            {
-                this.dropItem(item, 1);
-            }
-        }
-
-        //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
-        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) <= (lootingModifier + 1) / 2)
-            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
-
-        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
-        {
-            this.addRandomDrop();
-        }
-    }
+//    protected void addRandomDrop()
+//    {
+//        switch (this.rand.nextInt(16))
+//        {
+//        case 0:
+//        case 1:
+//        case 2:
+//            //Dehydrated carrot
+//            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 1), 0.0F);
+//            break;
+//        case 3:
+//        case 4:
+//            this.dropItem(GCItems.meteoricIronRaw, 1);
+//            break;
+//        case 5:
+//        case 6:
+//            //Dehydrated potato
+//            this.entityDropItem(new ItemStack(GCItems.foodItem, 1, 3), 0.0F);
+//            break;
+//        case 7:
+//        case 8:
+//            //Oxygen tank half empty or less
+//            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+//            break;
+//        case 9:
+//            this.dropItem(GCItems.oxMask, 1);
+//            break;
+//        case 10:
+//            this.dropItem(GCItems.oxygenVent, 1);
+//            break;
+//        case 11:
+//        case 12:
+//            this.dropItem(Items.CARROT, 1);
+//            break;
+//        case 13:
+//        case 14:
+//        case 15:
+//            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.MELON_SEEDS, 1);
+//            break;
+//        }
+//    }
+//
+//    @Override
+//    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+//    {
+//        // No loot table
+//        this.dropFewItems(wasRecentlyHit, lootingModifier);
+//        this.dropEquipment(wasRecentlyHit, lootingModifier);
+//    }
+//
+//    @Override
+//    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+//    {
+//        Item item = Items.ROTTEN_FLESH;
+//
+//        //Less rotten flesh than vanilla
+//        int j = this.rand.nextInt(2);
+//
+//        if (item != null)
+//        {
+//            if (lootingModifier > 0)
+//            {
+//                j += this.rand.nextInt(lootingModifier + 1);
+//            }
+//
+//            for (int k = 0; k < j; ++k)
+//            {
+//                this.dropItem(item, 1);
+//            }
+//        }
+//
+//        //Drop copper ingot as semi-rare drop if player hit and if dropping rotten flesh (50% chance)
+//        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 0 && this.rand.nextInt(6) <= (lootingModifier + 1) / 2)
+//            this.entityDropItem(new ItemStack(GCItems.basicItem, 1, 3), 0.0F);
+//
+//        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
+//        {
+//            this.addRandomDrop();
+//        }
+//    } TODO Loot
 
     @Override
     public void setTumbling(float value)
@@ -182,10 +157,10 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     }
     
     @Override
-    public void onEntityUpdate()
+    public void tick()
     {
-        super.onEntityUpdate();
-        if (!this.isDead)
+        super.tick();
+        if (this.isAlive())
         {
             if (this.tumbling != 0F)
             {
@@ -214,24 +189,24 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
-        super.entityInit();
+        super.registerData();
         this.getDataManager().register(SPIN_PITCH, 0.0F);
     }
 
     @Override
-    public void readEntityFromNBT(CompoundNBT nbt)
+    public void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(nbt);
+        super.readAdditional(nbt);
         this.tumbling = nbt.getFloat("tumbling");
     }
 
     @Override
-    public void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(nbt);
-        nbt.setFloat("tumbling", this.tumbling);
+        super.writeAdditional(nbt);
+        nbt.putFloat("tumbling", this.tumbling);
     }
 
     public float getSpinPitch()
@@ -264,16 +239,16 @@ public class EntityEvolvedZombie extends ZombieEntity implements IEntityBreathab
     @Override
     public float getTumbleAxisX()
     {
-        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
         if (velocity2 == 0D) return 1F;
-        return (float) (this.motionZ / MathHelper.sqrt(velocity2));
+        return (float) (this.getMotion().z / MathHelper.sqrt(velocity2));
     }
 
     @Override
     public float getTumbleAxisZ()
     {
-        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
         if (velocity2 == 0D) return 0F;
-        return (float) (this.motionX / MathHelper.sqrt(velocity2));
+        return (float) (this.getMotion().x / MathHelper.sqrt(velocity2));
     }
 }

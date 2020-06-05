@@ -36,7 +36,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
 
     public GuiTerraformer(PlayerInventory par1InventoryPlayer, TileEntityTerraformer terraformer)
     {
-        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, FMLClientHandler.instance().getClient().player));
+        super(new ContainerTerraformer(par1InventoryPlayer, terraformer, Minecraft.getInstance().player));
         this.ySize = 237;
         this.terraformer = terraformer;
     }
@@ -84,15 +84,15 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
         this.waterTankInfoRegion.parentWidth = this.width;
         this.waterTankInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.waterTankInfoRegion);
-        this.buttonList.clear();
+        this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableTreesButton = new Button(0, var5 + 98, var6 + 85, 72, 20, GCCoreUtil.translate("gui.message.enable_trees.name"));
         this.enableGrassButton = new Button(1, var5 + 98, var6 + 109, 72, 20, GCCoreUtil.translate("gui.message.enable_grass.name"));
-        this.buttonList.add(this.enableTreesButton);
-        this.buttonList.add(this.enableGrassButton);
+        this.buttons.add(this.enableTreesButton);
+        this.buttons.add(this.enableGrassButton);
         this.checkboxRenderBubble = new GuiElementCheckbox(2, this, var5 + 85, var6 + 132, GCCoreUtil.translate("gui.message.bubble_visible.name"));
-        this.buttonList.add(this.checkboxRenderBubble);
+        this.buttons.add(this.checkboxRenderBubble);
     }
 
     @Override
@@ -103,10 +103,10 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.terraformer.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 0 }));
                 break;
             case 1:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.terraformer.getPos(), 1 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.terraformer.getPos(), 1 }));
                 break;
             case 2:
                 break;
@@ -185,7 +185,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.textureManager.bindTexture(GuiTerraformer.terraformerGui);
+        this.minecraft.textureManager.bindTexture(GuiTerraformer.terraformerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
@@ -215,7 +215,7 @@ public class GuiTerraformer extends GuiContainerGC implements ICheckBoxCallback
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.terraformer.shouldRenderBubble = newSelected;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 6, this.terraformer.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

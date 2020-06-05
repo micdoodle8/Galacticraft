@@ -5,49 +5,51 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.common.util.LazyOptional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.ref.WeakReference;
 
 public class CapabilityProviderStats implements ICapabilitySerializable<CompoundNBT>
 {
     private ServerPlayerEntity owner;
-    private GCPlayerStats statsCapability;
+    private final LazyOptional<GCPlayerStats> holder = LazyOptional.of(() -> new StatsCapability(new WeakReference<>(this.owner)));
 
     public CapabilityProviderStats(ServerPlayerEntity owner)
     {
         this.owner = owner;
-        this.statsCapability = GCCapabilities.GC_STATS_CAPABILITY.getDefaultInstance();
-        this.statsCapability.setPlayer(new WeakReference<>(this.owner));
     }
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
-    {
-        return capability == GCCapabilities.GC_STATS_CAPABILITY;
-    }
+//    @Override
+//    public boolean hasCapability(Capability<?> capability, Direction facing)
+//    {
+//        return capability == GCCapabilities.GC_STATS_CAPABILITY;
+//    }
 
+    @Nonnull
     @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side)
     {
-        if (GCCapabilities.GC_STATS_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CAPABILITY)
+        if (cap == GCCapabilities.GC_STATS_CAPABILITY)
         {
-            return GCCapabilities.GC_STATS_CAPABILITY.cast(statsCapability);
+            return GCCapabilities.GC_STATS_CAPABILITY.orEmpty(cap, holder);
         }
 
-        return null;
+        return LazyOptional.empty();
     }
 
     @Override
     public CompoundNBT serializeNBT()
     {
         CompoundNBT nbt = new CompoundNBT();
-        statsCapability.saveNBTData(nbt);
+        this.holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!")).saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundNBT nbt)
     {
-        statsCapability.loadNBTData(nbt);
+        this.holder.orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!")).loadNBTData(nbt);
     }
 }

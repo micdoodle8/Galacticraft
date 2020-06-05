@@ -112,7 +112,7 @@
 //                //Look for Frequency Module
 //                if (!held.isEmpty() && held.getItem() == GCItems.basicItem && held.getItemDamage() == 19)
 //                {
-//                    CompoundNBT fmData = held.getTagCompound();
+//                    CompoundNBT fmData = held.getTag();
 //                    if (fmData != null && fmData.hasKey("linkedUUIDMost") && fmData.hasKey("linkedUUIDLeast"))
 //                    {
 //                        UUID uuid = new UUID(fmData.getLong("linkedUUIDMost"), fmData.getLong("linkedUUIDLeast"));
@@ -126,7 +126,7 @@
 //                        if (fmData == null)
 //                        {
 //                            fmData = new CompoundNBT();
-//                            held.setTagCompound(fmData);
+//                            held.setTag(fmData);
 //                        }
 //                    }
 //                    fmData.setInteger("teCoordX", pos.getX());
@@ -139,7 +139,7 @@
 //                ItemStack wearing = GCPlayerStats.get(entityPlayer).getFrequencyModuleInSlot();
 //                if (wearing != null)
 //                {
-//                    if (wearing.hasTagCompound() && wearing.getTagCompound().hasKey("teDim"))
+//                    if (wearing.hasTag() && wearing.getTag().hasKey("teDim"))
 //                    {
 //                        return false;
 //                    }
@@ -155,13 +155,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

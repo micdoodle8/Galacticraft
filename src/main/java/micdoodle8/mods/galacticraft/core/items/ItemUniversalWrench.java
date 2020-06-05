@@ -22,7 +22,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,9 +34,9 @@ import java.util.Map;
 
 public class ItemUniversalWrench extends Item implements ISortableItem
 {
-    public ItemUniversalWrench(String assetName)
+    public ItemUniversalWrench(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
         this.setMaxDamage(256);
@@ -75,21 +75,21 @@ public class ItemUniversalWrench extends Item implements ISortableItem
 
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, PlayerEntity player)
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockReader world, BlockPos pos, PlayerEntity player)
     {
         return true;
     }
@@ -124,14 +124,14 @@ public class ItemUniversalWrench extends Item implements ISortableItem
         for (Map.Entry<IProperty<?>, Comparable<?>> entry : state.getProperties().entrySet())
         {
             IProperty<?> iProperty = entry.getKey();
-            if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.getValue(iProperty) instanceof Direction)
+            if (iProperty instanceof PropertyEnum && iProperty.getName().equals("facing") && state.get(iProperty) instanceof Direction)
             {
                 EnumProperty<Direction> property = (EnumProperty<Direction>) iProperty;
                 Collection<Direction> values = property.getAllowedValues();
                 if (values.size() > 0)
                 {
                     boolean done = false;
-                    Direction currentFacing = state.getValue(property);
+                    Direction currentFacing = state.get(property);
                     
                     // Special case: horizontal facings should be rotated around the Y axis - this includes most of GC's own blocks
                     if (values.size() == 4 && !values.contains(Direction.UP) && !values.contains(Direction.DOWN))

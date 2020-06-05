@@ -2,8 +2,6 @@ package micdoodle8.mods.galacticraft.core;
 
 import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.core.blocks.*;
-import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassFrame;
-import micdoodle8.mods.galacticraft.core.blocks.BlockSpaceGlass.GlassType;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryBlock;
 import micdoodle8.mods.galacticraft.core.util.StackSorted;
 import net.minecraft.block.Block;
@@ -214,39 +212,39 @@ public class GCBlocks
         register(r, new BlockBrightLamp(builder), BlockNames.brightLamp);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(100000.0F).sound(SoundType.STONE).lightValue(13);
-        register(r, new BlockTier1TreasureChest(builder), BlockNames.treasureChestTier1);
+//        register(r, new BlockTier1TreasureChest(builder), BlockNames.treasureChestTier1);
 
         builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL);
-        register(r, new BlockLandingPad(builder), BlockNames.landingPad);
-        register(r, new BlockLandingPadFull(builder), BlockNames.landingPadFull);
+//        register(r, new BlockLandingPad(builder), BlockNames.landingPad);
+//        register(r, new BlockLandingPadFull(builder), BlockNames.landingPadFull);
 
         builder = Block.Properties.create(Material.MISCELLANEOUS).doesNotBlockMovement().hardnessAndResistance(0.0F).lightValue(3).sound(SoundType.WOOD);
-        register(r, new BlockUnlitTorch(false, builder), BlockNames.unlitTorch);
-        register(r, new BlockUnlitTorch(true, builder.lightValue(14)), BlockNames.unlitTorchLit);
-        register(r, new BlockGlowstoneTorch(builder.lightValue(12)), BlockNames.glowstoneTorch);
+//        register(r, new BlockUnlitTorch(false, builder), BlockNames.unlitTorch);
+//        register(r, new BlockUnlitTorch(true, builder.lightValue(14)), BlockNames.unlitTorchLit);
+//        register(r, new BlockGlowstoneTorch(builder.lightValue(12)), BlockNames.glowstoneTorch);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.METAL);
-        register(r, new BlockOxygenDistributor(builder), BlockNames.oxygenDistributor);
-        register(r, new BlockOxygenCollector(builder), BlockNames.oxygenCollector);
-        register(r, new BlockNasaWorkbench(builder), BlockNames.nasaWorkbench);
+//        register(r, new BlockOxygenDistributor(builder), BlockNames.oxygenDistributor);
+//        register(r, new BlockOxygenCollector(builder), BlockNames.oxygenCollector);
+//        register(r, new BlockNasaWorkbench(builder), BlockNames.nasaWorkbench);
         register(r, new BlockAirLockFrame(builder), BlockNames.airLockFrame);
-        register(r, new BlockMachine(builder), BlockNames.machineBase);
-        register(r, new BlockMachine2(builder), BlockNames.machineBase2);
-        register(r, new BlockMachine3(builder), BlockNames.machineBase3);
-        register(r, new BlockMachine4(builder), BlockNames.machineBase4);
+//        register(r, new BlockMachine(builder), BlockNames.machineBase);
+//        register(r, new BlockMachine2(builder), BlockNames.machineBase2);
+//        register(r, new BlockMachine3(builder), BlockNames.machineBase3);
+//        register(r, new BlockMachine4(builder), BlockNames.machineBase4);
         register(r, new BlockCrafting(builder), BlockNames.crafting);
-        register(r, new BlockRefinery(builder), BlockNames.refinery);
-        register(r, new BlockFuelLoader(builder), BlockNames.fuelLoader);
-        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenCompressor);
-        register(r, new BlockOxygenSealer(builder), BlockNames.oxygenSealer);
-        register(r, new BlockOxygenDetector(builder), BlockNames.oxygenDetector);
+//        register(r, new BlockRefinery(builder), BlockNames.refinery);
+//        register(r, new BlockFuelLoader(builder), BlockNames.fuelLoader);
+//        register(r, new BlockOxygenCompressor(builder), BlockNames.oxygenCompressor);
+//        register(r, new BlockOxygenSealer(builder), BlockNames.oxygenSealer);
+//        register(r, new BlockOxygenDetector(builder), BlockNames.oxygenDetector);
         register(r, new BlockCargoLoader(builder), BlockNames.cargoLoader);
-        register(r, new BlockSolar(builder), BlockNames.solarPanel);
-        register(r, new BlockDish(builder), BlockNames.radioTelescope);
-        register(r, new BlockMachineTiered(builder), BlockNames.machineTiered);
-        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting);
-        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster);
-        register(r, new BlockTelemetry(builder), BlockNames.telemetry);
+//        register(r, new BlockSolar(builder), BlockNames.solarPanel);
+//        register(r, new BlockDish(builder), BlockNames.radioTelescope);
+//        register(r, new BlockMachineTiered(builder), BlockNames.machineTiered);
+//        register(r, new BlockPanelLighting(builder), BlockNames.panelLighting);
+//        register(r, new BlockSpinThruster(builder), BlockNames.spinThruster);
+//        register(r, new BlockTelemetry(builder), BlockNames.telemetry);
         register(r, new BlockConcealedRedstone(builder), BlockNames.concealedRedstone);
         register(r, new BlockConcealedRepeater(builder), BlockNames.concealedRepeater);
         register(r, new BlockConcealedDetector(builder), BlockNames.concealedDetector);
@@ -255,37 +253,37 @@ public class GCBlocks
         register(r, new BlockAirLockWall(builder), BlockNames.airLockSeal);
 
         builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(0.3F).sound(SoundType.GLASS);
-        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.NORMAL), BlockNames.oxygenPipe);
-        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.PULL), BlockNames.oxygenPipePull);
+//        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.NORMAL), BlockNames.oxygenPipe);
+//        register(r, new BlockFluidPipe(builder, BlockFluidPipe.EnumPipeMode.PULL), BlockNames.oxygenPipePull);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(40.0F).sound(SoundType.STONE);
-        register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
+//        register(r, new BlockFallenMeteor(builder), BlockNames.fallenMeteor);
 
 //        builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1.0F).sound(SoundType.STONE);
 //        register(r, new BlockBasic(builder), BlockNames.basicBlock);
 
         //These glass types have to be registered as 6 separate blocks, (a) to allow different coloring of each one and (b) because the Forge MultiLayer custom model does not allow for different textures to be set for different variants
         builder = Block.Properties.create(Material.GLASS).sound(SoundType.GLASS).hardnessAndResistance(0.3F, 3.0F);
-        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.PLAIN, null), BlockNames.spaceGlassVanilla);
-        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.PLAIN, null), BlockNames.spaceGlassClear);
-        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla), BlockNames.spaceGlassTinVanilla);
-        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear), BlockNames.spaceGlassTinClear);
+//        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.PLAIN, null), BlockNames.spaceGlassVanilla);
+//        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.PLAIN, null), BlockNames.spaceGlassClear);
+//        register(r, new BlockSpaceGlass(builder, GlassType.VANILLA, GlassFrame.TIN_DECO, GCBlocks.spaceGlassVanilla), BlockNames.spaceGlassTinVanilla);
+//        register(r, new BlockSpaceGlass(builder, GlassType.CLEAR, GlassFrame.TIN_DECO, GCBlocks.spaceGlassClear), BlockNames.spaceGlassTinClear);
 
         builder = builder.hardnessAndResistance(4.0F, 35.0F);
-        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.PLAIN, null), BlockNames.spaceGlassStrong);
-        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong), BlockNames.spaceGlassTinStrong);
+//        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.PLAIN, null), BlockNames.spaceGlassStrong);
+//        register(r, new BlockSpaceGlass(builder, GlassType.STRONG, GlassFrame.TIN_DECO, GCBlocks.spaceGlassStrong), BlockNames.spaceGlassTinStrong);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(-1.0F, 3600000.0F).noDrops();
-        register(r, new BlockSpaceStationBase(builder), BlockNames.spaceStationBase);
+//        register(r, new BlockSpaceStationBase(builder), BlockNames.spaceStationBase);
 
         builder = Block.Properties.create(machine).hardnessAndResistance(1.0F, 3600000.0F).sound(SoundType.METAL);
-        register(r, new BlockMulti(builder), BlockNames.fakeBlock);
+//        register(r, new BlockMulti(builder), BlockNames.fakeBlock);
 
         builder = Block.Properties.create(Material.CLAY).hardnessAndResistance(0.4F).sound(SoundType.STONE);
-        register(r, new BlockEnclosed(builder), BlockNames.sealableBlock);
+//        register(r, new BlockEnclosed(builder), BlockNames.sealableBlock);
 
         builder = Block.Properties.create(Material.WOOD).hardnessAndResistance(3.0F).sound(SoundType.WOOD);
-        register(r, new BlockParaChest(builder), BlockNames.parachest);
+//        register(r, new BlockParaChest(builder), BlockNames.parachest);
 
         builder = Block.Properties.create(Material.WOOL).hardnessAndResistance(0.2F).sound(SoundType.CLOTH);
         register(r, new BlockAluminumWire(builder), BlockNames.aluminumWire);
@@ -297,10 +295,10 @@ public class GCBlocks
         register(r, new BlockCheese(builder), BlockNames.cheeseBlock);
 
         builder = Block.Properties.create(Material.MISCELLANEOUS).hardnessAndResistance(1.0F).sound(SoundType.STONE);
-        register(r, new BlockScreen(builder), BlockNames.screen);
+//        register(r, new BlockScreen(builder), BlockNames.screen);
 
         builder = Block.Properties.create(Material.GLASS).hardnessAndResistance(3.0F, 8.0F).sound(SoundType.GLASS);
-        register(r, new BlockFluidTank(builder), BlockNames.fluidTank);
+//        register(r, new BlockFluidTank(builder), BlockNames.fluidTank);
 
         builder = Block.Properties.create(Material.ROCK).hardnessAndResistance(1000000.0F).noDrops();
         register(r, new BlockBossSpawner(builder), BlockNames.bossSpawner);
@@ -314,7 +312,7 @@ public class GCBlocks
 //        register(r, new BlockWallGC(builder), BlockNames.wallGC);
 
         builder = Block.Properties.create(Material.IRON).hardnessAndResistance(1.0F, 10.0F).sound(SoundType.METAL);
-        register(r, new BlockPlatform(builder), BlockNames.platform);
+//        register(r, new BlockPlatform(builder), BlockNames.platform);
 
         builder = Block.Properties.create(Material.IRON).hardnessAndResistance(4.0F, 70.0F).lightValue(15).sound(SoundType.METAL);
         register(r, new BlockEmergencyBox(builder), BlockNames.emergencyBox);

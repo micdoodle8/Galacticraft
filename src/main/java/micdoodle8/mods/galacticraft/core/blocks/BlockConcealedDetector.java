@@ -86,7 +86,7 @@ public class BlockConcealedDetector extends Block implements ISortableBlock
 //    }
 //
 //    @Override
-//    public boolean isSideSolid(BlockState state, IBlockAccess world, BlockPos pos, Direction side)
+//    public boolean isSideSolid(BlockState state, IBlockReader world, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }

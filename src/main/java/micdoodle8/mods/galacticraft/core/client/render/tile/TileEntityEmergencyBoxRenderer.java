@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntityEmergencyBox>
 {
     private static final float MASKSCALE = 3F;
@@ -157,7 +157,7 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         BlockState b = tileEntity.getWorld().getBlockState(tileEntity.getPos());
         if (!(b.getBlock() instanceof BlockEmergencyBox)) return;
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
         
         flapA.angle = tileEntity.getAngleA(f);
         flapB.angle = tileEntity.getAngleB(f);
@@ -170,14 +170,14 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
             GlStateManager.pushMatrix();
             this.bindTexture(packTexture);
             this.pack.render(height);
-            GlStateManager.rotate(180F, 1F, 0F, 0F);
+            GlStateManager.rotatef(180F, 1F, 0F, 0F);
             this.bindTexture(oxygenMaskTexture);
-            GlStateManager.translate(0.0F, 0.0F, -0.07F);
+            GlStateManager.translatef(0.0F, 0.0F, -0.07F);
             this.mask.render(-height);
             this.bindTexture(oxygenTankTexture);
-            GlStateManager.translate(0.1F, 0.11F, 0.3F);
+            GlStateManager.translatef(0.1F, 0.11F, 0.3F);
             this.tank.render(-height);
-            GlStateManager.translate(-0.2F, 0F, 0F);
+            GlStateManager.translatef(-0.2F, 0F, 0F);
             this.tank.render(-height);
             GlStateManager.popMatrix();
         }
@@ -186,19 +186,19 @@ public class TileEntityEmergencyBoxRenderer extends TileEntityRenderer<TileEntit
         this.plat.render(height);
         this.bindTexture(flapTexture);
         this.flapA.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapB.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapC.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapD.render();
-        GlStateManager.rotate(180F, 1F, 0F, 0F);
+        GlStateManager.rotatef(180F, 1F, 0F, 0F);
         this.flapB.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapA.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapD.render();
-        GlStateManager.rotate(90F, 0, 1F, 0F);
+        GlStateManager.rotatef(90F, 0, 1F, 0F);
         this.flapC.render();
         GlStateManager.popMatrix();
     }

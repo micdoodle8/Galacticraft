@@ -119,7 +119,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
             BlockVec3 thisVec = new BlockVec3(this);
             for (int i = 0; i < 6; i++)
             {
-                Direction side = Direction.getFront(i);
+                Direction side = Direction.byIndex(i);
                 TileEntity tileEntity = thisVec.getTileEntityOnSide(this.world, side);
 
                 if (tileEntity instanceof IConnector)
@@ -148,7 +148,7 @@ public abstract class TileBaseConductor extends TileEntity implements IConductor
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), this.getPos().getX() + 1, this.getPos().getY() + 1, this.getPos().getZ() + 1);

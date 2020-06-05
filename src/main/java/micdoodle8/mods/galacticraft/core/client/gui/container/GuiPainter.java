@@ -9,45 +9,44 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityPainter;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.fml.LogicalSide;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class GuiPainter extends GuiContainerGC
+public class GuiPainter extends GuiContainerGC<ContainerPainter>
 {
     private static final ResourceLocation painterTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/painter.png");
 
-    private TileEntityPainter tileEntity;
-    private Button buttonApplyPaint;
+    private TileEntityPainter painter;
 
-    public GuiPainter(PlayerInventory par1InventoryPlayer, TileEntityPainter tileEntity)
+    public GuiPainter(PlayerInventory playerInv, TileEntityPainter painter)
     {
-        super(new ContainerPainter(par1InventoryPlayer, tileEntity));
-        this.tileEntity = tileEntity;
+        super(new ContainerPainter(playerInv, painter), playerInv, new StringTextComponent(painter.getName()));
+        this.painter = painter;
         this.ySize = 186;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
-        this.buttonList.add(this.buttonApplyPaint = new Button(0, this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name")));
-        this.buttonList.add(this.buttonApplyPaint = new Button(1, this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name")));
-        this.buttonList.add(this.buttonApplyPaint = new Button(2, this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name")));
-    }
-
-    @Override
-    protected void actionPerformed(Button par1GuiButton)
-    {
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tileEntity.getPos(), par1GuiButton.id }));
-        tileEntity.buttonPressed(par1GuiButton.id, this.mc.player, Side.CLIENT);
+        super.init();
+        this.buttons.add(new Button(this.width / 2 + 4, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintapply.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 0 }));
+            painter.buttonPressed(0, this.minecraft.player, LogicalSide.CLIENT);
+        }));
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48, 76, 20, GCCoreUtil.translate("gui.button.paintmix.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 1 }));
+            painter.buttonPressed(1, this.minecraft.player, LogicalSide.CLIENT);
+        }));
+        this.buttons.add(new Button(this.width / 2 - 80, this.height / 2 - 48 + 22, 76, 20, GCCoreUtil.translate("gui.button.paintreset.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.painter.getPos(), 2 }));
+            painter.buttonPressed(2, this.minecraft.player, LogicalSide.CLIENT);
+        }));
     }
 
     /**
@@ -57,10 +56,10 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), 39, 6, 4210752);
+        this.font.drawString(this.painter.getName(), 39, 6, 4210752);
         String displayText = "";
 
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -70,16 +69,16 @@ public class GuiPainter extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiPainter.painterTexture);
+        this.minecraft.textureManager.bindTexture(GuiPainter.painterTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int guiLeft = (this.width - this.xSize) / 2;
         int guiBottom = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(guiLeft, guiBottom, 0, 0, this.xSize, this.ySize);
+        this.blit(guiLeft, guiBottom, 0, 0, this.xSize, this.ySize);
 
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_TEXTURE_2D);
-        ColorUtil.setGLColor(tileEntity.guiColor);
+        ColorUtil.setGLColor(painter.guiColor);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldrenderer = tessellator.getBuffer();
         int x = guiLeft + this.xSize / 2 - 9;
@@ -87,10 +86,10 @@ public class GuiPainter extends GuiContainerGC
         int height = 18;
         int width = 18;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos((double)(x + 0F), (double)(y + height), (double)this.zLevel).endVertex();
-        worldrenderer.pos((double)(x + width), (double)(y + height), (double)this.zLevel).endVertex();
-        worldrenderer.pos((double)(x + width), (double)(y + 0), (double)this.zLevel).endVertex();
-        worldrenderer.pos((double)(x + 0F), (double)(y + 0), (double)this.zLevel).endVertex();
+        worldrenderer.pos((double)(x + 0F), (double)(y + height), (double)this.blitOffset).endVertex();
+        worldrenderer.pos((double)(x + width), (double)(y + height), (double)this.blitOffset).endVertex();
+        worldrenderer.pos((double)(x + width), (double)(y + 0), (double)this.blitOffset).endVertex();
+        worldrenderer.pos((double)(x + 0F), (double)(y + 0), (double)this.blitOffset).endVertex();
         tessellator.draw();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }

@@ -1,21 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntity>
+@OnlyIn(Dist.CLIENT)
+public class LayerOxygenTanks extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>
 {
     private final PlayerRenderer playerRenderer;
     public RendererModel[] greenOxygenTanks = new RendererModel[2];
@@ -24,9 +25,10 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
 
     public LayerOxygenTanks(PlayerRenderer playerRendererIn)
     {
+        super(playerRendererIn);
         this.playerRenderer = playerRendererIn;
         float scaleFactor = 0.0F;
-        ModelPlayer modelPlayer = playerRendererIn.getMainModel();
+        PlayerModel<AbstractClientPlayerEntity> modelPlayer = playerRendererIn.getEntityModel();
 
         this.greenOxygenTanks[0] = new RendererModel(modelPlayer, 4, 0).setTextureSize(128, 64);
         this.greenOxygenTanks[0].addBox(-1.5F, 0F, -1.5F, 3, 7, 3, scaleFactor);
@@ -57,7 +59,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
+    public void render(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
         {
@@ -72,16 +74,16 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
                 boolean wearingRightTankOrange = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_MEDIUM;
                 boolean wearingRightTankRed = gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_HEAVY || gearData.getRightTank() == Constants.GEAR_ID_OXYGEN_TANK_INFINITE;
 
-                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
+                Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.PLAYER_TEXTURE);
 
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.greenOxygenTanks[0]);
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.greenOxygenTanks[1]);
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.orangeOxygenTanks[0]);
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.orangeOxygenTanks[1]);
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.redOxygenTanks[0]);
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.redOxygenTanks[1]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.greenOxygenTanks[0]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.greenOxygenTanks[1]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.orangeOxygenTanks[0]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.orangeOxygenTanks[1]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.redOxygenTanks[0]);
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.redOxygenTanks[1]);
 
-                if (playerRenderer.getMainModel().isSneak)
+                if (playerRenderer.getEntityModel().isSneak)
                 {
                     this.greenOxygenTanks[0].rotationPointY = 2.0F;
                     this.greenOxygenTanks[1].rotationPointY = 2.0F;
@@ -120,9 +122,9 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
                 {
                     GlStateManager.enableRescaleNormal();
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(0.175F, 0.0F, 0.0F);
-                    GlStateManager.translate(0.0F, 0.2F, 0.0F);
-                    GlStateManager.translate(0.0F, 0.0F, 0.2F);
+                    GlStateManager.translatef(0.175F, 0.0F, 0.0F);
+                    GlStateManager.translatef(0.0F, 0.2F, 0.0F);
+                    GlStateManager.translatef(0.0F, 0.0F, 0.2F);
 
                     if (wearingLeftTankRed)
                     {
@@ -142,9 +144,9 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
                     GlStateManager.popMatrix();
 
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(-0.175F, 0.0F, 0.0F);
-                    GlStateManager.translate(0.0F, 0.2F, 0.0F);
-                    GlStateManager.translate(0.0F, 0.0F, 0.2F);
+                    GlStateManager.translatef(-0.175F, 0.0F, 0.0F);
+                    GlStateManager.translatef(0.0F, 0.2F, 0.0F);
+                    GlStateManager.translatef(0.0F, 0.0F, 0.2F);
 
                     if (wearingRightTankRed)
                     {
@@ -160,7 +162,7 @@ public class LayerOxygenTanks implements LayerRenderer<AbstractClientPlayerEntit
                     {
                         this.greenOxygenTanks[1].render(scale);
                     }
-                    GlStateManager.color(1.0F, 1.0F, 1.0F);
+                    GlStateManager.color3f(1.0F, 1.0F, 1.0F);
                     GlStateManager.popMatrix();
                 }
             }

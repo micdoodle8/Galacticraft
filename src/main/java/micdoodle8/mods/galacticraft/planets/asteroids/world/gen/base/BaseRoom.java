@@ -599,7 +599,7 @@ public class BaseRoom extends SizedPiece
             EntityHangingSchematic entityhanging = new EntityHangingSchematic(worldIn, blockpos, hangingDirection, x / 3 - 1);
             if (entityhanging != null)
             {
-                worldIn.spawnEntity(entityhanging);
+                worldIn.addEntity(entityhanging);
                 entityhanging.setSendToClient();
             }
         }

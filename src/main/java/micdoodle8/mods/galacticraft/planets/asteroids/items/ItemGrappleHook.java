@@ -24,9 +24,9 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
 {
     private static NonNullList<ItemStack> stringEntries = null;
 
-    public ItemGrappleHook(String assetName)
+    public ItemGrappleHook(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
         //this.setTextureName("arrow");
@@ -38,15 +38,15 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
@@ -62,7 +62,7 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
 
         PlayerEntity player = (PlayerEntity) entity;
 
-        boolean canShoot = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
+        boolean canShoot = player.abilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
         ItemStack string = ItemStack.EMPTY;
 
         if (stringEntries == null) stringEntries = OreDictionary.getOres("string");
@@ -85,13 +85,13 @@ public class ItemGrappleHook extends BowItem implements ISortableItem
 
             if (!worldIn.isRemote)
             {
-                worldIn.spawnEntity(grapple);
+                worldIn.addEntity(grapple);
             }
 
             stack.damageItem(1, player);
-            grapple.canBePickedUp = player.capabilities.isCreativeMode ? 2 : 1;
+            grapple.canBePickedUp = player.abilities.isCreativeMode ? 2 : 1;
 
-            if (!player.capabilities.isCreativeMode)
+            if (!player.abilities.isCreativeMode)
             {
                 string.shrink(1);
 

@@ -6,7 +6,7 @@ import java.util.Random;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
@@ -36,7 +36,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class WorldProviderVenus extends WorldProviderSpace implements IGalacticraftWorldProvider, ISolarLevel, IWeatherProvider
+public class WorldProviderVenus extends DimensionSpace implements IGalacticraftWorldProvider, ISolarLevel, IWeatherProvider
 {
     private double solarMultiplier = -0.36D;
     private float prevRainingStrength;
@@ -104,7 +104,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getStarBrightness(float par1)
     {
         float f1 = this.world.getCelestialAngle(par1);
@@ -238,7 +238,7 @@ public class WorldProviderVenus extends WorldProviderSpace implements IGalacticr
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Particle getParticle(ClientWorld world, double x, double y, double z)
     {
         return new ParticleAcidVapor(world, x, y, z, 0.0D, 0.0D, 0.0D, 0.95F);

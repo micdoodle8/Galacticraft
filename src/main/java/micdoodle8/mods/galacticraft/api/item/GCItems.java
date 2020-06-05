@@ -196,7 +196,7 @@ public class GCItems
             if (GCItems.itemsList != null)
             {
                 ItemStack stack = GCItems.itemsList.get(key);
-                return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
+                return new ItemStack(stack.getItem(), amount);
             }
         }
         catch (Exception ex)
@@ -234,7 +234,7 @@ public class GCItems
             if (GCItems.blocksList != null)
             {
                 ItemStack stack = GCItems.blocksList.get(key);
-                return new ItemStack(stack.getItem(), amount, stack.getItemDamage());
+                return new ItemStack(stack.getItem(), amount);
             }
         }
         catch (Exception ex)

@@ -1,30 +1,30 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class RenderTier1Rocket extends EntityRenderer<EntitySpaceshipBase>
+@OnlyIn(Dist.CLIENT)
+public class RenderTier1Rocket extends EntityRenderer<EntityTier1Rocket>
 {
     private ResourceLocation spaceshipTexture;
 
-    protected ModelBase modelSpaceship;
+    protected EntityModel<EntityTier1Rocket> rocketModel;
 
-    public RenderTier1Rocket(EntityRendererManager manager, ModelBase spaceshipModel, String textureDomain, String texture)
+    public RenderTier1Rocket(EntityRendererManager manager, EntityModel<EntityTier1Rocket> rocketModel, String textureDomain, String texture)
     {
         this(manager, new ResourceLocation(textureDomain, "textures/model/" + texture + ".png"));
-        this.modelSpaceship = spaceshipModel;
+        this.rocketModel = rocketModel;
     }
 
     private RenderTier1Rocket(EntityRendererManager manager, ResourceLocation texture)
@@ -40,13 +40,13 @@ public class RenderTier1Rocket extends EntityRenderer<EntitySpaceshipBase>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntitySpaceshipBase par1Entity)
+    protected ResourceLocation getEntityTexture(EntityTier1Rocket par1Entity)
     {
         return this.func_110779_a(par1Entity);
     }
 
     @Override
-    public void doRender(EntitySpaceshipBase entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityTier1Rocket entity, double par2, double par4, double par6, float par8, float par9)
     {
         GL11.glPushMatrix();
         final float var24 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * par9;
@@ -68,15 +68,15 @@ public class RenderTier1Rocket extends EntityRenderer<EntitySpaceshipBase>
 
         this.bindEntityTexture(entity);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
-        this.modelSpaceship.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+        this.rocketModel.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
         GL11.glPopMatrix();
     }
     
     @Override
-    public boolean shouldRender(EntitySpaceshipBase rocket, ICamera camera, double camX, double camY, double camZ)
+    public boolean shouldRender(EntityTier1Rocket rocket, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().grow(0.6D, 1D, 0.6D);
+        AxisAlignedBB axisalignedbb = rocket.getBoundingBox().grow(0.6D, 1D, 0.6D);
 
         return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }

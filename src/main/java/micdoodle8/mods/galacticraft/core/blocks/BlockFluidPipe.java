@@ -26,7 +26,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.shapes.VoxelShape;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.common.network.NetworkRegistry;
 //import net.minecraftforge.fml.relauncher.Side;
@@ -242,9 +242,9 @@
 //
 //                    worldIn.setBlockState(pos, state.with(COLOR, DyeColor.byDyeDamage(dyeColor)));
 //
-//                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[] { pos }), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(worldIn), pos.getX(), pos.getY(), pos.getZ(), 40.0));
+//                    GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_RECOLOR_PIPE, GCCoreUtil.getDimensionID(worldIn), new Object[] { pos }), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(worldIn), pos.getX(), pos.getY(), pos.getZ(), 40.0));
 //
-//                    if (colorBefore != (byte) dyeColor && !playerIn.capabilities.isCreativeMode)
+//                    if (colorBefore != (byte) dyeColor && !playerIn.abilities.isCreativeMode)
 //                    {
 //                        playerIn.inventory.getCurrentItem().shrink(1);
 //                    }
@@ -285,11 +285,11 @@
 //        final double d2 = syncRandom.nextFloat() * f + (1.0F - f) * 0.5D;
 //        final ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(Items.DYE, 1, colorBefore));
 //        entityitem.setDefaultPickupDelay();
-//        worldIn.spawnEntity(entityitem);
+//        worldIn.addEntity(entityitem);
 //    }
 //
 //    @Override
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }
@@ -307,7 +307,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -318,7 +318,7 @@
 //        return new TileEntityFluidPipe();
 //    }
 //
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    @Override
 ////    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 ////    {
@@ -332,7 +332,7 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
@@ -344,13 +344,13 @@
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;

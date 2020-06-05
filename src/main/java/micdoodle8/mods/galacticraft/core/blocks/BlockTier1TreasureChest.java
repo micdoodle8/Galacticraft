@@ -23,7 +23,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.MathHelper;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //import java.util.Iterator;
@@ -64,7 +64,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -76,7 +76,7 @@
 //    }
 //
 ////    @Override
-////    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+////    public void setBlockBoundsBasedOnState(IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        if (worldIn.getBlockState(pos.north()).getBlock() == this)
 ////        {
@@ -454,7 +454,7 @@
 //        return new TileEntityTreasureChest();
 //    }
 //
-//    public int isProvidingWeakPower(IBlockAccess worldIn, BlockPos pos, BlockState state, Direction side)
+//    public int isProvidingWeakPower(IBlockReader worldIn, BlockPos pos, BlockState state, Direction side)
 //    {
 //        if (!this.canProvidePower(state))
 //        {
@@ -474,7 +474,7 @@
 //        }
 //    }
 //
-//    public int isProvidingStrongPower(IBlockAccess worldIn, BlockPos pos, BlockState state, Direction side)
+//    public int isProvidingStrongPower(IBlockReader worldIn, BlockPos pos, BlockState state, Direction side)
 //    {
 //        return side == Direction.UP ? this.isProvidingWeakPower(worldIn, pos, state, side) : 0;
 //    }
@@ -518,7 +518,7 @@
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getFront(meta);
+//        Direction enumfacing = Direction.byIndex(meta);
 //
 //        if (enumfacing.getAxis() == Direction.Axis.Y)
 //        {
@@ -535,13 +535,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

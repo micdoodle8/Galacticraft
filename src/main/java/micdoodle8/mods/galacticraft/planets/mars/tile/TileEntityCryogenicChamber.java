@@ -38,7 +38,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos().getX() - 1, getPos().getY(), getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 3, getPos().getZ() + 2);
@@ -172,7 +172,7 @@ public class TileEntityCryogenicChamber extends TileEntityMulti implements IMult
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
+                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
                 this.world.destroyBlock(pos, false);
             }

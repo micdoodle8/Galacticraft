@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class CloudRenderer extends IRenderHandler
 {
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void render(float partialTicks, ClientWorld world, Minecraft mc)
     {
         // Do nothing

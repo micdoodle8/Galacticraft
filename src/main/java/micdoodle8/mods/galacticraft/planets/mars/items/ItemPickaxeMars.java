@@ -20,21 +20,21 @@ public class ItemPickaxeMars extends PickaxeItem implements ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon(this.getUnlocalizedName().replace("item.", "galacticraftmars:"));

@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.client.render.RenderPlanet;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.texture.TextureManager;
@@ -35,7 +35,7 @@ public class GameScreenBasic implements IGameScreen
         //client-side only code on the server.
         if (GCCoreUtil.getEffectiveSide().isClient())
         {
-            renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+            renderEngine = Minecraft.getInstance().renderEngine;
         }
     }
 
@@ -89,7 +89,7 @@ public class GameScreenBasic implements IGameScreen
                 GlStateManager.pushMatrix();
                 float centreX = scaleX / 2;
                 float centreY = scaleY / 2;
-                GlStateManager.translate(centreX, centreY, 0F);
+                GlStateManager.translatef(centreX, centreY, 0F);
                 RenderPlanet.renderPlanet(ClientProxyCore.overworldTextureWide.getGlTextureId(), Math.min(scaleX, scaleY) - 0.2F, ticks, 45F);
                 GlStateManager.popMatrix();
             }
@@ -98,7 +98,7 @@ public class GameScreenBasic implements IGameScreen
                 this.textureManager.bindTexture(new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png"));
                 if (!ClientProxyCore.overworldTextureRequestSent)
                 {
-                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] {}));
+                    GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] {}));
                     ClientProxyCore.overworldTextureRequestSent = true;
                 }
 ////                 Overworld texture is 48x48 in a 64x64 .png file

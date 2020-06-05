@@ -101,7 +101,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_VENUS, EnumBlockBasicVenus.ROCK_SOFT));
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -282,7 +282,7 @@ public class BlockBasicVenus extends Block implements IDetectableResource, IPlan
         return new ItemStack(Item.getItemFromBlock(this), 1, this.getMetaFromState(state));
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {

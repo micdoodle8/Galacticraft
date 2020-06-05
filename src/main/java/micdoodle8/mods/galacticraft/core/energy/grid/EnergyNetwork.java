@@ -513,7 +513,7 @@ public class EnergyNetwork implements IElectricityNetwork
             TileEntity tile = (TileEntity) conductor;
             World world = tile.getWorld();
             //Remove any conductors in unloaded chunks
-            if (tile.isInvalid() || world == null || !world.isBlockLoaded(tile.getPos()))
+            if (tile.isRemoved() || world == null || !world.isBlockLoaded(tile.getPos()))
             {
                 it.remove();
                 continue;
@@ -563,7 +563,7 @@ public class EnergyNetwork implements IElectricityNetwork
             TileEntity tile = (TileEntity) conductor;
             World world = tile.getWorld();
             //Remove any conductors in unloaded chunks
-            if (tile.isInvalid() || world == null)
+            if (tile.isRemoved() || world == null)
             {
                 it.remove();
                 continue;
@@ -711,7 +711,7 @@ public class EnergyNetwork implements IElectricityNetwork
                             break;
                         }
 
-                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(Direction.getFront(j ^ 1), NetworkType.POWER))
+                        if (tileEntity instanceof IConductor && ((IConductor)tileEntity).canConnect(Direction.byIndex(j ^ 1), NetworkType.POWER))
                         {
                             nextToSplit[j] = tileEntity;
                         }

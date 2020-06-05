@@ -7,26 +7,28 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.item.*;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPickaxeGC extends PickaxeItem implements ISortableItem
 {
-    public ItemPickaxeGC(String assetName)
+    public ItemPickaxeGC(Item.Properties builder)
     {
-        super(GCItems.TOOL_STEEL);
-        this.setUnlocalizedName(assetName);
+        super(EnumItemTierGC.STEEL, 1, -2.8F, builder);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

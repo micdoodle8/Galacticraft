@@ -70,7 +70,7 @@ public class MapGenAbandonedBase extends Structure
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.provider).getDungeonSpacing());
+        long dungeonPos = MapGenDungeon.getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.getDimension()).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;
         return i == chunkX && j == chunkZ;
@@ -105,7 +105,7 @@ public class MapGenAbandonedBase extends Structure
     @Override
     protected StructureStart getStructureStart(int chunkX, int chunkZ)
     {
-        BlockVec3 asteroid = ((WorldProviderAsteroids) this.world.provider).getClosestAsteroidXZ((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, false);
+        BlockVec3 asteroid = ((WorldProviderAsteroids) this.world.getDimension()).getClosestAsteroidXZ((chunkX << 4) + 8, 0, (chunkZ << 4) + 8, false);
         if (asteroid == null)
         {
             return new MapGenAbandonedBase.Start(this.world, this.rand, (chunkX << 4) + 8, (chunkZ << 4) + 8, 15, new BaseConfiguration(148, this.rand));

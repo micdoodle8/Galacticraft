@@ -1,14 +1,14 @@
 package micdoodle8.mods.galacticraft.planets.venus.client.fx;
 
 import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleAcidVapor extends Particle
 {
     float smokeParticleScale;

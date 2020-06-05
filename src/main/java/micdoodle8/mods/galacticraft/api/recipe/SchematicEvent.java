@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.api.recipe;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 /**
  * These events are used internally to perform actions when Galacticraft is

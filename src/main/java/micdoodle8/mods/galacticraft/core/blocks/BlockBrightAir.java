@@ -28,7 +28,7 @@ public class BlockBrightAir extends AirBlock
 //    }
 
 //    @Override
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return false;
 //    }

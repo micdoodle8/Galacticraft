@@ -8,7 +8,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.EnergyStorageTile;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
@@ -267,7 +267,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
         {
             this.initialised = false;
         }
-        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.processTicks = nbt.getInt("smeltingTicks");
 
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
@@ -280,7 +280,7 @@ public class TileEntityElectricFurnace extends TileBaseElectricBlockWithInventor
             this.storage.setEnergyStored(EnergyStorageTile.STANDARD_CAPACITY);
         }
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
 

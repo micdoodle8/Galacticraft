@@ -151,16 +151,16 @@ public class InventorySlimeling implements IInventory
 
     public void readFromNBT(ListNBT tagList)
     {
-        if (tagList == null || tagList.tagCount() <= 0)
+        if (tagList == null || tagList.size() <= 0)
         {
             return;
         }
 
         this.stacks = NonNullList.withSize(this.stacks.size(), ItemStack.EMPTY);
 
-        for (int i = 0; i < tagList.tagCount(); ++i)
+        for (int i = 0; i < tagList.size(); ++i)
         {
-            final CompoundNBT nbttagcompound = tagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = tagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 

@@ -23,12 +23,12 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
         this.setHasSubtypes(true);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public String getUnlocalizedName(ItemStack itemStack)
@@ -37,7 +37,7 @@ public class ItemKeyMars extends Item implements IKeyItem, ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

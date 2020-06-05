@@ -22,7 +22,7 @@ public class TileEntityDishRenderer extends TileEntityRenderer<TileEntityDish>
     private static IBakedModel modelSupport;
     private static IBakedModel modelFork;
     private static IBakedModel modelDish;
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private TextureManager renderEngine = Minecraft.getInstance().renderEngine;
 
     private void updateModels()
     {
@@ -49,7 +49,7 @@ public class TileEntityDishRenderer extends TileEntityRenderer<TileEntityDish>
         float hour = dish.rotation(partialTickTime) % 360F;
         float declination = dish.elevation(partialTickTime) % 360F;
         
-        final PlayerEntity player = FMLClientHandler.instance().getClient().player;
+        final PlayerEntity player = Minecraft.getInstance().player;
 
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

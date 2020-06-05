@@ -38,9 +38,9 @@ import javax.annotation.Nullable;
 
 public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableItem
 {
-    public ItemTier3Rocket(String assetName)
+    public ItemTier3Rocket(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setMaxStackSize(1);
@@ -49,18 +49,18 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public ActionResultType onItemUse(PlayerEntity playerIn, World worldIn, BlockPos pos, Hand hand, Direction facing, float hitX, float hitY, float hitZ)
@@ -114,7 +114,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
                     return ActionResultType.FAIL;
                 }
 
-                if (!playerIn.capabilities.isCreativeMode)
+                if (!playerIn.abilities.isCreativeMode)
                 {
                     stack.shrink(1);
                 }
@@ -140,7 +140,7 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         EnumRocketType type;
@@ -164,10 +164,10 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
             tooltip.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
+        if (par1ItemStack.hasTag() && par1ItemStack.getTag().hasKey("RocketFuel"))
         {
-            EntityTier3Rocket rocket = new EntityTier3Rocket(FMLClientHandler.instance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
-            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
+            EntityTier3Rocket rocket = new EntityTier3Rocket(Minecraft.getInstance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTag().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
         }
     }
 
@@ -220,15 +220,15 @@ public class ItemTier3Rocket extends Item implements IHoldableItem, ISortableIte
 
         rocket.rotationYaw += 45;
         rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-        worldIn.spawnEntity(rocket);
+        worldIn.addEntity(rocket);
 
         if (rocket.getType().getPreFueled())
         {
             rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
         }
-        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
+        else if (stack.hasTag() && stack.getTag().hasKey("RocketFuel"))
         {
-            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTag().getInteger("RocketFuel")), true);
         }
         
         return true;

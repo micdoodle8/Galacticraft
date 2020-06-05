@@ -16,20 +16,20 @@ public class GuiElementSpinner extends Button
     private boolean hoverLower;
     public Integer value;
 
-    public GuiElementSpinner(int id, ISpinnerCallback parentGui, int x, int y)
+    public GuiElementSpinner(ISpinnerCallback parentGui, int x, int y)
     {
-        this(id, parentGui, x, y, 4210752);
+        this(parentGui, x, y, 4210752);
     }
 
-    public GuiElementSpinner(int id, ISpinnerCallback parentGui, int x, int y, int textColor)
+    public GuiElementSpinner(ISpinnerCallback parentGui, int x, int y, int textColor)
     {
-        super(id, x, y, 31, 20, "");
+        super(x, y, 31, 20, "", (button) -> {});
         this.parentGui = parentGui;
         this.textColor = textColor;
     }
 
     @Override
-    public void drawButton(Minecraft mc, int mX, int mY, float partial)
+    public void renderButton(int mouseX, int mouseY, float partial)
     {
         if (this.value == null)
         {
@@ -38,16 +38,17 @@ public class GuiElementSpinner extends Button
 
         if (this.visible)
         {
-            mc.getTextureManager().bindTexture(GuiElementSpinner.texture);
+            Minecraft minecraft = Minecraft.getInstance();
+            minecraft.getTextureManager().bindTexture(GuiElementSpinner.texture);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = mX >= this.x && mY >= this.y && mX < this.x + this.width && mY < this.y + this.height;
-            this.hoverUpper = mX >= this.x + 20 && mX < this.x + width && mY > this.y && mY < this.y + this.height / 2;
-            this.hoverLower = mX >= this.x + 20 && mX < this.x + width && mY > this.y + this.height / 2 && mY < this.y + this.height;
-            this.drawTexturedModalRect(this.x, this.y, 214, 0, 20, this.height);
-            this.drawTexturedModalRect(this.x + 20, this.y, this.hoverUpper ? 245 : 234, 0, 11, 10);
-            this.drawTexturedModalRect(this.x + 20, this.y + 10, this.hoverLower ? 245 : 234, 10, 11, 10);
-//            this.mouseDragged(mc, mX, mY);
-            mc.fontRenderer.drawString(this.value.toString(), this.x + 11 - (mc.fontRenderer.getStringWidth(this.value.toString()) >> 1), this.y + (this.height - 6) / 2, this.textColor, false);
+            this.isHovered = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
+            this.hoverUpper = mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y && mouseY < this.y + this.height / 2;
+            this.hoverLower = mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y + this.height / 2 && mouseY < this.y + this.height;
+            this.blit(this.x, this.y, 214, 0, 20, this.height);
+            this.blit(this.x + 20, this.y, this.hoverUpper ? 245 : 234, 0, 11, 10);
+            this.blit(this.x + 20, this.y + 10, this.hoverLower ? 245 : 234, 10, 11, 10);
+//            this.mouseDragged(minecraft, mX, mY);
+            minecraft.fontRenderer.drawString(this.value.toString(), this.x + 11 - (minecraft.fontRenderer.getStringWidth(this.value.toString()) >> 1), this.y + (this.height - 6) / 2, this.textColor);
         }
     }
 
@@ -64,22 +65,23 @@ public class GuiElementSpinner extends Button
     }
 
     @Override
-    public boolean mousePressed(Minecraft mc, int mX, int mY)
+    protected boolean clicked(double mouseX, double mouseY)
     {
-        if (this.enabled && this.visible)
+        Minecraft minecraft = Minecraft.getInstance();
+        if (this.active && this.visible)
         {
-            if (mX >= this.x + 20 && mX < this.x + width && mY > this.y && mY < this.y + this.height / 2)
+            if (mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y && mouseY < this.y + this.height / 2)
             {
-                if (this.parentGui.canPlayerEdit(this, mc.player))
+                if (this.parentGui.canPlayerEdit(this, minecraft.player))
                 {
                     increase();
                     return true;
                 }
             }
 
-            if (mX >= this.x + 20 && mX < this.x + width && mY > this.y + this.height / 2 && mY < this.y + this.height)
+            if (mouseX >= this.x + 20 && mouseX < this.x + width && mouseY > this.y + this.height / 2 && mouseY < this.y + this.height)
             {
-                if (this.parentGui.canPlayerEdit(this, mc.player))
+                if (this.parentGui.canPlayerEdit(this, minecraft.player))
                 {
                     decrease();
                     return true;

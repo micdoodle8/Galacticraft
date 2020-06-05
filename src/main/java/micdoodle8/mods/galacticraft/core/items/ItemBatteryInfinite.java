@@ -1,30 +1,20 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
-import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-
-import javax.annotation.Nullable;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemBatteryInfinite extends ItemElectricBase implements ISortableItem
 {
-    public ItemBatteryInfinite(String assetName)
+    public ItemBatteryInfinite(Item.Properties properties)
     {
-        super();
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setUnlocalizedName(assetName);
     }
 
     @Override
@@ -45,25 +35,25 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
         return 3;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-    {
-        tooltip.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
-        tooltip.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
-    }
+//    @Override
+//    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+//    {
+//        tooltip.add(EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.infinite_item.desc"));
+//        tooltip.add(EnumColor.RED + GCCoreUtil.translate("gui.creative_only.desc"));
+//    }
 
     @Override
     public float getElectricityStored(ItemStack itemStack)
@@ -100,14 +90,14 @@ public class ItemBatteryInfinite extends ItemElectricBase implements ISortableIt
         return energy;
     }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            list.add(new ItemStack(this, 1, 0));
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            list.add(new ItemStack(this, 1, 0));
+//        }
+//    }
 
     @Override
     public EnumSortCategoryItem getCategory(int meta)

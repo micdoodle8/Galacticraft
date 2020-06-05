@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedWitch;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.model.ModelWitch;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.WitchModel;
 
-public class ModelEvolvedWitch extends ModelWitch
+public class ModelEvolvedWitch extends WitchModel<EntityEvolvedWitch>
 {
     RendererModel tank1;
     RendererModel tank2;
@@ -120,7 +120,7 @@ public class ModelEvolvedWitch extends ModelWitch
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(EntityEvolvedWitch entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.tank1.render(scale);
@@ -147,9 +147,9 @@ public class ModelEvolvedWitch extends ModelWitch
     }
 
     @Override
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, Entity entity)
+    public void setRotationAngles(EntityEvolvedWitch witch, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+        super.setRotationAngles(witch, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.oxygenMask.rotateAngleY = this.villagerHead.rotateAngleY;
         this.oxygenMask.rotateAngleX = this.villagerHead.rotateAngleX;
     }

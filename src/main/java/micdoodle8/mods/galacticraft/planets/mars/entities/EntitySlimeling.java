@@ -237,15 +237,15 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     public void writeEntityToNBT(CompoundNBT nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setTag("SlimelingInventory", this.slimelingInventory.writeToNBT(new ListNBT()));
+        nbt.put("SlimelingInventory", this.slimelingInventory.writeToNBT(new ListNBT()));
         nbt.setFloat("SlimeRed", this.colorRed);
         nbt.setFloat("SlimeGreen", this.colorGreen);
         nbt.setFloat("SlimeBlue", this.colorBlue);
-        nbt.setInteger("SlimelingAge", this.age);
+        nbt.putInt("SlimelingAge", this.age);
         nbt.setString("SlimelingName", this.slimelingName);
-        nbt.setInteger("FavFoodID", this.favFoodID);
+        nbt.putInt("FavFoodID", this.favFoodID);
         nbt.setFloat("SlimelingDamage", this.attackDamage);
-        nbt.setInteger("SlimelingKills", this.kills);
+        nbt.putInt("SlimelingKills", this.kills);
         nbt.setString("OwnerUsername", this.getOwnerUsername());
     }
 
@@ -253,15 +253,15 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     public void readEntityFromNBT(CompoundNBT nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.slimelingInventory.readFromNBT(nbt.getTagList("SlimelingInventory", 10));
+        this.slimelingInventory.readFromNBT(nbt.getList("SlimelingInventory", 10));
         this.colorRed = nbt.getFloat("SlimeRed");
         this.colorGreen = nbt.getFloat("SlimeGreen");
         this.colorBlue = nbt.getFloat("SlimeBlue");
-        this.age = nbt.getInteger("SlimelingAge");
+        this.age = nbt.getInt("SlimelingAge");
         this.slimelingName = nbt.getString("SlimelingName");
-        this.favFoodID = nbt.getInteger("FavFoodID");
+        this.favFoodID = nbt.getInt("FavFoodID");
         this.attackDamage = nbt.getFloat("SlimelingDamage");
-        this.kills = nbt.getInteger("SlimelingKills");
+        this.kills = nbt.getInt("SlimelingKills");
         this.setOwnerUsername(nbt.getString("OwnerUsername"));
         this.setColorRed(this.colorRed);
         this.setColorGreen(this.colorGreen);
@@ -360,7 +360,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
     @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
-        if (this.isEntityInvulnerable(par1DamageSource))
+        if (this.isInvulnerableTo(par1DamageSource))
         {
             return false;
         }
@@ -460,7 +460,7 @@ public class EntitySlimeling extends TameableEntity implements IEntityBreathable
         }
         else if (!itemstack.isEmpty() && itemstack.getItem() == Items.SLIME_BALL)
         {
-            if (!player.capabilities.isCreativeMode)
+            if (!player.abilities.isCreativeMode)
             {
                 itemstack.shrink(1);
             }

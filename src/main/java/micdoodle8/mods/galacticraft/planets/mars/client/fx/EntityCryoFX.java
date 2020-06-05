@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class EntityCryoFX extends Particle
 {
     float field_70569_a;
@@ -52,7 +52,7 @@ public class EntityCryoFX extends Particle
      * Called to update the entity's position/logic.
      */
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
@@ -70,9 +70,9 @@ public class EntityCryoFX extends Particle
         this.motionZ *= 0.9599999785423279D;
         PlayerEntity entityplayer = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 2.0D, false);
 
-        if (entityplayer != null && this.posY > entityplayer.getEntityBoundingBox().minY)
+        if (entityplayer != null && this.posY > entityplayer.getBoundingBox().minY)
         {
-            this.posY += (entityplayer.getEntityBoundingBox().minY - this.posY) * 0.2D;
+            this.posY += (entityplayer.getBoundingBox().minY - this.posY) * 0.2D;
             this.motionY += (entityplayer.motionY - this.motionY) * 0.2D;
             this.setPosition(this.posX, this.posY, this.posZ);
         }

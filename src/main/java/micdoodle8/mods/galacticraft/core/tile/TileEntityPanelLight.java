@@ -33,7 +33,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     private BlockState superState;
     private static BlockState defaultLook = GalacticraftCore.isPlanetsLoaded ? AsteroidBlocks.blockBasic.getStateFromMeta(6) : GCBlocks.basicBlock.getStateFromMeta(4);
     public int color = 0xf0f0e0;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private AxisAlignedBB renderAABB;
 
     public TileEntityPanelLight()
@@ -80,7 +80,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -91,7 +91,7 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;
@@ -102,10 +102,10 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     {
         super.readFromNBT(nbt);
 
-        this.meta = nbt.getInteger("meta");
-        if (nbt.hasKey("col"))
+        this.meta = nbt.getInt("meta");
+        if (nbt.contains("col"))
         {
-            this.color = nbt.getInteger("col");
+            this.color = nbt.getInt("col");
         }
         CompoundNBT tag = nbt.getCompoundTag("sust");
         if (!tag.hasNoTags())
@@ -118,13 +118,13 @@ public class TileEntityPanelLight extends TileEntity implements IPacketReceiver
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("meta", this.meta);
-        nbt.setInteger("col", this.color);
+        nbt.putInt("meta", this.meta);
+        nbt.putInt("col", this.color);
         if (this.superState != null)
         {
             CompoundNBT tag = new CompoundNBT();
             writeBlockState(tag, this.superState);
-            nbt.setTag("sust", tag);
+            nbt.put("sust", tag);
         }
         return nbt;
     }

@@ -15,6 +15,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -31,17 +32,17 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
 
     private GuiElementCheckbox checkboxRenderBubble;
 
-    public GuiOxygenDistributor(PlayerInventory par1InventoryPlayer, TileEntityOxygenDistributor par2TileEntityAirDistributor)
+    public GuiOxygenDistributor(PlayerInventory playerInv, TileEntityOxygenDistributor distributor)
     {
-        super(new ContainerOxygenDistributor(par1InventoryPlayer, par2TileEntityAirDistributor));
-        this.distributor = par2TileEntityAirDistributor;
+        super(new ContainerOxygenDistributor(playerInv, distributor), playerInv, new StringTextComponent(distributor.getName()));
+        this.distributor = distributor;
         this.ySize = 180;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         List<String> batterySlotDesc = new ArrayList<String>();
@@ -71,24 +72,24 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
         this.checkboxRenderBubble = new GuiElementCheckbox(0, this, var5 + 85, var6 + 87, GCCoreUtil.translate("gui.message.bubble_visible.name"));
-        this.buttonList.add(this.checkboxRenderBubble);
+        this.buttons.add(this.checkboxRenderBubble);
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.distributor.getName(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.fontRenderer);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.fontRenderer);
+        this.font.drawString(this.distributor.getName(), 8, 10, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
+        this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 50, 4210752);
         status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + this.distributor.oxygenPerTick * 20 + GCCoreUtil.translate("gui.per_second");
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
+        this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 60, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.distributor.ueWattsPerTick * 20, ElectricUnit.WATT);
-        //		this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
+        //		this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 70, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.distributor.getVoltage(), ElectricUnit.VOLTAGE);
-        //		this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 80, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
+        //		this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 80, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
     }
 
     private String getStatus()
@@ -105,26 +106,26 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiOxygenDistributor.distributorTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiOxygenDistributor.distributorTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
+        this.blit(var5, var6 + 5, 0, 0, this.xSize, 181);
 
         if (this.distributor != null)
         {
             int scale = this.distributor.getCappedScaledOxygenLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
             scale = this.distributor.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
 
             if (this.distributor.getEnergyStoredGC() > 0)
             {
-                this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
+                this.blit(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
             if (this.distributor.getOxygenStored() > 0)
             {
-                this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
+                this.blit(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();
@@ -146,7 +147,7 @@ public class GuiOxygenDistributor extends GuiContainerGC implements ICheckBoxCal
     public void onSelectionChanged(GuiElementCheckbox checkbox, boolean newSelected)
     {
         this.distributor.setBubbleVisible(newSelected);
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(mc.world), new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_ON_ADVANCED_GUI_CLICKED_INT, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 6, this.distributor.getPos(), newSelected ? 1 : 0 }));
     }
 
     @Override

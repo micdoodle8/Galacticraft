@@ -63,7 +63,7 @@ public class AsteroidsPlayerHandler
     public void onPlayerUpdate(ServerPlayerEntity player)
     {
         if (!ConfigManagerAsteroids.disableSmallAsteroids) {
-            if (!player.world.isRemote && player.world.provider instanceof WorldProviderAsteroids) {
+            if (!player.world.isRemote && player.world.getDimension() instanceof WorldProviderAsteroids) {
                 final int f = 50;
 
                 if (player.world.rand.nextInt(f) == 0 && player.posY < 260D) {
@@ -89,7 +89,7 @@ public class AsteroidsPlayerHandler
                         smallAsteroid.spinYaw = player.world.rand.nextFloat() * 4;
                         smallAsteroid.spinPitch = player.world.rand.nextFloat() * 2;
 
-                        player.world.spawnEntity(smallAsteroid);
+                        player.world.addEntity(smallAsteroid);
                     }
                 }
             }

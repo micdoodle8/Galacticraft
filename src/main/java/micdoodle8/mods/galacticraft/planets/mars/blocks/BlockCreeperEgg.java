@@ -45,7 +45,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
         return false;
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -77,7 +77,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, World world, BlockPos pos, PlayerEntity player)
     {
         return ItemStack.EMPTY;
@@ -91,7 +91,7 @@ public class BlockCreeperEgg extends DragonEggBlock implements IShiftDescription
             EntityEvolvedCreeper creeper = new EntityEvolvedCreeper(world);
             creeper.setPosition(pos.getX() + 0.5, pos.getY() + 3, pos.getZ() + 0.5);
             creeper.setChild(true);
-            world.spawnEntity(creeper);
+            world.addEntity(creeper);
         }
 
         world.setBlockToAir(pos);

@@ -59,7 +59,7 @@ public abstract class SizedPiece extends Piece
 
         if (tagCompound.hasKey("dir"))
         {
-            this.direction = Direction.getFront(tagCompound.getInteger("dir"));
+            this.direction = Direction.byIndex(tagCompound.getInteger("dir"));
         }
         else
         {

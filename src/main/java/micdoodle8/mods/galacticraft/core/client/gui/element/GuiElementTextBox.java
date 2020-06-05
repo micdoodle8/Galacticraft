@@ -4,58 +4,78 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SharedConstants;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import org.lwjgl.input.Keyboard;
+import org.lwjgl.glfw.GLFW;
 
-public class GuiElementTextBox extends Button
+public class GuiElementTextBox extends Widget
 {
     public String text;
     public boolean numericOnly;
     public boolean centered;
     private int maxLength;
 
-    public long timeBackspacePressed;
+    public long backspacePressedMillis;
     public int cursorPulse;
-    public int backspacePressed;
+    public int backspacePressedTicks;
     public boolean isTextFocused = false;
     public int incorrectUseTimer;
     public boolean resetOnClick = true;
 
     private ITextBoxCallback parentGui;
 
-    private Minecraft mc = FMLClientHandler.instance().getClient();
+    private Minecraft minecraft = Minecraft.getInstance();
 
-    public GuiElementTextBox(int id, ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength, boolean centered)
+    public GuiElementTextBox(ITextBoxCallback parentGui, int x, int y, int width, int height, String initialText, boolean numericOnly, int maxLength, boolean centered)
     {
-        super(id, x, y, width, height, initialText);
+        super(x, y, width, height, initialText);
         this.parentGui = parentGui;
         this.numericOnly = numericOnly;
         this.maxLength = maxLength;
         this.centered = centered;
     }
 
-    /**
-     * Call this from the parent GUI class in keyTyped.
-     */
-    public boolean keyTyped(char keyChar, int keyID)
+    public boolean charTyped(char character, int modifiers) {
+        if (SharedConstants.isAllowedCharacter(character)) {
+            if (this.active) {
+                if (this.parentGui.canPlayerEdit(this, this.minecraft.player))
+                {
+                    this.text = this.text + Character.toString(character);
+                    this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
+                }
+                else
+                {
+                    this.incorrectUseTimer = 10;
+                    this.parentGui.onIntruderInteraction(this);
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean keyPressed(int key, int scanCode, int modifiers)
     {
         if (this.isTextFocused)
         {
-            if (keyID == Keyboard.KEY_BACK)
+            String prevText = this.text;
+            if (key == GLFW.GLFW_KEY_BACKSPACE)
             {
+                backspaceHeld = true;
                 if (this.text.length() > 0)
                 {
-                    if (this.parentGui.canPlayerEdit(this, this.mc.player))
+                    if (this.parentGui.canPlayerEdit(this, this.minecraft.player))
                     {
                         String toBeParsed = this.text.substring(0, this.text.length() - 1);
 
                         if (this.isValid(toBeParsed))
                         {
                             this.text = toBeParsed;
-                            this.timeBackspacePressed = System.currentTimeMillis();
+                            this.backspacePressedMillis = System.currentTimeMillis();
                         }
                         else
                         {
@@ -69,18 +89,13 @@ public class GuiElementTextBox extends Button
                     }
                 }
             }
-            else if (keyChar == 22)
+            else if (Screen.isPaste(key))
             {
-                String pastestring = Screen.getClipboardString();
-
-                if (pastestring == null)
-                {
-                    pastestring = "";
-                }
+                String pastestring = Minecraft.getInstance().keyboardListener.getClipboardString();
 
                 if (this.isValid(this.text + pastestring))
                 {
-                    if (this.parentGui.canPlayerEdit(this, this.mc.player))
+                    if (this.parentGui.canPlayerEdit(this, this.minecraft.player))
                     {
                         this.text = this.text + pastestring;
                         this.text = this.text.substring(0, Math.min(String.valueOf(this.text).length(), this.maxLength));
@@ -92,29 +107,33 @@ public class GuiElementTextBox extends Button
                     }
                 }
             }
-            else if (this.isValid(this.text + keyChar))
-            {
-                if (this.parentGui.canPlayerEdit(this, this.mc.player))
-                {
-                    this.text = this.text + keyChar;
-                    this.text = this.text.substring(0, Math.min(this.text.length(), this.maxLength));
-                }
-                else
-                {
-                    this.incorrectUseTimer = 10;
-                    this.parentGui.onIntruderInteraction(this);
-                }
-            }
 
-            this.parentGui.onTextChanged(this, this.text);
+            if (!prevText.equals(text))
+            {
+                this.parentGui.onTextChanged(this, this.text);
+            }
             return true;
         }
 
         return false;
     }
 
+    private boolean backspaceHeld = false;
+
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partial)
+    public boolean keyReleased(int key, int scanCode, int modifiers)
+    {
+        if (key == GLFW.GLFW_KEY_BACKSPACE)
+        {
+            backspaceHeld = false;
+            return true;
+        }
+
+        return super.keyReleased(key, scanCode, modifiers);
+    }
+
+    @Override
+    public void render(int mouseX, int mouseY, float partial)
     {
         if (this.text == null)
         {
@@ -124,42 +143,45 @@ public class GuiElementTextBox extends Button
 
         if (this.visible)
         {
-            AbstractGui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, ColorUtil.to32BitColor(140, 140, 140, 140));
-            AbstractGui.drawRect(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+            AbstractGui.fill(this.x, this.y, this.x + this.width, this.y + this.height, ColorUtil.to32BitColor(140, 140, 140, 140));
+            AbstractGui.fill(this.x + 1, this.y + 1, this.x + this.width - 1, this.y + this.height - 1, ColorUtil.to32BitColor(255, 0, 0, 0));
 
             this.cursorPulse++;
 
-            if (this.timeBackspacePressed > 0)
+            if (this.backspacePressedMillis > 0)
             {
-                if (Keyboard.isKeyDown(Keyboard.KEY_BACK) && this.text.length() > 0)
+                if (backspaceHeld && this.text.length() > 0)
                 {
-                    if (System.currentTimeMillis() - this.timeBackspacePressed > 200 / (1 + this.backspacePressed * 0.3F) && this.parentGui.canPlayerEdit(this, this.mc.player))
+                    if (this.text.length() > 0)
                     {
-                        String toBeParsed = this.text.substring(0, this.text.length() - 1);
-
-                        if (this.isValid(toBeParsed))
+                        if (System.currentTimeMillis() - this.backspacePressedMillis > 200 / (1 + this.backspacePressedTicks * 0.3F) && this.parentGui.canPlayerEdit(this, this.minecraft.player))
                         {
-                            this.text = toBeParsed;
-                            this.parentGui.onTextChanged(this, this.text);
-                        }
-                        else
-                        {
-                            this.text = "";
-                        }
+                            String toBeParsed = this.text.substring(0, this.text.length() - 1);
 
-                        this.timeBackspacePressed = System.currentTimeMillis();
-                        this.backspacePressed++;
-                    }
-                    else if (!this.parentGui.canPlayerEdit(this, this.mc.player))
-                    {
-                        this.incorrectUseTimer = 10;
-                        this.parentGui.onIntruderInteraction(this);
+                            if (this.isValid(toBeParsed))
+                            {
+                                this.text = toBeParsed;
+                                this.parentGui.onTextChanged(this, this.text);
+                            }
+                            else
+                            {
+                                this.text = "";
+                            }
+
+                            this.backspacePressedMillis = System.currentTimeMillis();
+                            this.backspacePressedTicks++;
+                        }
+                        else if (!this.parentGui.canPlayerEdit(this, this.minecraft.player))
+                        {
+                            this.incorrectUseTimer = 10;
+                            this.parentGui.onIntruderInteraction(this);
+                        }
                     }
                 }
                 else
                 {
-                    this.timeBackspacePressed = 0;
-                    this.backspacePressed = 0;
+                    this.backspacePressedMillis = 0;
+                    this.backspacePressedTicks = 0;
                 }
             }
 
@@ -172,10 +194,10 @@ public class GuiElementTextBox extends Button
 
             if (this.centered)
             {
-                xPos = this.x + this.width / 2 - this.mc.fontRenderer.getStringWidth(this.text) / 2;
+                xPos = this.x + this.width / 2 - this.minecraft.fontRenderer.getStringWidth(this.text) / 2;
             }
 
-            this.drawString(this.mc.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.y + this.height / 2 - 4, this.incorrectUseTimer > 0 ? ColorUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
+            this.drawString(this.minecraft.fontRenderer, this.text + (this.cursorPulse / 24 % 2 == 0 && this.isTextFocused ? "_" : ""), xPos, this.y + this.height / 2 - 4, this.incorrectUseTimer > 0 ? ColorUtil.to32BitColor(255, 255, 20, 20) : this.parentGui.getTextColor(this));
         }
     }
 
@@ -224,11 +246,11 @@ public class GuiElementTextBox extends Button
     }
 
     @Override
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
+    protected boolean clicked(double mouseX, double mouseY)
     {
-        if (super.mousePressed(par1Minecraft, par2, par3))
+        if (super.clicked(mouseX, mouseY))
         {
-            AbstractGui.drawRect(this.x, this.y, this.x + this.width, this.y + this.height, 0xffA0A0A0);
+            AbstractGui.fill(this.x, this.y, this.x + this.width, this.y + this.height, 0xffA0A0A0);
             this.isTextFocused = true;
             if (resetOnClick)
             {

@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelFlag;
 import micdoodle8.mods.galacticraft.core.entities.EntityFlag;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderFlag extends EntityRenderer<EntityFlag>
 {
     public static ResourceLocation flagTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/flag.png");
@@ -42,11 +42,11 @@ public class RenderFlag extends EntityRenderer<EntityFlag>
         float seedX = (((seed >> 16 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         float seedY = (((seed >> 20 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
         float seedZ = (((seed >> 24 & 7L) + 0.5F) / 8.0F - 0.5F) * 0.004F;
-        GlStateManager.translate(seedX, seedY + 1.5F, seedZ);
-        GlStateManager.translate((float) x, (float) y, (float) z);
-        GlStateManager.rotate(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
+        GlStateManager.translatef(seedX, seedY + 1.5F, seedZ);
+        GlStateManager.translatef((float) x, (float) y, (float) z);
+        GlStateManager.rotatef(180.0F - entity.getFacingAngle(), 0.0F, 1.0F, 0.0F);
         this.bindEntityTexture(entity);
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
         this.modelFlag.render(entity, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
         GlStateManager.popMatrix();
     }
@@ -54,7 +54,7 @@ public class RenderFlag extends EntityRenderer<EntityFlag>
     @Override
     public boolean shouldRender(EntityFlag lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(1D, 2D, 1D);
+        AxisAlignedBB axisalignedbb = lander.getBoundingBox().grow(1D, 2D, 1D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

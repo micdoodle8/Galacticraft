@@ -80,9 +80,9 @@ public class TeleportTypeMars implements ITeleportType
 
             if (stats.getTeleportCooldown() <= 0)
             {
-                if (player.capabilities.isFlying)
+                if (player.abilities.isFlying)
                 {
-                    player.capabilities.isFlying = false;
+                    player.abilities.isFlying = false;
                 }
 
                 EntityLandingBalloons lander = new EntityLandingBalloons(player);
@@ -91,7 +91,7 @@ public class TeleportTypeMars implements ITeleportType
                 {
                     boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                     lander.forceSpawn = true;
-                    newWorld.spawnEntity(lander);
+                    newWorld.addEntity(lander);
                     CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 }
 

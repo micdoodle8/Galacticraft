@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.world.ITeleportType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.world.World;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 

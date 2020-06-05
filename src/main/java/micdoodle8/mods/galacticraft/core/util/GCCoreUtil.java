@@ -2,62 +2,36 @@ package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.entities.EntityLanderBase;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerBuggy;
-import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.Language;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.ServerWorld;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.common.thread.EffectiveSide;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
+import org.apache.commons.io.Charsets;
 
 import javax.annotation.Nullable;
-
-import org.apache.commons.io.Charsets;
-import org.apache.commons.io.IOUtils;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class GCCoreUtil
 {
@@ -71,11 +45,13 @@ public class GCCoreUtil
     {
         try
         {
-            deobfuscated = Launch.classLoader.getClassBytes("net.minecraft.world.World") != null;
+            Class.forName("net.minecraft.world.World");
+            deobfuscated = true;
         }
         catch (final Exception e)
         {
-            e.printStackTrace();
+            deobfuscated = false;
+//            e.printStackTrace();
         }
     }
 
@@ -84,77 +60,77 @@ public class GCCoreUtil
         return deobfuscated;
     }
 
-    public static void openBuggyInv(ServerPlayerEntity player, IInventory buggyInv, int type)
-    {
-        player.getNextWindowId();
-        player.closeContainer();
-        int id = player.currentWindowId;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.world), new Object[] { id, 0, 0 }), player);
-        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
-        player.openContainer.windowId = id;
-        player.openContainer.addListener(player);
-    }
+//    public static void openBuggyInv(ServerPlayerEntity player, IInventory buggyInv, int type)
+//    {
+//        player.getNextWindowId();
+//        player.closeContainer();
+//        int id = player.currentWindowId;
+//        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.world), new Object[] { id, 0, 0 }), player);
+//        player.openContainer = new ContainerBuggy(player.inventory, buggyInv, type, player);
+//        player.openContainer.windowId = id;
+//        player.openContainer.addListener(player);
+//    }
+//
+//    public static void openParachestInv(ServerPlayerEntity player, EntityLanderBase landerInv)
+//    {
+//        player.getNextWindowId();
+//        player.closeContainer();
+//        int windowId = player.currentWindowId;
+//        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.world), new Object[] { windowId, 1, landerInv.getEntityId() }), player);
+//        player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
+//        player.openContainer.windowId = windowId;
+//        player.openContainer.addListener(player);
+//    }
 
-    public static void openParachestInv(ServerPlayerEntity player, EntityLanderBase landerInv)
-    {
-        player.getNextWindowId();
-        player.closeContainer();
-        int windowId = player.currentWindowId;
-        GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_OPEN_PARACHEST_GUI, GCCoreUtil.getDimensionID(player.world), new Object[] { windowId, 1, landerInv.getEntityId() }), player);
-        player.openContainer = new ContainerParaChest(player.inventory, landerInv, player);
-        player.openContainer.windowId = windowId;
-        player.openContainer.addListener(player);
-    }
-
-    public static int nextInternalID()
-    {
-        GCCoreUtil.nextID++;
-        return GCCoreUtil.nextID - 1;
-    }
-
-    public static void registerGalacticraftCreature(Class<? extends Entity> clazz, String name, int back, int fore)
-    {
-        registerGalacticraftNonMobEntity(clazz, name, 80, 3, true);
-        int nextEggID = getNextValidID();
-        if (nextEggID < 65536)
-        {
-            ResourceLocation resourcelocation = new ResourceLocation(Constants.MOD_ID_CORE, name);
-//            name = Constants.MOD_ID_CORE + "." + name;
-            EntityList.ENTITY_EGGS.put(resourcelocation, new EntityList.EntityEggInfo(resourcelocation, back, fore));
-        }
-    }
-
-    public static int getNextValidID()
-    {
-        int eggID = 255;
-
-        //Non-global entity IDs - for egg ID purposes - can be greater than 255
-        //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
-
-        do
-        {
-            eggID++;
-        }
-        while (net.minecraftforge.registries.GameData.getEntityRegistry().getValue(eggID) != null);
-
-        return eggID;
-    }
-
-    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
-    {
-        ResourceLocation registryName = new ResourceLocation(Constants.MOD_ID_CORE, var1);
-        EntityRegistry.registerModEntity(registryName, var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
-    }
+//    public static int nextInternalID()
+//    {
+//        GCCoreUtil.nextID++;
+//        return GCCoreUtil.nextID - 1;
+//    }
+//
+//    public static void registerGalacticraftCreature(Class<? extends Entity> clazz, String name, int back, int fore)
+//    {
+//        registerGalacticraftNonMobEntity(clazz, name, 80, 3, true);
+//        int nextEggID = getNextValidID();
+//        if (nextEggID < 65536)
+//        {
+//            ResourceLocation resourcelocation = new ResourceLocation(Constants.MOD_ID_CORE, name);
+////            name = Constants.MOD_ID_CORE + "." + name;
+//            EntityList.ENTITY_EGGS.put(resourcelocation, new EntityList.EntityEggInfo(resourcelocation, back, fore));
+//        }
+//    }
+//
+//    public static int getNextValidID()
+//    {
+//        int eggID = 255;
+//
+//        //Non-global entity IDs - for egg ID purposes - can be greater than 255
+//        //The spawn egg will have this metadata.  Metadata up to 65535 is acceptable (see potions).
+//
+//        do
+//        {
+//            eggID++;
+//        }
+//        while (net.minecraftforge.registries.GameData.getEntityRegistry().getValue(eggID) != null);
+//
+//        return eggID;
+//    }
+//
+//    public static void registerGalacticraftNonMobEntity(Class<? extends Entity> var0, String var1, int trackingDistance, int updateFreq, boolean sendVel)
+//    {
+//        ResourceLocation registryName = new ResourceLocation(Constants.MOD_ID_CORE, var1);
+//        EntityRegistry.registerModEntity(registryName, var0, var1, nextInternalID(), GalacticraftCore.instance, trackingDistance, updateFreq, sendVel);
+//    }
 
     public static void registerGalacticraftItem(String key, Item item)
     {
         registerGalacticraftItem(key, new ItemStack(item));
     }
 
-    public static void registerGalacticraftItem(String key, Item item, int metadata)
-    {
-        registerGalacticraftItem(key, new ItemStack(item, 1, metadata));
-    }
+//    public static void registerGalacticraftItem(String key, Item item, int metadata)
+//    {
+//        registerGalacticraftItem(key, new ItemStack(item, 1, metadata));
+//    }
 
     public static void registerGalacticraftItem(String key, ItemStack stack)
     {
@@ -192,7 +168,18 @@ public class GCCoreUtil
 
     public static String translateWithFormat(String key, Object... values)
     {
-        String result = I18n.translateToLocalFormatted(key, values);
+        String translation = LanguageMap.getInstance().translateKey(key);
+        String result;
+
+        try
+        {
+            result = String.format(translation, values);
+        }
+        catch (IllegalFormatException var5)
+        {
+            result = "Format error: " + translation;
+        }
+
         int comment = result.indexOf('#');
         String ret = (comment > 0) ? result.substring(0, comment).trim() : result;
         for (int i = 0; i < key.length(); ++i)
@@ -219,7 +206,7 @@ public class GCCoreUtil
     public static String lowerCaseNoun(String string)
     {
         Language l = Minecraft.getInstance().getLanguageManager().getCurrentLanguage();
-        if (l.getLanguageCode().equals("de_DE"))
+        if (l.getCode().equals("de_DE"))
         {
             return string;
         }
@@ -258,77 +245,77 @@ public class GCCoreUtil
         return new ByteArrayInputStream(outputstream.toByteArray());
     }
 
-    public static void loadLanguage(String langIdentifier, String assetPrefix, File source)
+//    public static void loadLanguage(String langIdentifier, String assetPrefix, File source)
+//    {
+//        if (!lastLang.equals(langIdentifier))
+//        {
+//            langDisable = false;
+//        }
+//        if (langDisable) return;
+//        String langFile = "assets/" + assetPrefix + "/lang/" + langIdentifier.substring(0, 3).toLowerCase() + langIdentifier.substring(3).toUpperCase() + ".lang";
+//        InputStream stream = null;
+//        ZipFile zip = null;
+//        try
+//        {
+//            if (source.isDirectory() && (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
+//            {
+//                stream = new FileInputStream(new File(source.toURI().resolve(langFile).getPath()));
+//            }
+//            else
+//            {
+//                zip = new ZipFile(source);
+//                ZipEntry entry = zip.getEntry(langFile);
+//                if(entry == null) throw new FileNotFoundException();
+//                stream = zip.getInputStream(entry);
+//            }
+//            LanguageMap.inject(GCCoreUtil.supplementEntityKeys(stream, assetPrefix));
+//        }
+//        catch(FileNotFoundException fnf)
+//        {
+//            langDisable = true;
+//        }
+//        catch(Exception ignore) { }
+//        finally
+//        {
+//            if (stream != null) IOUtils.closeQuietly(stream);
+//            try
+//            {
+//                if (zip != null) zip.close();
+//            }
+//            catch (IOException ignore) {}
+//        }
+//    } TODO ?
+
+    public static DimensionType getDimensionID(IWorldReader world)
     {
-        if (!lastLang.equals(langIdentifier))
-        {
-            langDisable = false;
-        }
-        if (langDisable) return;
-        String langFile = "assets/" + assetPrefix + "/lang/" + langIdentifier.substring(0, 3).toLowerCase() + langIdentifier.substring(3).toUpperCase() + ".lang";
-        InputStream stream = null;
-        ZipFile zip = null;
-        try
-        {
-            if (source.isDirectory() && (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment"))
-            {
-                stream = new FileInputStream(new File(source.toURI().resolve(langFile).getPath()));
-            }
-            else
-            {
-                zip = new ZipFile(source);
-                ZipEntry entry = zip.getEntry(langFile);
-                if(entry == null) throw new FileNotFoundException();
-                stream = zip.getInputStream(entry);
-            }
-            LanguageMap.inject(GCCoreUtil.supplementEntityKeys(stream, assetPrefix));
-        }
-        catch(FileNotFoundException fnf)
-        {
-            langDisable = true;
-        }
-        catch(Exception ignore) { }
-        finally
-        {
-            if (stream != null) IOUtils.closeQuietly(stream);
-            try
-            {
-                if (zip != null) zip.close();
-            }
-            catch (IOException ignore) {}
-        }
+        return world.getDimension().getType();
     }
 
-    public static int getDimensionID(World world)
+    public static DimensionType getDimensionID(Dimension provider)
     {
-        return world.provider.getDimension();
+        return provider.getType();
     }
 
-    public static int getDimensionID(Dimension provider)
+    public static DimensionType getDimensionID(TileEntity tileEntity)
     {
-        return provider.getDimension();
+        return tileEntity.getWorld().dimension.getType();
     }
 
-    public static int getDimensionID(TileEntity tileEntity)
-    {
-        return tileEntity.getWorld().provider.getDimension();
-    }
-
-    public static ServerWorld[] getWorldServerList()
+    public static Iterable<ServerWorld> getWorldServerList()
     {
         MinecraftServer server = getServer();
         if (server != null)
         {
-            return server.worlds;
+            return server.getWorlds();
         }
-        return new ServerWorld[0];
+        return null;
     }
     
-    public static ServerWorld[] getWorldServerList(World world)
+    public static Iterable<ServerWorld> getWorldServerList(World world)
     {
         if (world instanceof ServerWorld)
         {
-            return ((ServerWorld)world).getMinecraftServer().worlds;
+            return ((ServerWorld)world).getServer().getWorlds();
         }
         return GCCoreUtil.getWorldServerList();
     }
@@ -337,18 +324,18 @@ public class GCCoreUtil
     {
         for (ServerWorld world : GCCoreUtil.getWorldServerList())
         {
-            int id = getDimensionID(world);
+            DimensionType id = getDimensionID(world);
             GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(packetType, id, data), id);
         }
     }
 
-    public static void sendToAllAround(PacketSimple packet, World world, int dimID, BlockPos pos, double radius)
+    public static void sendToAllAround(PacketSimple packet, World world, DimensionType dimID, BlockPos pos, double radius)
     {
         double x = pos.getX() + 0.5D;
         double y = pos.getY() + 0.5D;
         double z = pos.getZ() + 0.5D;
         double r2 = radius * radius;
-        for (PlayerEntity playerMP : world.playerEntities)
+        for (PlayerEntity playerMP : world.getPlayers())
         {
             if (playerMP.dimension == dimID)
             {
@@ -385,19 +372,19 @@ public class GCCoreUtil
     /**
      * Custom getEffectiveSide method, covering more cases than FMLCommonHandler
      */
-    public static Side getEffectiveSide()
+    public static LogicalSide getEffectiveSide()
     {
-        if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER || Thread.currentThread().getName().startsWith("Netty Epoll Server IO"))
+        if (EffectiveSide.get() == LogicalSide.SERVER || Thread.currentThread().getName().startsWith("Netty Epoll Server IO"))
         {
-            return Side.SERVER;
+            return LogicalSide.SERVER;
         }
 
-        return Side.CLIENT;
+        return LogicalSide.CLIENT;
     }
 
     public static MinecraftServer getServer()
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
         if (server == null)
         {
             // This may be called from a different thread e.g. MapUtil
@@ -457,13 +444,13 @@ public class GCCoreUtil
         if (y > 0) result.add(new BlockPos(x, y - 1, z));
         if (y < 255) result.add(new BlockPos(x, y + 1, z));
         BlockPos pos = new BlockPos(x, y, z - 1);
-        if ((z & 15) > 0 || world.isBlockLoaded(pos, false)) result.add(pos);
+        if ((z & 15) > 0 || world.isBlockLoaded(pos)) result.add(pos);
         pos = new BlockPos(x, y, z + 1);
-        if ((z & 15) < 15 || world.isBlockLoaded(pos, false)) result.add(pos);
+        if ((z & 15) < 15 || world.isBlockLoaded(pos)) result.add(pos);
         pos = new BlockPos(x - 1, y, z);
-        if ((x & 15) > 0 || world.isBlockLoaded(pos, false)) result.add(pos);
+        if ((x & 15) > 0 || world.isBlockLoaded(pos)) result.add(pos);
         pos = new BlockPos(x + 1, y, z);
-        if ((x & 15) < 15 || world.isBlockLoaded(pos, false)) result.add(pos);
+        if ((x & 15) < 15 || world.isBlockLoaded(pos)) result.add(pos);
     }
     
     //For performance
@@ -489,11 +476,11 @@ public class GCCoreUtil
 	        double dx = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
 	        double dy = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
 	        double dz = world.rand.nextFloat() * var + (1.0F - var) * 0.5D;
-	        ItemEntity entityitem = new ItemEntity(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.splitStack(world.rand.nextInt(21) + 10));
+	        ItemEntity entityitem = new ItemEntity(world, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, stack.split(world.rand.nextInt(21) + 10));
 	
 	        entityitem.setPickupDelay(10);
 	
-	        world.spawnEntity(entityitem);
+	        world.addEntity(entityitem);
         }
     }
 

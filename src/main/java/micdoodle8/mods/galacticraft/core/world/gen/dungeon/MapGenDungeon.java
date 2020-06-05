@@ -67,7 +67,7 @@ public class MapGenDungeon extends Structure
     @Override
     protected boolean canSpawnStructureAtCoords(int chunkX, int chunkZ)
     {
-        long dungeonPos = getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.provider).getDungeonSpacing());
+        long dungeonPos = getDungeonPosForCoords(this.world, chunkX, chunkZ, ((IGalacticraftWorldProvider) this.world.getDimension()).getDungeonSpacing());
         int i = (int) (dungeonPos >> 32);
         int j = (int) dungeonPos;  //Java automatically gives the 32 least significant bits
         return i == chunkX && j == chunkZ;
@@ -88,7 +88,7 @@ public class MapGenDungeon extends Structure
 
         int k = chunkX / numChunks;
         int l = chunkZ / numChunks;
-        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.provider.getDimension());
+        long seed = (long)k * 341873128712L + (long)l * 132897987541L + world.getWorldInfo().getSeed() + (long)(10387340 + world.getDimension().getType());
         Random random = new Random();
         random.setSeed(seed);
         k = k * numChunks + random.nextInt(numChunks);
@@ -102,7 +102,7 @@ public class MapGenDungeon extends Structure
      */
     public static float directionToNearestDungeon(World world, double xpos, double zpos)
     {
-        int spacing = ((IGalacticraftWorldProvider) world.provider).getDungeonSpacing();
+        int spacing = ((IGalacticraftWorldProvider) world.getDimension()).getDungeonSpacing();
         if (spacing == 0) return 0F;
         int x = MathHelper.floor(xpos);
         int z = MathHelper.floor(zpos);

@@ -1,32 +1,33 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity>
+@OnlyIn(Dist.CLIENT)
+public class LayerOxygenMask extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>
 {
     private final PlayerRenderer playerRenderer;
     public RendererModel oxygenMask;
 
     public LayerOxygenMask(PlayerRenderer playerRendererIn)
     {
+        super(playerRendererIn);
         this.playerRenderer = playerRendererIn;
         float scaleFactor = 1.0F;
-        ModelPlayer modelPlayer = playerRendererIn.getMainModel();
+        PlayerModel<AbstractClientPlayerEntity> modelPlayer = playerRendererIn.getEntityModel();
 
         this.oxygenMask = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.oxygenMask.addBox(-8.0F, -16.0F, -8.0F, 16, 16, 16, scaleFactor);
@@ -34,7 +35,7 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
+    public void render(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
         {
@@ -43,14 +44,14 @@ public class LayerOxygenMask implements LayerRenderer<AbstractClientPlayerEntity
             if (gearData != null)
             {
                 boolean wearingMask = gearData.getMask() != GCPlayerHandler.GEAR_NOT_PRESENT;
-                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.oxygenMaskTexture);
+                Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.OXYGEN_MASK_TEXTURE);
 
-                ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedHeadwear, this.oxygenMask);
-                this.oxygenMask.rotationPointY = this.playerRenderer.getMainModel().bipedHeadwear.rotationPointY * 8.0F;
+                ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedHeadwear, this.oxygenMask);
+                this.oxygenMask.rotationPointY = this.playerRenderer.getEntityModel().bipedHeadwear.rotationPointY * 8.0F;
 
                 GlStateManager.enableRescaleNormal();
                 GlStateManager.pushMatrix();
-                GlStateManager.scale(0.5F, 0.5F, 0.5F);
+                GlStateManager.scalef(0.5F, 0.5F, 0.5F);
 
                 if (wearingMask)
                 {

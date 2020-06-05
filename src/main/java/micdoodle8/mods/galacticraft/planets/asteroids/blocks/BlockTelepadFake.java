@@ -92,7 +92,7 @@ public class BlockTelepadFake extends BlockAdvancedTile implements ITileEntityPr
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 //    {
 //        this.setBlockBoundsBasedOnState(worldIn, pos);

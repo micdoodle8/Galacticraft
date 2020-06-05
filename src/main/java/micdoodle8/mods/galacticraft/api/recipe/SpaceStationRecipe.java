@@ -4,12 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.util.ResourceLocation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SpaceStationRecipe
 {
@@ -40,8 +38,11 @@ public class SpaceStationRecipe
             }
             else if (obj instanceof String)
             {
-                List<ItemStack> stacks = OreDictionary.getOres((String) obj);
-                this.input.put(stacks, amount);
+                Collection<Item> items = ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String)obj)).getAllElements();
+                for (Item item : items)
+                {
+                    this.input.put(item, amount);
+                }
             }
             else if (obj instanceof ArrayList)
             {
@@ -183,7 +184,7 @@ public class SpaceStationRecipe
 
     public static boolean checkItemEquals(ItemStack target, ItemStack input)
     {
-        return target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage());
+        return target.getItem() == input.getItem() && target.getDamage() == input.getDamage();
     }
 
     /**

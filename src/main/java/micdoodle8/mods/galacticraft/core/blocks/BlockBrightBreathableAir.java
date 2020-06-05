@@ -10,7 +10,7 @@ import net.minecraft.state.StateContainer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockBrightBreathableAir extends AirBlock
+public class BlockBrightBreathableAir extends BlockThermalAir
 {
     public static final BooleanProperty THERMAL = BooleanProperty.create("thermal");
     
@@ -39,7 +39,7 @@ public class BlockBrightBreathableAir extends AirBlock
 //    }
 //
 //    @Override
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        final Block block = blockAccess.getBlockState(pos).getBlock();
 //        if (block == this || block == GCBlocks.breatheableAir)

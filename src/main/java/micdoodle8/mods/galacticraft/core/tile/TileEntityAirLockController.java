@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.blocks.BlockAirLockWall;
 import micdoodle8.mods.galacticraft.core.client.sounds.GCSounds;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
@@ -398,7 +398,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         this.ownerName = nbt.getString("OwnerName");
         this.redstoneActivation = nbt.getBoolean("RedstoneActivation");
         this.playerDistanceActivation = nbt.getBoolean("PlayerDistanceActivation");
-        this.playerDistanceSelection = nbt.getInteger("PlayerDistanceSelection");
+        this.playerDistanceSelection = nbt.getInt("PlayerDistanceSelection");
         this.playerNameMatches = nbt.getBoolean("PlayerNameMatches");
         this.playerToOpenFor = nbt.getString("PlayerToOpenFor");
         this.invertSelection = nbt.getBoolean("InvertSelection");
@@ -414,7 +414,7 @@ public class TileEntityAirLockController extends TileEntityAirLock
         nbt.setString("OwnerName", this.ownerName);
         nbt.setBoolean("RedstoneActivation", this.redstoneActivation);
         nbt.setBoolean("PlayerDistanceActivation", this.playerDistanceActivation);
-        nbt.setInteger("PlayerDistanceSelection", this.playerDistanceSelection);
+        nbt.putInt("PlayerDistanceSelection", this.playerDistanceSelection);
         nbt.setBoolean("PlayerNameMatches", this.playerNameMatches);
         nbt.setString("PlayerToOpenFor", this.playerToOpenFor);
         nbt.setBoolean("InvertSelection", this.invertSelection);

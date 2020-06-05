@@ -19,20 +19,20 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemOxygenGear extends Item implements ISortableItem, IClickableItem
 {
-    public ItemOxygenGear(String assetName)
+    public ItemOxygenGear(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

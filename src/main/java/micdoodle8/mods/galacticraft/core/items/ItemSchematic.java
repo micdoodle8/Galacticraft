@@ -12,10 +12,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.HangingEntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.util.*;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
@@ -31,7 +28,7 @@ import javax.annotation.Nullable;
 
 public class ItemSchematic extends HangingEntityItem implements ISchematicItem, ISortableItem
 {
-    public ItemSchematic(String assetName)
+    public ItemSchematic(Item.Properties builder)
     {
         super(EntityHangingSchematic.class);
         this.setMaxDamage(0);
@@ -40,11 +37,11 @@ public class ItemSchematic extends HangingEntityItem implements ISchematicItem, 
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
@@ -59,7 +56,7 @@ public class ItemSchematic extends HangingEntityItem implements ISchematicItem, 
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
@@ -72,7 +69,7 @@ public class ItemSchematic extends HangingEntityItem implements ISchematicItem, 
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         switch (par1ItemStack.getItemDamage())
@@ -112,7 +109,7 @@ public class ItemSchematic extends HangingEntityItem implements ISchematicItem, 
                 if (!worldIn.isRemote)
                 {
                     entityhanging.playPlaceSound();
-                    worldIn.spawnEntity(entityhanging);
+                    worldIn.addEntity(entityhanging);
                     entityhanging.sendToClient(worldIn, blockpos);
                 }
 

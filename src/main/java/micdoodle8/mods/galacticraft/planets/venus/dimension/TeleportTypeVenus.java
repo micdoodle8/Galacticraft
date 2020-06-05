@@ -80,9 +80,9 @@ public class TeleportTypeVenus implements ITeleportType
 
             if (stats.getTeleportCooldown() <= 0)
             {
-                if (player.capabilities.isFlying)
+                if (player.abilities.isFlying)
                 {
-                    player.capabilities.isFlying = false;
+                    player.abilities.isFlying = false;
                 }
 
                 if (!newWorld.isRemote)
@@ -91,7 +91,7 @@ public class TeleportTypeVenus implements ITeleportType
 
                     boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                     entryPod.forceSpawn = true;
-                    newWorld.spawnEntity(entryPod);
+                    newWorld.addEntity(entryPod);
                     CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 }
 

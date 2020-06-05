@@ -1,7 +1,5 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
-import java.util.Random;
-
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedEnderman;
@@ -9,14 +7,16 @@ import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolv
 import micdoodle8.mods.galacticraft.core.client.render.entities.layer.LayerEvolvedEndermanHeldBlock;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman>
+import java.util.Random;
+
+@OnlyIn(Dist.CLIENT)
+public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman, ModelEvolvedEnderman>
 {
     private static final ResourceLocation endermanTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/evolved_enderman.png");
     private ModelEvolvedEnderman endermanModel;
@@ -26,7 +26,7 @@ public class RenderEvolvedEnderman extends MobRenderer<EntityEvolvedEnderman>
     public RenderEvolvedEnderman(EntityRendererManager manager)
     {
         super(manager, new ModelEvolvedEnderman(), 0.5F);
-        this.endermanModel = (ModelEvolvedEnderman)super.mainModel;
+        this.endermanModel = (ModelEvolvedEnderman)super.entityModel;
         this.addLayer(new LayerEvolvedEndermanEyes(this));
         this.addLayer(new LayerEvolvedEndermanHeldBlock(this));
     }

@@ -1,38 +1,37 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemOxygenTank extends Item implements ISortableItem, IClickableItem
 {
-    public ItemOxygenTank(int tier, String assetName)
+    public ItemOxygenTank(int tier, Item.Properties builder)
     {
-        super();
-        this.setMaxStackSize(1);
-        this.setMaxDamage(tier * 900);
-        this.setUnlocalizedName(assetName);
+        super(builder);
+//        this.setMaxStackSize(1);
+//        this.setMaxDamage(tier * 900);
+//        this.setUnlocalizedName(assetName);
 //        this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
-        this.setNoRepair();
+//        this.setNoRepair();
     }
 
     @Override
@@ -41,34 +40,34 @@ public class ItemOxygenTank extends Item implements ISortableItem, IClickableIte
         return false;
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            list.add(new ItemStack(this, 1, 0));
-            list.add(new ItemStack(this, 1, this.getMaxDamage()));
-        }
-    }
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            list.add(new ItemStack(this, 1, 0));
+//            list.add(new ItemStack(this, 1, this.getMaxDamage()));
+//        }
+//    }
+
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        tooltip.add(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage()));
+        tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.tank.oxygen_remaining") + ": " + (stack.getMaxDamage() - stack.getDamage())));
     }
 
     @Override

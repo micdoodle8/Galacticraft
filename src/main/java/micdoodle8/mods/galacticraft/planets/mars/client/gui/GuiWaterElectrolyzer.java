@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiWaterElectrolyzer extends GuiContainerGC
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/gas_liquefier.png");
@@ -42,7 +42,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
     public GuiWaterElectrolyzer(PlayerInventory par1InventoryPlayer, TileEntityElectrolyzer tileEntity)
     {
-        super(new ContainerElectrolyzer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
+        super(new ContainerElectrolyzer(par1InventoryPlayer, tileEntity, Minecraft.getInstance().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -90,7 +90,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.buttonList.add(this.buttonDisable = new Button(0, this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
+        this.buttons.add(this.buttonDisable = new Button(0, this.width / 2 - 49, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
     }
 
     @Override
@@ -152,7 +152,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
+        this.minecraft.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
@@ -161,7 +161,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         int waterLevel = this.tileEntity.getScaledGasLevel(38);
         //Water
-        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.gasTextures);
+        this.minecraft.textureManager.bindTexture(GuiWaterElectrolyzer.gasTextures);
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - waterLevel, 1 + 4 * 17, 38 - waterLevel, 16, waterLevel);
         //Oxygen
         int displayInt = this.tileEntity.getScaledFuelLevel(38);
@@ -172,7 +172,7 @@ public class GuiWaterElectrolyzer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.mc.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
+        this.minecraft.textureManager.bindTexture(GuiWaterElectrolyzer.refineryTexture);
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {

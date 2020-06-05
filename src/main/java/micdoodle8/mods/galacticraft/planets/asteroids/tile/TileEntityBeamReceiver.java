@@ -45,7 +45,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
         if (this.preLoadFacing != -1)
         {
-            this.setFacing(Direction.getFront(this.preLoadFacing));
+            this.setFacing(Direction.byIndex(this.preLoadFacing));
             this.preLoadFacing = -1;
         }
 
@@ -62,7 +62,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
 
                     if (electricalTile.storage.getEnergyStoredGC() > 0)
                     {
-                        EnergySourceAdjacent source = new EnergySourceAdjacent(Direction.getFront(this.facing.getIndex() ^ 1));
+                        EnergySourceAdjacent source = new EnergySourceAdjacent(Direction.byIndex(this.facing.getIndex() ^ 1));
                         float toSend = Math.min(electricalTile.storage.getMaxExtract(), electricalTile.storage.getEnergyStoredGC());
                         float transmitted = this.getTarget().receiveEnergyGC(new EnergySourceWireless(Lists.newArrayList((ILaserNode) this)), toSend, false);
                         electricalTile.extractEnergyGC(source, transmitted, false);
@@ -365,14 +365,14 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.preLoadFacing = nbt.getInteger("FacingSide");
+        this.preLoadFacing = nbt.getInt("FacingSide");
     }
 
     @Override
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("FacingSide", this.facing == null ? this.preLoadFacing : this.facing.ordinal());
+        nbt.putInt("FacingSide", this.facing == null ? this.preLoadFacing : this.facing.ordinal());
         return nbt;
     }
 
@@ -385,7 +385,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     private AxisAlignedBB renderAABB;
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -396,7 +396,7 @@ public class TileEntityBeamReceiver extends TileEntityBeamOutput implements IEne
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_SHORT;

@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.client;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -91,11 +91,11 @@ public class SkyProviderMoon extends IRenderHandler
             ClientProxyCore.overworldTextureRequestSent = true;
         }
 
-        WorldProviderMoon gcProvider = null;
+        DimensionMoon gcProvider = null;
 
-        if (world.provider instanceof WorldProviderMoon)
+        if (world.getDimension() instanceof DimensionMoon)
         {
-            gcProvider = (WorldProviderMoon) world.provider;
+            gcProvider = (DimensionMoon) world.getDimension();
         }
 
         GL11.glDisable(GL11.GL_TEXTURE_2D);
@@ -159,7 +159,7 @@ public class SkyProviderMoon extends IRenderHandler
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = 20.0F;
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderMoon.sunTexture);
+        Minecraft.getInstance().textureManager.bindTexture(SkyProviderMoon.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, 100.0D, -var12).tex(0.0D, 0.0D).endVertex();
         worldRenderer.pos(var12, 100.0D, -var12).tex(1.0D, 0.0D).endVertex();
@@ -188,7 +188,7 @@ public class SkyProviderMoon extends IRenderHandler
         else
         {
             // Overworld texture is 48x48 in a 64x64 .png file
-            FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderMoon.overworldTexture);
+            Minecraft.getInstance().textureManager.bindTexture(SkyProviderMoon.overworldTexture);
         }
 
         world.getMoonPhase();
@@ -315,7 +315,7 @@ public class SkyProviderMoon extends IRenderHandler
 
     public float getSkyBrightness(float par1)
     {
-        final float var2 = FMLClientHandler.instance().getClient().world.getCelestialAngle(par1);
+        final float var2 = Minecraft.getInstance().world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.sin(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)

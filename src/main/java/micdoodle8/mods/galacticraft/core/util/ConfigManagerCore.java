@@ -1,27 +1,18 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.google.common.primitives.Ints;
-import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
-import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
-import micdoodle8.mods.galacticraft.core.recipe.RecipeManagerGC;
-import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class ConfigManagerCore
 {
@@ -814,18 +805,17 @@ public class ConfigManagerCore
 
             sealableIDs = COMMON_BUILDER.comment("List non-opaque blocks from other mods (for example, special types of glass) that the Oxygen Sealer should recognize as solid seals. Format is BlockName or BlockName:metadata")
                     .translation("gc.configgui.sealable_i_ds")
-                    .define("external_sealable_ids", new String[] { Block.REGISTRY.getNameForObject(Blocks.GLASS_PANE) + ":0" }).get();
+                    .define("external_sealable_ids", new String[] { Blocks.GLASS_PANE.getRegistryName().toString() }).get();
 
             detectableIDs = COMMON_BUILDER.comment("List blocks from other mods that the Sensor Glasses should recognize as solid blocks. Format is BlockName or BlockName:metadata.")
                     .translation("gc.configgui.detectable_i_ds")
                     .define("external_detectable_ids", new String[] {
-                            Block.REGISTRY.getNameForObject(Blocks.COAL_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.DIAMOND_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.GOLD_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.IRON_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.LAPIS_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.REDSTONE_ORE).getResourcePath(),
-                            Block.REGISTRY.getNameForObject(Blocks.LIT_REDSTONE_ORE).getResourcePath() }).get();
+                            Blocks.COAL_ORE.getRegistryName().getPath(),
+                            Blocks.DIAMOND_ORE.getRegistryName().getPath(),
+                            Blocks.GOLD_ORE.getRegistryName().getPath(),
+                            Blocks.IRON_ORE.getRegistryName().getPath(),
+                            Blocks.LAPIS_ORE.getRegistryName().getPath(),
+                            Blocks.REDSTONE_ORE.getRegistryName().getPath() }).get();
 
             alternateCanisterRecipe = COMMON_BUILDER.comment("Enable this if the standard canister recipe causes a conflict.")
                     .translation("gc.configgui.alternate_canister_recipe")
@@ -1090,72 +1080,36 @@ public class ConfigManagerCore
 //        return list;
 //    }
 
-//    public static BlockTuple stringToBlock(String s, String caller, boolean logging)
-//    {
-//        int lastColon = s.lastIndexOf(':');
-//        int meta = -1;
-//        String name;
-//
-//        if (lastColon > 0)
-//        {
-//            try
-//            {
-//                meta = Integer.parseInt(s.substring(lastColon + 1, s.length()));
-//            }
-//            catch (NumberFormatException ex)
-//            {
-//            }
-//        }
-//
-//        if (meta == -1)
-//        {
-//            name = s;
-//        }
-//        else
-//        {
-//            name = s.substring(0, lastColon);
-//        }
-//
-//        Block block = Block.getBlockFromName(name);
-//        if (block == null)
-//        {
-//            Item item = (Item) Item.REGISTRY.getObject(new ResourceLocation(name));
-//            if (item instanceof ItemBlock)
-//            {
-//                block = ((ItemBlock) item).getBlock();
-//            }
-//            if (block == null)
-//            {
-//                if (logging)
-//                {
-//                    GCLog.severe("[config] " + caller + ": unrecognised block name '" + s + "'.");
-//                }
-//                return null;
-//            }
-//        }
-//        try
-//        {
-//            Integer.parseInt(name);
-//            String bName = (String) Block.REGISTRY.getNameForObject(block).toString();
-//            if (logging)
-//            {
-//                GCLog.info("[config] " + caller + ": the use of numeric IDs is discouraged, please use " + bName + " instead of " + name);
-//            }
-//        }
-//        catch (NumberFormatException ex)
-//        {
-//        }
-//        if (Blocks.AIR == block)
-//        {
-//            if (logging)
-//            {
-//                GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
-//            }
-//            return null;
-//        }
-//
-//        return new BlockTuple(block, meta);
-//    }
+    public static Block stringToBlock(ResourceLocation name, String caller, boolean logging)
+    {
+        Block block = ForgeRegistries.BLOCKS.getValue(name);
+        if (block == null)
+        {
+            Item item = ForgeRegistries.ITEMS.getValue(name);
+            if (item instanceof BlockItem)
+            {
+                block = ((BlockItem) item).getBlock();
+            }
+            if (block == null)
+            {
+                if (logging)
+                {
+                    GCLog.severe("[config] " + caller + ": unrecognised block name '" + name + "'.");
+                }
+                return null;
+            }
+        }
+        if (Blocks.AIR == block)
+        {
+            if (logging)
+            {
+                GCLog.info("[config] " + caller + ": not a good idea to specify air, skipping that!");
+            }
+            return null;
+        }
+
+        return block;
+    }
 
 //    public static List<Object> getServerConfigOverride()
 //    {
@@ -1181,7 +1135,7 @@ public class ConfigManagerCore
 //    	return returnList;
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public static void setConfigOverride(List<Object> configs)
 //    {
 //        int dataCount = 0;

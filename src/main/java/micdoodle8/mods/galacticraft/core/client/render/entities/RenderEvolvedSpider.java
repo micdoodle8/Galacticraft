@@ -7,13 +7,12 @@ import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider>
+@OnlyIn(Dist.CLIENT)
+public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider, ModelEvolvedSpider>
 {
     private static final ResourceLocation spiderTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/spider.png");
     private boolean texSwitch;
@@ -24,13 +23,13 @@ public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider>
     }
 
     @Override
-    protected ResourceLocation getEntityTexture(EntityEvolvedSpider par1Entity)
+    protected ResourceLocation getEntityTexture(EntityEvolvedSpider spider)
     {
         return texSwitch ? OverlaySensorGlasses.altTexture : RenderEvolvedSpider.spiderTexture;
     }
 
     @Override
-    protected void preRenderCallback(EntityEvolvedSpider par1EntityLiving, float par2)
+    protected void preRenderCallback(EntityEvolvedSpider spider, float par2)
     {
         GL11.glScalef(1.2F, 1.2F, 1.2F);
         if (texSwitch)
@@ -41,20 +40,20 @@ public class RenderEvolvedSpider extends MobRenderer<EntityEvolvedSpider>
     }
 
     @Override
-    public void doRender(EntityEvolvedSpider entity, double par2, double par4, double par6, float par8, float par9)
+    public void doRender(EntityEvolvedSpider spider, double par2, double par4, double par6, float par8, float par9)
     {
-        super.doRender(entity, par2, par4, par6, par8, par9);
+        super.doRender(spider, par2, par4, par6, par8, par9);
         if (OverlaySensorGlasses.overrideMobTexture())
         {
             texSwitch = true;
-            super.doRender(entity, par2, par4, par6, par8, par9);
+            super.doRender(spider, par2, par4, par6, par8, par9);
             texSwitch = false;
             OverlaySensorGlasses.postRenderMobs();
         }
     }
 
     @Override
-    protected float getDeathMaxRotation(EntityEvolvedSpider par1EntityLiving)
+    protected float getDeathMaxRotation(EntityEvolvedSpider spider)
     {
         return 180.0F;
     }

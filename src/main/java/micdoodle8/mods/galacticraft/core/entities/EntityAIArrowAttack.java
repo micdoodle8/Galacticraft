@@ -6,6 +6,8 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.EnumSet;
+
 public class EntityAIArrowAttack extends Goal
 {
     private final MobEntity entityHost;
@@ -43,7 +45,7 @@ public class EntityAIArrowAttack extends Goal
             this.maxRangedAttackTime = par5;
             this.field_96562_i = par6;
             this.field_82642_h = par6 * par6;
-            this.setMutexBits(3);
+            this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
         }
     }
 
@@ -89,14 +91,14 @@ public class EntityAIArrowAttack extends Goal
      * Updates the task
      */
     @Override
-    public void updateTask()
+    public void tick()
     {
-        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getEntityBoundingBox().minY, this.attackTarget.posZ);
+        double d0 = this.entityHost.getDistanceSq(this.attackTarget.posX, this.attackTarget.getBoundingBox().minY, this.attackTarget.posZ);
         boolean flag = this.entityHost.getEntitySenses().canSee(this.attackTarget);
 
         this.entityHost.getNavigator().tryMoveToEntityLiving(this.attackTarget, this.entityMoveSpeed);
 
-        this.entityHost.getLookHelper().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
+        this.entityHost.getLookController().setLookPositionWithEntity(this.attackTarget, 30.0F, 30.0F);
         float f;
 
         if (--this.rangedAttackTime == 0)

@@ -46,7 +46,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
 
     public GuiShortRangeTelepad(PlayerInventory playerInventory, TileEntityShortRangeTelepad telepad)
     {
-        super(new ContainerShortRangeTelepad(playerInventory, telepad, FMLClientHandler.instance().getClient().player));
+        super(new ContainerShortRangeTelepad(playerInventory, telepad, Minecraft.getInstance().player));
         this.ySize = 209;
         this.telepad = telepad;
     }
@@ -71,7 +71,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     @Override
     protected void keyTyped(char keyChar, int keyID) throws IOException
     {
-        if (keyID != Keyboard.KEY_ESCAPE && keyID != this.mc.gameSettings.keyBindInventory.getKeyCode())
+        if (keyID != Keyboard.KEY_ESCAPE && keyID != this.minecraft.gameSettings.keyBindInventory.getKeyCode())
         {
             if (this.address.keyTyped(keyChar, keyID))
             {
@@ -91,15 +91,15 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     public void initGui()
     {
         super.initGui();
-        this.buttonList.clear();
+        this.buttons.clear();
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.enableControllerButton = new Button(0, var5 + 70 + 124 - 72, var6 + 16, 48, 20, GCCoreUtil.translate("gui.button.enable.name"));
         this.address = new GuiElementTextBox(1, this, var5 + 66, var6 + 16, 48, 20, "", true, 6, false);
         this.targetAddress = new GuiElementTextBox(2, this, var5 + 122, var6 + 16 + 22, 48, 20, "", true, 6, false);
-        this.buttonList.add(this.enableControllerButton);
-        this.buttonList.add(this.address);
-        this.buttonList.add(this.targetAddress);
+        this.buttons.add(this.enableControllerButton);
+        this.buttons.add(this.address);
+        this.buttons.add(this.targetAddress);
         this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 98;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 113;
@@ -132,7 +132,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
             switch (par1GuiButton.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.telepad.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.telepad.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -161,7 +161,7 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
     {
         GL11.glPushMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.textureManager.bindTexture(GuiShortRangeTelepad.launchControllerGui);
+        this.minecraft.textureManager.bindTexture(GuiShortRangeTelepad.launchControllerGui);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);
@@ -194,12 +194,12 @@ public class GuiShortRangeTelepad extends GuiContainerGC implements ITextBoxCall
         if (textBox.equals(this.address))
         {
             this.telepad.address = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { 0, this.telepad.getPos(), this.telepad.address }));
         }
         else if (textBox.equals(this.targetAddress))
         {
             this.telepad.targetAddress = textBox.getIntegerValue();
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleAsteroids(PacketSimpleAsteroids.EnumSimplePacketAsteroids.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { 1, this.telepad.getPos(), this.telepad.targetAddress }));
         }
     }
 

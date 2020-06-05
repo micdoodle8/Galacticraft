@@ -45,7 +45,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -195,7 +195,7 @@ public class BlockShortRangeTelepad extends BlockTileGC implements IShiftDescrip
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
     {
         final TileEntity tileAt = worldIn.getTileEntity(pos);

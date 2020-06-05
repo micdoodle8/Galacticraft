@@ -64,7 +64,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
@@ -153,7 +153,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
 //    }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         switch (meta)
         {
@@ -166,7 +166,7 @@ public class BlockCargoLoader extends BlockAdvancedTile implements IShiftDescrip
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }

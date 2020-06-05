@@ -97,7 +97,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
             {
                 if (this.getDisabledCreatures().contains(mob.getClass()))
                 {
-                    mob.setDead();
+                    mob.remove();
                 }
             }
 
@@ -131,7 +131,7 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
                         {
                             MobEntity bossLiving = (MobEntity) this.boss;
                             bossLiving.onInitialSpawn(this.world.getDifficultyForLocation(new BlockPos(bossLiving)), null);
-                            this.world.spawnEntity(bossLiving);
+                            this.world.addEntity(bossLiving);
                             this.playSpawnSound(bossLiving);
                             this.spawned = true;
                         }
@@ -195,20 +195,20 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
         this.roomSize.y = nbt.getDouble("roomSizeY");
         this.roomSize.z = nbt.getDouble("roomSizeZ");
 
-        if (nbt.hasKey("lastKillTime"))
+        if (nbt.contains("lastKillTime"))
         {
             this.lastKillTime = nbt.getLong("lastKillTime");
         }
-        else if (nbt.hasKey("lastKillTimeNew"))
+        else if (nbt.contains("lastKillTimeNew"))
         {
             long savedTime = nbt.getLong("lastKillTimeNew");
             this.lastKillTime = savedTime == 0 ? 0 : savedTime + MinecraftServer.getCurrentTimeMillis();
         }
 
 
-        if (nbt.hasKey("chestPosNull") && !nbt.getBoolean("chestPosNull"))
+        if (nbt.contains("chestPosNull") && !nbt.getBoolean("chestPosNull"))
         {
-            this.chestPos = new BlockPos(nbt.getInteger("chestX"), nbt.getInteger("chestY"), nbt.getInteger("chestZ"));
+            this.chestPos = new BlockPos(nbt.getInt("chestX"), nbt.getInt("chestY"), nbt.getInt("chestZ"));
         }
     }
 
@@ -223,22 +223,22 @@ public class TileEntityDungeonSpawner<E extends Entity> extends TileEntityAdvanc
 
         if (this.roomCoords != null)
         {
-            nbt.setDouble("roomCoordsX", this.roomCoords.x);
-            nbt.setDouble("roomCoordsY", this.roomCoords.y);
-            nbt.setDouble("roomCoordsZ", this.roomCoords.z);
-            nbt.setDouble("roomSizeX", this.roomSize.x);
-            nbt.setDouble("roomSizeY", this.roomSize.y);
-            nbt.setDouble("roomSizeZ", this.roomSize.z);
+            nbt.putDouble("roomCoordsX", this.roomCoords.x);
+            nbt.putDouble("roomCoordsY", this.roomCoords.y);
+            nbt.putDouble("roomCoordsZ", this.roomCoords.z);
+            nbt.putDouble("roomSizeX", this.roomSize.x);
+            nbt.putDouble("roomSizeY", this.roomSize.y);
+            nbt.putDouble("roomSizeZ", this.roomSize.z);
         }
 
-        nbt.setLong("lastKillTimeNew", this.lastKillTime == 0 ? 0 : this.lastKillTime - MinecraftServer.getCurrentTimeMillis());
+        nbt.putLong("lastKillTimeNew", this.lastKillTime == 0 ? 0 : this.lastKillTime - MinecraftServer.getCurrentTimeMillis());
 
         nbt.setBoolean("chestPosNull", this.chestPos == null);
         if (this.chestPos != null)
         {
-            nbt.setInteger("chestX", this.chestPos.getX());
-            nbt.setInteger("chestY", this.chestPos.getY());
-            nbt.setInteger("chestZ", this.chestPos.getZ());
+            nbt.putInt("chestX", this.chestPos.getX());
+            nbt.putInt("chestY", this.chestPos.getY());
+            nbt.putInt("chestZ", this.chestPos.getZ());
         }
         return nbt;
     }

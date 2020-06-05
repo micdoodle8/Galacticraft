@@ -85,9 +85,9 @@ public class TeleportTypeAsteroids implements ITeleportType
             do
             {
                 BlockVec3 bv3 = null;
-                if (world.provider instanceof WorldProviderAsteroids)
+                if (world.getDimension() instanceof WorldProviderAsteroids)
                 {
-                    bv3 = ((WorldProviderAsteroids) world.provider).getClosestAsteroidXZ(x, 0, z, true);
+                    bv3 = ((WorldProviderAsteroids) world.getDimension()).getClosestAsteroidXZ(x, 0, z, true);
                 }
 
                 if (bv3 != null)
@@ -131,7 +131,7 @@ public class TeleportTypeAsteroids implements ITeleportType
                     {
                         GCLog.info("Removing drilled out asteroid at x" + (bv3.x) + " z" + (bv3.z));
                     }
-                    ((WorldProviderAsteroids) world.provider).removeAsteroid(bv3.x, bv3.y, bv3.z);
+                    ((WorldProviderAsteroids) world.getDimension()).removeAsteroid(bv3.x, bv3.y, bv3.z);
                 }
 
                 attemptCount++;
@@ -321,9 +321,9 @@ public class TeleportTypeAsteroids implements ITeleportType
 
             if (stats.getTeleportCooldown() <= 0)
             {
-                if (player.capabilities.isFlying)
+                if (player.abilities.isFlying)
                 {
-                    player.capabilities.isFlying = false;
+                    player.abilities.isFlying = false;
                 }
 
                 if (!newWorld.isRemote)
@@ -332,7 +332,7 @@ public class TeleportTypeAsteroids implements ITeleportType
 
                     boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                     entryPod.forceSpawn = true;
-                    newWorld.spawnEntity(entryPod);
+                    newWorld.addEntity(entryPod);
                     CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 }
 

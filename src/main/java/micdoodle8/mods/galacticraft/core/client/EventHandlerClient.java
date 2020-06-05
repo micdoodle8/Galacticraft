@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -31,7 +31,7 @@ import org.lwjgl.opengl.GL11;
 
 public class EventHandlerClient
 {
-    public static Minecraft mc = FMLClientHandler.instance().getClient();
+    public static Minecraft mc = Minecraft.getInstance();
     public static boolean sneakRenderOverride;
     public static IBakedModel[] fluidPipeModels = new IBakedModel[6];
 
@@ -104,13 +104,13 @@ public class EventHandlerClient
             {
                 mc.textureManager.bindTexture(ClientProxyCore.saturnRingTexture);
                 float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
-                ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 32, 32);
+                ((GuiCelestialSelection) mc.currentScreen).blit(-7.5F * size, -1.75F * size, 15.0F * size, 3.5F * size, 0, 0, 30, 7, false, false, 32, 32);
             }
             else if (event.celestialBody == GalacticraftCore.planetUranus)
             {
                 mc.textureManager.bindTexture(ClientProxyCore.uranusRingTexture);
                 float size = ((GuiCelestialSelection)mc.currentScreen).getWidthForCelestialBody(event.celestialBody) / 6.0F;
-                ((GuiCelestialSelection) mc.currentScreen).drawTexturedModalRect(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
+                ((GuiCelestialSelection) mc.currentScreen).blit(-1.75F * size, -7.0F * size, 3.5F * size, 14.0F * size, 0, 0, 7, 28, false, false, 32, 32);
             }
         }
     }

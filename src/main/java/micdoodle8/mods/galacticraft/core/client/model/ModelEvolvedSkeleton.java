@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBiped;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
+import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.model.SkeletonModel;
 
-public class ModelEvolvedSkeleton extends ModelBiped
+public class ModelEvolvedSkeleton extends SkeletonModel<EntityEvolvedSkeleton>
 {
     RendererModel leftOxygenTank;
     RendererModel rightOxygenTank;
@@ -34,8 +36,8 @@ public class ModelEvolvedSkeleton extends ModelBiped
         this.textureWidth = 128;
         this.textureHeight = 64;
         final int par2 = 0;
-        this.rightArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
-        this.leftArmPose = ModelBiped.ArmPose.BOW_AND_ARROW;
+        this.rightArmPose = BipedModel.ArmPose.BOW_AND_ARROW;
+        this.leftArmPose = BipedModel.ArmPose.BOW_AND_ARROW;
         this.leftOxygenTank = new RendererModel(this, 48, 20);
         this.leftOxygenTank.addBox(-1.5F, 0F, -1.5F, 3, 7, 3, par1);
         this.leftOxygenTank.setRotationPoint(2F, 2F, 3.8F);
@@ -168,9 +170,9 @@ public class ModelEvolvedSkeleton extends ModelBiped
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityEvolvedSkeleton entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         this.leftOxygenTank.render(f5);
         this.rightOxygenTank.render(f5);
         this.tubeRight2.render(f5);
@@ -205,10 +207,10 @@ public class ModelEvolvedSkeleton extends ModelBiped
     }
 
     @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)
+    public void setRotationAngles(EntityEvolvedSkeleton skeleton, float par1, float par2, float par3, float par4, float par5, float par6)
     {
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, entity);
-        copyModelAngles(this.bipedHead, this.oxygenMask);
+        super.setRotationAngles(skeleton, par1, par2, par3, par4, par5, par6);
+        ClientUtil.copyModelAngles(this.bipedHead, this.oxygenMask);
     }
 
     //    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity entity)

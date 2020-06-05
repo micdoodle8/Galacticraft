@@ -57,7 +57,7 @@ public abstract class KeyHandler
 
     public void keyTick(Type type, boolean tickEnd)
     {
-        boolean inChat = FMLClientHandler.instance().getClient().currentScreen instanceof ChatScreen;
+        boolean inChat = Minecraft.getInstance().currentScreen instanceof ChatScreen;
 
         for (int i = 0; i < this.keyBindings.length; i++)
         {

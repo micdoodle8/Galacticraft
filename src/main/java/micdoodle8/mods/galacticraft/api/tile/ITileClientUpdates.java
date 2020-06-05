@@ -1,15 +1,16 @@
 package micdoodle8.mods.galacticraft.api.tile;
 
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+import java.util.List;
 
 
 /***
@@ -32,7 +33,7 @@ public interface ITileClientUpdates
      * The supplied data list has 4 ints
      * of data to use at positions 1 through 4.
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     void updateClient(List<Object> data);
     
     /**
@@ -67,7 +68,7 @@ public interface ITileClientUpdates
     {
         int[] data = new int[4];
         this.buildDataPacket(data);
-        int dimID = GCCoreUtil.getDimensionID(((TileEntity)this).getWorld());
+        DimensionType dimID = GCCoreUtil.getDimensionID(((TileEntity)this).getWorld());
         GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_MACHINE_DATA, dimID, new Object[] { ((TileEntity)this).getPos(), data[0], data[1], data[2], data[3] }), dimID);
     }
 }

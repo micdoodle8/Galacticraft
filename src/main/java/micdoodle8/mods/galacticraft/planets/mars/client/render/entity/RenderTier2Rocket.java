@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.render.item.ItemModelRocketT2;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityTier2Rocket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
 {
     private ItemModelRocketT2 rocketModel;
@@ -37,7 +37,7 @@ public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
         if (this.rocketModel == null)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t2", "inventory");
-            this.rocketModel = (ItemModelRocketT2) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            this.rocketModel = (ItemModelRocketT2) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
@@ -78,8 +78,8 @@ public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.scale(0.8F, 0.8F, 0.8F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(0.8F, 0.8F, 0.8F);
         ClientUtil.drawBakedModel(this.rocketModel);
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
@@ -88,7 +88,7 @@ public class RenderTier2Rocket extends EntityRenderer<EntityTier2Rocket>
     @Override
     public boolean shouldRender(EntityTier2Rocket rocket, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().grow(0.6D, 1D, 0.6D);
+        AxisAlignedBB axisalignedbb = rocket.getBoundingBox().grow(0.6D, 1D, 0.6D);
         return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

@@ -107,7 +107,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         super.breakBlock(worldIn, pos, state);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -308,7 +308,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
         return true;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
     {
@@ -330,7 +330,7 @@ public class BlockMachineMars extends BlockTileGC implements IShiftDescription, 
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void randomDisplayTick(BlockState state, World worldIn, BlockPos pos, Random rand)
     {
         if (state.get(TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)

@@ -101,9 +101,9 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -114,11 +114,11 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                 if (attackTarget != null)
                 {
                     double dX = attackTarget.posX - this.posX;
-                    double dY = attackTarget.getEntityBoundingBox().minY + (double)(attackTarget.height / 3.0F) - this.posY;
+                    double dY = attackTarget.getBoundingBox().minY + (double)(attackTarget.height / 3.0F) - this.posY;
                     double dZ = attackTarget.posZ - this.posZ;
 
                     float distance = 5.0F;
-                    double d0 = this.getDistanceSq(attackTarget.posX, attackTarget.getEntityBoundingBox().minY, attackTarget.posZ);
+                    double d0 = this.getDistanceSq(attackTarget.posX, attackTarget.getBoundingBox().minY, attackTarget.posZ);
 
                     this.getLookHelper().setLookPositionWithEntity(attackTarget, 30.0F, 30.0F);
 
@@ -198,7 +198,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
                                     double dist = 3.0F;
                                     juicer.setPosition(this.posX + dist * Math.sin(angle), this.posY + 0.2F, this.posZ + dist * Math.cos(angle));
                                     juicer.setHanging(true);
-                                    this.world.spawnEntity(juicer);
+                                    this.world.addEntity(juicer);
                                     this.juicersSpawned.add(juicer);
                                 }
                             }
@@ -339,14 +339,14 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     }
 
     @Override
-    public boolean isEntityInvulnerable(DamageSource source)
+    public boolean isInvulnerableTo(DamageSource source)
     {
         if (this.getBurrowedCount() >= 0)
         {
             return true;
         }
 
-        return super.isEntityInvulnerable(source);
+        return super.isInvulnerableTo(source);
     }
 
     @Override
@@ -373,7 +373,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
     {
         EntityWebShot entityarrow = new EntityWebShot(this.world, this, target, 0.8F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
         this.playSound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
-        this.world.spawnEntity(entityarrow);
+        this.world.addEntity(entityarrow);
     }
 
     @Override
@@ -402,8 +402,8 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         if (tagCompound.hasKey("spawned_children"))
         {
             this.spawnedPreload = Lists.newArrayList();
-            ListNBT list = tagCompound.getTagList("spawned_children", 4);
-            for (int i = 0; i < list.tagCount(); i += 2)
+            ListNBT list = tagCompound.getList("spawned_children", 4);
+            for (int i = 0; i < list.size(); i += 2)
             {
                 LongNBT tagMost = (LongNBT) list.get(i);
                 LongNBT tagLeast = (LongNBT) list.get(i + 1);
@@ -430,7 +430,7 @@ public class EntitySpiderQueen extends EntityBossBase implements IEntityBreathab
         }
         else
         {
-            this.world.spawnEntity(entityitem);
+            this.world.addEntity(entityitem);
         }
         return entityitem;
     }

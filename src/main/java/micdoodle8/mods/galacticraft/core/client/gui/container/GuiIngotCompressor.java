@@ -8,32 +8,30 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GuiIngotCompressor extends GuiContainerGC
+public class GuiIngotCompressor extends GuiContainerGC<ContainerIngotCompressor>
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/ingot_compressor.png");
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
-    private TileEntityIngotCompressor tileEntity;
+    private TileEntityIngotCompressor compressor;
 
-    public GuiIngotCompressor(PlayerInventory par1InventoryPlayer, TileEntityIngotCompressor tileEntity)
+    public GuiIngotCompressor(PlayerInventory playerInv, TileEntityIngotCompressor compressor)
     {
-        super(new ContainerIngotCompressor(par1InventoryPlayer, tileEntity));
-        this.tileEntity = tileEntity;
+        super(new ContainerIngotCompressor(playerInv, compressor), playerInv, new StringTextComponent(compressor.getName()));
+        this.compressor = compressor;
         this.ySize = 192;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         this.processInfoRegion.tooltipStrings = new ArrayList<String>();
         this.processInfoRegion.xPosition = (this.width - this.xSize) / 2 + 77;
         this.processInfoRegion.yPosition = (this.height - this.ySize) / 2 + 30;
@@ -49,11 +47,11 @@ public class GuiIngotCompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), 10, 6, 4210752);
+        this.font.drawString(this.compressor.getName(), 10, 6, 4210752);
         String displayText = GCCoreUtil.translate("gui.message.fuel.name") + ":";
-        this.fontRenderer.drawString(displayText, 50 - this.fontRenderer.getStringWidth(displayText), 79, 4210752);
+        this.font.drawString(displayText, 50 - this.font.getStringWidth(displayText), 79, 4210752);
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.compressor.processTicks > 0)
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.compressing.name");
         }
@@ -63,10 +61,10 @@ public class GuiIngotCompressor extends GuiContainerGC
         }
 
         String str = GCCoreUtil.translate("gui.message.status.name") + ":";
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.fontRenderer.getStringWidth(str) / 2, 70, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ":", 120 - this.font.getStringWidth(str) / 2, 70, 4210752);
         str = displayText;
-        this.fontRenderer.drawString(displayText, 120 - this.fontRenderer.getStringWidth(str) / 2, 80, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(displayText, 120 - this.font.getStringWidth(str) / 2, 80, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -76,17 +74,17 @@ public class GuiIngotCompressor extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
+        this.minecraft.textureManager.bindTexture(GuiIngotCompressor.electricFurnaceTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int process;
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.compressor.processTicks > 0)
         {
-            process = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.PROCESS_TIME_REQUIRED * 100);
+            process = (int) ((double) this.compressor.processTicks / (double) this.compressor.PROCESS_TIME_REQUIRED * 100);
         }
         else
         {
@@ -98,21 +96,21 @@ public class GuiIngotCompressor extends GuiContainerGC
         processDesc.add(GCCoreUtil.translate("gui.electric_compressor.desc.0") + ": " + process + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.compressor.processTicks > 0)
         {
-            int scale = (int) ((double) this.tileEntity.processTicks / (double) TileEntityIngotCompressor.PROCESS_TIME_REQUIRED * 54);
-            this.drawTexturedModalRect(containerWidth + 77, containerHeight + 36, 176, 13, scale, 17);
+            int scale = (int) ((double) this.compressor.processTicks / (double) TileEntityIngotCompressor.PROCESS_TIME_REQUIRED * 54);
+            this.blit(containerWidth + 77, containerHeight + 36, 176, 13, scale, 17);
         }
 
-        if (this.tileEntity.furnaceBurnTime > 0)
+        if (this.compressor.furnaceBurnTime > 0)
         {
-            int scale = (int) ((double) this.tileEntity.furnaceBurnTime / (double) this.tileEntity.currentItemBurnTime * 14);
-            this.drawTexturedModalRect(containerWidth + 81, containerHeight + 27 + 14 - scale, 176, 30 + 14 - scale, 14, scale);
+            int scale = (int) ((double) this.compressor.furnaceBurnTime / (double) this.compressor.currentItemBurnTime * 14);
+            this.blit(containerWidth + 81, containerHeight + 27 + 14 - scale, 176, 30 + 14 - scale, 14, scale);
         }
 
-        if (this.tileEntity.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
+        if (this.compressor.processTicks > TileEntityIngotCompressor.PROCESS_TIME_REQUIRED / 2)
         {
-            this.drawTexturedModalRect(containerWidth + 101, containerHeight + 28, 176, 0, 15, 13);
+            this.blit(containerWidth + 101, containerHeight + 28, 176, 0, 15, 13);
         }
     }
 }

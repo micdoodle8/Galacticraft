@@ -19,21 +19,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemOxygenMask extends Item implements ISortableItem, IClickableItem
 {
-    public ItemOxygenMask(String assetName)
+    public ItemOxygenMask(Item.Properties properties)
     {
-        super();
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

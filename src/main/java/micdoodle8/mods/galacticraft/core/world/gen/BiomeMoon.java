@@ -2,6 +2,7 @@ package micdoodle8.mods.galacticraft.core.world.gen;
 
 import java.util.Random;
 
+import micdoodle8.mods.galacticraft.core.dimension.chunk.MoonChunkGenerator;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
@@ -32,8 +33,8 @@ public class BiomeMoon extends BiomeGenBaseGC
     @Override
     public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
     {
-        this.fillerBlock = ChunkProviderMoon.BLOCK_LOWER;
-        this.topBlock = ChunkProviderMoon.BLOCK_TOP;
+        this.fillerBlock = MoonChunkGenerator.BLOCK_LOWER;
+        this.topBlock = MoonChunkGenerator.BLOCK_TOP;
         super.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
     }
 }

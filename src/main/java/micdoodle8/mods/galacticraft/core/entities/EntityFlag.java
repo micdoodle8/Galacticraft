@@ -9,13 +9,16 @@ import net.minecraft.block.FenceBlock;
 import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
@@ -28,7 +31,6 @@ public class EntityFlag extends Entity
 {
     private static final DataParameter<String> OWNER = EntityDataManager.createKey(EntityFlag.class, DataSerializers.STRING);
     private static final DataParameter<Float> DAMAGE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.FLOAT);
-    private static final DataParameter<Integer> TYPE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.VARINT);
     private static final DataParameter<Integer> FACING_ANGLE = EntityDataManager.createKey(EntityFlag.class, DataSerializers.VARINT);
     public double xPosition;
     public double yPosition;
@@ -36,16 +38,15 @@ public class EntityFlag extends Entity
     public boolean indestructable = false;
     public FlagData flagData;
 
-    public EntityFlag(World world)
+    public EntityFlag(EntityType<EntityFlag> type, World world)
     {
-        super(world);
-        this.setSize(0.4F, 3F);
+        super(type, world);
         this.ignoreFrustumCheck = true;
     }
 
-    public EntityFlag(World par1World, double x, double y, double z, int dir)
+    public EntityFlag(World world, double x, double y, double z, int dir)
     {
-        this(par1World);
+        this(GCEntities.FLAG.get(), world);
         this.setFacingAngle(dir);
         this.setPosition(x, y, z);
         this.xPosition = x;
@@ -54,14 +55,20 @@ public class EntityFlag extends Entity
     }
 
     @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
+    }
+
+    @Override
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
     {
         Entity e = par1DamageSource.getTrueSource();
-        boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode;
+        boolean flag = e instanceof PlayerEntity && ((PlayerEntity) e).abilities.isCreativeMode;
 
-        if (!this.world.isRemote && !this.isDead && !this.indestructable)
+        if (!this.world.isRemote && this.isAlive() && !this.indestructable)
         {
-            if (this.isEntityInvulnerable(par1DamageSource))
+            if (this.isInvulnerableTo(par1DamageSource))
             {
                 return false;
             }
@@ -71,7 +78,7 @@ public class EntityFlag extends Entity
                 this.setDamage(this.getDamage() + par2 * 10);
                 this.world.playSound(null, this.posX, this.posY, this.posZ, SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 1.0F);
 
-                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).abilities.isCreativeMode)
                 {
                     this.setDamage(100.0F);
                 }
@@ -85,11 +92,11 @@ public class EntityFlag extends Entity
 
                     if (flag)
                     {
-                        this.setDead();
+                        this.remove();
                     }
                     else
                     {
-                        this.setDead();
+                        this.remove();
                         this.dropItemStack();
                     }
                 }
@@ -106,15 +113,15 @@ public class EntityFlag extends Entity
     @Override
     public ItemStack getPickedResult(RayTraceResult target)
     {
-        return new ItemStack(GCItems.flag, 1, this.getType());
+        return new ItemStack(GCItems.flag, 1);
     }
 
-    public int getWidth()
+    public int getFlagWidth()
     {
         return 25;
     }
 
-    public int getHeight()
+    public int getFlagHeight()
     {
         return 40;
     }
@@ -144,48 +151,45 @@ public class EntityFlag extends Entity
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
         this.dataManager.register(OWNER, "");
         this.dataManager.register(DAMAGE, 0.0F);
-        this.dataManager.register(TYPE, -1);
         this.dataManager.register(FACING_ANGLE, -1);
     }
 
     @Override
-    public void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
+    public void readAdditional(CompoundNBT nbt)
     {
-        this.setOwner(par1NBTTagCompound.getString("Owner"));
-        this.setType(par1NBTTagCompound.getInteger("Type"));
-        this.indestructable = par1NBTTagCompound.getBoolean("Indestructable");
+        this.setOwner(nbt.getString("Owner"));
+        this.indestructable = nbt.getBoolean("Indestructable");
 
-        this.xPosition = par1NBTTagCompound.getDouble("TileX");
-        this.yPosition = par1NBTTagCompound.getDouble("TileY");
-        this.zPosition = par1NBTTagCompound.getDouble("TileZ");
-        this.setFacingAngle(par1NBTTagCompound.getInteger("AngleI"));
+        this.xPosition = nbt.getDouble("TileX");
+        this.yPosition = nbt.getDouble("TileY");
+        this.zPosition = nbt.getDouble("TileZ");
+        this.setFacingAngle(nbt.getInt("AngleI"));
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT par1NBTTagCompound)
+    protected void writeAdditional(CompoundNBT nbt)
     {
-        par1NBTTagCompound.setString("Owner", String.valueOf(this.getOwner()));
-        par1NBTTagCompound.setInteger("Type", Integer.valueOf(this.getType()));
-        par1NBTTagCompound.setBoolean("Indestructable", this.indestructable);
-        par1NBTTagCompound.setInteger("AngleI", this.getFacingAngle());
-        par1NBTTagCompound.setDouble("TileX", this.xPosition);
-        par1NBTTagCompound.setDouble("TileY", this.yPosition);
-        par1NBTTagCompound.setDouble("TileZ", this.zPosition);
+        nbt.putString("Owner", String.valueOf(this.getOwner()));
+        nbt.putBoolean("Indestructable", this.indestructable);
+        nbt.putInt("AngleI", this.getFacingAngle());
+        nbt.putDouble("TileX", this.xPosition);
+        nbt.putDouble("TileY", this.yPosition);
+        nbt.putDouble("TileZ", this.zPosition);
     }
 
     public void dropItemStack()
     {
-        this.entityDropItem(new ItemStack(GCItems.flag, 1, this.getType()), 0.0F);
+        this.entityDropItem(new ItemStack(GCItems.flag, 1), 0.0F);
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         if ((this.ticksExisted - 1) % 20 == 0 && this.world.isRemote)
         {
@@ -205,11 +209,11 @@ public class EntityFlag extends Entity
             }
             else if (blockAt.isAir(this.world.getBlockState(pos), this.world, pos))
             {
-                this.motionY -= 0.02F;
+                this.setMotion(getMotion().add(0.0, -0.02F, 0.0F));
             }
         }
 
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.getMotion());
     }
 
     @Override
@@ -241,16 +245,6 @@ public class EntityFlag extends Entity
     public float getDamage()
     {
         return this.dataManager.get(DAMAGE);
-    }
-
-    public void setType(int par1)
-    {
-        this.dataManager.set(TYPE, Integer.valueOf(par1));
-    }
-
-    public int getType()
-    {
-        return this.dataManager.get(TYPE);
     }
 
     public void setFacingAngle(int par1)

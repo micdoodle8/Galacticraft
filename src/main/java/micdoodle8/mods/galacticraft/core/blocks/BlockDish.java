@@ -55,8 +55,8 @@
 //            }
 //        }
 //
-//        Direction facing = Direction.getFront(side.getIndex() ^ 1);
-//        return world.getBlockState(pos.add(facing.getFrontOffsetX(), facing.getFrontOffsetY(), facing.getFrontOffsetZ())).getBlock() != GCBlocks.fakeBlock;
+//        Direction facing = Direction.byIndex(side.getIndex() ^ 1);
+//        return world.getBlockState(pos.add(facing.getXOffset(), facing.getYOffset(), facing.getZOffset())).getBlock() != GCBlocks.fakeBlock;
 //    }
 //
 //    @Override
@@ -138,13 +138,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate("tile.radio_telescope.description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

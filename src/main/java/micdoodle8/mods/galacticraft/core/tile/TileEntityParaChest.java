@@ -2,24 +2,23 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockParaChest;
 import micdoodle8.mods.galacticraft.core.entities.IScaleableFuelLevel;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerParaChest;
 import micdoodle8.mods.galacticraft.core.inventory.IInventorySettable;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamicInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.DyeColor;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.util.*;
 import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.Iterator;
 import java.util.List;
@@ -27,14 +26,14 @@ import java.util.List;
 public class TileEntityParaChest extends TileEntityAdvanced implements IInventorySettable, IScaleableFuelLevel
 {
     private final int tankCapacity = 5000;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public FluidTank fuelTank = new FluidTank(this.tankCapacity);
 
     public boolean adjacentChestChecked = false;
     public float lidAngle;
     public float prevLidAngle;
     public int numUsingPlayers;
-    @NetworkedField(targetSide = Side.CLIENT)
+    @NetworkedField(targetSide = LogicalSide.CLIENT)
     public DyeColor color = DyeColor.RED;
 
     public TileEntityParaChest()
@@ -57,7 +56,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     @Override
     public int getScaledFuelLevel(int i)
     {
-        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().amount;
+        final double fuelLevel = this.fuelTank.getFluid() == null ? 0 : this.fuelTank.getFluid().getAmount();
 
         return (int) (fuelLevel * i / this.tankCapacity);
     }
@@ -86,7 +85,7 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         super.readFromNBT(nbt);
 
-        int size = nbt.getInteger("chestContentLength");
+        int size = nbt.getInt("chestContentLength");
         if ((size - 3) % 18 != 0)
         {
             size += 18 - ((size - 3) % 18);
@@ -95,14 +94,14 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         ItemStackHelper.loadAllItems(nbt, this.getInventory());
 
-        if (nbt.hasKey("fuelTank"))
+        if (nbt.contains("fuelTank"))
         {
-            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
+            this.fuelTank.readFromNBT(nbt.getCompound("fuelTank"));
         }
 
-        if (nbt.hasKey("color"))
+        if (nbt.contains("color"))
         {
-            this.color = DyeColor.byDyeDamage(nbt.getInteger("color"));
+            this.color = DyeColor.values()[nbt.getInt("color")];
         }
     }
 
@@ -111,15 +110,15 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     {
         super.writeToNBT(nbt);
 
-        nbt.setInteger("chestContentLength", this.getInventory().size());
+        nbt.putInt("chestContentLength", this.getInventory().size());
         ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
+            nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
 
-        nbt.setInteger("color", this.color.getDyeDamage());
+        nbt.putInt("color", this.color.ordinal());
         return nbt;
     }
 
@@ -240,21 +239,18 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
         }
 
         ++this.numUsingPlayers;
-        this.world.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
-        this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType(), false);
-        this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType(), false);
+        this.world.addBlockEvent(this.getPos(), this.getBlockState().getBlock(), 1, this.numUsingPlayers);
+        this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockState().getBlock());
+        this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockState().getBlock());
     }
 
     @Override
     public void closeInventory(PlayerEntity player)
     {
-        if (this.getBlockType() != null && this.getBlockType() instanceof BlockParaChest)
-        {
-            --this.numUsingPlayers;
-            this.world.addBlockEvent(this.getPos(), this.getBlockType(), 1, this.numUsingPlayers);
-            this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockType(), false);
-            this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockType(), false);
-        }
+        --this.numUsingPlayers;
+        this.world.addBlockEvent(this.getPos(), this.getBlockState().getBlock(), 1, this.numUsingPlayers);
+        this.world.notifyNeighborsOfStateChange(this.getPos(), this.getBlockState().getBlock());
+        this.world.notifyNeighborsOfStateChange(this.getPos().down(), this.getBlockState().getBlock());
     }
 
     @Override
@@ -264,9 +260,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
     }
 
     @Override
-    public void invalidate()
+    public void remove()
     {
-        super.invalidate();
+        super.remove();
         this.updateContainingBlockInfo();
     }
 
@@ -295,9 +291,9 @@ public class TileEntityParaChest extends TileEntityAdvanced implements IInventor
 
         super.decodePacketdata(buffer);
 
-        if (this.world.isRemote && color != this.color)
-        {
-            this.world.markBlockRangeForRenderUpdate(getPos(), getPos());
-        }
+//        if (this.world.isRemote && color != this.color)
+//        {
+//            this.world.markBlockRangeForRenderUpdate(getPos(), getPos()); TODO Necessary?
+//        }
     }
 }

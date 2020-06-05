@@ -47,7 +47,7 @@ public class BiomeProviderVenus extends BiomeProvider
 
     public BiomeProviderVenus(World world)
     {
-        this(world.getSeed(), world.getWorldInfo().getTerrainType());
+        this(world.getSeed(), world.getWorldInfo().getGenerator());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BiomeProviderVenus extends BiomeProvider
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getTemperatureAtHeight(float par1, int par2)
     {
         return par1;

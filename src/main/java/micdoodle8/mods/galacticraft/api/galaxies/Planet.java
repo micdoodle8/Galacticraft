@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 public class Planet extends CelestialBody
@@ -34,8 +35,8 @@ public class Planet extends CelestialBody
         return this;
     }
     
-    public static void addMobToSpawn(String planetName, SpawnListEntry mobData)
+    public static void addMobToSpawn(String planetName, SpawnListEntry entry, EntityClassification classification)
     {
-        GalaxyRegistry.getCelestialBodyFromUnlocalizedName("planet." + planetName).addMobInfo(mobData);
+        GalaxyRegistry.getCelestialBodyFromUnlocalizedName("planet." + planetName).addMobInfo(entry, classification);
     }
 }

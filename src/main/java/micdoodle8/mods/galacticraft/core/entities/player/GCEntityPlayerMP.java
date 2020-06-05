@@ -8,7 +8,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PlayerInteractionManager;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.server.ServerWorld;
 
 /**
  * This class provides various hooks which are missing from Forge or don't quite do what we need.
@@ -23,7 +24,7 @@ public class GCEntityPlayerMP extends ServerPlayerEntity
         super(server, world, profile, interactionManager);
 //        if (this.world != world)
 //        {
-//            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.world.provider));
+//            GCPlayerStats.get(this).setStartDimension(WorldUtil.getDimensionName(this.world.getDimension()));
 //        }
     }
 
@@ -36,28 +37,28 @@ public class GCEntityPlayerMP extends ServerPlayerEntity
     }
 
     @Override
-    public void dismountRidingEntity()
+    public void dismountEntity(Entity entityIn)
     {
         if (!GalacticraftCore.proxy.player.dismountEntity(this, this.getRidingEntity()))
         {
-            super.dismountRidingEntity();
+            super.dismountEntity(entityIn);
         }
     }
 
     @Override
-    public void move(MoverType type, double x, double y, double z)
+    public void move(MoverType type, Vec3d pos)
     {
-        super.move(type, x, y, z);
-        GalacticraftCore.proxy.player.move(this, type, x, y, z);
+        super.move(type, pos);
+        GalacticraftCore.proxy.player.move(this, type, pos);
     }
 
     @Override
     public void wakeUpPlayer(boolean immediately, boolean updateWorldFlag, boolean setSpawn)
     {
-        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
-        {
-            return;
-        }
+//        if (GalacticraftCore.proxy.player.wakeUpPlayer(this, immediately, updateWorldFlag, setSpawn))
+//        {
+//            return;
+//        } TODO Cryo chamber
         super.wakeUpPlayer(immediately, updateWorldFlag, setSpawn);
     }
 
@@ -83,7 +84,7 @@ public class GCEntityPlayerMP extends ServerPlayerEntity
     /*@Override
     public void setInPortal()
     {
-    	if (!(this.world.provider instanceof IGalacticraftWorldProvider))
+    	if (!(this.world.getDimension() instanceof IGalacticraftWorldProvider))
     	{
     		super.setInPortal();
     	}

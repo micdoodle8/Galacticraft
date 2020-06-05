@@ -37,7 +37,7 @@ public class SlotArmorGC extends Slot
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String getSlotTexture()
     {
         return ArmorItem.EMPTY_SLOT_NAMES[VALID_EQUIPMENT_SLOTS[this.armorType].getIndex()];

@@ -146,7 +146,7 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
         {
             return world.setBlockToAir(pos);
         }
-        else if (player.capabilities.isCreativeMode)
+        else if (player.abilities.isCreativeMode)
         {
             return world.setBlockToAir(pos);
         }
@@ -174,9 +174,9 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
             if (currentStack.getItem() == MarsItems.deshPickaxe && EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, currentStack) > 0)
             {
                 ItemStack itemstack = new ItemStack(MarsItems.deshPickSlime, 1, currentStack.getItemDamage());
-                if (currentStack.getTagCompound() != null)
+                if (currentStack.getTag() != null)
                 {
-                    itemstack.setTagCompound(currentStack.getTagCompound().copy());
+                    itemstack.setTag(currentStack.getTag().copy());
                 }
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, itemstack);
             }
@@ -184,13 +184,13 @@ public class BlockSlimelingEgg extends Block implements ITileEntityProvider, ISh
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public IIcon getIcon(int side, int metadata)
     {
         return this.icons[metadata % 6];
     }*/
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {

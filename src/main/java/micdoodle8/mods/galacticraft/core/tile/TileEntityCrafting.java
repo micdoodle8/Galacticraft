@@ -279,12 +279,12 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             this.craftMatrix.clear();
             for (int i = 0; i < SIZEINVENTORY; ++i)
                 this.memory.set(i, ItemStack.EMPTY);
-            ListNBT contents = nbt.getTagList("Items", 10);
-            if (contents != null && contents.tagCount() > 0)
+            ListNBT contents = nbt.getList("Items", 10);
+            if (contents != null && contents.size() > 0)
             {
-                for (int i = 0; i < contents.tagCount(); ++i)
+                for (int i = 0; i < contents.size(); ++i)
                 {
-                    CompoundNBT var4 = contents.getCompoundTagAt(i);
+                    CompoundNBT var4 = contents.getCompound(i);
                     int slot = var4.getByte("Slot") & 255;
 
                     if (slot < SIZEINVENTORY)
@@ -330,10 +330,10 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
             }
         }
 
-        nbt.setTag("Items", var2);
+        nbt.put("Items", var2);
         CompoundNBT buffer = new CompoundNBT();
         this.hiddenOutputBuffer.writeToNBT(buffer);
-        nbt.setTag("buf", buffer);
+        nbt.put("buf", buffer);
         return nbt;
     }
 
@@ -518,7 +518,7 @@ public class TileEntityCrafting extends TileEntity implements IInventoryDefaults
                 var12.motionX = (float) syncRandom.nextGaussian() * var13;
                 var12.motionY = (float) syncRandom.nextGaussian() * var13 + 0.2F;
                 var12.motionZ = (float) syncRandom.nextGaussian() * var13;
-                worldIn.spawnEntity(var12);
+                worldIn.addEntity(var12);
             }
         }
     }

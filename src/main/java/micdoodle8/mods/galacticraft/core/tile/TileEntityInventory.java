@@ -128,7 +128,7 @@ public abstract class TileEntityInventory extends TileEntity implements ISidedIn
     @Override
     public boolean isUsableByPlayer(PlayerEntity player)
     {
-        return !isInvalid() && this.world.isBlockLoaded(this.pos);
+        return !isRemoved() && this.world.isBlockLoaded(this.pos);
     }
 
     @Override

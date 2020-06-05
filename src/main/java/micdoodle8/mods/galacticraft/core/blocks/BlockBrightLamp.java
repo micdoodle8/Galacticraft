@@ -93,7 +93,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
 //    {
 //        double boundsMin = 0.2D;
 //        double boundsMax = 0.8D;
@@ -113,7 +113,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    }
 
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -152,7 +152,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //
 //        BlockPos offsetPos = pos.offset(side);
 //        BlockState state1 = worldIn.getBlockState(offsetPos);
-//        if (state1.getBlock().isSideSolid(state1, worldIn, offsetPos, Direction.getFront(side.getIndex() ^ 1)))
+//        if (state1.getBlock().isSideSolid(state1, worldIn, offsetPos, Direction.byIndex(side.getIndex() ^ 1)))
 //        {
 //            return;
 //        }
@@ -222,13 +222,13 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -236,7 +236,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getFront(meta);
+//        Direction enumfacing = Direction.byIndex(meta);
 //        return this.getDefaultState().with(FACING, enumfacing);
 //    }
 
@@ -247,7 +247,7 @@ public class BlockBrightLamp extends BlockAdvanced implements IShiftDescription,
     }
 
 //    @Override
-//    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public IBlockState getActualState(IBlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        return state.with(ACTIVE, ((TileEntityArclamp) worldIn.getTileEntity(pos)).getEnabled());
 //    }

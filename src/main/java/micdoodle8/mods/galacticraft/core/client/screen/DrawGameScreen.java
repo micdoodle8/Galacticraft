@@ -20,7 +20,7 @@ import java.nio.FloatBuffer;
 
 public class DrawGameScreen implements IScreenManager
 {
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private TextureManager renderEngine = Minecraft.getInstance().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
     private static int texCount = 1;
 

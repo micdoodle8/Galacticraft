@@ -12,21 +12,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSpadeAsteroids extends ShovelItem implements ISortableItem
 {
-    public ItemSpadeAsteroids(String assetName)
+    public ItemSpadeAsteroids(Item.Properties builder)
     {
         super(AsteroidsItems.TOOL_TITANIUM);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

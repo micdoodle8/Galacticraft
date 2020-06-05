@@ -353,7 +353,7 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         if (nbt.getBoolean("HasTarget"))
         {
-            this.preLoadTarget = new BlockPos(nbt.getInteger("TargetX"), nbt.getInteger("TargetY"), nbt.getInteger("TargetZ"));
+            this.preLoadTarget = new BlockPos(nbt.getInt("TargetX"), nbt.getInt("TargetY"), nbt.getInt("TargetZ"));
         }
     }
 
@@ -366,9 +366,9 @@ public abstract class TileEntityBeamOutput extends TileEntityAdvanced implements
 
         if (this.getTarget() != null)
         {
-            nbt.setInteger("TargetX", this.getTarget().getTile().getPos().getX());
-            nbt.setInteger("TargetY", this.getTarget().getTile().getPos().getY());
-            nbt.setInteger("TargetZ", this.getTarget().getTile().getPos().getZ());
+            nbt.putInt("TargetX", this.getTarget().getTile().getPos().getX());
+            nbt.putInt("TargetY", this.getTarget().getTile().getPos().getY());
+            nbt.putInt("TargetZ", this.getTarget().getTile().getPos().getZ());
         }
 
         return nbt;

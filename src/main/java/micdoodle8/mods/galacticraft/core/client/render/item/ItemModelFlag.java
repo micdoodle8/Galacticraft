@@ -4,8 +4,9 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.wrappers.ModelTransformWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.entity.LivingEntity;
+
+import static net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 
 import javax.vecmath.Matrix4f;
 import javax.vecmath.Vector3f;

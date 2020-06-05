@@ -123,7 +123,7 @@ public class MapGen extends BiomeProvider implements Runnable
         this.progressZ = 0;
         this.world = worldIn;
         this.worldInfo = worldIn.getWorldInfo();
-        this.worldType = worldInfo.getTerrainType();
+        this.worldType = worldInfo.getGenerator();
         long seed = worldInfo.getSeed();
         this.biomeCache = new BiomeCache(this);
         String options = worldInfo.getGeneratorOptions();
@@ -614,7 +614,7 @@ public class MapGen extends BiomeProvider implements Runnable
                 float f2 = 0.0F;
                 float f3 = 0.0F;
                 float f4 = 0.0F;
-                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].getBaseHeight();
+                float theMinHeight = biomesGridHeights[xx + 22 + zz * 10].getDepth();
 
                 for (int x = -2; x <= 2; ++x)
                 {
@@ -622,7 +622,7 @@ public class MapGen extends BiomeProvider implements Runnable
                     for (int z = -2; z <= 2; ++z)
                     {
                         Biome biomegenbase1 = biomesGridHeights[baseIndex + (zz + z) * 10];
-                        float f5 = this.settings.biomeDepthOffSet + biomegenbase1.getBaseHeight() * this.settings.biomeDepthWeight;
+                        float f5 = this.settings.biomeDepthOffSet + biomegenbase1.getDepth() * this.settings.biomeDepthWeight;
                         float f6 = this.settings.biomeScaleOffset + biomegenbase1.getHeightVariation() * this.settings.biomeScaleWeight;
 
                         if (amplified && f5 > 0.0F)
@@ -633,7 +633,7 @@ public class MapGen extends BiomeProvider implements Runnable
 
                         float f7 = parabolicField[x + 12 + z * 5] / (f5 + 2.0F);
 
-                        if (biomegenbase1.getBaseHeight() > theMinHeight)
+                        if (biomegenbase1.getDepth() > theMinHeight)
                         {
                             f7 /= 2.0F;
                         }

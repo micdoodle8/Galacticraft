@@ -11,7 +11,7 @@ public abstract class GCPlayerStatsClient
 {
     public static GCPlayerStatsClient get(Entity entity)
     {
-        return entity.getCapability(GCCapabilities.GC_STATS_CLIENT_CAPABILITY, null);
+        return entity.getCapability(GCCapabilities.GC_STATS_CLIENT_CAPABILITY, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
     }
 
     public abstract void setGravity(EnumGravity newGravity);
@@ -132,9 +132,9 @@ public abstract class GCPlayerStatsClient
 
     public abstract void setSsOnGroundLast(boolean ssOnGroundLast);
 
-    public abstract FreefallHandler getFreefallHandler();
-
-    public abstract void setFreefallHandler(FreefallHandler freefallHandler);
+//    public abstract FreefallHandler getFreefallHandler();
+//
+//    public abstract void setFreefallHandler(FreefallHandler freefallHandler);
 
     public abstract ArrayList<ISchematicPage> getUnlockedSchematics();
 

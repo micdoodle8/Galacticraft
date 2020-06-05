@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.core.entities.player;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
@@ -25,7 +25,7 @@ public class GCCapabilities
         CapabilityManager.INSTANCE.register(GCPlayerStats.class, new Capability.IStorage<GCPlayerStats>()
         {
             @Override
-            public NBTBase writeNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side)
+            public INBT writeNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side)
             {
                 CompoundNBT nbt = new CompoundNBT();
                 instance.saveNBTData(nbt);
@@ -33,7 +33,7 @@ public class GCCapabilities
             }
 
             @Override
-            public void readNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side, NBTBase nbt)
+            public void readNBT(Capability<GCPlayerStats> capability, GCPlayerStats instance, Direction side, INBT nbt)
             {
                 instance.loadNBTData((CompoundNBT) nbt);
             }
@@ -42,13 +42,13 @@ public class GCCapabilities
         CapabilityManager.INSTANCE.register(GCPlayerStatsClient.class, new Capability.IStorage<GCPlayerStatsClient>()
         {
             @Override
-            public NBTBase writeNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side)
+            public INBT writeNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side)
             {
                 return null;
             }
 
             @Override
-            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side, NBTBase nbt) { }
+            public void readNBT(Capability<GCPlayerStatsClient> capability, GCPlayerStatsClient instance, Direction side, INBT nbt) { }
         }, StatsClientCapability::new);
     }
 }

@@ -85,7 +85,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         if (!this.world.isRemote && updateClient && delayTimer.markTimeIfDelay(this.world))
         {
             PacketDynamic packet = new PacketDynamic(this);
-            GalacticraftCore.packetPipeline.sendToAllAround(packet, new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
+            GalacticraftCore.packetPipeline.sendToAllAround(packet, new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), this.getPacketRange()));
             this.updateClient = false;
         }
     }
@@ -265,7 +265,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     {
         super.readFromNBT(nbt);
 
-        if (nbt.hasKey("fuelTank"))
+        if (nbt.contains("fuelTank"))
         {
             this.fluidTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
@@ -280,7 +280,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
 
         if (this.fluidTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fluidTank.writeToNBT(new CompoundNBT()));
+            nbt.put("fuelTank", this.fluidTank.writeToNBT(new CompoundNBT()));
         }
         return nbt;
     }
@@ -307,7 +307,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
     {
         if (!this.world.isRemote)
@@ -327,7 +327,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
                 ByteBuf data = Unpooled.wrappedBuffer(bytes);
                 PacketDynamic packet = new PacketDynamic();
                 packet.decodeInto(data);
-                packet.handleClientSide(FMLClientHandler.instance().getClientPlayerEntity());
+                packet.handleClientSide(Minecraft.getInstance().player);
             }
         }
         catch (Throwable t)
@@ -415,7 +415,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
         return super.getCapability(capability, facing);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -426,7 +426,7 @@ public class TileEntityFluidTank extends TileEntityAdvanced implements IFluidHan
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;

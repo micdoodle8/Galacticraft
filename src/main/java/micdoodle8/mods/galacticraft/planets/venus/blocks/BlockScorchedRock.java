@@ -22,7 +22,7 @@ public class BlockScorchedRock extends Block implements ISortableBlock
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {

@@ -5,48 +5,53 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.BeaconContainer;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GuiContainerGC extends ContainerScreen
+public abstract class GuiContainerGC<T extends Container> extends ContainerScreen<T>
 {
-    public List<GuiElementInfoRegion> infoRegions = new ArrayList<GuiElementInfoRegion>();
+    public List<GuiElementInfoRegion> infoRegions = new ArrayList<>();
 
-    public GuiContainerGC(Container container)
+    public GuiContainerGC(T container, PlayerInventory playerInventory, ITextComponent title)
     {
-        super(container);
+        super(container, playerInventory, title);
     }
 
     @Override
-    public void drawScreen(int par1, int par2, float par3)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
-        this.drawDefaultBackground();
-        super.drawScreen(par1, par2, par3);
-        this.renderHoveredToolTip(par1, par2);
+        this.renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
+        this.renderHoveredToolTip(mouseX, mouseY);
 
         for (int k = 0; k < this.infoRegions.size(); ++k)
         {
             GuiElementInfoRegion guibutton = this.infoRegions.get(k);
-            guibutton.drawRegion(par1, par2);
+            guibutton.drawRegion(mouseX, mouseY);
         }
     }
 
+
+
     @Override
-    public void setWorldAndResolution(Minecraft par1Minecraft, int par2, int par3)
+    public void init(Minecraft mc, int width, int height)
     {
         this.infoRegions.clear();
-        super.setWorldAndResolution(par1Minecraft, par2, par3);
+        super.init(mc, width, height);
     }
 
     public int getTooltipOffset(int par1, int par2)
     {
-        for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
+        for (int i1 = 0; i1 < this.container.inventorySlots.size(); ++i1)
         {
-            Slot slot = this.inventorySlots.inventorySlots.get(i1);
+            Slot slot = this.container.inventorySlots.get(i1);
 
             if (slot.isEnabled() && this.isPointInRegion(slot.xPos, slot.yPos, 16, 16, par1, par2))
             {
@@ -54,7 +59,7 @@ public abstract class GuiContainerGC extends ContainerScreen
 
                 if (!itemStack.isEmpty())
                 {
-                    List list = itemStack.getTooltip(this.mc.player, this.mc.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
+                    List list = itemStack.getTooltip(this.minecraft.player, this.minecraft.gameSettings.advancedItemTooltips ? ITooltipFlag.TooltipFlags.ADVANCED : ITooltipFlag.TooltipFlags.NORMAL);
                     int size = list.size();
 
                     if (CompatibilityManager.isWailaLoaded())

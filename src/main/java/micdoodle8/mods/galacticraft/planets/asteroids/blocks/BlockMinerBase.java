@@ -33,7 +33,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -101,7 +101,7 @@ public class BlockMinerBase extends BlockTileGC implements IShiftDescription, IS
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
         return BlockRenderLayer.CUTOUT;

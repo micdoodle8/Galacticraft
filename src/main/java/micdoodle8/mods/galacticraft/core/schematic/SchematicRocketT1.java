@@ -33,7 +33,7 @@ public class SchematicRocketT1 extends SchematicPage
         return null;  //This null is OK, it's used only as a flag by the calling code in SchematicRegistry
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

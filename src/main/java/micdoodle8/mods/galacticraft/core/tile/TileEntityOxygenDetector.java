@@ -24,7 +24,7 @@ public class TileEntityOxygenDetector extends TileEntity implements ITickable
             if (this.getBlockType() instanceof BlockOxygenDetector)
             {
                 boolean oxygenFound = false;
-                if (this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.provider).hasBreathableAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.getDimension()).hasBreathableAtmosphere())
                 {
                     oxygenFound = OxygenUtil.isAABBInBreathableAirBlock(this.world, this.oxygenSearch, false);
                 }

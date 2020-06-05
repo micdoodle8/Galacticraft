@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.asteroids.items;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.items.ISortableItem;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -37,9 +37,9 @@ import javax.annotation.Nullable;
 
 public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
 {
-    public ItemAstroMiner(String assetName)
+    public ItemAstroMiner(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setMaxDamage(0);
         this.setMaxStackSize(1);
         this.setUnlocalizedName(assetName);
@@ -47,18 +47,18 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public ActionResultType onItemUseFirst(PlayerEntity playerIn, World worldIn, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
@@ -96,7 +96,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                     return ActionResultType.FAIL;
                 }
                 
-                if (worldIn.provider instanceof WorldProviderSpaceStation)
+                if (worldIn.provider instanceof DimensionSpaceStation)
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner7.fail")));
                     return ActionResultType.FAIL;
@@ -118,7 +118,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                 GCPlayerStats stats = GCPlayerStats.get(playerIn);
 
                 int astroCount = stats.getAstroMinerCount();
-                if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.capabilities.isCreativeMode))
+                if (astroCount >= ConfigManagerAsteroids.astroMinerMax && (!playerIn.abilities.isCreativeMode))
                 {
                     playerIn.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.message.astro_miner2.fail")));
                     return ActionResultType.FAIL;
@@ -130,7 +130,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
                     return ActionResultType.FAIL;
                 }
 
-                if (!playerIn.capabilities.isCreativeMode)
+                if (!playerIn.abilities.isCreativeMode)
                 {
                     stats.setAstroMinerCount(stats.getAstroMinerCount() + 1);
                     playerIn.getHeldItem(hand).shrink(1);
@@ -142,7 +142,7 @@ public class ItemAstroMiner extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         //TODO

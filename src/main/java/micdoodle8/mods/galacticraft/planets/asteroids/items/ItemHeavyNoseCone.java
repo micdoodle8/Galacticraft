@@ -15,36 +15,36 @@ public class ItemHeavyNoseCone extends Item implements ISortableItem
 {
 //    public IIcon[] icons;
 
-    public ItemHeavyNoseCone(String assetName)
+    public ItemHeavyNoseCone(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
-    /*@SideOnly(Side.CLIENT)
+    /*@OnlyIn(Dist.CLIENT)
     public IIcon getIconFromDamageForRenderPass(int par1, int par2)
     {
         return par2 == 0 ? this.icons[0] : this.icons[1];
     }*/
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         this.icons = new IIcon[2];

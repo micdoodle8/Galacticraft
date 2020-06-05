@@ -161,7 +161,7 @@ public class TileEntityGeothermalGenerator extends TileBaseUniversalElectricalSo
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockGeothermalGenerator)
         {
-            return state.getValue(BlockGeothermalGenerator.FACING);
+            return state.get(BlockGeothermalGenerator.FACING);
         }
         return Direction.NORTH;
     }

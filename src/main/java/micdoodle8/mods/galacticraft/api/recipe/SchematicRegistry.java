@@ -3,14 +3,14 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.FlipPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicEvent.Unlock;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 
@@ -114,10 +114,10 @@ public class SchematicRegistry
      * @param currentIndex the current index of unlocked schematics the player is viewing
      * @return the schematic page that will be shown when the player clicks NEXT
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void flipToNextPage(Screen cs, int currentIndex)
     {
-        FMLClientHandler.instance().getClient().currentScreen = null;
+        Minecraft.getInstance().currentScreen = null;
 
         // Used internally inside Galacticraft to flip to the next page. No need
         // to subscribe to this event.
@@ -130,10 +130,10 @@ public class SchematicRegistry
      * @param currentIndex the current index of unlocked schematics the player is viewing
      * @return the schematic page that will be shown when the player clicks BACK
      */
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void flipToLastPage(Screen cs, int currentIndex)
     {
-        FMLClientHandler.instance().getClient().currentScreen = null;
+        Minecraft.getInstance().currentScreen = null;
 
         // Used internally inside Galacticraft to flip to the last page. No need
         // to subscribe to this event.

@@ -7,12 +7,12 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public interface IWeatherProvider
 {
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     Particle getParticle(ClientWorld world, double x, double y, double z);
 
     void weatherSounds(int j, Minecraft mc, World world, BlockPos blockpos, double xx, double yy, double zz, Random random);

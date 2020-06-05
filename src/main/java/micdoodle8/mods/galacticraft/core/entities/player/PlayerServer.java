@@ -1,27 +1,21 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
 import micdoodle8.mods.galacticraft.core.entities.EntityCelestialFake;
-import micdoodle8.mods.galacticraft.core.event.EventWakePlayer;
 import micdoodle8.mods.galacticraft.core.util.DamageSourceGC;
-import micdoodle8.mods.galacticraft.planets.asteroids.dimension.WorldProviderAsteroids;
-import micdoodle8.mods.galacticraft.planets.asteroids.items.ItemArmorAsteroids;
-import micdoodle8.mods.galacticraft.planets.mars.items.ItemArmorMars;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.util.math.Vec3d;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class PlayerServer implements IPlayerServer
 {
@@ -48,33 +42,33 @@ public class PlayerServer implements IPlayerServer
     }
 
     @Override
-    public void move(ServerPlayerEntity player, MoverType type, double x, double y, double z)
+    public void move(ServerPlayerEntity player, MoverType type, Vec3d motion)
     {
         // If the player is on the moon, not airbourne and not riding anything
-        if (player.world.provider instanceof WorldProviderMoon && !player.world.isRemote && player.getRidingEntity() == null)
+        if (player.world.getDimension() instanceof DimensionMoon && !player.world.isRemote && player.getRidingEntity() == null)
         {
-            GCPlayerHandler.updateFeet(player, x, z);
+            GCPlayerHandler.updateFeet(player, motion.x, motion.z);
         }
     }
 
-    @Override
-    public boolean wakeUpPlayer(ServerPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
-    {
-        BlockPos c = player.bedLocation;
-
-        if (c != null)
-        {
-            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, false);
-            MinecraftForge.EVENT_BUS.post(event);
-
-            if (event.result == null || event.result == PlayerEntity.SleepResult.OK)
-            {
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean wakeUpPlayer(ServerPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn)
+//    {
+//        BlockPos c = player.bedLocation;
+//
+//        if (c != null)
+//        {
+//            EventWakePlayer event = new EventWakePlayer(player, c, immediately, updateWorldFlag, setSpawn, false);
+//            MinecraftForge.EVENT_BUS.post(event);
+//
+//            if (event.result == null || event.result == PlayerEntity.SleepResult.OK)
+//            {
+//                return false;
+//            }
+//        }
+//
+//        return true; TODO Cryo chamber
+//    }
 
     @Override
     public float attackEntityFrom(ServerPlayerEntity player, DamageSource par1DamageSource, float par2)
@@ -89,31 +83,31 @@ public class PlayerServer implements IPlayerServer
         {
             if (par1DamageSource == DamageSource.OUT_OF_WORLD)
             {
-                if (player.world.provider instanceof WorldProviderAsteroids)
-                {
-                    if (player.posY > -120D)
-                    {
-                        return -1F;
-                    }
-                    if (player.posY > -180D)
-                    {
-                        par2 /= 2;
-                    }
-                }
+//                if (player.world.getDimension() instanceof WorldProviderAsteroids)
+//                {
+//                    if (player.posY > -120D)
+//                    {
+//                        return -1F;
+//                    }
+//                    if (player.posY > -180D)
+//                    {
+//                        par2 /= 2;
+//                    }
+//                } TODO Planets
             }
             else if (par1DamageSource == DamageSource.FALL || par1DamageSource == DamageSourceGC.spaceshipCrash)
             {
                 int titaniumCount = 0;
-                if (player.inventory != null)
-                {
-                    for (ItemStack armorPiece : player.getArmorInventoryList())
-                    {
-                        if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
-                        {
-                            titaniumCount++;
-                        }
-                    }
-                }
+//                if (player.inventory != null)
+//                {
+//                    for (ItemStack armorPiece : player.getArmorInventoryList())
+//                    {
+//                        if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorAsteroids)
+//                        {
+//                            titaniumCount++;
+//                        }
+//                    }
+//                } TODO Planets
                 if (titaniumCount == 4)
                 {
                     titaniumCount = 5;
@@ -129,36 +123,32 @@ public class PlayerServer implements IPlayerServer
     public void knockBack(ServerPlayerEntity player, Entity p_70653_1_, float p_70653_2_, double impulseX, double impulseZ)
     {
         int deshCount = 0;
-        if (player.inventory != null && GalacticraftCore.isPlanetsLoaded)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                for (ItemStack armorPiece : player.getArmorInventoryList())
-                {
-                    if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
-                    {
-                        deshCount++;
-                    }
-                }
-            }
-        }
+//        if (player.inventory != null && GalacticraftCore.isPlanetsLoaded)
+//        {
+//            for (int i = 0; i < 4; i++)
+//            {
+//                for (ItemStack armorPiece : player.getArmorInventoryList())
+//                {
+//                    if (armorPiece != null && armorPiece.getItem() instanceof ItemArmorMars)
+//                    {
+//                        deshCount++;
+//                    }
+//                }
+//            }
+//        } TODO Planets
 
-        if (player.getRNG().nextDouble() >= player.getEntityAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getAttributeValue())
+        if (player.getRNG().nextDouble() >= player.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue())
         {
             player.isAirBorne = deshCount < 2;
             float f1 = MathHelper.sqrt(impulseX * impulseX + impulseZ * impulseZ);
             float f2 = 0.4F - deshCount * 0.05F;
             double d1 = 2.0D - deshCount * 0.15D;
-            player.motionX /= d1;
-            player.motionY /= d1;
-            player.motionZ /= d1;
-            player.motionX -= f2 * impulseX / f1;
-            player.motionY += f2;
-            player.motionZ -= f2 * impulseZ / f1;
+            player.setMotion(player.getMotion().mul(1.0 / d1, 1.0 / d1, 1.0 / d1));
+            player.setMotion(player.getMotion().add(-f2 * impulseX / f1, f2, -f2 * impulseZ / f1));
 
-            if (player.motionY > 0.4D)
+            if (player.getMotion().y > 0.4D)
             {
-                player.motionY = 0.4D;
+                player.setMotion(player.getMotion().x, 0.4, player.getMotion().z);
             }
         }
     }

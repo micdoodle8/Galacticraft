@@ -12,12 +12,12 @@ import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.blocks.BlockSolar;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.planets.venus.dimension.WorldProviderVenus;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
@@ -118,7 +118,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
             {
                 this.solarStrength = 0;
 
-                if (this.world.isDaytime() && (this.world.provider instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
+                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
                 {
                     double distance = 100.0D;
                     double sinA = -Math.sin((this.currentAngle - 77.5D) / Constants.RADIANS_TO_DEGREES_D);
@@ -186,10 +186,10 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
-        if (!(this.world.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
-        if (GalacticraftCore.isPlanetsLoaded && this.world.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        if (!(this.world.getDimension() instanceof DimensionSpaceStation)) celestialAngle += 12.5F;
+        if (GalacticraftCore.isPlanetsLoaded && this.world.getDimension() instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
         celestialAngle %= 360;
-        boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.provider instanceof WorldProviderSpaceStation;
+        boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.getDimension() instanceof DimensionSpaceStation;
 
         if (this.tierGC == 1)
         {
@@ -276,9 +276,9 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
         float angle = this.world.getCelestialAngle(1.0F) - 0.784690560F < 0 ? 1.0F - 0.784690560F : -0.784690560F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
-        if (!(this.world.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
+        if (!(this.world.getDimension() instanceof DimensionSpaceStation)) celestialAngle += 12.5F;
 
-        if (GalacticraftCore.isPlanetsLoaded && this.world.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        if (GalacticraftCore.isPlanetsLoaded && this.world.getDimension() instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
         celestialAngle %= 360F;
 
         float difference = (180.0F - Math.abs((this.currentAngle + 12.5F) % 180F - celestialAngle)) / 180.0F;
@@ -288,8 +288,8 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
 
     public float getSolarBoost()
     {
-        float result = (float) (this.world.provider instanceof ISolarLevel ? ((ISolarLevel) this.world.provider).getSolarEnergyMultiplier() : 1.0F);
-        if (GalacticraftCore.isPlanetsLoaded && this.world.provider instanceof WorldProviderVenus)
+        float result = (float) (this.world.getDimension() instanceof ISolarLevel ? ((ISolarLevel) this.world.getDimension()).getSolarEnergyMultiplier() : 1.0F);
+        if (GalacticraftCore.isPlanetsLoaded && this.world.getDimension() instanceof WorldProviderVenus)
         {
             if (this.pos.getY() > 90)
             {
@@ -374,7 +374,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
                 {
                     if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
+                        Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, GCBlocks.solarPanel.getDefaultState());
                     }
 
                     this.world.setBlockToAir(pos);
@@ -393,7 +393,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         this.currentAngle = nbt.getFloat("currentAngle");
         this.targetAngle = nbt.getFloat("targetAngle");
         this.setDisabled(0, nbt.getBoolean("disabled"));
-        this.disableCooldown = nbt.getInteger("disabledCooldown");
+        this.disableCooldown = nbt.getInt("disabledCooldown");
 
         this.initialised = false;
     }
@@ -405,7 +405,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
         nbt.setFloat("currentAngle", this.currentAngle);
         nbt.setFloat("targetAngle", this.targetAngle);
-        nbt.setInteger("disabledCooldown", this.disableCooldown);
+        nbt.putInt("disabledCooldown", this.disableCooldown);
         nbt.setBoolean("disabled", this.getDisabled(0));
 
         return nbt;
@@ -429,7 +429,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockSolar)
         {
-            return state.getValue(BlockSolar.FACING);
+            return state.get(BlockSolar.FACING);
         }
         return Direction.NORTH;
     }
@@ -447,7 +447,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -458,7 +458,7 @@ public class TileEntitySolar extends TileBaseUniversalElectricalSource implement
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;

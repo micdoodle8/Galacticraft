@@ -100,7 +100,7 @@
 //        this.typeBase = EnumMachineType.values[0];
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {

@@ -105,7 +105,7 @@ public class PacketSimpleVenus extends PacketBase
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void handleClientSide(PlayerEntity player)
     {

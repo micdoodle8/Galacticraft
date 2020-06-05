@@ -1,7 +1,10 @@
 package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
+import java.util.Map;
 
+import com.google.common.collect.BiMap;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 
 /**
@@ -9,5 +12,5 @@ import net.minecraft.world.biome.Biome.SpawnListEntry;
  */
 public interface IMobSpawnBiome
 {
-    public void initialiseMobLists(LinkedList<SpawnListEntry> mobInfo);
+    public void initialiseMobLists(Map<SpawnListEntry, EntityClassification> mobInfo);
 }

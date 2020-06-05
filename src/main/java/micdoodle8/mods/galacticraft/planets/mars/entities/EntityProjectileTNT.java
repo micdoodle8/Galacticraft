@@ -24,7 +24,7 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
         this.setSize(1.0F, 1.0F);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public EntityProjectileTNT(World par1World, double par2, double par4, double par6, double par8, double par10, double par12)
     {
         super(par1World, par2, par4, par6, par8, par10, par12);
@@ -56,7 +56,7 @@ public class EntityProjectileTNT extends DamagingProjectileEntity
             }
 
             this.world.newExplosion((Entity) null, this.posX, this.posY, this.posZ, 1.0F, false, this.world.getGameRules().getBoolean("mobGriefing"));
-            this.setDead();
+            this.remove();
         }
     }
 

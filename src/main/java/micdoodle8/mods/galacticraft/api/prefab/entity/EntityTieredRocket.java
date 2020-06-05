@@ -8,10 +8,12 @@ import micdoodle8.mods.galacticraft.api.entity.IWorldTransferCallback;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.galaxies.Planet;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
+import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.IExitHeight;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
@@ -19,15 +21,21 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -41,10 +49,11 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     public EnumRocketType rocketType;
     public float rumble;
     public int launchCooldown;
-    private ArrayList<BlockVec3> preGenList = new ArrayList<>();
-    private Iterator<BlockVec3> preGenIterator = null;
+    private ArrayList<BlockVec3Dim> preGenList = new ArrayList<>();
+    private Iterator<BlockVec3Dim> preGenIterator = null;
     static boolean preGenInProgress = false;
     static Field marsConfigAllDimsAllowed;
+    private boolean heightHalved = false;
 
     static {
         try
@@ -55,18 +64,18 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
         }
     }
-    
-    public EntityTieredRocket(World par1World)
+
+    public EntityTieredRocket(EntityType<? extends EntityTieredRocket> type, World worldIn)
     {
-        super(par1World);
-        this.setSize(0.98F, 4F);
+        super(type, worldIn);
+//        this.setSize(0.98F, 4F);
 //        this.yOffset = this.height / 2.0F;
     }
 
-    public EntityTieredRocket(World world, double posX, double posY, double posZ)
-    {
-        super(world, posX, posY, posZ);
-    }
+//    public EntityTieredRocket(World world, double posX, double posY, double posZ)
+//    {
+//        super(world, posX, posY, posZ);
+//    }
 
     public void igniteCheckingCooldown()
     {
@@ -92,7 +101,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         //If the server is at less than 20tps then maybe some of the outermost chunks won't be pre-generated but that's probably OK
         if (this.destinationFrequency == -1 && !EntityTieredRocket.preGenInProgress)
         {
-            ArrayList<Integer> toPreGen = new ArrayList<>();
+            ArrayList<DimensionType> toPreGen = new ArrayList<>();
             for (Planet planet : GalaxyRegistry.getRegisteredPlanets().values())
             {
                 if (planet.getDimensionID() == this.dimension)
@@ -107,9 +116,9 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (toPreGen.size() > 0)
             {
-                for (Integer dimID : toPreGen)
+                for (DimensionType dimID : toPreGen)
                 {
-                    this.preGenList.add(new BlockVec3(cx, dimID, cz));
+                    this.preGenList.add(new BlockVec3Dim(cx, 0, cz, dimID));
                     if (ConfigManagerCore.enableDebug)
                     {
                         GCLog.info("Starting terrain pregen for dimension " + dimID + " at " + (cx * 16 + 8) + ", " + (cz * 16 + 8));
@@ -123,12 +132,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     int zmax = cz + r;
                     for (int i = -r; i < r; i++)  //stop before i == r to avoid doing corners twice
                     {
-                        for (Integer dimID : toPreGen)
+                        for (DimensionType dimID : toPreGen)
                         {
-                            this.preGenList.add(new BlockVec3(xmin, dimID, cz + i));
-                            this.preGenList.add(new BlockVec3(xmax, dimID, cz - i));
-                            this.preGenList.add(new BlockVec3(cx - i, dimID, zmin));
-                            this.preGenList.add(new BlockVec3(cx + i, dimID, zmax));
+                            this.preGenList.add(new BlockVec3Dim(xmin, 0, cz + i, dimID));
+                            this.preGenList.add(new BlockVec3Dim(xmax, 0, cz - i, dimID));
+                            this.preGenList.add(new BlockVec3Dim(cx - i, 0, zmin, dimID));
+                            this.preGenList.add(new BlockVec3Dim(cx + i, 0, zmax, dimID));
                         }
                     }
                 }
@@ -143,12 +152,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         if (this.getWaitForPlayer())
         {
             if (!this.getPassengers().isEmpty())
             {
+                Vec3d motion = getMotion();
                 Entity passenger = this.getPassengers().get(0);
                 if (this.ticks >= 40)
                 {
@@ -160,21 +170,22 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     }
 
                     this.setWaitForPlayer(false);
-                    this.motionY = -0.5D;
+                    setMotion(getMotion().x, -0.5, getMotion().z);
                 }
                 else
                 {
-                    this.motionX = this.motionY = this.motionZ = 0.0D;
-                    passenger.motionX = passenger.motionY = passenger.motionZ = 0;
+                    this.setMotion(Vec3d.ZERO);
+                    passenger.setMotion(Vec3d.ZERO);
                 }
             }
             else
             {
-                this.motionX = this.motionY = this.motionZ = 0.0D;
+//                this.motionX = this.motionY = this.motionZ = 0.0D;
+                this.setMotion(0.0, 0.0, 0.0);
             }
         }
 
-        super.onUpdate();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -190,18 +201,18 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     MinecraftServer mcserver;
                     if (this.world instanceof ServerWorld)
                     {
-                        mcserver = ((ServerWorld) this.world).getMinecraftServer();
-	                	BlockVec3 coords = this.preGenIterator.next();
-	                    World w = mcserver.getWorld(coords.y);
+                        mcserver = ((ServerWorld) this.world).getServer();
+	                	BlockVec3Dim coords = this.preGenIterator.next();
+	                    World w = mcserver.getWorld(coords.dim);
                         if (w != null)
                         {
-                            w.getChunkFromChunkCoords(coords.x, coords.z);
+                            w.getChunk(coords.x, coords.z);
                             //Pregen a second chunk if still on launchpad (low strain on server)
                             if (this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal() && this.preGenIterator.hasNext())
                             {
                                 coords = this.preGenIterator.next();
-                                w = mcserver.getWorld(coords.y);
-                                w.getChunkFromChunkCoords(coords.x, coords.z);
+                                w = mcserver.getWorld(coords.dim);
+                                w.getChunk(coords.x, coords.z);
                             }
                         }
                     }
@@ -240,7 +251,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         if (!this.world.isRemote)
         {
             this.lastLastMotionY = this.lastMotionY;
-            this.lastMotionY = this.motionY;
+            this.lastMotionY = this.getMotion().y;
         }
     }
 
@@ -296,12 +307,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
 
             if (this.targetVec != null)
             {
-                if (this.targetDimension != this.world.provider.getDimension())
+                if (this.targetDimension != this.world.getDimension().getType())
                 {
                     Dimension targetDim = WorldUtil.getProviderForDimensionServer(this.targetDimension);
-                    if (targetDim != null && targetDim.world instanceof ServerWorld)
+                    if (targetDim != null && targetDim.getWorld() instanceof ServerWorld)
                     {
-                    	boolean dimensionAllowed = this.targetDimension == ConfigManagerCore.idDimensionOverworld;
+                    	boolean dimensionAllowed = this.targetDimension == DimensionType.OVERWORLD;
 
                     	if (targetDim instanceof IGalacticraftWorldProvider)
                     	{
@@ -312,7 +323,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     	}
                     	else
                     		//No rocket flight to non-Galacticraft dimensions other than the Overworld allowed unless config
-                    		if ((this.targetDimension > 1 || this.targetDimension < -1) && marsConfigAllDimsAllowed != null)
+                    		if (/*(this.targetDimension > 1 || this.targetDimension < -1) &&*/ marsConfigAllDimsAllowed != null)
                     		{
                     			try {
                     				if (marsConfigAllDimsAllowed.getBoolean(null))
@@ -330,13 +341,13 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		    {
                     		        if (passenger instanceof ServerPlayerEntity)
                     		        {
-                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (ServerWorld) targetDim.world, false, this);
+                    		            WorldUtil.transferEntityToDimension(passenger, this.targetDimension, (ServerWorld) targetDim.getWorld(), false, this);
                     		        }
                     		    }
                     		}
                     		else
                     		{
-                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld)targetDim.world, false, null);
+                    		    Entity e = WorldUtil.transferEntityToDimension(this, this.targetDimension, (ServerWorld)targetDim.getWorld(), false, null);
                     		    if (e instanceof EntityAutoRocket)
                     		    {
                     		        e.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5f);
@@ -346,8 +357,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                     		    else
                     		    {
                     		        GCLog.info("Error: failed to recreate the unmanned rocket in landing mode on target planet.");
-                    		        e.setDead();
-                    		        this.setDead();
+                    		        e.remove();
+                    		        this.remove();
                     		    }
                     		}
                     		return;
@@ -360,9 +371,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
                 	//Same dimension controlled rocket flight
                 	this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
                     //Stop any lateral motion, otherwise it will update to an incorrect x,z position first tick after spawning above target
-                    this.motionX = this.motionZ = 0.0D;
                     //Small upward motion initially, to keep clear of own flame trail from launch
-                    this.motionY = 0.1D;
+                    this.setMotion(0.0, 0.1, 0.0);
                     for (Entity passenger : this.getPassengers())
                     {
                         if (passenger instanceof ServerPlayerEntity)
@@ -381,8 +391,8 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             {
                 //Launch controlled launch but no valid target frequency = rocket loss [INVESTIGATE]
             	GCLog.info("Error: the launch controlled rocket failed to find a valid landing spot when it reached space.");
-            	this.fuelTank.drain(Integer.MAX_VALUE, true);
-            	this.posY = Math.max(255, (this.world.provider instanceof IExitHeight ? ((IExitHeight) this.world.provider).getYCoordinateToTeleport() : 1200) - 200);
+            	this.fuelTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.EXECUTE);
+            	this.posY = Math.max(255, (this.world.getDimension() instanceof IExitHeight ? ((IExitHeight) this.world.getDimension()).getYCoordinateToTeleport() : 1200) - 200);
                 return;
             }
         }
@@ -403,7 +413,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             }
 
             //Destroy any rocket which reached the top of the atmosphere and is not controlled by a Launch Controller
-            this.setDead();
+            this.remove();
         }
         
         //Client side, non-launch controlled, do nothing - no reason why it can't continue flying until the GUICelestialSelection activates
@@ -438,6 +448,15 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         return true;
     }
 
+    public EntitySize getSize(Pose poseIn)
+    {
+        if (heightHalved)
+        {
+            return super.getSize(poseIn).scale(1.0F, 0.5F);
+        }
+        return super.getSize(poseIn);
+    }
+
     @Override
     public boolean processInitialInteract(PlayerEntity player, Hand hand)
     {
@@ -455,14 +474,18 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.provider.getDimension(), new Object[] { }), (ServerPlayerEntity) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, this.world.getDimension().getType(), new Object[] { }), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 // Prevent player being dropped from the top of the rocket...
-                float heightBefore = this.height;
-                this.height = this.height / 2.0F;
+                float heightBefore = this.getHeight();
+                heightHalved = true;
+                this.recalculateSize();
+//                this.height = this.height / 2.0F;
                 this.removePassengers();
-                this.height = heightBefore;
+//                this.height = heightBefore;
+                heightHalved = false;
+                this.recalculateSize();
             }
 
             return true;
@@ -471,7 +494,7 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.provider.getDimension(), new Object[] { }), (ServerPlayerEntity) player);
+                GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_DISPLAY_ROCKET_CONTROLS, this.world.getDimension().getType(), new Object[] { }), (ServerPlayerEntity) player);
                 GCPlayerStats stats = GCPlayerStats.get(player);
                 stats.setChatCooldown(0);
                 player.startRiding(this);
@@ -484,22 +507,22 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
     	if (world.isRemote) return;
-    	nbt.setInteger("Type", this.rocketType.getIndex());
-        super.writeEntityToNBT(nbt);
+    	nbt.putInt("Type", this.rocketType.getIndex());
+        super.writeAdditional(nbt);
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
-        this.rocketType = EnumRocketType.values()[nbt.getInteger("Type")];
-        super.readEntityFromNBT(nbt);
+        this.rocketType = EnumRocketType.values()[nbt.getInt("Type")];
+        super.readAdditional(nbt);
     }
 
     @Override
-    public EnumRocketType getType()
+    public EnumRocketType getRocketType()
     {
         return this.rocketType;
     }
@@ -519,11 +542,12 @@ public abstract class EntityTieredRocket extends EntityAutoRocket implements IRo
             this.setPosition(this.targetVec.getX() + 0.5F, this.targetVec.getY() + 800, this.targetVec.getZ() + 0.5F);
             this.setLaunchPhase(EnumLaunchPhase.LANDING);
             this.setWaitForPlayer(true);
-            this.motionX = this.motionY = this.motionZ = 0.0D;
+            this.setMotion(Vec3d.ZERO);
+//            this.motionX = this.motionY = this.motionZ = 0.0D;
         }
         else
         {
-            this.setDead();
+            this.remove();
         }
     }
 

@@ -1,13 +1,15 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBiped;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedEnderman;
+import net.minecraft.client.renderer.entity.model.BipedModel;
+import net.minecraft.client.renderer.entity.model.EndermanModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.entity.Entity;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class ModelEvolvedEnderman extends ModelBiped
+@OnlyIn(Dist.CLIENT)
+public class ModelEvolvedEnderman extends BipedModel<EntityEvolvedEnderman>
 {
     public boolean isCarrying;
     public boolean isAttacking;
@@ -31,7 +33,7 @@ public class ModelEvolvedEnderman extends ModelBiped
 
     public ModelEvolvedEnderman()
     {
-        super(0.0F, -14.0F, 64, 64);
+        super(0.0F/*, -14.0F, 64, 64*/);
         float f1 = -14.0F;
         this.bipedHeadwear = new RendererModel(this, 0, 16);
         this.bipedHeadwear.addBox(-4.0F, -8.0F, -4.0F, 8, 8, 8, 0.0F - 0.5F);
@@ -124,9 +126,9 @@ public class ModelEvolvedEnderman extends ModelBiped
     }
 
     @Override
-    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, Entity entity)
+    public void setRotationAngles(EntityEvolvedEnderman enderman, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        super.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+        super.setRotationAngles(enderman, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.bipedHead.showModel = true;
         float f6 = -14.0F;
         this.bipedBody.rotateAngleX = 0.0F;
@@ -212,10 +214,10 @@ public class ModelEvolvedEnderman extends ModelBiped
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(EntityEvolvedEnderman entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
         super.render(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-        this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entity);
+        this.setRotationAngles(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
         this.oxygenMask.render(scale);
         this.tank1.render(scale);
         this.tank2.render(scale);

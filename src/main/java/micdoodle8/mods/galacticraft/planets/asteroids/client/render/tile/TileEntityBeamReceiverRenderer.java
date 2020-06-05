@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReceiver;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityBeamReceiverRenderer extends TileEntityRenderer<TileEntityBeamReceiver>
 {
     private static OBJModel.OBJBakedModel reflectorModelMain;
@@ -61,7 +61,7 @@ public class TileEntityBeamReceiverRenderer extends TileEntityRenderer<TileEntit
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y, (float) z + 0.5F);
-        GlStateManager.scale(0.85F, 0.85F, 0.85F);
+        GlStateManager.scalef(0.85F, 0.85F, 0.85F);
 
         switch (tile.facing)
         {

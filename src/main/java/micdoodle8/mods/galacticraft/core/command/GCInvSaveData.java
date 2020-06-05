@@ -30,11 +30,11 @@ public class GCInvSaveData extends WorldSavedData
                 ListNBT entry = (ListNBT) obj;
                 String name = entry.toString(); // TODO See if this is equivilent to 1.6's getName function
                 ItemStack[] saveinv = new ItemStack[6];
-                if (entry.tagCount() > 0)
+                if (entry.size() > 0)
                 {
-                    for (int j = 0; j < entry.tagCount(); j++)
+                    for (int j = 0; j < entry.size(); j++)
                     {
-                        CompoundNBT obj1 = entry.getCompoundTagAt(j);
+                        CompoundNBT obj1 = entry.getCompound(j);
 
                         if (obj1 != null)
                         {

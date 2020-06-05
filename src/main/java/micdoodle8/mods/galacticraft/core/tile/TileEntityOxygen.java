@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenStorage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.energy.EnergyConfigHandler;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlock;
@@ -16,7 +16,7 @@ import micdoodle8.mods.galacticraft.core.util.CompatibilityManager;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
 import micdoodle8.mods.miccore.Annotations;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
@@ -115,15 +115,15 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         super.readFromNBT(nbt);
 
-        if (nbt.hasKey("storedOxygen"))
+        if (nbt.contains("storedOxygen"))
         {
-            this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, nbt.getInteger("storedOxygen")));
+            this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, nbt.getInt("storedOxygen")));
         }
-        else if (nbt.hasKey("storedOxygenF"))
+        else if (nbt.contains("storedOxygenF"))
         {
             int oxygen = (int) nbt.getFloat("storedOxygenF");
             oxygen = Math.min(this.tank.getCapacity(), oxygen);
-            this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, oxygen));
+            this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, oxygen));
         }
         else
         {
@@ -148,7 +148,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     @Override
     public void setOxygenStored(int oxygen)
     {
-        this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
+        this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, (int) Math.max(Math.min(oxygen, this.getMaxOxygenStored()), 0)));
     }
 
     @Override
@@ -286,7 +286,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
 
                 if (gasRequested > 0)
                 {
-                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GCFluids.fluidOxygenGas, Math.min(gasRequested, provide)), true);
+                    int usedGas = outputNetwork.emitToBuffer(new FluidStack(GCFluidRegistry.fluidOxygenGas, Math.min(gasRequested, provide)), true);
 
                     this.drawOxygen(usedGas, true);
                     return true;
@@ -428,7 +428,7 @@ public abstract class TileEntityOxygen extends TileBaseElectricBlock implements 
     {
         if (this.getOxygenOutputDirections().contains(from))
         {
-            return new FluidStack(GCFluids.fluidOxygenGas, this.drawOxygen(maxDrain, doDrain));
+            return new FluidStack(GCFluidRegistry.fluidOxygenGas, this.drawOxygen(maxDrain, doDrain));
         }
 
         return null;

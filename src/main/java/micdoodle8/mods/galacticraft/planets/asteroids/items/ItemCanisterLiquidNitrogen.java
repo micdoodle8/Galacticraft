@@ -30,7 +30,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
 {
 //    protected IIcon[] icons = new IIcon[7];
 
-    public ItemCanisterLiquidNitrogen(String assetName)
+    public ItemCanisterLiquidNitrogen(Item.Properties builder)
     {
         super(assetName);
         this.setAllowedFluid("liquidnitrogen");
@@ -38,7 +38,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         for (int i = 0; i < this.icons.length; i++)
@@ -77,7 +77,7 @@ public class ItemCanisterLiquidNitrogen extends ItemCanisterGeneric implements I
     }*/
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)

@@ -55,9 +55,9 @@
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(CircuitFabricatorRecipeHandler.circuitFabricatorTexture);
-//        GuiDraw.drawTexturedModalRect(-2, 9, 3, 4, 168, 64);
-//        GuiDraw.drawTexturedModalRect(68, 73, 73, 68, 96, 35);
-//        GuiDraw.drawTexturedModalRect(83, 25, 176, 17 + 10 * (Math.min(this.ticksPassed % 70, 51) / 3 % 3), Math.min(this.ticksPassed % 70, 51), 10);
+//        GuiDraw.blit(-2, 9, 3, 4, 168, 64);
+//        GuiDraw.blit(68, 73, 73, 68, 96, 35);
+//        GuiDraw.blit(83, 25, 176, 17 + 10 * (Math.min(this.ticksPassed % 70, 51) / 3 % 3), Math.min(this.ticksPassed % 70, 51), 10);
 //    }
 //
 //    @Override

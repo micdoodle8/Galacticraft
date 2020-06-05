@@ -24,7 +24,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
     public StructureComponentVillageWell(StructureComponentVillageStartPiece par1ComponentVillageStartPiece, int par2, Random par3Random, int par4, int par5)
     {
         super(par1ComponentVillageStartPiece, par2);
-        this.setCoordBaseMode(Direction.getFront(par3Random.nextInt(4)));
+        this.setCoordBaseMode(Direction.byIndex(par3Random.nextInt(4)));
 
         switch (this.getCoordBaseMode().getHorizontalIndex())
         {
@@ -42,7 +42,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class StructureComponentVillageWell extends StructureComponentVillage
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
     }
 
     @Override

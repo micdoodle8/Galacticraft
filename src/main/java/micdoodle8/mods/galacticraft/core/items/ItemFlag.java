@@ -20,6 +20,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
@@ -30,20 +31,20 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 {
     public int placeProgress;
 
-    public ItemFlag(String assetName)
+    public ItemFlag(Item.Properties properties)
     {
-        super();
-        this.setMaxDamage(0);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setMaxDamage(0);
+//        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entity, int timeLeft)
@@ -69,9 +70,10 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
             var7 = 1.0F;
         }
 
-        if (var7 == 1.0F && var12 != null && var12.typeOfHit == RayTraceResult.Type.BLOCK)
+        if (var7 == 1.0F && var12 != null && var12.getType() == RayTraceResult.Type.BLOCK)
         {
-            final BlockPos pos = var12.getBlockPos();
+            BlockRayTraceResult blockResult = (BlockRayTraceResult) var12;
+            final BlockPos pos = blockResult.getPos();
 
             if (!worldIn.isRemote)
             {
@@ -79,8 +81,8 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
 
                 if (worldIn.getEntitiesWithinAABB(EntityFlag.class, new AxisAlignedBB(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 3, pos.getZ() + 1)).isEmpty())
                 {
-                    worldIn.spawnEntity(flag);
-                    flag.setType(stack.getItemDamage());
+                    worldIn.addEntity(flag);
+//                    flag.setType(stack.getItemDamage());
                     flag.setOwner(PlayerUtil.getName(player));
                     worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundType.METAL.getBreakSound(), SoundCategory.BLOCKS, SoundType.METAL.getVolume(), SoundType.METAL.getPitch() + 2.0F);
                     placed = true;
@@ -95,7 +97,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
             {
                 final int var2 = this.getInventorySlotContainItem(player, stack);
 
-                if (var2 >= 0 && !player.capabilities.isCreativeMode)
+                if (var2 >= 0 && !player.abilities.isCreativeMode)
                 {
                     player.inventory.mainInventory.get(var2).shrink(1);
                 }
@@ -136,7 +138,7 @@ public class ItemFlag extends Item implements IHoldableItemCustom, ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

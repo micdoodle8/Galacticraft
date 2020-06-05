@@ -46,7 +46,7 @@ public abstract class DirectionalPieceVenus extends PieceVenus
 
         if (tagCompound.hasKey("direction"))
         {
-            this.direction = Direction.getFront(tagCompound.getInteger("direction"));
+            this.direction = Direction.byIndex(tagCompound.getInteger("direction"));
         }
         else
         {

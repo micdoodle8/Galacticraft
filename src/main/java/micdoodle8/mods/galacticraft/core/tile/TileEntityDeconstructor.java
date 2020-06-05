@@ -20,7 +20,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.mars.items.MarsItems;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -453,7 +453,7 @@ public class TileEntityDeconstructor extends TileBaseElectricBlock implements II
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
 
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;

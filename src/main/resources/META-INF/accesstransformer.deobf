@@ -1,0 +1,46 @@
+# Micdoodle Core Access Transformer configuration file
+# Fields
+public net.minecraft.client.gui.inventory.GuiContainer guiLeft
+public net.minecraft.client.gui.inventory.GuiContainer guiLeft
+public net.minecraft.client.gui.GuiScreen buttonList
+public net.minecraft.inventory.InventoryCrafting eventHandler
+#public net.minecraft.client.renderer.entity.RenderPlayer modelBipedMain
+#public net.minecraft.client.renderer.entity.RenderPlayer modelArmorChestplate
+#public net.minecraft.client.renderer.entity.RenderPlayer modelArmor
+public net.minecraft.entity.player.EntityPlayer sleeping
+public net.minecraft.entity.player.EntityPlayer sleepTimer
+public net.minecraft.entity.EntityLivingBase recentlyHit
+public net.minecraft.entity.EntityLivingBase attackingPlayer
+public net.minecraft.network.EnumConnectionState STATES_BY_CLASS
+public net.minecraft.network.EnumConnectionState directionMaps
+public net.minecraft.client.renderer.EntityRenderer thirdPersonDistance
+public net.minecraft.client.renderer.EntityRenderer thirdPersonDistanceTemp
+#public net.minecraft.client.renderer.WorldRenderer glRenderList
+public net.minecraft.client.audio.MusicTicker rand
+public net.minecraft.client.audio.MusicTicker mc
+public net.minecraft.client.audio.MusicTicker currentMusic
+public net.minecraft.client.audio.MusicTicker timeUntilNextMusic
+public net.minecraft.client.gui.GuiIngame recordPlaying
+public net.minecraft.client.renderer.entity.RendererLivingEntity mainModel
+public net.minecraft.world.WorldProvider worldObj
+public net.minecraft.world.chunk.Chunk heightMapMinimum
+public net.minecraft.world.chunk.Chunk precipitationHeightMap
+public net.minecraft.world.chunk.Chunk isChunkLoaded
+public net.minecraft.world.chunk.Chunk heightMap
+public net.minecraft.world.chunk.Chunk isModified
+public net.minecraft.client.renderer.EntityRenderer cameraZoom
+public net.minecraft.client.renderer.EntityRenderer cameraYaw
+public net.minecraft.client.renderer.EntityRenderer cameraPitch
+public net.minecraft.entity.EntityList classToIDMapping
+public net.minecraft.network.NetHandlerPlayServer floatingTickCount
+public net.minecraft.world.biome.WorldChunkManager biomeIndexLayer
+# Methods
+public net.minecraft.entity.player.EntityPlayer closeScreen()V
+public net.minecraft.entity.player.EntityPlayerMP closeScreen()V
+#public net.minecraft.client.entity.EntityClientPlayerMP closeScreen()V
+public net.minecraft.client.entity.EntityPlayerSP closeScreen()V
+public net.minecraft.world.World onEntityRemoved(Lnet/minecraft/entity/Entity;)V
+public net.minecraft.client.multiplayer.WorldClient onEntityRemoved(Lnet/minecraft/entity/Entity;)V
+public net.minecraft.world.WorldServer onEntityRemoved(Lnet/minecraft/entity/Entity;)V
+public net.minecraft.entity.DataWatcher getWatchedObject(I)Lnet/minecraft/entity/DataWatcher$WatchableObject;
+public net.minecraft.client.renderer.EntityRenderer orientCamera(F)V

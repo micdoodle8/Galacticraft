@@ -29,7 +29,7 @@ public class WorldGenEggs extends Feature
 
         if (!par1World.isBlockLoaded(newPos.add(1, 0, 1))) return false;
 
-        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1World.provider.isNether()))
+        if (par1World.isAirBlock(newPos) && (j1 < 127 || !par1world.getDimension().isNether()))
         {
             BlockState below = par1World.getBlockState(newPos.down());
             if (below.getBlock() == MarsBlocks.marsBlock && below.getValue(BlockBasicMars.BASIC_TYPE) == BlockBasicMars.EnumBlockBasic.SURFACE)

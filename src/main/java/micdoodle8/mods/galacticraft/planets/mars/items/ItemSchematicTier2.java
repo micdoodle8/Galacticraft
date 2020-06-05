@@ -29,12 +29,12 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
         super("schematic");
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
@@ -49,7 +49,7 @@ public class ItemSchematicTier2 extends ItemSchematic implements ISchematicItem,
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         switch (par1ItemStack.getItemDamage())

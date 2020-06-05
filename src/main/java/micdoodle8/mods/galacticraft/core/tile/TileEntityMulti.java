@@ -122,7 +122,7 @@ public class TileEntityMulti extends TileEntity
             tag.setInteger("x", this.mainBlockPosition.getX());
             tag.setInteger("y", this.mainBlockPosition.getY());
             tag.setInteger("z", this.mainBlockPosition.getZ());
-            nbt.setTag("mainBlockPosition", tag);
+            nbt.put("mainBlockPosition", tag);
         }
 
         return nbt;

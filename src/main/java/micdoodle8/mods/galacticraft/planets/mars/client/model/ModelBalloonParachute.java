@@ -48,7 +48,7 @@ public class ModelBalloonParachute extends ModelBase
 
     public void renderAll()
     {
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelBalloonParachute.grayParachuteTexture);
+        Minecraft.getInstance().textureManager.bindTexture(ModelBalloonParachute.grayParachuteTexture);
 
         int i;
 

@@ -1072,7 +1072,7 @@ public class ThreadFindSeal
     {
         if (block instanceof IPartialSealableBlock)
         {
-            Direction testSide = Direction.getFront(side);
+            Direction testSide = Direction.byIndex(side);
             IPartialSealableBlock blockPartial = (IPartialSealableBlock) block;
             BlockPos vecPos = new BlockPos(vec.x, vec.y, vec.z);
             if (blockPartial.isSealed(this.world, vecPos, testSide))
@@ -1177,9 +1177,9 @@ public class ThreadFindSeal
         if (block instanceof PistonBlock)
         {
             PistonBlock piston = (PistonBlock) block;
-            if (state.getValue(PistonBlock.EXTENDED).booleanValue())
+            if (state.get(PistonBlock.EXTENDED).booleanValue())
             {
-                int facing = ((Direction) state.getValue(PistonBlock.FACING)).getIndex();
+                int facing = ((Direction) state.get(PistonBlock.FACING)).getIndex();
                 if (side == facing)
                 {
                     this.checkCount--;
@@ -1196,7 +1196,7 @@ public class ThreadFindSeal
         //General case - this should cover any block which correctly implements isBlockSolidOnSide
         //including most modded blocks - Forge microblocks in particular is covered by this.
         // ### Any exceptions in mods should implement the IPartialSealableBlock interface ###
-        if (block.isSideSolid(state, this.world, vec.toBlockPos(), Direction.getFront(side ^ 1)))
+        if (block.isSideSolid(state, this.world, vec.toBlockPos(), Direction.byIndex(side ^ 1)))
         {
             //Solid on all sides
             if (block.getMaterial(state).blocksMovement() && block.isFullCube(state))
@@ -1224,7 +1224,7 @@ public class ThreadFindSeal
             {
                 continue;
             }
-            if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), Direction.getFront(i)))
+            if (block.isSideSolid(state, this.world, new BlockPos(vec.x, vec.y, vec.z), Direction.byIndex(i)))
             {
                 vec.setSideDone(i);
             }

@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityPanelLightRenderer extends TileEntityRenderer<TileEntityPanelLight>
 {
     public static final ResourceLocation lightTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/light.png");
@@ -27,42 +27,42 @@ public class TileEntityPanelLightRenderer extends TileEntityRenderer<TileEntityP
         BlockPanelLighting.PanelType type = tileEntity.getType();
 
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
 
         switch (side)
         {
         case 0:
             break;
         case 1:
-            GlStateManager.rotate(180F, 1F, 0, 0);
+            GlStateManager.rotatef(180F, 1F, 0, 0);
             break;
         case 2:
-            GlStateManager.rotate(90F, 1F, 0, 0);
+            GlStateManager.rotatef(90F, 1F, 0, 0);
             break;
         case 3:
-            GlStateManager.rotate(90F, -1F, 0, 0);
+            GlStateManager.rotatef(90F, -1F, 0, 0);
             break;
         case 4:
-            GlStateManager.rotate(90F, 0, 0, -1F);
+            GlStateManager.rotatef(90F, 0, 0, -1F);
             rot = (rot + 1) % 4;
             break;
         case 5:
-            GlStateManager.rotate(90F, 0, 0, 1F);
+            GlStateManager.rotatef(90F, 0, 0, 1F);
             rot = (rot + 1) % 4;
             break;
         }
         
         if (rot > 0)
         {
-            GlStateManager.rotate(90F * rot, 0, 1F, 0F);
+            GlStateManager.rotatef(90F * rot, 0, 1F, 0F);
         }
 
         if (type == BlockPanelLighting.PanelType.SFDIAG)
         {
-            GlStateManager.rotate(45F, 0, 1F, 0F);
+            GlStateManager.rotatef(45F, 0, 1F, 0F);
         }
 
-        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+        GlStateManager.translatef(-0.5F, -0.5F, -0.5F);
         RenderHelper.disableStandardItemLighting();
 
         if (tileEntity.getEnabled())
@@ -144,7 +144,7 @@ public class TileEntityPanelLightRenderer extends TileEntityRenderer<TileEntityP
         else
         {
             frameA += 0.02F;
-            GlStateManager.translate(0.239F, 0F, -0.345F);
+            GlStateManager.translatef(0.239F, 0F, -0.345F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             worldRenderer.pos(frameA, frameY, frameB).endVertex();
             worldRenderer.pos(frameB, frameY, frameB).endVertex();
@@ -152,14 +152,14 @@ public class TileEntityPanelLightRenderer extends TileEntityRenderer<TileEntityP
             worldRenderer.pos(frameA, frameY, frameC).endVertex();
             tess.draw();
             frameA += 0.02F;
-            GlStateManager.translate(0.23F, 0F, 0.233F);
+            GlStateManager.translatef(0.23F, 0F, 0.233F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             worldRenderer.pos(frameA, frameY, frameB).endVertex();
             worldRenderer.pos(frameB, frameY, frameB).endVertex();
             worldRenderer.pos(frameB, frameY, frameC).endVertex();
             worldRenderer.pos(frameA, frameY, frameC).endVertex();
             tess.draw();
-            GlStateManager.translate(-0.48F, 0F, 0F);
+            GlStateManager.translatef(-0.48F, 0F, 0F);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             worldRenderer.pos(frameA, frameY, frameB).endVertex();
             worldRenderer.pos(frameB, frameY, frameB).endVertex();

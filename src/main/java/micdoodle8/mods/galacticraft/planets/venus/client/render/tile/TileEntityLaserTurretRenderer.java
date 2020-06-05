@@ -24,7 +24,7 @@ import net.minecraftforge.client.model.obj.OBJModel;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntityLaserTurret>
 {
     public static OBJModel.OBJBakedModel laserBase;
@@ -82,10 +82,10 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
 
         this.updateModels();
 
-        GlStateManager.scale(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
+        GlStateManager.scalef(1 / 16.0F, 1 / 16.0F, 1 / 16.0F);
 
         GlStateManager.pushMatrix();
-        GlStateManager.scale(0.9F, 1.0F, 0.9F);
+        GlStateManager.scalef(0.9F, 1.0F, 0.9F);
         ClientUtil.drawBakedModel(laserBase);
         GlStateManager.popMatrix();
 
@@ -97,7 +97,7 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
         GlStateManager.rotate(partialRot, 0.0F, 0.0F, -1.0F);
 
         GlStateManager.pushMatrix();
-        GlStateManager.scale(1.1F, 1.0F, 1.0F);
+        GlStateManager.scalef(1.1F, 1.0F, 1.0F);
 
         ClientUtil.drawBakedModel(laserPhalange);
         GlStateManager.popMatrix();
@@ -139,7 +139,7 @@ public class TileEntityLaserTurretRenderer extends TileEntityRenderer<TileEntity
             GlStateManager.enableTexture2D();
 
             float scale = tile.chargeLevel / 600.0F;
-            GlStateManager.scale(0.01F + scale, 0.01F + scale, 0.01F + scale);
+            GlStateManager.scalef(0.01F + scale, 0.01F + scale, 0.01F + scale);
             GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModel(orb1);
             GlStateManager.rotate(rotate, 0.0F, 1.0F, 0.0F);

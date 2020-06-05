@@ -2,26 +2,24 @@ package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntityAutoRocket;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase.EnumLaunchPhase;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class OverlayDockingRocket extends Overlay
 {
     /**
      * Render the GUI when player is docking a vehicle
      */
-    public static void renderDockingOverlay(Minecraft mc, long ticks)
+    public static void renderDockingOverlay(long ticks)
     {
-        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
-        final int width = scaledresolution.getScaledWidth();
-        final int height = scaledresolution.getScaledHeight();
-        mc.entityRenderer.setupOverlayRendering();
+        Minecraft mc = Minecraft.getInstance();
+//        mc.entityRenderer.setupOverlayRendering(); TODO Needed?
+        int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
+        int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
 
         if (mc.player.getRidingEntity() instanceof EntityAutoRocket)
         {
@@ -37,7 +35,7 @@ public class OverlayDockingRocket extends Overlay
                 String dZStr = String.valueOf(dZ);
 
                 double targetMotionY = Math.round(Math.max((rocket.posY - rocket.targetVec.getY()) / -100.0D, -0.9D) * 100.0D) / 100.0D;
-                double currentMotionY = Math.round(rocket.motionY * 100.0D) / 100.0D;
+                double currentMotionY = Math.round(rocket.getMotion().y * 100.0D) / 100.0D;
                 double dMY = Math.floor((targetMotionY - currentMotionY) * 300);
                 int dMotionY = (int) Math.max(1, Math.min(255, dMY));
                 int dMotionYN = (int) Math.max(1, Math.min(255, -dMY));
@@ -50,22 +48,22 @@ public class OverlayDockingRocket extends Overlay
 
 //                if (dMY > 25)
 //                {
-//                    String warning = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.0", GameSettings.getKeyDisplayString(KeyHandlerClient.spaceKey.getKeyCode()));
+//                    String warning = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.0", GameSettings.getKeymessage(KeyHandlerClient.spaceKey.getKeyCode()));
 //                    mc.fontRenderer.drawString(warning, width / 2 - mc.fontRenderer.getStringWidth(warning) / 2, height / 3 - 50, green);
 //                }
 //                else if (dMY < -25)
 //                {
-//                    String warning2 = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.1", GameSettings.getKeyDisplayString(KeyHandlerClient.leftShiftKey.getKeyCode()));
+//                    String warning2 = GCCoreUtil.translateWithFormat("gui.docking_rocket.warning.name.1", GameSettings.getKeymessage(KeyHandlerClient.leftShiftKey.getKeyCode()));
 //                    mc.fontRenderer.drawString(warning2, width / 2 - mc.fontRenderer.getStringWidth(warning2) / 2, height / 3 - 35, red);
 //                }
 
-                mc.fontRenderer.drawString(targetMotionYStr, width - mc.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3 + 50, grey);
-                mc.fontRenderer.drawString(currentMotionYStr, width - mc.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3 + 35, grey);
+                mc.fontRenderer.drawString(targetMotionYStr, width - mc.fontRenderer.getStringWidth(targetMotionYStr) - 50, height / 3.0F + 50, grey);
+                mc.fontRenderer.drawString(currentMotionYStr, width - mc.fontRenderer.getStringWidth(currentMotionYStr) - 50, height / 3.0F + 35, grey);
 
-                mc.fontRenderer.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3 + 15, grey);
-                mc.fontRenderer.drawString("X: " + dXStr, 50, height / 3 + 35, Math.abs(dX) > 15 ? red : grey);
-                mc.fontRenderer.drawString("Y: " + dYStr, 50, height / 3 + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : ticks / 10 % 2 == 0 ? red : grey);
-                mc.fontRenderer.drawString("Z: " + dZStr, 50, height / 3 + 55, Math.abs(dZ) > 15 ? red : grey);
+                mc.fontRenderer.drawString(GCCoreUtil.translate("gui.docking_rocket.distance_from.name"), 50, height / 3.0F + 15, grey);
+                mc.fontRenderer.drawString("X: " + dXStr, 50, height / 3.0F + 35, Math.abs(dX) > 15 ? red : grey);
+                mc.fontRenderer.drawString("Y: " + dYStr, 50, height / 3.0F + 45, Math.abs(dY) > 50 || Math.abs(dY) < 1.9 ? grey : ticks / 10 % 2 == 0 ? red : grey);
+                mc.fontRenderer.drawString("Z: " + dZStr, 50, height / 3.0F + 55, Math.abs(dZ) > 15 ? red : grey);
             }
         }
     }

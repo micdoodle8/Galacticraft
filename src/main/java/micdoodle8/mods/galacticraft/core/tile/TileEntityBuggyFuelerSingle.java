@@ -27,7 +27,7 @@ public class TileEntityBuggyFuelerSingle extends TileEntity implements ITickable
                 {
                     final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
-                    if (tile instanceof TileEntityBuggyFuelerSingle && !tile.isInvalid() && ((TileEntityBuggyFuelerSingle)tile).corner == 0)
+                    if (tile instanceof TileEntityBuggyFuelerSingle && !tile.isRemoved() && ((TileEntityBuggyFuelerSingle)tile).corner == 0)
                     {
                         attachedLaunchPads.add(tile);
                     }

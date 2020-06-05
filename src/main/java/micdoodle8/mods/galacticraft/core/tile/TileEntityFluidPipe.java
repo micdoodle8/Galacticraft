@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.grid.IGridNetwork;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.blocks.BlockFluidPipe;
 import micdoodle8.mods.galacticraft.core.energy.EnergyUtil;
@@ -148,7 +148,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     {
         if (state.getBlock() instanceof BlockFluidPipe)
         {
-            return (byte) state.getValue(BlockFluidPipe.COLOR).getDyeDamage();
+            return (byte) state.get(BlockFluidPipe.COLOR).getDyeDamage();
         }
         return 15;
     }
@@ -308,7 +308,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -319,7 +319,7 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return 16384;  //128 squared
@@ -337,11 +337,11 @@ public class TileEntityFluidPipe extends TileEntityFluidTransmitter implements I
         FluidStack mekEquivalent = null;
         if (mekGas.equals("oxygen"))
         {
-            mekEquivalent = new FluidStack(GCFluids.fluidOxygenGas, stack.amount);
+            mekEquivalent = new FluidStack(GCFluidRegistry.fluidOxygenGas, stack.amount);
         }
         else if (mekGas.equals("hydrogen"))
         {
-            mekEquivalent = new FluidStack(GCFluids.fluidHydrogenGas, stack.amount);
+            mekEquivalent = new FluidStack(GCFluidRegistry.fluidHydrogenGas, stack.amount);
         }
         else
         {

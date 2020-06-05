@@ -57,7 +57,7 @@ public class TileCableIC2Sealed extends TileEntity
     @RuntimeInterface(clazz = "ic2.core.IWorldTickCallback", modID = CompatibilityManager.modidIC2)
     public void onTick(World world)
     {
-        if (!this.isInvalid() && world.isBlockLoaded(this.pos) && (world.getBlockState(this.pos)).getBlock() == GCBlocks.sealableBlock && world.getTileEntity(this.pos) == this)
+        if (!this.isRemoved() && world.isBlockLoaded(this.pos) && (world.getBlockState(this.pos)).getBlock() == GCBlocks.sealableBlock && world.getTileEntity(this.pos) == this)
         {
             if (!onLoadedDone) getOnLoaded();
             if (onLoaded != null) {

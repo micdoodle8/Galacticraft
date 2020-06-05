@@ -141,7 +141,7 @@ public class CircuitFabricatorRecipes
                 else if (recipeStack instanceof ItemStack)
                 {
                     ItemStack stack = ((ItemStack) recipeStack); 
-                    if (stack.getItem() != inputStack.getItem() || stack.getItemDamage() != inputStack.getItemDamage() || !RecipeUtil.areItemStackTagsEqual(stack, inputStack))
+                    if (stack.getItem() != inputStack.getItem() || stack.getDamage() != inputStack.getDamage() || !RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                     {
                         found = false;
                         break;
@@ -152,7 +152,7 @@ public class CircuitFabricatorRecipes
                     boolean listMatchOne = false;
                     for (ItemStack stack : (List<ItemStack>)recipeStack)
                     {
-                        if (stack.getItem() == inputStack.getItem() && stack.getItemDamage() == inputStack.getItemDamage() && RecipeUtil.areItemStackTagsEqual(stack, inputStack))
+                        if (stack.getItem() == inputStack.getItem() && stack.getDamage() == inputStack.getDamage() && RecipeUtil.areItemStackTagsEqual(stack, inputStack))
                         {
                             listMatchOne = true;
                             break;
@@ -224,7 +224,7 @@ public class CircuitFabricatorRecipes
                 if (recipeStack instanceof ItemStack)
                 {
                     ItemStack stack = ((ItemStack) recipeStack); 
-                    if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
+                    if (stack.getItem() == ingredient.getItem() && stack.getDamage() == ingredient.getDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                     {
                         recipe.set(i, newIngredient);
                     }
@@ -234,7 +234,7 @@ public class CircuitFabricatorRecipes
                     boolean listMatchOne = false;
                     for (ItemStack stack : (List<ItemStack>)recipeStack)
                     {
-                        if (stack.getItem() == ingredient.getItem() && stack.getItemDamage() == ingredient.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
+                        if (stack.getItem() == ingredient.getItem() && stack.getDamage() == ingredient.getDamage() && ItemStack.areItemStackTagsEqual(stack, ingredient))
                         {
                             recipe.set(i, newIngredient);
                             break;

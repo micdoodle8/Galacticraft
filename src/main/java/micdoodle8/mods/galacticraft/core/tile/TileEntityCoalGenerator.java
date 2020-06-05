@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.IConnector;
 import micdoodle8.mods.galacticraft.core.blocks.BlockMachineBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Items;
 import net.minecraft.inventory.ISidedInventory;
@@ -101,15 +101,15 @@ public class TileEntityCoalGenerator extends TileBaseUniversalElectricalSource i
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.itemCookTime = nbt.getInteger("itemCookTime");
-        this.heatGJperTick = nbt.getInteger("generateRateInt");
+        this.itemCookTime = nbt.getInt("itemCookTime");
+        this.heatGJperTick = nbt.getInt("generateRateInt");
     }
 
     @Override
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("itemCookTime", this.itemCookTime);
+        nbt.putInt("itemCookTime", this.itemCookTime);
         nbt.setFloat("generateRate", this.heatGJperTick);
 
         return nbt;

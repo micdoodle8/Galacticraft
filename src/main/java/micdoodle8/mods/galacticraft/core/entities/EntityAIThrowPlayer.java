@@ -4,6 +4,8 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
 
+import java.util.EnumSet;
+
 public class EntityAIThrowPlayer extends Goal
 {
     EntitySkeletonBoss skeletonBoss;
@@ -13,13 +15,13 @@ public class EntityAIThrowPlayer extends Goal
     public EntityAIThrowPlayer(EntitySkeletonBoss boss)
     {
         this.skeletonBoss = boss;
-        this.setMutexBits(1);
+        this.setMutexFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
     public boolean shouldExecute()
     {
-        final PlayerEntity player = this.skeletonBoss.world.getClosestPlayerToEntity(this.skeletonBoss, 5.0F);
+        final PlayerEntity player = this.skeletonBoss.world.getClosestPlayer(this.skeletonBoss, 5.0F);
 
         if (player == null)
         {

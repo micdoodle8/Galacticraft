@@ -14,7 +14,7 @@
 //import net.minecraft.tileentity.TileEntity;
 //import net.minecraft.util.Direction;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
@@ -82,19 +82,19 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
 //
 //    @Override
-//    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction side)
+//    public boolean isSideSolid(BlockState base_state, IBlockReader world, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }

@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderPlanet
 {
-    private static TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private static TextureManager renderEngine = Minecraft.getInstance().renderEngine;
 
     private static ResourceLocation textureEuropa = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/europa.png");
     private static ResourceLocation textureGanymede = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/planets/ganymede.png");

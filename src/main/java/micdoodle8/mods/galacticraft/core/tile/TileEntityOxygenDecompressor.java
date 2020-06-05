@@ -129,7 +129,7 @@ public class TileEntityOxygenDecompressor extends TileEntityOxygen implements II
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenCompressor)
         {
-            return state.getValue(BlockOxygenCompressor.FACING).rotateY();
+            return state.get(BlockOxygenCompressor.FACING).rotateY();
         }
         return Direction.NORTH;
     }

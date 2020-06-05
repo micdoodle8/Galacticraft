@@ -448,7 +448,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        int data = nbt.getInteger("open");
+        int data = nbt.getInt("open");
         this.openN = (data & 1) == 1;
         this.openW = (data & 2) == 2;
         this.openS = (data & 4) == 4;
@@ -456,12 +456,12 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.airToRestore.clear();
-            ListNBT airBlocks = nbt.getTagList("air", 10);
-            if (airBlocks.tagCount() > 0)
+            ListNBT airBlocks = nbt.getList("air", 10);
+            if (airBlocks.size() > 0)
             {
-                for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
+                for (int j = airBlocks.size() - 1; j >= 0; j--)
                 {
-                    CompoundNBT tag1 = airBlocks.getCompoundTagAt(j);
+                    CompoundNBT tag1 = airBlocks.getCompound(j);
                     if (tag1 != null)
                     {
                         this.airToRestore.add(BlockVec3.readFromNBT(tag1));
@@ -476,7 +476,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     {
         super.writeToNBT(nbt);
         int data = (this.openN ? 1 : 0) + (this.openW ? 2 : 0) + (this.openS ? 4 : 0) + (this.openE ? 8 : 0);
-        nbt.setInteger("open", data);
+        nbt.putInt("open", data);
 
         ListNBT airBlocks = new ListNBT();
         for (BlockVec3 vec : this.airToRestore)
@@ -485,7 +485,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
             vec.writeToNBT(tag);
             airBlocks.appendTag(tag);
         }
-        nbt.setTag("air", airBlocks);
+        nbt.put("air", airBlocks);
         return nbt;
     }
 
@@ -544,7 +544,7 @@ public class TileEntityEmergencyBox extends TileEntity implements ITickable, IPa
     
     private void updateClients()
     {
-        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), 128));
+        GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), getPos().getX(), getPos().getY(), getPos().getZ(), 128));
     }
 
     @Override

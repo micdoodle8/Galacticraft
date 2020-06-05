@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
+import micdoodle8.mods.galacticraft.api.entity.IRocketType;
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
@@ -20,7 +21,7 @@ public abstract class GCPlayerStats
 {
     public static GCPlayerStats get(Entity entity)
     {
-        return entity.getCapability(GCCapabilities.GC_STATS_CAPABILITY, null);
+        return entity.getCapability(GCCapabilities.GC_STATS_CAPABILITY, null).orElseThrow(() -> new IllegalArgumentException("LazyOptional must not be empty!"));
     }
 
     public abstract void saveNBTData(CompoundNBT nbt);
@@ -64,10 +65,6 @@ public abstract class GCPlayerStats
     public abstract NonNullList<ItemStack> getRocketStacks();
 
     public abstract void setRocketStacks(NonNullList<ItemStack> rocketStacks);
-
-    public abstract int getRocketType();
-
-    public abstract void setRocketType(int rocketType);
 
     public abstract int getFuelLevel();
 
@@ -319,13 +316,13 @@ public abstract class GCPlayerStats
 
     public abstract int getGlassColor3();
 
-    public abstract BlockState[] getPanelLightingBases();
-    
+//    public abstract BlockState[] getPanelLightingBases();
+
     public abstract int getPanelLightingColor();
 
     public abstract void setPanelLightingColor(int color);
 
-    public abstract Object[] getMiscNetworkedStats();
+//    public abstract Object[] getMiscNetworkedStats();
 
     public abstract void setSavedSpeed(float value);
 

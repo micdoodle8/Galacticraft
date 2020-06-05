@@ -32,7 +32,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
     }
 
     public static StructureComponentVillageField func_74900_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructurePiece> par1List, Random par2Random, int par3, int par4, int par5, Direction par6, int par7)
@@ -86,7 +86,7 @@ public class StructureComponentVillageField extends StructureComponentVillage
                 {
                     if (par2Random.nextInt(3) == 0)
                     {
-                        this.setBlockState(par1World, Blocks.SAPLING.getStateFromMeta(MathHelper.getInt(par2Random, 0, 2)), i, 1, var4, par3StructureBoundingBox);
+                        this.setBlockState(par1World, Blocks.SAPLING.getStateFromMeta(MathHelper.nextInt(par2Random, 0, 2)), i, 1, var4, par3StructureBoundingBox);
                     }
                 }
             }

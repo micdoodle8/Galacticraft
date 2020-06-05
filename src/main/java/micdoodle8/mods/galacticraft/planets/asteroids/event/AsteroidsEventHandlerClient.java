@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
 
 public class AsteroidsEventHandlerClient
 {
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onClientTick(ClientTickEvent event)
     {
@@ -34,29 +34,29 @@ public class AsteroidsEventHandlerClient
 
         if (world != null)
         {
-            if (world.provider instanceof WorldProviderAsteroids)
+            if (world.getDimension() instanceof WorldProviderAsteroids)
             {
-                if (world.provider.getSkyRenderer() == null)
+                if (world.getDimension().getSkyRenderer() == null)
                 {
-                    world.provider.setSkyRenderer(new SkyProviderAsteroids((IGalacticraftWorldProvider) world.provider));
+                    world.getDimension().setSkyRenderer(new SkyProviderAsteroids((IGalacticraftWorldProvider) world.getDimension()));
                 }
 
-                if (world.provider.getCloudRenderer() == null)
+                if (world.getDimension().getCloudRenderer() == null)
                 {
-                    world.provider.setCloudRenderer(new CloudRenderer());
+                    world.getDimension().setCloudRenderer(new CloudRenderer());
                 }
             }
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onRingRender(CelestialBodyRenderEvent.CelestialRingRenderEvent.Pre renderEvent)
     {
         if (renderEvent.celestialBody.equals(AsteroidsModule.planetAsteroids))
         {
             float alpha = 1.0F;
-            Screen screen = FMLClientHandler.instance().getClient().currentScreen;
+            Screen screen = Minecraft.getInstance().currentScreen;
             if (screen instanceof GuiCelestialSelection)
             {
                 alpha = ((GuiCelestialSelection) screen).getAlpha(renderEvent.celestialBody);
@@ -133,7 +133,7 @@ public class AsteroidsEventHandlerClient
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onBodyRender(CelestialBodyRenderEvent.Pre renderEvent)
     {
@@ -143,10 +143,10 @@ public class AsteroidsEventHandlerClient
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onSpecialRender(EventSpecialRender event)
     {
-        NetworkRenderer.renderNetworks(FMLClientHandler.instance().getClient().world, event.partialTicks);
+        NetworkRenderer.renderNetworks(Minecraft.getInstance().world, event.partialTicks);
     }
 }

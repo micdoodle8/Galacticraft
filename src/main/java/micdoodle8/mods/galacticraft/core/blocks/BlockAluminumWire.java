@@ -291,7 +291,7 @@ public class BlockAluminumWire extends BlockTransmitter implements IShiftDescrip
     }
 
     //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
 //        list.add(new ItemStack(this, 1, 0));

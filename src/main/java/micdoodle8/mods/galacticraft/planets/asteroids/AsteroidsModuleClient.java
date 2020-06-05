@@ -105,7 +105,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         replaceModelDefault(event, "beam_receiver", "block/receiver.obj", ImmutableList.of("Main", "Receiver", "Ring"), ItemModelBeamReceiver.class, TRSRTransformation.identity(), "inventory", "facing=up", "facing=down", "facing=north", "facing=west", "facing=east", "facing=south");
@@ -122,7 +122,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "minerbase");
@@ -256,7 +256,7 @@ public class AsteroidsModuleClient implements IPlanetsModuleClient
     @Override
     public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
-        Minecraft mc = FMLClientHandler.instance().getClient();
+        Minecraft mc = Minecraft.getInstance();
 
         if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {

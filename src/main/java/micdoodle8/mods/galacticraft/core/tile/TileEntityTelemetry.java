@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import com.mojang.authlib.GameProfile;
-
 import micdoodle8.mods.galacticraft.api.entity.ITelemetry;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -29,12 +28,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.common.network.PacketDistributor.TargetPoint;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashSet;
 import java.util.List;
@@ -210,12 +210,12 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
             {
                 name = "";
             }
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.world.provider.getDimension(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.world.provider.getDimension(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_TELEMETRY, this.world.getDimension().getType(), new Object[] { this.getPos(), name, data[0], data[1], data[2], data[3], data[4], strUUID }), new TargetPoint(this.world.getDimension().getType(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ(), 320D));
         }
     }
     
-    @SideOnly(Side.CLIENT)
-    public void receiveUpdate(List <Object> data, int dimID)
+    @OnlyIn(Dist.CLIENT)
+    public void receiveUpdate(List <Object> data, DimensionType dimID)
     {
         String name = (String) data.get(1);
         if (name.startsWith("$"))
@@ -255,8 +255,8 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         super.writeToNBT(nbt);
         if (this.linkedEntity != null && !this.linkedEntity.isDead)
         {
-            nbt.setLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
-            nbt.setLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
+            nbt.putLong("entityUUIDMost", this.linkedEntity.getUniqueID().getMostSignificantBits());
+            nbt.putLong("entityUUIDLeast", this.linkedEntity.getUniqueID().getLeastSignificantBits());
         }
         return nbt;
     }
@@ -349,7 +349,7 @@ public class TileEntityTelemetry extends TileEntity implements ITickable
         {
             return;
         }
-        CompoundNBT fmData = held.getTagCompound();
+        CompoundNBT fmData = held.getTag();
         if (fmData != null && fmData.hasKey("teDim"))
         {
             int dim = fmData.getInteger("teDim");

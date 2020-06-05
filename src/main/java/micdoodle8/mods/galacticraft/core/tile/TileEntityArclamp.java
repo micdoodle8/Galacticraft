@@ -516,16 +516,16 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     {
         super.readFromNBT(nbt);
 
-        this.facing = nbt.getInteger("Facing");
+        this.facing = nbt.getInt("Facing");
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.airToRestore.clear();
-            ListNBT airBlocks = nbt.getTagList("AirBlocks", 10);
-            if (airBlocks.tagCount() > 0)
+            ListNBT airBlocks = nbt.getList("AirBlocks", 10);
+            if (airBlocks.size() > 0)
             {
-                for (int j = airBlocks.tagCount() - 1; j >= 0; j--)
+                for (int j = airBlocks.size() - 1; j >= 0; j--)
                 {
-                    CompoundNBT tag1 = airBlocks.getCompoundTagAt(j);
+                    CompoundNBT tag1 = airBlocks.getCompound(j);
                     if (tag1 != null)
                     {
                         this.airToRestore.add(BlockVec3.readFromNBT(tag1));
@@ -540,7 +540,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     {
         super.writeToNBT(nbt);
 
-        nbt.setInteger("Facing", this.facing);
+        nbt.putInt("Facing", this.facing);
 
         ListNBT airBlocks = new ListNBT();
 
@@ -550,7 +550,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
             vec.writeToNBT(tag);
             airBlocks.appendTag(tag);
         }
-        nbt.setTag("AirBlocks", airBlocks);
+        nbt.put("AirBlocks", airBlocks);
         return nbt;
     }
 
@@ -1070,7 +1070,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -1081,7 +1081,7 @@ public class TileEntityArclamp extends TileEntity implements ITickable, ITileCli
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;

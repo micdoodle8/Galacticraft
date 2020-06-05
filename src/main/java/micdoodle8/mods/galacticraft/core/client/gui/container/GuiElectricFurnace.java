@@ -9,34 +9,32 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GuiElectricFurnace extends GuiContainerGC
+public class GuiElectricFurnace extends GuiContainerGC<ContainerElectricFurnace>
 {
     private static final ResourceLocation electricFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_furnace.png");
     private static final ResourceLocation arcFurnaceTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/electric_arc_furnace.png");
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
 
-    private TileEntityElectricFurnace tileEntity;
+    private TileEntityElectricFurnace furnace;
     private ResourceLocation texture;
 
-    public GuiElectricFurnace(PlayerInventory par1InventoryPlayer, TileEntityElectricFurnace tileEntity)
+    public GuiElectricFurnace(PlayerInventory playerInv, TileEntityElectricFurnace furnace)
     {
-        super(new ContainerElectricFurnace(par1InventoryPlayer, tileEntity));
-        this.tileEntity = tileEntity;
-        texture = tileEntity.tierGC == 2 ? arcFurnaceTexture : electricFurnaceTexture;
+        super(new ContainerElectricFurnace(playerInv, furnace), playerInv, new StringTextComponent(furnace.getName()));
+        this.furnace = furnace;
+        texture = furnace.tierGC == 2 ? arcFurnaceTexture : electricFurnaceTexture;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 39;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 52;
@@ -56,10 +54,10 @@ public class GuiElectricFurnace extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), 45, 6, 4210752);
+        this.font.drawString(this.furnace.getName(), 45, 6, 4210752);
         String displayText = "";
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.furnace.processTicks > 0)
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
         }
@@ -68,11 +66,11 @@ public class GuiElectricFurnace extends GuiContainerGC
             displayText = EnumColor.ORANGE + GCCoreUtil.translate("gui.status.idle.name");
         }
 
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
-        this.fontRenderer.drawString(this.tileEntity.getGUIstatus(null, displayText, true), 107, 62, 4210752);
-//		this.fontRenderer.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
-//		this.fontRenderer.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": ", 97, 52, 4210752);
+        this.font.drawString(this.furnace.getGUIstatus(null, displayText, true), 107, 62, 4210752);
+//		this.font.drawString("" + this.tileEntity.storage.getMaxExtract(), 97, 56, 4210752);
+//		this.font.drawString("Voltage: " + (int) (this.tileEntity.getVoltage() * 1000.0F), 97, 68, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -82,30 +80,30 @@ public class GuiElectricFurnace extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(this.texture);
+        this.minecraft.textureManager.bindTexture(this.texture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         int scale;
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
-        EnergyDisplayHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
+        EnergyDisplayHelper.getEnergyDisplayTooltip(this.furnace.getEnergyStoredGC(), this.furnace.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.furnace.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 23);
-            this.drawTexturedModalRect(containerWidth + 78, containerHeight + 24, 176, 0, 23 - scale, 15);
+            scale = (int) ((double) this.furnace.processTicks / (double) this.furnace.processTimeRequired * 23);
+            this.blit(containerWidth + 78, containerHeight + 24, 176, 0, 23 - scale, 15);
         }
 
-        if (this.tileEntity.getEnergyStoredGC() > 0)
+        if (this.furnace.getEnergyStoredGC() > 0)
         {
-            scale = this.tileEntity.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(containerWidth + 40, containerHeight + 53, 176, 15, scale, 7);
-            this.drawTexturedModalRect(containerWidth + 26, containerHeight + 52, 176, 22, 11, 10);
+            scale = this.furnace.getScaledElecticalLevel(54);
+            this.blit(containerWidth + 40, containerHeight + 53, 176, 15, scale, 7);
+            this.blit(containerWidth + 26, containerHeight + 52, 176, 22, 11, 10);
         }
     }
 }

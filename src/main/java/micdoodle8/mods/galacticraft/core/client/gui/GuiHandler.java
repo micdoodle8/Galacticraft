@@ -28,8 +28,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class GuiHandler implements IGuiHandler
 {
@@ -168,7 +166,7 @@ public class GuiHandler implements IGuiHandler
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private Object getClientGuiElement(int ID, PlayerEntity player, World world, BlockPos position)
     {
         ClientPlayerEntity playerClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
@@ -196,7 +194,7 @@ public class GuiHandler implements IGuiHandler
         else if (ID == GuiIdsCore.PRE_LAUNCH_CHECKLIST)
         {
             ItemStack checkList = GCCoreUtil.getMatchingItemEitherHand(playerClient, GCItems.prelaunchChecklist);
-            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), checkList != null && checkList.hasTagCompound() ? (CompoundNBT) checkList.getTagCompound().getTag("checklistData") : null);
+            return new GuiPreLaunchChecklist(WorldUtil.getAllChecklistKeys(), checkList != null && checkList.hasTag() ? (CompoundNBT) checkList.getTag().getTag("checklistData") : null);
         }
 
         TileEntity tile = world.getTileEntity(position);

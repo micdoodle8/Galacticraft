@@ -1,47 +1,42 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedZombie;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedZombie;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.model.ModelZombie;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.BipedRenderer;
+import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class RenderEvolvedZombie extends BipedRenderer<EntityEvolvedZombie>
+@OnlyIn(Dist.CLIENT)
+public class RenderEvolvedZombie extends AbstractZombieRenderer<EntityEvolvedZombie, ModelEvolvedZombie>
 {
     private static final ResourceLocation zombieTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/zombie.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/power.png");
 
-    private final ModelBase model = new ModelEvolvedZombie(0.2F, false, true);
     private boolean texSwitch;
 
     public RenderEvolvedZombie(EntityRendererManager manager)
     {
-        super(manager, new ModelEvolvedZombie(true), 0.5F);
-        LayerRenderer layerrenderer = (LayerRenderer) this.layerRenderers.get(0);
+        super(manager, new ModelEvolvedZombie(0.0F, false, true), new ModelEvolvedZombie(0.5F, false, true), new ModelEvolvedZombie(1.0F, false, true));
+//        LayerRenderer layerrenderer = (LayerRenderer) this.layerRenderers.get(0);
         this.addLayer(new HeldItemLayer(this));
-        BipedArmorLayer layerbipedarmor = new BipedArmorLayer(this)
-        {
-            @Override
-            protected void initArmor()
-            {
-                this.modelLeggings = new ModelZombie(0.5F, true);
-                this.modelArmor = new ModelZombie(1.0F, true);
-            }
-        };
-        this.addLayer(layerbipedarmor);
+//        BipedArmorLayer layerbipedarmor = new BipedArmorLayer(this)
+//        {
+//            @Override
+//            protected void initArmor()
+//            {
+//                this.modelLeggings = new ZombieModel(0.5F, true);
+//                this.modelArmor = new ZombieModel(1.0F, true);
+//            }
+//        };
+//        this.addLayer(layerbipedarmor);
     }
 
     @Override
@@ -76,11 +71,11 @@ public class RenderEvolvedZombie extends BipedRenderer<EntityEvolvedZombie>
     @Override
     protected void applyRotations(EntityEvolvedZombie zombie, float pitch, float yaw, float partialTicks)
     {
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0F, -zombie.height * 0.55F, 0F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, -zombie.getHeight() * 0.55F, 0F);
         GL11.glRotatef(zombie.getTumbleAngle(partialTicks), zombie.getTumbleAxisX(), 0F, zombie.getTumbleAxisZ());
-        GL11.glTranslatef(0F, zombie.height * 0.55F, 0F);
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, zombie.getHeight() * 0.55F, 0F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
         super.applyRotations(zombie, pitch, yaw, partialTicks);
     }
 }

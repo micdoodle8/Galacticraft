@@ -1,6 +1,6 @@
 package micdoodle8.mods.galacticraft.core.util;
 
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.items.ItemBucketGC;
 import micdoodle8.mods.galacticraft.core.items.ItemCanisterGeneric;
@@ -17,6 +17,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandler;
@@ -152,7 +153,7 @@ public class FluidUtil
             //If the tank is empty, fill it with the current type of GC fuel
             if (liquidInTank == null)
             {
-                return tank.fill(new FluidStack(GCFluids.fluidFuel, liquid.amount), doFill);
+                return tank.fill(new FluidStack(GCFluidRegistry.fluidFuel, liquid.amount), doFill);
             }
 
             //If the tank already contains something, fill it with more of the same
@@ -304,9 +305,9 @@ public class FluidUtil
                 if (liquidname.startsWith("fuel"))
                 {
                     //Make sure it is the current GC fuel
-                    if (!liquidname.equals(GCFluids.fluidFuel.getName()))
+                    if (!liquidname.equals(GCFluidRegistry.fluidFuel.getName()))
                     {
-                        liquid = new FluidStack(GCFluids.fluidFuel, liquid.amount);
+                        liquid = new FluidStack(GCFluidRegistry.fluidFuel, liquid.amount);
                     }
 
                     //But match any existing fuel fluid in the container
@@ -318,7 +319,7 @@ public class FluidUtil
                     	if (handler != null)
                     	{
                     		FluidStack existingFluid = net.minecraftforge.fluids.FluidUtil.getFluidContained(stack);
-                    		if (existingFluid != null && !existingFluid.getFluid().getName().equals(GCFluids.fluidFuel.getName()))
+                    		if (existingFluid != null && !existingFluid.getFluid().getName().equals(GCFluidRegistry.fluidFuel.getName()))
                     		{
                     			liquid = new FluidStack(existingFluid, liquid.amount);
                     		}
@@ -709,7 +710,7 @@ public class FluidUtil
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static boolean isInsideOfFluid(Entity entity, Fluid fluid)
     {
         double d0 = entity.posY + entity.getEyeHeight();
@@ -781,7 +782,7 @@ public class FluidUtil
         if (container.getItem() instanceof ItemCanisterGeneric)
         {
             ItemStack result;
-        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler, player.capabilities.isCreativeMode)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler, player.capabilities.isCreativeMode)) != ItemStack.EMPTY)
+        	if ((result = FluidUtil.tryEmptyCanister(container, fluidHandler, player.abilities.isCreativeMode)) != ItemStack.EMPTY || (result = FluidUtil.tryFillCanister(container, fluidHandler, player.abilities.isCreativeMode)) != ItemStack.EMPTY)
         	{
         		// send inventory updates to client
         		if (player.inventoryContainer != null)

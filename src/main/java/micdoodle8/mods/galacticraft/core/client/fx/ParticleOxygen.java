@@ -1,19 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
-public class ParticleOxygen extends Particle
+@OnlyIn(Dist.CLIENT)
+public class ParticleOxygen extends SpriteTexturedParticle
 {
     private final float portalParticleScale;
     private final double portalPosX;
@@ -35,26 +36,31 @@ public class ParticleOxygen extends Particle
         this.particleRed = color.floatX();
         this.particleGreen = color.floatY();
         this.particleBlue = color.floatZ();
-        this.particleMaxAge = (int) (Math.random() * 10.0D) + 40;
+        this.maxAge = (int) (Math.random() * 10.0D) + 40;
         this.canCollide = false;
-        this.setParticleTextureIndex((int) (Math.random() * 8.0D));
     }
 
     @Override
-    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public IParticleRenderType getRenderType()
     {
-        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge;
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
+    @Override
+    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    {
+        float var8 = (this.age + partialTicks) / this.maxAge;
         var8 = 1.0F - var8;
         var8 *= var8;
         var8 = 1.0F - var8;
         this.particleScale = this.portalParticleScale * var8;
-        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
     }
 
     @Override
     public int getBrightnessForRender(float par1)
     {
-        long time = this.world.getWorldTime();
+        long time = this.world.getDayTime();
         if (time > tick)
         {
             cacheLighting.clear();
@@ -71,7 +77,7 @@ public class ParticleOxygen extends Particle
             var2 = this.world.isBlockLoaded(blockpos) ? this.world.getCombinedLight(blockpos, 0) : 0;
             cacheLighting.put(blockpos, var2);
         }
-        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
+        float var3 = (float) this.age / (float) this.maxAge;
         var3 *= var3;
         var3 *= var3;
         final int var4 = var2 & 255;
@@ -90,18 +96,18 @@ public class ParticleOxygen extends Particle
 //    public float getBrightness(float par1)
 //    {
 //        final float var2 = super.getBrightness(par1);
-//        float var3 = (float) this.particleAge / (float) this.particleMaxAge;
+//        float var3 = (float) this.particleAge / (float) this.maxAge;
 //        var3 = var3 * var3 * var3 * var3;
 //        return var2 * (1.0F - var3) + var3;
 //    }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
-        float var1 = (float) this.particleAge / (float) this.particleMaxAge;
+        float var1 = (float) this.age / (float) this.maxAge;
         final float var2 = var1;
         var1 = -var1 + var1 * var1 * 2.0F;
         var1 = 1.0F - var1;
@@ -109,9 +115,23 @@ public class ParticleOxygen extends Particle
         this.posY = this.portalPosY + this.motionY * var1 + (1.0F - var2);
         this.posZ = this.portalPosZ + this.motionZ * var1;
 
-        if (this.particleAge++ >= this.particleMaxAge)
+        if (this.age++ >= this.maxAge)
         {
             this.setExpired();
+        }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class Factory implements IParticleFactory<BasicParticleType>
+    {
+        private final IAnimatedSprite spriteSet;
+
+        public Factory(IAnimatedSprite spriteSet) {
+            this.spriteSet = spriteSet;
+        }
+
+        public Particle makeParticle(BasicParticleType typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new ParticleOxygen(worldIn, new Vector3(x, y, z), new Vector3(xSpeed, ySpeed, zSpeed), new Vector3(0.7D, 0.7D, 1.0D));
         }
     }
 }

@@ -56,7 +56,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         if (!this.getPassengers().isEmpty())
         {
@@ -66,7 +66,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
             }
         }
 
-        super.onUpdate();
+        super.tick();
 
         if (!this.getPassengers().isEmpty())
         {
@@ -84,17 +84,17 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
         super.readEntityFromNBT(nbt);
-        this.groundHitCount = nbt.getInteger("GroundHitCount");
+        this.groundHitCount = nbt.getInt("GroundHitCount");
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    protected void writeAdditional(CompoundNBT nbt)
     {
         super.writeEntityToNBT(nbt);
-        nbt.setInteger("GroundHitCount", this.groundHitCount);
+        nbt.putInt("GroundHitCount", this.groundHitCount);
     }
 
     @Override
@@ -198,7 +198,7 @@ public class EntityLandingBalloons extends EntityLanderBase implements IIgnoreSh
         return null;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
     {

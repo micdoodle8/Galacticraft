@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenDistributor;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -87,7 +87,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
                     }
                 }
             }
-//        	this.oxygenBubble.setDead();
+//        	this.oxygenBubble.remove();
             TileEntityOxygenDistributor.loadedTiles.remove(new BlockVec3Dim(this));
         }
 
@@ -103,7 +103,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     @Override
     public void addExtraNetworkedData(List<Object> networkedList)
     {
-        if (!this.world.isRemote && !this.isInvalid())
+        if (!this.world.isRemote && !this.isRemoved())
         {
 //            networkedList.add(this.oxygenBubble != null);
 //            if (this.oxygenBubble != null)
@@ -142,14 +142,14 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(this.getPos().getX() - this.bubbleSize, this.getPos().getY() - this.bubbleSize, this.getPos().getZ() - this.bubbleSize, this.getPos().getX() + this.bubbleSize, this.getPos().getY() + this.bubbleSize, this.getPos().getZ() + this.bubbleSize);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;
@@ -230,11 +230,11 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
 //        if (!hasValidBubble && !this.world.isRemote && (this.oxygenBubble == null || this.ticks < 25))
 //        {
 //            //Check it's a world without a breathable atmosphere
-//        	if (this.oxygenBubble == null && this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.provider).hasBreathableAtmosphere())
+//        	if (this.oxygenBubble == null && this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider)this.world.getDimension()).hasBreathableAtmosphere())
 //            {
 //                this.oxygenBubble = new EntityBubble(this.world, new Vector3(this), this);
 //                this.hasValidBubble = true;
-//                this.world.spawnEntity(this.oxygenBubble);
+//                this.world.addEntity(this.oxygenBubble);
 //            }
 //        }
 
@@ -283,12 +283,12 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
     {
         super.readFromNBT(nbt);
 
-        if (nbt.hasKey("bubbleVisible"))
+        if (nbt.contains("bubbleVisible"))
         {
             this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
         }
 
-        if (nbt.hasKey("bubbleSize"))
+        if (nbt.contains("bubbleSize"))
         {
             this.bubbleSize = nbt.getFloat("bubbleSize");
         }
@@ -382,7 +382,7 @@ public class TileEntityOxygenDistributor extends TileEntityOxygen implements IBu
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenDistributor)
         {
-            return state.getValue(BlockOxygenDistributor.FACING);
+            return state.get(BlockOxygenDistributor.FACING);
         }
         return Direction.NORTH;
     }

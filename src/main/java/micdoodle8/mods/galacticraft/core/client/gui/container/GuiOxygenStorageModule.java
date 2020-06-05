@@ -7,30 +7,28 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityOxygenStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GuiOxygenStorageModule extends GuiContainerGC
+public class GuiOxygenStorageModule extends GuiContainerGC<ContainerOxygenStorageModule>
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/oxygen_storage_module.png");
 
     private TileEntityOxygenStorageModule tileEntity;
 
-    public GuiOxygenStorageModule(PlayerInventory par1InventoryPlayer, TileEntityOxygenStorageModule storageModule)
+    public GuiOxygenStorageModule(PlayerInventory playerInv, TileEntityOxygenStorageModule storageModule)
     {
-        super(new ContainerOxygenStorageModule(par1InventoryPlayer, storageModule));
+        super(new ContainerOxygenStorageModule(playerInv, storageModule), playerInv, new StringTextComponent(storageModule.getName()));
         this.tileEntity = storageModule;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         List<String> oxygenSlotDesc = new ArrayList<String>();
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygen_slot.desc.0"));
         oxygenSlotDesc.add(GCCoreUtil.translate("gui.oxygen_slot.desc.1"));
@@ -45,15 +43,15 @@ public class GuiOxygenStorageModule extends GuiContainerGC
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String guiTitle = GCCoreUtil.translate("tile.machine2.6.name");
-        this.fontRenderer.drawString(guiTitle, this.xSize / 2 - this.fontRenderer.getStringWidth(guiTitle) / 2, 6, 4210752);
+        this.font.drawString(guiTitle, this.xSize / 2 - this.font.getStringWidth(guiTitle) / 2, 6, 4210752);
         String displayJoules = (int) (this.tileEntity.getOxygenStored() + 0.5F) + " " + GCCoreUtil.translate("gui.message.of.name");
         String displayMaxJoules = "" + (int) this.tileEntity.getMaxOxygenStored();
         String maxOutputLabel = GCCoreUtil.translate("gui.max_output.desc") + ": " + TileEntityOxygenStorageModule.OUTPUT_PER_TICK * 20 + GCCoreUtil.translate("gui.per_second");
 
-        this.fontRenderer.drawString(displayJoules, 122 - this.fontRenderer.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);
-        this.fontRenderer.drawString(displayMaxJoules, 122 - this.fontRenderer.getStringWidth(displayMaxJoules) / 2 - 35, 40, 4210752);
-        this.fontRenderer.drawString(maxOutputLabel, 122 - this.fontRenderer.getStringWidth(maxOutputLabel) / 2 - 35, 60, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(displayJoules, 122 - this.font.getStringWidth(displayJoules) / 2 - 35, 30, 4210752);
+        this.font.drawString(displayMaxJoules, 122 - this.font.getStringWidth(displayMaxJoules) / 2 - 35, 40, 4210752);
+        this.font.drawString(maxOutputLabel, 122 - this.font.getStringWidth(maxOutputLabel) / 2 - 35, 60, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -63,15 +61,15 @@ public class GuiOxygenStorageModule extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiOxygenStorageModule.batteryBoxTexture);
+        this.minecraft.textureManager.bindTexture(GuiOxygenStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
         // Background energy bar
-        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         // Foreground energy bar
         int scale = (int) ((double) this.tileEntity.getOxygenStored() / (double) this.tileEntity.getMaxOxygenStored() * 72);
-        this.drawTexturedModalRect(containerWidth + 52, containerHeight + 52, 176, 0, scale, 3);
+        this.blit(containerWidth + 52, containerHeight + 52, 176, 0, scale, 3);
     }
 }

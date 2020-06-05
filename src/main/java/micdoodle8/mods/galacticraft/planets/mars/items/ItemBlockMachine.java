@@ -54,7 +54,7 @@ public class ItemBlockMachine extends ItemBlockDesc
                     {
                         if (world.isRemote)
                         {
-                            FMLClientHandler.instance().getClient().ingameGUI.setOverlayMessage(new StringTextComponent(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
+                            Minecraft.getInstance().ingameGUI.setOverlayMessage(new StringTextComponent(GCCoreUtil.translate("gui.warning.noroom")).setStyle(new Style().setColor(TextFormatting.RED)).getFormattedText(), false);
                         }
                         return false;
                     }
@@ -90,7 +90,7 @@ public class ItemBlockMachine extends ItemBlockDesc
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

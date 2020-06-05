@@ -1,8 +1,8 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.core.entities.EntityHangingSchematic;
-import net.minecraft.client.renderer.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -14,10 +14,10 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderSchematic extends EntityRenderer<EntityHangingSchematic>
 {
     public RenderSchematic(EntityRendererManager manager)
@@ -35,12 +35,12 @@ public class RenderSchematic extends EntityRenderer<EntityHangingSchematic>
     public void doRender(EntityHangingSchematic entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, z);
-        GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translated(x, y, z);
+        GlStateManager.rotatef(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
         GlStateManager.enableRescaleNormal();
         this.bindEntityTexture(entity);
         float f = 0.0625F;
-        GlStateManager.scale(f, f, f);
+        GlStateManager.scalef(f, f, f);
         this.renderPainting(entity, entity.getWidthPixels(), entity.getHeightPixels());
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
@@ -115,32 +115,32 @@ public class RenderSchematic extends EntityRenderer<EntityHangingSchematic>
         int i = MathHelper.floor(painting.posX);
         int j = MathHelper.floor(painting.posY + (double)(p_77008_3_ / 16.0F));
         int k = MathHelper.floor(painting.posZ);
-        Direction enumfacing = painting.facingDirection;
+        Direction enumfacing = painting.getHorizontalFacing();
 
         if (enumfacing == Direction.NORTH)
         {
-            i = MathHelper.floor(painting.posX + (double)(p_77008_2_ / 16.0F));
+            i = MathHelper.floor(painting.posX + (p_77008_2_ / 16.0F));
         }
 
         if (enumfacing == Direction.WEST)
         {
-            k = MathHelper.floor(painting.posZ - (double)(p_77008_2_ / 16.0F));
+            k = MathHelper.floor(painting.posZ - (p_77008_2_ / 16.0F));
         }
 
         if (enumfacing == Direction.SOUTH)
         {
-            i = MathHelper.floor(painting.posX - (double)(p_77008_2_ / 16.0F));
+            i = MathHelper.floor(painting.posX - (p_77008_2_ / 16.0F));
         }
 
         if (enumfacing == Direction.EAST)
         {
-            k = MathHelper.floor(painting.posZ + (double)(p_77008_2_ / 16.0F));
+            k = MathHelper.floor(painting.posZ + (p_77008_2_ / 16.0F));
         }
 
         int l = this.renderManager.world.getCombinedLight(new BlockPos(i, j, k), 0);
         int i1 = l % 65536;
         int j1 = l / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)i1, (float)j1);
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float)j1, (float)j1);
+        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
     }
 }

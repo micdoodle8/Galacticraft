@@ -1,10 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityTier1Rocket;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraft.client.renderer.model.Model;
 import net.minecraft.entity.Entity;
 
-public class ModelRocketTier1 extends ModelBase
+public class ModelRocketTier1 extends EntityModel<EntityTier1Rocket>
 {
     RendererModel insideRoof;
     RendererModel rocketBase1;
@@ -295,10 +297,10 @@ public class ModelRocketTier1 extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityTier1Rocket entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        super.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         this.insideRoof.render(f5);
         this.rocketBase1.render(f5);
         this.rocketBase2.render(f5);

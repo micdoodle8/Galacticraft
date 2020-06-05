@@ -2,10 +2,10 @@ package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.blocks.BlockOxygenCollector;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.AirBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
@@ -104,7 +104,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 
                     if (!this.isInitialised)
                     {
-                        this.noAtmosphericOxygen = (this.world.provider instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.provider).isGasPresent(EnumAtmosphericGas.OXYGEN));
+                        this.noAtmosphericOxygen = (this.world.getDimension() instanceof IGalacticraftWorldProvider && !((IGalacticraftWorldProvider) this.world.getDimension()).isGasPresent(EnumAtmosphericGas.OXYGEN));
                         this.isInitialised = true;
                     }
 
@@ -179,7 +179,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
 
                     this.lastOxygenCollected = nearbyLeaves / 10F;
 
-                    this.tank.setFluid(new FluidStack(GCFluids.fluidOxygenGas, (int) Math.max(Math.min(this.getOxygenStored() + nearbyLeaves, this.getMaxOxygenStored()), 0)));
+                    this.tank.setFluid(new FluidStack(GCFluidRegistry.fluidOxygenGas, (int) Math.max(Math.min(this.getOxygenStored() + nearbyLeaves, this.getMaxOxygenStored()), 0)));
                 }
                 else
                 {
@@ -221,7 +221,7 @@ public class TileEntityOxygenCollector extends TileEntityOxygen
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenCollector)
         {
-            return state.getValue(BlockOxygenCollector.FACING);
+            return state.get(BlockOxygenCollector.FACING);
         }
         return Direction.NORTH;
     }

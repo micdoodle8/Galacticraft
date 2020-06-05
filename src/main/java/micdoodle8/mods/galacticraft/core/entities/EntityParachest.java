@@ -2,8 +2,9 @@ package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GCFluids;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityParaChest;
@@ -11,19 +12,23 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.DyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,61 +40,66 @@ public class EntityParachest extends Entity implements IPacketReceiver
     private boolean placedChest;
     public DyeColor color = DyeColor.WHITE;
 
-    public EntityParachest(World world, NonNullList<ItemStack> cargo, int fuelLevel)
+    public EntityParachest(EntityType<EntityParachest> type, World world, NonNullList<ItemStack> cargo, int fuelLevel)
     {
-        this(world);
+        super(type, world);
         this.cargo = NonNullList.withSize(cargo.size(), ItemStack.EMPTY);
         Collections.copy(this.cargo, cargo);
         this.placedChest = false;
         this.fuelLevel = fuelLevel;
     }
 
-    public EntityParachest(World world)
+    public EntityParachest(EntityType<EntityParachest> type, World world)
     {
-        super(world);
-        this.setSize(1.0F, 1.0F);
+        super(type, world);
     }
 
     @Override
-    protected void entityInit()
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
+    }
+
+    @Override
+    protected void registerData()
     {
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
         int size = 56;
-        if (nbt.hasKey("CargoLength"))
+        if (nbt.contains("CargoLength"))
         {
-            size = nbt.getInteger("CargoLength");
+            size = nbt.getInt("CargoLength");
         }
         this.cargo = NonNullList.withSize(size, ItemStack.EMPTY);
 
         ItemStackHelper.loadAllItems(nbt, this.cargo);
 
         this.placedChest = nbt.getBoolean("placedChest");
-        this.fuelLevel = nbt.getInteger("FuelLevel");
+        this.fuelLevel = nbt.getInt("FuelLevel");
 
-        if (nbt.hasKey("color"))
+        if (nbt.contains("color"))
         {
-            this.color = DyeColor.byDyeDamage(nbt.getInteger("color"));
+            this.color = DyeColor.values()[nbt.getInt("color")];
         }
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
         if (world.isRemote) return;
-        nbt.setInteger("CargoLength", this.cargo.size());
+        nbt.putInt("CargoLength", this.cargo.size());
         ItemStackHelper.saveAllItems(nbt, this.cargo);
 
-        nbt.setBoolean("placedChest", this.placedChest);
-        nbt.setInteger("FuelLevel", this.fuelLevel);
-        nbt.setInteger("color", this.color.getDyeDamage());
+        nbt.putBoolean("placedChest", this.placedChest);
+        nbt.putInt("FuelLevel", this.fuelLevel);
+        nbt.putInt("color", this.color.ordinal());
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         if (!this.placedChest)
         {
@@ -133,24 +143,25 @@ public class EntityParachest extends Entity implements IPacketReceiver
                     for (final ItemStack stack : this.cargo)
                     {
                         final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
-                        this.world.spawnEntity(e);
+                        this.world.addEntity(e);
                     }
                 }
 
                 this.placedChest = true;
-                this.setDead();
+                this.remove();
             }
             else
             {
-                this.motionY = -0.35;
+                this.setMotion(this.getMotion().add(0.0, -0.35, 0.0));
             }
 
-            this.move(MoverType.SELF, 0, this.motionY, 0);
+            this.setMotion(0.0, this.getMotion().y, 0.0);
+            this.move(MoverType.SELF, this.getMotion());
         }
 
         if (!this.world.isRemote && this.ticksExisted % 5 == 0)
         {
-            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 64.0));
+            GalacticraftCore.packetPipeline.sendToAllAround(new PacketDynamic(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 64.0, GCCoreUtil.getDimensionID(this.world)));
         }
     }
 
@@ -164,7 +175,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
             if (this.placeChest(pos))
             {
                 this.placedChest = true;
-                this.setDead();
+                this.remove();
                 return true;
             }
         }
@@ -188,14 +199,14 @@ public class EntityParachest extends Entity implements IPacketReceiver
 
                     Collections.copy(chest.getInventory(), this.cargo);
 
-                    chest.fuelTank.fill(FluidRegistry.getFluidStack(GCFluids.fluidFuel.getName().toLowerCase(), this.fuelLevel), true);
+                    chest.fuelTank.fill(new FluidStack(GCFluids.FUEL.getFluid(), this.fuelLevel), IFluidHandler.FluidAction.EXECUTE);
                 }
                 else
                 {
                     for (ItemStack stack : this.cargo)
                     {
                         final ItemEntity e = new ItemEntity(this.world, this.posX, this.posY, this.posZ, stack);
-                        this.world.spawnEntity(e);
+                        this.world.addEntity(e);
                     }
                 }
             }
@@ -210,7 +221,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     {
         if (!this.world.isRemote)
         {
-            sendData.add(this.color.getDyeDamage());
+            sendData.add(this.color.getId());
         }
     }
 
@@ -219,7 +230,7 @@ public class EntityParachest extends Entity implements IPacketReceiver
     {
         if (this.world.isRemote)
         {
-            this.color = DyeColor.byDyeDamage(buffer.readInt());
+            this.color = DyeColor.byId(buffer.readInt());
         }
     }
 }

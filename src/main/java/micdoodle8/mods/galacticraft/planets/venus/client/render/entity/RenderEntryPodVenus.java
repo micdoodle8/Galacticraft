@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityEntryPodVenus;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -72,8 +72,8 @@ public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
         this.updateModels();
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.scale(0.65F, 0.6F, 0.65F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(0.65F, 0.6F, 0.65F);
         ClientUtil.drawBakedModel(modelEntryPod);
 
         if (entityEntryPod.posY > 382.0F)
@@ -89,12 +89,12 @@ public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
 
             GlStateManager.pushMatrix();
             float val = (float) (Math.sin(entityEntryPod.ticksExisted) / 20.0F + 0.5F);
-            GlStateManager.scale(1.0F, 1.0F + val, 1.0F);
+            GlStateManager.scalef(1.0F, 1.0F + val, 1.0F);
             GlStateManager.rotate(entityEntryPod.ticksExisted * 20.0F, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModelColored(modelFlame, color);
             GlStateManager.popMatrix();
 
-            GlStateManager.scale(1.0F, 1.0F + val / 6.0F, 1.0F);
+            GlStateManager.scalef(1.0F, 1.0F + val / 6.0F, 1.0F);
             GlStateManager.rotate(entityEntryPod.ticksExisted * 5.0F, 0.0F, 1.0F, 0.0F);
             ClientUtil.drawBakedModelColored(modelFlame, color);
 
@@ -108,7 +108,7 @@ public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
         {
             GlStateManager.pushMatrix();
             GlStateManager.translate(-1.4F, 1.5F, -0.3F);
-            GlStateManager.scale(2.5F, 3.0F, 2.5F);
+            GlStateManager.scalef(2.5F, 3.0F, 2.5F);
             this.parachuteModel.renderAll();
             GlStateManager.popMatrix();
         }
@@ -124,7 +124,7 @@ public class RenderEntryPodVenus extends EntityRenderer<EntityEntryPodVenus>
     @Override
     public boolean shouldRender(EntityEntryPodVenus lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(1D, 2D, 1D);
+        AxisAlignedBB axisalignedbb = lander.getBoundingBox().grow(1D, 2D, 1D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

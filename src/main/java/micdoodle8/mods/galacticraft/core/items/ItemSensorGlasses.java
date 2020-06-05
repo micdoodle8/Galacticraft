@@ -14,15 +14,17 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISensorGlassesArmor
 {
-    public ItemSensorGlasses(String assetName)
+    public ItemSensorGlasses(Item.Properties builder)
     {
-        super(GCItems.ARMOR_SENSOR_GLASSES, 0, EquipmentSlotType.HEAD);
-        this.setUnlocalizedName(assetName);
+        super(EnumArmorGC.ARMOR_SENSOR_GLASSES, EquipmentSlotType.HEAD, builder);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
@@ -32,11 +34,11 @@ public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISens
         return false;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlotType slot, String type)
@@ -45,14 +47,14 @@ public class ItemSensorGlasses extends ArmorItem implements ISortableItem, ISens
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void renderHelmetOverlay(ItemStack stack, PlayerEntity player, ScaledResolution resolution, float partialTicks)
     {
         OverlaySensorGlasses.renderSensorGlassesMain(stack, player, resolution, partialTicks);

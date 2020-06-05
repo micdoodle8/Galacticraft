@@ -18,7 +18,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class SkyProviderVenus extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
@@ -116,7 +116,7 @@ public class SkyProviderVenus extends IRenderHandler
         GL11.glDisable(GL11.GL_FOG);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glEnable(GL11.GL_BLEND);
-        OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+        GlStateManager.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);;
         RenderHelper.disableStandardItemLighting();
         float f7;
         float f8;
@@ -252,7 +252,7 @@ public class SkyProviderVenus extends IRenderHandler
         GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderVenus.overworldTexture);
+        Minecraft.getInstance().textureManager.bindTexture(SkyProviderVenus.overworldTexture);
         worldRenderer1.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer1.pos(-f10, -100.0D, f10).tex(0, 1.0).endVertex();
         worldRenderer1.pos(f10, -100.0D, f10).tex(1.0, 1.0).endVertex();
@@ -304,7 +304,7 @@ public class SkyProviderVenus extends IRenderHandler
             tessellator1.draw();
         }
 
-        if (world.provider.isSkyColored())
+        if (world.getDimension().isSkyColored())
         {
             GL11.glColor3f(f1 * 0.2F + 0.04F, f2 * 0.2F + 0.04F, f3 * 0.6F + 0.1F);
         }
@@ -386,7 +386,7 @@ public class SkyProviderVenus extends IRenderHandler
 
     public float getSkyBrightness(float par1)
     {
-        final float var2 = FMLClientHandler.instance().getClient().world.getCelestialAngle(par1);
+        final float var2 = Minecraft.getInstance().world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.sin(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)

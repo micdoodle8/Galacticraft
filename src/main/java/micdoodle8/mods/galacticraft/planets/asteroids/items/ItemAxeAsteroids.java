@@ -23,7 +23,7 @@ public class ItemAxeAsteroids extends ToolItem implements ISortableItem
 {
     private static final Set<Block> EFFECTIVE_ON = Sets.newHashSet(new Block[] { Blocks.PLANKS, Blocks.BOOKSHELF, Blocks.LOG, Blocks.LOG2, Blocks.CHEST, Blocks.PUMPKIN, Blocks.LIT_PUMPKIN, Blocks.MELON_BLOCK, Blocks.LADDER, Blocks.WOODEN_BUTTON, Blocks.WOODEN_PRESSURE_PLATE});
 
-    public ItemAxeAsteroids(String assetName)
+    public ItemAxeAsteroids(Item.Properties builder)
     {
         super(GCItems.TOOL_STEEL, EFFECTIVE_ON);
         this.setUnlocalizedName(assetName);
@@ -31,14 +31,14 @@ public class ItemAxeAsteroids extends ToolItem implements ISortableItem
         this.attackSpeed = -3.0F;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

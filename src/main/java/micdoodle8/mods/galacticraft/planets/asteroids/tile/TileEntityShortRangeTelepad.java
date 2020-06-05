@@ -233,9 +233,9 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
 
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
-            this.setAddress(nbt.getInteger("Address"));
+            this.setAddress(nbt.getInt("Address"));
         }
-        this.targetAddress = nbt.getInteger("TargetAddress");
+        this.targetAddress = nbt.getInt("TargetAddress");
         this.owner = nbt.getString("Owner");
     }
 
@@ -245,8 +245,8 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         super.writeToNBT(nbt);
         ItemStackHelper.saveAllItems(nbt, this.getInventory());
 
-        nbt.setInteger("TargetAddress", this.targetAddress);
-        nbt.setInteger("Address", this.address);
+        nbt.putInt("TargetAddress", this.targetAddress);
+        nbt.putInt("Address", this.address);
         nbt.setString("Owner", this.owner);
         return nbt;
     }
@@ -335,7 +335,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -346,7 +346,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;
@@ -409,7 +409,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
     @Override
     public Direction getElectricInputDirection()
     {
-        return Direction.getFront((this.getBlockMetadata() & 3) + 2);
+        return Direction.byIndex((this.getBlockMetadata() & 3) + 2);
     }
 
     @Override
@@ -544,7 +544,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         return this.owner;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String getReceivingStatus()
     {
         if (!this.addressValid)
@@ -570,7 +570,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.receiving_active.name");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public String getSendingStatus()
     {
         if (!this.addressValid)
@@ -616,7 +616,7 @@ public class TileEntityShortRangeTelepad extends TileBaseElectricBlock implement
         return EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.message.sending_active.name");
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Vector3 getParticleColor(Random rand, boolean sending)
     {
         float teleportTimeScaled = Math.min(1.0F, this.teleportTime / (float) TileEntityShortRangeTelepad.MAX_TELEPORT_TIME);

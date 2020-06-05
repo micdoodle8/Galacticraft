@@ -42,7 +42,7 @@
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.RayTraceResult;
 //import net.minecraft.util.text.translation.I18n;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraft.world.ServerWorld;
 //import net.minecraftforge.client.model.ModelLoader;
@@ -58,7 +58,7 @@
 //{
 //    public static final PropertyObject<BlockState> BASE_STATE = new PropertyObject<>("held_state", BlockState.class);
 //    protected static final VoxelShape BOUNDING_BOX = Block.makeCuboidShape(0.0D, 0.875D, 0.0D, 1.0D, 1.0D, 1.0D);
-//    public static IBlockAccess savedBlockAccess;
+//    public static IBlockReader savedBlockAccess;
 //    public static BlockPos savedPos;
 //
 //    private int adjacentSourceBlocks;
@@ -160,7 +160,7 @@
 //    @Override
 //    public String getLocalizedName()
 //    {
-//        return I18n.translateToLocal("tile.grating.name");
+//        return LanguageMap.getInstance().translateKey("tile.grating.name");
 //    }
 //
 //    @Override
@@ -188,13 +188,13 @@
 //    }
 //
 //    @Override
-//    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction side)
+//    public boolean isSideSolid(BlockState base_state, IBlockReader world, BlockPos pos, Direction side)
 //    {
 //        return false;
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -206,14 +206,14 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    @OnlyIn(Dist.CLIENT)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //         return BlockRenderLayer.CUTOUT;
@@ -225,7 +225,7 @@
 //        return true;
 //    }
 //    
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public static void remapVariant(Block grating)
 //    {
 //        ModelLoader.setCustomStateMapper(grating, new StateMapperBase()
@@ -239,7 +239,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos)
+//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        return BOUNDING_BOX;
 //    }
@@ -287,7 +287,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getExtendedState(BlockState state, IBlockAccess world, BlockPos pos)
+//    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        savedBlockAccess = world;
 //        savedPos = pos;
@@ -427,7 +427,7 @@
 //    }
 //    
 //    @Override
-//    public boolean isReplaceable(IBlockAccess worldIn, BlockPos pos)
+//    public boolean isReplaceable(IBlockReader worldIn, BlockPos pos)
 //    {
 //        return false;
 //    }
@@ -440,7 +440,7 @@
 //    }
 //    
 //    @Override
-//    public boolean isPassable(IBlockAccess worldIn, BlockPos pos)
+//    public boolean isPassable(IBlockReader worldIn, BlockPos pos)
 //    {
 //        return false;
 //    }
@@ -879,13 +879,13 @@
 //        return test == this || test == this.forgeBlock;
 //    }
 //
-//    private boolean isSourceBlock(IBlockAccess world, BlockPos pos)
+//    private boolean isSourceBlock(IBlockReader world, BlockPos pos)
 //    {
 //        BlockState state = world.getBlockState(pos);
 //        return state.getBlock() instanceof BlockFluidBase && state.get(BlockFluidBase.LEVEL) == 0;
 //    }
 //    
-//    protected int getLargerQuanta(IBlockAccess world, BlockPos pos, int compare)
+//    protected int getLargerQuanta(IBlockReader world, BlockPos pos, int compare)
 //    {
 //        int quantaRemaining = this.forgeBlock.getQuantaValue(world, pos);
 //        if (quantaRemaining <= 0)

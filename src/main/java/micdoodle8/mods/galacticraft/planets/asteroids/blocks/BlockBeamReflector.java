@@ -44,7 +44,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
         return AABB;
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -96,7 +96,7 @@ public class BlockBeamReflector extends BlockTileGC implements IShiftDescription
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, 0));

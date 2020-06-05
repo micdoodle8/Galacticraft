@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.transmission.tile.IOxygenReceiver;
@@ -432,11 +432,11 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
 
     public int getAirProducts()
     {
-        Dimension WP = this.world.provider;
-        if (WP instanceof WorldProviderSpace)
+        Dimension WP = this.world.getDimension();
+        if (WP instanceof DimensionSpace)
         {
             int result = 0;
-            ArrayList<EnumAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
+            ArrayList<EnumAtmosphericGas> atmos = ((DimensionSpace) WP).getCelestialBody().atmosphere.composition;
             if (atmos.size() > 0)
             {
                 result = this.getIdFromName(atmos.get(0).name().toLowerCase()) + 1;
@@ -539,18 +539,18 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.processTicks = nbt.getInt("smeltingTicks");
 
-        if (nbt.hasKey("gasTank"))
+        if (nbt.contains("gasTank"))
         {
             this.gasTank.readFromNBT(nbt.getCompoundTag("gasTank"));
         }
 
-        if (nbt.hasKey("liquidTank"))
+        if (nbt.contains("liquidTank"))
         {
             this.liquidTank.readFromNBT(nbt.getCompoundTag("liquidTank"));
         }
-        if (nbt.hasKey("liquidTank2"))
+        if (nbt.contains("liquidTank2"))
         {
             this.liquidTank2.readFromNBT(nbt.getCompoundTag("liquidTank2"));
         }
@@ -560,20 +560,20 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
 
         if (this.gasTank.getFluid() != null)
         {
-            nbt.setTag("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.liquidTank.getFluid() != null)
         {
-            nbt.setTag("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
+            nbt.put("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
         }
         if (this.liquidTank2.getFluid() != null)
         {
-            nbt.setTag("liquidTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
+            nbt.put("liquidTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
         }
 
         return nbt;
@@ -856,7 +856,7 @@ public class TileEntityGasLiquefier extends TileBaseElectricBlockWithInventory i
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMarsT2)
         {
-            return state.getValue(BlockMachineMarsT2.FACING);
+            return state.get(BlockMachineMarsT2.FACING);
         }
         return Direction.NORTH;
     }

@@ -33,7 +33,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class StructureComponentVillageWoodHut extends StructureComponentVillage
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
     }
 
     public static StructureComponentVillageWoodHut func_74908_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructurePiece> par1List, Random par2Random, int par3, int par4, int par5, Direction par6, int par7)

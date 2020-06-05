@@ -88,13 +88,13 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     private String ownerName = null;
     private SpaceRace ownerSpaceRace = null;
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float pitch;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float yaw;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float targetPitch;
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float targetYaw;
     public int timeSinceShot = -1;  //Cannot initialise client-only fields (causes a server crash on constructing the object)
 
@@ -400,7 +400,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                     }
                     else if (toTarget instanceof EntityMeteor)
                     {
-                        toTarget.setDead();
+                        toTarget.remove();
                     }
                     this.world.playSound(null, getPos().up(), GCSounds.laserShoot, SoundCategory.BLOCKS, 1.0F, 1.0F);
                     storage.setEnergyStored(storage.getEnergyStoredGC() - 1000);
@@ -506,31 +506,31 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         super.readFromNBT(nbt);
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
 
-        ListNBT playersTag = nbt.getTagList("PlayerList", 10);
-        for (int i = 0; i < playersTag.tagCount(); i++)
+        ListNBT playersTag = nbt.getList("PlayerList", 10);
+        for (int i = 0; i < playersTag.size(); i++)
         {
-            CompoundNBT tagAt = playersTag.getCompoundTagAt(i);
+            CompoundNBT tagAt = playersTag.getCompound(i);
             this.players.add(tagAt.getString("PlayerName"));
         }
 
-        ListNBT entitiesTag = nbt.getTagList("EntitiesList", 10);
-        for (int i = 0; i < entitiesTag.tagCount(); i++)
+        ListNBT entitiesTag = nbt.getList("EntitiesList", 10);
+        for (int i = 0; i < entitiesTag.size(); i++)
         {
-            CompoundNBT tagAt = entitiesTag.getCompoundTagAt(i);
+            CompoundNBT tagAt = entitiesTag.getCompound(i);
             this.entities.add(new ResourceLocation(tagAt.getString("EntityRes")));
         }
 
         this.active = nbt.getBoolean("active");
-        this.targettedEntity = nbt.getInteger("targettedEntity");
-        this.chargeLevel = nbt.getInteger("chargeLevel");
+        this.targettedEntity = nbt.getInt("targettedEntity");
+        this.chargeLevel = nbt.getInt("chargeLevel");
         this.blacklistMode = nbt.getBoolean("blacklistMode");
         this.targetMeteors = nbt.getBoolean("targetMeteors");
         this.alwaysIgnoreSpaceRace = nbt.getBoolean("alwaysIgnoreSpaceRace");
-        this.priorityClosest = nbt.getInteger("priorityClosest");
-        this.priorityLowestHealth = nbt.getInteger("priorityLowestHealth");
-        this.priorityHighestHealth = nbt.getInteger("priorityHighestHealth");
+        this.priorityClosest = nbt.getInt("priorityClosest");
+        this.priorityLowestHealth = nbt.getInt("priorityLowestHealth");
+        this.priorityHighestHealth = nbt.getInt("priorityHighestHealth");
 
-        this.ownerName = nbt.hasKey("ownerName") ? nbt.getString("ownerName") : null;
+        this.ownerName = nbt.contains("ownerName") ? nbt.getString("ownerName") : null;
         this.ownerUUID = nbt.getUniqueId("ownerUUID");
     }
 
@@ -548,7 +548,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             playersTag.appendTag(tagComp);
         }
 
-        nbt.setTag("PlayerList", playersTag);
+        nbt.put("PlayerList", playersTag);
 
         ListNBT entitiesTag = new ListNBT();
         for (ResourceLocation entity : this.entities)
@@ -558,17 +558,17 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
             entitiesTag.appendTag(tagComp);
         }
 
-        nbt.setTag("EntitiesList", entitiesTag);
+        nbt.put("EntitiesList", entitiesTag);
 
         nbt.setBoolean("active", this.active);
-        nbt.setInteger("targettedEntity", this.targettedEntity);
-        nbt.setInteger("chargeLevel", this.chargeLevel);
+        nbt.putInt("targettedEntity", this.targettedEntity);
+        nbt.putInt("chargeLevel", this.chargeLevel);
         nbt.setBoolean("blacklistMode", this.blacklistMode);
         nbt.setBoolean("targetMeteors", this.targetMeteors);
         nbt.setBoolean("alwaysIgnoreSpaceRace", this.alwaysIgnoreSpaceRace);
-        nbt.setInteger("priorityClosest", this.priorityClosest);
-        nbt.setInteger("priorityLowestHealth", this.priorityLowestHealth);
-        nbt.setInteger("priorityHighestHealth", this.priorityHighestHealth);
+        nbt.putInt("priorityClosest", this.priorityClosest);
+        nbt.putInt("priorityLowestHealth", this.priorityLowestHealth);
+        nbt.putInt("priorityHighestHealth", this.priorityHighestHealth);
 
         if (this.ownerName != null)
         {
@@ -580,7 +580,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -591,7 +591,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;
@@ -639,7 +639,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         BlockState state = world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockLaserTurret)
         {
-            return state.getValue(BlockLaserTurret.FACING);
+            return state.get(BlockLaserTurret.FACING);
         }
         return Direction.NORTH;
     }
@@ -668,7 +668,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
         this.ownerUUID = uniqueID;
         if (uniqueID != null)
         {
-            PlayerEntity player = this.world.getPlayerEntityByUUID(uniqueID);
+            PlayerEntity player = this.world.getPlayerByUuid(uniqueID);
             if (player != null)
             {
                 this.ownerName = player.getName();
@@ -721,7 +721,7 @@ public class TileEntityLaserTurret extends TileBaseElectricBlockWithInventory im
                 {
                     if (this.world.isRemote)
                     {
-                        FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, VenusBlocks.laserTurret.getDefaultState());
+                        Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, VenusBlocks.laserTurret.getDefaultState());
                     }
 
                     this.world.setBlockToAir(pos);

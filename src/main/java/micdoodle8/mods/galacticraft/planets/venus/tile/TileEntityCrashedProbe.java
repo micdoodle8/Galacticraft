@@ -67,7 +67,7 @@ public class TileEntityCrashedProbe extends TileEntityInventory
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        if (nbt.hasKey("ctd"))
+        if (nbt.contains("ctd"))
         {
             this.hasCoreToDrop = nbt.getBoolean("ctd");
         }

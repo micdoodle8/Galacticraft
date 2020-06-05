@@ -56,12 +56,12 @@ public class ShortRangeTelepadHandler extends WorldSavedData
     @Override
     public void readFromNBT(CompoundNBT nbt)
     {
-        ListNBT tagList = nbt.getTagList("TelepadList", 10);
+        ListNBT tagList = nbt.getList("TelepadList", 10);
         tileMap.clear();
 
-        for (int i = 0; i < tagList.tagCount(); i++)
+        for (int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT nbt2 = tagList.getCompoundTagAt(i);
+            CompoundNBT nbt2 = tagList.getCompound(i);
             int address = nbt2.getInteger("Address");
             int dimID = nbt2.getInteger("DimID");
             int posX = nbt2.getInteger("PosX");
@@ -93,7 +93,7 @@ public class ShortRangeTelepadHandler extends WorldSavedData
             tagList.appendTag(nbt2);
         }
 
-        nbt.setTag("TelepadList", tagList);
+        nbt.put("TelepadList", tagList);
         return nbt;
     }
 

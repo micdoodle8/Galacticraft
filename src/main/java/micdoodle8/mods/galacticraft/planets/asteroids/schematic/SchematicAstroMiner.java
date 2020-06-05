@@ -34,7 +34,7 @@ public class SchematicAstroMiner implements ISchematicPage
         return new ItemStack(MarsItems.schematic, 1, 2);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

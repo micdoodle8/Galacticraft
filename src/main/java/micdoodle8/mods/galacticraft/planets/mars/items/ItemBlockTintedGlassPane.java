@@ -25,7 +25,7 @@ public class ItemBlockTintedGlassPane extends BlockItem
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public IIcon getIconFromDamage(int par1)
     {
         return this.getBlock().getIcon(0, par1);
@@ -38,7 +38,7 @@ public class ItemBlockTintedGlassPane extends BlockItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

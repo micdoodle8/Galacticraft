@@ -19,7 +19,7 @@
 //import net.minecraft.tileentity.TileEntity;
 //import net.minecraft.util.*;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.LightType;
 //import net.minecraft.world.World;
 //import net.minecraftforge.common.property.ExtendedBlockState;
@@ -82,7 +82,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
 //        for (int i = 0; i < PANELTYPES_LENGTH; i++)
@@ -98,7 +98,7 @@
 //    }
 //
 //    @Override
-//    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
+//    public List<ItemStack> getDrops(IBlockReader world, BlockPos pos, BlockState state, int fortune)
 //    {
 //        ArrayList<ItemStack> result = new ArrayList<ItemStack>();
 //        result.add(new ItemStack(this.getItemDropped(state, null, fortune), 1, this.getMetaFromState(state)));
@@ -178,13 +178,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate("tile.panel_lighting.description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -215,7 +215,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getExtendedState(BlockState state, IBlockAccess world, BlockPos pos)
+//    public BlockState getExtendedState(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        TileEntity tile = world.getTileEntity(pos);
 //        if (tile instanceof TileEntityPanelLight)
@@ -227,7 +227,7 @@
 //    }
 //
 //    @Override
-//    public int getLightValue(BlockState bs, IBlockAccess world, BlockPos pos)
+//    public int getLightValue(BlockState bs, IBlockReader world, BlockPos pos)
 //    {
 //        if (!(bs.getBlock() instanceof BlockPanelLighting))
 //        {

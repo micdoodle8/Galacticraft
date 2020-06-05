@@ -25,7 +25,7 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         int i = 0;
@@ -76,14 +76,14 @@ public class ItemMoon extends ItemDesc implements ISortableItem
         return par1;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
@@ -104,7 +104,7 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         if (meta == 2)
         {
@@ -115,7 +115,7 @@ public class ItemMoon extends ItemDesc implements ISortableItem
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return meta == 2;
     }

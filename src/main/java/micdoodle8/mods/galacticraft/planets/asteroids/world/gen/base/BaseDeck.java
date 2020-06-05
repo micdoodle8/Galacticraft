@@ -171,11 +171,11 @@ public class BaseDeck extends SizedPiece
             
             if (tagCompound.hasKey("oD"))
             {
-                ListNBT tagList = tagCompound.getTagList("oD", 10);
+                ListNBT tagList = tagCompound.getList("oD", 10);
                 this.otherDecks = new ArrayList<BaseDeck>();
-                for (int i = 0; i < tagList.tagCount(); i++)
+                for (int i = 0; i < tagList.size(); i++)
                 {
-                    CompoundNBT tagAt = tagList.getCompoundTagAt(i);
+                    CompoundNBT tagAt = tagList.getCompound(i);
                     BaseDeck deck = new BaseDeck();
                     deck.readStructureFromNBT(tagAt, manager);
                     this.otherDecks.add(deck);

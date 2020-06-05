@@ -152,7 +152,7 @@ public class RoomBoss extends SizedPiece
     protected void readStructureFromNBT(CompoundNBT nbt, TemplateManager manager)
     {
         super.readStructureFromNBT(nbt, manager);
-        this.chestPos = new BlockPos(nbt.getInteger("chestX"), nbt.getInteger("chestY"), nbt.getInteger("chestZ"));
+        this.chestPos = new BlockPos(nbt.getInt("chestX"), nbt.getInt("chestY"), nbt.getInt("chestZ"));
     }
 
     @Override

@@ -28,7 +28,7 @@ public class NetworkHelper
         {
             for (int i = 0; i < 6; i++)
             {
-                Direction direction = Direction.getFront(i);
+                Direction direction = Direction.byIndex(i);
                 if (((IConnector) tileEntity).canConnect(direction, type))
                 {
                     possibleSides.add(direction);

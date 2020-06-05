@@ -9,33 +9,31 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
-public class GuiDeconstructor extends GuiContainerGC
+public class GuiDeconstructor extends GuiContainerGC<ContainerDeconstructor>
 {
     private static final ResourceLocation guiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/deconstructor.png");
-    private TileEntityDeconstructor tileEntity;
+    private TileEntityDeconstructor deconstructor;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion(0, 0, 56, 9, null, 0, 0, this);
     private GuiElementInfoRegion processInfoRegion = new GuiElementInfoRegion(0, 0, 52, 25, null, 0, 0, this);
 
-    public GuiDeconstructor(PlayerInventory par1InventoryPlayer, TileEntityDeconstructor tileEntity)
+    public GuiDeconstructor(PlayerInventory playerInv, TileEntityDeconstructor deconstructor)
     {
-        super(new ContainerDeconstructor(par1InventoryPlayer, tileEntity));
-        this.tileEntity = tileEntity;
+        super(new ContainerDeconstructor(playerInv, deconstructor), playerInv, new StringTextComponent(deconstructor.getName()));
+        this.deconstructor = deconstructor;
         this.ySize = 199;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         this.electricInfoRegion.tooltipStrings = new ArrayList<String>();
         this.electricInfoRegion.xPosition = (this.width - this.xSize) / 2 + 17;
         this.electricInfoRegion.yPosition = (this.height - this.ySize) / 2 + 95;
@@ -57,10 +55,10 @@ public class GuiDeconstructor extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), 10, 6, 4210752);
+        this.font.drawString(this.deconstructor.getName(), 10, 6, 4210752);
         String displayText;
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.deconstructor.processTicks > 0)
         {
             displayText = EnumColor.BRIGHT_GREEN + GCCoreUtil.translate("gui.status.running.name");
         }
@@ -70,12 +68,12 @@ public class GuiDeconstructor extends GuiContainerGC
         }
 
         String str = GCCoreUtil.translate("gui.message.status.name") + ": " + displayText;
-        this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 75, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
+        this.font.drawString(str, 120 - this.font.getStringWidth(str) / 2, 75, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 93, 4210752);
 //		str = "" + this.tileEntity.storage.getMaxExtract();
-//		this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 85, 4210752);
+//		this.font.drawString(str, 120 - this.font.getStringWidth(str) / 2, 85, 4210752);
 //		//		str = ElectricityDisplay.getDisplay(this.tileEntity.getVoltage(), ElectricUnit.VOLTAGE);
-//		this.fontRenderer.drawString(str, 120 - this.fontRenderer.getStringWidth(str) / 2, 95, 4210752);
+//		this.font.drawString(str, 120 - this.font.getStringWidth(str) / 2, 95, 4210752);
     }
 
     /**
@@ -85,22 +83,22 @@ public class GuiDeconstructor extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiDeconstructor.guiTexture);
+        this.minecraft.textureManager.bindTexture(GuiDeconstructor.guiTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         int scale;
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
-        EnergyDisplayHelper.getEnergyDisplayTooltip(this.tileEntity.getEnergyStoredGC(), this.tileEntity.getMaxEnergyStoredGC(), electricityDesc);
+        EnergyDisplayHelper.getEnergyDisplayTooltip(this.deconstructor.getEnergyStoredGC(), this.deconstructor.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.deconstructor.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 100);
+            scale = (int) ((double) this.deconstructor.processTicks / (double) this.deconstructor.processTimeRequired * 100);
         }
         else
         {
@@ -112,22 +110,22 @@ public class GuiDeconstructor extends GuiContainerGC
         processDesc.add(GCCoreUtil.translate("gui.electric_compressor.desc.0") + ": " + scale + "%");
         this.processInfoRegion.tooltipStrings = processDesc;
 
-        if (this.tileEntity.processTicks > 0)
+        if (this.deconstructor.processTicks > 0)
         {
-            scale = (int) ((double) this.tileEntity.processTicks / (double) this.tileEntity.processTimeRequired * 54);
-            this.drawTexturedModalRect(containerWidth + 53, containerHeight + 36, 176, 13, scale, 17);
+            scale = (int) ((double) this.deconstructor.processTicks / (double) this.deconstructor.processTimeRequired * 54);
+            this.blit(containerWidth + 53, containerHeight + 36, 176, 13, scale, 17);
         }
 
-        if (this.tileEntity.getEnergyStoredGC() > 0)
+        if (this.deconstructor.getEnergyStoredGC() > 0)
         {
-            scale = this.tileEntity.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(containerWidth + 116 - 98, containerHeight + 96, 176, 30, scale, 7);
-            this.drawTexturedModalRect(containerWidth + 4, containerHeight + 95, 176, 37, 11, 10);
+            scale = this.deconstructor.getScaledElecticalLevel(54);
+            this.blit(containerWidth + 116 - 98, containerHeight + 96, 176, 30, scale, 7);
+            this.blit(containerWidth + 4, containerHeight + 95, 176, 37, 11, 10);
         }
 
-        if (this.tileEntity.processTicks > this.tileEntity.processTimeRequired / 2)
+        if (this.deconstructor.processTicks > this.deconstructor.processTimeRequired / 2)
         {
-            this.drawTexturedModalRect(containerWidth + 77, containerHeight + 28, 176, 0, 15, 13);
+            this.blit(containerWidth + 77, containerHeight + 28, 176, 0, 15, 13);
         }
     }
 }

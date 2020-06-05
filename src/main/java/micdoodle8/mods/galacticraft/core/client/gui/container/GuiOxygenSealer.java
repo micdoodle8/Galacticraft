@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client.gui.container;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.blocks.BlockThermalAir;
 import micdoodle8.mods.galacticraft.core.client.gui.element.GuiElementInfoRegion;
 import micdoodle8.mods.galacticraft.core.energy.EnergyDisplayHelper;
 import micdoodle8.mods.galacticraft.core.fluid.OxygenPressureProtocol;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -35,28 +37,17 @@ public class GuiOxygenSealer extends GuiContainerGC
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenSealer(PlayerInventory par1InventoryPlayer, TileEntityOxygenSealer par2TileEntityAirDistributor)
+    public GuiOxygenSealer(PlayerInventory playerInv, TileEntityOxygenSealer sealer)
     {
-        super(new ContainerOxygenSealer(par1InventoryPlayer, par2TileEntityAirDistributor));
-        this.sealer = par2TileEntityAirDistributor;
+        super(new ContainerOxygenSealer(playerInv, sealer), playerInv, new StringTextComponent(sealer.getName()));
+        this.sealer = sealer;
         this.ySize = 200;
     }
 
     @Override
-    protected void actionPerformed(Button par1GuiButton)
+    protected void init()
     {
-        switch (par1GuiButton.id)
-        {
-        case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.sealer.getPos(), 0 }));
-            break;
-        }
-    }
-
-    @Override
-    public void initGui()
-    {
-        super.initGui();
+        super.init();
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
@@ -88,41 +79,41 @@ public class GuiOxygenSealer extends GuiContainerGC
         this.electricInfoRegion.parentWidth = this.width;
         this.electricInfoRegion.parentHeight = this.height;
         this.infoRegions.add(this.electricInfoRegion);
-        this.buttonList.add(this.buttonDisable = new Button(0, this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal.name")));
+        this.buttons.add(this.buttonDisable = new Button(this.width / 2 - 38, this.height / 2 - 30 + 21, 76, 20, GCCoreUtil.translate("gui.button.enableseal.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.sealer.getPos(), 0 }));
+        }));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.sealer.getName(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.fontRenderer);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.fontRenderer);
+        this.font.drawString(this.sealer.getName(), 8, 10, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 26, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 38, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus();
-        this.buttonDisable.enabled = this.sealer.disableCooldown == 0;
-        this.buttonDisable.displayString = this.sealer.disabled ? GCCoreUtil.translate("gui.button.enableseal.name") : GCCoreUtil.translate("gui.button.disableseal.name");
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 50, 4210752);
+        this.buttonDisable.active = this.sealer.disableCooldown == 0;
+        this.buttonDisable.setMessage(this.sealer.disabled ? GCCoreUtil.translate("gui.button.enableseal.name") : GCCoreUtil.translate("gui.button.disableseal.name"));
+        this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 50, 4210752);
         int adjustedOxygenPerTick =  (int) (this.sealer.oxygenPerTick * 20);
         if (this.sealer.disabled || this.sealer.getEnergyStoredGC() < this.sealer.storage.getMaxExtract()) adjustedOxygenPerTick = 0;
         status = GCCoreUtil.translate("gui.oxygen_use.desc") + ": " + adjustedOxygenPerTick + GCCoreUtil.translate("gui.per_second");
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 60, 4210752);
+        this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 60, 4210752);
         status = GCCoreUtil.translate("gui.message.thermal_status.name") + ": " + this.getThermalStatus();
-        this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
+        this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 70, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.sealer.ueWattsPerTick * 20, ElectricUnit.WATT);
-        //		this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 70, 4210752);
+        //		this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 70, 4210752);
         //		status = ElectricityDisplay.getDisplay(this.sealer.getVoltage(), ElectricUnit.VOLTAGE);
-        //		this.fontRenderer.drawString(status, this.xSize / 2 - this.fontRenderer.getStringWidth(status) / 2, 80, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
+        //		this.font.drawString(status, this.xSize / 2 - this.font.getStringWidth(status) / 2, 80, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 3, 4210752);
     }
 
     private String getThermalStatus()
     {
         BlockState stateAbove = this.sealer.getWorld().getBlockState(this.sealer.getPos().up());
-        Block blockAbove = stateAbove.getBlock();
-        int metadata = blockAbove.getMetaFromState(stateAbove);
 
-        if (blockAbove == GCBlocks.breatheableAir || blockAbove == GCBlocks.brightBreatheableAir)
+        if (stateAbove.getBlock() instanceof BlockThermalAir)
         {
-            if (metadata == 1)
+            if (stateAbove.get(BlockThermalAir.THERMAL))
             {
                 return EnumColor.DARK_GREEN + GCCoreUtil.translate("gui.status.on.name");
             }
@@ -213,10 +204,10 @@ public class GuiOxygenSealer extends GuiContainerGC
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiOxygenSealer.sealerTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiOxygenSealer.sealerTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
+        this.blit(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
 
         if (this.sealer != null)
         {
@@ -232,24 +223,24 @@ public class GuiOxygenSealer extends GuiContainerGC
             this.electricInfoRegion.tooltipStrings = electricityDesc;
 
             int scale = this.sealer.getCappedScaledOxygenLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 24, 197, 7, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 24, 197, 7, Math.min(scale, 54), 7);
             scale = this.sealer.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 37, 197, 0, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 37, 197, 0, Math.min(scale, 54), 7);
             scale = 25 - this.sealer.getScaledThreadCooldown(25);
-            this.drawTexturedModalRect(var5 + 148, var6 + 60, 176, 14, 10, 27);
+            this.blit(var5 + 148, var6 + 60, 176, 14, 10, 27);
             if (scale != 0)
             {
-                this.drawTexturedModalRect(var5 + 149, var6 + 61 + scale, 186, 14, 8, 25 - scale);
+                this.blit(var5 + 149, var6 + 61 + scale, 186, 14, 8, 25 - scale);
             }
 
             if (this.sealer.getEnergyStoredGC() > 0)
             {
-                this.drawTexturedModalRect(var5 + 99, var6 + 36, 176, 0, 11, 10);
+                this.blit(var5 + 99, var6 + 36, 176, 0, 11, 10);
             }
 
             if (this.sealer.getOxygenStored() > 0)
             {
-                this.drawTexturedModalRect(var5 + 100, var6 + 23, 187, 0, 10, 10);
+                this.blit(var5 + 100, var6 + 23, 187, 0, 10, 10);
             }
         }
     }

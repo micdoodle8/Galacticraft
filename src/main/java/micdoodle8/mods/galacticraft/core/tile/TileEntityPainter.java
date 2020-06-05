@@ -28,6 +28,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.relauncher.Side;
 import ic2.api.item.IC2Items;
 import io.netty.buffer.ByteBuf;
@@ -98,7 +99,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         }
     }
 
-    private void applyColorToItem(ItemStack itemStack, int color, Side side, PlayerEntity player)
+    private void applyColorToItem(ItemStack itemStack, int color, LogicalSide side, PlayerEntity player)
     {
         if (itemStack == null)
         {
@@ -159,13 +160,13 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        if (nbt.hasKey("guic"))
+        if (nbt.contains("guic"))
         {
-            this.glassColor[0] = nbt.getInteger("G1");
-            this.glassColor[1] = nbt.getInteger("G2");
-            this.glassColor[2] = nbt.getInteger("G3");
-            this.range = nbt.getInteger("rge");
-            this.guiColor = nbt.getInteger("guic");
+            this.glassColor[0] = nbt.getInt("G1");
+            this.glassColor[1] = nbt.getInt("G2");
+            this.glassColor[2] = nbt.getInt("G3");
+            this.range = nbt.getInt("rge");
+            this.guiColor = nbt.getInt("guic");
         }
     }
 
@@ -173,11 +174,11 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("G1", this.glassColor[0]);
-        nbt.setInteger("G2", this.glassColor[1]);
-        nbt.setInteger("G3", this.glassColor[2]);
-        nbt.setInteger("guic", this.guiColor);
-        nbt.setInteger("rge", this.range);
+        nbt.putInt("G1", this.glassColor[0]);
+        nbt.putInt("G2", this.glassColor[1]);
+        nbt.putInt("G3", this.glassColor[2]);
+        nbt.putInt("guic", this.guiColor);
+        nbt.putInt("rge", this.range);
 
         return nbt;
     }
@@ -289,7 +290,7 @@ public class TileEntityPainter extends TileEntityInventory implements IDisableab
         }
     }
     
-    public void buttonPressed(int index, PlayerEntity player, Side side)
+    public void buttonPressed(int index, PlayerEntity player, LogicalSide side)
     {
         switch (index)
         {

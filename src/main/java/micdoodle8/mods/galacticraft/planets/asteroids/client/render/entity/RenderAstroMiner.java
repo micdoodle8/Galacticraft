@@ -19,7 +19,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -191,7 +191,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
         }
 
         GlStateManager.translate(0F, -0.42F, 0.28F);
-        GlStateManager.scale(0.0495F, 0.0495F, 0.0495F);
+        GlStateManager.scalef(0.0495F, 0.0495F, 0.0495F);
         GlStateManager.translate(wx, wy, wz);
 
         if (active)
@@ -221,7 +221,7 @@ public class RenderAstroMiner extends EntityRenderer<EntityAstroMiner>
             if (ais < EntityAstroMiner.AISTATE_DOCKING)
             {
                 //This is the scanning lasers:
-                FMLClientHandler.instance().getClient().textureManager.bindTexture(scanTexture);
+                Minecraft.getInstance().textureManager.bindTexture(scanTexture);
                 final Tessellator tess = Tessellator.getInstance();
                 GlStateManager.color(0, 0.6F, 1.0F, 0.2F);
                 BufferBuilder worldRenderer = tess.getBuffer();

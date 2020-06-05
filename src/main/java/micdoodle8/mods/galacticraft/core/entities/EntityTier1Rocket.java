@@ -7,15 +7,22 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.GCParticles;
+import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
+import micdoodle8.mods.galacticraft.core.items.ItemTier1Rocket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -23,24 +30,78 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-//import calclavia.api.icbm.IMissile;
-
 public class EntityTier1Rocket extends EntityTieredRocket
 {
-    public EntityTier1Rocket(World par1World)
+    public static int FUEL_CAPACITY = 1000 * ConfigManagerCore.rocketFuelFactor;
+
+    public EntityTier1Rocket(EntityType<? extends EntityTier1Rocket> type, World worldIn)
     {
-        super(par1World);
-        this.setSize(1.2F, 3.5F);
+        super(type, worldIn);
+//        this.setSize(1.2F, 3.5F);
 //        this.yOffset = 1.5F;
     }
 
-    public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
+    @Override
+    protected void registerData()
     {
-        super(par1World, par2, par4, par6);
-        this.rocketType = rocketType;
-        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-        this.setSize(1.2F, 3.5F);
-//        this.yOffset = 1.5F;
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
+    }
+
+    //    public EntityTier1Rocket(World par1World, double par2, double par4, double par6, EnumRocketType rocketType)
+//    {
+//        super(par1World, par2, par4, par6);
+//        this.rocketType = rocketType;
+//        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
+//        this.setSize(1.2F, 3.5F);
+////        this.yOffset = 1.5F;
+//    }
+
+    public static Item getItemFromType(EnumRocketType rocketType)
+    {
+        switch (rocketType)
+        {
+        default:
+        case DEFAULT:
+            return GCItems.rocketTierOne;
+        case INVENTORY27:
+            return GCItems.rocketTierOneCargo1;
+        case INVENTORY36:
+            return GCItems.rocketTierOneCargo2;
+        case INVENTORY54:
+            return GCItems.rocketTierOneCargo3;
+        case PREFUELED:
+            return GCItems.rocketTierOneCreative;
+        }
+    }
+
+    public static EnumRocketType getTypeFromItem(Item item)
+    {
+        if (item == GCItems.rocketTierOne)
+        {
+            return EnumRocketType.DEFAULT;
+        }
+        if (item == GCItems.rocketTierOneCargo1)
+        {
+            return EnumRocketType.INVENTORY27;
+        }
+        if (item == GCItems.rocketTierOneCargo2)
+        {
+            return EnumRocketType.INVENTORY36;
+        }
+        if (item == GCItems.rocketTierOneCargo3)
+        {
+            return EnumRocketType.INVENTORY54;
+        }
+        if (item == GCItems.rocketTierOneCreative)
+        {
+            return EnumRocketType.PREFUELED;
+        }
+        return null;
     }
 
     @Override
@@ -58,13 +119,13 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public ItemStack getPickedResult(RayTraceResult target)
     {
-        return new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
+        return new ItemStack(getItemFromType(getRocketType()), 1);
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         int i;
 
@@ -91,7 +152,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.world.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.provider).hasNoAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.getDimension()).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 1.6);
                 }
@@ -102,19 +163,19 @@ public class EntityTier1Rocket extends EntityTieredRocket
 
                 if (d != 0.0)
                 {
-                    this.motionY = -d * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D);
+                    setMotion(getMotion().x, -d * Math.cos((this.rotationPitch - 180) / Constants.RADIANS_TO_DEGREES_D), getMotion().z);
                 }
             }
             else
             {
-                this.motionY -= 0.008D;
+                this.setMotion(this.getMotion().add(0.0, -0.008, 0.0));
             }
 
             double multiplier = 1.0D;
 
-            if (this.world.provider instanceof IGalacticraftWorldProvider)
+            if (this.world.getDimension() instanceof IGalacticraftWorldProvider)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.world.provider).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftWorldProvider) this.world.getDimension()).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {
@@ -135,7 +196,8 @@ public class EntityTier1Rocket extends EntityTieredRocket
         {
             if (Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 10 != 0.0)
             {
-                this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
+                this.setMotion(this.getMotion().add(0.0, -(Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20), 0.0));
+//                this.motionY -= Math.abs(Math.sin(this.timeSinceLaunch / 1000)) / 20;
             }
         }
     }
@@ -158,15 +220,14 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 stats.setRocketStacks(this.stacks);
             }
 
-            stats.setRocketType(this.rocketType.getIndex());
-            stats.setRocketItem(GCItems.rocketTier1);
+            stats.setRocketItem(getItemFromType(getRocketType()));
             stats.setFuelLevel(this.fuelTank.getFluidAmount());
         }
     }
 
     protected void spawnParticles(boolean launched)
     {
-        if (!this.isDead)
+        if (this.isAlive())
         {
             double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
             double x1 = 2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
@@ -182,10 +243,10 @@ public class EntityTier1Rocket extends EntityTieredRocket
                 z1 *= modifier / 100.0D;
             }
 
-            double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.motionY + 1.2D;
+            double y = this.prevPosY + (this.posY - this.prevPosY) + y1 - this.getMotion().y + 1.2D;
 
-            final double x2 = this.posX + x1 - this.motionX;
-            final double z2 = this.posZ + z1 - this.motionZ;
+            final double x2 = this.posX + x1 - this.getMotion().x;
+            final double z2 = this.posZ + z1 - this.getMotion().z;
 
             LivingEntity riddenByEntity = !this.getPassengers().isEmpty() && this.getPassengers().get(0) instanceof LivingEntity ? (LivingEntity) this.getPassengers().get(0) : null;
 
@@ -193,25 +254,26 @@ public class EntityTier1Rocket extends EntityTieredRocket
             {
                 Vector3 motionVec = new Vector3(x1, y1, z1);
                 Object[] rider = new Object[] { riddenByEntity };
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4, y, z2), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4, y, z2), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 + 0.4D), motionVec, rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y, z2 - 0.4D), motionVec, rider);
+                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
+                this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
+                this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, x1, y1, z1);
+                this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, x1, y1, z1);
+                this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, x1, y1, z1);
+                this.world.addParticle(particleData, x2, y, z2, x1, y1, z1);
+                this.world.addParticle(particleData, x2 + 0.4, y, z2, x1, y1, z1);
+                this.world.addParticle(particleData, x2, y, z2 + 0.4D, x1, y1, z1);
+                this.world.addParticle(particleData, x2, y, z2 - 0.4D, x1, y1, z1);
 
             }
             else if (this.ticksExisted % 2 == 0)
             {
                 Object[] rider = new Object[] { riddenByEntity };
                 y += 0.6D;
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), rider);
-                GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25), rider);
+                EntityParticleData particleData = new EntityParticleData(GCParticles.LAUNCH_FLAME_LAUNCHED, riddenByEntity.getUniqueID());
+                this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
+                this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 + 0.4 - this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
+                this.world.addParticle(particleData, x2 - 0.4 + this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
+                this.world.addParticle(particleData, x2 + 0.4 - this.rand.nextDouble() / 10D, y, z2 - 0.4 + this.rand.nextDouble() / 10D, this.rand.nextDouble() / 2.0 - 0.25, 0.0, this.rand.nextDouble() / 2.0 - 0.25);
             }
         }
     }
@@ -219,19 +281,19 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
-        return !this.isDead && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
+        return this.isAlive() && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT par1NBTTagCompound)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(par1NBTTagCompound);
+        super.writeAdditional(nbt);
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT par1NBTTagCompound)
+    public void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(par1NBTTagCompound);
+        super.readAdditional(nbt);
     }
 
     @Override
@@ -244,9 +306,9 @@ public class EntityTier1Rocket extends EntityTieredRocket
     public List<ItemStack> getItemsDropped(List<ItemStack> droppedItems)
     {
         super.getItemsDropped(droppedItems);
-        ItemStack rocket = new ItemStack(GCItems.rocketTier1, 1, this.rocketType.getIndex());
-        rocket.setTagCompound(new CompoundNBT());
-        rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
+        ItemStack rocket = new ItemStack(getItemFromType(getRocketType()), 1);
+        rocket.setTag(new CompoundNBT());
+        rocket.getTag().putInt("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItems.add(rocket);
         return droppedItems;
     }
@@ -278,7 +340,7 @@ public class EntityTier1Rocket extends EntityTieredRocket
     @Override
     public int getFuelTankCapacity()
     {
-        return 1000;
+        return FUEL_CAPACITY;
     }
 
     @Override

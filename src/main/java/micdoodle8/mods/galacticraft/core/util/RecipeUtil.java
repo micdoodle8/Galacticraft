@@ -97,13 +97,13 @@ public class RecipeUtil
             return true;
         
         CompoundNBT query = null;
-        if (stackA.getTagCompound() == null && stackB.getTagCompound() != null)
+        if (stackA.getTag() == null && stackB.getTag() != null)
         {
-            query = stackB.getTagCompound();
+            query = stackB.getTag();
         }
-        else if (stackA.getTagCompound() != null && stackB.getTagCompound() == null)
+        else if (stackA.getTag() != null && stackB.getTag() == null)
         {
-            query = stackA.getTagCompound();
+            query = stackA.getTag();
         }
         if (query != null)
         {

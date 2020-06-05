@@ -10,19 +10,24 @@ import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockLandingPadFull;
 import micdoodle8.mods.galacticraft.core.client.sounds.SoundUpdaterRocket;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.event.EventLandingPadRemoval;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
+import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityLandingPad;
 import micdoodle8.mods.galacticraft.core.util.*;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.client.audio.TickableSound;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.renderer.texture.ITickable;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -32,21 +37,21 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ClassInheritanceMultiMap;
-import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.translation.I18n;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.world.World;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,7 +64,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 {
     public int destinationFrequency = -1;
     public BlockPos targetVec;
-    public int targetDimension;
+    public DimensionType targetDimension;
     protected NonNullList<ItemStack> stacks;
     private IFuelDock landingPad;
     public EnumAutoLaunch autoLaunchSetting;
@@ -74,7 +79,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     protected double lastMotionY;
     protected double lastLastMotionY;
     private boolean waitForPlayer;
-    protected ITickable rocketSoundUpdater;
+    protected TickableSound rocketSoundUpdater;
     private boolean rocketSoundToStop = false;
     private static Class<?> controllerClass = null;
 
@@ -89,28 +94,27 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
     }
 
-    public EntityAutoRocket(World world)
+    public EntityAutoRocket(EntityType<? extends EntityAutoRocket> type, World worldIn)
     {
-        super(world);
+        super(type, worldIn);
         
         if (world != null && world.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
+
+        this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
     }
 
-    public EntityAutoRocket(World world, double posX, double posY, double posZ)
-    {
-        this(world);
-        this.setSize(0.98F, 2F);
-        this.setPosition(posX, posY, posZ);
-        this.motionX = 0.0D;
-        this.motionY = 0.0D;
-        this.motionZ = 0.0D;
-        this.prevPosX = posX;
-        this.prevPosY = posY;
-        this.prevPosZ = posZ;
-    }
+//    public EntityAutoRocket(World world, double posX, double posY, double posZ)
+//    {
+//        this(world);
+////        this.setSize(0.98F, 2F);
+//        this.setPosition(posX, posY, posZ);
+//        this.prevPosX = posX;
+//        this.prevPosY = posY;
+//        this.prevPosZ = posZ;
+//    }
 
     //Used for Cargo Rockets, client is asking the server what is the status
     public boolean checkLaunchValidity()
@@ -124,13 +128,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 if (!this.setFrequency())
                 {
                     this.destinationFrequency = -1;
-                    this.statusMessage = I18n.translateToLocal("gui.message.frequency.name") + "#" + I18n.translateToLocal("gui.message.not_set.name");
+                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.frequency.name") + "#" + LanguageMap.getInstance().translateKey("gui.message.not_set.name");
                     this.statusColour = "\u00a7c";
                     return false;
                 }
                 else
                 {
-                    this.statusMessage = I18n.translateToLocal("gui.message.success.name");
+                    this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.success.name");
                     this.statusColour = "\u00a7a";
                     return true;
                 }
@@ -139,7 +143,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         else
         {
             this.destinationFrequency = -1;
-            this.statusMessage = I18n.translateToLocal("gui.message.not_enough.name") + "#" + I18n.translateToLocal("gui.message.fuel.name");
+            this.statusMessage = LanguageMap.getInstance().translateKey("gui.message.not_enough.name") + "#" + LanguageMap.getInstance().translateKey("gui.message.fuel.name");
             this.statusColour = "\u00a7c";
             return false;
         }
@@ -156,33 +160,33 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
 
         if (this.activeLaunchController != null)
-                                {
+        {
             TileEntity launchController = this.activeLaunchController.getTileEntity(this.world);
             if (controllerClass.isInstance(launchController))
-                                {
-                                    try
-                                    {
-                                Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
+            {
+                try
+                {
+                    Boolean b = (Boolean) controllerClass.getMethod("validFrequency").invoke(launchController);
 
-                                if (b != null && b)
-                                {
-                                    int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
-                                    boolean foundPad = this.setTarget(false, controllerFrequency);
+                    if (b != null && b)
+                    {
+                        int controllerFrequency = controllerClass.getField("destFrequency").getInt(launchController);
+                        boolean foundPad = this.setTarget(false, controllerFrequency);
 
-                                    if (foundPad)
-                                    {
-                                        this.destinationFrequency = controllerFrequency;
-                                        GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
-                                        return true;
-                                    }
-                                }
-                            }
-                        catch (Exception e)
+                        if (foundPad)
                         {
-                            e.printStackTrace();
+                            this.destinationFrequency = controllerFrequency;
+                            GCLog.debug("Rocket under launch control: going to target frequency " + controllerFrequency);
+                            return true;
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         this.destinationFrequency = -1;
         return false;
@@ -190,16 +194,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
     protected boolean setTarget(boolean doSet, int destFreq)
     {
-        ServerWorld[] servers = GCCoreUtil.getWorldServerList(this.world);
+        Iterable<ServerWorld> worlds = GCCoreUtil.getWorldServerList(this.world);
         if (!GalacticraftCore.isPlanetsLoaded || controllerClass == null)
         {
             return false;
         }
 
-        for (int i = 0; i < servers.length; i++)
+        for (ServerWorld world : worlds)
         {
-            ServerWorld world = servers[i];
-
             try
             {
                 for (TileEntity tile : new ArrayList<TileEntity>(world.loadedTileEntityList))
@@ -225,22 +227,22 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                                         BlockPos pos = new BlockPos(tile.getPos().add(x, 0, z));
                 						Block block = world.getBlockState(pos).getBlock();
 
-                						if (block instanceof BlockLandingPadFull)
-                						{
-                							if (doSet)
-                							{
-                								this.targetVec = pos;
-                							}
-
-                							targetSet = true;
-                							break blockLoop;
-                						}
+//                						if (block instanceof BlockLandingPadFull)
+//                						{
+//                							if (doSet)
+//                							{
+//                								this.targetVec = pos;
+//                							}
+//
+//                							targetSet = true;
+//                							break blockLoop;
+//                						} TODO Full landing pad
                 					}
                 				}
 
                 			if (doSet)
                 			{
-                				this.targetDimension = tile.getWorld().provider.getDimension();
+                				this.targetDimension = tile.getWorld().dimension.getType();
                 			}
 
                 			if (!targetSet)
@@ -280,7 +282,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         //Workaround for a weird bug (?) in vanilla 1.8.9 where - if client view distance is shorter
         //than the server's chunk loading distance - chunks will unload on the client, but the
@@ -298,10 +300,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         //Weird, huh?
         if (this.world.isRemote && this.addedToChunk && !CompatibilityManager.isCubicChunksLoaded)
         {
-            Chunk chunk = this.world.getChunkFromChunkCoords(this.chunkCoordX, this.chunkCoordZ);
+            Chunk chunk = this.world.getChunk(this.chunkCoordX, this.chunkCoordZ);
             int cx = MathHelper.floor(this.posX) >> 4;
             int cz = MathHelper.floor(this.posZ) >> 4;
-            if (chunk.isLoaded() && this.chunkCoordX == cx && this.chunkCoordZ == cz)
+            if (chunk.loaded && this.chunkCoordX == cx && this.chunkCoordZ == cz)
             {
                 boolean thisfound = false;
                 ClassInheritanceMultiMap<Entity> mapEntities = chunk.getEntityLists()[this.chunkCoordY];
@@ -325,7 +327,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             if (this.targetVec != null)
             {
                 double yDiff = this.posY - this.getOnPadYOffset() - this.targetVec.getY();
-                this.motionY = Math.max(-2.0, (yDiff - 0.04) / -55.0);
+                this.setMotion(this.getMotion().x, Math.max(-2.0, (yDiff - 0.04) / -55.0), this.getMotion().z);
 
                 //Some lateral motion in case not exactly on target (happens if rocket was moving laterally during launch)
                 double diff = this.posX - this.targetVec.getX() - 0.5D;
@@ -362,19 +364,19 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
                 if (yDiff > 1D && yDiff < 4D)
                 {
-                    for (Object o : this.world.getEntitiesInAABBexcluding(this, this.getEntityBoundingBox().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
+                    for (Object o : this.world.getEntitiesInAABBexcluding(this, this.getBoundingBox().offset(0D, -3D, 0D), EntitySpaceshipBase.rocketSelector))
                     {
                         if (o instanceof EntitySpaceshipBase)
                         {
                             ((EntitySpaceshipBase)o).dropShipAsItem();
-                            ((EntitySpaceshipBase)o).setDead();
+                            ((EntitySpaceshipBase)o).remove();
                         }
                     }
                 }
                 if (yDiff < 0.4)
                 {
-                    int yMin = MathHelper.floor(this.getEntityBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
-                    int yMax = MathHelper.floor(this.getEntityBoundingBox().maxY) + 1;
+                    int yMin = MathHelper.floor(this.getBoundingBox().minY - this.getOnPadYOffset() - 0.45D) - 2;
+                    int yMax = MathHelper.floor(this.getBoundingBox().maxY) + 1;
                     int zMin = MathHelper.floor(this.posZ) - 1;
                     int zMax = MathHelper.floor(this.posZ) + 1;
                     for (int x = MathHelper.floor(this.posX) - 1; x <= MathHelper.floor(this.posX) + 1; x++)
@@ -397,7 +399,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             }
         }
 
-        super.onUpdate();
+        super.tick();
 
         if (!this.world.isRemote)
         {
@@ -462,7 +464,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
 	        if (this.rocketSoundUpdater != null)
 	        {
-	            this.rocketSoundUpdater.update();
+	            this.rocketSoundUpdater.tick();
 	            this.rocketSoundToStop = true;
 	        }
         }
@@ -473,7 +475,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 this.stopRocketSound();
                 if (this.rocketSoundUpdater != null)
                 {
-                    FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+                    Minecraft.getInstance().getSoundHandler().stop((ISound) rocketSoundUpdater);
                 }
                 this.rocketSoundUpdater = null;
             }
@@ -573,7 +575,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 	if (dock.getDockedEntity() instanceof EntitySpaceshipBase && dock.getDockedEntity() != this)
                     {
                     	((EntitySpaceshipBase)dock.getDockedEntity()).dropShipAsItem();
-                    	((EntitySpaceshipBase)dock.getDockedEntity()).setDead();
+                    	((EntitySpaceshipBase)dock.getDockedEntity()).remove();
                     }
                 	
                     this.setPad(dock);
@@ -647,7 +649,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         this.stopRocketSound();
         if (this.rocketSoundUpdater != null)
         {
-            FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+            Minecraft.getInstance().getSoundHandler().stop((ISound) rocketSoundUpdater);
         }
         this.rocketSoundUpdater = null;  //Allow sound to be restarted again if it relaunches
     }
@@ -662,13 +664,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public void setDead()
+    public void remove(boolean keepData)
     {
-        super.setDead();
+        super.remove(keepData);
 
         if (this.rocketSoundUpdater != null)
         {
-            this.rocketSoundUpdater.update();
+            this.rocketSoundUpdater.tick();
         }
     }
     
@@ -684,14 +686,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                 {
                     if (clientPosY > this.posY)
                     {
-                        this.motionY += (clientPosY - this.posY) / 40D;
+                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.posY) / 40D, this.getMotion().z);
                     }
                 }
                 else if (this.launchPhase == EnumLaunchPhase.LANDING.ordinal())
                 {
                     if (clientPosY < this.posY)
                     {
-                        this.motionY += (clientPosY - this.posY) / 40D;
+                        this.setMotion(this.getMotion().x, this.getMotion().y + (clientPosY - this.posY) / 40D, this.getMotion().z);
                     }
                 }
             }
@@ -699,13 +701,13 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         }
         int launchPhaseLast = this.launchPhase;
         super.decodePacketdata(buffer);
-        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, buffer.readInt()));
+        this.fuelTank.setFluid(new FluidStack(GCFluids.FUEL.getFluid(), buffer.readInt()));
         boolean landingNew = buffer.readBoolean();
         if (landingNew && launchPhaseLast != EnumLaunchPhase.LANDING.ordinal())
         {
             if (this.rocketSoundUpdater != null)
             {
-                FMLClientHandler.instance().getClient().getSoundHandler().stopSound((ISound) rocketSoundUpdater);
+                Minecraft.getInstance().getSoundHandler().stop((ISound) rocketSoundUpdater);
             }
             this.rocketSoundUpdater = null;  //Flag TickHandlerClient to restart it
         }
@@ -723,10 +725,8 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         double lastLastMotY = buffer.readDouble() / 8000.0D;
 
         if (!this.hasValidFuel())
-        {    
-            this.motionX = motX;
-            this.motionY = motY;
-            this.motionZ = motZ;
+        {
+            this.setMotion(motX, motY, motZ);
             this.lastMotionY = lastMotY;
             this.lastLastMotionY = lastLastMotY;
         }
@@ -738,7 +738,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 
         this.setWaitForPlayer(buffer.readBoolean());
 
-        this.statusMessage = ByteBufUtils.readUTF8String(buffer);
+        this.statusMessage = NetworkUtil.readUTF8String(buffer);
         this.statusMessage = this.statusMessage.equals("") ? null : this.statusMessage;
         this.statusMessageCooldown = buffer.readInt();
         this.lastStatusMessageCooldown = buffer.readInt();
@@ -752,14 +752,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	        {
 	        	 if (shouldBeMountedId > -1)
 	        	 {
-	        		 Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+	        		 Entity e = Minecraft.getInstance().world.getEntityByID(shouldBeMountedId);
 	        		 if (e != null)
 	        		 {
 	        			 if (e.dimension != this.dimension)
 	        			 {
 	        				 if (e instanceof PlayerEntity)
 	        				 {
-	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity)e).interactionManager.getGameType().getID());
+	        					 e = WorldUtil.forceRespawnClient(this.dimension, e.world.getWorldInfo().getGenerator(), ((ServerPlayerEntity)e).interactionManager.getGameType());
 	        					 e.startRiding(this);
 	        				 }
 	        			 }
@@ -776,14 +776,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	        	}
 	        	else
 	        	{
-	        		Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+	        		Entity e = Minecraft.getInstance().world.getEntityByID(shouldBeMountedId);
 	       		 	if (e != null)
 	       		 	{
 	       		 		if (e.dimension != this.dimension)
 	       		 		{
 	       		 			if (e instanceof PlayerEntity)
 	       		 			{
-	       		 				e = WorldUtil.forceRespawnClient(this.dimension, e.world.getDifficulty().getDifficultyId(), e.world.getWorldInfo().getTerrainType().getName(), ((ServerPlayerEntity)e).interactionManager.getGameType().getID());
+	       		 				e = WorldUtil.forceRespawnClient(this.dimension, e.world.getWorldInfo().getGenerator(), ((ServerPlayerEntity)e).interactionManager.getGameType());
 	       		 				e.startRiding(this);
 	       		 			}
 	       		 		}
@@ -793,7 +793,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
 	        	}
 	        }
         }
-        this.statusColour = ByteBufUtils.readUTF8String(buffer);
+        this.statusColour = NetworkUtil.readUTF8String(buffer);
         if (this.statusColour.equals("")) this.statusColour = null;
     }
 
@@ -802,7 +802,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     {
         if (this.world.isRemote)
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClientPlayerEntity()) && this.hasValidFuel())
+            if (this.getPassengers().contains(Minecraft.getInstance().player) && this.hasValidFuel())
             {
                 list.add(this.posY);
             }
@@ -825,9 +825,9 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             list.add(this.targetVec.getZ());
         }
 
-        list.add(this.motionX * 8000.0D);
-        list.add(this.motionY * 8000.0D);
-        list.add(this.motionZ * 8000.0D);
+        list.add(this.getMotion().x * 8000.0D);
+        list.add(this.getMotion().y * 8000.0D);
+        list.add(this.getMotion().z * 8000.0D);
         list.add(this.lastMotionY * 8000.0D);
         list.add(this.lastLastMotionY * 8000.0D);
 
@@ -926,7 +926,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onLaunch()
     {
-        if (!(this.world.provider.getDimension() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.provider instanceof IGalacticraftWorldProvider))
+        if (!(this.world.getDimension().getType() == GalacticraftCore.planetOverworld.getDimensionID() || this.world.getDimension() instanceof IGalacticraftWorldProvider))
         {
             if (ConfigManagerCore.disableRocketLaunchAllNonGC)
             {
@@ -937,7 +937,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //No rocket flight in the Nether, the End etc
         	for (int i = ConfigManagerCore.disableRocketLaunchDimensions.length - 1; i >= 0; i--)
             {
-                if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.world.provider.getDimension())
+                if (ConfigManagerCore.disableRocketLaunchDimensions[i] == this.world.getDimension().getType().getId())
                 {
                 	this.cancelLaunch();
                     return;
@@ -961,7 +961,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         	            stats = GCPlayerStats.get(player);
                         stats.setLaunchpadStack(null);
 
-        	            if (!(this.world.provider instanceof IOrbitDimension))
+        	            if (!(this.world.getDimension() instanceof IOrbitDimension))
         	            {
         	                stats.setCoordsTeleportedFromX(player.posX);
         	                stats.setCoordsTeleportedFromZ(player.posZ);
@@ -986,21 +986,21 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
                         BlockPos pos = new BlockPos(x, y, z);
                         final Block block = this.world.getBlockState(pos).getBlock();
 
-                        if (block != null && block instanceof BlockLandingPadFull)
-                        {
-                            if (amountRemoved < 9)
-                            {
-                                EventLandingPadRemoval event = new EventLandingPadRemoval(this.world, pos);
-                                MinecraftForge.EVENT_BUS.post(event);
-
-                                if (event.allow)
-                                {
-                                    this.world.setBlockToAir(pos);
-                                    amountRemoved = 9;
-                                }
-                                break PADSEARCH;
-                            }
-                        }
+//                        if (block != null && block instanceof BlockLandingPadFull)
+//                        {
+//                            if (amountRemoved < 9)
+//                            {
+//                                EventLandingPadRemoval event = new EventLandingPadRemoval(this.world, pos);
+//                                MinecraftForge.EVENT_BUS.post(event);
+//
+//                                if (event.allow)
+//                                {
+//                                    this.world.removeBlock(pos, false);
+//                                    amountRemoved = 9;
+//                                }
+//                                break PADSEARCH;
+//                            }
+//                        } TODO Full landing pads
                     }
                 }
             }
@@ -1008,7 +1008,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             //Set the player's launchpad item for return on landing - or null if launchpads not removed
             if (stats != null && amountRemoved == 9)
             {
-                stats.setLaunchpadStack(new ItemStack(GCBlocks.landingPad, 9, 0));
+                stats.setLaunchpadStack(new ItemStack(GCBlocks.landingPad, 9));
             }
 
             this.playSound(SoundEvents.ENTITY_ITEM_PICKUP, 0.2F, ((this.rand.nextFloat() - this.rand.nextFloat()) * 0.7F + 1.0F) * 2.0F);
@@ -1016,45 +1016,42 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(nbt);
+        super.writeAdditional(nbt);
 
-        if (this.fuelTank.getFluid() != null)
-        {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
-        }
+        nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
 
         if (this.getSizeInventory() > 0)
         {
             ItemStackHelper.saveAllItems(nbt, this.stacks);
         }
 
-        nbt.setBoolean("TargetValid", this.targetVec != null);
+        nbt.putBoolean("TargetValid", this.targetVec != null);
 
         if (this.targetVec != null)
         {
-            nbt.setDouble("targetTileX", this.targetVec.getX());
-            nbt.setDouble("targetTileY", this.targetVec.getY());
-            nbt.setDouble("targetTileZ", this.targetVec.getZ());
+            nbt.putDouble("targetTileX", this.targetVec.getX());
+            nbt.putDouble("targetTileY", this.targetVec.getY());
+            nbt.putDouble("targetTileZ", this.targetVec.getZ());
         }
 
-        nbt.setBoolean("WaitingForPlayer", this.getWaitForPlayer());
-        nbt.setBoolean("Landing", this.launchPhase == EnumLaunchPhase.LANDING.ordinal());
-        nbt.setInteger("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
-        nbt.setInteger("TimeUntilAutoLaunch", this.autoLaunchCountdown);
-        nbt.setInteger("DestinationFrequency", this.destinationFrequency);
+        nbt.putBoolean("WaitingForPlayer", this.getWaitForPlayer());
+        nbt.putBoolean("Landing", this.launchPhase == EnumLaunchPhase.LANDING.ordinal());
+        nbt.putInt("AutoLaunchSetting", this.autoLaunchSetting != null ? this.autoLaunchSetting.getIndex() : -1);
+        nbt.putInt("TimeUntilAutoLaunch", this.autoLaunchCountdown);
+        nbt.putInt("DestinationFrequency", this.destinationFrequency);
         if (this.activeLaunchController != null) this.activeLaunchController.writeToNBT(nbt,"ALCat");
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(nbt);
+        super.readAdditional(nbt);
 
-        if (nbt.hasKey("fuelTank"))
+        if (nbt.contains("fuelTank"))
         {
-            this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
+            this.fuelTank.readFromNBT(nbt.getCompound("fuelTank"));
         }
 
         if (this.getSizeInventory() > 0)
@@ -1063,16 +1060,16 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
             ItemStackHelper.loadAllItems(nbt, this.stacks);
         }
 
-        if (nbt.getBoolean("TargetValid") && nbt.hasKey("targetTileX"))
+        if (nbt.getBoolean("TargetValid") && nbt.contains("targetTileX"))
         {
             this.targetVec = new BlockPos(MathHelper.floor(nbt.getDouble("targetTileX")), MathHelper.floor(nbt.getDouble("targetTileY")), MathHelper.floor(nbt.getDouble("targetTileZ")));
         }
 
         this.setWaitForPlayer(nbt.getBoolean("WaitingForPlayer"));
-        int autoLaunchValue = nbt.getInteger("AutoLaunchSetting");
+        int autoLaunchValue = nbt.getInt("AutoLaunchSetting");
         this.autoLaunchSetting = autoLaunchValue == -1 ? null : EnumAutoLaunch.values()[autoLaunchValue];
-        this.autoLaunchCountdown = nbt.getInteger("TimeUntilAutoLaunch");
-        this.destinationFrequency = nbt.getInteger("DestinationFrequency");
+        this.autoLaunchCountdown = nbt.getInt("TimeUntilAutoLaunch");
+        this.destinationFrequency = nbt.getInt("DestinationFrequency");
         this.activeLaunchController = BlockVec3.readFromNBT(nbt, "ALCat");
     }
 
@@ -1085,7 +1082,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public FluidStack removeFuel(int amount)
     {
-        return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor, true);
+        return this.fuelTank.drain(amount * ConfigManagerCore.rocketFuelFactor, IFluidHandler.FluidAction.EXECUTE);
     }
 
     @Override
@@ -1147,7 +1144,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
         {
             ItemStack stackAt = this.stacks.get(count);
 
-            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getItemDamage() == stack.getItemDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
+            if (!stackAt.isEmpty() && stackAt.getItem() == stack.getItem() && stackAt.getDamage() == stack.getDamage() && stackAt.getCount() < stackAt.getMaxStackSize())
             {
                 if (stackAt.getCount() + stack.getCount() <= stackAt.getMaxStackSize())
                 {
@@ -1302,7 +1299,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public boolean isUsableByPlayer(PlayerEntity entityplayer)
     {
-        return !this.isDead && entityplayer.getDistanceSq(this) <= 64.0D;
+        return this.isAlive() && entityplayer.getDistanceSq(this) <= 64.0D;
     }
 
     @Override
@@ -1343,23 +1340,6 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
     public void clear()
     {
 
@@ -1368,10 +1348,10 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     @Override
     public void onPadDestroyed()
     {
-        if (!this.isDead && this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal())
+        if (this.isAlive() && this.launchPhase < EnumLaunchPhase.LAUNCHED.ordinal())
         {
             this.dropShipAsItem();
-            this.setDead();
+            this.remove();
         }
     }
 
@@ -1434,14 +1414,14 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public ITickable getSoundUpdater()
+    @OnlyIn(Dist.CLIENT)
+    public TickableSound getSoundUpdater()
     {
     	return this.rocketSoundUpdater;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public ISound setSoundUpdater(ClientPlayerEntity player)
     {
     	this.rocketSoundUpdater = new SoundUpdaterRocket(player, this);
@@ -1449,7 +1429,7 @@ public abstract class EntityAutoRocket extends EntitySpaceshipBase implements IL
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean isInRangeToRender3d(double x, double y, double z)
     {
         double d0 = this.posX - x;

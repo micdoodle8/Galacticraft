@@ -51,18 +51,18 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
     public ActionResultType onItemUseFirst(PlayerEntity player, World world, BlockPos pos, Direction side, float hitX, float hitY, float hitZ, Hand hand)
@@ -116,7 +116,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                     return ActionResultType.FAIL;
                 }
 
-                if (!player.capabilities.isCreativeMode)
+                if (!player.abilities.isCreativeMode)
                 {
                     stack.shrink(1);
                 }
@@ -156,7 +156,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
         }
 
         rocket.setPosition(rocket.posX, rocket.posY + rocket.getOnPadYOffset(), rocket.posZ);
-        world.spawnEntity(rocket);
+        world.addEntity(rocket);
 
         if (((IRocketType) rocket).getType().getPreFueled())
         {
@@ -169,9 +169,9 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
                 ((EntityCargoRocket) rocket).fuelTank.fill(new FluidStack(GCFluids.fluidFuel, rocket.getMaxFuel()), true);
             }
         }
-        else if (stack.hasTagCompound() && stack.getTagCompound().hasKey("RocketFuel"))
+        else if (stack.hasTag() && stack.getTag().hasKey("RocketFuel"))
         {
-            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTagCompound().getInteger("RocketFuel")), true);
+            rocket.fuelTank.fill(new FluidStack(GCFluids.fluidFuel, stack.getTag().getInteger("RocketFuel")), true);
         }
 
         return true;
@@ -195,7 +195,7 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         EnumRocketType type;
@@ -219,20 +219,20 @@ public class ItemTier2Rocket extends Item implements IHoldableItem, ISortableIte
             tooltip.add(EnumColor.RED + "\u00a7o" + GCCoreUtil.translate("gui.creative_only.desc"));
         }
 
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("RocketFuel"))
+        if (par1ItemStack.hasTag() && par1ItemStack.getTag().hasKey("RocketFuel"))
         {
             EntityAutoRocket rocket;
 
             if (par1ItemStack.getItemDamage() < 10)
             {
-                rocket = new EntityTier2Rocket(FMLClientHandler.instance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
+                rocket = new EntityTier2Rocket(Minecraft.getInstance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage()]);
             }
             else
             {
-                rocket = new EntityCargoRocket(FMLClientHandler.instance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
+                rocket = new EntityCargoRocket(Minecraft.getInstance().getWorldClient(), 0, 0, 0, EnumRocketType.values()[par1ItemStack.getItemDamage() - 10]);
             }
 
-            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
+            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTag().getInteger("RocketFuel") + " / " + rocket.fuelTank.getCapacity());
         }
 
         if (par1ItemStack.getItemDamage() >= 10)

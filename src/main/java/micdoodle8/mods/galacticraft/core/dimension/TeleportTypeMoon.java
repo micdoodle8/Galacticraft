@@ -9,8 +9,8 @@ import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.Random;
 
@@ -85,9 +85,9 @@ public class TeleportTypeMoon implements ITeleportType
         GCPlayerStats stats = GCPlayerStats.get(player);
         if (!ridingAutoRocket && !ConfigManagerCore.disableLander && stats.getTeleportCooldown() <= 0)
         {
-            if (player.capabilities.isFlying)
+            if (player.abilities.isFlying)
             {
-                player.capabilities.isFlying = false;
+                player.abilities.isFlying = false;
             }
 
             EntityLander lander = new EntityLander(player);
@@ -97,9 +97,10 @@ public class TeleportTypeMoon implements ITeleportType
             {
                 boolean previous = CompatibilityManager.forceLoadChunks((ServerWorld) newWorld);
                 lander.forceSpawn = true;
-                newWorld.spawnEntity(lander);
+                newWorld.addEntity(lander);
                 lander.setWorld(newWorld);
-                newWorld.updateEntityWithOptionalForce(lander, true);
+//                newWorld.updateEntityWithOptionalForce(lander, true);
+                ((ServerWorld) newWorld).chunkCheck(lander);
                 player.startRiding(lander);
                 CompatibilityManager.forceLoadChunksEnd((ServerWorld) newWorld, previous);
                 GCLog.debug("Entering lander at : " + player.posX + "," + player.posZ + " lander spawn at: " + lander.posX + "," + lander.posZ);

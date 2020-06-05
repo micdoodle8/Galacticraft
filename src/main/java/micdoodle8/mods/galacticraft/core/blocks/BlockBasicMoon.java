@@ -28,7 +28,7 @@
 //import net.minecraft.util.math.MathHelper;
 //import net.minecraft.util.math.RayTraceResult;
 //import net.minecraft.world.Explosion;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.common.IPlantable;
 //import net.minecraftforge.fml.relauncher.Side;
@@ -92,7 +92,7 @@
 //        this.setDefaultState(stateContainer.getBaseState().with(BASIC_TYPE_MOON, EnumBlockBasicMoon.ORE_COPPER_MOON));
 //    }
 //
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    @Override
 ////    public ItemGroup getCreativeTabToDisplayOn()
 ////    {
@@ -150,7 +150,7 @@
 //    }
 //
 //    @Override
-//    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, PlayerEntity player)
+//    public boolean canHarvestBlock(IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        BlockState bs = world.getBlockState(pos);
 //        if (bs.getBlock() != this) return false;
@@ -213,7 +213,7 @@
 //        }
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
@@ -240,7 +240,7 @@
 //    }
 //
 //    @Override
-//    public boolean canSustainPlant(BlockState state, IBlockAccess world, BlockPos pos, Direction direction, IPlantable plantable)
+//    public boolean canSustainPlant(BlockState state, IBlockReader world, BlockPos pos, Direction direction, IPlantable plantable)
 //    {
 //        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 //
@@ -328,7 +328,7 @@
 //    }
 //
 //    @Override
-//    public boolean isReplaceableOreGen(BlockState state, IBlockAccess world, BlockPos pos, Predicate<BlockState> target)
+//    public boolean isReplaceableOreGen(BlockState state, IBlockReader world, BlockPos pos, Predicate<BlockState> target)
 //    {
 //        EnumBlockBasicMoon type = ((EnumBlockBasicMoon) world.getBlockState(pos).getValue(BASIC_TYPE_MOON));
 //        return type == EnumBlockBasicMoon.MOON_STONE || type == EnumBlockBasicMoon.MOON_DIRT;
@@ -364,7 +364,7 @@
 //    }
 //
 //    @Override
-//    public int getExpDrop(BlockState state, IBlockAccess world, BlockPos pos, int fortune)
+//    public int getExpDrop(BlockState state, IBlockReader world, BlockPos pos, int fortune)
 //    {
 //        if (state.getBlock() != this) return 0;
 //
@@ -372,7 +372,7 @@
 //        if (type == EnumBlockBasicMoon.ORE_CHEESE_MOON || type == EnumBlockBasicMoon.ORE_SAPPHIRE)
 //        {
 //            Random rand = world instanceof World ? ((World)world).rand : new Random();
-//            return MathHelper.getInt(rand, 2, 5) + (type == EnumBlockBasicMoon.ORE_SAPPHIRE ? 1 : 0);
+//            return MathHelper.nextInt(rand, 2, 5) + (type == EnumBlockBasicMoon.ORE_SAPPHIRE ? 1 : 0);
 //        }
 //        return 0;
 //    }

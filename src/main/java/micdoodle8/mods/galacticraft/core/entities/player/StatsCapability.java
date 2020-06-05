@@ -1,38 +1,27 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.google.common.collect.Maps;
-
 import micdoodle8.mods.galacticraft.api.recipe.ISchematicPage;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockPanelLighting;
 import micdoodle8.mods.galacticraft.core.command.CommandGCInv;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
-import micdoodle8.mods.galacticraft.core.tile.TileEntityPanelLight;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
-import micdoodle8.mods.galacticraft.planets.asteroids.tick.AsteroidsTickHandlerServer;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.NonNullList;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import javax.annotation.Nullable;
-import java.util.LinkedList;
-import java.util.List;
+import java.lang.ref.WeakReference;
+import java.util.*;
 
 public class StatsCapability extends GCPlayerStats
 {
@@ -51,7 +40,6 @@ public class StatsCapability extends GCPlayerStats
     // temporary data while player is in planet selection GUI
     public int spaceshipTier = 1;
     public NonNullList<ItemStack> stacks = NonNullList.withSize(2, ItemStack.EMPTY);
-    public int rocketType;
     public int fuelLevel;
     public Item rocketItem;
     public ItemStack launchpadStack;
@@ -146,8 +134,17 @@ public class StatsCapability extends GCPlayerStats
     public int glassColor2 = -1;
     public int glassColor3 = -1;
     
-    private BlockState[] panelLightingBases = new BlockState[BlockPanelLighting.PANELTYPES_LENGTH];
+//    private BlockState[] panelLightingBases = new BlockState[BlockPanelLighting.PANELTYPES_LENGTH]; TODO Panel Lighting
     private int panelLightingColor = 0xf0f0e0;
+
+    public StatsCapability()
+    {
+    }
+
+    public StatsCapability(WeakReference<ServerPlayerEntity> player)
+    {
+        this.player = player;
+    }
 
     @Override
     public WeakReference<ServerPlayerEntity> getPlayer()
@@ -255,18 +252,6 @@ public class StatsCapability extends GCPlayerStats
     public void setRocketStacks(NonNullList<ItemStack> rocketStacks)
     {
         this.stacks = rocketStacks;
-    }
-
-    @Override
-    public int getRocketType()
-    {
-        return rocketType;
-    }
-
-    @Override
-    public void setRocketType(int rocketType)
-    {
-        this.rocketType = rocketType;
     }
 
     @Override
@@ -999,18 +984,18 @@ public class StatsCapability extends GCPlayerStats
     @Override
     public void saveNBTData(CompoundNBT nbt)
     {
-        nbt.setTag("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new ListNBT()));
-        nbt.setInteger("playerAirRemaining", this.airRemaining);
-        nbt.setInteger("damageCounter", this.damageCounter);
-        nbt.setBoolean("OxygenSetupValid", this.oxygenSetupValid);
-        nbt.setBoolean("usingParachute2", this.usingParachute);
-        nbt.setBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
-        nbt.setInteger("teleportCooldown", this.teleportCooldown);
-        nbt.setDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
-        nbt.setDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
-        nbt.setString("startDimension", this.startDimension);
-        nbt.setString("spaceStationDimensionInfo", WorldUtil.spaceStationDataToString(this.spaceStationDimensionData));
-        nbt.setInteger("thermalLevel", this.thermalLevel);
+        nbt.put("ExtendedInventoryGC", this.extendedInventory.writeToNBT(new ListNBT()));
+        nbt.putInt("playerAirRemaining", this.airRemaining);
+        nbt.putInt("damageCounter", this.damageCounter);
+        nbt.putBoolean("OxygenSetupValid", this.oxygenSetupValid);
+        nbt.putBoolean("usingParachute2", this.usingParachute);
+        nbt.putBoolean("usingPlanetSelectionGui", this.usingPlanetSelectionGui);
+        nbt.putInt("teleportCooldown", this.teleportCooldown);
+        nbt.putDouble("coordsTeleportedFromX", this.coordsTeleportedFromX);
+        nbt.putDouble("coordsTeleportedFromZ", this.coordsTeleportedFromZ);
+        nbt.putString("startDimension", this.startDimension);
+        nbt.putString("spaceStationDimensionInfo", WorldUtil.spaceStationDataToString(this.spaceStationDimensionData));
+        nbt.putInt("thermalLevel", this.thermalLevel);
 
         Collections.sort(this.unlockedSchematics);
 
@@ -1021,20 +1006,20 @@ public class StatsCapability extends GCPlayerStats
             if (page != null)
             {
                 final CompoundNBT nbttagcompound = new CompoundNBT();
-                nbttagcompound.setInteger("UnlockedPage", page.getPageID());
-                tagList.appendTag(nbttagcompound);
+                nbttagcompound.putInt("UnlockedPage", page.getPageID());
+                tagList.add(nbttagcompound);
             }
         }
 
-        nbt.setTag("Schematics", tagList);
+        nbt.put("Schematics", tagList);
 
-        nbt.setInteger("rocketStacksLength", this.stacks.size());
-        nbt.setInteger("SpaceshipTier", this.spaceshipTier);
-        nbt.setInteger("FuelLevel", this.fuelLevel);
+        nbt.putInt("rocketStacksLength", this.stacks.size());
+        nbt.putInt("SpaceshipTier", this.spaceshipTier);
+        nbt.putInt("FuelLevel", this.fuelLevel);
         if (this.rocketItem != null)
         {
-            ItemStack returnRocket = new ItemStack(this.rocketItem, 1, this.rocketType);
-            nbt.setTag("ReturnRocket", returnRocket.writeToNBT(new CompoundNBT()));
+            ItemStack returnRocket = new ItemStack(this.rocketItem, 1);
+            nbt.put("ReturnRocket", returnRocket.write(new CompoundNBT()));
         }
 
         ListNBT nbttaglist = new ListNBT();
@@ -1046,61 +1031,61 @@ public class StatsCapability extends GCPlayerStats
             if (!itemstack.isEmpty())
             {
                 CompoundNBT nbttagcompound = new CompoundNBT();
-                nbttagcompound.setByte("Slot", (byte)i);
-                itemstack.writeToNBT(nbttagcompound);
-                nbttaglist.appendTag(nbttagcompound);
+                nbttagcompound.putByte("Slot", (byte)i);
+                itemstack.write(nbttagcompound);
+                nbttaglist.add(nbttagcompound);
             }
         }
 
-        if (!nbttaglist.hasNoTags())
+        if (!nbttaglist.isEmpty())
         {
-            nbt.setTag("RocketItems", nbttaglist);
+            nbt.put("RocketItems", nbttaglist);
         }
 
         final CompoundNBT var4 = new CompoundNBT();
         if (this.launchpadStack != null)
         {
-            nbt.setTag("LaunchpadStack", this.launchpadStack.writeToNBT(var4));
+            nbt.put("LaunchpadStack", this.launchpadStack.write(var4));
         }
         else
         {
-            nbt.setTag("LaunchpadStack", var4);
+            nbt.put("LaunchpadStack", var4);
         }
 
-        nbt.setInteger("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
-        nbt.setBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
-        nbt.setBoolean("ReceivedBedWarning", this.receivedBedWarning);
-        nbt.setInteger("BuildFlags", this.buildFlags);
-        nbt.setBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
-        nbt.setInteger("AstroMinerCount", this.astroMinerCount);
+        nbt.putInt("CryogenicChamberCooldown", this.cryogenicChamberCooldown);
+        nbt.putBoolean("ReceivedSoundWarning", this.receivedSoundWarning);
+        nbt.putBoolean("ReceivedBedWarning", this.receivedBedWarning);
+        nbt.putInt("BuildFlags", this.buildFlags);
+        nbt.putBoolean("ShownSpaceRace", this.openedSpaceRaceManager);
+        nbt.putInt("AstroMinerCount", this.astroMinerCount);
         ListNBT astroList = new ListNBT();
         for (BlockVec3 data : this.activeAstroMinerChunks)
         {
             if (data != null)
             {
-                astroList.appendTag(data.writeToNBT(new CompoundNBT()));
+                astroList.add(data.writeToNBT(new CompoundNBT()));
             }
         }
-        nbt.setTag("AstroData", astroList);
+        nbt.put("AstroData", astroList);
         
-        nbt.setInteger("GlassColor1", this.glassColor1);
-        nbt.setInteger("GlassColor2", this.glassColor2);
-        nbt.setInteger("GlassColor3", this.glassColor3);
+        nbt.putInt("GlassColor1", this.glassColor1);
+        nbt.putInt("GlassColor2", this.glassColor2);
+        nbt.putInt("GlassColor3", this.glassColor3);
         
-        ListNBT panelList = new ListNBT();
-        for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
-        {
-            final CompoundNBT stateNBT = new CompoundNBT();
-            BlockState bs = this.panelLightingBases[i];
-            if (bs != null)
-            {
-                TileEntityPanelLight.writeBlockState(stateNBT, bs);
-            }
-            panelList.appendTag(stateNBT);
-        }
-        nbt.setTag("PanLi", panelList);
+//        ListNBT panelList = new ListNBT();
+//        for (int i = 0; i < BlockPanelLighting.PANELTYPES_LENGTH; ++i)
+//        {
+//            final CompoundNBT stateNBT = new CompoundNBT();
+//            BlockState bs = this.panelLightingBases[i];
+//            if (bs != null)
+//            {
+//                TileEntityPanelLight.writeBlockState(stateNBT, bs);
+//            }
+//            panelList.appendTag(stateNBT);
+//        } TODO Panel Lighting
+//        nbt.put("PanLi", panelList);
         
-        nbt.setInteger("PanCo", this.panelLightingColor);
+        nbt.putInt("PanCo", this.panelLightingColor);
     }
 
     @Override
@@ -1108,18 +1093,18 @@ public class StatsCapability extends GCPlayerStats
     {
         try
         {
-            this.airRemaining = nbt.getInteger("playerAirRemaining");
-            this.damageCounter = nbt.getInteger("damageCounter");
+            this.airRemaining = nbt.getInt("playerAirRemaining");
+            this.damageCounter = nbt.getInt("damageCounter");
             this.oxygenSetupValid = this.lastOxygenSetupValid = nbt.getBoolean("OxygenSetupValid");
-            this.thermalLevel = nbt.getInteger("thermalLevel");
+            this.thermalLevel = nbt.getInt("thermalLevel");
 
             // Backwards compatibility
-            ListNBT nbttaglist = nbt.getTagList("Inventory", 10);
+            ListNBT nbttaglist = nbt.getList("Inventory", 10);
             this.extendedInventory.readFromNBTOld(nbttaglist);
 
-            if (nbt.hasKey("ExtendedInventoryGC"))
+            if (nbt.contains("ExtendedInventoryGC"))
             {
-                this.extendedInventory.readFromNBT(nbt.getTagList("ExtendedInventoryGC", 10));
+                this.extendedInventory.readFromNBT(nbt.getList("ExtendedInventoryGC", 10));
             }
 
             // Added for GCInv command - if tried to load an offline player's
@@ -1136,33 +1121,32 @@ public class StatsCapability extends GCPlayerStats
                 }
             }
 
-            if (nbt.hasKey("SpaceshipTier"))
+            if (nbt.contains("SpaceshipTier"))
             {
-                this.spaceshipTier = nbt.getInteger("SpaceshipTier");
+                this.spaceshipTier = nbt.getInt("SpaceshipTier");
             }
 
             //New keys in version 3.0.5.220
-            if (nbt.hasKey("FuelLevel"))
+            if (nbt.contains("FuelLevel"))
             {
-                this.fuelLevel = nbt.getInteger("FuelLevel");
+                this.fuelLevel = nbt.getInt("FuelLevel");
             }
-            if (nbt.hasKey("ReturnRocket"))
+            if (nbt.contains("ReturnRocket"))
             {
-                ItemStack returnRocket = new ItemStack(nbt.getCompoundTag("ReturnRocket"));
+                ItemStack returnRocket = ItemStack.read(nbt.getCompound("ReturnRocket"));
                 this.rocketItem = returnRocket.getItem();
-                this.rocketType = returnRocket.getItemDamage();
             }
 
             this.usingParachute = nbt.getBoolean("usingParachute2");
             this.usingPlanetSelectionGui = nbt.getBoolean("usingPlanetSelectionGui");
-            this.teleportCooldown = nbt.getInteger("teleportCooldown");
+            this.teleportCooldown = nbt.getInt("teleportCooldown");
             this.coordsTeleportedFromX = nbt.getDouble("coordsTeleportedFromX");
             this.coordsTeleportedFromZ = nbt.getDouble("coordsTeleportedFromZ");
-            this.startDimension = nbt.hasKey("startDimension") ? nbt.getString("startDimension") : "";
-            if (nbt.hasKey("spaceStationDimensionID"))
+            this.startDimension = nbt.contains("startDimension") ? nbt.getString("startDimension") : "";
+            if (nbt.contains("spaceStationDimensionID"))
             {
                 // If loading from an old save file, the home space station is always the overworld, so use 0 as home planet
-                this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInteger("spaceStationDimensionID"));
+                this.spaceStationDimensionData = WorldUtil.stringToSpaceStationData("0$" + nbt.getInt("spaceStationDimensionID"));
             }
             else
             {
@@ -1174,22 +1158,22 @@ public class StatsCapability extends GCPlayerStats
                 this.openPlanetSelectionGuiCooldown = 20;
             }
 
-            if (nbt.hasKey("RocketItems") && nbt.hasKey("rocketStacksLength"))
+            if (nbt.contains("RocketItems") && nbt.contains("rocketStacksLength"))
             {
-                int length = nbt.getInteger("rocketStacksLength");
+                int length = nbt.getInt("rocketStacksLength");
 
                 this.stacks = NonNullList.withSize(length, ItemStack.EMPTY);
 
-                ListNBT nbttaglist1 = nbt.getTagList("RocketItems", 10);
+                ListNBT nbttaglist1 = nbt.getList("RocketItems", 10);
 
-                for (int i = 0; i < nbttaglist1.tagCount(); ++i)
+                for (int i = 0; i < nbttaglist1.size(); ++i)
                 {
-                    CompoundNBT nbttagcompound = nbttaglist1.getCompoundTagAt(i);
+                    CompoundNBT nbttagcompound = nbttaglist1.getCompound(i);
                     int j = nbttagcompound.getByte("Slot") & 255;
 
                     if (j >= 0 && j < this.stacks.size())
                     {
-                        this.stacks.set(j, new ItemStack(nbttagcompound));
+                        this.stacks.set(j, ItemStack.read(nbttagcompound));
                     }
                 }
             }
@@ -1198,11 +1182,11 @@ public class StatsCapability extends GCPlayerStats
 
             if (p != null)
             {
-                for (int i = 0; i < nbt.getTagList("Schematics", 10).tagCount(); ++i)
+                for (int i = 0; i < nbt.getList("Schematics", 10).size(); ++i)
                 {
-                    final CompoundNBT nbttagcompound = nbt.getTagList("Schematics", 10).getCompoundTagAt(i);
+                    final CompoundNBT nbttagcompound = nbt.getList("Schematics", 10).getCompound(i);
 
-                    final int j = nbttagcompound.getInteger("UnlockedPage");
+                    final int j = nbttagcompound.getInt("UnlockedPage");
 
                     SchematicRegistry.addUnlockedPage(p, SchematicRegistry.getMatchingRecipeForID(j));
                 }
@@ -1210,79 +1194,79 @@ public class StatsCapability extends GCPlayerStats
 
             Collections.sort(this.unlockedSchematics);
 
-            this.cryogenicChamberCooldown = nbt.getInteger("CryogenicChamberCooldown");
+            this.cryogenicChamberCooldown = nbt.getInt("CryogenicChamberCooldown");
 
-            if (nbt.hasKey("ReceivedSoundWarning"))
+            if (nbt.contains("ReceivedSoundWarning"))
             {
                 this.receivedSoundWarning = nbt.getBoolean("ReceivedSoundWarning");
             }
-            if (nbt.hasKey("ReceivedBedWarning"))
+            if (nbt.contains("ReceivedBedWarning"))
             {
                 this.receivedBedWarning = nbt.getBoolean("ReceivedBedWarning");
             }
 
-            if (nbt.hasKey("LaunchpadStack"))
+            if (nbt.contains("LaunchpadStack"))
             {
-                this.launchpadStack = new ItemStack(nbt.getCompoundTag("LaunchpadStack"));
+                this.launchpadStack = ItemStack.read(nbt.getCompound("LaunchpadStack"));
             }
             else
             {
                 // for backwards compatibility with saves which don't have this tag - players can't lose launchpads
-                this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9, 0);
+                this.launchpadStack = new ItemStack(GCBlocks.landingPad, 9);
             }
 
-            if (nbt.hasKey("BuildFlags"))
+            if (nbt.contains("BuildFlags"))
             {
-                this.buildFlags = nbt.getInteger("BuildFlags");
+                this.buildFlags = nbt.getInt("BuildFlags");
             }
 
-            if (nbt.hasKey("ShownSpaceRace"))
+            if (nbt.contains("ShownSpaceRace"))
             {
                 this.openedSpaceRaceManager = nbt.getBoolean("ShownSpaceRace");
             }
 
-            if (nbt.hasKey("AstroMinerCount"))
+            if (nbt.contains("AstroMinerCount"))
             {
-                this.astroMinerCount = nbt.getInteger("AstroMinerCount");
+                this.astroMinerCount = nbt.getInt("AstroMinerCount");
             }
-            if (nbt.hasKey("AstroData"))
+            if (nbt.contains("AstroData"))
             {
                 this.activeAstroMinerChunks.clear();
-                ListNBT astroList = nbt.getTagList("AstroData", 10);
-                for (int i = 0; i < astroList.tagCount(); ++i)
+                ListNBT astroList = nbt.getList("AstroData", 10);
+                for (int i = 0; i < astroList.size(); ++i)
                 {
-                    final CompoundNBT nbttagcompound = astroList.getCompoundTagAt(i);
+                    final CompoundNBT nbttagcompound = astroList.getCompound(i);
                     BlockVec3 data = BlockVec3.readFromNBT(nbttagcompound);
                     this.activeAstroMinerChunks.add(data);
                 }
-                if (GalacticraftCore.isPlanetsLoaded)
-                {
-                    AsteroidsTickHandlerServer.loadAstroChunkList(this.activeAstroMinerChunks);
-                }
+//                if (GalacticraftCore.isPlanetsLoaded)
+//                {
+//                    AsteroidsTickHandlerServer.loadAstroChunkList(this.activeAstroMinerChunks);
+//                } TODO Planets
             }
 
-            if (nbt.hasKey("GlassColor1"))
+            if (nbt.contains("GlassColor1"))
             {
-                this.glassColor1 = nbt.getInteger("GlassColor1");
-                this.glassColor2 = nbt.getInteger("GlassColor2");
-                this.glassColor3 = nbt.getInteger("GlassColor3");
+                this.glassColor1 = nbt.getInt("GlassColor1");
+                this.glassColor2 = nbt.getInt("GlassColor2");
+                this.glassColor3 = nbt.getInt("GlassColor3");
             }
 
-            if (nbt.hasKey("PanLi"))
-            {
-                final ListNBT panels = nbt.getTagList("PanLi", 10);
-                for (int i = 0; i < panels.tagCount(); ++i)
-                {
-                    if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
-                    final CompoundNBT stateNBT = panels.getCompoundTagAt(i);
-                    BlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
-                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
-                }
-            }
+//            if (nbt.contains("PanLi"))
+//            {
+//                final ListNBT panels = nbt.getList("PanLi", 10);
+//                for (int i = 0; i < panels.size(); ++i)
+//                {
+//                    if (i == BlockPanelLighting.PANELTYPES_LENGTH) break;
+//                    final CompoundNBT stateNBT = panels.getCompound(i);
+//                    BlockState bs = TileEntityPanelLight.readBlockState(stateNBT);
+//                    this.panelLightingBases[i] = (bs.getBlock() == Blocks.AIR) ? null : bs;
+//                }
+//            } TODO Panel Lighting
 
-            if (nbt.hasKey("PanCo"))
+            if (nbt.contains("PanCo"))
             {
-                this.panelLightingColor = nbt.getInteger("PanCo");
+                this.panelLightingColor = nbt.getInt("PanCo");
             }
 
             
@@ -1317,7 +1301,7 @@ public class StatsCapability extends GCPlayerStats
         this.glassColor1 = oldData.getGlassColor1();
         this.glassColor2 = oldData.getGlassColor2();
         this.glassColor3 = oldData.getGlassColor3();
-        this.panelLightingBases = oldData.getPanelLightingBases();
+//        this.panelLightingBases = oldData.getPanelLightingBases(); TODO Panel lighting
         this.panelLightingColor = oldData.getPanelLightingColor();
         this.astroMinerCount = oldData.getAstroMinerCount();
         this.activeAstroMinerChunks = oldData.getActiveAstroMinerChunks();
@@ -1365,11 +1349,11 @@ public class StatsCapability extends GCPlayerStats
         return glassColor3;
     }
 
-    @Override
-    public BlockState[] getPanelLightingBases()
-    {
-        return panelLightingBases;
-    }
+//    @Override
+//    public BlockState[] getPanelLightingBases()
+//    {
+//        return panelLightingBases;
+//    } TODO Panel Lighting
 
     @Override
     public int getPanelLightingColor()
@@ -1383,16 +1367,16 @@ public class StatsCapability extends GCPlayerStats
         panelLightingColor = color;
     }
 
-    @Override
-    public Object[] getMiscNetworkedStats()
-    {
-        int length = 2 + BlockPanelLighting.PANELTYPES_LENGTH * 2;
-        Object[] result = new Object[length];
-        result[0] = this.getBuildFlags();
-        BlockPanelLighting.getNetworkedData(result, this.panelLightingBases);
-        result[length - 1] = this.panelLightingColor;
-        return result;
-    }
+//    @Override
+//    public Object[] getMiscNetworkedStats()
+//    {
+//        int length = 2 + BlockPanelLighting.PANELTYPES_LENGTH * 2;
+//        Object[] result = new Object[length];
+//        result[0] = this.getBuildFlags();
+//        BlockPanelLighting.getNetworkedData(result, this.panelLightingBases);
+//        result[length - 1] = this.panelLightingColor;
+//        return result;
+//    } TODO Panel Lighting
 
     @Override
     public void setSavedSpeed(float value)

@@ -16,7 +16,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
 {
 //    protected IIcon[] icons = new IIcon[7];
 
-    public ItemCanisterLiquidArgon(String assetName)
+    public ItemCanisterLiquidArgon(Item.Properties builder)
     {
         super(assetName);
         this.setAllowedFluid("liquidargon");
@@ -24,7 +24,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         for (int i = 0; i < this.icons.length; i++)
@@ -63,7 +63,7 @@ public class ItemCanisterLiquidArgon extends ItemCanisterGeneric
     }*/
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)

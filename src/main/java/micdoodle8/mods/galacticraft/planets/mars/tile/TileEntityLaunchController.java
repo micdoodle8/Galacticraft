@@ -174,9 +174,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
             }
 
             CompoundNBT nbt = this.chunkLoadTicket.getModData();
-            nbt.setInteger("ChunkLoaderTileX", this.getPos().getX());
-            nbt.setInteger("ChunkLoaderTileY", this.getPos().getY());
-            nbt.setInteger("ChunkLoaderTileZ", this.getPos().getZ());
+            nbt.putInt("ChunkLoaderTileX", this.getPos().getX());
+            nbt.putInt("ChunkLoaderTileY", this.getPos().getY());
+            nbt.putInt("ChunkLoaderTileZ", this.getPos().getZ());
 
             for (int x = -2; x <= 2; x++)
             {
@@ -225,9 +225,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         super.readFromNBT(nbt);
 
         this.ownerName = nbt.getString("OwnerName");
-        this.launchDropdownSelection = nbt.getInteger("LaunchSelection");
-        this.frequency = nbt.getInteger("ControllerFrequency");
-        this.destFrequency = nbt.getInteger("TargetFrequency");
+        this.launchDropdownSelection = nbt.getInt("LaunchSelection");
+        this.frequency = nbt.getInt("ControllerFrequency");
+        this.destFrequency = nbt.getInt("TargetFrequency");
         this.frequencyCheckNeeded = true;
         this.launchPadRemovalDisabled = nbt.getBoolean("LaunchPadRemovalDisabled");
         this.launchSchedulingEnabled = nbt.getBoolean("LaunchPadSchedulingEnabled");
@@ -240,9 +240,9 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
     {
         super.writeToNBT(nbt);
         nbt.setString("OwnerName", this.ownerName);
-        nbt.setInteger("LaunchSelection", this.launchDropdownSelection);
-        nbt.setInteger("ControllerFrequency", this.frequency);
-        nbt.setInteger("TargetFrequency", this.destFrequency);
+        nbt.putInt("LaunchSelection", this.launchDropdownSelection);
+        nbt.putInt("ControllerFrequency", this.frequency);
+        nbt.putInt("TargetFrequency", this.destFrequency);
         nbt.setBoolean("LaunchPadRemovalDisabled", this.launchPadRemovalDisabled);
         nbt.setBoolean("LaunchPadSchedulingEnabled", this.launchSchedulingEnabled);
         nbt.setBoolean("HideTargetDestination", this.hideTargetDestination);
@@ -475,7 +475,7 @@ public class TileEntityLaunchController extends TileBaseElectricBlockWithInvento
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMars)
         {
-            return state.getValue(BlockMachineMars.FACING);
+            return state.get(BlockMachineMars.FACING);
         }
         return Direction.NORTH;
     }

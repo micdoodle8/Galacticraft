@@ -28,7 +28,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.MathHelper;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //import java.util.Random;
@@ -67,7 +67,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -196,7 +196,7 @@
 //        }
 //    }
 //
-//    public static int colorMultiplier(IBlockAccess worldIn, BlockPos pos)
+//    public static int colorMultiplier(IBlockReader worldIn, BlockPos pos)
 //    {
 //        if (worldIn != null && pos != null)
 //        {
@@ -270,13 +270,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -288,11 +288,11 @@
 //    }
 //
 //    @Override
-//    public int getExpDrop(BlockState state, IBlockAccess world, BlockPos pos, int fortune)
+//    public int getExpDrop(BlockState state, IBlockReader world, BlockPos pos, int fortune)
 //    {
 //        if (state.getBlock() != this) return 0;
 //
 //        Random rand = world instanceof World ? ((World)world).rand : new Random();
-//        return MathHelper.getInt(rand, 3, 7);
+//        return MathHelper.nextInt(rand, 3, 7);
 //    }
 //}

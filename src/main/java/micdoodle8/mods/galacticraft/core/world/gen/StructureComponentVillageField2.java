@@ -42,11 +42,11 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
-        nbt.setInteger("CropTypeA", Block.getIdFromBlock(this.cropTypeA));
-        nbt.setInteger("CropTypeB", Block.getIdFromBlock(this.cropTypeB));
-        nbt.setInteger("CropTypeC", Block.getIdFromBlock(this.cropTypeC));
-        nbt.setInteger("CropTypeD", Block.getIdFromBlock(this.cropTypeD));
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("CropTypeA", Block.getIdFromBlock(this.cropTypeA));
+        nbt.putInt("CropTypeB", Block.getIdFromBlock(this.cropTypeB));
+        nbt.putInt("CropTypeC", Block.getIdFromBlock(this.cropTypeC));
+        nbt.putInt("CropTypeD", Block.getIdFromBlock(this.cropTypeD));
     }
 
     @Override
@@ -54,11 +54,11 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
-        this.cropTypeA = Block.getBlockById(nbt.getInteger("CropTypeA"));
-        this.cropTypeB = Block.getBlockById(nbt.getInteger("CropTypeB"));
-        this.cropTypeC = Block.getBlockById(nbt.getInteger("CropTypeC"));
-        this.cropTypeD = Block.getBlockById(nbt.getInteger("CropTypeD"));
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
+        this.cropTypeA = Block.getBlockById(nbt.getInt("CropTypeA"));
+        this.cropTypeB = Block.getBlockById(nbt.getInt("CropTypeB"));
+        this.cropTypeC = Block.getBlockById(nbt.getInt("CropTypeC"));
+        this.cropTypeD = Block.getBlockById(nbt.getInt("CropTypeD"));
     }
 
     private Block getRandomCrop(Random par1Random)
@@ -115,14 +115,14 @@ public class StructureComponentVillageField2 extends StructureComponentVillage
 
         for (i = 1; i <= 7; ++i)
         {
-            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 1, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 2, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 4, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 5, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 7, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 8, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 10, 1, i, par3StructureBoundingBox);
-            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.getInt(par2Random, 2, 7)), 11, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 1, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeA.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 2, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 4, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeB.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 5, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 7, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeC.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 8, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 10, 1, i, par3StructureBoundingBox);
+            this.setBlockState(par1World, this.cropTypeD.getStateFromMeta(MathHelper.nextInt(par2Random, 2, 7)), 11, 1, i, par3StructureBoundingBox);
         }
 
         for (i = 0; i < 9; ++i)

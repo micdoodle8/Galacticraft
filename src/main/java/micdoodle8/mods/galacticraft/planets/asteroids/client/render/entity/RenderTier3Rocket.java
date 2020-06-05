@@ -11,7 +11,7 @@ import micdoodle8.mods.galacticraft.core.util.PlayerUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityTier3Rocket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 {
     private OBJModel.OBJBakedModel rocketModel;
@@ -71,7 +71,7 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 //            };
 //
 //            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_t3", "inventory");
-//            rocketModel = (ItemModelRocketT3) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+//            rocketModel = (ItemModelRocketT3) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
@@ -112,11 +112,11 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-		GlStateManager.scale(0.8F, 0.8F, 0.8F);
+		GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+		GlStateManager.scalef(0.8F, 0.8F, 0.8F);
         ClientUtil.drawBakedModel(this.rocketModel);
 
-        Vector3 teamColor = ClientUtil.updateTeamColor(PlayerUtil.getName(FMLClientHandler.instance().getClient().player), true);
+        Vector3 teamColor = ClientUtil.updateTeamColor(PlayerUtil.getName(Minecraft.getInstance().player), true);
 
         if (teamColor != null)
         {
@@ -132,7 +132,7 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
 
         GlStateManager.disableLighting();
 
-        boolean red = FMLClientHandler.instance().getClient().player.ticksExisted / 10 % 2 < 1;
+        boolean red = Minecraft.getInstance().player.ticksExisted / 10 % 2 < 1;
         int color = ColorUtil.to32BitColor(255, 0, red ? 0 : 255, red ? 255 : 0);
         ClientUtil.drawBakedModelColored(cubeModel, color);
 
@@ -147,7 +147,7 @@ public class RenderTier3Rocket extends EntityRenderer<EntityTier3Rocket>
     @Override
     public boolean shouldRender(EntityTier3Rocket rocket, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox().grow(0.5D, 0, 0.5D);
+        AxisAlignedBB axisalignedbb = rocket.getBoundingBox().grow(0.5D, 0, 0.5D);
         return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

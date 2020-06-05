@@ -51,7 +51,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         this.posY = shooter.posY + (double)shooter.getEyeHeight() - 0.10000000149011612D;
         double d0 = target.posX - shooter.posX;
-        double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - this.posY;
+        double d1 = target.getBoundingBox().minY + (double)(target.height / 3.0F) - this.posY;
         double d2 = target.posZ - shooter.posZ;
         double d3 = (double)MathHelper.sqrt(d0 * d0 + d2 * d2);
 
@@ -92,7 +92,7 @@ public class EntityWebShot extends Entity implements IProjectile
     @Override
     public boolean isInRangeToRenderDist(double distance)
     {
-        double d0 = this.getEntityBoundingBox().getAverageEdgeLength();
+        double d0 = this.getBoundingBox().getAverageEdgeLength();
 
         if (Double.isNaN(d0))
         {
@@ -130,7 +130,7 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean p_180426_10_)
     {
         this.setPosition(x, y, z);
@@ -138,7 +138,7 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setVelocity(double x, double y, double z)
     {
         this.motionX = x;
@@ -157,9 +157,9 @@ public class EntityWebShot extends Entity implements IProjectile
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         if (this.prevRotationPitch == 0.0F && this.prevRotationYaw == 0.0F)
         {
@@ -175,7 +175,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
         if (this.ticksExisted > 1000)
         {
-            this.setDead();
+            this.remove();
         }
 
         ++this.ticksInAir;
@@ -191,7 +191,7 @@ public class EntityWebShot extends Entity implements IProjectile
         }
 
         Entity entity = null;
-        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+        List<Entity> list = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().expand(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
         double d0 = 0.0D;
         final double border = 0.3D;
 
@@ -201,7 +201,7 @@ public class EntityWebShot extends Entity implements IProjectile
 
             if (entity1.canBeCollidedWith() && (entity1 != this.shootingEntity || this.ticksInAir >= 5))
             {
-                AxisAlignedBB axisalignedbb1 = entity1.getEntityBoundingBox().grow(border, border, border);
+                AxisAlignedBB axisalignedbb1 = entity1.getBoundingBox().grow(border, border, border);
                 RayTraceResult movingobjectposition1 = axisalignedbb1.calculateIntercept(vec31, vec3);
 
                 if (movingobjectposition1 != null)
@@ -226,7 +226,7 @@ public class EntityWebShot extends Entity implements IProjectile
         {
             PlayerEntity entityplayer = (PlayerEntity)movingobjectposition.entityHit;
 
-            if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !((PlayerEntity)this.shootingEntity).canAttackPlayer(entityplayer))
+            if (entityplayer.abilities.disableDamage || this.shootingEntity instanceof PlayerEntity && !((PlayerEntity)this.shootingEntity).canAttackPlayer(entityplayer))
             {
                 movingobjectposition = null;
             }
@@ -241,7 +241,7 @@ public class EntityWebShot extends Entity implements IProjectile
                     if (movingobjectposition.entityHit instanceof LivingEntity)
                     {
                         ((LivingEntity) movingobjectposition.entityHit).addPotionEffect(new EffectInstance(Effects.SLOWNESS, 180, 2, true, true));
-                        this.setDead();
+                        this.remove();
                     }
                     else
                     {
@@ -264,7 +264,7 @@ public class EntityWebShot extends Entity implements IProjectile
                 this.posY -= this.motionY / (double)f5 * 0.05000000074505806D;
                 this.posZ -= this.motionZ / (double)f5 * 0.05000000074505806D;
                 this.arrowShake = 7;
-                this.setDead();
+                this.remove();
             }
         }
 

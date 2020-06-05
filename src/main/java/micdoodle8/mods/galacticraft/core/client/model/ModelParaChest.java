@@ -103,7 +103,7 @@ public class ModelParaChest extends ModelChest
         this.parachuteStrings[3].rotateAngleX = (float) -(23F / Constants.RADIANS_TO_DEGREES);
         this.parachuteStrings[3].setRotationPoint(9.0F, 3.0F, 2.0F);
 
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(RenderParaChest.parachestTexture);
+        Minecraft.getInstance().textureManager.bindTexture(RenderParaChest.PARACHEST_TEXTURE);
 
         super.renderAll();
     }

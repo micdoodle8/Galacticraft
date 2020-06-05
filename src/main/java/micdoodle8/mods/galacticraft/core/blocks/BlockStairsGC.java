@@ -9,7 +9,7 @@
 //import net.minecraft.util.Mirror;
 //import net.minecraft.util.Rotation;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //
 //public class BlockStairsGC extends StairsBlock implements ISortableBlock
 //{
@@ -47,13 +47,13 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        return state.with(SHAPE, getStairsShape(state, worldIn, pos));
 //    }
 //
 //    //Correct bugged version in vanilla Minecraft
-//    private static StairsBlock.EnumShape getStairsShape(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    private static StairsBlock.EnumShape getStairsShape(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        Direction enumfacing = (Direction)state.get(FACING);
 //        BlockState iblockstate = worldIn.getBlockState(pos.offset(enumfacing));
@@ -94,7 +94,7 @@
 //        return StairsBlock.EnumShape.STRAIGHT;
 //    }
 //
-//    private static boolean isDifferentStairs(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction side)
+//    private static boolean isDifferentStairs(BlockState state, IBlockReader worldIn, BlockPos pos, Direction side)
 //    {
 //        BlockState iblockstate = worldIn.getBlockState(pos.offset(side));
 //        return !isBlockStairs(iblockstate) || iblockstate.get(FACING) != state.get(FACING) || iblockstate.get(HALF) != state.get(HALF);

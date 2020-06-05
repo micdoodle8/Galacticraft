@@ -232,7 +232,7 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
         }
 
         //Add to the list of asteroids for external use
-        ((WorldProviderAsteroids) this.world.provider).addAsteroid(asteroidX, asteroidY, asteroidZ, size, isHollow ? -1 : core.index);
+        ((WorldProviderAsteroids) this.world.getDimension()).addAsteroid(asteroidX, asteroidY, asteroidZ, size, isHollow ? -1 : core.index);
 
         final int xMin = this.clamp(Math.max(chunkX, asteroidX - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkX, 0, 16);
         final int zMin = this.clamp(Math.max(chunkZ, asteroidZ - size - ChunkProviderAsteroids.MAX_ASTEROID_SKEW - 2) - chunkZ, 0, 16);
@@ -540,7 +540,7 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
         this.generateTerrain(par1, par2, primer, false);
         //this.biomesForGeneration = this.world.getWorldChunkManager().loadBlockGeneratorData(this.biomesForGeneration, par1 * 16, par2 * 16, 16, 16);
 
-        if (this.world.provider instanceof WorldProviderAsteroids && ((WorldProviderAsteroids)this.world.provider).checkHasAsteroids())
+        if (this.world.getDimension() instanceof WorldProviderAsteroids && ((WorldProviderAsteroids)this.world.getDimension()).checkHasAsteroids())
         {
             this.dungeonGenerator.generate(this.world, par1, par2, primer);
         }
@@ -808,7 +808,7 @@ public class ChunkProviderAsteroids extends ChunkProviderBase
 //        boolean flagXZUChunk = w.getChunkProvider().chunkExists(cx - 1, cz + 1);
 //        boolean flagXZDChunk = w.getChunkProvider().chunkExists(cx - 1, cz - 1);
 
-        boolean flag = world.provider.hasSkyLight();
+        boolean flag = world.getDimension().hasSkyLight();
         for (int j = 0; j < 16; j++)
         {
             if (chunk.getBlockStorageArray()[j] == null)

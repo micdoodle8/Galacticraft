@@ -13,42 +13,32 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiCargoUnloader extends GuiContainerGC
+public class GuiCargoUnloader extends GuiContainerGC<ContainerCargoLoader>
 {
-    private static final ResourceLocation unloaderTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/cargo_loader.png");
+    private static final ResourceLocation UNLOADER_TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/cargo_loader.png");
 
     private final TileEntityCargoUnloader cargoUnloader;
 
     private Button buttonLoadItems;
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 107, (this.height - this.ySize) / 2 + 101, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiCargoUnloader(PlayerInventory par1InventoryPlayer, TileEntityCargoUnloader par2TileEntityAirDistributor)
+    public GuiCargoUnloader(PlayerInventory playerInv, TileEntityCargoUnloader unloader)
     {
-        super(new ContainerCargoLoader(par1InventoryPlayer, par2TileEntityAirDistributor));
-        this.cargoUnloader = par2TileEntityAirDistributor;
+        super(new ContainerCargoLoader(playerInv, unloader), playerInv, new StringTextComponent(unloader.getName()));
+        this.cargoUnloader = unloader;
         this.ySize = 201;
     }
 
     @Override
-    protected void actionPerformed(Button par1GuiButton)
+    protected void init()
     {
-        switch (par1GuiButton.id)
-        {
-        case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.cargoUnloader.getPos(), 0 }));
-            break;
-        }
-    }
-
-    @Override
-    public void initGui()
-    {
-        super.initGui();
+        super.init();
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         electricityDesc.add(EnumColor.YELLOW + GCCoreUtil.translate("gui.energy_storage.desc.1") + ((int) Math.floor(this.cargoUnloader.getEnergyStoredGC()) + " / " + (int) Math.floor(this.cargoUnloader.getMaxEnergyStoredGC())));
@@ -62,7 +52,9 @@ public class GuiCargoUnloader extends GuiContainerGC
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 9, (this.height - this.ySize) / 2 + 26, 18, 18, batterySlotDesc, this.width, this.height, this));
-        this.buttonList.add(this.buttonLoadItems = new Button(0, this.width / 2 - 1, this.height / 2 - 23, 76, 20, GCCoreUtil.translate("gui.button.unloaditems.name")));
+        this.buttons.add(this.buttonLoadItems = new Button(this.width / 2 - 1, this.height / 2 - 23, 76, 20, GCCoreUtil.translate("gui.button.unloaditems.name"), (button) -> {
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.cargoUnloader.getPos(), 0 }));
+        }));
     }
 
     @Override
@@ -70,13 +62,13 @@ public class GuiCargoUnloader extends GuiContainerGC
     {
         int offsetX = -17;
         int offsetY = 45;
-        this.fontRenderer.drawString(this.cargoUnloader.getName(), 60, 12, 4210752);
-        this.buttonLoadItems.enabled = this.cargoUnloader.disableCooldown == 0;
-        this.buttonLoadItems.displayString = !this.cargoUnloader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stopunloading.name") : GCCoreUtil.translate("gui.button.unloaditems.name");
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
-        //this.fontRenderer.drawString("" + this.cargoUnloader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
-        //		this.fontRenderer.drawString(ElectricityDisplay.getDisplay(this.cargoUnloader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
+        this.font.drawString(this.cargoUnloader.getName(), 60, 12, 4210752);
+        this.buttonLoadItems.active = this.cargoUnloader.disableCooldown == 0;
+        this.buttonLoadItems.setMessage(!this.cargoUnloader.getDisabled(0) ? GCCoreUtil.translate("gui.button.stopunloading.name") : GCCoreUtil.translate("gui.button.unloaditems.name"));
+        this.font.drawString(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), 28 + offsetX, 45 + 23 - 46 + offsetY, 4210752);
+        //this.font.drawString("" + this.cargoUnloader.storage.getMaxExtract(), 28 + offsetX, 56 + 23 - 46 + offsetY, 4210752);
+        //		this.font.drawString(ElectricityDisplay.getDisplay(this.cargoUnloader.getVoltage(), ElectricUnit.VOLTAGE), 28 + offsetX, 68 + 23 - 46 + offsetY, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90, 4210752);
     }
 
     private String getStatus()
@@ -103,10 +95,10 @@ public class GuiCargoUnloader extends GuiContainerGC
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiCargoUnloader.unloaderTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiCargoUnloader.UNLOADER_TEXTURE);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
+        this.blit(var5, var6 + 5, 0, 0, this.xSize, this.ySize);
 
         List<String> electricityDesc = new ArrayList<String>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
@@ -116,9 +108,9 @@ public class GuiCargoUnloader extends GuiContainerGC
 
         if (this.cargoUnloader.getEnergyStoredGC() > 0)
         {
-            this.drawTexturedModalRect(var5 + 94, var6 + 101, 176, 0, 11, 10);
+            this.blit(var5 + 94, var6 + 101, 176, 0, 11, 10);
         }
 
-        this.drawTexturedModalRect(var5 + 108, var6 + 102, 187, 0, Math.min(this.cargoUnloader.getScaledElecticalLevel(54), 54), 7);
+        this.blit(var5 + 108, var6 + 102, 187, 0, Math.min(this.cargoUnloader.getScaledElecticalLevel(54), 54), 7);
     }
 }

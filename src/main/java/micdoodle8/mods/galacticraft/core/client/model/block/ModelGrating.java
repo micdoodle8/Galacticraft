@@ -38,7 +38,7 @@
 //            BlockState baseState = ((IExtendedBlockState) state).getValue(BlockGrating.BASE_STATE);
 //            if (baseState != null)
 //            {
-//                IBlockAccess blockAccess = BlockGrating.savedBlockAccess;
+//                IBlockReader blockAccess = BlockGrating.savedBlockAccess;
 //                BlockPos pos = BlockGrating.savedPos;
 //                BufferBuilder buffer = TransformerHooks.renderBuilder.get();
 //                if (buffer != null)

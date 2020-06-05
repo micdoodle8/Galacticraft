@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityBeamReflector;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.AtlasTexture;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityBeamReflectorRenderer extends TileEntityRenderer<TileEntityBeamReflector>
 {
     private static OBJModel.OBJBakedModel reflectorModelBase;
@@ -56,7 +56,7 @@ public class TileEntityBeamReflectorRenderer extends TileEntityRenderer<TileEnti
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) d + 0.5F, (float) d1, (float) d2 + 0.5F);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
         this.bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
 
         if (Minecraft.isAmbientOcclusionEnabled())

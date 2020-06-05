@@ -21,7 +21,7 @@
 //import net.minecraft.util.IStringSerializable;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
@@ -130,26 +130,26 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    @OnlyIn(Dist.CLIENT)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }
 //
 //    @Override
-//    public boolean doesSideBlockRendering(BlockState state, IBlockAccess world, BlockPos pos, Direction face)
+//    public boolean doesSideBlockRendering(BlockState state, IBlockReader world, BlockPos pos, Direction face)
 //    {
 //        return false;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;
@@ -199,13 +199,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -246,7 +246,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos)
+//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        if (world instanceof World && ((World) world).provider instanceof IZeroGDimension)
 //            return BOUNDING_BOX_ZEROG;
@@ -254,7 +254,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public AxisAlignedBB getSelectedBoundingBox(BlockState bs, World worldIn, BlockPos pos)
 //    {
 //        TileEntity te = worldIn.getTileEntity(pos);

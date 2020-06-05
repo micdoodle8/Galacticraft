@@ -1,117 +1,107 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.entities.EntityMeteorChunk;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Rarity;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemMeteorChunk extends Item implements ISortableItem
 {
-    public static final String[] names = { "meteor_chunk", "meteor_chunk_hot" };
-
     public static final int METEOR_BURN_TIME = 45 * 20;
 
-    public ItemMeteorChunk(String assetName)
+    public ItemMeteorChunk(Item.Properties properties)
     {
-        super();
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-        this.maxStackSize = 16;
-        this.setCreativeTab(ItemGroup.MATERIALS);
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setMaxDamage(0);
+//        this.setHasSubtypes(true);
+//        this.maxStackSize = 16;
+//        this.setCreativeTab(ItemGroup.MATERIALS);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
+
 
     @Override
-    public void onUpdate(ItemStack itemstack, World world, Entity entity, int par4, boolean par5)
+    public void inventoryTick(ItemStack stack, World world, Entity entityIn, int itemSlot, boolean isSelected)
     {
-        if (itemstack.getItemDamage() == 1 && !world.isRemote)
+        if (entityIn instanceof PlayerEntity && stack.getItem() == GCItems.meteorChunkHot && !world.isRemote)
         {
-            if (itemstack.hasTagCompound())
+            if (stack.hasTag())
             {
-                float meteorBurnTime = itemstack.getTagCompound().getFloat("MeteorBurnTimeF");
+                float meteorBurnTime = stack.getTag().getFloat("MeteorBurnTimeF");
 
                 if (meteorBurnTime >= 0.5F)
                 {
                     meteorBurnTime -= 0.5F;
-                    itemstack.getTagCompound().setFloat("MeteorBurnTimeF", meteorBurnTime);
+                    stack.getTag().putFloat("MeteorBurnTimeF", meteorBurnTime);
                 }
                 else
                 {
-                    itemstack.setItemDamage(0);
-                    itemstack.setTagCompound(null);
+                    ((PlayerEntity) entityIn).inventory.setInventorySlotContents(itemSlot, new ItemStack(GCItems.meteorChunk, stack.getCount()));
+//                    stack.setItemDamage(0);
+                    stack.setTag(null);
                 }
             }
             else
             {
-                itemstack.setTagCompound(new CompoundNBT());
-                itemstack.getTagCompound().setFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
+                stack.getOrCreateTag().putFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
             }
         }
     }
 
     @Override
-    public void onCreated(ItemStack itemstack, World world, PlayerEntity entityPlayer)
+    public void onCreated(ItemStack stack, World world, PlayerEntity entityPlayer)
     {
-        super.onCreated(itemstack, world, entityPlayer);
+        super.onCreated(stack, world, entityPlayer);
 
-        if (itemstack.getItemDamage() == 1)
+        if (stack.getItem() == GCItems.meteorChunkHot)
         {
-            if (!itemstack.hasTagCompound())
-            {
-                itemstack.setTagCompound(new CompoundNBT());
-            }
-
-            itemstack.getTagCompound().setFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
+            stack.getOrCreateTag().putFloat("MeteorBurnTimeF", ItemMeteorChunk.METEOR_BURN_TIME);
         }
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            list.add(new ItemStack(this, 1, 0));
-            list.add(new ItemStack(this, 1, 1));
-        }
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            list.add(new ItemStack(this, 1, 0));
+//            list.add(new ItemStack(this, 1, 1));
+//        }
+//    }
 
-    @SideOnly(Side.CLIENT)
+
     @Override
-    public void addInformation(ItemStack itemstack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (itemstack.getItemDamage() > 0)
+        if (stack.getItem() == GCItems.meteorChunkHot)
         {
             float burnTime = 0.0F;
 
-            if (itemstack.hasTagCompound())
+            if (stack.hasTag())
             {
-                float meteorBurnTime = itemstack.getTagCompound().getFloat("MeteorBurnTimeF");
+                float meteorBurnTime = stack.getTag().getFloat("MeteorBurnTimeF");
                 burnTime = Math.round(meteorBurnTime / 10.0F) / 2.0F;
             }
             else
@@ -119,46 +109,46 @@ public class ItemMeteorChunk extends Item implements ISortableItem
                 burnTime = 45.0F;
             }
 
-            tooltip.add(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds"));
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("item.hot_description.name") + " " + burnTime + GCCoreUtil.translate("gui.seconds")));
         }
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        return "item." + ItemMeteorChunk.names[itemStack.getItemDamage()];
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        return "item." + ItemMeteorChunk.names[itemStack.getItemDamage()];
+//    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand)
     {
         ItemStack itemStack = player.getHeldItem(hand);
 
-        if (!player.capabilities.isCreativeMode)
+        if (!player.abilities.isCreativeMode)
         {
             itemStack.shrink(1);
         }
 
-        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.itemRand.nextFloat() * 0.1F));
+        world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 0.0001F / (Item.random.nextFloat() * 0.1F));
 
         if (!world.isRemote)
         {
             EntityMeteorChunk meteor = new EntityMeteorChunk(world, player, 1.0F);
 
-            if (itemStack.getItemDamage() > 0)
+            if (itemStack.getItem() == GCItems.meteorChunkHot)
             {
                 meteor.setFire(20);
                 meteor.isHot = true;
             }
-            meteor.canBePickedUp = player.capabilities.isCreativeMode ? 2 : 1;
-            world.spawnEntity(meteor);
+
+            meteor.canBePickedUp = player.abilities.isCreativeMode ? 2 : 1;
+            world.addEntity(meteor);
         }
 
         player.swingArm(hand);

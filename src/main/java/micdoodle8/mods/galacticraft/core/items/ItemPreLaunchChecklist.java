@@ -25,9 +25,9 @@ import javax.annotation.Nullable;
 
 public class ItemPreLaunchChecklist extends Item implements ISortableItem
 {
-    public ItemPreLaunchChecklist(String assetName)
+    public ItemPreLaunchChecklist(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setUnlocalizedName(assetName);
         this.setMaxStackSize(1);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
@@ -39,21 +39,21 @@ public class ItemPreLaunchChecklist extends Item implements ISortableItem
         return false;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack != null && this == GCItems.heavyPlatingTier1)

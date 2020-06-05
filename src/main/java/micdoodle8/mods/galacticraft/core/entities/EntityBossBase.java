@@ -5,19 +5,19 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityDungeonSpawner;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityTreasureChest;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.ServerBossInfo;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.List;
 import java.util.Random;
@@ -32,9 +32,9 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
 
     private final ServerBossInfo bossInfo = (ServerBossInfo)(new ServerBossInfo(this.getDisplayName(), getHealthBarColor(), BossInfo.Overlay.PROGRESS));
 
-    public EntityBossBase(World world)
+    public EntityBossBase(EntityType<? extends EntityBossBase> type, World worldIn)
     {
-        super(world);
+        super(type, worldIn);
     }
 
     public abstract int getChestTier();
@@ -59,10 +59,10 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
 
         if (this.deathTicks >= 180 && this.deathTicks <= 200)
         {
-            final float x = (this.rand.nextFloat() - 0.5F) * this.width;
-            final float y = (this.rand.nextFloat() - 0.5F) * (this.height / 2.0F);
-            final float z = (this.rand.nextFloat() - 0.5F) * this.width;
-            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D);
+            final float x = (this.rand.nextFloat() - 0.5F) * this.getWidth();
+            final float y = (this.rand.nextFloat() - 0.5F) * (this.getHeight() / 2.0F);
+            final float z = (this.rand.nextFloat() - 0.5F) * this.getWidth();
+//            this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, this.posX + x, this.posY + 2.0D + y, this.posZ + z, 0.0D, 0.0D, 0.0D); TODO Particles
         }
 
         int i;
@@ -72,7 +72,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
         {
             if (this.deathTicks >= 180 && this.deathTicks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 40.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(PacketSimple.EnumSimplePacket.C_PLAY_SOUND_EXPLODE, GCCoreUtil.getDimensionID(this.world), new Object[] {}), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 40.0D, GCCoreUtil.getDimensionID(this.world)));
             }
 
             if (this.deathTicks > 150 && this.deathTicks % 5 == 0)
@@ -83,7 +83,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
                 {
                     j = ExperienceOrbEntity.getXPSplit(i);
                     i -= j;
-                    this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+                    this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
                 }
             }
         }
@@ -96,7 +96,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             {
                 j = ExperienceOrbEntity.getXPSplit(i);
                 i -= j;
-                this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
+                this.world.addEntity(new ExperienceOrbEntity(this.world, this.posX, this.posY, this.posZ, j));
             }
 
             TileEntityTreasureChest chest = null;
@@ -148,7 +148,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
 
             this.dropKey();
 
-            super.setDead();
+            super.remove();
 
             if (this.spawner != null)
             {
@@ -159,14 +159,14 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
 
                 if (!this.world.isRemote)
                 {
-                    this.spawner.lastKillTime = MinecraftServer.getCurrentTimeMillis();
+                    this.spawner.lastKillTime = ((ServerWorld) this.world).getServer().getServerTime();
                 }
             }
         }
     }
 
     @Override
-    public void onLivingUpdate()
+    public void tick()
     {
         if (this.world.isRemote)
         {
@@ -188,7 +188,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
                     p.sendMessage(new StringTextComponent(GCCoreUtil.translate("gui.skeleton_boss.message")));
                 }
 
-                this.setDead();
+                this.remove();
                 //Note: spawner.isBossDefeated is false, so the boss will respawn if any player comes back inside the room
 
                 return;
@@ -197,11 +197,11 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             this.entitiesWithinLast = this.entitiesWithin;
         }
 
-        super.onLivingUpdate();
+        super.tick();
     }
 
     @Override
-    public void setDead()
+    public void remove(boolean keepData)
     {
         if (this.spawner != null)
         {
@@ -210,7 +210,7 @@ public abstract class EntityBossBase extends MonsterEntity implements IBoss
             this.spawner.spawned = false;
         }
 
-        super.setDead();
+        super.remove(keepData);
     }
 
     @Override

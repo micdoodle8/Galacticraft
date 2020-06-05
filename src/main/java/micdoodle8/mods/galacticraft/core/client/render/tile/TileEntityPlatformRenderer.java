@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPlatform>
 {
     public class ModelPlatform extends ModelBase
@@ -75,9 +75,9 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
         if (b.getBlock() == GCBlocks.platform && b.getValue(BlockPlatform.CORNER) == BlockPlatform.EnumCorner.NW)
         {
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
-            GlStateManager.rotate(90F, 0, 1F, 0F);
-            GlStateManager.translate(-0.5F, -0.5F, 0.5F);
+            GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+            GlStateManager.rotatef(90F, 0, 1F, 0F);
+            GlStateManager.translatef(-0.5F, -0.5F, 0.5F);
             RenderHelper.disableStandardItemLighting();
             GlStateManager.disableRescaleNormal();
 
@@ -102,7 +102,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     int light = tileEntity.getBlendedLight();
                     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)(light % 65536), (float)(light / 65536));
                 }
-                GlStateManager.translate(0F, 0.79F + yOffset, 0F);
+                GlStateManager.translatef(0F, 0.79F + yOffset, 0F);
                 this.bindTexture(TileEntityPlatformRenderer.platformTexture);
                 this.platform.render();
                 GlStateManager.popMatrix();
@@ -124,7 +124,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                 if (tileEntity.isMoving() && renderPlatformForThisTE)
                 {
                     GlStateManager.pushMatrix();
-                    GlStateManager.translate(0F, 0.26F + yOffset, 0F);
+                    GlStateManager.translatef(0F, 0.26F + yOffset, 0F);
                     GlStateManager.color(1.0F, 0.84F, 65F / 255F, 1.0F);
 
                     float frameRadius = 1.126F / 2F;
@@ -146,7 +146,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     worldRenderer.pos(-frameRadius, frameD, frameC).endVertex();
                     worldRenderer.pos(-frameRadius, frameA, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     frameA = 0.552F;
                     frameD = 0.578F;
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -163,7 +163,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     worldRenderer.pos(-frameRadius, frameD, frameC).endVertex();
                     worldRenderer.pos(-frameRadius, frameA, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     frameA = 0.552F;
                     frameD = 0.578F;
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -180,7 +180,7 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     worldRenderer.pos(-frameRadius, frameD, frameC).endVertex();
                     worldRenderer.pos(-frameRadius, frameA, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     frameA = 0.552F;
                     frameD = 0.578F;
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
@@ -223,21 +223,21 @@ public class TileEntityPlatformRenderer extends TileEntityRenderer<TileEntityPla
                     worldRenderer.pos(frameD, frameY, frameC).endVertex();
                     worldRenderer.pos(frameA, frameY, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
                     worldRenderer.pos(frameA, frameY, frameB).endVertex();
                     worldRenderer.pos(frameD, frameY, frameB).endVertex();
                     worldRenderer.pos(frameD, frameY, frameC).endVertex();
                     worldRenderer.pos(frameA, frameY, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
                     worldRenderer.pos(frameA, frameY, frameB).endVertex();
                     worldRenderer.pos(frameD, frameY, frameB).endVertex();
                     worldRenderer.pos(frameD, frameY, frameC).endVertex();
                     worldRenderer.pos(frameA, frameY, frameC).endVertex();
                     tess.draw();
-                    GlStateManager.rotate(90F, 0, 1F, 0F);
+                    GlStateManager.rotatef(90F, 0, 1F, 0F);
                     worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
                     worldRenderer.pos(frameA, frameY, frameB).endVertex();
                     worldRenderer.pos(frameD, frameY, frameB).endVertex();

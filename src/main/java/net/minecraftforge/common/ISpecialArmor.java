@@ -127,7 +127,7 @@
 //            }
 //            
 //            double totalArmor = entity.getTotalArmorValue();
-//            double totalToughness = entity.getEntityAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
+//            double totalToughness = entity.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getAttributeValue();
 //
 //            ArrayList<ArmorProperties> dmgVals = new ArrayList<ArmorProperties>();
 //            for (int slot = 0; slot < inventory.size(); slot++)

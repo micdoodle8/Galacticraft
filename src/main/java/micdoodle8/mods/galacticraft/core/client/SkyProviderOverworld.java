@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -119,7 +119,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEndList();
     }
 
-    private final Minecraft minecraft = FMLClientHandler.instance().getClient();
+    private final Minecraft minecraft = Minecraft.getInstance();
 
     @Override
     public void render(float partialTicks, ClientWorld world, Minecraft mc)
@@ -201,7 +201,7 @@ public class SkyProviderOverworld extends IRenderHandler
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.disableStandardItemLighting();
-        final float[] costh = this.minecraft.world.provider.calcSunriseSunsetColors(this.minecraft.world.getCelestialAngle(partialTicks), partialTicks);
+        final float[] costh = this.minecraft.world.getDimension().calcSunriseSunsetColors(this.minecraft.world.getCelestialAngle(partialTicks), partialTicks);
         float var9;
         float size;
         float rand1;

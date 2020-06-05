@@ -2,13 +2,12 @@ package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.EntitySkeletonBoss;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelEvolvedSkeletonBoss extends ModelBase
+public class ModelEvolvedSkeletonBoss extends EntityModel<EntitySkeletonBoss>
 {
     private RendererModel upperHead;
     private RendererModel pelvis;
@@ -247,10 +246,10 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntitySkeletonBoss entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
+        this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         this.upperHead.render(f5);
         this.pelvis.render(f5);
         this.sternum.render(f5);
@@ -293,12 +292,12 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
     }
 
     @Override
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity e)
+    public void setRotationAngles(EntitySkeletonBoss entity, float par1, float par2, float par3, float par4, float par5, float par6)
     {
         final float floatPI = 3.1415927F;
 
-        final EntitySkeletonBoss boss = (EntitySkeletonBoss) e;
-        super.setRotationAngles(par1, par2, par3, par4, par5, par6, e);
+        final EntitySkeletonBoss boss = (EntitySkeletonBoss) entity;
+        super.setRotationAngles(entity, par1, par2, par3, par4, par5, par6);
         this.upperHead.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
         this.upperHead.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
         this.rightArm.rotateAngleX = MathHelper.cos(par1 * 0.6662F + floatPI) * 2.0F * par2 * 0.5F;
@@ -310,15 +309,15 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         this.rightLeg.rotateAngleY = 0.0F;
         this.leftLeg.rotateAngleY = 0.0F;
 
-        if (this.isRiding)
-        {
-            this.rightArm.rotateAngleX += -(floatPI / 5F);
-            this.leftArm.rotateAngleX += -(floatPI / 5F);
-            this.rightLeg.rotateAngleX = -(floatPI * 2F / 5F);
-            this.leftLeg.rotateAngleX = -(floatPI * 2F / 5F);
-            this.rightLeg.rotateAngleY = floatPI / 10F;
-            this.leftLeg.rotateAngleY = -(floatPI / 10F);
-        }
+//        if (this.isRiding)
+//        {
+//            this.rightArm.rotateAngleX += -(floatPI / 5F);
+//            this.leftArm.rotateAngleX += -(floatPI / 5F);
+//            this.rightLeg.rotateAngleX = -(floatPI * 2F / 5F);
+//            this.leftLeg.rotateAngleX = -(floatPI * 2F / 5F);
+//            this.rightLeg.rotateAngleY = floatPI / 10F;
+//            this.leftLeg.rotateAngleY = -(floatPI / 10F);
+//        }
 
         this.rightArm.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
         this.leftArm.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
@@ -363,10 +362,10 @@ public class ModelEvolvedSkeletonBoss extends ModelBase
         this.rightArm.rotateAngleX += MathHelper.sin(par3 * 0.067F) * 0.05F;
         this.leftArm.rotateAngleX -= MathHelper.sin(par3 * 0.067F) * 0.05F;
 
-        if (((EntitySkeletonBoss) e).deathTicks > 0)
+        if (((EntitySkeletonBoss) entity).deathTicks > 0)
         {
-            this.leftArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 3.0F / Constants.RADIANS_TO_DEGREES;
-            this.rightArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) e).deathTicks, 2) / 5.0F) / 2.0F / Constants.RADIANS_TO_DEGREES;
+            this.leftArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) entity).deathTicks, 2) / 5.0F) / 3.0F / Constants.RADIANS_TO_DEGREES;
+            this.rightArm.rotateAngleX = -(floatPI / 2F) + (float) (Math.pow(((EntitySkeletonBoss) entity).deathTicks, 2) / 5.0F) / 2.0F / Constants.RADIANS_TO_DEGREES;
         }
 
         if (boss.throwTimer + boss.postThrowDelay > 0)

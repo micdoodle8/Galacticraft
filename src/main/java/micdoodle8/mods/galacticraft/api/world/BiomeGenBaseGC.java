@@ -1,8 +1,11 @@
 package micdoodle8.mods.galacticraft.api.world;
 
 import java.util.LinkedList;
+import java.util.Map;
 
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.entity.passive.AmbientEntity;
 import net.minecraft.entity.passive.WaterMobEntity;
@@ -16,18 +19,16 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
 {
     public final boolean isAdaptiveBiome;
     
-    protected BiomeGenBaseGC(BiomeProperties var1)
+    protected BiomeGenBaseGC(Biome.Builder biomeBuilder)
     {
-        super(var1);
-        this.setRegistryName(var1.biomeName);
+        super(biomeBuilder);
         GalacticraftCore.biomesList.add(this);
         this.isAdaptiveBiome = false;
     }
 
-    protected BiomeGenBaseGC(BiomeProperties properties, boolean adaptive)
+    protected BiomeGenBaseGC(Biome.Builder biomeBuilder, boolean adaptive)
     {
-        super(properties);
-        this.setRegistryName(properties.biomeName);
+        super(biomeBuilder);
         this.isAdaptiveBiome = adaptive;
     }
 
@@ -51,31 +52,15 @@ public abstract class BiomeGenBaseGC extends Biome implements IMobSpawnBiome
      * Override this if different behaviour is required.
      */
     @Override
-    public void initialiseMobLists(LinkedList<SpawnListEntry> mobInfo)
+    public void initialiseMobLists(Map<SpawnListEntry, EntityClassification> mobInfo)
     {
-        this.spawnableMonsterList.clear();
-        this.spawnableWaterCreatureList.clear();
-        this.spawnableCreatureList.clear();
-        this.spawnableCaveCreatureList.clear();
-        for (SpawnListEntry entry : mobInfo)
+        for (EntityClassification classification : EntityClassification.values())
         {
-            Class<?> mobClass = entry.entityClass;
-            if (WaterMobEntity.class.isAssignableFrom(mobClass))
-            {
-                this.spawnableWaterCreatureList.add(entry);
-            }
-            else if (AmbientEntity.class.isAssignableFrom(mobClass))
-            {
-                this.spawnableCaveCreatureList.add(entry);
-            }
-            else if (MonsterEntity.class.isAssignableFrom(mobClass))
-            {
-                this.spawnableMonsterList.add(entry);
-            }
-            else
-            {
-                this.spawnableCreatureList.add(entry);
-            }
+            this.getSpawns(classification).clear();
+        }
+        for (Map.Entry<SpawnListEntry, EntityClassification> entry : mobInfo.entrySet())
+        {
+            getSpawns(entry.getValue()).add(entry.getKey());
         }
     }
 }

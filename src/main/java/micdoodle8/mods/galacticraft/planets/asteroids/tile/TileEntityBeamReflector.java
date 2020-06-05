@@ -130,7 +130,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     private AxisAlignedBB renderAABB;
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -141,7 +141,7 @@ public class TileEntityBeamReflector extends TileEntityBeamOutput implements ILa
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_SHORT;

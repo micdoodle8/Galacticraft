@@ -120,7 +120,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         return super.getExplosionResistance(world, pos, exploder, explosion);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -180,7 +180,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
         return 1;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
@@ -224,7 +224,7 @@ public class BlockBasicMars extends Block implements IDetectableResource, IPlant
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void randomDisplayTick(BlockState state, World worldIn, BlockPos pos, Random rand)
     {
         if (rand.nextInt(10) == 0)

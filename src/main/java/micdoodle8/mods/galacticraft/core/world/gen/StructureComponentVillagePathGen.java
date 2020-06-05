@@ -37,7 +37,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
     }
 
     @Override
@@ -116,7 +116,7 @@ public class StructureComponentVillagePathGen extends StructureComponentVillageR
 
     public static MutableBoundingBox func_74933_a(StructureComponentVillageStartPiece par0ComponentVillageStartPiece, List<StructurePiece> par1List, Random par2Random, int par3, int par4, int par5, Direction par6)
     {
-        for (int var7 = 7 * MathHelper.getInt(par2Random, 3, 5); var7 >= 7; var7 -= 7)
+        for (int var7 = 7 * MathHelper.nextInt(par2Random, 3, 5); var7 >= 7; var7 -= 7)
         {
             final MutableBoundingBox var8 = MutableBoundingBox.getComponentToAddBoundingBox(par3, par4, par5, 0, 0, 0, 3, 3, var7, par6);
 

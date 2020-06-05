@@ -2,67 +2,64 @@ package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.GCFluids;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.EntityBuggy;
+import micdoodle8.mods.galacticraft.core.entities.GCEntities;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.item.Rarity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
 {
-    public ItemBuggy(String assetName)
+    public ItemBuggy(Item.Properties properties)
     {
-        super();
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName("arrow");
-        this.setMaxStackSize(1);
+//        this.setMaxStackSize(1);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
     }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            for (int i = 0; i < 4; i++)
+//            {
+//                list.add(new ItemStack(this, 1, i));
+//            }
+//        }
+//    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand hand)
@@ -82,10 +79,10 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
         final float var18 = var15 * var16;
         final float var20 = var14 * var16;
         final double var21 = 5.0D;
-        final Vec3d var23 = var13.addVector(var18 * var21, var17 * var21, var20 * var21);
-        final RayTraceResult var24 = worldIn.rayTraceBlocks(var13, var23, true);
+        final Vec3d var23 = var13.add(var18 * var21, var17 * var21, var20 * var21);
+        final RayTraceResult var24 = worldIn.rayTraceBlocks(new RayTraceContext(var13, var23, RayTraceContext.BlockMode.COLLIDER, RayTraceContext.FluidMode.ANY, playerIn));
 
-        if (var24 == null)
+        if (var24.getType() == RayTraceResult.Type.MISS)
         {
             return new ActionResult<>(ActionResultType.PASS, itemstack);
         }
@@ -94,17 +91,16 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             final Vec3d var25 = playerIn.getLook(var4);
             boolean var26 = false;
             final float var27 = 1.0F;
-            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getEntityBoundingBox().grow(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
-            int var29;
+            final List<?> var28 = worldIn.getEntitiesWithinAABBExcludingEntity(playerIn, playerIn.getBoundingBox().grow(var25.x * var21, var25.y * var21, var25.z * var21).expand(var27, var27, var27));
 
-            for (var29 = 0; var29 < var28.size(); ++var29)
+            for (int i = 0; i < var28.size(); ++i)
             {
-                final Entity var30 = (Entity) var28.get(var29);
+                final Entity var30 = (Entity) var28.get(i);
 
                 if (var30.canBeCollidedWith())
                 {
                     final float var31 = var30.getCollisionBorderSize();
-                    final AxisAlignedBB var32 = var30.getEntityBoundingBox().expand(var31, var31, var31);
+                    final AxisAlignedBB var32 = var30.getBoundingBox().expand(var31, var31, var31);
 
                     if (var32.contains(var13))
                     {
@@ -119,35 +115,38 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
             }
             else
             {
-                if (var24.typeOfHit == RayTraceResult.Type.BLOCK)
+                if (var24.getType() == RayTraceResult.Type.BLOCK)
                 {
-                    var29 = var24.getBlockPos().getX();
-                    int var33 = var24.getBlockPos().getY();
-                    final int var34 = var24.getBlockPos().getZ();
+                    BlockRayTraceResult blockResult = (BlockRayTraceResult) var24;
+                    int x = blockResult.getPos().getX();
+                    int y = blockResult.getPos().getY();
+                    int z = blockResult.getPos().getZ();
 
-                    if (worldIn.getBlockState(new BlockPos(var29, var33, var34)).getBlock() == Blocks.SNOW)
+                    if (worldIn.getBlockState(new BlockPos(x, y, z)).getBlock() == Blocks.SNOW)
                     {
-                        --var33;
+                        --y;
                     }
 
-                    final EntityBuggy var35 = new EntityBuggy(worldIn, var29 + 0.5F, var33 + 1.0F, var34 + 0.5F, itemstack.getItemDamage());
+                    final EntityBuggy var35 = GCEntities.BUGGY.get().create(worldIn);
+                    var35.setBuggyType(EntityBuggy.getTypeFromItem(itemstack.getItem()));
+                    var35.setPosition(x + 0.5F, y + 1.0F, z + 0.5F);
 
-                    if (!worldIn.getCollisionBoxes(var35, var35.getEntityBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
-                    {
-                        return new ActionResult<>(ActionResultType.PASS, itemstack);
-                    }
+//                    if (!worldIn.getCollisionBoxes(var35, var35.getBoundingBox().expand(-0.1D, -0.1D, -0.1D)).isEmpty())
+//                    {
+//                        return new ActionResult<>(ActionResultType.PASS, itemstack);
+//                    } TODO Needed?
 
-                    if (itemstack.hasTagCompound() && itemstack.getTagCompound().hasKey("BuggyFuel"))
+                    if (itemstack.hasTag() && itemstack.getTag().contains("BuggyFuel"))
                     {
-                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, itemstack.getTagCompound().getInteger("BuggyFuel")));
+                        var35.buggyFuelTank.setFluid(new FluidStack(GCFluids.FUEL.getFluid(), itemstack.getTag().getInt("BuggyFuel")));
                     }
 
                     if (!worldIn.isRemote)
                     {
-                        worldIn.spawnEntity(var35);
+                        worldIn.addEntity(var35);
                     }
 
-                    if (!playerIn.capabilities.isCreativeMode)
+                    if (!playerIn.abilities.isCreativeMode)
                     {
                         itemstack.shrink(1);
                     }
@@ -159,17 +158,17 @@ public class ItemBuggy extends Item implements IHoldableItem, ISortableItem
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    public void addInformation(ItemStack item, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
     {
-        if (par1ItemStack.getItemDamage() != 0)
+        EntityBuggy.BuggyType type = EntityBuggy.getTypeFromItem(item.getItem());
+        if (type.getInvSize() != 0)
         {
-            tooltip.add(GCCoreUtil.translate("gui.buggy.storage_space") + ": " + par1ItemStack.getItemDamage() * 18);
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.buggy.storage_space") + ": " + type.getInvSize()));
         }
 
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("BuggyFuel"))
+        if (item.hasTag() && item.getTag().contains("BuggyFuel"))
         {
-            tooltip.add(GCCoreUtil.translate("gui.message.fuel.name") + ": " + par1ItemStack.getTagCompound().getInteger("BuggyFuel") + " / " + EntityBuggy.tankCapacity);
+            tooltip.add(new StringTextComponent(GCCoreUtil.translate("gui.message.fuel.name") + ": " + item.getTag().getInt("BuggyFuel") + " / " + EntityBuggy.tankCapacity));
         }
     }
 

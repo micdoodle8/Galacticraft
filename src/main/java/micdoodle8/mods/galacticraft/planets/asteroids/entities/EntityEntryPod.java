@@ -170,7 +170,7 @@ public class EntityEntryPod extends EntityLanderBase implements IScaleableFuelLe
     @Override
     public boolean canBeCollidedWith()
     {
-        return !this.isDead;
+        return this.isAlive();
     }
 
     @Override

@@ -104,7 +104,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(thisBlock));
+                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(thisBlock));
                 }
                 this.world.setBlockToAir(pos);
             }
@@ -113,7 +113,7 @@ public class TileEntityNasaWorkbench extends TileEntityMulti implements IMultiBl
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(getPos().getX() - 1, getPos().getY() - 1, getPos().getZ() - 1, getPos().getX() + 2, getPos().getY() + 5, getPos().getZ() + 2);

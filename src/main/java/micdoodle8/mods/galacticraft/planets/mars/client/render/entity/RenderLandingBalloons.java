@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.mars.client.model.ModelBalloonParachute;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityLandingBalloons;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
 {
     private IBakedModel balloonModel;
@@ -77,8 +77,8 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
         ClientUtil.drawBakedModel(this.balloonModel);
         GlStateManager.popMatrix();
 
@@ -86,7 +86,7 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
         {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float) x - 1.25F, (float) y - 0.93F, (float) z - 0.3F);
-            GlStateManager.scale(2.5F, 3.0F, 2.5F);
+            GlStateManager.scalef(2.5F, 3.0F, 2.5F);
             this.parachuteModel.renderAll();
             GlStateManager.popMatrix();
         }
@@ -96,7 +96,7 @@ public class RenderLandingBalloons extends EntityRenderer<EntityLandingBalloons>
     @Override
     public boolean shouldRender(EntityLandingBalloons lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(2D, 1D, 2D);
+        AxisAlignedBB axisalignedbb = lander.getBoundingBox().grow(2D, 1D, 2D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

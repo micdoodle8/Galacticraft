@@ -68,7 +68,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -125,13 +125,13 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 //    }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -149,7 +149,7 @@ public class BlockCheese extends Block implements IShiftDescription, ISortableBl
 //    }
 
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;

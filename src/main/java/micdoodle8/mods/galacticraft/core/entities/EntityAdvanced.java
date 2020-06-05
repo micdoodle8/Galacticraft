@@ -1,17 +1,18 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
 import io.netty.buffer.ByteBuf;
+import micdoodle8.mods.galacticraft.core.Annotations;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.NetworkUtil;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -24,11 +25,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     private Map<Field, Object> lastSentData = new HashMap<Field, Object>();
     private boolean networkDataChanged = false;
 
-    public EntityAdvanced(World world)
+    public EntityAdvanced(EntityType<?> type, World world)
     {
-        super(world);
+        super(type, world);
         
-        if (world != null && world.isRemote)
+        if (world.isRemote)
         {
             //Empty packet client->server just to kickstart the server into sending this client an initial packet
             this.fieldCacheServer = new LinkedHashSet<Field>();
@@ -50,7 +51,7 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
      * @return The amount of ticks to wait before sending another packet to this
      * target
      */
-    public abstract int getPacketCooldown(Side side);
+    public abstract int getPacketCooldown(LogicalSide side);
 
     /**
      * Add any additional data to the stream
@@ -96,15 +97,15 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
     public abstract double getPacketRange();
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         this.ticks++;
 
         if (this.isNetworkedEntity())
         {
-            if (!this.world.isRemote && this.ticks % this.getPacketCooldown(Side.CLIENT) == 0)
+            if (!this.world.isRemote && this.ticks % this.getPacketCooldown(LogicalSide.CLIENT) == 0)
             {
                 if (this.fieldCacheClient == null)
                 {
@@ -121,11 +122,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
                 PacketDynamic packet = new PacketDynamic(this);
                 if (networkDataChanged)
                 {
-                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, this.getPacketRange()));
+                    GalacticraftCore.packetPipeline.sendToAllAround(packet, new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
                 }
             }
 
-            if (this.world.isRemote && this.ticks % this.getPacketCooldown(Side.SERVER) == 0)
+            if (this.world.isRemote && this.ticks % this.getPacketCooldown(LogicalSide.SERVER) == 0)
             {
                 if (this.fieldCacheClient == null)  //The target server cache may have been initialised to an empty set
                 {
@@ -155,11 +156,11 @@ public abstract class EntityAdvanced extends Entity implements IPacketReceiver
 
         for (Field field : this.getClass().getFields())
         {
-            if (field.isAnnotationPresent(NetworkedField.class))
+            if (field.isAnnotationPresent(Annotations.NetworkedField.class))
             {
-                NetworkedField f = field.getAnnotation(NetworkedField.class);
+                Annotations.NetworkedField f = field.getAnnotation(Annotations.NetworkedField.class);
 
-                if (f.targetSide() == Side.CLIENT)
+                if (f.targetSide() == LogicalSide.CLIENT)
                 {
                     this.fieldCacheClient.add(field);
                 }

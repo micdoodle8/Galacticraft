@@ -344,7 +344,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.facing = Direction.getHorizontal(nbt.getInteger("facing"));
+        this.facing = Direction.getHorizontal(nbt.getInt("facing"));
         if (GCCoreUtil.getEffectiveSide() == Side.SERVER)
         {
             this.isMaster = nbt.getBoolean("isMaster");
@@ -362,7 +362,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
                     this.updateClientFlag = true;
                 }
             }
-            if (nbt.hasKey("LinkedUUIDMost", 4) && nbt.hasKey("LinkedUUIDLeast", 4))
+            if (nbt.contains("LinkedUUIDMost", 4) && nbt.contains("LinkedUUIDLeast", 4))
             {
                 this.linkedMinerID = new UUID(nbt.getLong("LinkedUUIDMost"), nbt.getLong("LinkedUUIDLeast"));
             }
@@ -370,13 +370,13 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 this.linkedMinerID = null;
             }
-            if (nbt.hasKey("TargetPoints"))
+            if (nbt.contains("TargetPoints"))
             {
                 this.targetPoints.clear();
-                final ListNBT mpList = nbt.getTagList("TargetPoints", 10);
-                for (int j = 0; j < mpList.tagCount(); j++)
+                final ListNBT mpList = nbt.getList("TargetPoints", 10);
+                for (int j = 0; j < mpList.size(); j++)
                 {
-                    CompoundNBT bvTag = mpList.getCompoundTagAt(j);
+                    CompoundNBT bvTag = mpList.getCompound(j);
                     this.targetPoints.add(BlockVec3.readFromNBT(bvTag));
                 }
             }
@@ -398,20 +398,20 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             masterTag.setInteger("x", this.mainBlockPosition.getX());
             masterTag.setInteger("y", this.mainBlockPosition.getY());
             masterTag.setInteger("z", this.mainBlockPosition.getZ());
-            nbt.setTag("masterpos", masterTag);
+            nbt.put("masterpos", masterTag);
         }
-        nbt.setInteger("facing", this.facing.getHorizontalIndex());
+        nbt.putInt("facing", this.facing.getHorizontalIndex());
         if (this.isMaster && this.linkedMinerID != null)
         {
-            nbt.setLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
-            nbt.setLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
+            nbt.putLong("LinkedUUIDMost", this.linkedMinerID.getMostSignificantBits());
+            nbt.putLong("LinkedUUIDLeast", this.linkedMinerID.getLeastSignificantBits());
         }
         ListNBT mpList = new ListNBT();
         for (int j = 0; j < this.targetPoints.size(); j++)
         {
             mpList.appendTag(this.targetPoints.get(j).writeToNBT(new CompoundNBT()));
         }
-        nbt.setTag("TargetPoints", mpList);
+        nbt.put("TargetPoints", mpList);
         return nbt;
     }
 
@@ -646,7 +646,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.1D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
+                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
                 this.world.destroyBlock(pos, false);
             }
@@ -659,7 +659,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     //chest goes above (could be 2 chests or other mods storage)
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -670,7 +670,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_LONG;
@@ -965,9 +965,9 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
         this.targetPoints.clear();
         BlockVec3 posnTarget = new BlockVec3(this);
 
-        if (this.world.provider instanceof WorldProviderAsteroids)
+        if (this.world.getDimension() instanceof WorldProviderAsteroids)
         {
-            ArrayList<BlockVec3> roids = ((WorldProviderAsteroids) this.world.provider).getClosestAsteroidsXZ(posnTarget.x, posnTarget.y, posnTarget.z, this.facing.getIndex(), 100);
+            ArrayList<BlockVec3> roids = ((WorldProviderAsteroids) this.world.getDimension()).getClosestAsteroidsXZ(posnTarget.x, posnTarget.y, posnTarget.z, this.facing.getIndex(), 100);
             if (roids != null && roids.size() > 0)
             {
                 this.targetPoints.addAll(roids);
@@ -1063,7 +1063,7 @@ public class TileEntityMinerBase extends TileBaseElectricBlockWithInventory impl
     public void updateClient(List<Object> data)
     {
         int data1 = (Integer) data.get(1);
-        this.facing = Direction.getFront(data1 & 7);
+        this.facing = Direction.byIndex(data1 & 7);
         this.setMainBlockPos(new BlockPos((Integer) data.get(2), (Integer) data.get(3), (Integer) data.get(4)));
         if (data1 > 7)
         {

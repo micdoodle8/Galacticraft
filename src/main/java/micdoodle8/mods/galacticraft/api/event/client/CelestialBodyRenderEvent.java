@@ -1,10 +1,10 @@
 package micdoodle8.mods.galacticraft.api.event.client;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import net.minecraft.client.renderer.Vector3f;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
-import org.lwjgl.util.vector.Vector3f;
+import net.minecraftforge.eventbus.api.Cancelable;
+import net.minecraftforge.eventbus.api.Event;
 
 public abstract class CelestialBodyRenderEvent extends Event
 {

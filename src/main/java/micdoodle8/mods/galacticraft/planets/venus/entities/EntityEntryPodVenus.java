@@ -195,7 +195,7 @@ public class EntityEntryPodVenus extends EntityLanderBase implements IScaleableF
     @Override
     public boolean canBeCollidedWith()
     {
-        return !this.isDead;
+        return this.isAlive();
     }
 
     @Override

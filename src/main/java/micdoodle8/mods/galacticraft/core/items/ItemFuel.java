@@ -9,21 +9,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemFuel extends Item
 {
-    public ItemFuel(String assetName)
+    public ItemFuel(Item.Properties properties)
     {
-        super();
+        super(properties);
         this.setUnlocalizedName(assetName);
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister par1IconRegister)
     {
         this.itemIcon = par1IconRegister.registerIcon(Constants.TEXTURE_PREFIX + "fuel_flow");
     }*/
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

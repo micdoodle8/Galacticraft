@@ -8,7 +8,7 @@
 //import net.minecraft.util.Direction;
 //import net.minecraft.util.IStringSerializable;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //
 //public class BlockMachine2 extends BlockMachineBase
 //{
@@ -109,7 +109,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        TileEntity tile = worldIn.getTileEntity(pos);
 //        return IMachineSides.addPropertyForTile(state, tile, MACHINESIDES_RENDERTYPE, SIDES);

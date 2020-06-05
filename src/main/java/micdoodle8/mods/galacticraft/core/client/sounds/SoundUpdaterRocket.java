@@ -38,9 +38,9 @@ public class SoundUpdaterRocket extends TickableSound
      * Updates the JList with a new model.
      */
     @Override
-    public void update()
+    public void tick()
     {
-        if (!this.theRocket.isDead)
+        if (this.theRocket.isAlive())
         {
             if (this.theRocket.launchPhase == EnumLaunchPhase.IGNITED.ordinal())
             {
@@ -103,8 +103,8 @@ public class SoundUpdaterRocket extends TickableSound
 
     public void updateSoundLocation(Entity e)
     {
-        this.xPosF = (float) e.posX;
-        this.yPosF = (float) e.posY;
-        this.zPosF = (float) e.posZ;
+        this.x = (float) e.posX;
+        this.y = (float) e.posY;
+        this.z = (float) e.posZ;
     }
 }

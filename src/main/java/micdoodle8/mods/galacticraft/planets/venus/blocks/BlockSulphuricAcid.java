@@ -59,7 +59,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
 //        super.randomDisplayTick(stateIn, worldIn, pos, rand);

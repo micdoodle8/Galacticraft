@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -307,7 +307,7 @@ public class TileEntityOxygenSealer extends TileEntityOxygen implements ITileCli
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockOxygenSealer)
         {
-            return state.getValue(BlockOxygenSealer.FACING);
+            return state.get(BlockOxygenSealer.FACING);
         }
         return Direction.NORTH;
     }

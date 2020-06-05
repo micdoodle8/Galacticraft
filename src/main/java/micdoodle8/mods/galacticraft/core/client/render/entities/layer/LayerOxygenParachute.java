@@ -1,21 +1,21 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerEntity>
+@OnlyIn(Dist.CLIENT)
+public class LayerOxygenParachute extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>
 {
     private final PlayerRenderer playerRenderer;
     public RendererModel[] parachute = new RendererModel[3];
@@ -23,9 +23,10 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
 
     public LayerOxygenParachute(PlayerRenderer playerRendererIn)
     {
+        super(playerRendererIn);
         this.playerRenderer = playerRendererIn;
         float scaleFactor = 0.0F;
-        ModelPlayer modelPlayer = playerRendererIn.getMainModel();
+        PlayerModel<AbstractClientPlayerEntity> modelPlayer = playerRendererIn.getEntityModel();
 
         this.parachute[0] = new RendererModel(modelPlayer, 0, 0).setTextureSize(256, 256);
         this.parachute[0].addBox(-20.0F, -45.0F, -20.0F, 10, 2, 40, scaleFactor);
@@ -52,7 +53,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
+    public void render(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
         {
@@ -64,7 +65,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
 
                 if (usingParachute)
                 {
-                    FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
+                    Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.PLAYER_TEXTURE);
 
                     this.parachute[0].rotateAngleZ = (float) (30F / Constants.RADIANS_TO_DEGREES);
                     this.parachute[2].rotateAngleZ = (float) -(30F / Constants.RADIANS_TO_DEGREES);
@@ -83,7 +84,7 @@ public class LayerOxygenParachute implements LayerRenderer<AbstractClientPlayerE
 
                     GlStateManager.pushMatrix();
 
-                    FMLClientHandler.instance().getClient().textureManager.bindTexture(gearData.getParachute());
+                    Minecraft.getInstance().textureManager.bindTexture(gearData.getParachute());
 
                     this.parachute[0].render(scale);
                     this.parachute[1].render(scale);

@@ -102,7 +102,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 //            if (!this.world.isRemote)
 //            {
 //                this.terraformBubble = new EntityTerraformBubble(this.world, new Vector3(this), this);
-//                this.world.spawnEntity(this.terraformBubble);
+//                this.world.addEntity(this.terraformBubble);
 //            }
 //        }
 
@@ -444,12 +444,12 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
             this.useCount = new int[2];
         }
 
-        if (nbt.hasKey("waterTank"))
+        if (nbt.contains("waterTank"))
         {
             this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
         }
 
-        if (nbt.hasKey("bubbleVisible"))
+        if (nbt.contains("bubbleVisible"))
         {
             this.setBubbleVisible(nbt.getBoolean("bubbleVisible"));
         }
@@ -464,7 +464,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
 
         if (this.waterTank.getFluid() != null)
         {
-            nbt.setTag("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
+            nbt.put("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
         }
 
         nbt.setBoolean("bubbleVisible", this.shouldRenderBubble);
@@ -643,7 +643,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         return new AxisAlignedBB(this.getPos().getX() - this.bubbleSize, this.getPos().getY() - this.bubbleSize, this.getPos().getZ() - this.bubbleSize, this.getPos().getX() + this.bubbleSize, this.getPos().getY() + this.bubbleSize, this.getPos().getZ() + this.bubbleSize);
@@ -673,7 +673,7 @@ public class TileEntityTerraformer extends TileBaseElectricBlockWithInventory im
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMars)
         {
-            return state.getValue(BlockMachineMars.FACING);
+            return state.get(BlockMachineMars.FACING);
         }
         return Direction.NORTH;
     }

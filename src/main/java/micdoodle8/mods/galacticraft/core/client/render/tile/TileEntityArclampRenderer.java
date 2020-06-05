@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityArclampRenderer extends TileEntityRenderer<TileEntityArclamp>
 {
     public static final ResourceLocation lampTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/misc/underoil.png");
@@ -28,7 +28,7 @@ public class TileEntityArclampRenderer extends TileEntityRenderer<TileEntityArcl
 
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
+        GlStateManager.translatef((float) d + 0.5F, (float) d1 + 0.5F, (float) d2 + 0.5F);
         RenderHelper.enableStandardItemLighting();
         GlStateManager.enableRescaleNormal();
 
@@ -37,21 +37,21 @@ public class TileEntityArclampRenderer extends TileEntityRenderer<TileEntityArcl
         case 0:
             break;
         case 1:
-            GlStateManager.rotate(180F, 1F, 0, 0);
+            GlStateManager.rotatef(180F, 1F, 0, 0);
             if (metaFacing < 2)
             {
                 metaFacing ^= 1;
             }
             break;
         case 2:
-            GlStateManager.rotate(90F, 1F, 0, 0);
+            GlStateManager.rotatef(90F, 1F, 0, 0);
             metaFacing ^= 1;
             break;
         case 3:
-            GlStateManager.rotate(90F, -1F, 0, 0);
+            GlStateManager.rotatef(90F, -1F, 0, 0);
             break;
         case 4:
-            GlStateManager.rotate(90F, 0, 0, -1F);
+            GlStateManager.rotatef(90F, 0, 0, -1F);
             metaFacing -= 2;
             if (metaFacing < 0)
             {
@@ -59,7 +59,7 @@ public class TileEntityArclampRenderer extends TileEntityRenderer<TileEntityArcl
             }
             break;
         case 5:
-            GlStateManager.rotate(90F, 0, 0, 1F);
+            GlStateManager.rotatef(90F, 0, 0, 1F);
             metaFacing += 2;
             if (metaFacing > 3)
             {
@@ -68,27 +68,27 @@ public class TileEntityArclampRenderer extends TileEntityRenderer<TileEntityArcl
             break;
         }
 
-        GlStateManager.translate(0, -0.175F, 0);
+        GlStateManager.translatef(0, -0.175F, 0);
 
         switch (metaFacing)
         {
         case 0:
             break;
         case 1:
-            GlStateManager.rotate(180F, 0, 1F, 0);
+            GlStateManager.rotatef(180F, 0, 1F, 0);
             break;
         case 2:
-            GlStateManager.rotate(90F, 0, 1F, 0);
+            GlStateManager.rotatef(90F, 0, 1F, 0);
             break;
         case 3:
-            GlStateManager.rotate(270F, 0, 1F, 0);
+            GlStateManager.rotatef(270F, 0, 1F, 0);
             break;
         }
 
         this.bindTexture(TileEntityArclampRenderer.lampTexture);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.rotate(45F, -1F, 0, 0);
-        GlStateManager.scale(0.048F, 0.048F, 0.048F);
+        GlStateManager.rotatef(45F, -1F, 0, 0);
+        GlStateManager.scalef(0.048F, 0.048F, 0.048F);
         ClientUtil.drawBakedModel(TileEntityArclampRenderer.lampMetal);
         RenderHelper.disableStandardItemLighting();
 

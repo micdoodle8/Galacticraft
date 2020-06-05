@@ -79,7 +79,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -137,7 +137,7 @@ public class BlockBasicAsteroids extends Block implements IDetectableResource, I
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {

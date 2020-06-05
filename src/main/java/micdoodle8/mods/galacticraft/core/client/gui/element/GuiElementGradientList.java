@@ -1,15 +1,17 @@
 package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
+import net.minecraft.client.gui.FocusableGui;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import org.lwjgl.input.Mouse;
+import net.minecraft.client.gui.IGuiEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class GuiElementGradientList extends AbstractGui
+public class GuiElementGradientList extends FocusableGui
 {
     public static class ListElement
     {
@@ -54,35 +56,41 @@ public class GuiElementGradientList extends AbstractGui
         }
     }
 
+    @Override
+    public List<? extends IGuiEventListener> children()
+    {
+        return Collections.emptyList();
+    }
+
     public void draw(int mousePosX, int mousePosY)
     {
         if (this.sliderEnabled)
         {
             if (this.sliderGrabbed || mousePosX >= this.xPosition + this.width - 9 && mousePosX < this.xPosition + this.width && mousePosY >= this.yPosition && mousePosY < this.yPosition + this.height)
             {
-                if (Mouse.isButtonDown(0))
-                {
-                    this.sliderGrabbed = true;
-
-                    if (this.lastMousePosY > 0)
-                    {
-                        if (mousePosY >= this.sliderPos && mousePosY < this.sliderPos + 15)
-                        {
-                            int deltaY = this.lastMousePosY - this.sliderPos;
-                            this.sliderPos = mousePosY - deltaY;
-                        }
-                        else
-                        {
-                            this.sliderPos = mousePosY - 7;
-                        }
-                    }
-
-                    this.lastMousePosY = mousePosY;
-                }
-                else
-                {
-                    this.sliderGrabbed = false;
-                }
+//                if (Mouse.isButtonDown(0))
+//                {
+//                    this.sliderGrabbed = true;
+//
+//                    if (this.lastMousePosY > 0)
+//                    {
+//                        if (mousePosY >= this.sliderPos && mousePosY < this.sliderPos + 15)
+//                        {
+//                            int deltaY = this.lastMousePosY - this.sliderPos;
+//                            this.sliderPos = mousePosY - deltaY;
+//                        }
+//                        else
+//                        {
+//                            this.sliderPos = mousePosY - 7;
+//                        }
+//                    }
+//
+//                    this.lastMousePosY = mousePosY;
+//                }
+//                else
+//                {
+//                    this.sliderGrabbed = false;
+//                }
             }
             else
             {
@@ -90,41 +98,41 @@ public class GuiElementGradientList extends AbstractGui
             }
         }
 
-        if (Mouse.isButtonDown(0))
-        {
-            if (mousePosX >= this.xPosition && mousePosX < this.xPosition + this.width - 10 && mousePosY >= this.yPosition && mousePosY < this.yPosition + this.height)
-            {
-                int clickPosY = mousePosY - this.yPosition + (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
-                this.selectedIndex = clickPosY / GuiElementGradientList.BUTTON_HEIGHT;
-
-                if (this.selectedIndex < 0 || this.selectedIndex >= this.listContents.size())
-                {
-                    this.selectedIndex = -1;
-                }
-            }
-        }
+//        if (Mouse.isButtonDown(0))
+//        {
+//            if (mousePosX >= this.xPosition && mousePosX < this.xPosition + this.width - 10 && mousePosY >= this.yPosition && mousePosY < this.yPosition + this.height)
+//            {
+//                int clickPosY = mousePosY - this.yPosition + (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
+//                this.selectedIndex = clickPosY / GuiElementGradientList.BUTTON_HEIGHT;
+//
+//                if (this.selectedIndex < 0 || this.selectedIndex >= this.listContents.size())
+//                {
+//                    this.selectedIndex = -1;
+//                }
+//            }
+//        } TODO Gradient lists
 
         this.sliderPos = Math.min(Math.max(this.yPosition, this.sliderPos), this.yPosition + this.height - 15);
 
-        this.drawGradientRect(this.xPosition, this.yPosition, this.xPosition + this.width - 10, this.yPosition + this.height, ColorUtil.to32BitColor(255, 30, 30, 30), ColorUtil.to32BitColor(255, 30, 30, 30));
-        this.drawGradientRect(this.xPosition + this.width - 9, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 50, 50, 50), ColorUtil.to32BitColor(255, 50, 50, 50));
+        this.fillGradient(this.xPosition, this.yPosition, this.xPosition + this.width - 10, this.yPosition + this.height, ColorUtil.to32BitColor(255, 30, 30, 30), ColorUtil.to32BitColor(255, 30, 30, 30));
+        this.fillGradient(this.xPosition + this.width - 9, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 50, 50, 50), ColorUtil.to32BitColor(255, 50, 50, 50));
         int sliderColor = this.sliderEnabled ? ColorUtil.to32BitColor(255, 90, 90, 90) : ColorUtil.to32BitColor(255, 40, 40, 40);
-        this.drawGradientRect(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width, this.sliderPos + 15, sliderColor, sliderColor);
+        this.fillGradient(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width, this.sliderPos + 15, sliderColor, sliderColor);
 
-        AbstractGui.drawRect(this.xPosition + this.width - 1, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        AbstractGui.drawRect(this.xPosition + this.width - 10, this.yPosition, this.xPosition + this.width - 9, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        AbstractGui.drawRect(this.xPosition, this.yPosition, this.xPosition + 1, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
-        AbstractGui.drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
-        AbstractGui.drawRect(this.xPosition, this.yPosition + this.height - 1, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.fill(this.xPosition + this.width - 1, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.fill(this.xPosition + this.width - 10, this.yPosition, this.xPosition + this.width - 9, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.fill(this.xPosition, this.yPosition, this.xPosition + 1, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.fill(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + 1, ColorUtil.to32BitColor(255, 0, 0, 0));
+        AbstractGui.fill(this.xPosition, this.yPosition + this.height - 1, this.xPosition + this.width, this.yPosition + this.height, ColorUtil.to32BitColor(255, 0, 0, 0));
 
         sliderColor = this.sliderEnabled ? ColorUtil.to32BitColor(255, 120, 120, 120) : ColorUtil.to32BitColor(255, 60, 60, 60);
-        AbstractGui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 1, this.xPosition + this.width - 8, this.sliderPos + 14, sliderColor);
-        AbstractGui.drawRect(this.xPosition + this.width - 2, this.sliderPos + 1, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
-        AbstractGui.drawRect(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width - 1, this.sliderPos + 1, sliderColor);
-        AbstractGui.drawRect(this.xPosition + this.width - 9, this.sliderPos + 15, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
+        AbstractGui.fill(this.xPosition + this.width - 9, this.sliderPos + 1, this.xPosition + this.width - 8, this.sliderPos + 14, sliderColor);
+        AbstractGui.fill(this.xPosition + this.width - 2, this.sliderPos + 1, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
+        AbstractGui.fill(this.xPosition + this.width - 9, this.sliderPos, this.xPosition + this.width - 1, this.sliderPos + 1, sliderColor);
+        AbstractGui.fill(this.xPosition + this.width - 9, this.sliderPos + 15, this.xPosition + this.width - 1, this.sliderPos + 14, sliderColor);
 
         int currentDrawHeight = this.yPosition + 1 - (int) Math.floor((this.listContents.size() * GuiElementGradientList.BUTTON_HEIGHT - this.height) * this.getSliderPercentage());
-        FontRenderer fontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
+        FontRenderer fontRenderer = Minecraft.getInstance().fontRenderer;
 
         for (int i = 0; i < this.listContents.size(); i++)
         {
@@ -142,7 +150,7 @@ public class GuiElementGradientList extends AbstractGui
 
                     int color = i == this.selectedIndex ? ColorUtil.to32BitColor(255, 35, 35, 35) : ColorUtil.to32BitColor(255, 25, 25, 25);
 
-                    AbstractGui.drawRect(this.xPosition + 1, yCoord0, this.xPosition + this.width - 10, yCoord1, color);
+                    AbstractGui.fill(this.xPosition + 1, yCoord0, this.xPosition + this.width - 10, yCoord1, color);
 
                     if (currentDrawHeight + GuiElementGradientList.BUTTON_HEIGHT / 2 - fontRenderer.FONT_HEIGHT / 2 > this.yPosition && currentDrawHeight + GuiElementGradientList.BUTTON_HEIGHT / 2 + fontRenderer.FONT_HEIGHT / 2 < this.yPosition + this.height)
                     {

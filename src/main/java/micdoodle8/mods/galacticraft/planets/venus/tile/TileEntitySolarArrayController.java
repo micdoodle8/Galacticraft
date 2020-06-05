@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.api.transmission.tile.ITransmitter;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectricalSource;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
@@ -26,7 +26,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.Vec3i;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -127,7 +126,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
             {
                 this.solarStrength = 0;
                 int arraySizeWithinRange = 0;
-                if (this.world.isDaytime() && (this.world.provider instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
+                if (this.world.isDaytime() && (this.world.getDimension() instanceof IGalacticraftWorldProvider || !this.world.isRaining() && !this.world.isThundering()))
                 {
                     for (ITransmitter transmitter : solarArray)
                     {
@@ -166,10 +165,10 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
         float angle = this.world.getCelestialAngle(1.0F) - 0.7845194F < 0 ? 1.0F - 0.7845194F : -0.7845194F;
         float celestialAngle = (this.world.getCelestialAngle(1.0F) + angle) * 360.0F;
-        if (!(this.world.provider instanceof WorldProviderSpaceStation)) celestialAngle += 12.5F;
-        if (this.world.provider instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
+        if (!(this.world.getDimension() instanceof DimensionSpaceStation)) celestialAngle += 12.5F;
+        if (this.world.getDimension() instanceof WorldProviderVenus) celestialAngle = 180F - celestialAngle;
         celestialAngle %= 360;
-        boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.provider instanceof WorldProviderSpaceStation;
+        boolean isDaytime = this.world.isDaytime() && (celestialAngle < 180.5F || celestialAngle > 359.5F) || this.world.getDimension() instanceof DimensionSpaceStation;
 
         if (!this.world.isRemote)
         {
@@ -199,13 +198,13 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
 
     public float getSolarBoost()
     {
-        float result = (float) (this.world.provider instanceof ISolarLevel ? ((ISolarLevel) this.world.provider).getSolarEnergyMultiplier() : 1.0F);
-        if (this.world.provider instanceof WorldProviderSpaceStation)
+        float result = (float) (this.world.getDimension() instanceof ISolarLevel ? ((ISolarLevel) this.world.getDimension()).getSolarEnergyMultiplier() : 1.0F);
+        if (this.world.getDimension() instanceof DimensionSpaceStation)
         {
             // 10% boost for new solar on space stations
             result *= 1.1F;
         }
-        if (this.world.provider instanceof WorldProviderVenus)
+        if (this.world.getDimension() instanceof WorldProviderVenus)
         {
             if (this.pos.getY() > 90)
             {
@@ -227,7 +226,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         super.readFromNBT(nbt);
         this.storage.setCapacity(nbt.getFloat("maxEnergy"));
         this.setDisabled(0, nbt.getBoolean("disabled"));
-        this.disableCooldown = nbt.getInteger("disabledCooldown");
+        this.disableCooldown = nbt.getInt("disabledCooldown");
 
         this.initialised = false;
     }
@@ -237,7 +236,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
     {
         super.writeToNBT(nbt);
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
-        nbt.setInteger("disabledCooldown", this.disableCooldown);
+        nbt.putInt("disabledCooldown", this.disableCooldown);
         nbt.setBoolean("disabled", this.getDisabled(0));
 
         return nbt;
@@ -261,7 +260,7 @@ public class TileEntitySolarArrayController extends TileBaseUniversalElectricalS
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockSolarArrayController)
         {
-            return state.getValue(BlockSolarArrayController.FACING);
+            return state.get(BlockSolarArrayController.FACING);
         }
         return Direction.NORTH;
     }

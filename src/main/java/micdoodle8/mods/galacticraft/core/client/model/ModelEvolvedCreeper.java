@@ -1,17 +1,16 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedCreeper;
+import net.minecraft.client.renderer.entity.model.CreeperModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class ModelEvolvedCreeper extends ModelBase
+@OnlyIn(Dist.CLIENT)
+public class ModelEvolvedCreeper extends CreeperModel<EntityEvolvedCreeper>
 {
     RendererModel leftOxygenTank;
     RendererModel rightOxygenTank;
@@ -196,84 +195,86 @@ public class ModelEvolvedCreeper extends ModelBase
     }
 
     @Override
-    public void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7)
+//    public void render(EntityEvolvedCreeper entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(EntityEvolvedCreeper entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        this.setRotationAngles(par2, par3, par4, par5, par6, par7);
+        this.setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
 
         if (this.isChild)
         {
             float f6 = 2.0F;
             GL11.glPushMatrix();
             GL11.glScalef(1.5F / f6, 1.5F / f6, 1.5F / f6);
-            GL11.glTranslatef(0.0F, 16.0F * par7, 0.0F);
-            this.head.render(par7);
-            this.oxygenMask.render(par7);
+            GL11.glTranslatef(0.0F, 16.0F * scale, 0.0F);
+            this.head.render(scale);
+            this.oxygenMask.render(scale);
             GL11.glPopMatrix();
             GL11.glPushMatrix();
             GL11.glScalef(1.0F / f6, 1.0F / f6, 1.0F / f6);
-            GL11.glTranslatef(0.0F, 24.0F * par7, 0.0F);
-            this.leftOxygenTank.render(par7);
-            this.rightOxygenTank.render(par7);
-            this.tubeRight2.render(par7);
-            this.tubeLeft1.render(par7);
-            this.tubeRight3.render(par7);
-            this.tubeRight4.render(par7);
-            this.tubeRight5.render(par7);
-            this.tubeLeft6.render(par7);
-            this.tubeRight7.render(par7);
-            this.tubeRight1.render(par7);
-            this.tubeLeft2.render(par7);
-            this.tubeLeft3.render(par7);
-            this.tubeLeft4.render(par7);
-            this.tubeLeft5.render(par7);
-            this.tubeLeft7.render(par7);
-            this.tubeRight6.render(par7);
-            this.tubeLeft8.render(par7);
-            this.body.render(par7);
-            this.leg1.render(par7);
-            this.leg2.render(par7);
-            this.leg3.render(par7);
-            this.leg4.render(par7);
+            GL11.glTranslatef(0.0F, 24.0F * scale, 0.0F);
+            this.leftOxygenTank.render(scale);
+            this.rightOxygenTank.render(scale);
+            this.tubeRight2.render(scale);
+            this.tubeLeft1.render(scale);
+            this.tubeRight3.render(scale);
+            this.tubeRight4.render(scale);
+            this.tubeRight5.render(scale);
+            this.tubeLeft6.render(scale);
+            this.tubeRight7.render(scale);
+            this.tubeRight1.render(scale);
+            this.tubeLeft2.render(scale);
+            this.tubeLeft3.render(scale);
+            this.tubeLeft4.render(scale);
+            this.tubeLeft5.render(scale);
+            this.tubeLeft7.render(scale);
+            this.tubeRight6.render(scale);
+            this.tubeLeft8.render(scale);
+            this.body.render(scale);
+            this.leg1.render(scale);
+            this.leg2.render(scale);
+            this.leg3.render(scale);
+            this.leg4.render(scale);
             GL11.glPopMatrix();
         }
         else
         {
-            this.leftOxygenTank.render(par7);
-            this.rightOxygenTank.render(par7);
-            this.tubeRight2.render(par7);
-            this.tubeLeft1.render(par7);
-            this.tubeRight3.render(par7);
-            this.tubeRight4.render(par7);
-            this.tubeRight5.render(par7);
-            this.tubeLeft6.render(par7);
-            this.tubeRight7.render(par7);
-            this.tubeRight1.render(par7);
-            this.tubeLeft2.render(par7);
-            this.tubeLeft3.render(par7);
-            this.tubeLeft4.render(par7);
-            this.tubeLeft5.render(par7);
-            this.tubeLeft7.render(par7);
-            this.tubeRight6.render(par7);
-            this.tubeLeft8.render(par7);
-            this.oxygenMask.render(par7);
-            this.head.render(par7);
-            this.body.render(par7);
-            this.leg1.render(par7);
-            this.leg2.render(par7);
-            this.leg3.render(par7);
-            this.leg4.render(par7);
+            this.leftOxygenTank.render(scale);
+            this.rightOxygenTank.render(scale);
+            this.tubeRight2.render(scale);
+            this.tubeLeft1.render(scale);
+            this.tubeRight3.render(scale);
+            this.tubeRight4.render(scale);
+            this.tubeRight5.render(scale);
+            this.tubeLeft6.render(scale);
+            this.tubeRight7.render(scale);
+            this.tubeRight1.render(scale);
+            this.tubeLeft2.render(scale);
+            this.tubeLeft3.render(scale);
+            this.tubeLeft4.render(scale);
+            this.tubeLeft5.render(scale);
+            this.tubeLeft7.render(scale);
+            this.tubeRight6.render(scale);
+            this.tubeLeft8.render(scale);
+            this.oxygenMask.render(scale);
+            this.head.render(scale);
+            this.body.render(scale);
+            this.leg1.render(scale);
+            this.leg2.render(scale);
+            this.leg3.render(scale);
+            this.leg4.render(scale);
         }
     }
 
-    public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6)
+    @Override
+    public void setRotationAngles(EntityEvolvedCreeper entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor)
     {
-        this.oxygenMask.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
-        this.oxygenMask.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
-        this.head.rotateAngleY = par4 / Constants.RADIANS_TO_DEGREES;
-        this.head.rotateAngleX = par5 / Constants.RADIANS_TO_DEGREES;
-        this.leg1.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
-        this.leg2.rotateAngleX = MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2;
-        this.leg3.rotateAngleX = MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2;
-        this.leg4.rotateAngleX = MathHelper.cos(par1 * 0.6662F) * 1.4F * par2;
+        this.oxygenMask.rotateAngleY = netHeadYaw / Constants.RADIANS_TO_DEGREES;
+        this.oxygenMask.rotateAngleX = headPitch / Constants.RADIANS_TO_DEGREES;
+        this.head.rotateAngleY = netHeadYaw / Constants.RADIANS_TO_DEGREES;
+        this.head.rotateAngleX = headPitch / Constants.RADIANS_TO_DEGREES;
+        this.leg1.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+        this.leg2.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.1415927F) * 1.4F * limbSwingAmount;
+        this.leg3.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F + 3.1415927F) * 1.4F * limbSwingAmount;
+        this.leg4.rotateAngleX = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
     }
 }

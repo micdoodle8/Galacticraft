@@ -14,7 +14,7 @@
 //import net.minecraft.util.EnumParticleTypes;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,7 +54,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
 //    {
 //        return null;
 //    }
@@ -140,7 +140,7 @@
 //
 //    private void checkOxygen(World world, BlockPos pos, BlockState state)
 //    {
-//        if (world.provider instanceof IGalacticraftWorldProvider)
+//        if (world.getDimension() instanceof IGalacticraftWorldProvider)
 //        {
 //            if (OxygenUtil.checkTorchHasOxygen(world, pos))
 //            {
@@ -158,7 +158,7 @@
 //        }
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
@@ -172,10 +172,10 @@
 //        if (enumfacing.getAxis().isHorizontal())
 //        {
 //            Direction enumfacing1 = enumfacing.getOpposite();
-//            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double) enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double) enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+//            worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + d4 * (double) enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D, new int[0]);
 //            if (this == GCBlocks.unlitTorchLit)
 //            {
-//                worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4 * (double) enumfacing1.getFrontOffsetX(), d1 + d3, d2 + d4 * (double) enumfacing1.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D, new int[0]);
+//                worldIn.spawnParticle(EnumParticleTypes.FLAME, d0 + d4 * (double) enumfacing1.getXOffset(), d1 + d3, d2 + d4 * (double) enumfacing1.getZOffset(), 0.0D, 0.0D, 0.0D, new int[0]);
 //            }
 //        }
 //        else
@@ -191,7 +191,7 @@
 //    @Override
 //    public void onOxygenRemoved(World world, BlockPos pos, BlockState state)
 //    {
-//        if (world.provider instanceof IGalacticraftWorldProvider)
+//        if (world.getDimension() instanceof IGalacticraftWorldProvider)
 //        {
 //            Direction enumfacing = state.get(FACING);
 //            world.setBlockState(pos, this.unlitVersion.getDefaultState().with(FACING, enumfacing), 2);
@@ -201,7 +201,7 @@
 //    @Override
 //    public void onOxygenAdded(World world, BlockPos pos, BlockState state)
 //    {
-//        if (world.provider instanceof IGalacticraftWorldProvider)
+//        if (world.getDimension() instanceof IGalacticraftWorldProvider)
 //        {
 //            Direction enumfacing = state.get(FACING);
 //            world.setBlockState(pos, this.litVersion.getDefaultState().with(FACING, enumfacing), 2);
@@ -209,7 +209,7 @@
 //    }
 //
 //    @Override
-//    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
+//    public List<ItemStack> getDrops(IBlockReader world, BlockPos pos, BlockState state, int fortune)
 //    {
 //        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 //        ret.add(new ItemStack(this.litVersion));
@@ -223,7 +223,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;

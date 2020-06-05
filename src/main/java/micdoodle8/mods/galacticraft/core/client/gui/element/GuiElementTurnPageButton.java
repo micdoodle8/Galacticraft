@@ -2,32 +2,32 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class GuiElementTurnPageButton extends Button
+@OnlyIn(Dist.CLIENT)
+public class GuiElementTurnPageButton extends Widget
 {
     private final boolean nextPage;
-    private static final ResourceLocation background = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/bookleft.png");
+    private static final ResourceLocation BACKGROUND = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/bookleft.png");
 
-    public GuiElementTurnPageButton(int par1, int par2, int par3, boolean par4)
+    public GuiElementTurnPageButton(int par2, int par3, boolean par4)
     {
-        super(par1, par2, par3, 23, 13, "");
+        super(par2, par3, 23, 13, "");
         this.nextPage = par4;
     }
 
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partial)
+    public void render(int mouseX, int mouseY, float partial)
     {
         if (this.visible)
         {
-            boolean var4 = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+            boolean var4 = mouseX >= this.x && mouseY >= this.y && mouseX < this.x + this.width && mouseY < this.y + this.height;
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            par1Minecraft.getTextureManager().bindTexture(GuiElementTurnPageButton.background);
+            Minecraft.getInstance().getTextureManager().bindTexture(GuiElementTurnPageButton.BACKGROUND);
             int var5 = 0;
             int var6 = 192;
 
@@ -41,7 +41,7 @@ public class GuiElementTurnPageButton extends Button
                 var6 += 13;
             }
 
-            this.drawTexturedModalRect(this.x, this.y, var5, var6, 23, 13);
+            this.blit(this.x, this.y, var5, var6, 23, 13);
         }
     }
 }

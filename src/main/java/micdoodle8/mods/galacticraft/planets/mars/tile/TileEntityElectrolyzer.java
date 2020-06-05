@@ -212,18 +212,18 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("processTicks");
+        this.processTicks = nbt.getInt("processTicks");
 
-        if (nbt.hasKey("waterTank"))
+        if (nbt.contains("waterTank"))
         {
             this.waterTank.readFromNBT(nbt.getCompoundTag("waterTank"));
         }
 
-        if (nbt.hasKey("gasTank"))
+        if (nbt.contains("gasTank"))
         {
             this.liquidTank.readFromNBT(nbt.getCompoundTag("gasTank"));
         }
-        if (nbt.hasKey("gasTank2"))
+        if (nbt.contains("gasTank2"))
         {
             this.liquidTank2.readFromNBT(nbt.getCompoundTag("gasTank2"));
         }
@@ -233,20 +233,20 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("processTicks", this.processTicks);
+        nbt.putInt("processTicks", this.processTicks);
 
         if (this.waterTank.getFluid() != null)
         {
-            nbt.setTag("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
+            nbt.put("waterTank", this.waterTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.liquidTank.getFluid() != null)
         {
-            nbt.setTag("gasTank", this.liquidTank.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank", this.liquidTank.writeToNBT(new CompoundNBT()));
         }
         if (this.liquidTank2.getFluid() != null)
         {
-            nbt.setTag("gasTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank2", this.liquidTank2.writeToNBT(new CompoundNBT()));
         }
 
         return nbt;
@@ -755,7 +755,7 @@ public class TileEntityElectrolyzer extends TileBaseElectricBlockWithInventory i
     	BlockState state = this.world.getBlockState(getPos());
     	if (state.getBlock() instanceof BlockMachineMarsT2)
     	{
-    		return state.getValue(BlockMachineMarsT2.FACING);
+    		return state.get(BlockMachineMarsT2.FACING);
     	}
     	return Direction.NORTH;
     }

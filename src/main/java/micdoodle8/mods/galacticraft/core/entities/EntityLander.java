@@ -3,23 +3,30 @@ package micdoodle8.mods.galacticraft.core.entities;
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
-import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
+import micdoodle8.mods.galacticraft.core.client.GCParticles;
+import micdoodle8.mods.galacticraft.core.client.fx.EntityParticleData;
+import micdoodle8.mods.galacticraft.core.client.fx.ParticleLanderFlame;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,15 +36,26 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 {
     private double lastMotionY;
 
-    public EntityLander(World world)
+    public EntityLander(EntityType<EntityLander> type, World world)
     {
-        super(world);
-        this.setSize(3.0F, 4.25F);
+        super(type, world);
     }
 
     public EntityLander(ServerPlayerEntity player)
     {
-        super(player, 0.0F);
+        super(GCEntities.LANDER.get(), player);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
+    }
+
+    @Override
+    protected void registerData()
+    {
+
     }
 
     @Override
@@ -53,32 +71,32 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
-        this.lastMotionY = this.motionY;
+        this.lastMotionY = this.getMotion().y;
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(nbt);
+        super.readAdditional(nbt);
 
-        this.lastMotionY = this.motionY;
+        this.lastMotionY = this.getMotion().y;
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(nbt);
+        super.writeAdditional(nbt);
     }
 
-    @Override
-    public String getName()
-    {
-        return GCCoreUtil.translate("container.lander.name");
-    }
+//    @Override
+//    public String getName()
+//    {
+//        return GCCoreUtil.translate("container.lander.name");
+//    }
 
     @Override
     public boolean hasCustomName()
@@ -106,7 +124,7 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
         if (this.getPassengers().isEmpty() && player instanceof ServerPlayerEntity)
         {
-            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
+//            GCCoreUtil.openParachestInv((ServerPlayerEntity) player, this);
             return true;
         }
         else if (player instanceof ServerPlayerEntity)
@@ -151,10 +169,10 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             this.rotationYaw += 0.5F * turnFactor;
             return true;
         case 4:
-            this.motionY = Math.min(this.motionY + 0.03F, this.posY < 90 ? -0.15 : -1.0);
+            this.setMotion(getMotion().x, Math.min(this.getMotion().y + 0.03F, this.posY < 90 ? -0.15 : -1.0), getMotion().z);
             return true;
         case 5:
-            this.motionY = Math.min(this.motionY - 0.022F, -1.0);
+            this.setMotion(getMotion().x, Math.min(this.getMotion().y - 0.022F, -1.0), getMotion().z);
             return true;
         }
 
@@ -162,32 +180,22 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     }
 
     @Override
-    public boolean shouldSpawnParticles()
+    public void spawnParticles()
     {
-        return this.ticks > 40 && this.rotationPitch != 0.0000001F;
-    }
+        if (this.ticks > 40 && this.rotationPitch != 0.0000001F)
+        {
+            double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
+            final double x1 = 4 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+            final double z1 = 4 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
+            final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D));
 
-    @Override
-    public Map<Vector3, Vector3> getParticleMap()
-    {
-        double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
-        final double x1 = 4 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
-        final double z1 = 4 * Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
-        final double y1 = -4 * Math.abs(Math.cos(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D));
-
-        new Vector3(this);
-
-        final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
-        particleMap.put(new Vector3(this.posX, this.posY + 1D + this.motionY / 2, this.posZ), new Vector3(x1, y1 + this.motionY / 2, z1));
-        return particleMap;
-    }
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ)
-    {
-        LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
-        return new ParticleLanderFlame(this.world, x, y, z, motX, motY, motZ, passenger);
+            final Map<Vector3, Vector3> particleMap = new HashMap<Vector3, Vector3>();
+            particleMap.put(new Vector3(), new Vector3(x1, y1 + this.getMotion().y / 2, z1));
+            LivingEntity passenger = this.getPassengers().isEmpty() || !(this.getPassengers().get(0) instanceof LivingEntity) ? null : (LivingEntity) this.getPassengers().get(0);
+            this.world.addParticle(new EntityParticleData(GCParticles.LANDER_FLAME, passenger != null ? passenger.getUniqueID() : getUniqueID()),
+                    this.posX, this.posY + 1D + this.getMotion().y / 2, this.posZ,
+                    x1, y1 + this.getMotion().y / 2, z1);
+        }
     }
 
     @Override
@@ -199,14 +207,13 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
         {
             if (!this.onGround)
             {
-                this.motionY -= 0.008D;
+                this.setMotion(getMotion().add(0.0, -0.008D, 0.0));
             }
 
             double motY = -1 * Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
             double motX = Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * motY;
             double motZ = Math.sin(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * motY;
-            this.motionX = motX / 2.0F;
-            this.motionZ = motZ / 2.0F;
+            this.setMotion(motX / 2.0, getMotion().y, motZ / 2.0);
         }
     }
 
@@ -226,20 +233,21 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
             {
                 for (Entity entity : this.getPassengers())
                 {
-                    entity.dismountRidingEntity();
+                    entity.stopRiding();
                     if (entity instanceof ServerPlayerEntity)
                     {
                         GalacticraftCore.packetPipeline.sendTo(new PacketSimple(EnumSimplePacket.C_RESET_THIRD_PERSON, GCCoreUtil.getDimensionID(this.world), new Object[] {}), (ServerPlayerEntity) entity);
                     }
-                    entity.motionX = 0;
-                    entity.motionY = 0;
-                    entity.motionZ = 0;
+                    entity.setMotion(0.0, 0.0, 0.0);
                     entity.setPosition(entity.posX, this.posY + this.getMountedYOffset(), entity.posZ);
-                    this.world.updateEntityWithOptionalForce(entity, false);
+                    if (this.world instanceof ServerWorld)
+                    {
+                        ((ServerWorld) this.world).chunkCheck(entity);
+                    }
                 }
-                this.world.createExplosion(this, this.posX, this.posY, this.posZ, 12, true);
+                this.world.createExplosion(this, this.posX, this.posY, this.posZ, 12, Explosion.Mode.BREAK);
 
-                this.setDead();
+                this.remove();
             }
         }
     }
@@ -254,10 +262,10 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
 
         if (this.ticks >= 40 && this.ticks < 45)
         {
-            this.motionY = this.getInitialMotionY();
+            this.setMotion(this.getMotion().x, this.getInitialMotionY(), this.getMotion().z);
         }
 
-        return new Vector3(this.motionX, this.ticks < 40 ? 0 : this.motionY, this.motionZ);
+        return new Vector3(this.getMotion().x, this.ticks < 40 ? 0 : this.getMotion().y, this.getMotion().z);
     }
 
     @Override
@@ -311,6 +319,6 @@ public class EntityLander extends EntityLanderBase implements IIgnoreShift, ICam
     @Override
     public boolean canBeCollidedWith()
     {
-        return !this.isDead;
+        return this.isAlive();
     }
 }

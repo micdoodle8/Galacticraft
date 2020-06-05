@@ -26,7 +26,7 @@ public class TileEntityLandingPadSingle extends TileEntity implements ITickable
                 {
                     final TileEntity tile = this.world.getTileEntity(new BlockPos(x, this.getPos().getY(), z));
 
-                    if (tile instanceof TileEntityLandingPadSingle && !tile.isInvalid() && ((TileEntityLandingPadSingle)tile).corner == 0)
+                    if (tile instanceof TileEntityLandingPadSingle && !tile.isRemoved() && ((TileEntityLandingPadSingle)tile).corner == 0)
                     {
                         attachedLaunchPads.add(tile);
                     }

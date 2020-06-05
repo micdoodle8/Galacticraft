@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import net.minecraft.item.ItemStack;
+
 public interface IShiftDescription
 {
-    String getShiftDescription(int meta);
+    String getShiftDescription(ItemStack stack);
 
-    boolean showDescription(int meta);
+    boolean showDescription(ItemStack stack);
 }

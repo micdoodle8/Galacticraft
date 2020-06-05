@@ -29,7 +29,7 @@ public class EventHandlerVenus
             {
                 if (e.ticksExisted % 20 == 1 && e instanceof LivingEntity)
                 {
-                    if (event.world.isMaterialInBB(e.getEntityBoundingBox().grow(-0.1D, -0.4D, -0.1D), VenusModule.acidMaterial))
+                    if (event.world.isMaterialInBB(e.getBoundingBox().grow(-0.1D, -0.4D, -0.1D), VenusModule.acidMaterial))
                     {
                         e.attackEntityFrom(DamageSourceGC.acid, 3.0F);
                     }

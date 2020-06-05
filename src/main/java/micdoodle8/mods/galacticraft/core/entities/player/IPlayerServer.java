@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.Vec3d;
 
 public interface IPlayerServer
 {
@@ -13,9 +14,9 @@ public interface IPlayerServer
 
     boolean dismountEntity(ServerPlayerEntity player, Entity par1Entity);
 
-    void move(ServerPlayerEntity player, MoverType type, double x, double y, double z);
+    void move(ServerPlayerEntity player, MoverType type, Vec3d pos);
 
-    boolean wakeUpPlayer(ServerPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn);
+//    boolean wakeUpPlayer(ServerPlayerEntity player, boolean immediately, boolean updateWorldFlag, boolean setSpawn); TODO Cryo chamber
 
     float attackEntityFrom(ServerPlayerEntity player, DamageSource par1DamageSource, float par2);
 

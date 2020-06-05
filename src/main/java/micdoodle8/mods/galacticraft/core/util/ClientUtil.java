@@ -19,9 +19,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.entity.model.RendererModel;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.Item;
@@ -41,7 +43,7 @@ import org.lwjgl.opengl.GL11;
 import java.io.IOException;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ClientUtil
 {
     /**
@@ -58,45 +60,45 @@ public class ClientUtil
         return (long) (Minecraft.getInstance().world.getTotalWorldTime() * 66.666666666666);
     }
 
-    public static void addVariant(String modID, String name, String... variants)
-    {
-//        Item itemBlockVariants = GameRegistry.findItem(modID, name);
-        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(modID, name));
-        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
-        for (int i = 0; i < variants.length; ++i)
-        {
-            variants0[i] = new ResourceLocation(modID + ":" + variants[i]);
-        }
-        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
-    }
+//    public static void addVariant(String modID, String name, String... variants)
+//    {
+////        Item itemBlockVariants = GameRegistry.findItem(modID, name);
+//        Item itemBlockVariants = Item.REGISTRY.getObject(new ResourceLocation(modID, name));
+//        ResourceLocation[] variants0 = new ResourceLocation[variants.length];
+//        for (int i = 0; i < variants.length; ++i)
+//        {
+//            variants0[i] = new ResourceLocation(modID + ":" + variants[i]);
+//        }
+//        ModelBakery.registerItemVariants(itemBlockVariants, variants0);
+//    }
 
-    public static void registerBlockJson(String texturePrefix, Block block)
-    {
-        registerBlockJson(texturePrefix, block, 0, block.getUnlocalizedName().substring(5));
-    }
+//    public static void registerBlockJson(String texturePrefix, Block block)
+//    {
+//        registerBlockJson(texturePrefix, block, 0, block.getUnlocalizedName().substring(5));
+//    }
+//
+//    public static void registerBlockJson(String texturePrefix, Block block, int meta, String name)
+//    {
+////        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+//        Minecraft.getInstance().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+//    }
 
-    public static void registerBlockJson(String texturePrefix, Block block, int meta, String name)
-    {
-//        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
-        FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(Item.getItemFromBlock(block), meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
-    }
+//    public static void registerItemJson(String texturePrefix, Item item)
+//    {
+//        registerItemJson(texturePrefix, item, 0, item.getUnlocalizedName().substring(5));
+//    }
+//
+//    public static void registerItemJson(String texturePrefix, Item item, String name)
+//    {
+////        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
+//        Minecraft.getInstance().getItemRenderer().getItemModelMesher().register(item, new ModelResourceLocation(texturePrefix + name, "inventory"));
+//    }
 
-    public static void registerItemJson(String texturePrefix, Item item)
-    {
-        registerItemJson(texturePrefix, item, 0, item.getUnlocalizedName().substring(5));
-    }
-
-    public static void registerItemJson(String texturePrefix, Item item, int meta, String name)
-    {
-//        ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
-        FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().register(item, meta, new ModelResourceLocation(texturePrefix + name, "inventory"));
-    }
-
-    public static ScaledResolution getScaledRes(Minecraft minecraft, int width, int height)
-    {
-        return new ScaledResolution(minecraft);
-//        return VersionUtil.getScaledRes(minecraft, width, height);
-    }
+//    public static ScaledResolution getScaledRes(Minecraft minecraft, int width, int height)
+//    {
+//        return new ScaledResolution(minecraft);
+////        return VersionUtil.getScaledRes(minecraft, width, height);
+//    }
 
     public static FlagData updateFlagData(String playerName, boolean sendPacket)
     {
@@ -108,7 +110,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -125,7 +127,7 @@ public class ClientUtil
         }
         else if (!ClientProxyCore.flagRequestsSent.contains(playerName) && sendPacket)
         {
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { playerName }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_REQUEST_FLAG_DATA, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { playerName }));
             ClientProxyCore.flagRequestsSent.add(playerName);
         }
 
@@ -228,5 +230,15 @@ public class ClientUtil
         }
 
         tessellator.draw();
+    }
+
+    public static void copyModelAngles(RendererModel source, RendererModel dest)
+    {
+        dest.rotateAngleX = source.rotateAngleX;
+        dest.rotateAngleY = source.rotateAngleY;
+        dest.rotateAngleZ = source.rotateAngleZ;
+        dest.rotationPointX = source.rotationPointX;
+        dest.rotationPointY = source.rotationPointY;
+        dest.rotationPointZ = source.rotationPointZ;
     }
 }

@@ -56,9 +56,11 @@ public class StatsClientCapability extends GCPlayerStatsClient
     public boolean ssOnGroundLast;
     private float dungeonDirection;
 
-    public FreefallHandler freefallHandler = new FreefallHandler(this);
+//    public FreefallHandler freefallHandler = new FreefallHandler(this); TODO Freefall handler
 
     public ArrayList<ISchematicPage> unlockedSchematics = new ArrayList<ISchematicPage>();
+
+
 
     @Override
     public void setGravity(EnumGravity newGravity)
@@ -571,17 +573,17 @@ public class StatsClientCapability extends GCPlayerStatsClient
         this.ssOnGroundLast = ssOnGroundLast;
     }
 
-    @Override
-    public FreefallHandler getFreefallHandler()
-    {
-        return freefallHandler;
-    }
-
-    @Override
-    public void setFreefallHandler(FreefallHandler freefallHandler)
-    {
-        this.freefallHandler = freefallHandler;
-    }
+//    @Override
+//    public FreefallHandler getFreefallHandler()
+//    {
+//        return freefallHandler;
+//    }
+//
+//    @Override
+//    public void setFreefallHandler(FreefallHandler freefallHandler)
+//    {
+//        this.freefallHandler = freefallHandler;
+//    } TODO Freefall handler
 
     @Override
     public ArrayList<ISchematicPage> getUnlockedSchematics()

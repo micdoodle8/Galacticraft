@@ -6,7 +6,6 @@ import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3Dim;
 import micdoodle8.mods.galacticraft.api.world.IOrbitDimension;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.blocks.BlockUnlitTorch;
 import micdoodle8.mods.galacticraft.core.command.CommandGCHouston;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRace;
 import micdoodle8.mods.galacticraft.core.dimension.SpaceRaceManager;
@@ -16,7 +15,6 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseConductor;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.fluid.FluidNetwork;
 import micdoodle8.mods.galacticraft.core.fluid.ThreadFindSeal;
-import micdoodle8.mods.galacticraft.core.network.GalacticraftPacketHandler;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.tile.TileEntityFluidTank;
@@ -40,18 +38,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.ServerChunkProvider;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.ServerWorld;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerChunkProvider;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.network.NetworkRegistry;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -62,7 +60,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TickHandlerServer
 {
     private static Map<Integer, CopyOnWriteArrayList<ScheduledBlockChange>> scheduledBlockChanges = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<ScheduledBlockChange>>();
-    private static Map<Integer, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<BlockVec3>>();
+    private static Map<DimensionType, CopyOnWriteArrayList<BlockVec3>> scheduledTorchUpdates = new ConcurrentHashMap<>();
     private static Map<Integer, Set<BlockPos>> edgeChecks = new TreeMap<Integer, Set<BlockPos>>();
     private static LinkedList<EnergyNetwork> networkTicks = new LinkedList<EnergyNetwork>();
     public static Map<Integer, Map<Long, List<Footprint>>> serverFootprintMap = new TreeMap<Integer, Map<Long, List<Footprint>>>();
@@ -190,9 +188,9 @@ public class TickHandlerServer
         scheduledDimensionChanges.add(change);
     }
 
-    public static void scheduleNewTorchUpdate(int dimID, List<BlockVec3> torches)
+    public static void scheduleNewTorchUpdate(DimensionType dimType, List<BlockVec3> torches)
     {
-        CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimID);
+        CopyOnWriteArrayList<BlockVec3> updateList = TickHandlerServer.scheduledTorchUpdates.get(dimType);
 
         if (updateList == null)
         {
@@ -200,12 +198,12 @@ public class TickHandlerServer
         }
 
         updateList.addAll(torches);
-        TickHandlerServer.scheduledTorchUpdates.put(dimID, updateList);
+        TickHandlerServer.scheduledTorchUpdates.put(dimType, updateList);
     }
 
-    public static void scheduleNewEdgeCheck(int dimID, BlockPos edgeBlock)
+    public static void scheduleNewEdgeCheck(DimensionType dimType, BlockPos edgeBlock)
     {
-        Set<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimID);
+        Set<BlockPos> updateList = TickHandlerServer.edgeChecks.get(dimType);
 
         if (updateList == null)
         {
@@ -213,7 +211,7 @@ public class TickHandlerServer
         }
 
         updateList.add(edgeBlock);
-        TickHandlerServer.edgeChecks.put(dimID, updateList);
+        TickHandlerServer.edgeChecks.put(dimType, updateList);
     }
 
     public static boolean scheduledForChange(int dimID, BlockPos test)
@@ -244,16 +242,16 @@ public class TickHandlerServer
     }
 
     @SubscribeEvent
-    public void onServerTick(ServerTickEvent event)
+    public void onServerTick(TickEvent.ServerTickEvent event)
     {
-        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
-        //Prevent issues when clients switch to LAN servers
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+//        Prevent issues when clients switch to LAN servers
         if (server == null)
         {
             return;
         }
 
-        if (event.phase == Phase.START)
+        if (event.phase == TickEvent.Phase.START)
         {
             if (timerHoustonCommand > 0)
             {
@@ -309,14 +307,15 @@ public class TickHandlerServer
 
             if (TickHandlerServer.spaceRaceData == null)
             {
-                World world = server.getWorld(0);
-                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
-
-                if (TickHandlerServer.spaceRaceData == null)
-                {
-                    TickHandlerServer.spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
-                    world.getMapStorage().setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
-                }
+                ServerWorld world = server.getWorld(DimensionType.OVERWORLD);
+                WorldDataSpaceRaces.initWorldData(world);
+//                TickHandlerServer.spaceRaceData = (WorldDataSpaceRaces) world.getMapStorage().getOrLoadData(WorldDataSpaceRaces.class, WorldDataSpaceRaces.saveDataID);
+//
+//                if (TickHandlerServer.spaceRaceData == null)
+//                {
+//                    TickHandlerServer.spaceRaceData = new WorldDataSpaceRaces(WorldDataSpaceRaces.saveDataID);
+//                    world.getMapStorage().setData(WorldDataSpaceRaces.saveDataID, TickHandlerServer.spaceRaceData);
+//                }
             }
 
             SpaceRaceManager.tick();
@@ -325,21 +324,19 @@ public class TickHandlerServer
 
             if (TickHandlerServer.tickCount % 33 == 0)
             {
-                ServerWorld[] worlds = server.worlds;
+                Iterable<ServerWorld> worlds = server.getWorlds();
 
-                for (int i = worlds.length - 1; i >= 0; i--)
+                for (ServerWorld world : worlds)
                 {
-                    ServerWorld world = worlds[i];
                     TileEntityPainter.onServerTick(world);
                 }                    
             }
             if (TickHandlerServer.tickCount % 100 == 0)
             {
-                ServerWorld[] worlds = server.worlds;
+                Iterable<ServerWorld> worlds = server.getWorlds();
 
-                for (int i = 0; i < worlds.length; i++)
+                for (ServerWorld world : worlds)
                 {
-                    ServerWorld world = worlds[i];
                     ServerChunkProvider chunkProviderServer = world.getChunkProvider();
 
                     Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(GCCoreUtil.getDimensionID(world));
@@ -398,25 +395,23 @@ public class TickHandlerServer
             {
                 for (BlockVec3Dim targetPoint : footprintBlockChanges)
                 {
-                    ServerWorld[] worlds = server.worlds;
+                    Iterable<ServerWorld> worlds = server.getWorlds();
 
-                    for (int i = 0; i < worlds.length; i++)
+                    for (ServerWorld world : worlds)
                     {
-                        ServerWorld world = worlds[i];
-
                         if (GCCoreUtil.getDimensionID(world) == targetPoint.dim)
                         {
                             long chunkKey = ChunkPos.asLong((int) targetPoint.x >> 4, (int) targetPoint.z >> 4);
-                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
+                            GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_FOOTPRINTS_REMOVED, GCCoreUtil.getDimensionID(world), new Object[] { chunkKey, new BlockVec3(targetPoint.x, targetPoint.y, targetPoint.z) }), new PacketDistributor.TargetPoint(targetPoint.x, targetPoint.y, targetPoint.z, 50, targetPoint.dim));
 
 
-//                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.provider.dimensionId);
+//                            Map<Long, List<Footprint>> footprintMap = TickHandlerServer.serverFootprintMap.get(world.getDimension().dimensionId);
 //
 //                            if (footprintMap != null && !footprintMap.isEmpty())
 //                            {
 //                                List<Footprint> footprints = footprintMap.get(chunkKey);
 //                                if (footprints != null)
-//                                	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), new NetworkRegistry.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
+//                                	GalacticraftCore.packetPipeline.sendToAllAround(new PacketSimple(EnumSimplePacket.C_UPDATE_FOOTPRINT_LIST, new Object[] { chunkKey, footprints.toArray(new Footprint[footprints.size()]) }), new PacketDistributor.TargetPoint(targetPoint.dim, targetPoint.x, targetPoint.y, targetPoint.z, 50));
 //                            }
                         }
                     }
@@ -429,7 +424,7 @@ public class TickHandlerServer
             {
                 if (!playersRequestingMapData.isEmpty())
                 {
-                    File baseFolder = new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft/overworldMap");
+                    File baseFolder = new File(server.getWorld(DimensionType.OVERWORLD).getSaveHandler().getPlayerFolder(), "galacticraft/overworldMap");
                     if (!baseFolder.exists() && !baseFolder.mkdirs())
                     {
 
@@ -453,7 +448,7 @@ public class TickHandlerServer
 
             EnergyNetwork.tickCount++;
         }
-        else if (event.phase == Phase.END)
+        else if (event.phase == TickEvent.Phase.END)
         {
             for (FluidNetwork network : new ArrayList<>(fluidNetworks))
             {
@@ -492,7 +487,7 @@ public class TickHandlerServer
                 TickHandlerServer.oxygenTransmitterUpdates.clear();
                 for (TileEntityFluidTransmitter newTile : pass)
                 {
-                    if (!newTile.isInvalid())
+                    if (!newTile.isRemoved())
                     {
                         newTile.refresh();
                     }
@@ -514,7 +509,7 @@ public class TickHandlerServer
                 {
                     // I'm not sure why this would be null, but apparently it can be
                     //      See https://github.com/micdoodle8/Galacticraft/issues/3700
-                    if (newTile != null && !newTile.isInvalid())
+                    if (newTile != null && !newTile.isRemoved())
                     {
                         newTile.refresh();
                     }
@@ -528,9 +523,9 @@ public class TickHandlerServer
         }
     }
 
-    private static Set<Integer> worldsNeedingUpdate = new HashSet<Integer>();
+    private static Set<DimensionType> worldsNeedingUpdate = new HashSet<DimensionType>();
 
-    public static void markWorldNeedsUpdate(int dimension)
+    public static void markWorldNeedsUpdate(DimensionType dimension)
     {
         worldsNeedingUpdate.add(dimension);
     }
@@ -600,13 +595,13 @@ public class TickHandlerServer
                 TickHandlerServer.scheduledTorchUpdates.remove(GCCoreUtil.getDimensionID(world));
             }
 
-            if (world.provider instanceof IOrbitDimension)
+            if (world.getDimension() instanceof IOrbitDimension)
             {
                 try
                 {
-                    int dim = ((IOrbitDimension) world.provider).getPlanetIdToOrbit();
-                    if (dim == Integer.MIN_VALUE) dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.provider).getPlanetToOrbit()));
-                    int minY = ((IOrbitDimension)world.provider).getYCoordToTeleportToPlanet();
+                    int dim = ((IOrbitDimension) world.getDimension()).getPlanetIdToOrbit();
+                    if (dim == Integer.MIN_VALUE) dim = GCCoreUtil.getDimensionID(WorldUtil.getProviderForNameServer(((IOrbitDimension)world.getDimension()).getPlanetToOrbit()));
+                    int minY = ((IOrbitDimension)world.getDimension()).getYCoordToTeleportToPlanet();
 
                     final Entity[] entityList = world.loadedEntityList.toArray(new Entity[world.loadedEntityList.size()]);
                     for (final Entity e : entityList)

@@ -1,12 +1,12 @@
 package micdoodle8.mods.galacticraft.core.client.model;
 
 import micdoodle8.mods.galacticraft.core.Constants;
-import net.minecraft.client.model.ModelBase;
+import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSpider;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 
-public class ModelEvolvedSpider extends ModelBase
+public class ModelEvolvedSpider extends EntityModel<EntityEvolvedSpider>
 {
     RendererModel body;
     RendererModel rearEnd;
@@ -248,10 +248,10 @@ public class ModelEvolvedSpider extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
+    public void render(EntityEvolvedSpider entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.render(entity, f, f1, f2, f3, f4, f5);
-        this.setRotationAngles(f, f1, f2, f3, f4, f5);
+        this.setRotationAngles(entity, f, f1, f2, f3, f4, f5);
         this.body.render(f5);
         this.rearEnd.render(f5);
         this.leg8.render(f5);
@@ -293,7 +293,9 @@ public class ModelEvolvedSpider extends ModelBase
         model.rotateAngleZ = z;
     }
 
-    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5)
+    @Override
+//    public void setRotationAngles(EntityEvolvedSpider entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor)
+    public void setRotationAngles(EntityEvolvedSpider entityIn, float f, float f1, float f2, float f3, float f4, float f5)
     {
         this.head.rotateAngleY = f3 / Constants.RADIANS_TO_DEGREES;
         this.head.rotateAngleX = f4 / Constants.RADIANS_TO_DEGREES;

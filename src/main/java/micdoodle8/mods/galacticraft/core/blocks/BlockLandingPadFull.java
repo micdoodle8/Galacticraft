@@ -18,7 +18,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.RayTraceResult;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
@@ -102,7 +102,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
 //    {
 ////        switch (getMetaFromState(blockState))
 ////        {
@@ -177,14 +177,14 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }

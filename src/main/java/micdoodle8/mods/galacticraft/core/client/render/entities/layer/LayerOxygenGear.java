@@ -1,30 +1,32 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
+import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
+import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
-import net.minecraft.client.model.ModelPlayer;
-import net.minecraft.client.renderer.entity.model.RendererModel;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
+import net.minecraft.client.renderer.entity.model.RendererModel;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@SideOnly(Side.CLIENT)
-public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity>
+@OnlyIn(Dist.CLIENT)
+public class LayerOxygenGear extends LayerRenderer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>>
 {
     private final PlayerRenderer playerRenderer;
     public RendererModel[][] tubes = new RendererModel[2][7];
 
     public LayerOxygenGear(PlayerRenderer playerRendererIn)
     {
+        super(playerRendererIn);
         this.playerRenderer = playerRendererIn;
         float scaleFactor = 0.0F;
-        ModelPlayer modelPlayer = playerRendererIn.getMainModel();
+        PlayerModel<AbstractClientPlayerEntity> modelPlayer = playerRendererIn.getEntityModel();
 
         this.tubes[0][0] = new RendererModel(modelPlayer, 0, 0).setTextureSize(128, 64);
         this.tubes[0][0].addBox(-0.5F, -0.5F, -0.5F, 1, 1, 1, scaleFactor);
@@ -100,7 +102,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity
     }
 
     @Override
-    public void doRenderLayer(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
+    public void render(AbstractClientPlayerEntity player, float f5, float f6, float partialTicks, float f8, float f2, float f7, float scale)
     {
         if (!player.isInvisible())
         {
@@ -109,23 +111,23 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity
             if (gearData != null)
             {
                 boolean wearingGear = gearData.getGear() == Constants.GEAR_ID_OXYGEN_GEAR;
-                FMLClientHandler.instance().getClient().textureManager.bindTexture(ModelPlayerGC.playerTexture);
+                Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.PLAYER_TEXTURE);
 
-                if (wearingGear && !playerRenderer.getMainModel().isSneak)
+                if (wearingGear && !playerRenderer.getEntityModel().isSneak)
                 {
                     for (int i = 0; i < 7; i++)
                     {
                         for (int k = 0; k < 2; k++)
                         {
-                            ModelPlayer.copyModelAngles(this.playerRenderer.getMainModel().bipedBody, this.tubes[k][i]);
+                            ClientUtil.copyModelAngles(this.playerRenderer.getEntityModel().bipedBody, this.tubes[k][i]);
 
                             GlStateManager.enableRescaleNormal();
                             GlStateManager.pushMatrix();
-                            GlStateManager.translate(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
-                            GlStateManager.translate(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);
-                            GlStateManager.translate(0.0F, 0.0F, -0.0325F * (float) (Math.pow(i * 2 - 1, 2) * 0.05));
-                            GlStateManager.translate(0.0F, 0.2F, 0.0F);
-                            GlStateManager.translate(0.0F, 0.0F, 0.2F);
+                            GlStateManager.translatef(0.175F * (float) (k * 2 - 1), 0.0F, 0.0F);
+                            GlStateManager.translatef(0.0F, -0.0325F * (float) (i * 2 - 1), 0.0F);
+                            GlStateManager.translatef(0.0F, 0.0F, -0.0325F * (float) (Math.pow(i * 2 - 1, 2) * 0.05));
+                            GlStateManager.translatef(0.0F, 0.2F, 0.0F);
+                            GlStateManager.translatef(0.0F, 0.0F, 0.2F);
 
                             this.tubes[k][i].render(scale);
 
@@ -135,7 +137,7 @@ public class LayerOxygenGear implements LayerRenderer<AbstractClientPlayerEntity
                 }
             }
         }
-        GlStateManager.color(1.0F, 1.0F, 1.0F);
+        GlStateManager.color3f(1.0F, 1.0F, 1.0F);
     }
 
     @Override

@@ -36,7 +36,7 @@ public class OverworldGenerator implements IWorldGenerator
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, ChunkGenerator chunkGenerator, AbstractChunkProvider chunkProvider)
     {
-        if (!(world.provider instanceof IGalacticraftWorldProvider))
+        if (!(world.getDimension() instanceof IGalacticraftWorldProvider))
         {
             for (int i = 0; i < this.amountPerChunk; i++)
             {

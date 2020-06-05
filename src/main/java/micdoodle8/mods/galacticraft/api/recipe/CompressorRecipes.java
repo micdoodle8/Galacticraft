@@ -67,7 +67,8 @@ public class CompressorRecipes
             }
             else if (inputList[i + 1] instanceof Block)
             {
-                itemstack1 = new ItemStack((Block) inputList[i + 1], 1, 32767);
+//                itemstack1 = new ItemStack((Block) inputList[i + 1], 1, 32767);
+                itemstack1 = new ItemStack((Block) inputList[i + 1], 1);
             }
             else if (inputList[i + 1] instanceof ItemStack)
             {
@@ -176,10 +177,10 @@ public class CompressorRecipes
             }
         }
 
-        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.getCount() == 1 && itemstack1.getCount() == 1 && itemstack.getItem().isRepairable())
+        if (i == 2 && itemstack.getItem() == itemstack1.getItem() && itemstack.getCount() == 1 && itemstack1.getCount() == 1 && itemstack.getItem().isRepairable(itemstack))
         {
-            int k = itemstack.getItem().getMaxDamage() - itemstack.getItemDamage();
-            int l = itemstack.getItem().getMaxDamage() - itemstack1.getItemDamage();
+            int k = itemstack.getItem().getMaxDamage() - itemstack.getDamage();
+            int l = itemstack.getItem().getMaxDamage() - itemstack1.getDamage();
             int i1 = k + l + itemstack.getItem().getMaxDamage() * 5 / 100;
             int j1 = itemstack.getItem().getMaxDamage() - i1;
 
@@ -188,7 +189,9 @@ public class CompressorRecipes
                 j1 = 0;
             }
 
-            return new ItemStack(itemstack.getItem(), 1, j1);
+            ItemStack stack = new ItemStack(itemstack.getItem(), 1);
+            stack.setDamage(j1);
+            return stack;
         }
         else
         {
@@ -249,7 +252,7 @@ public class CompressorRecipes
             {
                 ItemStack output = recipe.getRecipeOutput();
                 if (output == null) continue;  //Intentional ItemStack null check
-                if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
+                if (output.getItem() == GCItems.compressedSteel && recipe instanceof ShapelessOreRecipeGC)
                 {
                     if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))
                     {
@@ -276,7 +279,7 @@ public class CompressorRecipes
             {
                 ItemStack output = recipe.getRecipeOutput();
                 if (output == null) continue;  //Intentional ItemStack null check
-                if (output.getItemDamage() == 9 && output.getItem() == GCItems.basicItem && recipe instanceof ShapelessOreRecipeGC)
+                if (output.getItem() == GCItems.compressedSteel && recipe instanceof ShapelessOreRecipeGC)
                 {
                     if (((ShapelessOreRecipeGC)recipe).matches(steelRecipeGC))
                     {

@@ -21,7 +21,7 @@
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.MathHelper;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //public class BlockScreen extends BlockAdvanced implements IShiftDescription, IPartialSealableBlock, ITileEntityProvider, ISortableBlock
@@ -49,7 +49,7 @@
 //    }
 //
 //    @Override
-//    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction direction)
+//    public boolean isSideSolid(BlockState base_state, IBlockReader world, BlockPos pos, Direction direction)
 //    {
 //        return direction.ordinal() != getMetaFromState(world.getBlockState(pos));
 //    }
@@ -74,7 +74,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return face.ordinal() == getMetaFromState(state) ? BlockFaceShape.UNDEFINED : BlockFaceShape.BOWL;
 //    }
@@ -130,13 +130,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -171,7 +171,7 @@
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getFront(meta);
+//        Direction enumfacing = Direction.byIndex(meta);
 //        return this.getDefaultState().with(FACING, enumfacing);
 //    }
 //
@@ -182,7 +182,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        TileEntityScreen screen = (TileEntityScreen) worldIn.getTileEntity(pos);
 //        return state.with(LEFT, screen.connectedLeft)

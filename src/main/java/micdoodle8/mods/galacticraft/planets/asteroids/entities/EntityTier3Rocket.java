@@ -79,9 +79,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         int i;
 
@@ -108,7 +108,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
             {
                 double d = this.timeSinceLaunch / 150;
 
-                if (this.world.provider instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.provider).hasNoAtmosphere())
+                if (this.world.getDimension() instanceof IGalacticraftWorldProvider && ((IGalacticraftWorldProvider) this.world.getDimension()).hasNoAtmosphere())
                 {
                     d = Math.min(d * 1.2, 2);
                 }
@@ -129,9 +129,9 @@ public class EntityTier3Rocket extends EntityTieredRocket
 
             double multiplier = 1.0D;
 
-            if (this.world.provider instanceof IGalacticraftWorldProvider)
+            if (this.world.getDimension() instanceof IGalacticraftWorldProvider)
             {
-                multiplier = ((IGalacticraftWorldProvider) this.world.provider).getFuelUsageMultiplier();
+                multiplier = ((IGalacticraftWorldProvider) this.world.getDimension()).getFuelUsageMultiplier();
 
                 if (multiplier <= 0)
                 {
@@ -183,7 +183,7 @@ public class EntityTier3Rocket extends EntityTieredRocket
 
     protected void spawnParticles(boolean launched)
     {
-        if (!this.isDead)
+        if (this.isAlive())
         {
             double sinPitch = Math.sin(this.rotationPitch / Constants.RADIANS_TO_DEGREES_D);
             double x1 = 3.2 * Math.cos(this.rotationYaw / Constants.RADIANS_TO_DEGREES_D) * sinPitch;
@@ -225,15 +225,15 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         if (getLaunched)
         {
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y2, z2), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 + 0.4, y2, z2), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2 - 0.4, y2, z2), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y2, z2 + 0.4D), motionVec, rider);
-            GalacticraftCore.proxy.spawnParticle("launchFlameLaunched", new Vector3(x2, y2, z2 - 0.4D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2, y2, z2), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 + 0.4, y2, z2), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2 - 0.4, y2, z2), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2, y2, z2 + 0.4D), motionVec, rider);
+            this.world.addParticle("launchFlameLaunched", new Vector3(x2, y2, z2 - 0.4D), motionVec, rider);
             return;
         }
 
@@ -243,20 +243,20 @@ public class EntityTier3Rocket extends EntityTieredRocket
         double x1 = motionVec.x;
         double y1 = motionVec.y;
         double z1 = motionVec.z;
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(x1 + 0.1D + this.rand.nextDouble() / 10D, y1 - 0.3D, z1 + 0.1D + this.rand.nextDouble() / 10D), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(x1 - 0.1D - this.rand.nextDouble() / 10D, y1 - 0.3D, z1 + 0.1D + this.rand.nextDouble() / 10D), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(x1 - 0.1D - this.rand.nextDouble() / 10D, y1 - 0.3D, z1 - 0.1D - this.rand.nextDouble() / 10D), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(x1 + 0.1D + this.rand.nextDouble() / 10D, y1 - 0.3D, z1 - 0.1D - this.rand.nextDouble() / 10D), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 + 0.4, y2, z2), new Vector3(x1 + 0.3D, y1 - 0.3D, z1), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2 - 0.4, y2, z2), new Vector3(x1 - 0.3D, y1 - 0.3D, z1), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2, y2, z2 + 0.4D), new Vector3(x1, y1 - 0.3D, z1 + 0.3D), rider);
-        GalacticraftCore.proxy.spawnParticle("launchFlameIdle", new Vector3(x2, y2, z2 - 0.4D), new Vector3(x1, y1 - 0.3D, z1 - 0.3D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(x1 + 0.1D + this.rand.nextDouble() / 10D, y1 - 0.3D, z1 + 0.1D + this.rand.nextDouble() / 10D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 + 0.4 - this.rand.nextDouble() / 10D), new Vector3(x1 - 0.1D - this.rand.nextDouble() / 10D, y1 - 0.3D, z1 + 0.1D + this.rand.nextDouble() / 10D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 - 0.4 + this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(x1 - 0.1D - this.rand.nextDouble() / 10D, y1 - 0.3D, z1 - 0.1D - this.rand.nextDouble() / 10D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 + 0.4 - this.rand.nextDouble() / 10D, y2, z2 - 0.4 + this.rand.nextDouble() / 10D), new Vector3(x1 + 0.1D + this.rand.nextDouble() / 10D, y1 - 0.3D, z1 - 0.1D - this.rand.nextDouble() / 10D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 + 0.4, y2, z2), new Vector3(x1 + 0.3D, y1 - 0.3D, z1), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2 - 0.4, y2, z2), new Vector3(x1 - 0.3D, y1 - 0.3D, z1), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2, y2, z2 + 0.4D), new Vector3(x1, y1 - 0.3D, z1 + 0.3D), rider);
+        this.world.addParticle("launchFlameIdle", new Vector3(x2, y2, z2 - 0.4D), new Vector3(x1, y1 - 0.3D, z1 - 0.3D), rider);
     }
 
     @Override
     public boolean isUsableByPlayer(PlayerEntity par1EntityPlayer)
     {
-        return !this.isDead && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
+        return this.isAlive() && par1EntityPlayer.getDistanceSq(this) <= 64.0D;
     }
 
     @Override
@@ -306,8 +306,8 @@ public class EntityTier3Rocket extends EntityTieredRocket
     {
         super.getItemsDropped(droppedItems);
         ItemStack rocket = new ItemStack(AsteroidsItems.tier3Rocket, 1, this.rocketType.getIndex());
-        rocket.setTagCompound(new CompoundNBT());
-        rocket.getTagCompound().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
+        rocket.setTag(new CompoundNBT());
+        rocket.getTag().setInteger("RocketFuel", this.fuelTank.getFluidAmount());
         droppedItems.add(rocket);
         return droppedItems;
     }

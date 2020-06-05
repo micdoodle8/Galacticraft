@@ -35,7 +35,7 @@ public class Overlay
      * @param par5 width
      * @param par6 height
      */
-    protected static void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    protected static void blit(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         final float var7 = 0.00390625F;
         final float var8 = 0.00390625F;

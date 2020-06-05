@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.api;
 
 import com.google.common.collect.Lists;
-
 import micdoodle8.mods.galacticraft.api.client.IGameScreen;
 import micdoodle8.mods.galacticraft.api.item.EnumExtendedInventorySlot;
 import micdoodle8.mods.galacticraft.api.recipe.INasaWorkbenchRecipe;
@@ -14,20 +13,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.dimension.Dimension;
-import net.minecraft.world.dimension.DimensionType;
-import net.minecraft.world.WorldProviderSurface;
-import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.OverworldDimension;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.logging.log4j.Level;
+import java.util.*;
 
 public class GalacticraftRegistry
 {
@@ -199,7 +190,7 @@ public class GalacticraftRegistry
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
         {
-            clazz = WorldProviderSurface.class;
+            clazz = OverworldDimension.class;
         }
         return GalacticraftRegistry.teleportTypeMap.get(clazz);
     }
@@ -268,12 +259,12 @@ public class GalacticraftRegistry
         return GalacticraftRegistry.astroMinerRecipes;
 	}   
 
-	@SideOnly(Side.CLIENT)
+	@OnlyIn(Dist.CLIENT)
     public static ResourceLocation getResouceLocationForDimension(Class<? extends Dimension> clazz)
     {
         if (!IGalacticraftWorldProvider.class.isAssignableFrom(clazz))
         {
-            clazz = WorldProviderSurface.class;
+            clazz = OverworldDimension.class;
         }
         return GalacticraftRegistry.rocketGuiMap.get(clazz);
     }
@@ -286,25 +277,25 @@ public class GalacticraftRegistry
     /***
      * Register a Galacticraft dimension
      */
-    public static DimensionType registerDimension(String name, String suffix, int id, Class<? extends Dimension> provider, boolean keepLoaded) throws IllegalArgumentException
-    {
-        for (DimensionType other : DimensionType.values())
-        {
-            if (other.getId() == id)
-            {
-                return null;
-            }
-        }
-
-        DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
-        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
-        if (type == null)
-        {
-            FMLRelaunchLog.log("Galacticraft", Level.ERROR, "Problem registering dimension type " + id + ".  May be fixable by changing config.");
-        }
-        
-        return type;
-    }
+//    public static DimensionType registerDimension(String name, String suffix, DimensionType id, Class<? extends Dimension> provider, boolean keepLoaded) throws IllegalArgumentException
+//    {
+//        for (DimensionType other : DimensionType.values())
+//        {
+//            if (other.getId() == id)
+//            {
+//                return null;
+//            }
+//        }
+//
+//        DimensionType type = DimensionType.register(name, suffix, id, provider, keepLoaded);
+//        GalacticraftRegistry.dimensionTypeIDs.add(type == null ? 0 : id);
+//        if (type == null)
+//        {
+//            FMLRelaunchLog.log("Galacticraft", Level.ERROR, "Problem registering dimension type " + id + ".  May be fixable by changing config.");
+//        }
+//
+//        return type;
+//    } TODO ?
 
     public static int getDimensionTypeID(int index)
     {
@@ -456,7 +447,7 @@ public class GalacticraftRegistry
                 }
                 else if (o instanceof ItemStack)
                 {
-                    if (stack.getItem() == ((ItemStack) o).getItem() && stack.getItemDamage() == ((ItemStack) o).getItemDamage())
+                    if (stack.getItem() == ((ItemStack) o).getItem() && stack.getDamage() == ((ItemStack) o).getDamage())
                     {
                         return entry.getKey();
                     }

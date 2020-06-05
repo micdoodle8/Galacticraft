@@ -6,6 +6,7 @@ import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.WorldUtil;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.SkeletonEntity;
 import net.minecraft.item.Items;
@@ -27,17 +28,16 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     private float tumbling = 0F;
     private float tumbleAngle = 0F;
 
-    public EntityEvolvedSkeleton(World worldIn)
+    public EntityEvolvedSkeleton(EntityType<? extends EntityEvolvedSkeleton> type, World worldIn)
     {
-        super(worldIn);
+        super(type, worldIn);
     }
-
     @Override
-    protected void applyEntityAttributes()
+    protected void registerAttributes()
     {
-        super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35F);
+        super.registerAttributes();
+        this.getAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(25);
+        this.getAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.35F);
     }
 
     @Override
@@ -46,99 +46,74 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
         return true;
     }
 
-    @Override
-    protected void jump()
-    {
-        this.motionY = 0.45D / WorldUtil.getGravityFactor(this);
-        if (this.motionY < 0.24D)
-        {
-            this.motionY = 0.24D;
-        }
-
-        if (this.isPotionActive(Effects.JUMP_BOOST))
-        {
-            this.motionY += (this.getActivePotionEffect(Effects.JUMP_BOOST).getAmplifier() + 1) * 0.1F;
-        }
-
-        if (this.isSprinting())
-        {
-            float f = this.rotationYaw / Constants.RADIANS_TO_DEGREES;
-            this.motionX -= MathHelper.sin(f) * 0.2F;
-            this.motionZ += MathHelper.cos(f) * 0.2F;
-        }
-
-        this.isAirBorne = true;
-        ForgeHooks.onLivingJump(this);
-    }
-
-    protected void addRandomDrop()
-    {
-        int r = this.rand.nextInt(12);
-        switch (r)
-        {
-        case 0:
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-        case 5:
-            this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
-            break;
-        case 6:
-            //Oxygen tank half empty or less
-            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
-            break;
-        case 7:
-        case 8:
-            this.dropItem(GCItems.canister, 1);
-            break;
-        default:
-            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.PUMPKIN_SEEDS, 1);
-            break;
-        }
-    }
-
-    @Override
-    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
-    {
-        // No loot table
-        this.dropFewItems(wasRecentlyHit, lootingModifier);
-        this.dropEquipment(wasRecentlyHit, lootingModifier);
-    }
-
-    @Override
-    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
-    {
-        Item item = Items.BONE;
-
-        int j = this.rand.nextInt(3);
-
-        if (item != null)
-        {
-            if (lootingModifier > 0)
-            {
-                j += this.rand.nextInt(lootingModifier + 1);
-            }
-
-            for (int k = 1; k < j; ++k)
-            {
-                this.dropItem(item, 1);
-            }
-        }
-
-        j = this.rand.nextInt(3 + lootingModifier);
-        if (j > 1)
-            this.dropItem(Items.BONE, 1);
-
-        //Drop lapis as semi-rare drop if player hit and if dropping bones
-        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) <= lootingModifier)
-            this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
-
-        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
-        {
-            this.addRandomDrop();
-        }
-    }
+//    protected void addRandomDrop()
+//    {
+//        int r = this.rand.nextInt(12);
+//        switch (r)
+//        {
+//        case 0:
+//        case 1:
+//        case 2:
+//        case 3:
+//        case 4:
+//        case 5:
+//            this.entityDropItem(new ItemStack(GCBlocks.oxygenPipe), 0.0F);
+//            break;
+//        case 6:
+//            //Oxygen tank half empty or less
+//            this.entityDropItem(new ItemStack(GCItems.oxTankMedium, 1, 901 + this.rand.nextInt(900)), 0.0F);
+//            break;
+//        case 7:
+//        case 8:
+//            this.dropItem(GCItems.canister, 1);
+//            break;
+//        default:
+//            if (ConfigManagerCore.challengeMobDropsAndSpawning) this.dropItem(Items.PUMPKIN_SEEDS, 1);
+//            break;
+//        }
+//    }
+//
+//    @Override
+//    protected void dropLoot(boolean wasRecentlyHit, int lootingModifier, DamageSource source)
+//    {
+//        // No loot table
+//        this.dropFewItems(wasRecentlyHit, lootingModifier);
+//        this.dropEquipment(wasRecentlyHit, lootingModifier);
+//    }
+//
+//    @Override
+//    protected void dropFewItems(boolean wasRecentlyHit, int lootingModifier)
+//    {
+//        Item item = Items.BONE;
+//
+//        int j = this.rand.nextInt(3);
+//
+//        if (item != null)
+//        {
+//            if (lootingModifier > 0)
+//            {
+//                j += this.rand.nextInt(lootingModifier + 1);
+//            }
+//
+//            for (int k = 1; k < j; ++k)
+//            {
+//                this.dropItem(item, 1);
+//            }
+//        }
+//
+//        j = this.rand.nextInt(3 + lootingModifier);
+//        if (j > 1)
+//            this.dropItem(Items.BONE, 1);
+//
+//        //Drop lapis as semi-rare drop if player hit and if dropping bones
+//        if (wasRecentlyHit && (ConfigManagerCore.challengeMobDropsAndSpawning) && j > 1 && this.rand.nextInt(12) <= lootingModifier)
+//            this.entityDropItem(new ItemStack(Items.DYE, 1, 4), 0.0F);
+//
+//        if (wasRecentlyHit && this.rand.nextFloat() < 0.025F + (float)lootingModifier * 0.02F)
+//        {
+//            this.addRandomDrop();
+//        }
+//    } TODO Loot
 
     @Override
     public void setTumbling(float value)
@@ -153,10 +128,10 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     }
     
     @Override
-    public void onEntityUpdate()
+    public void tick()
     {
-        super.onEntityUpdate();
-        if (!this.isDead)
+        super.tick();
+        if (this.isAlive())
         {
             if (this.tumbling != 0F)
             {
@@ -185,24 +160,24 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
-        super.entityInit();
+        super.registerData();
         this.getDataManager().register(SPIN_PITCH, 0.0F);
     }
 
     @Override
-    public void readEntityFromNBT(CompoundNBT nbt)
+    public void readAdditional(CompoundNBT nbt)
     {
-        super.readEntityFromNBT(nbt);
+        super.readAdditional(nbt);
         this.tumbling = nbt.getFloat("tumbling");
     }
 
     @Override
-    public void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
-        super.writeEntityToNBT(nbt);
-        nbt.setFloat("tumbling", this.tumbling);
+        super.writeAdditional(nbt);
+        nbt.putFloat("tumbling", this.tumbling);
     }
 
     public float getSpinPitch()
@@ -235,16 +210,16 @@ public class EntityEvolvedSkeleton extends SkeletonEntity implements IEntityBrea
     @Override
     public float getTumbleAxisX()
     {
-        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
         if (velocity2 == 0D) return 1F;
-        return (float) (this.motionZ / MathHelper.sqrt(velocity2));
+        return (float) (this.getMotion().z / MathHelper.sqrt(velocity2));
     }
 
     @Override
     public float getTumbleAxisZ()
     {
-        double velocity2 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+        double velocity2 = this.getMotion().x * this.getMotion().x + this.getMotion().z * this.getMotion().z;
         if (velocity2 == 0D) return 0F;
-        return (float) (this.motionX / MathHelper.sqrt(velocity2));
+        return (float) (this.getMotion().x / MathHelper.sqrt(velocity2));
     }
 }

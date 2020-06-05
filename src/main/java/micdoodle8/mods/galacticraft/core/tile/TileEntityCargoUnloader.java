@@ -9,14 +9,14 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockCargoLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.RecipeUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory implements ILandingPadAttachable
@@ -244,7 +244,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
+    public boolean canAttachToLandingPad(IBlockReader world, BlockPos pos)
     {
         return true;
     }
@@ -255,7 +255,7 @@ public class TileEntityCargoUnloader extends TileBaseElectricBlockWithInventory 
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockCargoLoader)
         {
-            return (state.getValue(BlockCargoLoader.FACING));
+            return (state.get(BlockCargoLoader.FACING));
         }
         return Direction.NORTH;
     }

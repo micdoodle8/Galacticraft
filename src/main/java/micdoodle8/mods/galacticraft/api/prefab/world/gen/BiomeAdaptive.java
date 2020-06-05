@@ -1,41 +1,51 @@
 package micdoodle8.mods.galacticraft.api.prefab.world.gen;
 
+import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
+import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.util.SharedSeedRandom;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IWorld;
+import net.minecraft.world.IWorldReader;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.IChunk;
+import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationSettings;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.carver.ConfiguredCarver;
+import net.minecraft.world.gen.carver.ICarverConfig;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
+import net.minecraft.world.gen.feature.structure.Structure;
+import net.minecraft.world.gen.surfacebuilders.ConfiguredSurfaceBuilder;
+import net.minecraft.world.gen.surfacebuilders.ISurfaceBuilderConfig;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.BiomeDictionary;
+
+import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.FlowerBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeDecorator;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.feature.AbstractTreeFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.core.util.GCLog;
-
 public class BiomeAdaptive extends BiomeGenBaseGC
 {
     public static BiomeAdaptive biomeDefault;
-    public static List<BiomeAdaptive> biomeList = new LinkedList<>(); 
+    public static List<BiomeAdaptive> biomeList = new LinkedList<>();
     private Biome biomeTrue;
     private final int index;
     private boolean loggedConflict;
-    
+
     public BiomeAdaptive(int i, Biome biomeInitial)
     {
-        super(new BiomeProperties("Outer Space" + (i == 0 ? "" : " "+ i)).setRainfall(0.0F));
+        super((new Builder().precipitation(RainType.NONE)));
+//        super(new BiomeProperties().setRainfall(0.0F));
         this.index = i;
         this.biomeTrue = biomeInitial;
-        this.decorator = this.createBiomeDecorator();
+//        this.decorator = this.createBiomeDecorator();
         if (index == 0)
         {
             biomeDefault = this;
@@ -46,7 +56,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     public void registerTypes(Biome b)
     {
         if (this.biomeTrue instanceof BiomeGenBaseGC)
-        {   
+        {
             ((BiomeGenBaseGC) this.biomeTrue).registerTypes(this);
         }
         else
@@ -59,13 +69,14 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         if (index >= biomeList.size())
         {
-            BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome); 
+            BiomeAdaptive newAdaptive = new BiomeAdaptive(index, biome);
+            Registry.register(Registry.BIOME, index, "Outer Space" + (index == 0 ? "" : " "+ index), newAdaptive);
             biomeList.add(newAdaptive);
             return newAdaptive;
         }
         return biomeList.get(index);
     }
-    
+
     public static BiomeGenBaseGC getDefaultBiomeFor(CelestialBody body)
     {
         return body.biomesToAdapt[0];
@@ -75,12 +86,12 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     {
         biomeDefault.setBodyInstance(body);
     }
-    
+
     public boolean isInstance(Class<?> clazz)
     {
         return clazz.isInstance(this.biomeTrue);
     }
-    
+
     /**
      * Be sure to call this from your BiomeProvider in:
      * <br>-- getBiome(BlockPos pos, Biome defaultBiome)
@@ -100,7 +111,7 @@ public class BiomeAdaptive extends BiomeGenBaseGC
                 break;
         }
     }
-    
+
     /**
      * @param body
      * @return true if end of list
@@ -108,9 +119,9 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     protected boolean setBodyInstance(CelestialBody body)
     {
         this.biomeTrue = body.biomesToAdapt[this.index];
-        this.fillerBlock = this.biomeTrue.fillerBlock;
-        this.topBlock = this.biomeTrue.topBlock;
-        this.decorator = this.biomeTrue.decorator;
+//        this.fillerBlock = this.biomeTrue.fillerBlock;
+//        this.topBlock = this.biomeTrue.topBlock;
+//        this.decorator = this.biomeTrue.decorator; TODO ?
         return this.index == body.biomesToAdapt.length - 1;
     }
 
@@ -123,22 +134,258 @@ public class BiomeAdaptive extends BiomeGenBaseGC
             {
                 break;
             }
-            
+
             result.add(b);
         }
         return result;
     }
-   
+
 
     // ===========================================================================
     // ===============Pass through all Biome methods to the true biome============
     // ===========================================================================
-       
-    @Override
-    public BiomeDecorator createBiomeDecorator()
-    {
-        return biomeTrue == null ? null : biomeTrue.createBiomeDecorator();
-    }
+
+//    @Override
+//    public BiomeDecorator createBiomeDecorator()
+//    {
+//        return biomeTrue == null ? null : biomeTrue.createBiomeDecorator();
+//    }
+//
+//    @Override
+//    public boolean isMutation()
+//    {
+//        return biomeTrue.isMutation();
+//    }
+//
+//    @Override
+//    public AbstractTreeFeature getRandomTreeFeature(Random rand)
+//    {
+//        return biomeTrue.getRandomTreeFeature(rand);
+//    }
+//
+//    @Override
+//    public Feature getRandomWorldGenForGrass(Random rand)
+//    {
+//        return biomeTrue.getRandomWorldGenForGrass(rand);
+//    }
+//
+//    @Override
+//    public FlowerBlock.EnumFlowerType pickRandomFlower(Random rand, BlockPos pos)
+//    {
+//        return biomeTrue.pickRandomFlower(rand, pos);
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getSkyColorByTemp(float currentTemperature)
+//    {
+//        return biomeTrue.getSkyColorByTemp(currentTemperature);
+//    }
+//
+//    @Override
+//    public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType)
+//    {
+//        return biomeTrue.getSpawnableList(creatureType);
+//    }
+//
+//    @Override
+//    public boolean getEnableSnow()
+//    {
+//        return biomeTrue.getEnableSnow();
+//    }
+//
+//    @Override
+//    public boolean canRain()
+//    {
+//        return biomeTrue.canRain();
+//    }
+//
+//    @Override
+//    public boolean isHighHumidity()
+//    {
+//        return biomeTrue.isHighHumidity();
+//    }
+//
+//    @Override
+//    public float getSpawningChance()
+//    {
+//        return biomeTrue.getSpawningChance();
+//    }
+//
+//    @Override
+//    public float getTemperature(BlockPos pos)
+//    {
+//        return biomeTrue.getTemperature(pos);
+//    }
+//
+//    @Override
+//    public void decorate(World worldIn, Random rand, BlockPos pos)
+//    {
+//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        {
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//        }
+//        else
+//        {
+//            reportBiomeIDconflict();
+//        }
+//        biomeTrue.decorate(worldIn, rand, pos);
+//    }
+//
+//    @Override
+//    public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
+//    {
+//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        {
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//        }
+//        else
+//        {
+//            reportBiomeIDconflict();
+//        }
+//        biomeTrue.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getGrassColorAtPos(BlockPos pos)
+//    {
+//        return biomeTrue.getGrassColorAtPos(pos);
+//    }
+//
+//    @Override
+//    public final void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
+//    {
+//        if (worldIn.provider instanceof IGalacticraftWorldProvider)
+//        {
+//            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
+//        }
+//        else
+//        {
+//            reportBiomeIDconflict();
+//        }
+//        biomeTrue.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getFoliageColorAtPos(BlockPos pos)
+//    {
+//        return biomeTrue.getFoliageColorAtPos(pos);
+//    }
+//
+//    @Override
+//    public Class <? extends Biome > getBiomeClass()
+//    {
+//        return biomeTrue.getBiomeClass();
+//    }
+//
+//    @Override
+//    public Biome.TempCategory getTempCategory()
+//    {
+//        return biomeTrue.getTempCategory();
+//    }
+//
+//    @Override
+//    public boolean ignorePlayerSpawnSuitability()
+//    {
+//        return biomeTrue.ignorePlayerSpawnSuitability();
+//    }
+//
+//    @Override
+//    public float getDepth()
+//    {
+//        return biomeTrue == null ? 0.0F : biomeTrue.getDepth();
+//    }
+//
+//    @Override
+//    public float getRainfall()
+//    {
+//        return biomeTrue.getRainfall();
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public String getBiomeName()
+//    {
+//        return biomeTrue.getBiomeName();
+//    }
+//
+//    @Override
+//    public float getHeightVariation()
+//    {
+//        return biomeTrue.getHeightVariation();
+//    }
+//
+//    @Override
+//    public float getDefaultTemperature()
+//    {
+//        return biomeTrue.getDefaultTemperature();
+//    }
+//
+//    @Override
+//    @OnlyIn(Dist.CLIENT)
+//    public int getWaterColor()
+//    {
+//        return biomeTrue.getWaterColor();
+//    }
+//
+//    @Override
+//    public boolean isSnowyBiome()
+//    {
+//        return biomeTrue.isSnowyBiome();
+//    }
+//
+//    @Override
+//    public BiomeDecorator getModdedBiomeDecorator(BiomeDecorator original)
+//    {
+//        return biomeTrue.getModdedBiomeDecorator(original);
+//    }
+//
+//    @Override
+//    public int getWaterColorMultiplier()
+//    {
+//        return biomeTrue.getWaterColorMultiplier();
+//    }
+//
+//    @Override
+//    public int getModdedBiomeGrassColor(int original)
+//    {
+//        return biomeTrue.getModdedBiomeGrassColor(original);
+//    }
+//
+//    @Override
+//    public int getModdedBiomeFoliageColor(int original)
+//    {
+//        return biomeTrue.getModdedBiomeFoliageColor(original);
+//    }
+//
+//    @Override
+//    public void addDefaultFlowers()
+//    {
+//        if (biomeTrue != null)
+//            biomeTrue.addDefaultFlowers();
+//    }
+//
+//    @Override
+//    public void addFlower(BlockState state, int weight)
+//    {
+//        biomeTrue.addFlower(state, weight);
+//    }
+//
+//    @Override
+//    public void plantFlower(World world, Random rand, BlockPos pos)
+//    {
+//        if (world.getDimension() instanceof IGalacticraftWorldProvider)
+//        {
+//            this.setBodyInstance(((IGalacticraftWorldProvider)world.getDimension()).getCelestialBody());
+//        }
+//        else
+//        {
+//            reportBiomeIDconflict();
+//        }
+//        biomeTrue.plantFlower(world, rand, pos);
+//    }
 
     @Override
     public boolean isMutation()
@@ -146,61 +393,53 @@ public class BiomeAdaptive extends BiomeGenBaseGC
         return biomeTrue.isMutation();
     }
 
+    /**
+     * takes temperature, returns color
+     */
     @Override
-    public AbstractTreeFeature getRandomTreeFeature(Random rand)
-    {
-        return biomeTrue.getRandomTreeFeature(rand);
-    }
-
-    @Override
-    public Feature getRandomWorldGenForGrass(Random rand)
-    {
-        return biomeTrue.getRandomWorldGenForGrass(rand);
-    }
-
-    @Override
-    public FlowerBlock.EnumFlowerType pickRandomFlower(Random rand, BlockPos pos)
-    {
-        return biomeTrue.pickRandomFlower(rand, pos);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getSkyColorByTemp(float currentTemperature)
     {
         return biomeTrue.getSkyColorByTemp(currentTemperature);
     }
 
+    /**
+     * Returns the correspondent list of the EnumCreatureType informed.
+     */
     @Override
-    public List<Biome.SpawnListEntry> getSpawnableList(EntityClassification creatureType)
+    public List<Biome.SpawnListEntry> getSpawns(EntityClassification creatureType)
     {
-        return biomeTrue.getSpawnableList(creatureType);
+        return biomeTrue.getSpawns(creatureType);
     }
 
     @Override
-    public boolean getEnableSnow()
+    public Biome.RainType getPrecipitation()
     {
-        return biomeTrue.getEnableSnow();
+        return biomeTrue.getPrecipitation();
     }
 
-    @Override
-    public boolean canRain()
-    {
-        return biomeTrue.canRain();
-    }
-
+    /**
+     * Checks to see if the rainfall level of the biome is extremely high
+     */
     @Override
     public boolean isHighHumidity()
     {
         return biomeTrue.isHighHumidity();
     }
 
+    /**
+     * returns the chance a creature has to spawn.
+     */
     @Override
     public float getSpawningChance()
     {
         return biomeTrue.getSpawningChance();
     }
 
+    /**
+     * Gets the current temperature at the given location, based off of the default for this biome, the elevation of the
+     * position, and {@linkplain #TEMPERATURE_NOISE} some random perlin noise.
+     */
     @Override
     public float getTemperature(BlockPos pos)
     {
@@ -208,65 +447,96 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     }
 
     @Override
-    public void decorate(World worldIn, Random rand, BlockPos pos)
+    public boolean doesWaterFreeze(IWorldReader worldIn, BlockPos pos)
     {
-        if (worldIn.provider instanceof IGalacticraftWorldProvider)
-        {
-            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
-        }
-        else
-        {
-            reportBiomeIDconflict();
-        }
-        biomeTrue.decorate(worldIn, rand, pos);
+        return biomeTrue.doesWaterFreeze(worldIn, pos);
     }
 
     @Override
-    public void genTerrainBlocks(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
+    public boolean doesWaterFreeze(IWorldReader worldIn, BlockPos water, boolean mustBeAtEdge)
     {
-        if (worldIn.provider instanceof IGalacticraftWorldProvider)
-        {
-            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
-        }
-        else
-        {
-            reportBiomeIDconflict();
-        }
-        biomeTrue.genTerrainBlocks(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
+        return biomeTrue.doesWaterFreeze(worldIn, water, mustBeAtEdge);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public int getGrassColorAtPos(BlockPos pos)
+    public boolean doesSnowGenerate(IWorldReader worldIn, BlockPos pos)
     {
-        return biomeTrue.getGrassColorAtPos(pos);
+        return biomeTrue.doesSnowGenerate(worldIn, pos);
     }
 
     @Override
-    public final void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal)
+    public void addFeature(GenerationStage.Decoration decorationStage, ConfiguredFeature<?> featureIn)
     {
-        if (worldIn.provider instanceof IGalacticraftWorldProvider)
-        {
-            this.setBodyInstance(((IGalacticraftWorldProvider)worldIn.provider).getCelestialBody());
-        }
-        else
-        {
-            reportBiomeIDconflict();
-        }
-        biomeTrue.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
+        biomeTrue.addFeature(decorationStage, featureIn);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public int getFoliageColorAtPos(BlockPos pos)
+    public <C extends ICarverConfig> void addCarver(GenerationStage.Carving stage, ConfiguredCarver<C> carver)
     {
-        return biomeTrue.getFoliageColorAtPos(pos);
+        biomeTrue.addCarver(stage, carver);
     }
 
     @Override
-    public Class <? extends Biome > getBiomeClass()
+    public List<ConfiguredCarver<?>> getCarvers(GenerationStage.Carving stage)
     {
-        return biomeTrue.getBiomeClass();
+        return biomeTrue.getCarvers(stage);
+    }
+
+    @Override
+    public <C extends IFeatureConfig> void addStructure(Structure<C> structureIn, C config)
+    {
+        biomeTrue.addStructure(structureIn, config);
+    }
+
+    @Override
+    public <C extends IFeatureConfig> boolean hasStructure(Structure<C> structureIn)
+    {
+        return biomeTrue.hasStructure(structureIn);
+    }
+
+    @Nullable
+    @Override
+    public <C extends IFeatureConfig> C getStructureConfig(Structure<C> structureIn)
+    {
+        return biomeTrue.getStructureConfig(structureIn);
+    }
+
+    @Override
+    public List<ConfiguredFeature<?>> getFlowers()
+    {
+        return biomeTrue.getFlowers();
+    }
+
+    @Override
+    public List<ConfiguredFeature<?>> getFeatures(GenerationStage.Decoration decorationStage)
+    {
+        return biomeTrue.getFeatures(decorationStage);
+    }
+
+    @Override
+    public void decorate(GenerationStage.Decoration stage, ChunkGenerator<? extends GenerationSettings> chunkGenerator, IWorld worldIn, long seed, SharedSeedRandom random, BlockPos pos)
+    {
+        biomeTrue.decorate(stage, chunkGenerator, worldIn, seed, random, pos);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getGrassColor(BlockPos pos)
+    {
+        return biomeTrue.getGrassColor(pos);
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public int getFoliageColor(BlockPos pos)
+    {
+        return biomeTrue.getFoliageColor(pos);
+    }
+
+    @Override
+    public void buildSurface(Random random, IChunk chunkIn, int x, int z, int startHeight, double noise, BlockState defaultBlock, BlockState defaultFluid, int seaLevel, long seed)
+    {
+        biomeTrue.buildSurface(random, chunkIn, x, z, startHeight, noise, defaultBlock, defaultFluid, seaLevel, seed);
     }
 
     @Override
@@ -276,112 +546,38 @@ public class BiomeAdaptive extends BiomeGenBaseGC
     }
 
     @Override
-    public boolean ignorePlayerSpawnSuitability()
+    @OnlyIn(Dist.CLIENT)
+    public ITextComponent getDisplayName()
     {
-        return biomeTrue.ignorePlayerSpawnSuitability();
+        return biomeTrue.getDisplayName();
     }
 
     @Override
-    public float getBaseHeight()
+    public String getTranslationKey()
     {
-        return biomeTrue == null ? 0.0F : biomeTrue.getBaseHeight();
+        return biomeTrue.getTranslationKey();
     }
 
     @Override
-    public float getRainfall()
+    public ConfiguredSurfaceBuilder<?> getSurfaceBuilder()
     {
-        return biomeTrue.getRainfall();
+        return biomeTrue.getSurfaceBuilder();
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public String getBiomeName()
+    public ISurfaceBuilderConfig getSurfaceBuilderConfig()
     {
-        return biomeTrue.getBiomeName();
+        return biomeTrue.getSurfaceBuilderConfig();
     }
 
     @Override
-    public float getHeightVariation()
-    {
-        return biomeTrue.getHeightVariation();
+    @Nullable
+    public String getParent() {
+        return biomeTrue.getParent();
     }
 
     @Override
-    public float getDefaultTemperature()
-    {
-        return biomeTrue.getDefaultTemperature();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getWaterColor()
-    {
-        return biomeTrue.getWaterColor();
-    }
-
-    @Override
-    public boolean isSnowyBiome()
-    {
-        return biomeTrue.isSnowyBiome();
-    }
-
-    @Override
-    public BiomeDecorator getModdedBiomeDecorator(BiomeDecorator original)
-    {
-        return biomeTrue.getModdedBiomeDecorator(original);
-    }
-
-    @Override
-    public int getWaterColorMultiplier()
-    {
-        return biomeTrue.getWaterColorMultiplier();
-    }
-
-    @Override
-    public int getModdedBiomeGrassColor(int original)
-    {
-        return biomeTrue.getModdedBiomeGrassColor(original);
-    }
-
-    @Override
-    public int getModdedBiomeFoliageColor(int original)
-    {
-        return biomeTrue.getModdedBiomeFoliageColor(original);
-    }
-
-    @Override
-    public void addDefaultFlowers()
-    {
-        if (biomeTrue != null)
-            biomeTrue.addDefaultFlowers();
-    }
-
-    @Override
-    public void addFlower(BlockState state, int weight)
-    {
-        biomeTrue.addFlower(state, weight);
-    }
-
-    @Override
-    public void plantFlower(World world, Random rand, BlockPos pos)
-    {
-        if (world.provider instanceof IGalacticraftWorldProvider)
-        {
-            this.setBodyInstance(((IGalacticraftWorldProvider)world.provider).getCelestialBody());
-        }
-        else
-        {
-            reportBiomeIDconflict();
-        }
-        biomeTrue.plantFlower(world, rand, pos);
-    }
-
-    private void reportBiomeIDconflict()
-    {
-        if (this.loggedConflict) return;
-        this.loggedConflict = true;
-        GCLog.severe("POTENTIAL BIOME ID CONFLICT for id " + Biome.getIdForBiome(this) + " conflicting with Galacticraft");
-        GCLog.severe("PLEASE CHECK CONFIGS FOR BOTH MODS: see Galacticraft core.conf setting BiomeIDBase");
-        Thread.dumpStack();
+    public Biome getRiver() {
+        return biomeTrue.getRiver();
     }
 }

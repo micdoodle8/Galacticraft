@@ -10,17 +10,19 @@ import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.IPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,22 +47,22 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
     protected boolean lastOnGround;
 
-    public EntityAdvancedMotion(World world)
+    public EntityAdvancedMotion(EntityType<?> type, World world)
     {
-        super(world);
+        super(type, world);
         this.preventEntitySpawning = true;
         this.ignoreFrustumCheck = true;
-        this.isImmuneToFire = true;
+//        this.isImmuneToFire = true;
     }
 
-    public EntityAdvancedMotion(World world, double var2, double var4, double var6)
+    public EntityAdvancedMotion(EntityType<?> type, World world, double var2, double var4, double var6)
     {
-        this(world);
+        this(type, world);
         this.setPosition(var2, var4, var6);
     }
 
     @Override
-    protected void entityInit()
+    protected void registerData()
     {
     }
 
@@ -79,13 +81,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     @Override
     public double getMountedYOffset()
     {
-        return this.height - 1.0D;
+        return this.getHeight() - 1.0D;
     }
 
     @Override
     public boolean canBeCollidedWith()
     {
-        return !this.isDead;
+        return this.isAlive();
     }
 
     @Override
@@ -109,18 +111,14 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
             this.advancedPositionZ = z;
             this.advancedYaw = yaw;
             this.advancedPitch = pitch;
-            this.motionX = motX;
-            this.motionY = motY;
-            this.motionZ = motZ;
+            this.setMotion(motX, motY, motZ);
             this.posRotIncrements = 5;
         }
         else
         {
             this.setPosition(x, y, z);
             this.setRotation(yaw, pitch);
-            this.motionX = motX;
-            this.motionY = motY;
-            this.motionZ = motZ;
+            this.setMotion(motX, motY, motZ);
             if (onGround || this.forceGroundUpdate())
             {
                 this.onGround = onGround;
@@ -144,14 +142,14 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     @Override
     public boolean attackEntityFrom(DamageSource var1, float var2)
     {
-        if (this.isDead || var1.equals(DamageSource.CACTUS) || !this.allowDamageSource(var1))
+        if (!this.isAlive() || var1.equals(DamageSource.CACTUS) || !this.allowDamageSource(var1))
         {
             return true;
         }
         else
         {
             Entity e = var1.getTrueSource();
-            if (this.isEntityInvulnerable(var1) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
+            if (this.isInvulnerableTo(var1) || this.posY > 300 || (e instanceof LivingEntity && !(e instanceof PlayerEntity)))
             {
                 return false;
             }
@@ -162,7 +160,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
                 this.currentDamage = this.currentDamage + var2 * 10;
                 this.markVelocityChanged();
 
-                if (e instanceof PlayerEntity && ((PlayerEntity) e).capabilities.isCreativeMode)
+                if (e instanceof PlayerEntity && ((PlayerEntity) e).abilities.isCreativeMode)
                 {
                     this.currentDamage = 100;
                 }
@@ -180,7 +178,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
                     {
                         this.dropItems();
 
-                        this.setDead();
+                        this.remove();
                     }
                 }
 
@@ -193,17 +191,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
     public abstract boolean shouldMove();
 
-    public abstract boolean shouldSpawnParticles();
-
-    /**
-     * @return map of the particle vectors. Map key is the position and map
-     * value is the motion of the particles. Each entry will be spawned
-     * as a separate particle
-     */
-    public abstract Map<Vector3, Vector3> getParticleMap();
-
-    @SideOnly(Side.CLIENT)
-    public abstract Particle getParticle(Random rand, double x, double y, double z, double motX, double motY, double motZ);
+    public abstract void spawnParticles();
 
     public abstract void tickInAir();
 
@@ -252,12 +240,12 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean b)
     {
         if (!this.getPassengers().isEmpty())
         {
-            if (this.getPassengers().contains(FMLClientHandler.instance().getClient().player))
+            if (this.getPassengers().contains(Minecraft.getInstance().player))
             {
             }
             else
@@ -273,11 +261,11 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     }
 
     @Override
-    public void move(MoverType type, double x, double y, double z)
+    public void move(MoverType typeIn, Vec3d pos)
     {
         if (this.shouldMove())
         {
-            super.move(type, x, y, z);
+            super.move(typeIn, pos);
         }
     }
 
@@ -286,13 +274,13 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
     public abstract boolean shouldSendAdvancedMotionPacket();
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.ticks++;
 
-        super.onUpdate();
+        super.tick();
 
-        if (this.canSetPositionClient() && this.world.isRemote && (this.getPassengers().isEmpty() || !this.getPassengers().contains(FMLClientHandler.instance().getClient().player)))
+        if (this.canSetPositionClient() && this.world.isRemote && (this.getPassengers().isEmpty() || !this.getPassengers().contains(Minecraft.getInstance().player)))
         {
             double x;
             double y;
@@ -329,9 +317,9 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
             this.currentDamage--;
         }
 
-        if (this.shouldSpawnParticles() && this.world.isRemote)
+        if (this.world.isRemote)
         {
-            this.spawnParticles(this.getParticleMap());
+            this.spawnParticles();
         }
 
         if (this.onGround)
@@ -346,12 +334,10 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         if (this.world.isRemote)
         {
             Vector3 mot = this.getMotionVec();
-            this.motionX = mot.x;
-            this.motionY = mot.y;
-            this.motionZ = mot.z;
+            this.setMotion(mot.x, mot.y, mot.z);
         }
         //Necessary on both server and client to achieve a correct this.onGround setting
-        this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+        this.move(MoverType.SELF, this.getMotion());
 
         if (this.onGround && !this.lastOnGround)
         {
@@ -367,7 +353,7 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
 
             if (!this.world.isRemote && this.ticks % 5 == 0)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, 50.0D));
+                GalacticraftCore.packetPipeline.sendToAllAround(new PacketEntityUpdate(this), new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, 50.0, GCCoreUtil.getDimensionID(this.world)));
             }
         }
 
@@ -389,29 +375,29 @@ public abstract class EntityAdvancedMotion extends InventoryEntity implements IC
         this.readNetworkedData(buffer);
     }
 
-    @SideOnly(Side.CLIENT)
-    public void spawnParticles(Map<Vector3, Vector3> points)
-    {
-        for (final Entry<Vector3, Vector3> vec : points.entrySet())
-        {
-            final Vector3 posVec = vec.getKey();
-            final Vector3 motionVec = vec.getValue();
+//    @OnlyIn(Dist.CLIENT)
+//    public void spawnParticles(Map<Vector3, Vector3> points)
+//    {
+//        for (final Entry<Vector3, Vector3> vec : points.entrySet())
+//        {
+//            final Vector3 posVec = vec.getKey();
+//            final Vector3 motionVec = vec.getValue();
+//
+//            this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
+//        }
+//    }
 
-            this.spawnParticle(this.getParticle(this.rand, posVec.x, posVec.y, posVec.z, motionVec.x, motionVec.y, motionVec.z));
-        }
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void spawnParticle(Particle fx)
-    {
-        final Minecraft mc = FMLClientHandler.instance().getClient();
-
-        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
-        {
-            if (fx != null)
-            {
-                mc.effectRenderer.addEffect(fx);
-            }
-        }
-    }
+//    @OnlyIn(Dist.CLIENT)
+//    public void spawnParticle(Particle fx)
+//    {
+//        final Minecraft mc = Minecraft.getInstance();
+//
+//        if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
+//        {
+//            if (fx != null)
+//            {
+//                mc.effectRenderer.addEffect(fx);
+//            }
+//        }
+//    } TODO Particles
 }

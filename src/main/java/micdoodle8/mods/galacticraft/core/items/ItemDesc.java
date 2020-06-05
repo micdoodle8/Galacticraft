@@ -1,16 +1,13 @@
 package micdoodle8.mods.galacticraft.core.items;
 
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import net.minecraft.client.GameSettings;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -18,19 +15,27 @@ import javax.annotation.Nullable;
 
 public abstract class ItemDesc extends Item implements IShiftDescription
 {
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> info, ITooltipFlag flagIn)
+    public ItemDesc(Properties properties)
     {
-        if (this.showDescription(stack.getItemDamage()))
+        super(properties);
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn)
+    {
+        if (this.showDescription(stack))
         {
-            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT))
+            if (Minecraft.getInstance().gameSettings.keyBindSneak.isKeyDown())
             {
-                info.addAll(FMLClientHandler.instance().getClient().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack.getItemDamage()), 150));
+                List<String> descString = Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(this.getShiftDescription(stack), 150);
+                for (String string : descString)
+                {
+                    tooltip.add(new StringTextComponent(string));
+                }
             }
             else
             {
-                info.add(GCCoreUtil.translateWithFormat("item_desc.shift.name", GameSettings.getKeyDisplayString(FMLClientHandler.instance().getClient().gameSettings.keyBindSneak.getKeyCode())));
+                tooltip.add(new StringTextComponent(GCCoreUtil.translateWithFormat("item_desc.shift.name", Minecraft.getInstance().gameSettings.keyBindSneak.getLocalizedName())));
             }
         }
     }

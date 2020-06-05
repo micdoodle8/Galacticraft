@@ -21,7 +21,7 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.tier = nbt.getInteger("tier");
+        this.tier = nbt.getInt("tier");
         //For legacy worlds (e.g. converted from 1.6.4)
         if (this.tier == 0)
         {
@@ -33,7 +33,7 @@ public class TileEntityAluminumWire extends TileBaseUniversalConductor
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("tier", this.tier);
+        nbt.putInt("tier", this.tier);
         return nbt;
     }
 

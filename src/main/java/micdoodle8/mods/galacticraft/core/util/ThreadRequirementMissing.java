@@ -1,25 +1,24 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.client.gui.screen.GuiMissingCore;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.LogicalSide;
 
 public class ThreadRequirementMissing extends Thread
 {
-    private static Side threadSide;
+    private static LogicalSide threadSide;
     public static ThreadRequirementMissing INSTANCE;
 
-    public ThreadRequirementMissing(Side threadSide)
+    public ThreadRequirementMissing(LogicalSide threadSide)
     {
         super("Galacticraft Requirement Check Thread");
         this.setDaemon(true);
         ThreadRequirementMissing.threadSide = threadSide;
     }
 
-    public static void beginCheck(Side threadSide)
+    public static void beginCheck(LogicalSide threadSide)
     {
         INSTANCE = new ThreadRequirementMissing(threadSide);
         INSTANCE.start();
@@ -28,24 +27,24 @@ public class ThreadRequirementMissing extends Thread
     @Override
     public void run()
     {
-        if (!Loader.isModLoaded("micdoodlecore"))
-        {
-            if (ThreadRequirementMissing.threadSide.isServer())
-            {
-                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
-                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
-                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
-            }
-            else
-            {
-                ThreadRequirementMissing.openGuiClient();
-            }
-        }
+//        if (!Loader.isModLoaded("micdoodlecore"))
+//        {
+//            if (ThreadRequirementMissing.threadSide.isServer())
+//            {
+//                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
+//                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("MicdoodleCore not found in mods folder. Galacticraft will not load.");
+//                FMLCommonHandler.instance().getMinecraftServerInstance().logSevere("===================================================================");
+//            }
+//            else
+//            {
+//                ThreadRequirementMissing.openGuiClient();
+//            }
+//        }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private static void openGuiClient()
     {
-        FMLClientHandler.instance().getClient().displayGuiScreen(new GuiMissingCore());
+        Minecraft.getInstance().displayGuiScreen(new GuiMissingCore());
     }
 }

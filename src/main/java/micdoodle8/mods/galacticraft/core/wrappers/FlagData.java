@@ -86,11 +86,11 @@ public class FlagData
 
     public static FlagData readFlagData(CompoundNBT nbt)
     {
-        if (nbt.hasKey("FlagWidth"))
+        if (nbt.contains("FlagWidth"))
         {
             //Legacy saves
-            int width = nbt.getInteger("FlagWidth");
-            int height = nbt.getInteger("FlagHeight");
+            int width = nbt.getInt("FlagWidth");
+            int height = nbt.getInt("FlagHeight");
 
             FlagData flagData = new FlagData(width, height);
 
@@ -108,8 +108,8 @@ public class FlagData
         }
 
         //New more compact flag save style
-        int width = nbt.getInteger("FWidth");
-        int height = nbt.getInteger("FHeight");
+        int width = nbt.getInt("FWidth");
+        int height = nbt.getInt("FHeight");
 
         FlagData flagData = new FlagData(width, height);
         for (int i = 0; i < height; i++)
@@ -128,8 +128,8 @@ public class FlagData
 
     public void saveFlagData(CompoundNBT nbt)
     {
-        nbt.setInteger("FWidth", this.width);
-        nbt.setInteger("FHeight", this.height);
+        nbt.putInt("FWidth", this.width);
+        nbt.putInt("FHeight", this.height);
 
         for (int i = 0; i < this.height; i++)
         {

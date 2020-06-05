@@ -1,24 +1,20 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerStats;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Rarity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import static net.minecraft.item.DyeColor.*;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemParaChute extends Item implements ISortableItem, IClickableItem
 {
@@ -38,17 +34,24 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
             "red", // 13
             "teal", // 14
             "yellow" }; // 15
+    private final DyeColor color;
 
 //    protected IIcon[] icons;
 
-    public ItemParaChute(String assetName)
+    public ItemParaChute(DyeColor color, Item.Properties properties)
     {
-        super();
-        this.setMaxDamage(0);
-        this.setHasSubtypes(true);
-        this.setMaxStackSize(1);
-        this.setUnlocalizedName(assetName);
+        super(properties);
+        this.color = color;
+//        this.setMaxDamage(0);
+//        this.setHasSubtypes(true);
+//        this.setMaxStackSize(1);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
+    }
+
+    public DyeColor getColor()
+    {
+        return color;
     }
 
     @Override
@@ -57,32 +60,32 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
         return false;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
-    @Override
-    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
-    {
-        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
-        {
-            for (int i = 0; i < ItemParaChute.names.length; i++)
-            {
-                list.add(new ItemStack(this, 1, i));
-            }
-        }
-    }
+//    @Override
+//    public void getSubItems(ItemGroup tab, NonNullList<ItemStack> list)
+//    {
+//        if (tab == GalacticraftCore.galacticraftItemsTab || tab == ItemGroup.SEARCH)
+//        {
+//            for (int i = 0; i < ItemParaChute.names.length; i++)
+//            {
+//                list.add(new ItemStack(this, 1, i));
+//            }
+//        }
+//    }
 
-    @Override
-    public int getMetadata(int par1)
-    {
-        return par1;
-    }
+//    @Override
+//    public int getMetadata(int par1)
+//    {
+//        return par1;
+//    }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         int i = 0;
@@ -94,11 +97,11 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
         }
     }*/
 
-    @Override
-    public String getUnlocalizedName(ItemStack itemStack)
-    {
-        return this.getUnlocalizedName() + "_" + ItemParaChute.names[itemStack.getItemDamage()];
-    }
+//    @Override
+//    public String getUnlocalizedName(ItemStack itemStack)
+//    {
+//        return this.getUnlocalizedName() + "_" + ItemParaChute.names[itemStack.getItemDamage()];
+//    }
 
     /*@Override
     public IIcon getIconFromDamage(int damage)
@@ -112,7 +115,7 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
     }*/
 
     // @Override
-    // @SideOnly(Side.CLIENT)
+    // @OnlyIn(Dist.CLIENT)
     // public int getIconFromDamage(int par1)
     // {
     // switch (par1)
@@ -154,95 +157,95 @@ public class ItemParaChute extends Item implements ISortableItem, IClickableItem
     // return 0;
     // }
 
-    public static DyeColor getDyeEnumFromParachuteDamage(int damage)
-    {
-        switch (damage)
-        {
-        case 1:
-            return BLACK;
-        case 13:
-            return RED;
-        case 7:
-            return GREEN;
-        case 4:
-            return BROWN;
-        case 5:
-            return BLUE;
-        case 12:
-            return PURPLE;
-        case 14:
-            return CYAN;
-        case 8:
-            return SILVER;
-        case 6:
-            return GRAY;
-        case 11:
-            return PINK;
-        case 3:
-            return LIME;
-        case 15:
-            return YELLOW;
-        case 2:
-            return LIGHT_BLUE;
-        case 9:
-            return MAGENTA;
-        case 10:
-            return ORANGE;
-        case 0:
-            return WHITE;
-        }
+//    public static DyeColor getDyeEnumFromParachuteDamage(int damage)
+//    {
+//        switch (damage)
+//        {
+//        case 1:
+//            return BLACK;
+//        case 13:
+//            return RED;
+//        case 7:
+//            return GREEN;
+//        case 4:
+//            return BROWN;
+//        case 5:
+//            return BLUE;
+//        case 12:
+//            return PURPLE;
+//        case 14:
+//            return CYAN;
+//        case 8:
+//            return SILVER;
+//        case 6:
+//            return GRAY;
+//        case 11:
+//            return PINK;
+//        case 3:
+//            return LIME;
+//        case 15:
+//            return YELLOW;
+//        case 2:
+//            return LIGHT_BLUE;
+//        case 9:
+//            return MAGENTA;
+//        case 10:
+//            return ORANGE;
+//        case 0:
+//            return WHITE;
+//        }
+//
+//        return WHITE;
+//    }
+//
+//    public static int getParachuteDamageValueFromDyeEnum(DyeColor color)
+//    {
+//        switch (color)
+//        {
+//        case BLACK:
+//            return 1;
+//        case RED:
+//            return 13;
+//        case GREEN:
+//            return 7;
+//        case BROWN:
+//            return 4;
+//        case BLUE:
+//            return 5;
+//        case PURPLE:
+//            return 12;
+//        case CYAN:
+//            return 14;
+//        case SILVER:
+//            return 8;
+//        case GRAY:
+//            return 6;
+//        case PINK:
+//            return 11;
+//        case LIME:
+//            return 3;
+//        case YELLOW:
+//            return 15;
+//        case LIGHT_BLUE:
+//            return 2;
+//        case MAGENTA:
+//            return 9;
+//        case ORANGE:
+//            return 10;
+//        case WHITE:
+//            return 0;
+//        }
+//
+//        return -1;
+//    }
 
-        return WHITE;
-    }
-
-    public static int getParachuteDamageValueFromDyeEnum(DyeColor color)
-    {
-        switch (color)
-        {
-        case BLACK:
-            return 1;
-        case RED:
-            return 13;
-        case GREEN:
-            return 7;
-        case BROWN:
-            return 4;
-        case BLUE:
-            return 5;
-        case PURPLE:
-            return 12;
-        case CYAN:
-            return 14;
-        case SILVER:
-            return 8;
-        case GRAY:
-            return 6;
-        case PINK:
-            return 11;
-        case LIME:
-            return 3;
-        case YELLOW:
-            return 15;
-        case LIGHT_BLUE:
-            return 2;
-        case MAGENTA:
-            return 9;
-        case ORANGE:
-            return 10;
-        case WHITE:
-            return 0;
-        }
-
-        return -1;
-    }
-
-    public static int getParachuteDamageValueFromDye(int meta)
-    {
-        return getParachuteDamageValueFromDyeEnum(DyeColor.byDyeDamage(meta));
-    }
+//    public static int getParachuteDamageValueFromDye(int meta)
+//    {
+//        return getParachuteDamageValueFromDyeEnum(DyeColor.byDyeDamage(meta));
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

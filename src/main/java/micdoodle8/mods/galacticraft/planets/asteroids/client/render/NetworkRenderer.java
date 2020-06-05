@@ -34,7 +34,7 @@ public class NetworkRenderer
         }
 
         Tessellator tess = Tessellator.getInstance();
-        ClientPlayerEntity player = FMLClientHandler.instance().getClient().player;
+        ClientPlayerEntity player = Minecraft.getInstance().player;
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
         double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;

@@ -3,10 +3,13 @@ package micdoodle8.mods.galacticraft.api.recipe;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
+public class ShapedRecipesGC implements IRecipe<CraftingInventory>
 {
     public final int recipeWidth;
     public final int recipeHeight;
@@ -21,13 +24,11 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
         this.recipeOutput = output;
     }
 
-    @Override
     public ItemStack getRecipeOutput()
     {
         return this.recipeOutput;
     }
 
-    @Override
     public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv)
     {
         NonNullList<ItemStack> aitemstack = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
@@ -63,7 +64,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
         return false;
     }
 
-    private boolean checkMatch(CraftingInventory p_77573_1_, int p_77573_2_, int p_77573_3_, boolean p_77573_4_)
+    private boolean checkMatch(CraftingInventory craftingInv, int p_77573_2_, int p_77573_3_, boolean p_77573_4_)
     {
         for (int i = 0; i < 3; ++i)
         {
@@ -85,7 +86,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
                     }
                 }
 
-                ItemStack itemstack1 = p_77573_1_.getStackInRowAndColumn(i, j);
+                ItemStack itemstack1 = craftingInv.getStackInSlot(i + j * craftingInv.getWidth());
 
                 if (!itemstack1.isEmpty() || !itemstack.isEmpty())
                 {
@@ -99,7 +100,7 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
                         return false;
                     }
 
-                    if (itemstack.getMetadata() != 32767 && itemstack.getMetadata() != itemstack1.getMetadata())
+                    if (itemstack.getDamage() != itemstack1.getDamage())
                     {
                         return false;
                     }
@@ -110,15 +111,31 @@ public class ShapedRecipesGC extends net.minecraftforge.registries.IForgeRegistr
         return true;
     }
 
-    @Override
     public ItemStack getCraftingResult(CraftingInventory inv)
     {
         return this.getRecipeOutput().copy();
     }
 
-    @Override
     public boolean canFit(int width, int height)
     {
         return width >= 3 && height >= 3;
+    }
+
+    @Override
+    public ResourceLocation getId()
+    {
+        return null;
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer()
+    {
+        return null;
+    }
+
+    @Override
+    public IRecipeType<?> getType()
+    {
+        return null;
     }
 }

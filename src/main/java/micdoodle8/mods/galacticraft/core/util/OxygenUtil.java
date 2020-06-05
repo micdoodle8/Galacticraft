@@ -46,10 +46,10 @@ public class OxygenUtil
 {
     private static HashSet<BlockPos> checked;
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static boolean shouldDisplayTankGui(Screen gui)
     {
-        if (FMLClientHandler.instance().getClient().gameSettings.hideGUI)
+        if (Minecraft.getInstance().gameSettings.hideGUI)
         {
             return false;
         }
@@ -79,9 +79,9 @@ public class OxygenUtil
         double x = entity.posX;
         double z = entity.posZ;
 
-        double sx = entity.getEntityBoundingBox().maxX - entity.getEntityBoundingBox().minX;
-        double sy = entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY;
-        double sz = entity.getEntityBoundingBox().maxZ - entity.getEntityBoundingBox().minZ;
+        double sx = entity.getBoundingBox().maxX - entity.getBoundingBox().minX;
+        double sy = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
+        double sz = entity.getBoundingBox().maxZ - entity.getBoundingBox().minZ;
 
         //A good first estimate of head size is that it's the smallest of the entity's 3 dimensions (e.g. front to back, for Steve)
         double smin = Math.min(sx, Math.min(sy, sz)) / 2;
@@ -276,7 +276,7 @@ public class OxygenUtil
             {
                 if (permeableFlag || OxygenUtil.canBlockPassAirOnSide(world, block, pos, side))
                 {
-                    BlockPos sidevec = pos.add(side.getFrontOffsetX(), side.getFrontOffsetY(), side.getFrontOffsetZ());
+                    BlockPos sidevec = pos.add(side.getXOffset(), side.getYOffset(), side.getZOffset());
                     if (!checked.contains(sidevec))
                     {
                         Block newblock = world.getBlockState(sidevec).getBlock();
@@ -319,7 +319,7 @@ public class OxygenUtil
         if (block instanceof PistonBlock)
         {
             BlockState state = world.getBlockState(vec);
-            if ((Boolean) state.getValue(PistonBlock.EXTENDED))
+            if ((Boolean) state.get(PistonBlock.EXTENDED))
             {
                 int meta0 = state.getBlock().getMetaFromState(state);
                 Direction facing = PistonBlock.getFacing(meta0);
@@ -328,7 +328,7 @@ public class OxygenUtil
             return false;
         }
 
-        return !block.isSideSolid(world.getBlockState(vec), world, vec, Direction.getFront(side.getIndex() ^ 1));
+        return !block.isSideSolid(world.getBlockState(vec), world, vec, Direction.byIndex(side.getIndex() ^ 1));
     }
 
     public static int getDrainSpacing(ItemStack tank, ItemStack tank2)

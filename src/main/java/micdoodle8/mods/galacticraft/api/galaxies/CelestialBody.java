@@ -1,25 +1,19 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
+import com.google.common.collect.Maps;
 import micdoodle8.mods.galacticraft.api.prefab.world.gen.BiomeAdaptive;
-import micdoodle8.mods.galacticraft.api.world.AtmosphereInfo;
-import micdoodle8.mods.galacticraft.api.world.BiomeGenBaseGC;
-import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
-import micdoodle8.mods.galacticraft.api.world.IMobSpawnBiome;
-import micdoodle8.mods.galacticraft.api.world.EnumAtmosphericGas;
+import micdoodle8.mods.galacticraft.api.world.*;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityClassification;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.dimension.Dimension;
+import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
-
+import net.minecraft.world.dimension.Dimension;
+import net.minecraft.world.dimension.DimensionType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public abstract class CelestialBody implements Comparable<CelestialBody>
 {
@@ -30,7 +24,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected ScalableDistance relativeDistanceFromCenter = new ScalableDistance(1.0F, 1.0F);
     protected float relativeOrbitTime = 1.0F;
     protected float phaseShift = 0.0F;
-    protected int dimensionID = -1;
+    protected DimensionType dimensionID = null;
     protected Class<? extends Dimension> providerClass;
     protected String dimensionSuffix;
     protected boolean autoRegisterDimension = false;
@@ -42,7 +36,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     protected LinkedList<Biome> biomeInfo;
     public LinkedList<Biome> biomesToGenerate;
     public BiomeGenBaseGC[] biomesToAdapt;
-    protected LinkedList<SpawnListEntry> mobInfo;
+    protected Map<SpawnListEntry, EntityClassification> mobInfo;
 
     protected ResourceLocation celestialBodyIcon;
 
@@ -75,7 +69,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
     public String getLocalizedName()
     {
         String s = this.getUnlocalizedName();
-        s = s == null ? "" : I18n.translateToLocal(s);
+        s = s == null ? "" : LanguageMap.getInstance().translateKey(s);
         int comment = s.indexOf('#');
         return (comment > 0) ? s.substring(0, comment).trim() : s;
     }
@@ -178,12 +172,12 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this;
     }
 
-    public CelestialBody setDimensionInfo(int dimID, Class<? extends Dimension> providerClass)
+    public CelestialBody setDimensionInfo(DimensionType dimID, Class<? extends Dimension> providerClass)
     {
         return this.setDimensionInfo(dimID, providerClass, true);
     }
 
-    public CelestialBody setDimensionInfo(int providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
+    public CelestialBody setDimensionInfo(DimensionType providerId, Class<? extends Dimension> providerClass, boolean autoRegister)
     {
         this.dimensionID = providerId;
         this.providerClass = providerClass;
@@ -197,7 +191,7 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this.autoRegisterDimension;
     }
     
-    public int getDimensionID()
+    public DimensionType getDimensionID()
     {
         return this.dimensionID;
     }
@@ -357,13 +351,13 @@ public abstract class CelestialBody implements Comparable<CelestialBody>
         return this.biomeInfo;
     }
 
-    public void addMobInfo(SpawnListEntry entry)
+    public void addMobInfo(SpawnListEntry entry, EntityClassification classification)
     {
         if (this.mobInfo == null)
         {
-            this.mobInfo = new LinkedList<SpawnListEntry>();
+            this.mobInfo = Maps.newHashMap();
         }
-        this.mobInfo.add(entry);
+        this.mobInfo.put(entry, classification);
     }
 
     public void initialiseMobSpawns()

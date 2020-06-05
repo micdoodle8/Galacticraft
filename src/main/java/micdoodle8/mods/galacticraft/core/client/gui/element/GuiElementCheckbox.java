@@ -2,8 +2,9 @@ package micdoodle8.mods.galacticraft.core.client.gui.element;
 
 import micdoodle8.mods.galacticraft.core.Constants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -11,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
-public class GuiElementCheckbox extends Button
+public class GuiElementCheckbox extends Widget
 {
     protected static final ResourceLocation texture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
     public Boolean isSelected;
@@ -23,24 +24,24 @@ public class GuiElementCheckbox extends Button
     private int texY;
     private boolean shiftOnHover;
 
-    public GuiElementCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, String text)
+    public GuiElementCheckbox(ICheckBoxCallback parentGui, int x, int y, String text)
     {
-        this(id, parentGui, x, y, text, 4210752);
+        this(parentGui, x, y, text, 4210752);
     }
 
-    public GuiElementCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, String text, int textColor)
+    public GuiElementCheckbox(ICheckBoxCallback parentGui, int x, int y, String text, int textColor)
     {
-        this(id, parentGui, x, y, 13, 13, 20, 24, text, textColor);
+        this(parentGui, x, y, 13, 13, 20, 24, text, textColor);
     }
 
-    private GuiElementCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, int width, int height, int texX, int texY, String text, int textColor)
+    private GuiElementCheckbox(ICheckBoxCallback parentGui, int x, int y, int width, int height, int texX, int texY, String text, int textColor)
     {
-        this(id, parentGui, x, y, width, height, width, height, texX, texY, text, textColor, true);
+        this(parentGui, x, y, width, height, width, height, texX, texY, text, textColor, true);
     }
 
-    public GuiElementCheckbox(int id, ICheckBoxCallback parentGui, int x, int y, int width, int height, int texWidth, int texHeight, int texX, int texY, String text, int textColor, boolean shiftOnHover)
+    public GuiElementCheckbox(ICheckBoxCallback parentGui, int x, int y, int width, int height, int texWidth, int texHeight, int texX, int texY, String text, int textColor, boolean shiftOnHover)
     {
-        super(id, x, y, width, height, text);
+        super(x, y, width, height, text);
         this.parentGui = parentGui;
         this.textColor = textColor;
         this.texWidth = texWidth;
@@ -51,7 +52,7 @@ public class GuiElementCheckbox extends Button
     }
 
     @Override
-    public void drawButton(Minecraft par1Minecraft, int par2, int par3, float partial)
+    public void renderButton(int par2, int par3, float partial)
     {
         if (this.isSelected == null)
         {
@@ -60,48 +61,51 @@ public class GuiElementCheckbox extends Button
 
         if (this.visible)
         {
-            par1Minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.hovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
-            this.drawTexturedModalRect(this.x, this.y, this.isSelected ? this.texX + this.texWidth : this.texX, this.hovered ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
-            this.mouseDragged(par1Minecraft, par2, par3);
-            par1Minecraft.fontRenderer.drawString(this.displayString, this.x + this.width + 3, this.y + (this.height - 6) / 2, this.textColor, false);
+            Minecraft minecraft = Minecraft.getInstance();
+            minecraft.getTextureManager().bindTexture(GuiElementCheckbox.texture);
+            GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+            this.isHovered = par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height;
+            this.blit(this.x, this.y, this.isSelected ? this.texX + this.texWidth : this.texX, this.isHovered() ? this.shiftOnHover ? this.texY + this.texHeight : this.texY : this.texY, this.width, this.height);
+            minecraft.fontRenderer.drawString(this.getMessage(), this.x + this.width + 3, this.y + (this.height - 6) / 2, this.textColor);
         }
     }
 
     @Override
-    public void drawTexturedModalRect(int par1, int par2, int par3, int par4, int par5, int par6)
+    public void blit(int par1, int par2, int par3, int par4, int par5, int par6)
     {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.pos(par1 + 0, par2 + par6, this.zLevel).tex((par3 + 0) * f, (par4 + this.texHeight) * f1).endVertex();
-        worldRenderer.pos(par1 + par5, par2 + par6, this.zLevel).tex((par3 + this.texWidth) * f, (par4 + this.texHeight) * f1).endVertex();
-        worldRenderer.pos(par1 + par5, par2 + 0, this.zLevel).tex((par3 + this.texWidth) * f, (par4 + 0) * f1).endVertex();
-        worldRenderer.pos(par1 + 0, par2 + 0, this.zLevel).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + par6, this.blitOffset).tex((par3 + 0) * f, (par4 + this.texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + par6, this.blitOffset).tex((par3 + this.texWidth) * f, (par4 + this.texHeight) * f1).endVertex();
+        worldRenderer.pos(par1 + par5, par2 + 0, this.blitOffset).tex((par3 + this.texWidth) * f, (par4 + 0) * f1).endVertex();
+        worldRenderer.pos(par1 + 0, par2 + 0, this.blitOffset).tex((par3 + 0) * f, (par4 + 0) * f1).endVertex();
         tessellator.draw();
     }
 
-    @Override
-    public boolean mousePressed(Minecraft par1Minecraft, int par2, int par3)
+    protected boolean clicked(double p_clicked_1_, double p_clicked_3_)
     {
-        if (this.enabled && this.visible && par2 >= this.x && par3 >= this.y && par2 < this.x + this.width && par3 < this.y + this.height)
+        if (super.clicked(p_clicked_1_, p_clicked_3_))
         {
-            if (this.parentGui.canPlayerEdit(this, par1Minecraft.player))
-            {
-                this.isSelected = !this.isSelected;
-                this.parentGui.onSelectionChanged(this, this.isSelected);
-                return true;
-            }
-            else
+            boolean canInteract = this.parentGui.canPlayerEdit(this, Minecraft.getInstance().player);
+            if (!canInteract)
             {
                 this.parentGui.onIntruderInteraction();
             }
+            else
+            {
+                return true;
+            }
         }
-
         return false;
+    }
+
+    @Override
+    public void onClick(double mouseX, double mouseY)
+    {
+        this.parentGui.onSelectionChanged(this, this.isSelected);
     }
 
     public interface ICheckBoxCallback

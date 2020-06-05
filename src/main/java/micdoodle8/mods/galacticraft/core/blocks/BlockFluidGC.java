@@ -1,7 +1,7 @@
 //package micdoodle8.mods.galacticraft.core.blocks;
 //
 //import micdoodle8.mods.galacticraft.api.vector.Vector3;
-//import micdoodle8.mods.galacticraft.core.GCFluids;
+//import micdoodle8.mods.galacticraft.core.fluid.GCFluids;
 //import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 //import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 //import net.minecraft.block.BlockLiquid;
@@ -16,7 +16,7 @@
 //import net.minecraft.util.SoundCategory;
 //import net.minecraft.util.math.BlockPos;
 //import net.minecraft.util.math.Vec3d;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.common.property.IExtendedBlockState;
 //import net.minecraftforge.fluids.BlockFluidBase;
@@ -49,7 +49,7 @@
 //
 //    @Override
 //    @Nullable
-//    public Boolean isEntityInsideMaterial(IBlockAccess world, BlockPos pos, BlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
+//    public Boolean isEntityInsideMaterial(IBlockReader world, BlockPos pos, BlockState state, Entity entity, double yToTest, Material material, boolean testingHead)
 //    {
 //        return true;
 //    }
@@ -80,13 +80,13 @@
 //            BlockState state = worldIn.getBlockState(below);
 //            if (state.getBlock().isSideSolid(state, worldIn, below, Direction.UP) && !worldIn.getBlockState(pos.down(2)).getMaterial().blocksMovement())
 //            {
-//                GalacticraftCore.proxy.spawnParticle("oilDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
+//                this.world.addParticle("oilDrip", new Vector3(pos.getX() + rand.nextFloat(), pos.getY() - 1.05D, pos.getZ() + rand.nextFloat()), new Vector3(0, 0, 0), new Object[] {});
 //            }
 //        }
 //    }
 //
 //    @Override
-//    public boolean canDisplace(IBlockAccess world, BlockPos pos)
+//    public boolean canDisplace(IBlockReader world, BlockPos pos)
 //    {
 //        if (world.getBlockState(pos).getMaterial().isLiquid())
 //        {
@@ -108,7 +108,7 @@
 //    }
 //
 //    @Override
-//    public boolean isFlammable(IBlockAccess world, BlockPos pos, Direction face)
+//    public boolean isFlammable(IBlockReader world, BlockPos pos, Direction face)
 //    {
 //        if (this.fluidName.startsWith("fuel"))
 //        {
@@ -119,7 +119,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getExtendedState(BlockState oldState, IBlockAccess world, BlockPos pos)
+//    public BlockState getExtendedState(BlockState oldState, IBlockReader world, BlockPos pos)
 //    {
 //        IExtendedBlockState state = (IExtendedBlockState)oldState;
 //        state = state.with(FLOW_DIRECTION, (float)getFlowDirection(state, world, pos));
@@ -193,7 +193,7 @@
 //        return state;
 //    }
 //
-//    public static double getFlowDirection(BlockState state, IBlockAccess world, BlockPos pos)
+//    public static double getFlowDirection(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        if (!state.getMaterial().isLiquid())
 //        {
@@ -209,7 +209,7 @@
 //    }
 //
 //    @Override
-//    public float getFluidHeightForRender(IBlockAccess world, BlockPos pos, BlockState up)
+//    public float getFluidHeightForRender(IBlockReader world, BlockPos pos, BlockState up)
 //    {
 //        BlockState here = world.getBlockState(pos);
 //

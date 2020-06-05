@@ -1,13 +1,9 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import micdoodle8.mods.galacticraft.core.GCBlocks;
-import micdoodle8.mods.galacticraft.core.blocks.BlockEnclosed;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ServerWorld;
-import net.minecraft.world.chunk.ServerChunkProvider;
 import net.minecraft.world.WorldType;
-import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -19,6 +15,8 @@ import net.minecraft.entity.Entity;
 //import cpw.mods.fml.common.Loader;
 //import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.server.ServerChunkProvider;
+import net.minecraft.world.server.ServerWorld;
 
 
 public class CompatibilityManager

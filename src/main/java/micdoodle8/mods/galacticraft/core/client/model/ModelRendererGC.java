@@ -22,7 +22,7 @@ public class ModelRendererGC extends RendererModel
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void render(float par1)
     {
         if (!this.isHidden)
@@ -105,7 +105,7 @@ public class ModelRendererGC extends RendererModel
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void compileDisplayList(float par1)
     {
         this.displayList = GLAllocation.generateDisplayLists(1);

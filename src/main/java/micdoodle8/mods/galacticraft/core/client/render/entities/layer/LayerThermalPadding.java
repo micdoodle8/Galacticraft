@@ -1,9 +1,9 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities.layer;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.client.model.ModelPlayerGC;
 import micdoodle8.mods.galacticraft.core.client.render.entities.RenderPlayerGC;
 import micdoodle8.mods.galacticraft.core.entities.player.GCPlayerHandler;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
@@ -11,25 +11,29 @@ import micdoodle8.mods.galacticraft.planets.asteroids.items.AsteroidsItems;
 import micdoodle8.mods.galacticraft.planets.venus.VenusItems;
 import micdoodle8.mods.galacticraft.planets.venus.items.ItemThermalPaddingTier2;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.renderer.entity.layers.ArmorLayer;
+import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
-
 import org.lwjgl.opengl.GL11;
 
-public class LayerThermalPadding extends ArmorLayer<ModelBiped>
+public class LayerThermalPadding extends ArmorLayer<AbstractClientPlayerEntity, PlayerModel<AbstractClientPlayerEntity>, PlayerModel<AbstractClientPlayerEntity>>
 {
-    private final PlayerRenderer renderer;
+    private final RenderPlayerGC renderer;
 
-    public LayerThermalPadding(PlayerRenderer playerRendererIn)
+    public LayerThermalPadding(RenderPlayerGC renderer)
     {
-        super(playerRendererIn);
-        this.renderer = playerRendererIn;
+        super(renderer, new PlayerModel<>(0.55F, false), new PlayerModel<>(0.05F, false));
+        this.renderer = renderer;
+    }
+
+    @Override
+    protected void setModelVisible(PlayerModel<AbstractClientPlayerEntity> model)
+    {
+        model.setVisible(false);
     }
 
     @Override
@@ -39,10 +43,9 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
     }
 
     @Override
-    protected void setModelSlotVisible(ModelBiped model, EquipmentSlotType slotIn)
+    protected void setModelSlotVisible(PlayerModel<AbstractClientPlayerEntity> model, EquipmentSlotType slotIn)
     {
-        model.setVisible(false);
-
+        setModelVisible(model);
         switch (slotIn)
         {
         case HEAD:
@@ -79,12 +82,12 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
                 case Constants.GEAR_ID_THERMAL_PADDING_T1_CHESTPLATE:
                 case Constants.GEAR_ID_THERMAL_PADDING_T1_LEGGINGS:
                 case Constants.GEAR_ID_THERMAL_PADDING_T1_BOOTS:
-                    return new ItemStack(AsteroidsItems.thermalPadding, 1, slotIn.getSlotIndex() - 1);
+                    return new ItemStack(AsteroidsItems.thermalPadding, 1); // TODO Flatten thermal padding
                 case Constants.GEAR_ID_THERMAL_PADDING_T2_HELMET:
                 case Constants.GEAR_ID_THERMAL_PADDING_T2_CHESTPLATE:
                 case Constants.GEAR_ID_THERMAL_PADDING_T2_LEGGINGS:
                 case Constants.GEAR_ID_THERMAL_PADDING_T2_BOOTS:
-                    return new ItemStack(VenusItems.thermalPaddingTier2, 1, slotIn.getSlotIndex() - 1);
+                    return new ItemStack(VenusItems.thermalPaddingTier2, 1); // TODO Flatten thermal padding
                 default:
                     break;
                 }
@@ -95,22 +98,22 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
     }
 
     @Override
-    public void doRenderLayer(LivingEntity entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
+    public void render(AbstractClientPlayerEntity player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.CHEST);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.LEGS);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.FEET);
-        this.renderArmorLayer(entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.HEAD);
+        this.renderArmorLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.CHEST);
+        this.renderArmorLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.LEGS);
+        this.renderArmorLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.FEET);
+        this.renderArmorLayer(player, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale, EquipmentSlotType.HEAD);
     }
 
-    private void renderArmorLayer(LivingEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EquipmentSlotType slotIn)
+    private void renderArmorLayer(AbstractClientPlayerEntity entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, EquipmentSlotType slotIn)
     {
         ItemStack itemstack = this.getItemStackFromSlot(entityLivingBaseIn, slotIn);
 
         if (itemstack != null)
         {
-            ModelBiped model = this.getModelFromSlot(slotIn);
-            model.setModelAttributes(this.renderer.getMainModel());
+            PlayerModel<AbstractClientPlayerEntity> model = this.func_215337_a(slotIn);
+            model.setModelAttributes(this.renderer.getEntityModel());
             model.setLivingAnimations(entityLivingBaseIn, limbSwing, limbSwingAmount, partialTicks);
             this.setModelSlotVisible(model, slotIn);
             this.renderer.bindTexture(itemstack.getItem() instanceof ItemThermalPaddingTier2 ? RenderPlayerGC.thermalPaddingTexture1_T2 : RenderPlayerGC.thermalPaddingTexture1);
@@ -119,7 +122,7 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
             // Start alpha render
             GlStateManager.disableLighting();
             Minecraft.getInstance().textureManager.bindTexture(RenderPlayerGC.thermalPaddingTexture0);
-            GlStateManager.enableAlpha();
+            GlStateManager.enableAlphaTest();
             GlStateManager.enableBlend();
             GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             float time = entityLivingBaseIn.ticksExisted / 10.0F;
@@ -129,9 +132,9 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
             float g = 1.0F * sTime;
             float b = 0.2F * sTime;
 
-            if (entityLivingBaseIn.world.provider instanceof IGalacticraftWorldProvider)
+            if (entityLivingBaseIn.world.getDimension() instanceof IGalacticraftWorldProvider)
             {
-                float modifier = ((IGalacticraftWorldProvider) entityLivingBaseIn.world.provider).getThermalLevelModifier();
+                float modifier = ((IGalacticraftWorldProvider) entityLivingBaseIn.world.getDimension()).getThermalLevelModifier();
 
                 if (modifier > 0)
                 {
@@ -145,24 +148,17 @@ public class LayerThermalPadding extends ArmorLayer<ModelBiped>
                 }
             }
 
-            GlStateManager.color(r, g, b, 0.4F * sTime);
+            GlStateManager.color4f(r, g, b, 0.4F * sTime);
             model.render(entityLivingBaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale);
-            GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.color4f(1, 1, 1, 1);
             GlStateManager.disableBlend();
-            GlStateManager.enableAlpha();
+            GlStateManager.enableAlphaTest();
             GlStateManager.enableLighting();
         }
     }
 
     @Override
-    protected void initArmor()
-    {
-        this.modelLeggings = new ModelPlayerGC(0.55F, false);  //Head inside Oxygen Mask
-        this.modelArmor = new ModelPlayerGC(0.05F, false);  //Chest and limbs close to skin
-    }
-
-    @Override
-    public ModelBiped getModelFromSlot(EquipmentSlotType slotIn)
+    public PlayerModel<AbstractClientPlayerEntity> func_215337_a(EquipmentSlotType slotIn)
     {
         return slotIn == EquipmentSlotType.FEET ? this.modelLeggings : this.modelArmor;  //FEET is intended here, actually picks up the helmet (yes really)
     }

@@ -1,27 +1,32 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
+import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.renderer.BufferBuilder;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.particles.BasicParticleType;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
+import java.util.UUID;
 
-@SideOnly(Side.CLIENT)
-public class ParticleLanderFlame extends Particle
+@OnlyIn(Dist.CLIENT)
+public class ParticleLanderFlame extends SpriteTexturedParticle
 {
+    private IAnimatedSprite animatedSprite;
     private float smokeParticleScale;
-    private LivingEntity ridingEntity;
+    private UUID ridingEntity;
 
-    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, LivingEntity ridingEntity)
+    public ParticleLanderFlame(World world, double x, double y, double z, double mX, double mY, double mZ, EntityParticleData particleData, IAnimatedSprite animatedSprite)
     {
         super(world, x, y, z, mX, mY, mZ);
         this.motionX *= 0.10000000149011612D;
@@ -34,17 +39,24 @@ public class ParticleLanderFlame extends Particle
         this.particleBlue = 200F / 255F + this.rand.nextFloat() / 3;
         this.particleScale *= 8F * 1.0F;
         this.smokeParticleScale = this.particleScale;
-        this.particleMaxAge = (int) 5.0D;
+        this.maxAge = (int) 5.0D;
         this.canCollide = true;
-        this.ridingEntity = ridingEntity;
+        this.ridingEntity = particleData.getEntityUUID();
+        this.animatedSprite = animatedSprite;
     }
 
     @Override
-    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public IParticleRenderType getRenderType()
+    {
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
+    @Override
+    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
+        float var8 = (this.age + partialTicks) / this.maxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -57,24 +69,24 @@ public class ParticleLanderFlame extends Particle
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
-        if (this.particleAge++ >= this.particleMaxAge)
+        if (this.age++ >= this.maxAge)
         {
             this.setExpired();
         }
 
-        this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
+        this.selectSpriteWithAge(this.animatedSprite);
         this.move(this.motionX, this.motionY, this.motionZ);
 
         this.particleGreen -= 0.09F;
@@ -102,7 +114,7 @@ public class ParticleLanderFlame extends Particle
                 {
                     final Entity var5 = (Entity) var3.get(var4);
 
-                    if (var5 instanceof LivingEntity && !var5.isDead && !var5.isBurning() && !var5.equals(this.ridingEntity))
+                    if (var5 instanceof LivingEntity && var5.isAlive() && !var5.isBurning() && !var5.getUniqueID().equals(this.ridingEntity))
                     {
                         var5.setFire(3);
                         GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_SET_ENTITY_FIRE, GCCoreUtil.getDimensionID(var5.world), new Object[] { var5.getEntityId() }));
@@ -123,4 +135,18 @@ public class ParticleLanderFlame extends Particle
 //    {
 //        return 1.0F;
 //    }
+
+    @OnlyIn(Dist.CLIENT)
+    public static class Factory implements IParticleFactory<EntityParticleData>
+    {
+        private final IAnimatedSprite spriteSet;
+
+        public Factory(IAnimatedSprite spriteSet) {
+            this.spriteSet = spriteSet;
+        }
+
+        public Particle makeParticle(EntityParticleData typeIn, World worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new ParticleLanderFlame(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn, this.spriteSet);
+        }
+    }
 }

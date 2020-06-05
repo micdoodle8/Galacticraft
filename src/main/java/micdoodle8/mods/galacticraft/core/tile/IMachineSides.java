@@ -503,13 +503,13 @@ public interface IMachineSides extends ITileClientUpdates
 
     public default void readMachineSidesFromNBT(CompoundNBT par1nbtTagCompound)
     {
-        ListNBT tagList = par1nbtTagCompound.getTagList("macsides", 10);
+        ListNBT tagList = par1nbtTagCompound.getList("macsides", 10);
         MachineSidePack[] msps = this.getAllMachineSides();
-        if (tagList.tagCount() == msps.length)
+        if (tagList.size() == msps.length)
         {
-            for (int i = 0; i < tagList.tagCount(); ++i)
+            for (int i = 0; i < tagList.size(); ++i)
             {
-                msps[i].readFromNBT(tagList.getCompoundTagAt(i));
+                msps[i].readFromNBT(tagList.getCompound(i));
             }
         }
     }
@@ -525,7 +525,7 @@ public interface IMachineSides extends ITileClientUpdates
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public default void updateClient(List<Object> data)
     {
         MachineSidePack[] msps = this.getAllMachineSides();

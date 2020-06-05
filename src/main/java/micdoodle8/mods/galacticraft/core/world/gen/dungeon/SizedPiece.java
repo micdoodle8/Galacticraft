@@ -37,9 +37,9 @@ public abstract class SizedPiece extends DirectionalPiece
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.sizeX = nbt.getInteger("sizeX");
-        this.sizeY = nbt.getInteger("sizeY");
-        this.sizeZ = nbt.getInteger("sizeZ");
+        this.sizeX = nbt.getInt("sizeX");
+        this.sizeY = nbt.getInt("sizeY");
+        this.sizeZ = nbt.getInt("sizeZ");
     }
 
     public int getSizeX()

@@ -23,7 +23,7 @@ public class ItemSwordAsteroids extends SwordItem implements ISortableItem
 {
     private double attackDamageD;
 
-    public ItemSwordAsteroids(String assetName)
+    public ItemSwordAsteroids(Item.Properties builder)
     {
         super(AsteroidsItems.TOOL_TITANIUM);
         this.setUnlocalizedName(assetName);
@@ -37,14 +37,14 @@ public class ItemSwordAsteroids extends SwordItem implements ISortableItem
         return 6.0F;
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

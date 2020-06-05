@@ -19,7 +19,7 @@
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //public class BlockNasaWorkbench extends ContainerBlock implements ITileEntityProvider, IShiftDescription, IPartialSealableBlock, ISortableBlock
@@ -48,12 +48,12 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
 //    {
 //        return Block.makeCuboidShape((double) pos.getX() + -0.0F, (double) pos.getY() + 0.0F, (double) pos.getZ() + -0.0F, (double) pos.getX() + 1.0F, (double) pos.getY() + 1.4F, (double) pos.getZ() + 1.0F);
 //    }
 //
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    @Override
 ////    public AxisAlignedBB getSelectedBoundingBox(IBlockState state, World worldIn, BlockPos pos)
 ////    {
@@ -147,7 +147,7 @@
 //    }
 //
 ////    @Override
-////    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+////    public void setBlockBoundsBasedOnState(IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        this.setBlockBounds(-0.0F, 0.0F, -0.0F, 1.0F, 1.4F, 1.0F);
 ////    }
@@ -159,13 +159,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

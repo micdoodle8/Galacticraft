@@ -34,7 +34,7 @@ public class SchematicMoonBuggy extends SchematicPage
         return new ItemStack(GCItems.schematic, 1, 0);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

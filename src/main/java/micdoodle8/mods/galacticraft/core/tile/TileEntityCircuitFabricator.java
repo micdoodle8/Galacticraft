@@ -10,7 +10,7 @@ import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithIn
 import micdoodle8.mods.galacticraft.core.items.ItemBasic;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.*;
 import net.minecraft.inventory.ISidedInventory;
@@ -113,7 +113,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
         if (this.canCompress())
         {
             ItemStack resultItemStack = this.producingStack.copy();
-            if (this.world.provider instanceof IZeroGDimension)
+            if (this.world.getDimension() instanceof IZeroGDimension)
             {
                 if (resultItemStack.getItem() == GCItems.basicItem)
                 {
@@ -161,7 +161,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.processTicks = nbt.getInt("smeltingTicks");
         this.readMachineSidesFromNBT(nbt);  //Needed by IMachineSides
     }
 
@@ -169,7 +169,7 @@ public class TileEntityCircuitFabricator extends TileBaseElectricBlockWithInvent
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
         return nbt;
     }

@@ -1,22 +1,19 @@
-def mcVersion = "1.12.2"
-def versionMajor = 4
+def mcVersion = "1.14.4"
+def versionMajor = 5
 def versionMinor = 0
-def versionRev = 2
+def versionRev = 0
 
-// For those who want the bleeding edge
 buildscript {
-    repositories {
-        jcenter()
-        maven {
-            name = "forge"
-            url = "https://files.minecraftforge.net/maven"
-        }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
+	repositories {
+		maven { url = 'https://files.minecraftforge.net/maven' }
+		jcenter()
+		mavenCentral()
+	}
+	dependencies {
+		classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+	}
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'net.minecraftforge.gradle'
 
 sourceSets.main {
     java {
@@ -39,16 +36,74 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 minecraft {
-    version = "1.12.2-14.23.5.2768"
-    runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20171003"
-    makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+	// The mappings can be changed at any time, and must be in the following format.
+	// snapshot_YYYYMMDD   Snapshot are built nightly.
+	// stable_#            Stables are built at the discretion of the MCP team.
+	// Use non-default mappings at your own risk. they may not always work.
+	// Simply re-run your setup task after changing the mappings to update your workspace.
+	mappings channel: 'snapshot', version: '20190719-1.14.3'
+	// makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+	// accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+	accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+	// Default run configurations.
+	// These can be tweaked, removed, or duplicated as needed.
+	runs {
+		client {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+
+			mods {
+				galacticraftcore {
+					source sourceSets.main
+				}
+			}
+		}
+
+		server {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+
+			mods {
+				galacticraftcore {
+					source sourceSets.main
+				}
+			}
+		}
+
+		data {
+			workingDirectory project.file('run')
+
+			// Recommended logging data for a userdev environment
+			property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+			// Recommended logging level for the console
+			property 'forge.logging.console.level', 'debug'
+
+			args '--mod', 'galacticraftcore', '--all', '--output', file('src/generated/resources/')
+
+			mods {
+				galacticraftcore {
+					source sourceSets.main
+				}
+			}
+		}
+	}
+}
+
+dependencies {
+	minecraft 'net.minecraftforge:forge:1.14.4-28.2.0'
 }
 
 repositories {
@@ -62,16 +117,15 @@ repositories {
 }
 
 dependencies {
-	compile "jei:jei_1.12.2:4.15.0.268"
-	compile "mekanism:Mekanism-1.12.2:9.4.13.349:api"
-	compile "applied-energistics-2:appliedenergistics2-rv6:stable:6"
-	compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
-	compile "com.mod-buildcraft:buildcraft-api:7.99.24.6"
-	compile "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
-	compile "actually-additions:ActuallyAdditions:1.12.2:r144"
-	compile "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
-	compile "player-api:PlayerAPI:1.12.1:1.0"
-
+//	compile "jei:jei_1.12.2:4.15.0.268"
+//	compile "mekanism:Mekanism-1.12.2:9.4.13.349:api"
+//	compile "applied-energistics-2:appliedenergistics2-rv6:stable:6"
+//	compile "com.github.glitchfiend.biomesoplenty:BiomesOPlenty:1.12.2-7.0.1.2399:universal"
+//	compile "com.mod-buildcraft:buildcraft-api:7.99.24.6"
+//	compile "redstone-flux:RedstoneFlux-1.12:2.1.0.6:universal"
+//	compile "actually-additions:ActuallyAdditions:1.12.2:r144"
+//	compile "industrial-craft:industrialcraft-2-2.8.109:ex112:api"
+//	compile "player-api:PlayerAPI:1.12.1:1.0"
 }
 					
 // Keep a list of core files/directories for easy jar packing

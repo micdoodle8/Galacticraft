@@ -68,7 +68,7 @@ public class RoomBossVenus extends SizedPieceVenus
 
         if (tagCompound.hasKey("direction_exit"))
         {
-            this.exitDirection = Direction.getFront(tagCompound.getInteger("direction_exit"));
+            this.exitDirection = Direction.byIndex(tagCompound.getInteger("direction_exit"));
         }
         else
         {

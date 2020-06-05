@@ -143,9 +143,9 @@ public class InventoryExtended implements IInventoryGC
     {
         this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
-        for (int i = 0; i < par1NBTTagList.tagCount(); ++i)
+        for (int i = 0; i < par1NBTTagList.size(); ++i)
         {
-            final CompoundNBT nbttagcompound = par1NBTTagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = par1NBTTagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 
@@ -163,9 +163,9 @@ public class InventoryExtended implements IInventoryGC
     {
         this.stacks = NonNullList.withSize(11, ItemStack.EMPTY);
 
-        for (int i = 0; i < tagList.tagCount(); ++i)
+        for (int i = 0; i < tagList.size(); ++i)
         {
-            final CompoundNBT nbttagcompound = tagList.getCompoundTagAt(i);
+            final CompoundNBT nbttagcompound = tagList.getCompound(i);
             final int j = nbttagcompound.getByte("Slot") & 255;
             final ItemStack itemstack = new ItemStack(nbttagcompound);
 

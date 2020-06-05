@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiCargoRocket extends GuiContainerGC
 {
     private static ResourceLocation[] rocketTextures = new ResourceLocation[4];
@@ -48,7 +48,7 @@ public class GuiCargoRocket extends GuiContainerGC
 
     public GuiCargoRocket(IInventory par1IInventory, EntityCargoRocket rocket, EnumRocketType rocketType)
     {
-        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, FMLClientHandler.instance().getClient().player));
+        super(new ContainerRocketInventory(par1IInventory, rocket, rocketType, Minecraft.getInstance().player));
         this.upperChestInventory = par1IInventory;
         this.rocket = rocket;
         this.allowUserInput = false;
@@ -62,7 +62,7 @@ public class GuiCargoRocket extends GuiContainerGC
         switch (button.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(mc.world), new Object[] { this.rocket.getEntityId(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleMars(EnumSimplePacketMars.S_UPDATE_CARGO_ROCKET_STATUS, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { this.rocket.getEntityId(), 0 }));
             break;
         default:
             break;
@@ -76,7 +76,7 @@ public class GuiCargoRocket extends GuiContainerGC
         final int var6 = (this.height - this.ySize) / 2;
         final int var7 = (this.width - this.xSize) / 2;
         this.launchButton = new Button(0, var7 + 116, var6 + 26, 50, 20, GCCoreUtil.translate("gui.message.launch.name"));
-        this.buttonList.add(this.launchButton);
+        this.buttons.add(this.launchButton);
         List<String> fuelTankDesc = new ArrayList<String>();
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.0"));
         fuelTankDesc.add(GCCoreUtil.translate("gui.fuel_tank.desc.1"));
@@ -136,14 +136,14 @@ public class GuiCargoRocket extends GuiContainerGC
 
         if (this.rocket.statusValid && this.rocket.statusMessageCooldown > 0 && this.rocket.statusMessageCooldown < 4)
         {
-            this.mc.displayGuiScreen(null);
+            this.minecraft.displayGuiScreen(null);
         }
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.getTextureManager().bindTexture(GuiCargoRocket.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
+        this.minecraft.getTextureManager().bindTexture(GuiCargoRocket.rocketTextures[(this.rocketType.getInventorySpace() - 2) / 18]);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         final int var5 = (this.width - this.xSize) / 2;

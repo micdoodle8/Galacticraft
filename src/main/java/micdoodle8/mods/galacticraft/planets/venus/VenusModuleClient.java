@@ -112,7 +112,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "pod_flame");
@@ -128,7 +128,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
     }
@@ -220,7 +220,7 @@ public class VenusModuleClient implements IPlanetsModuleClient
     @Override
     public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
-        Minecraft mc = FMLClientHandler.instance().getClient();
+        Minecraft mc = Minecraft.getInstance();
 
         if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {

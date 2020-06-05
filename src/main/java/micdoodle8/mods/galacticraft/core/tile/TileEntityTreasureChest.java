@@ -63,7 +63,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         super.readFromNBT(nbt);
         this.locked = nbt.getBoolean("isLocked");
-        this.tier = nbt.getInteger("tier");
+        this.tier = nbt.getInt("tier");
 
         checkLootAndRead(nbt);
     }
@@ -73,7 +73,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     {
         super.writeToNBT(nbt);
         nbt.setBoolean("isLocked", this.locked);
-        nbt.setInteger("tier", this.tier);
+        nbt.putInt("tier", this.tier);
 
         checkLootAndWrite(nbt);
 
@@ -309,7 +309,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
             }
             else
             {
-                if (!player.capabilities.isCreativeMode)
+                if (!player.abilities.isCreativeMode)
                 {
                     player.inventory.getCurrentItem().shrink(1);
                 }
@@ -444,7 +444,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -455,7 +455,7 @@ public class TileEntityTreasureChest extends TileEntityAdvanced implements ITick
     }
     
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;

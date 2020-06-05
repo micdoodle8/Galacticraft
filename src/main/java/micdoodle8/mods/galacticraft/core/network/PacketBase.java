@@ -1,22 +1,19 @@
 package micdoodle8.mods.galacticraft.core.network;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraft.world.dimension.DimensionType;
 
 public abstract class PacketBase implements IPacket
 {
-    public static final int INVALID_DIMENSION_ID = Integer.MIN_VALUE + 12;
-    private int dimensionID;
+    private DimensionType dimensionID;
 
     public PacketBase()
     {
-        this.dimensionID = INVALID_DIMENSION_ID;
+        this.dimensionID = null;
     }
 
-    public PacketBase(int dimensionID)
+    public PacketBase(DimensionType dimensionID)
     {
         this.dimensionID = dimensionID;
     }
@@ -24,34 +21,23 @@ public abstract class PacketBase implements IPacket
     @Override
     public void encodeInto(ByteBuf buffer)
     {
-        if (dimensionID == INVALID_DIMENSION_ID)
+        if (dimensionID == null)
         {
             throw new IllegalStateException("Invalid Dimension ID! [GC]");
         }
-        buffer.writeInt(this.dimensionID);
+        NetworkUtil.writeUTF8String(buffer, this.dimensionID.getRegistryName().toString());
+//        buffer.writeInt(this.dimensionID);
     }
 
     @Override
     public void decodeInto(ByteBuf buffer)
     {
-        this.dimensionID = buffer.readInt();
+        this.dimensionID = DimensionType.byName(new ResourceLocation(NetworkUtil.readUTF8String(buffer)));
     }
 
     @Override
-    public int getDimensionID()
+    public DimensionType getDimensionID()
     {
         return dimensionID;
-    }
-
-    private static String getProtocolVersion() {
-        return GalacticraftCore.instance == null ? "999.999.999" : GalacticraftCore.instance.versionNumber.toString();
-    }
-
-    public static SimpleChannel createChannel(ResourceLocation name) {
-        return NetworkRegistry.ChannelBuilder.named(name)
-                .clientAcceptedVersions(getProtocolVersion()::equals)
-                .serverAcceptedVersions(getProtocolVersion()::equals)
-                .networkProtocolVersion(PacketBase::getProtocolVersion)
-                .simpleChannel();
     }
 }

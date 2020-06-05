@@ -133,7 +133,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void loadTextures(TextureStitchEvent.Pre event)
     {
         registerTexture(event, "rocket_t2");
@@ -147,7 +147,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     }
 
     @SubscribeEvent
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void onModelBakeEvent(ModelBakeEvent event)
     {
         replaceModelDefault(event, "rocket_t2", "rocket_t2.obj", ImmutableList.of("Rocket"), ItemModelRocketT2.class, TRSRTransformation.identity());
@@ -255,7 +255,7 @@ public class MarsModuleClient implements IPlanetsModuleClient
     @Override
     public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object... extraData)
     {
-        Minecraft mc = FMLClientHandler.instance().getClient();
+        Minecraft mc = Minecraft.getInstance();
 
         if (mc != null && mc.getRenderViewEntity() != null && mc.effectRenderer != null)
         {
@@ -295,36 +295,36 @@ public class MarsModuleClient implements IPlanetsModuleClient
         switch (gui)
         {
         case 0:
-            FMLClientHandler.instance().getClient().displayGuiScreen(new GuiSlimeling(slimeling));
+            Minecraft.getInstance().displayGuiScreen(new GuiSlimeling(slimeling));
             break;
         case 1:
-            FMLClientHandler.instance().getClient().displayGuiScreen(new GuiSlimelingFeed(slimeling));
+            Minecraft.getInstance().displayGuiScreen(new GuiSlimelingFeed(slimeling));
             break;
         }
     }
 
     public static class TickHandlerClient
     {
-        @SideOnly(Side.CLIENT)
+        @OnlyIn(Dist.CLIENT)
         @SubscribeEvent
         public void onClientTick(ClientTickEvent event)
         {
-            final Minecraft minecraft = FMLClientHandler.instance().getClient();
+            final Minecraft minecraft = Minecraft.getInstance();
 
             final ClientWorld world = minecraft.world;
 
             if (world != null)
             {
-                if (world.provider instanceof WorldProviderMars)
+                if (world.getDimension() instanceof WorldProviderMars)
                 {
-                    if (world.provider.getSkyRenderer() == null)
+                    if (world.getDimension().getSkyRenderer() == null)
                     {
-                        world.provider.setSkyRenderer(new SkyProviderMars((IGalacticraftWorldProvider) world.provider));
+                        world.getDimension().setSkyRenderer(new SkyProviderMars((IGalacticraftWorldProvider) world.getDimension()));
                     }
 
-                    if (world.provider.getCloudRenderer() == null)
+                    if (world.getDimension().getCloudRenderer() == null)
                     {
-                        world.provider.setCloudRenderer(new CloudRenderer());
+                        world.getDimension().setCloudRenderer(new CloudRenderer());
                     }
                 }
             }

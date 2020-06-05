@@ -3,6 +3,8 @@ package micdoodle8.mods.galacticraft.core.world.gen.dungeon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class DungeonConfiguration
 {
@@ -33,15 +35,15 @@ public class DungeonConfiguration
 
     public CompoundNBT writeToNBT(CompoundNBT tagCompound)
     {
-        tagCompound.setString("brickBlock", Block.REGISTRY.getNameForObject(this.brickBlock.getBlock()).toString());
-        tagCompound.setInteger("brickBlockMeta", this.brickBlock.getBlock().getMetaFromState(this.brickBlock));
-        tagCompound.setInteger("yPosition", this.yPosition);
-        tagCompound.setInteger("hallwayLengthMin", this.hallwayLengthMin);
-        tagCompound.setInteger("hallwayLengthMax", this.hallwayLengthMax);
-        tagCompound.setInteger("hallwayHeight", this.hallwayHeight);
-        tagCompound.setInteger("roomHeight", this.roomHeight);
-        tagCompound.setString("bossRoom", this.bossRoom.getName());
-        tagCompound.setString("treasureRoom", this.treasureRoom.getName());
+        tagCompound.putString("brickBlock", this.brickBlock.getBlock().getRegistryName().toString());
+//        tagCompound.putInt("brickBlockMeta", this.brickBlock.getBlock().getMetaFromState(this.brickBlock));
+        tagCompound.putInt("yPosition", this.yPosition);
+        tagCompound.putInt("hallwayLengthMin", this.hallwayLengthMin);
+        tagCompound.putInt("hallwayLengthMax", this.hallwayLengthMax);
+        tagCompound.putInt("hallwayHeight", this.hallwayHeight);
+        tagCompound.putInt("roomHeight", this.roomHeight);
+        tagCompound.putString("bossRoom", this.bossRoom.getName());
+        tagCompound.putString("treasureRoom", this.treasureRoom.getName());
         return tagCompound;
     }
 
@@ -49,12 +51,12 @@ public class DungeonConfiguration
     {
         try
         {
-            this.brickBlock = Block.getBlockFromName(tagCompound.getString("brickBlock")).getStateFromMeta(tagCompound.getInteger("brickBlockMeta"));
-            this.yPosition = tagCompound.getInteger("yPosition");
-            this.hallwayLengthMin = tagCompound.getInteger("hallwayLengthMin");
-            this.hallwayLengthMax = tagCompound.getInteger("hallwayLengthMax");
-            this.hallwayHeight = tagCompound.getInteger("hallwayHeight");
-            this.roomHeight = tagCompound.getInteger("roomHeight");
+            this.brickBlock = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(tagCompound.getString("brickBlock"))).getDefaultState();
+            this.yPosition = tagCompound.getInt("yPosition");
+            this.hallwayLengthMin = tagCompound.getInt("hallwayLengthMin");
+            this.hallwayLengthMax = tagCompound.getInt("hallwayLengthMax");
+            this.hallwayHeight = tagCompound.getInt("hallwayHeight");
+            this.roomHeight = tagCompound.getInt("roomHeight");
             this.bossRoom = Class.forName(tagCompound.getString("bossRoom"));
             this.treasureRoom = Class.forName(tagCompound.getString("treasureRoom"));
         }

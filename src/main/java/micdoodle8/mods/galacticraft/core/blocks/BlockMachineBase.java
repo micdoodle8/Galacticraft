@@ -40,7 +40,7 @@
 //    protected abstract void initialiseTypes();
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
 //        return GalacticraftCore.galacticraftBlocksTab;
@@ -105,14 +105,14 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        EnumMachineBase type = typeBase.fromMetadata(meta);
 //        return GCCoreUtil.translate(type.getShiftDescriptionKey());
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

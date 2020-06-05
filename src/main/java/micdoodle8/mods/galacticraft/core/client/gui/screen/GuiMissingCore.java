@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.net.URI;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiMissingCore extends Screen
 {
     private int urlX;
@@ -21,9 +21,9 @@ public class GuiMissingCore extends Screen
     private int urlHeight;
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
     }
 
     @Override
@@ -31,19 +31,19 @@ public class GuiMissingCore extends Screen
     {
         this.drawDefaultBackground();
         int offset = this.height / 2 - 50;
-        this.drawCenteredString(this.fontRenderer, GCCoreUtil.translate("gui.missing_core.name.0"), this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.font, GCCoreUtil.translate("gui.missing_core.name.0"), this.width / 2, offset, 0xFF5555);
         offset += 25;
-        this.drawCenteredString(this.fontRenderer, GCCoreUtil.translate("gui.missing_core.name.1"), this.width / 2, offset, 0xFF5555);
+        this.drawCenteredString(this.font, GCCoreUtil.translate("gui.missing_core.name.1"), this.width / 2, offset, 0xFF5555);
         offset += 20;
-        this.drawCenteredString(this.fontRenderer, GCCoreUtil.translate("gui.missing_core.name.2"), this.width / 2, offset, 0x999999);
+        this.drawCenteredString(this.font, GCCoreUtil.translate("gui.missing_core.name.2"), this.width / 2, offset, 0x999999);
         offset += 20;
         String s = TextFormatting.UNDERLINE + GCCoreUtil.translate("gui.missing_core.name.3");
-        this.urlX = this.width / 2 - this.fontRenderer.getStringWidth(s) / 2 - 10;
+        this.urlX = this.width / 2 - this.font.getStringWidth(s) / 2 - 10;
         this.urlY = offset - 2;
-        this.urlWidth = this.fontRenderer.getStringWidth(s) + 20;
+        this.urlWidth = this.font.getStringWidth(s) + 20;
         this.urlHeight = 14;
-        AbstractGui.drawRect(this.urlX, this.urlY, this.urlX + this.urlWidth, this.urlY + this.urlHeight, ColorUtil.to32BitColor(50, 0, 0, 255));
-        this.drawCenteredString(this.fontRenderer, s, this.width / 2, offset, 0x999999);
+        AbstractGui.fill(this.urlX, this.urlY, this.urlX + this.urlWidth, this.urlY + this.urlHeight, ColorUtil.to32BitColor(50, 0, 0, 255));
+        this.drawCenteredString(this.font, s, this.width / 2, offset, 0x999999);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class GuiMissingCore extends Screen
     @Override
     protected void actionPerformed(Button par1GuiButton)
     {
-        FMLClientHandler.instance().getClient().displayGuiScreen((Screen) null);
+        Minecraft.getInstance().displayGuiScreen((Screen) null);
     }
 
     @Override

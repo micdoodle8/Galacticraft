@@ -201,9 +201,9 @@ public class EntityJuicer extends MonsterEntity implements IEntityBreathable
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         if (this.world.isRemote)
         {

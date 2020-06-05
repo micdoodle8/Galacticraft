@@ -61,18 +61,18 @@
 //    {
 //        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 //        GuiDraw.changeTexture(IngotCompressorRecipeHandler.ingotCompressorTexture);
-//        GuiDraw.drawTexturedModalRect(20, 25, 18, 17, 137, 78);
+//        GuiDraw.blit(20, 25, 18, 17, 137, 78);
 //
 //        if (IngotCompressorRecipeHandler.ticksPassed % 70 > 26)
 //        {
-//            GuiDraw.drawTexturedModalRect(103, 36, 176, 0, 17, 13);
+//            GuiDraw.blit(103, 36, 176, 0, 17, 13);
 //        }
 //
-//        GuiDraw.drawTexturedModalRect(79, 44, 176, 13, Math.min(IngotCompressorRecipeHandler.ticksPassed % 70, 53), 17);
+//        GuiDraw.blit(79, 44, 176, 13, Math.min(IngotCompressorRecipeHandler.ticksPassed % 70, 53), 17);
 //
 //        int yOffset = (int) Math.floor(IngotCompressorRecipeHandler.ticksPassed % 48 * 0.29166666666666666666666666666667D);
 //
-//        GuiDraw.drawTexturedModalRect(83, 35 + yOffset, 176, 30 + yOffset, 14, 14 - yOffset);
+//        GuiDraw.blit(83, 35 + yOffset, 176, 30 + yOffset, 14, 14 - yOffset);
 //    }
 //
 //    @Override

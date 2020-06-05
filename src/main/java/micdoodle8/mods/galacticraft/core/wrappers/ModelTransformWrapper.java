@@ -1,8 +1,10 @@
 package micdoodle8.mods.galacticraft.core.wrappers;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.*;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.model.TRSRTransformation;
@@ -11,6 +13,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import javax.annotation.Nullable;
 import javax.vecmath.Matrix4f;
 import java.util.List;
+import java.util.Random;
 
 abstract public class ModelTransformWrapper implements IBakedModel
 {
@@ -47,7 +50,7 @@ abstract public class ModelTransformWrapper implements IBakedModel
         return parent.getItemCameraTransforms();
     }
 
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, long rand)
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand)
     {
         return parent.getQuads(state, side, rand);
     }
@@ -64,11 +67,11 @@ abstract public class ModelTransformWrapper implements IBakedModel
 
 		if (matrix4f == null)
 		{
-			return Pair.of(this, TRSRTransformation.blockCornerToCenter(TRSRTransformation.identity()).getMatrix());
+            return net.minecraftforge.client.ForgeHooksClient.handlePerspective(getBakedModel(), cameraTransformType);
 		}
 
 		return Pair.of(this, matrix4f);
 	}
 
-    abstract protected Matrix4f getTransformForPerspective(TransformType cameraTransformType);
+    abstract protected Matrix4f getTransformForPerspective(ItemCameraTransforms.TransformType cameraTransformType);
 }

@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -53,7 +53,7 @@ public class FootprintRenderer
         double interpPosX = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTicks;
         double interpPosY = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTicks;
         double interpPosZ = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTicks;
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(FootprintRenderer.footprintTexture);
+        Minecraft.getInstance().textureManager.bindTexture(FootprintRenderer.footprintTexture);
 
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
@@ -153,7 +153,7 @@ public class FootprintRenderer
         while (i.hasNext())
         {
             Footprint print = i.next();
-            if (!print.owner.equals(FMLClientHandler.instance().getClient().player.getName()))
+            if (!print.owner.equals(Minecraft.getInstance().player.getName()))
             {
                 i.remove();
             }

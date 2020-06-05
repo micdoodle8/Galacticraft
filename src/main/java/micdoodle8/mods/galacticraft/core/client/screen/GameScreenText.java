@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -82,7 +82,7 @@ public class GameScreenText implements IGameScreen
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void render(int type, float ticks, float sizeX, float sizeY, IScreenManager scr)
     {
         DrawGameScreen screen = (DrawGameScreen) scr;
@@ -133,7 +133,7 @@ public class GameScreenText implements IGameScreen
                     {
                         strName = telemeter.clientName;
                         entity = new RemoteClientPlayerEntity(screen.driver.getWorld(), telemeter.clientGameProfile);
-                        renderEntity = (EntityRenderer) FMLClientHandler.instance().getClient().getRenderManager().getEntityRenderObject(entity);
+                        renderEntity = (EntityRenderer) Minecraft.getInstance().getRenderManager().getEntityRenderObject(entity);
                     }
                     else
                     {
@@ -148,7 +148,7 @@ public class GameScreenText implements IGameScreen
                         {
                             strName = entity.getName();
                         }
-                        renderEntity = (EntityRenderer) FMLClientHandler.instance().getClient().getRenderManager().entityRenderMap.get(telemeter.clientClass);
+                        renderEntity = (EntityRenderer) Minecraft.getInstance().getRenderManager().entityRenderMap.get(telemeter.clientClass);
                     }
                 }
 
@@ -353,11 +353,11 @@ public class GameScreenText implements IGameScreen
             float f2 = f1 - f;
             float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
             float f8 = 0F;
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotatef(180.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.enableRescaleNormal();
-            GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+            GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
             float f4 = 0.0625F;
-            GlStateManager.translate(0.0F, -1.5078125F, 0.0F);
+            GlStateManager.translatef(0.0F, -1.5078125F, 0.0F);
             float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * partialTicks;
             float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
 

@@ -26,9 +26,9 @@
 //
 //public class BlockSludge extends BlockFluidClassic
 //{
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    IIcon stillIcon;
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    IIcon flowingIcon;
 //
 //    @Override
@@ -48,7 +48,7 @@
 //            {
 //                EntitySludgeling sludgeling = new EntitySludgeling(worldIn);
 //                sludgeling.setPosition(pos.getX() + worldIn.rand.nextInt(5) - 2, pos.getY(), pos.getZ() + worldIn.rand.nextInt(5) - 2);
-//                worldIn.spawnEntity(sludgeling);
+//                worldIn.addEntity(sludgeling);
 //            }
 //        }
 //
@@ -72,14 +72,14 @@
 //    }
 //
 //    /*@Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public IIcon getIcon(int par1, int par2)
 //    {
 //        return par1 != 0 && par1 != 1 ? this.flowingIcon : this.stillIcon;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void registerBlockIcons(IIconRegister par1IconRegister)
 //    {
 //        this.stillIcon = par1IconRegister.registerIcon(MarsModule.TEXTURE_PREFIX + "sludge_still");
@@ -109,7 +109,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
 //        super.randomDisplayTick(stateIn, worldIn, pos, rand);

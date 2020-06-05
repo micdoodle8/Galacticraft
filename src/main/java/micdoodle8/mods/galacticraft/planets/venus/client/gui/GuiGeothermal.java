@@ -42,7 +42,7 @@ public class GuiGeothermal extends GuiContainerGC
         switch (par1GuiButton.id)
         {
         case 0:
-            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.geothermalGenerator.getPos(), 0 }));
+            GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.geothermalGenerator.getPos(), 0 }));
             break;
         }
     }
@@ -68,7 +68,7 @@ public class GuiGeothermal extends GuiContainerGC
 //        float sunVisible = Math.round(this.geothermalGenerator.solarStrength / 9.0F * 1000) / 10.0F;
 //        sunGenDesc.add(this.geothermalGenerator.solarStrength > 0 ? GCCoreUtil.translate("gui.status.sun_visible.name") + ": " + sunVisible + "%" : GCCoreUtil.translate("gui.status.blockedfully.name"));
 //        this.infoRegions.add(new GuiElementInfoRegion((this.width - this.xSize) / 2 + 47, (this.height - this.ySize) / 2 + 20, 18, 18, sunGenDesc, this.width, this.height, this));
-        this.buttonList.add(this.buttonEnableSolar = new Button(0, this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable.name")));
+        this.buttons.add(this.buttonEnableSolar = new Button(0, this.width / 2 - 36, this.height / 2 - 19, 72, 20, GCCoreUtil.translate("gui.button.enable.name")));
     }
 
     @Override
@@ -132,7 +132,7 @@ public class GuiGeothermal extends GuiContainerGC
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiGeothermal.backgroundTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiGeothermal.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize);

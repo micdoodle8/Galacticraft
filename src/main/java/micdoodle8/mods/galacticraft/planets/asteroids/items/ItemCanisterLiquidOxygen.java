@@ -22,7 +22,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     //    protected IIcon[] icons = new IIcon[7];
     private static HashMap<ItemStack, Integer> craftingvalues = new HashMap<>();
 
-    public ItemCanisterLiquidOxygen(String assetName)
+    public ItemCanisterLiquidOxygen(Item.Properties builder)
     {
         super(assetName);
         this.setAllowedFluid("liquidoxygen");
@@ -30,7 +30,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         for (int i = 0; i < this.icons.length; i++)
@@ -69,7 +69,7 @@ public class ItemCanisterLiquidOxygen extends ItemCanisterGeneric implements IIt
     }*/
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (ItemCanisterGeneric.EMPTY - par1ItemStack.getItemDamage() > 0)

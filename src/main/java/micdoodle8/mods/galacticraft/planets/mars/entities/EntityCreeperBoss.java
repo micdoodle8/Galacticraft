@@ -59,7 +59,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
     {
         if (damageSource.getDamageType().equals("fireball"))
         {
-            if (this.isEntityInvulnerable(damageSource))
+            if (this.isInvulnerableTo(damageSource))
             {
                 return false;
             }
@@ -209,7 +209,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         }
         else
         {
-            this.world.spawnEntity(entityitem);
+            this.world.addEntity(entityitem);
         }
         return entityitem;
     }
@@ -314,7 +314,7 @@ public class EntityCreeperBoss extends EntityBossBase implements IEntityBreathab
         projectileTNT.posY = d4;
         projectileTNT.posX = d3;
         projectileTNT.posZ = d5;
-        this.world.spawnEntity(projectileTNT);
+        this.world.addEntity(projectileTNT);
     }
 
     @Override

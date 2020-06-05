@@ -1,16 +1,15 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.blocks.BlockRefinery;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -20,7 +19,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nullable;
 
@@ -41,8 +40,8 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         super("container.refinery.name");
         this.storage.setMaxExtract(ConfigManagerCore.hardMode ? 90 : 60);
-        this.oilTank.setFluid(new FluidStack(GCFluids.fluidOil, 0));
-        this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, 0));
+        this.oilTank.setFluid(new FluidStack(GCFluidRegistry.fluidOil, 0));
+        this.fuelTank.setFluid(new FluidStack(GCFluidRegistry.fluidFuel, 0));
         this.inventory = NonNullList.withSize(3, ItemStack.EMPTY);
     }
 
@@ -56,7 +55,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
             final FluidStack liquid = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isOil(liquid))
             {
-                FluidUtil.loadFromContainer(this.oilTank, GCFluids.fluidOil, this.getInventory(), 1, liquid.amount);
+                FluidUtil.loadFromContainer(this.oilTank, GCFluidRegistry.fluidOil, this.getInventory(), 1, liquid.amount);
             }
 
             checkFluidTankTransfer(2, this.fuelTank);
@@ -137,25 +136,25 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.processTicks = nbt.getInt("smeltingTicks");
 
-        if (nbt.hasKey("oilTank"))
+        if (nbt.contains("oilTank"))
         {
             this.oilTank.readFromNBT(nbt.getCompoundTag("oilTank"));
         }
-        if (this.oilTank.getFluid() != null && this.oilTank.getFluid().getFluid() != GCFluids.fluidOil)
+        if (this.oilTank.getFluid() != null && this.oilTank.getFluid().getFluid() != GCFluidRegistry.fluidOil)
         {
-            this.oilTank.setFluid(new FluidStack(GCFluids.fluidOil, this.oilTank.getFluidAmount()));
+            this.oilTank.setFluid(new FluidStack(GCFluidRegistry.fluidOil, this.oilTank.getFluidAmount()));
         }
 
 
-        if (nbt.hasKey("fuelTank"))
+        if (nbt.contains("fuelTank"))
         {
             this.fuelTank.readFromNBT(nbt.getCompoundTag("fuelTank"));
         }
-        if (this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid() != GCFluids.fluidFuel)
+        if (this.fuelTank.getFluid() != null && this.fuelTank.getFluid().getFluid() != GCFluidRegistry.fluidFuel)
         {
-            this.fuelTank.setFluid(new FluidStack(GCFluids.fluidFuel, this.fuelTank.getFluidAmount()));
+            this.fuelTank.setFluid(new FluidStack(GCFluidRegistry.fluidFuel, this.fuelTank.getFluidAmount()));
         }
     }
 
@@ -163,16 +162,16 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
 
         if (this.oilTank.getFluid() != null)
         {
-            nbt.setTag("oilTank", this.oilTank.writeToNBT(new CompoundNBT()));
+            nbt.put("oilTank", this.oilTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
+            nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
         return nbt;
     }
@@ -264,7 +263,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockRefinery)
         {
-            return state.getValue(BlockRefinery.FACING);
+            return state.get(BlockRefinery.FACING);
         }
         return Direction.NORTH;
     }
@@ -306,7 +305,7 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
     {
         if (from == getFuelPipe())
         {
-            return this.drain(from, new FluidStack(GCFluids.fluidFuel, maxDrain), doDrain);
+            return this.drain(from, new FluidStack(GCFluidRegistry.fluidFuel, maxDrain), doDrain);
         }
 
         return null;
@@ -334,13 +333,13 @@ public class TileEntityRefinery extends TileBaseElectricBlockWithInventory imple
 
             if (liquidName != null && FluidUtil.testOil(liquidName))
             {
-                if (liquidName.equals(GCFluids.fluidOil.getName()))
+                if (liquidName.equals(GCFluidRegistry.fluidOil.getName()))
                 {
                     used = this.oilTank.fill(resource, doFill);
                 }
                 else
                 {
-                    used = this.oilTank.fill(new FluidStack(GCFluids.fluidOil, resource.amount), doFill);
+                    used = this.oilTank.fill(new FluidStack(GCFluidRegistry.fluidOil, resource.amount), doFill);
                 }
             }
         }

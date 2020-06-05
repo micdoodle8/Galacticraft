@@ -1,21 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.gui.overlay;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class OverlayOxygenTanks extends Overlay
 {
     private final static ResourceLocation guiTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/gui.png");
@@ -25,23 +23,21 @@ public class OverlayOxygenTanks extends Overlay
      */
     public static void renderOxygenTankIndicator(Minecraft mc, int heatLevel, int oxygenInTank1, int oxygenInTank2, boolean right, boolean top, boolean invalid)
     {
-        final ScaledResolution scaledresolution = ClientUtil.getScaledRes(mc, mc.displayWidth, mc.displayHeight);
-        final int i = scaledresolution.getScaledWidth();
-        final int j = scaledresolution.getScaledHeight();
-        mc.entityRenderer.setupOverlayRendering();
+        int width = (int)(mc.mouseHelper.getMouseX() * (double)mc.mainWindow.getScaledWidth() / (double)mc.mainWindow.getWidth());
+        int height = (int)(mc.mouseHelper.getMouseY() * (double)mc.mainWindow.getScaledHeight() / (double)mc.mainWindow.getHeight());
+//        mc.entityRenderer.setupOverlayRendering();
         GlStateManager.enableBlend();
-        GlStateManager.disableAlpha();
+        GlStateManager.disableAlphaTest();
         GlStateManager.depthMask(false);
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        GlStateManager.disableAlpha();
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.disableAlphaTest();
         mc.textureManager.bindTexture(OverlayOxygenTanks.guiTexture);
         final Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder worldRenderer = tessellator.getBuffer();
-        GlStateManager.enableDepth();
-        GlStateManager.enableAlpha();
+        GlStateManager.enableAlphaTest();
         GlStateManager.disableLighting();
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int minLeftX = 0;
         int maxLeftX = 0;
@@ -53,10 +49,10 @@ public class OverlayOxygenTanks extends Overlay
 
         if (right)
         {
-            minLeftX = i - 59;
-            maxLeftX = i - 40;
-            minRightX = i - 39;
-            maxRightX = i - 20;
+            minLeftX = width - 59;
+            maxLeftX = width - 40;
+            minRightX = width - 39;
+            maxRightX = width - 20;
         }
         else
         {
@@ -72,7 +68,7 @@ public class OverlayOxygenTanks extends Overlay
         }
         else
         {
-            topY = j - 57;
+            topY = height - 57;
         }
 
         bottomY = topY + 46.5;
@@ -98,14 +94,14 @@ public class OverlayOxygenTanks extends Overlay
 
         if (invalid)
         {
-            GlStateManager.color(1, 0, 0);
+            GlStateManager.color3f(1, 0, 0);
             worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
             worldRenderer.pos(minLeftX - 5, bottomY - heatLevelScaledMin + 3, zLevel).tex(84 * texMod, 47 * texMod).endVertex();
             worldRenderer.pos(minLeftX - 1, bottomY - heatLevelScaledMin + 3, zLevel).tex((84 + 5) * texMod, 47 * texMod).endVertex();
             worldRenderer.pos(minLeftX - 1, bottomY - heatLeveLScaledMax - 3, zLevel).tex((84 + 5) * texMod, (47 + 9) * texMod).endVertex();
             worldRenderer.pos(minLeftX - 5, bottomY - heatLeveLScaledMax - 3, zLevel).tex(84 * texMod, (47 + 9) * texMod).endVertex();
             tessellator.draw();
-            GlStateManager.color(1, 1, 1);
+            GlStateManager.color3f(1, 1, 1);
         }
 
         minLeftX += 10;

@@ -19,7 +19,7 @@
 //import net.minecraft.util.NonNullList;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
 //
@@ -85,7 +85,7 @@
 //    }
 //
 //    @Override
-//    public boolean isPassable(IBlockAccess world, BlockPos pos)
+//    public boolean isPassable(IBlockReader world, BlockPos pos)
 //    {
 //        return false;
 //    }
@@ -97,13 +97,13 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return face != Direction.UP && face != Direction.DOWN ? BlockFaceShape.MIDDLE_POLE_THICK : BlockFaceShape.CENTER_BIG;
 //    }
 //
 //    @Override
-//    public boolean canPlaceTorchOnTop(BlockState state, IBlockAccess world, BlockPos pos)
+//    public boolean canPlaceTorchOnTop(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        return true;
 //    }
@@ -116,7 +116,7 @@
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getCollisionBoundingBox(BlockState blockState, IBlockReader worldIn, BlockPos pos)
 //    {
 //        blockState = this.getActualState(blockState, worldIn, pos);
 //        return CLIP_AABB_BY_INDEX[getAABBIndex(blockState)];
@@ -150,7 +150,7 @@
 //    }
 //
 ////    @Override
-////    public void setBlockBoundsBasedOnState(IBlockAccess world, BlockPos pos)
+////    public void setBlockBoundsBasedOnState(IBlockReader world, BlockPos pos)
 ////    {
 ////        boolean flag = this.canConnectTo(world, pos.north());
 ////        boolean flag1 = this.canConnectTo(world, pos.south());
@@ -202,7 +202,7 @@
 ////        return super.getCollisionBoundingBox(world, pos, state);
 ////    }
 //
-//    private boolean canConnectTo(IBlockAccess world, BlockPos pos)
+//    private boolean canConnectTo(IBlockReader world, BlockPos pos)
 //    {
 //        BlockState state = world.getBlockState(pos);
 //        Block block = state.getBlock();
@@ -210,7 +210,7 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
 //        for (int i = 0; i < (GalacticraftCore.isPlanetsLoaded ? 6 : 4); ++i)
@@ -232,7 +232,7 @@
 //    }
 //
 //    @Override
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return side == Direction.DOWN ? super.shouldSideBeRendered(blockState, blockAccess, pos, side) : true;
 //    }
@@ -250,7 +250,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess world, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        boolean flag = this.canConnectTo(world, pos.north());
 //        boolean flag1 = this.canConnectTo(world, pos.east());

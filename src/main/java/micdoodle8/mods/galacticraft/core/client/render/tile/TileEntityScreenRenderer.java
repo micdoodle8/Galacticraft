@@ -13,11 +13,11 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityScreenRenderer extends TileEntityRenderer<TileEntityScreen>
 {
     public static final ResourceLocation blockTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/blocks/screen_side.png");
-    private TextureManager renderEngine = FMLClientHandler.instance().getClient().renderEngine;
+    private TextureManager renderEngine = Minecraft.getInstance().renderEngine;
     private static FloatBuffer colorBuffer = GLAllocation.createDirectFloatBuffer(16);
 
     private float yPlane = 0.91F;

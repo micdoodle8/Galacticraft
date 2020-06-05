@@ -1,17 +1,20 @@
 package micdoodle8.mods.galacticraft.core.client.gui.screen;
 
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.tick.TickHandlerClient;
 import micdoodle8.mods.galacticraft.core.util.ColorUtil;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.dimension.DimensionType;
 
 public class GuiTeleporting extends Screen
 {
-    private final int targetDimensionID;
+    private final DimensionType targetDimensionID;
     private final String message;
 
-    public GuiTeleporting(int targetDimensionID)
+    public GuiTeleporting(DimensionType targetDimensionID)
     {
+        super(new StringTextComponent("Teleporting"));
         this.targetDimensionID = targetDimensionID;
         String[] possibleStrings = new String[] { "Taking one small step", "Taking one giant leap", "Prepare for entry!" };
         this.message = possibleStrings[(int) (Math.random() * possibleStrings.length)];
@@ -19,31 +22,31 @@ public class GuiTeleporting extends Screen
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(mouseX, mouseY, partialTicks);
-        this.drawBackground(0);
-        this.drawCenteredString(this.fontRenderer, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
+        super.render(mouseX, mouseY, partialTicks);
+        this.renderBackground(0);
+        this.drawCenteredString(this.font, this.message, this.width / 2, this.height / 2, ColorUtil.to32BitColor(255, 255, 255, 255));
     }
 
     @Override
-    public void updateScreen()
+    public void tick()
     {
-        super.updateScreen();
-		if (mc.player != null && mc.player.world != null)
+        super.tick();
+		if (minecraft.player != null && minecraft.player.world != null)
         {
             // Screen will exit when the player is in the target dimension and has started moving down
-            if (mc.player.world.provider.getDimension() == this.targetDimensionID)
+            if (minecraft.player.world.getDimension().getType() == this.targetDimensionID)
             {
-                if ((mc.player.world.provider instanceof WorldProviderSpaceStation || (mc.player.posY - mc.player.lastTickPosY) < 0.0))
+                if ((minecraft.player.world.getDimension() instanceof DimensionSpaceStation || (minecraft.player.posY - minecraft.player.lastTickPosY) < 0.0))
                 {
-                    mc.displayGuiScreen(null);
+                    minecraft.displayGuiScreen(null);
                     TickHandlerClient.teleportingGui = null;
                 }
             }
@@ -51,7 +54,7 @@ public class GuiTeleporting extends Screen
     }
 
     @Override
-    public boolean doesGuiPauseGame()
+    public boolean isPauseScreen()
     {
         return false;
     }

@@ -62,7 +62,7 @@
 //        worldIn.setBlockState(pos, getStateFromMeta(change), 3);
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
@@ -97,20 +97,20 @@
 //                        mZ = rand.nextFloat() * 2.0F * dir;
 //                    }
 //
-//                    GalacticraftCore.proxy.spawnParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Object[] { new Vector3(0.7D, 0.7D, 1.0D) });
+//                    this.world.addParticle("oxygen", new Vector3(x2, y2, z2), new Vector3(mX, mY, mZ), new Object[] { new Vector3(0.7D, 0.7D, 1.0D) });
 //                }
 //            }
 //        }
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

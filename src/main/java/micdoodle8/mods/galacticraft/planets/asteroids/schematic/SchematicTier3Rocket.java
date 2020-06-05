@@ -34,7 +34,7 @@ public class SchematicTier3Rocket implements ISchematicPage
         return new ItemStack(MarsItems.schematic, 1, 0);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

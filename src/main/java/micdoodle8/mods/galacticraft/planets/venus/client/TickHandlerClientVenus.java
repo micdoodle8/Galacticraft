@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.Iterator;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TickHandlerClientVenus
 {
     private Map<BlockPos, Integer> lightning = Maps.newHashMap();
@@ -32,7 +32,7 @@ public class TickHandlerClientVenus
     @SubscribeEvent
     public void onRenderTick(RenderTickEvent event)
     {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = Minecraft.getInstance();
         final ClientPlayerEntity player = minecraft.player;
         final ClientPlayerEntity playerBaseClient = PlayerUtil.getPlayerBaseClientFromPlayer(player, false);
 
@@ -44,7 +44,7 @@ public class TickHandlerClientVenus
     @SubscribeEvent
     public void renderLightning(ClientProxyCore.EventSpecialRender event)
     {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = Minecraft.getInstance();
         final ClientPlayerEntity player = minecraft.player;
         if (player != null && !ConfigManagerVenus.disableAmbientLightning)
         {
@@ -58,41 +58,41 @@ public class TickHandlerClientVenus
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event)
     {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = Minecraft.getInstance();
 
         final ClientWorld world = minecraft.world;
 
         if (world != null)
         {
-            if (world.provider instanceof WorldProviderVenus)
+            if (world.getDimension() instanceof WorldProviderVenus)
             {
-                if (world.provider.getSkyRenderer() == null)
+                if (world.getDimension().getSkyRenderer() == null)
                 {
-                    world.provider.setSkyRenderer(new SkyProviderVenus((IGalacticraftWorldProvider) world.provider));
+                    world.getDimension().setSkyRenderer(new SkyProviderVenus((IGalacticraftWorldProvider) world.getDimension()));
                 }
 
-                if (world.provider.getCloudRenderer() == null)
+                if (world.getDimension().getCloudRenderer() == null)
                 {
-                    world.provider.setCloudRenderer(new CloudRenderer());
+                    world.getDimension().setCloudRenderer(new CloudRenderer());
                 }
 
-                if (world.provider.getWeatherRenderer() == null)
+                if (world.getDimension().getWeatherRenderer() == null)
                 {
-                    world.provider.setWeatherRenderer(new WeatherRendererVenus());
+                    world.getDimension().setWeatherRenderer(new WeatherRendererVenus());
                 }
             }
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event)
     {
-        final Minecraft minecraft = FMLClientHandler.instance().getClient();
+        final Minecraft minecraft = Minecraft.getInstance();
         final ClientPlayerEntity player = minecraft.player;
 
         if (player == event.player)
@@ -114,7 +114,7 @@ public class TickHandlerClientVenus
                     }
                 }
 
-                if (player.getRNG().nextInt(300 + (int) (800F * minecraft.world.rainingStrength)) == 0 && minecraft.world.provider instanceof WorldProviderVenus)
+                if (player.getRNG().nextInt(300 + (int) (800F * minecraft.world.rainingStrength)) == 0 && minecraft.world.getDimension() instanceof WorldProviderVenus)
                 {
                     double freq = player.getRNG().nextDouble() * Math.PI * 2.0F;
                     double dist = 180.0F;

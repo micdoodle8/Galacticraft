@@ -149,7 +149,7 @@ public class TileEntityTelepadFake extends TileBaseElectricBlock
             tagCompound.setInteger("x", this.mainBlockPosition.getX());
             tagCompound.setInteger("y", this.mainBlockPosition.getY());
             tagCompound.setInteger("z", this.mainBlockPosition.getZ());
-            nbt.setTag("mainBlockPosition", tagCompound);
+            nbt.put("mainBlockPosition", tagCompound);
         }
 
         return nbt;

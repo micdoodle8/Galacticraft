@@ -21,7 +21,7 @@
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
@@ -74,7 +74,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -198,7 +198,7 @@
 ////    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void randomDisplayTick(BlockState stateIn, World worldIn, BlockPos pos, Random rand)
 //    {
 //        //TODO this is torch code as a placeholder, still need to adjust positioning and particle type
@@ -247,9 +247,9 @@
 ////        }
 //        //TODO  else
 //
-//        if (world.provider instanceof WorldProviderSpaceStation && !world.isRemote)
+//        if (world.getDimension() instanceof WorldProviderSpaceStation && !world.isRemote)
 //        {
-//            WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) world.provider;
+//            WorldProviderSpaceStation worldOrbital = (WorldProviderSpaceStation) world.getDimension();
 //            worldOrbital.getSpinManager().refresh(pos, true);
 //        }
 //        return true;
@@ -283,13 +283,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

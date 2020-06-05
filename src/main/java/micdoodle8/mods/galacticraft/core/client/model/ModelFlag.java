@@ -67,9 +67,9 @@ public class ModelFlag extends ModelBase
 
             float windLevel = 1.0F;
 
-            if (entity.world.provider instanceof IGalacticraftWorldProvider)
+            if (entity.world.getDimension() instanceof IGalacticraftWorldProvider)
             {
-                windLevel = ((IGalacticraftWorldProvider) entity.world.provider).getWindLevel();
+                windLevel = ((IGalacticraftWorldProvider) entity.world.getDimension()).getWindLevel();
             }
 
             for (int i = 0; i < entity.flagData.getWidth(); i++)

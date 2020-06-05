@@ -343,7 +343,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 if (this.updateDelay == 0)
                 {
                     BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 30.0));
+                    GalacticraftCore.packetPipeline.sendToAllAround(this.getAddTransmitterUpdate(), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 30.0));
                     this.firstUpdate = false;
                     this.pipesAdded.clear();
                     this.needsUpdate = true;
@@ -373,7 +373,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
             if (this.didTransfer != this.prevTransfer || this.needsUpdate)
             {
                 BlockPos pos = ((TileEntity) this.pipes.iterator().next()).getPos();
-                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.buffer, this.didTransfer), new NetworkRegistry.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 20.0));
+                GalacticraftCore.packetPipeline.sendToAllAround(PacketFluidNetworkUpdate.getFluidUpdate(GCCoreUtil.getDimensionID(this.world), pos, this.buffer, this.didTransfer), new PacketDistributor.TargetPoint(GCCoreUtil.getDimensionID(this.world), pos.getX(), pos.getY(), pos.getZ(), 20.0));
                 this.needsUpdate = false;
             }
 
@@ -500,7 +500,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
 
                 transmitter.onNetworkChanged();
 
-                if (tileTransmitter.isInvalid() || tileTransmitter.getWorld() == null)
+                if (tileTransmitter.isRemoved() || tileTransmitter.getWorld() == null)
                 {
                     it.remove();
                     continue;
@@ -546,7 +546,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 IBufferTransmitter<FluidStack> transmitter = it.next();
                 TileEntity tile = (TileEntity) transmitter;
 
-                if (transmitter == null || tile.isInvalid() || tile.getWorld() == null)
+                if (transmitter == null || tile.isRemoved() || tile.getWorld() == null)
                 {
                     it.remove();
                     continue;
@@ -562,7 +562,7 @@ public class FluidNetwork implements IGridNetwork<FluidNetwork, IBufferTransmitt
                 {
                     if (!(acceptor instanceof IBufferTransmitter) && acceptor != null)
                     {
-                        Direction facing = Direction.getFront(i).getOpposite();
+                        Direction facing = Direction.byIndex(i).getOpposite();
                         IFluidHandler handler = acceptor.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing);
                         if (handler != null)
                         {

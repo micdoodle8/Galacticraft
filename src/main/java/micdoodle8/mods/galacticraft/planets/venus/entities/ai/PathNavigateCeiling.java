@@ -43,7 +43,7 @@ public class PathNavigateCeiling extends PathNavigator
 
     private int getPathablePosY()
     {
-        return (int)(this.entity.getEntityBoundingBox().minY + 0.5D);
+        return (int)(this.entity.getBoundingBox().minY + 0.5D);
     }
 
     @Override

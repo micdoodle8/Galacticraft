@@ -1,33 +1,32 @@
 package micdoodle8.mods.galacticraft.core.items;
 
-import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class ItemBattery extends ItemElectricBase implements ISortableItem
 {
-    public ItemBattery(String assetName)
+    public ItemBattery(Item.Properties properties)
     {
-        super();
-        this.setMaxStackSize(4);
-        this.setUnlocalizedName(assetName);
+        super(properties);
+//        this.setMaxStackSize(4);
+//        this.setUnlocalizedName(assetName);
         //this.setTextureName(Constants.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
@@ -48,10 +47,10 @@ public class ItemBattery extends ItemElectricBase implements ISortableItem
     @Override
     public int getItemStackLimit(ItemStack stack)
     {
-        if (stack.getItemDamage() < 100 || stack.hasTagCompound() && stack.getTagCompound().hasKey("electricity"))
+        if (stack.getDamage() < DAMAGE_RANGE || stack.hasTag() && stack.getTag().contains("electricity"))
         {
             return 1;
         }
-        return this.getItemStackLimit();
+        return super.getItemStackLimit(stack);
     }
 }

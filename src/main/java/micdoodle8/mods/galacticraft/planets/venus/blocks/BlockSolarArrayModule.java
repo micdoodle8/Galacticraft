@@ -99,7 +99,7 @@ public class BlockSolarArrayModule extends BlockAdvanced implements IShiftDescri
         }
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {

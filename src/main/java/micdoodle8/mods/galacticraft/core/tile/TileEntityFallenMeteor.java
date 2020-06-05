@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.core.tile;
 
 import io.netty.buffer.ByteBuf;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,14 +71,14 @@ public class TileEntityFallenMeteor extends TileEntityAdvanced
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.heatLevel = nbt.getInteger("MeteorHeatLevel");
+        this.heatLevel = nbt.getInt("MeteorHeatLevel");
     }
 
     @Override
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("MeteorHeatLevel", this.heatLevel);
+        nbt.putInt("MeteorHeatLevel", this.heatLevel);
         return nbt;
     }
 

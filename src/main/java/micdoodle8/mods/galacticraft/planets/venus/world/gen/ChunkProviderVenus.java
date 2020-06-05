@@ -62,7 +62,7 @@ public class ChunkProviderVenus extends ChunkProviderBase
     public ChunkProviderVenus(World worldIn, long seed, boolean mapFeaturesEnabled)
     {
         this.world = worldIn;
-        this.worldType = worldIn.getWorldInfo().getTerrainType();
+        this.worldType = worldIn.getWorldInfo().getGenerator();
         this.rand = new Random(seed);
         this.noiseGen1 = new OctavesNoiseGenerator(this.rand, 16);
         this.noiseGen2 = new OctavesNoiseGenerator(this.rand, 16);

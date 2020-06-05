@@ -4,32 +4,30 @@ import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
+import net.minecraftforge.common.util.LazyOptional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CapabilityProviderStatsClient implements ICapabilityProvider
 {
     private ClientPlayerEntity owner;
-    private GCPlayerStatsClient statsCapability;
+    private final LazyOptional<GCPlayerStatsClient> holder = LazyOptional.of(StatsClientCapability::new);
 
     public CapabilityProviderStatsClient(ClientPlayerEntity owner)
     {
         this.owner = owner;
-        this.statsCapability = GCCapabilities.GC_STATS_CLIENT_CAPABILITY.getDefaultInstance();
     }
 
+    @Nonnull
     @Override
-    public boolean hasCapability(Capability<?> capability, Direction facing)
+    public <T> LazyOptional<T> getCapability(@Nonnull final Capability<T> cap, final @Nullable Direction side)
     {
-        return capability == GCCapabilities.GC_STATS_CLIENT_CAPABILITY;
-    }
-
-    @Override
-    public <T> T getCapability(Capability<T> capability, Direction facing)
-    {
-        if (GCCapabilities.GC_STATS_CLIENT_CAPABILITY != null && capability == GCCapabilities.GC_STATS_CLIENT_CAPABILITY)
+        if (cap == GCCapabilities.GC_STATS_CLIENT_CAPABILITY)
         {
-            return GCCapabilities.GC_STATS_CLIENT_CAPABILITY.cast(statsCapability);
+            return GCCapabilities.GC_STATS_CLIENT_CAPABILITY.orEmpty(cap, holder);
         }
 
-        return null;
+        return LazyOptional.empty();
     }
 }

@@ -9,24 +9,24 @@ import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.material.MapColor;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.block.Blocks;
+import net.minecraft.resources.IResourceManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.WorldProviderSurface;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.dimension.OverworldDimension;
+import net.minecraft.world.gen.Heightmap;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.apache.commons.io.FileUtils;
 
 import javax.imageio.*;
@@ -98,20 +98,20 @@ public class MapUtil
         overworldImageCompressed = null;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void resetClient()
     {
         resetClientFlag.set(true);
         //Threadsafe
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void resetClientBody()
     {
         ClientProxyCore.overworldTexturesValid = false;
         clientRequests.clear();
         overworldImageBytesPart = null;
-        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
+        File baseFolder = new File(Minecraft.getInstance().gameDir, "assets/galacticraftMaps");
         if (baseFolder.exists() && baseFolder.isDirectory())
         {
             for (File f : baseFolder.listFiles())
@@ -122,9 +122,9 @@ public class MapUtil
                 }
             }
         }
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] {}));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_OVERWORLD_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] {}));
         ClientProxyCore.overworldTextureRequestSent = true;
-		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2);
+		DrawGameScreen.reusableMap = new DynamicTexture(MapUtil.SIZE_STD2, MapUtil.SIZE_STD2, false);
 		MapUtil.biomeColours.clear();
 		setupColours();
     }
@@ -138,7 +138,7 @@ public class MapUtil
         {
             for (int z0 = -12; z0 <= 12; z0++)
             {
-                Chunk chunk = world.getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
+                Chunk chunk = world.getChunk(chunkXPos + x0, chunkZPos + z0);
                 BlockPos pos = null;
 
                 if (chunk != null)
@@ -147,7 +147,7 @@ public class MapUtil
                     {
                         for (int x = 0; x < 16; x++)
                         {
-                            int l4 = chunk.getHeight(new BlockPos(x, 0, z)) + 1;
+                            int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                             BlockState state = Blocks.AIR.getDefaultState();
 
                             if (l4 > 1)
@@ -155,12 +155,12 @@ public class MapUtil
                                 do
                                 {
                                     --l4;
-                                    state = chunk.getBlockState(x, l4, z);
+                                    state = chunk.getBlockState(new BlockPos(x, l4, z));
                                 }
-                                while (state.getMapColor(world, pos) == MapColor.AIR && l4 > 0);
+                                while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
                             }
 
-                            int col = pos != null ? state.getMapColor(world, pos).colorValue : 0;
+                            int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
                             image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                         }
                     }
@@ -175,13 +175,13 @@ public class MapUtil
         {
             return;
         }
-        World overworld = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).world;
+        World overworld = WorldUtil.getProviderForDimensionServer(ConfigManagerCore.idDimensionOverworld).getWorld();
         if (overworld == null)
         {
             return;
         }
         
-        if (overworld.getWorldType() == WorldType.FLAT  || !(overworld.provider instanceof WorldProviderSurface))
+        if (overworld.getWorldType() == WorldType.FLAT  || !(overworld.getDimension() instanceof OverworldDimension))
         {
             doneOverworldTexture = true;
             return;
@@ -239,7 +239,7 @@ public class MapUtil
     public static void sendOrCreateMap(World world, int cx, int cz, ServerPlayerEntity client)
     {
         
-        if (world.getWorldType() == WorldType.FLAT  || !(world.provider instanceof WorldProviderSurface))
+        if (world.getWorldType() == WorldType.FLAT  || !(world.getDimension() instanceof OverworldDimension))
         {
             doneOverworldTexture = true;
             return;
@@ -343,7 +343,7 @@ public class MapUtil
      */
     public static boolean buildMaps(World world, int x, int z)
     {
-        if (world.getWorldType() == WorldType.FLAT || !(world.provider instanceof WorldProviderSurface))
+        if (world.getWorldType() == WorldType.FLAT || !(world.getDimension() instanceof OverworldDimension))
         {
             return false;
         }
@@ -370,7 +370,7 @@ public class MapUtil
 
     private static File getBaseFolder()
     {
-        return new File(DimensionManager.getCurrentSaveRootDirectory(), "galacticraft/overworldMap");
+        return new File(ServerLifecycleHooks.getCurrentServer().getWorld(DimensionType.OVERWORLD).getSaveHandler().getPlayerFolder(), "galacticraft/overworldMap");
     }
 
     private static int convertMap(int x)
@@ -688,12 +688,12 @@ public class MapUtil
         return b;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void writeImgToFile(BufferedImage img, String name)
     {
         if (GalacticraftCore.enableJPEG)
         {
-            File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
+            File folder = new File(Minecraft.getInstance().gameDir, "assets/galacticraftMaps");
 
             try
             {
@@ -738,7 +738,7 @@ public class MapUtil
         return deCompressed.toByteArray();
     }
     
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void receiveOverworldImageCompressed(int cx, int cz, byte[] raw) throws IOException
     {
         if (cx == LARGEMAP_MARKER)
@@ -788,7 +788,7 @@ public class MapUtil
         }
     }
     
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static void getOverworldImageFromRaw(int cx, int cz, byte[] raw) throws IOException
     {
     	File folder = MapUtil.getClientMapsFolder();
@@ -937,7 +937,7 @@ public class MapUtil
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static boolean getMap(int[] image, World world, BlockPos pos)
     {
         int xCoord = pos.getX();
@@ -945,14 +945,14 @@ public class MapUtil
         int cx = convertMap(xCoord);
         int cz = convertMap(zCoord);
 
-        File baseFolder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
+        File baseFolder = new File(Minecraft.getInstance().gameDir, "assets/galacticraftMaps");
         if (!baseFolder.exists() && !baseFolder.mkdirs())
         {
             GCLog.severe("Base folder(s) could not be created: " + baseFolder.getAbsolutePath());
             return false;
         }
 
-        int dim = GCCoreUtil.getDimensionID(world);
+        DimensionType dim = GCCoreUtil.getDimensionID(world);
         boolean result = true;
         if (makeRGBimage(image, baseFolder, cx - SIZE_STD2, cz - SIZE_STD2, 0, 0, xCoord, zCoord, dim, result))
         {
@@ -993,8 +993,8 @@ public class MapUtil
         return result;
     }
 
-    @SideOnly(Side.CLIENT)
-    private static boolean makeRGBimage(int[] array, File baseFolder, int cx, int cz, int offsetX, int offsetZ, int xCoord, int zCoord, int dim, boolean prevResult)
+    @OnlyIn(Dist.CLIENT)
+    private static boolean makeRGBimage(int[] array, File baseFolder, int cx, int cz, int offsetX, int offsetZ, int xCoord, int zCoord, DimensionType dim, boolean prevResult)
     {
         File filename = makeFileName(baseFolder, cx, cz);
         if (!filename.exists())
@@ -1007,7 +1007,7 @@ public class MapUtil
             {
                 clientRequests.add(filename.getName());
                 //GCLog.debug("Info: Client requested map file" + filename.getName());
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(FMLClientHandler.instance().getClient().world), new Object[] { dim, cx, cz }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(PacketSimple.EnumSimplePacket.S_REQUEST_MAP_IMAGE, GCCoreUtil.getDimensionID(Minecraft.getInstance().world), new Object[] { dim, cx, cz }));
             }
             return true;
         }
@@ -1088,7 +1088,7 @@ public class MapUtil
 
     private static int getBiomeBaseColour(int biomeId)
     {
-    	Biome biomegenbase = Biome.REGISTRY.getObjectById(biomeId);
+//    	Biome biomegenbase = Biome.REGISTRY.getObjectById(biomeId);
 //    	return biomegenbase == null ? Biomes.OCEAN.color : biomegenbase.color; TODO Fix vanilla biome colors
         return 0;
     }
@@ -1136,7 +1136,7 @@ public class MapUtil
         {
             if (MapUtil.rand.nextInt(8) > 98 - height)
             {
-                rv = Material.SNOW.getMaterialMapColor().colorValue;
+                rv = Material.SNOW.getColor().colorValue;
             }
         }
         float factor = (height - 68F) / 94F;
@@ -1146,13 +1146,13 @@ public class MapUtil
     private static void setupColours()
     {
         //ocean = Ocean(0) colour(112) "Ocean"
-        MapUtil.biomeColours.add(new BlockVec3(Material.WATER.getMaterialMapColor().colorValue, 0, 0));
+        MapUtil.biomeColours.add(new BlockVec3(Material.WATER.getColor().colorValue, 0, 0));
         //plains = Plains(1) colour(9286496) "Plains"
         MapUtil.biomeColours.add(new BlockVec3(0x497436, 0, 0));
         //desert = Desert(2) colour(16421912) "Desert"
-        MapUtil.biomeColours.add(new BlockVec3(0xd4cd98, Material.CACTUS.getMaterialMapColor().colorValue, 3));
+        MapUtil.biomeColours.add(new BlockVec3(0xd4cd98, Material.CACTUS.getColor().colorValue, 3));
         //extremeHills = Hills(3, false) colour(6316128) "Extreme Hills"
-        MapUtil.biomeColours.add(new BlockVec3(0x4d654c, Material.ROCK.getMaterialMapColor().colorValue, 15));
+        MapUtil.biomeColours.add(new BlockVec3(0x4d654c, Material.ROCK.getColor().colorValue, 15));
         //forest = Forest(4, 0) colour(353825) "Forest"
         MapUtil.biomeColours.add(new BlockVec3(0x3c7521, 0x295416, 45));
         //taiga = Taiga(5, 0) colour(747097) "Taiga"
@@ -1164,19 +1164,19 @@ public class MapUtil
         MapUtil.biomeColours.add(new BlockVec3(0, 0, 0));
         MapUtil.biomeColours.add(new BlockVec3(0, 0, 0));
         //frozenOcean = Ocean(10) colour(9474208) "FrozenOcean"
-        MapUtil.biomeColours.add(new BlockVec3(Material.ICE.getMaterialMapColor().colorValue, 0, 0));
+        MapUtil.biomeColours.add(new BlockVec3(Material.ICE.getColor().colorValue, 0, 0));
         //frozenRiver = River(11) colour(10526975) "FrozenRiver"
-        MapUtil.biomeColours.add(new BlockVec3(Material.ICE.getMaterialMapColor().colorValue, 0, 0));
+        MapUtil.biomeColours.add(new BlockVec3(Material.ICE.getColor().colorValue, 0, 0));
         //icePlains = Snow(12, false) colour(16777215) "Ice Plains"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getMaterialMapColor().colorValue, 0x497436, 3));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getColor().colorValue, 0x497436, 3));
         //iceMountains = Snow(13, false) colour(10526880) "Ice Mountains"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getMaterialMapColor().colorValue, Material.ICE.getMaterialMapColor().colorValue, 5));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getColor().colorValue, Material.ICE.getColor().colorValue, 5));
         //mushroomIsland = MushroomIsland(14) colour(16711935) "MushroomIsland"
         MapUtil.biomeColours.add(new BlockVec3(0x63565f, 0x7c1414, 10));
         //mushroomIslandShore = MushroomIsland(15) colour(10486015) "MushroomIslandShore"
         MapUtil.biomeColours.add(new BlockVec3(0x6a6066, 0, 0));
         //beach = Beach(16) colour(16440917) "Beach"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SAND.getMaterialMapColor().colorValue, 0, 0));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SAND.getColor().colorValue, 0, 0));
         //desertHills = Desert(17) colour(13786898) "DesertHills"
         MapUtil.biomeColours.add(new BlockVec3(0xd4cd98, 0, 0));
         //forestHills = Forest(18, 0) colour(2250012) "ForestHills"
@@ -1194,9 +1194,9 @@ public class MapUtil
         //deepOcean = Ocean(24) colour(48) "Deep Ocean"
         MapUtil.biomeColours.add(new BlockVec3(0x2f2fd4, 0, 0));
         //stoneBeach = StoneBeach(25) colour(10658436) "Stone Beach"
-        MapUtil.biomeColours.add(new BlockVec3(Material.ROCK.getMaterialMapColor().colorValue, 0, 0));
+        MapUtil.biomeColours.add(new BlockVec3(Material.ROCK.getColor().colorValue, 0, 0));
         //coldBeach = Beach(26) colour(16445632) "Cold Beach"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SAND.getMaterialMapColor().colorValue, Material.SNOW.getMaterialMapColor().colorValue, 75));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SAND.getColor().colorValue, Material.SNOW.getColor().colorValue, 75));
         //birchForest = Forest(27, 2)) colour(3175492) "Birch Forest"
         MapUtil.biomeColours.add(new BlockVec3(0x516b36, 0x497436, 65));
         //birchForestHills = Forest(28, 2)) colour(2055986) "Birch Forest Hills"
@@ -1204,9 +1204,9 @@ public class MapUtil
         //roofedForest = Forest(29, 3) colour(4215066) "Roofed Forest"
         MapUtil.biomeColours.add(new BlockVec3(0x9c2424, 0x1e2e18, 98));
         //coldTaiga = Taiga(30, 0) colour(3233098) "Cold Taiga"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getMaterialMapColor().colorValue, 0x172a17, 12));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getColor().colorValue, 0x172a17, 12));
         //coldTaigaHills = Taiga(31, 0) colour(2375478) "Cold Taiga Hills"
-        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getMaterialMapColor().colorValue, 0x172a17, 12));
+        MapUtil.biomeColours.add(new BlockVec3(Material.SNOW.getColor().colorValue, 0x172a17, 12));
         //megaTaiga = Taiga(32, 1) colour(5858897) "Mega Taiga"
         MapUtil.biomeColours.add(new BlockVec3(0x172a17, 0x6e4e35, 12));
         //megaTaigaHills = Taiga(33, 1) colour(4542270) "Mega Taiga Hills"
@@ -1225,14 +1225,14 @@ public class MapUtil
         MapUtil.biomeColours.add(new BlockVec3(0xa0521f, 0x712f23, 20));
     }
 
-    public static void makeVanillaMap(int dim, int chunkXPos, int chunkZPos, File baseFolder, BufferedImage image)
+    public static void makeVanillaMap(DimensionType dim, int chunkXPos, int chunkZPos, File baseFolder, BufferedImage image)
     {
         World world = WorldUtil.getWorldForDimensionServer(dim);
         for (int x0 = -12; x0 <= 12; x0++)
         {
             for (int z0 = -12; z0 <= 12; z0++)
             {
-                Chunk chunk = world.getChunkFromChunkCoords(chunkXPos + x0, chunkZPos + z0);
+                Chunk chunk = world.getChunk(chunkXPos + x0, chunkZPos + z0);
 
                 if (chunk != null)
                 {
@@ -1240,7 +1240,7 @@ public class MapUtil
                     {
                         for (int x = 0; x < 16; x++)
                         {
-                            int l4 = chunk.getHeightValue(x, z) + 1;
+                            int l4 = chunk.getTopBlockY(Heightmap.Type.WORLD_SURFACE_WG, x, z) + 1;
                             BlockState state = Blocks.AIR.getDefaultState();
                             BlockPos pos = null;
 
@@ -1252,10 +1252,10 @@ public class MapUtil
                                     pos = new BlockPos(x, l4, z);
                                     state = chunk.getBlockState(pos);
                                 }
-                                while (state.getMapColor(world, pos) == MapColor.AIR && l4 > 0);
+                                while (state.getMaterialColor(world, pos) == MaterialColor.AIR && l4 > 0);
                             }
 
-                            int col = pos != null ? state.getMapColor(world, pos).colorValue : 0;
+                            int col = pos != null ? state.getMaterialColor(world, pos).colorValue : 0;
                             image.setRGB(x + (x0 + 12) * 16, z + (z0 + 12) * 16, col);
                         }
                     }
@@ -1278,10 +1278,10 @@ public class MapUtil
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static File getClientMapsFolder()
     {
-        File folder = new File(FMLClientHandler.instance().getClient().mcDataDir, "assets/galacticraftMaps");
+        File folder = new File(Minecraft.getInstance().gameDir, "assets/galacticraftMaps");
         try
         {
             if (folder.exists() || folder.mkdirs())

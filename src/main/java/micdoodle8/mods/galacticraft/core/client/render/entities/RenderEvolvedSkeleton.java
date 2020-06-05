@@ -1,23 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.render.entities;
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.gui.overlay.OverlaySensorGlasses;
 import micdoodle8.mods.galacticraft.core.client.model.ModelEvolvedSkeleton;
 import micdoodle8.mods.galacticraft.core.entities.EntityEvolvedSkeleton;
-import net.minecraft.client.model.ModelSkeleton;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.BipedRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.client.renderer.entity.layers.HeldItemLayer;
+import net.minecraft.client.renderer.entity.model.SkeletonModel;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton>
+@OnlyIn(Dist.CLIENT)
+public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton, ModelEvolvedSkeleton>
 {
     private static final ResourceLocation skeletonTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/skeleton.png");
     private static final ResourceLocation powerTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/power.png");
@@ -29,15 +28,7 @@ public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton>
     {
         super(manager, new ModelEvolvedSkeleton(), 0.6F);
         this.addLayer(new HeldItemLayer(this));
-        this.addLayer(new BipedArmorLayer(this)
-        {
-            @Override
-            protected void initArmor()
-            {
-                this.modelLeggings = new ModelSkeleton(0.5F, true);
-                this.modelArmor = new ModelSkeleton(1.0F, true);
-            }
-        });
+        this.addLayer(new BipedArmorLayer<>(this, new SkeletonModel<>(0.5F, true), new SkeletonModel<>(1.0F, true)));
     }
 
     @Override
@@ -74,11 +65,11 @@ public class RenderEvolvedSkeleton extends BipedRenderer<EntityEvolvedSkeleton>
     @Override
     protected void applyRotations(EntityEvolvedSkeleton skellie, float pitch, float yaw, float partialTicks)
     {
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GL11.glTranslatef(0F, -skellie.height * 0.55F, 0F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, -skellie.getHeight() * 0.55F, 0F);
         GL11.glRotatef(skellie.getTumbleAngle(partialTicks), skellie.getTumbleAxisX(), 0F, skellie.getTumbleAxisZ());
-        GL11.glTranslatef(0F, skellie.height * 0.55F, 0F);
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+        GL11.glTranslatef(0F, skellie.getHeight() * 0.55F, 0F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
         super.applyRotations(skellie, pitch, yaw, partialTicks);
     }
 }

@@ -1,20 +1,22 @@
 package micdoodle8.mods.galacticraft.core.client.fx;
 
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import net.minecraft.client.particle.IAnimatedSprite;
+import net.minecraft.client.particle.IParticleRenderType;
+import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class ParticleLaunchSmoke extends EntityFXLaunchParticle
+@OnlyIn(Dist.CLIENT)
+public class ParticleLaunchSmoke extends LaunchParticle
 {
     float smokeParticleScale;
+    private final IAnimatedSprite animatedSprite;
 
-    public ParticleLaunchSmoke(World par1World, Vector3 position, Vector3 motion, float size, boolean launched)
+    public ParticleLaunchSmoke(World par1World, Vector3 position, Vector3 motion, float size, boolean launched, IAnimatedSprite animatedSprite)
     {
         super(par1World, position.x, position.y, position.z, 0.0D, 0.0D, 0.0D);
         this.motionX *= 0.10000000149011612D;
@@ -29,29 +31,36 @@ public class ParticleLaunchSmoke extends EntityFXLaunchParticle
         this.particleScale *= 0.75F;
         this.particleScale *= size * 3;
         this.smokeParticleScale = this.particleScale;
+        this.animatedSprite = animatedSprite;
 
         if (launched)
         {
-            this.particleMaxAge = (int) (this.particleMaxAge * size) + 10;
+            this.maxAge = (int) (this.maxAge * size) + 10;
         }
         else
         {
             this.motionX += par1World.rand.nextDouble() / 2 - 0.25;
             this.motionY += par1World.rand.nextDouble() / 20;
             this.motionZ += par1World.rand.nextDouble() / 2 - 0.25;
-            this.particleMaxAge = 30 + this.particleMaxAge;
+            this.maxAge = 30 + this.maxAge;
         }
 
         this.canCollide = true;
     }
 
     @Override
-    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
+    public IParticleRenderType getRenderType()
+    {
+        return IParticleRenderType.PARTICLE_SHEET_OPAQUE;
+    }
+
+    @Override
+    public void renderParticle(BufferBuilder buffer, ActiveRenderInfo entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
         GL11.glPushMatrix();
         GL11.glDepthMask(false);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
-        float var8 = (this.particleAge + partialTicks) / this.particleMaxAge * 32.0F;
+        float var8 = (this.age + partialTicks) / this.maxAge * 32.0F;
 
         if (var8 < 0.0F)
         {
@@ -64,7 +73,7 @@ public class ParticleLaunchSmoke extends EntityFXLaunchParticle
         }
 
         this.particleScale = this.smokeParticleScale * var8;
-        super.renderParticle(worldRendererIn, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
+        super.renderParticle(buffer, entityIn, partialTicks, rotationX, rotationZ, rotationYZ, rotationXY, rotationXZ);
 
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(true);
@@ -72,18 +81,18 @@ public class ParticleLaunchSmoke extends EntityFXLaunchParticle
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.prevPosX = this.posX;
         this.prevPosY = this.posY;
         this.prevPosZ = this.posZ;
 
-        if (this.particleAge++ >= this.particleMaxAge)
+        if (this.age++ >= this.maxAge)
         {
             this.setExpired();
         }
 
-        this.setParticleTextureIndex(7 - this.particleAge * 8 / this.particleMaxAge);
+        this.selectSpriteWithAge(this.animatedSprite);
         this.move(this.motionX, this.motionY, this.motionZ);
 
 //        if (this.posY == this.prevPosY)

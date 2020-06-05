@@ -12,10 +12,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockBreathableAir extends AirBlock
+public class BlockBreathableAir extends BlockThermalAir
 {
-    public static final BooleanProperty THERMAL = BooleanProperty.create("thermal");
-    
     public BlockBreathableAir(Properties builder)
     {
         super(builder);

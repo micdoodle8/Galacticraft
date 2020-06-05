@@ -14,7 +14,7 @@ import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityAstroMiner;
 import micdoodle8.mods.galacticraft.planets.asteroids.inventory.ContainerAstroMinerDock;
 import micdoodle8.mods.galacticraft.planets.asteroids.tile.TileEntityMinerBase;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -42,7 +42,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
         this.recallButton.enabled = true;
 
@@ -80,7 +80,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
         this.infoRegions.add(new GuiElementInfoRegion(xPos + 230, yPos + 108, 18, 18, batterySlotDesc, this.width, this.height, this));
-        this.buttonList.add(this.recallButton = new Button(0, xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall.name")));
+        this.buttons.add(this.recallButton = new Button(0, xPos + 173, yPos + 195, 76, 20, GCCoreUtil.translate("gui.button.recall.name")));
     }
 
     @Override
@@ -91,7 +91,7 @@ public class GuiAstroMinerDock extends GuiContainerGC
             switch (button.id)
             {
             case 0:
-                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.mc.world), new Object[] { this.tile.getPos(), 0 }));
+                GalacticraftCore.packetPipeline.sendToServer(new PacketSimple(EnumSimplePacket.S_UPDATE_DISABLEABLE_BUTTON, GCCoreUtil.getDimensionID(this.minecraft.world), new Object[] { this.tile.getPos(), 0 }));
                 break;
             default:
                 break;
@@ -167,14 +167,14 @@ public class GuiAstroMinerDock extends GuiContainerGC
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int xPos = (this.width - this.xSize) / 2;
         int yPos = (this.height - this.ySize) / 2;
-        this.mc.getTextureManager().bindTexture(GuiAstroMinerDock.dockGui);
+        this.minecraft.getTextureManager().bindTexture(GuiAstroMinerDock.dockGui);
         this.drawTexturedModalRect(xPos, yPos, 0, 0, this.xSize, this.ySize);
         List<String> electricityDesc = new ArrayList<>();
         electricityDesc.add(GCCoreUtil.translate("gui.energy_storage.desc.0"));
         EnergyDisplayHelper.getEnergyDisplayTooltip(this.tile.getEnergyStoredGC(), this.tile.getMaxEnergyStoredGC(), electricityDesc);
         this.electricInfoRegion.tooltipStrings = electricityDesc;
 
-        this.mc.getTextureManager().bindTexture(GuiCargoLoader.loaderTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiCargoLoader.loaderTexture);
 
         if (this.tile.getEnergyStoredGC() > 0)
         {

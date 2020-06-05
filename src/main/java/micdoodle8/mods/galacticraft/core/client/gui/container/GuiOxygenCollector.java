@@ -9,6 +9,7 @@ import micdoodle8.mods.galacticraft.core.util.EnumColor;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -23,17 +24,17 @@ public class GuiOxygenCollector extends GuiContainerGC
     private GuiElementInfoRegion oxygenInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 24, 56, 9, new ArrayList<String>(), this.width, this.height, this);
     private GuiElementInfoRegion electricInfoRegion = new GuiElementInfoRegion((this.width - this.xSize) / 2 + 112, (this.height - this.ySize) / 2 + 37, 56, 9, new ArrayList<String>(), this.width, this.height, this);
 
-    public GuiOxygenCollector(PlayerInventory par1InventoryPlayer, TileEntityOxygenCollector par2TileEntityAirDistributor)
+    public GuiOxygenCollector(PlayerInventory playerInv, TileEntityOxygenCollector collector)
     {
-        super(new ContainerOxygenCollector(par1InventoryPlayer, par2TileEntityAirDistributor));
-        this.collector = par2TileEntityAirDistributor;
+        super(new ContainerOxygenCollector(playerInv, collector), playerInv, new StringTextComponent(collector.getName()));
+        this.collector = collector;
         this.ySize = 180;
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
         List<String> batterySlotDesc = new ArrayList<String>();
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.0"));
         batterySlotDesc.add(GCCoreUtil.translate("gui.battery_slot.desc.1"));
@@ -53,13 +54,13 @@ public class GuiOxygenCollector extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.collector.getName(), 8, 10, 4210752);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.out.name") + ":", 99, 25, 4210752, this.fontRenderer);
-        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 37, 4210752, this.fontRenderer);
-        GCCoreUtil.drawStringCentered(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), this.xSize / 2, 50, 4210752, this.fontRenderer);
+        this.font.drawString(this.collector.getName(), 8, 10, 4210752);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.out.name") + ":", 99, 25, 4210752, this.font);
+        GCCoreUtil.drawStringRightAligned(GCCoreUtil.translate("gui.message.in.name") + ":", 99, 37, 4210752, this.font);
+        GCCoreUtil.drawStringCentered(GCCoreUtil.translate("gui.message.status.name") + ": " + this.getStatus(), this.xSize / 2, 50, 4210752, this.font);
         String status = GCCoreUtil.translate("gui.status.collecting.name") + ": " + (int) (0.5F + Math.min(this.collector.lastOxygenCollected * 20F, TileEntityOxygenCollector.OUTPUT_PER_TICK * 20F)) + GCCoreUtil.translate("gui.per_second");
-        GCCoreUtil.drawStringCentered(status, this.xSize / 2, 60, 4210752, this.fontRenderer);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
+        GCCoreUtil.drawStringCentered(status, this.xSize / 2, 60, 4210752, this.font);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 90 + 2, 4210752);
     }
 
     private String getStatus()
@@ -78,26 +79,26 @@ public class GuiOxygenCollector extends GuiContainerGC
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiOxygenCollector.collectorTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiOxygenCollector.collectorTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(var5, var6 + 5, 0, 0, this.xSize, 181);
+        this.blit(var5, var6 + 5, 0, 0, this.xSize, 181);
 
         if (this.collector != null)
         {
             int scale = this.collector.getCappedScaledOxygenLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 25, 197, 7, Math.min(scale, 54), 7);
             scale = this.collector.getScaledElecticalLevel(54);
-            this.drawTexturedModalRect(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
+            this.blit(var5 + 113, var6 + 38, 197, 0, Math.min(scale, 54), 7);
 
             if (this.collector.getEnergyStoredGC() > 0)
             {
-                this.drawTexturedModalRect(var5 + 99, var6 + 37, 176, 0, 11, 10);
+                this.blit(var5 + 99, var6 + 37, 176, 0, 11, 10);
             }
 
             if (this.collector.getOxygenStored() > 0)
             {
-                this.drawTexturedModalRect(var5 + 100, var6 + 24, 187, 0, 10, 10);
+                this.blit(var5 + 100, var6 + 24, 187, 0, 10, 10);
             }
 
             List<String> oxygenDesc = new ArrayList<String>();

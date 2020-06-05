@@ -12,21 +12,21 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ItemPickaxeAsteroids extends PickaxeItem implements ISortableItem
 {
-    public ItemPickaxeAsteroids(String assetName)
+    public ItemPickaxeAsteroids(Item.Properties builder)
     {
         super(AsteroidsItems.TOOL_TITANIUM);
         this.setUnlocalizedName(assetName);
         //this.setTextureName(GalacticraftPlanets.TEXTURE_PREFIX + assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;

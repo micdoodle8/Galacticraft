@@ -5,8 +5,8 @@ import micdoodle8.mods.galacticraft.api.vector.BlockTuple;
 import micdoodle8.mods.galacticraft.api.world.IGalacticraftWorldProvider;
 import micdoodle8.mods.galacticraft.core.GCBlocks;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderMoon;
-import micdoodle8.mods.galacticraft.core.dimension.WorldProviderSpaceStation;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionMoon;
+import micdoodle8.mods.galacticraft.core.dimension.DimensionSpaceStation;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.planets.mars.blocks.MarsBlocks;
@@ -219,8 +219,8 @@ public class OreGenOtherMods
 
         int dimDetected = 0;
 
-        Dimension prov = world.provider;
-        if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof WorldProviderSpaceStation))
+        Dimension prov = world.getDimension();
+        if (!(prov instanceof IGalacticraftWorldProvider) || (prov instanceof DimensionSpaceStation))
         {
             return;
         }
@@ -228,7 +228,7 @@ public class OreGenOtherMods
         Block stoneBlock = null;
         int stoneMeta = 0;
 
-        if (prov instanceof WorldProviderMoon)
+        if (prov instanceof DimensionMoon)
         {
             stoneBlock = GCBlocks.blockMoon;
             stoneMeta = 4;

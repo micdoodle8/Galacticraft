@@ -44,9 +44,9 @@ public abstract class DirectionalPiece extends Piece
     {
         super.readStructureFromNBT(nbt, manager);
 
-        if (nbt.hasKey("direction"))
+        if (nbt.contains("direction"))
         {
-            this.direction = Direction.getFront(nbt.getInteger("direction"));
+            this.direction = Direction.byIndex(nbt.getInt("direction"));
         }
         else
         {

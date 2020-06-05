@@ -1,5 +1,6 @@
 package micdoodle8.mods.galacticraft.core.items;
 
+import com.google.common.collect.Lists;
 import micdoodle8.mods.galacticraft.core.GCItems;
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
@@ -8,11 +9,9 @@ import micdoodle8.mods.galacticraft.core.util.EnumSortCategoryItem;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemGroup;
+import net.minecraft.item.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.SoundEvents;
-import net.minecraft.item.Rarity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
@@ -22,26 +21,26 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemFood extends net.minecraft.item.ItemFood implements ISortableItem
+public class ItemFood extends Food implements ISortableItem
 {
     public static final String[] names = { "dehydrated_apple", "dehydrated_carrot", "dehydrated_melon", "dehydrated_potato", "cheese_slice", "burger_bun", "beef_patty_raw", "beef_patty_cooked", "cheeseburger", "canned_beef" };
 
-    public ItemFood(String assetName)
+    public ItemFood(int healing, float saturationIn, boolean meat, Item.Properties builder)
     {
-        super(2, 0.3F, false);
+        super(healing, saturationIn, meat, true, false, Lists.newArrayList());
         this.setMaxDamage(0);
         this.setHasSubtypes(true);
         this.setUnlocalizedName(assetName);
     }
 
-    @Override
-    public ItemGroup getCreativeTab()
-    {
-        return GalacticraftCore.galacticraftItemsTab;
-    }
+//    @Override
+//    public ItemGroup getCreativeTab()
+//    {
+//        return GalacticraftCore.galacticraftItemsTab;
+//    }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public Rarity getRarity(ItemStack par1ItemStack)
     {
         return ClientProxyCore.galacticraftItem;
@@ -84,7 +83,7 @@ public class ItemFood extends net.minecraft.item.ItemFood implements ISortableIt
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getItemDamage() < 4)

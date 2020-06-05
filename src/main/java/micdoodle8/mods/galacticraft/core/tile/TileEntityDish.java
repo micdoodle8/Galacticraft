@@ -9,7 +9,7 @@ import micdoodle8.mods.galacticraft.core.blocks.BlockMulti.EnumBlockMultiType;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseUniversalElectrical;
 import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
@@ -258,7 +258,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
             {
                 if (this.world.isRemote && this.world.rand.nextDouble() < 0.05D)
                 {
-                    FMLClientHandler.instance().getClient().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
+                    Minecraft.getInstance().effectRenderer.addBlockDestroyEffects(pos, this.world.getBlockState(pos));
                 }
                 this.world.setBlockToAir(pos);
             }
@@ -274,7 +274,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         this.currentAngle = nbt.getFloat("currentAngle");
         this.targetAngle = nbt.getFloat("targetAngle");
         this.setDisabled(0, nbt.getBoolean("disabled"));
-        this.disableCooldown = nbt.getInteger("disabledCooldown");
+        this.disableCooldown = nbt.getInt("disabledCooldown");
 
         this.initialised = false;
     }
@@ -286,7 +286,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
         nbt.setFloat("maxEnergy", this.getMaxEnergyStoredGC());
         nbt.setFloat("currentAngle", this.currentAngle);
         nbt.setFloat("targetAngle", this.targetAngle);
-        nbt.setInteger("disabledCooldown", this.disableCooldown);
+        nbt.putInt("disabledCooldown", this.disableCooldown);
         nbt.setBoolean("disabled", this.getDisabled(0));
 
         return nbt;
@@ -299,7 +299,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -310,7 +310,7 @@ public class TileEntityDish extends TileBaseUniversalElectrical implements IMult
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;

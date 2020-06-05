@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.BufferBuilder;
@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import java.util.Random;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class SkyProviderAsteroids extends IRenderHandler
 {
     private static final ResourceLocation overworldTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/celestialbodies/earth.png");
@@ -134,7 +134,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         var12 = this.sunSize / 1.2F;
         //110 distance instead of the normal 100, because there is no atmosphere to make the disk seem larger
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderAsteroids.sunTexture);
+        Minecraft.getInstance().textureManager.bindTexture(SkyProviderAsteroids.sunTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, 90.0D, -var12).tex(0.0D, 0.0D).endVertex();
         worldRenderer.pos(var12, 90.0D, -var12).tex(1.0D, 0.0D).endVertex();
@@ -152,7 +152,7 @@ public class SkyProviderAsteroids extends IRenderHandler
         GL11.glRotatef(40.0F, 0.0F, 0.0F, 1.0F);
         GL11.glRotatef(200F, 1.0F, 0.0F, 0.0F);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1F);
-        FMLClientHandler.instance().getClient().textureManager.bindTexture(SkyProviderAsteroids.overworldTexture);
+        Minecraft.getInstance().textureManager.bindTexture(SkyProviderAsteroids.overworldTexture);
         worldRenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         worldRenderer.pos(-var12, -100.0D, var12).tex(0, 1.0).endVertex();
         worldRenderer.pos(var12, -100.0D, var12).tex(1.0, 1.0).endVertex();
@@ -278,7 +278,7 @@ public class SkyProviderAsteroids extends IRenderHandler
 
     public float getSkyBrightness(float par1)
     {
-        final float var2 = FMLClientHandler.instance().getClient().world.getCelestialAngle(par1);
+        final float var2 = Minecraft.getInstance().world.getCelestialAngle(par1);
         float var3 = 1.0F - (MathHelper.sin(var2 * Constants.twoPI) * 2.0F + 0.25F);
 
         if (var3 < 0.0F)

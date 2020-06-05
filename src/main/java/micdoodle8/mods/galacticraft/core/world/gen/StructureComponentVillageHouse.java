@@ -39,7 +39,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
     {
         super.writeStructureToNBT(nbt);
 
-        nbt.setInteger("AvgGroundLevel", this.averageGroundLevel);
+        nbt.putInt("AvgGroundLevel", this.averageGroundLevel);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class StructureComponentVillageHouse extends StructureComponentVillage
     {
         super.readStructureFromNBT(nbt, manager);
 
-        this.averageGroundLevel = nbt.getInteger("AvgGroundLevel");
+        this.averageGroundLevel = nbt.getInt("AvgGroundLevel");
     }
 
     /**

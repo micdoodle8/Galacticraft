@@ -7,17 +7,10 @@
 //import micdoodle8.mods.galacticraft.core.util.GCLog;
 //import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 //import net.minecraft.client.Minecraft;
-//import net.minecraft.entity.player.EntityPlayer;
-//import net.minecraft.network.NetHandlerPlayServer;
+//import net.minecraft.entity.player.PlayerEntity;
 //import net.minecraft.network.NetworkManager;
 //import net.minecraft.network.PacketBuffer;
-//import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-//import net.minecraftforge.fml.common.network.FMLEventChannel;
-//import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-//import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 //import net.minecraftforge.fml.network.simple.SimpleChannel;
-//import net.minecraftforge.fml.relauncher.Side;
-//import net.minecraftforge.fml.relauncher.SideOnly;
 //
 //import java.io.IOException;
 //import java.util.ArrayList;
@@ -30,7 +23,7 @@
 //    public static final String CHANNEL = "galacticraft";
 //    public static SimpleChannel bus;
 //
-//    public void handle(ByteBuf payload, EntityPlayer player)
+//    public void handle(ByteBuf payload, PlayerEntity player)
 //    {
 //        int packetId = payload.readByte();
 //        List<Object> data = new ArrayList<Object>();
@@ -125,7 +118,7 @@
 //    }
 //
 //    @SubscribeEvent
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public void onPacketData(FMLNetworkEvent.ClientCustomPacketEvent event)
 //    {
 //        FMLProxyPacket pkt = event.getPacket();

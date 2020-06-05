@@ -72,7 +72,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         }
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -83,7 +83,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving)
     {
         int oldMeta = getMetaFromState(worldIn.getBlockState(pos));
-        int meta = this.getMetadataFromAngle(worldIn, pos, Direction.getFront(oldMeta).getOpposite());
+        int meta = this.getMetadataFromAngle(worldIn, pos, Direction.byIndex(oldMeta).getOpposite());
 
         if (meta == -1)
         {
@@ -96,7 +96,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
             if (thisTile instanceof TileEntityBeamReceiver)
             {
                 TileEntityBeamReceiver thisReceiver = (TileEntityBeamReceiver) thisTile;
-                thisReceiver.setFacing(Direction.getFront(meta));
+                thisReceiver.setFacing(Direction.byIndex(meta));
                 thisReceiver.invalidateReflector();
                 thisReceiver.initiateReflector();
             }
@@ -111,7 +111,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         TileEntity thisTile = world.getTileEntity(pos);
         if (thisTile instanceof TileEntityBeamReceiver)
         {
-            ((TileEntityBeamReceiver) thisTile).setFacing(Direction.getFront(getMetaFromState(state)));
+            ((TileEntityBeamReceiver) thisTile).setFacing(Direction.byIndex(getMetaFromState(state)));
         }
     }
 
@@ -229,10 +229,10 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void sendIncorrectSideMessage()
     {
-        FMLClientHandler.instance().getClient().player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
+        Minecraft.getInstance().player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.receiver.cannot_attach")));
     }
 
     @Override
@@ -272,7 +272,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
     {
         list.add(new ItemStack(this, 1, 0));
@@ -306,7 +306,7 @@ public class BlockBeamReceiver extends BlockTileGC implements IShiftDescription,
     @Override
     public BlockState getStateFromMeta(int meta)
     {
-        Direction enumfacing = Direction.getFront(meta);
+        Direction enumfacing = Direction.byIndex(meta);
         return this.getDefaultState().with(FACING, enumfacing);
     }
 

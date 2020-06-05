@@ -4,33 +4,34 @@ import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.client.model.ModelParaChest;
 import micdoodle8.mods.galacticraft.core.entities.EntityParachest;
 import micdoodle8.mods.galacticraft.core.items.ItemParaChute;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderParaChest extends EntityRenderer<EntityParachest>
 {
     private static final ResourceLocation[] textures = { new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/plain.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/black.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/blue.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/lime.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/brown.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkblue.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkgray.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkgreen.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/gray.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/magenta.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/orange.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/magenta.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/blue.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/yellow.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/lime.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/pink.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/purple.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/red.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkgray.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/gray.png"),
             new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/teal.png"),
-            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/yellow.png") };
-    public static final ResourceLocation parachestTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachest.png");
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/purple.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkblue.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/brown.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/darkgreen.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/red.png"),
+            new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachute/black.png") };
+    public static final ResourceLocation PARACHEST_TEXTURE = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/parachest.png");
 
     private final ModelParaChest chestModel;
 
@@ -44,7 +45,7 @@ public class RenderParaChest extends EntityRenderer<EntityParachest>
     @Override
     protected ResourceLocation getEntityTexture(EntityParachest entity)
     {
-        return RenderParaChest.textures[ItemParaChute.getParachuteDamageValueFromDyeEnum(entity.color)];
+        return RenderParaChest.textures[entity.color.ordinal()];
     }
 
     @Override
@@ -55,7 +56,7 @@ public class RenderParaChest extends EntityRenderer<EntityParachest>
 
         this.bindEntityTexture(entity);
 
-        if (!entity.isDead)
+        if (entity.isAlive())
         {
             this.chestModel.renderAll();
         }

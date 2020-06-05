@@ -105,9 +105,9 @@ public class CommandGCHouston extends CommandBase
                 if (args.length == 0)
                 {
                     playerBase = PlayerUtil.getPlayerBaseServerFromPlayerUsername(sender.getName(), true);
-                    if (!playerBase.capabilities.isCreativeMode)
+                    if (!playerBase.abilities.isCreativeMode)
                     {
-                        if (ConfigManagerCore.challengeMode || !(playerBase.world.provider instanceof IGalacticraftWorldProvider) )
+                        if (ConfigManagerCore.challengeMode || !(playerBase.world.getDimension() instanceof IGalacticraftWorldProvider) )
                         {
                             CommandBase.notifyCommandListener(sender, this, "commands.gchouston.fail");
                             return;
@@ -163,7 +163,7 @@ public class CommandGCHouston extends CommandBase
                     }
                     GCPlayerStats stats = GCPlayerStats.get(playerBase);
                     stats.setRocketStacks(NonNullList.withSize(0, ItemStack.EMPTY));
-                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT.ordinal());
+                    stats.setRocketType(IRocketType.EnumRocketType.DEFAULT);
                     stats.setRocketItem(null);
                     stats.setFuelLevel(0);
                     stats.setCoordsTeleportedFromX(spawnPoint.getX());

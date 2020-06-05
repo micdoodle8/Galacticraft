@@ -33,13 +33,13 @@ public class EntitySmallAsteroid extends Entity
             // Kill non-moving entities
             if (Math.abs(this.posX - this.prevPosX) + Math.abs(this.posZ - this.prevPosZ) <= 0)
             {
-                this.setDead();
+                this.remove();
             }
 
             // Remove entities far outside the build range, or too old (to stop accumulations)
             else if (this.posY > 288D || this.posY < -32D || this.ticksExisted > 3000)
             {
-                this.setDead();
+                this.remove();
             }
         }
 
@@ -82,7 +82,7 @@ public class EntitySmallAsteroid extends Entity
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
     }
 
@@ -92,7 +92,7 @@ public class EntitySmallAsteroid extends Entity
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    protected void writeAdditional(CompoundNBT nbt)
     {
     }
 

@@ -1,7 +1,6 @@
 package micdoodle8.mods.galacticraft.core.entities.player;
 
 import com.mojang.authlib.GameProfile;
-
 import micdoodle8.mods.galacticraft.api.entity.ICameraZoomEntity;
 import micdoodle8.mods.galacticraft.api.item.IHoldableItem;
 import micdoodle8.mods.galacticraft.api.prefab.entity.EntitySpaceshipBase;
@@ -11,20 +10,20 @@ import micdoodle8.mods.galacticraft.core.proxy.ClientProxyCore;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import net.minecraft.client.entity.player.RemoteClientPlayerEntity;
 import net.minecraft.client.network.play.NetworkPlayerInfo;
+import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
 {
     private boolean checkedCape = false;
     private ResourceLocation galacticraftCape = null;
 
-    public GCEntityOtherPlayerMP(World par1World, GameProfile profile)
+    public GCEntityOtherPlayerMP(ClientWorld world, GameProfile profile)
     {
-        super(par1World, profile);
+        super(world, profile);
     }
 
     @Override
@@ -54,7 +53,7 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getBrightnessForRender()
     {
         double height = this.posY + (double)this.getEyeHeight();
@@ -66,7 +65,7 @@ public class GCEntityOtherPlayerMP extends RemoteClientPlayerEntity
     @Override
     public boolean isSneaking()
     {
-        if (EventHandlerClient.sneakRenderOverride && !(this.world.provider instanceof IZeroGDimension))
+        if (EventHandlerClient.sneakRenderOverride && !(this.world.getDimension() instanceof IZeroGDimension))
         {
             if (this.onGround && this.inventory.getCurrentItem() != null && this.inventory.getCurrentItem().getItem() instanceof IHoldableItem && !(this.getRidingEntity() instanceof ICameraZoomEntity))
             {

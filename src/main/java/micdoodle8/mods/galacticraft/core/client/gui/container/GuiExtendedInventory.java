@@ -1,20 +1,19 @@
 package micdoodle8.mods.galacticraft.core.client.gui.container;
 
-import micdoodle8.mods.galacticraft.api.client.tabs.AbstractTab;
-import micdoodle8.mods.galacticraft.api.client.tabs.TabRegistry;
+import com.mojang.blaze3d.platform.GLX;
+import com.mojang.blaze3d.platform.GlStateManager;
 import micdoodle8.mods.galacticraft.core.Constants;
-import micdoodle8.mods.galacticraft.core.client.gui.screen.InventoryTabGalacticraft;
 import micdoodle8.mods.galacticraft.core.inventory.ContainerExtendedInventory;
 import micdoodle8.mods.galacticraft.core.inventory.InventoryExtended;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.gui.DisplayEffectsScreen;
-import com.mojang.blaze3d.platform.GlStateManager;
+import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
 
 public class GuiExtendedInventory extends DisplayEffectsScreen
 {
@@ -23,21 +22,21 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
     private static float rotation = 0.0F;
     private boolean initWithPotion;
 
-    public GuiExtendedInventory(PlayerEntity player, InventoryExtended inventory)
+    public GuiExtendedInventory(PlayerEntity playerInv, InventoryExtended inventory)
     {
-        super(new ContainerExtendedInventory(player, inventory));
+        super(new ContainerExtendedInventory(playerInv, inventory), playerInv.inventory, new StringTextComponent("Extended Inventory"));
     }
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
-        GuiExtendedInventory.drawPlayerOnGui(this.mc, 33, 60, 29);
+        GuiExtendedInventory.drawPlayerOnGui(this.minecraft, 33, 60, 29);
     }
 
     @Override
-    public void initGui()
+    protected void init()
     {
-        super.initGui();
+        super.init();
 
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiLeft += this.getPotionOffset();
@@ -46,37 +45,27 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
         int cornerX = this.guiLeft;
         int cornerY = this.guiTop;
 
-        TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
-        TabRegistry.addTabsToList(this.buttonList);
+//        TabRegistry.updateTabValues(cornerX, cornerY, InventoryTabGalacticraft.class);
+//        TabRegistry.addTabsToList(this.buttons); TODO Inventory tabs
 
-        this.buttonList.add(new Button(0, this.guiLeft + 10, this.guiTop + 71, 7, 7, ""));
-        this.buttonList.add(new Button(1, this.guiLeft + 51, this.guiTop + 71, 7, 7, ""));
-    }
-
-    @Override
-    protected void actionPerformed(Button button)
-    {
-        switch (button.id)
-        {
-        case 0:
+        this.buttons.add(new Button(this.guiLeft + 10, this.guiTop + 71, 7, 7, "", (button) -> {
             GuiExtendedInventory.rotation += 10.0F;
-            break;
-        case 1:
+        }));
+        this.buttons.add(new Button(this.guiLeft + 51, this.guiTop + 71, 7, 7, "", (button) -> {
             GuiExtendedInventory.rotation -= 10.0F;
-            break;
-        }
+        }));
     }
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
     {
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiExtendedInventory.inventoryTexture);
-        this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+        GlStateManager.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bindTexture(GuiExtendedInventory.inventoryTexture);
+        this.blit(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
         int newPotionOffset = this.getPotionOffsetNEI();
 
@@ -86,56 +75,56 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
             this.potionOffsetLast = newPotionOffset;
             this.guiLeft += diff;
 
-            for (int k = 0; k < this.buttonList.size(); ++k)
-            {
-                Button button = this.buttonList.get(k);
-
-                if (!(button instanceof AbstractTab))
-                {
-                    button.x += diff;
-                }
-            }
+//            for (int k = 0; k < this.buttons.size(); ++k)
+//            {
+//                Widget widget = this.buttons.get(k);
+//
+//                if (!(widget instanceof AbstractTab))
+//                {
+//                    widget.x += diff;
+//                }
+//            }
         }
-        this.drawDefaultBackground();
-        super.drawScreen(mouseX, mouseY, partialTicks);
+        this.renderBackground();
+        super.render(mouseX, mouseY, partialTicks);
         this.renderHoveredToolTip(mouseX, mouseY);
     }
 
-    public static void drawPlayerOnGui(Minecraft mc, int x, int y, int scale)
+    public static void drawPlayerOnGui(Minecraft minecraft, int x, int y, int scale)
     {
         EntityRendererManager rendermanager = Minecraft.getInstance().getRenderManager();
         GlStateManager.enableColorMaterial();
         GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y, 50.0F);
-        GlStateManager.scale(-scale, scale, scale);
-        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
-        float f2 = mc.player.renderYawOffset;
-        float f3 = mc.player.rotationYaw;
-        float f4 = mc.player.rotationPitch;
-        float f5 = mc.player.rotationYawHead;
-        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.translatef(x, y, 50.0F);
+        GlStateManager.scalef(-scale, scale, scale);
+        GlStateManager.rotatef(180.0F, 0.0F, 0.0F, 1.0F);
+        float f2 = minecraft.player.renderYawOffset;
+        float f3 = minecraft.player.rotationYaw;
+        float f4 = minecraft.player.rotationPitch;
+        float f5 = minecraft.player.rotationYawHead;
+        GlStateManager.rotatef(135.0F, 0.0F, 1.0F, 0.0F);
         RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotate(-135.0F, 0.0F, 1.0F, 0.0F);
-        mc.player.renderYawOffset = GuiExtendedInventory.rotation;
-        mc.player.rotationYaw = (float) Math.atan(32 / 40.0F) * 40.0F;
-        mc.player.rotationYaw = GuiExtendedInventory.rotation;
-        mc.player.rotationYawHead = mc.player.rotationYaw;
-        mc.player.rotationPitch = (float) Math.sin(Minecraft.getSystemTime() / 500.0F) * 3.0F;
-        GlStateManager.translate(0.0F, (float) mc.player.getYOffset(), 0.0F);
+        GlStateManager.rotatef(-135.0F, 0.0F, 1.0F, 0.0F);
+        minecraft.player.renderYawOffset = GuiExtendedInventory.rotation;
+        minecraft.player.rotationYaw = (float) Math.atan(32 / 40.0F) * 40.0F;
+        minecraft.player.rotationYaw = GuiExtendedInventory.rotation;
+        minecraft.player.rotationYawHead = minecraft.player.rotationYaw;
+        minecraft.player.rotationPitch = (float) Math.sin(Util.milliTime() / 500.0F) * 3.0F;
+        GlStateManager.translatef(0.0F, (float) minecraft.player.getYOffset(), 0.0F);
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
-        rendermanager.renderEntity(mc.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
+        rendermanager.renderEntity(minecraft.player, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, false);
         rendermanager.setRenderShadow(true);
-        mc.player.renderYawOffset = f2;
-        mc.player.rotationYaw = f3;
-        mc.player.rotationPitch = f4;
-        mc.player.rotationYawHead = f5;
+        minecraft.player.renderYawOffset = f2;
+        minecraft.player.rotationYaw = f3;
+        minecraft.player.rotationPitch = f4;
+        minecraft.player.rotationYawHead = f5;
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
-        GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        GlStateManager.disableTexture2D();
-        GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        GlStateManager.activeTexture(GLX.GL_TEXTURE1);
+        GlStateManager.disableTexture();
+        GlStateManager.activeTexture(GLX.GL_TEXTURE0);
     }
 
     //Instanced method of this to have the instance field initWithPotion
@@ -160,29 +149,29 @@ public class GuiExtendedInventory extends DisplayEffectsScreen
     //Instanced method of this to use the instance field initWithPotion
     public int getPotionOffsetNEI()
     {
-        if (this.initWithPotion && TabRegistry.clazzNEIConfig != null)
-        {
-            try
-            {
-                // Check whether NEI is hidden and enabled
-                Object hidden = TabRegistry.clazzNEIConfig.getMethod("isHidden").invoke(null);
-                Object enabled = TabRegistry.clazzNEIConfig.getMethod("isEnabled").invoke(null);
-
-                if (hidden instanceof Boolean && enabled instanceof Boolean)
-                {
-                    if ((Boolean) hidden || !((Boolean) enabled))
-                    {
-                        // If NEI is disabled or hidden, offset the tabs by the standard 60
-                        return 0;
-                    }
-                    //Active NEI undoes the standard potion offset
-                    return -60;
-                }
-            }
-            catch (Exception e)
-            {
-            }
-        }
+//        if (this.initWithPotion && TabRegistry.clazzNEIConfig != null)
+//        {
+//            try
+//            {
+//                // Check whether NEI is hidden and enabled
+//                Object hidden = TabRegistry.clazzNEIConfig.getMethod("isHidden").invoke(null);
+//                Object enabled = TabRegistry.clazzNEIConfig.getMethod("isEnabled").invoke(null);
+//
+//                if (hidden instanceof Boolean && enabled instanceof Boolean)
+//                {
+//                    if ((Boolean) hidden || !((Boolean) enabled))
+//                    {
+//                        // If NEI is disabled or hidden, offset the tabs by the standard 60
+//                        return 0;
+//                    }
+//                    //Active NEI undoes the standard potion offset
+//                    return -60;
+//                }
+//            }
+//            catch (Exception e)
+//            {
+//            }
+//        } TODO Inv tabs
         //No NEI, no change
         return 0;
     }

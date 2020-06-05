@@ -109,10 +109,10 @@ public class EntitySludgeling extends MonsterEntity implements IEntityBreathable
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         this.renderYawOffset = this.rotationYaw;
-        super.onUpdate();
+        super.tick();
     }
 
     @Override

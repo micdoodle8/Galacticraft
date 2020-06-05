@@ -4,15 +4,14 @@ import micdoodle8.mods.galacticraft.api.entity.IFuelable;
 import micdoodle8.mods.galacticraft.api.tile.ILandingPadAttachable;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
-import micdoodle8.mods.galacticraft.core.GCFluids;
+import micdoodle8.mods.galacticraft.core.fluid.GCFluidRegistry;
 import micdoodle8.mods.galacticraft.core.GCItems;
-import micdoodle8.mods.galacticraft.core.blocks.BlockFuelLoader;
 import micdoodle8.mods.galacticraft.core.energy.item.ItemElectricBase;
 import micdoodle8.mods.galacticraft.core.energy.tile.TileBaseElectricBlockWithInventory;
 import micdoodle8.mods.galacticraft.core.util.FluidUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.FluidHandlerWrapper;
 import micdoodle8.mods.galacticraft.core.wrappers.IFluidHandlerWrapper;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -21,11 +20,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.IBlockReader;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import javax.annotation.Nullable;
 
@@ -63,7 +62,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
             final FluidStack liquidContained = FluidUtil.getFluidContained(this.getInventory().get(1));
             if (FluidUtil.isFuel(liquidContained))
             {
-                FluidUtil.loadFromContainer(this.fuelTank, GCFluids.fluidFuel, this.getInventory(), 1, liquidContained.amount);
+                FluidUtil.loadFromContainer(this.fuelTank, GCFluidRegistry.fluidFuel, this.getInventory(), 1, liquidContained.amount);
             }
 
             if (this.ticks % 100 == 0)
@@ -96,7 +95,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
             if (this.fuelTank != null && this.fuelTank.getFluid() != null && this.fuelTank.getFluid().amount > 0)
             {
-                final FluidStack liquid = new FluidStack(GCFluids.fluidFuel, 2);
+                final FluidStack liquid = new FluidStack(GCFluidRegistry.fluidFuel, 2);
 
                 if (this.attachedFuelable != null && this.hasEnoughEnergyToRun && !this.disabled)
                 {
@@ -128,7 +127,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
 
         if (this.fuelTank.getFluid() != null)
         {
-            nbt.setTag("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
+            nbt.put("fuelTank", this.fuelTank.writeToNBT(new CompoundNBT()));
         }
         
         this.addMachineSidesToNBT(nbt);  //Needed by IMachineSides
@@ -239,7 +238,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     }
 
     @Override
-    public boolean canAttachToLandingPad(IBlockAccess world, BlockPos pos)
+    public boolean canAttachToLandingPad(IBlockReader world, BlockPos pos)
     {
         return true;
     }
@@ -250,7 +249,7 @@ public class TileEntityFuelLoader extends TileBaseElectricBlockWithInventory imp
     	BlockState state = this.world.getBlockState(getPos());
     	if (state.getBlock() instanceof BlockFuelLoader)
     	{
-    		return state.getValue(BlockFuelLoader.FACING);
+    		return state.get(BlockFuelLoader.FACING);
     	}
     	return Direction.NORTH;
     }

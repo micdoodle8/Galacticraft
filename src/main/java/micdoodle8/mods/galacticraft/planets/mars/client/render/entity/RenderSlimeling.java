@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderSlimeling extends MobRenderer<EntitySlimeling>
 {
     private static final ResourceLocation landerTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/model/slimeling/green.png");
@@ -99,7 +99,7 @@ public class RenderSlimeling extends MobRenderer<EntitySlimeling>
 //    @Override
 //    protected void passSpecialRender(EntityLivingBase par1EntityLivingBase, double par2, double par4, double par6)
 //    {
-//        Minecraft mc = FMLClientHandler.instance().getClient();
+//        Minecraft mc = Minecraft.getInstance();
 //
 //        if (!mc.gameSettings.hideGUI && !par1EntityLivingBase.isInvisible() && (mc.currentScreen == null || !((mc.currentScreen instanceof GuiSlimeling || mc.currentScreen instanceof GuiSlimelingInventory) && GuiSlimeling.renderingOnGui)))
 //        {

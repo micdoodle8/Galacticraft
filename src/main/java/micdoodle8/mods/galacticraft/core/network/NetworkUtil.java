@@ -10,25 +10,25 @@ import micdoodle8.mods.galacticraft.core.util.GCLog;
 import micdoodle8.mods.galacticraft.core.wrappers.FlagData;
 import micdoodle8.mods.galacticraft.core.wrappers.Footprint;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.DyeColor;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
@@ -61,7 +61,7 @@ public class NetworkUtil
             }
             else if (dataValue instanceof String)
             {
-                ByteBufUtils.writeUTF8String(buffer, (String) dataValue);
+                writeUTF8String(buffer, (String) dataValue);
             }
             else if (dataValue instanceof Short)
             {
@@ -163,7 +163,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < array.length; i++)
                 {
-                    ByteBufUtils.writeUTF8String(buffer, array[i]);
+                    writeUTF8String(buffer, array[i]);
                 }
             }
             else if (dataValue instanceof Footprint[])
@@ -179,7 +179,8 @@ public class NetworkUtil
                     buffer.writeFloat((float) array[i].position.z);
                     buffer.writeFloat(array[i].rotation);
                     buffer.writeShort(array[i].age);
-                    ByteBufUtils.writeUTF8String(buffer, array[i].owner);
+
+                    writeUTF8String(buffer, array[i].owner);
                 }
             }
             else if (dataValue instanceof Direction)
@@ -193,10 +194,10 @@ public class NetworkUtil
                 buffer.writeInt(pos.getY());
                 buffer.writeInt(pos.getZ());
             }
-            else if (dataValue instanceof DyeColor)
-            {
-                buffer.writeInt(((DyeColor) dataValue).getDyeDamage());
-            }
+//            else if (dataValue instanceof DyeColor)
+//            {
+//                buffer.writeInt(((DyeColor) dataValue).getDyeDamage());
+//            }
             else
             {
                 if (dataValue == null)
@@ -236,7 +237,7 @@ public class NetworkUtil
             }
             else if (clazz.equals(String.class))
             {
-                objList.add(ByteBufUtils.readUTF8String(buffer));
+                objList.add(readUTF8String(buffer));
             }
             else if (clazz.equals(Short.class))
             {
@@ -313,7 +314,7 @@ public class NetworkUtil
 
                 for (int i = 0; i < size; i++)
                 {
-                    objList.add(ByteBufUtils.readUTF8String(buffer));
+                    objList.add(readUTF8String(buffer));
                 }
             }
             else if (clazz.equals(Footprint[].class))
@@ -322,21 +323,21 @@ public class NetworkUtil
 
                 for (int i = 0; i < size; i++)
                 {
-                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), ByteBufUtils.readUTF8String(buffer), -1));
+                    objList.add(new Footprint(buffer.readInt(), new Vector3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()), buffer.readFloat(), buffer.readShort(), readUTF8String(buffer), -1));
                 }
             }
             else if (clazz.equals(Direction.class))
             {
-                objList.add(Direction.getFront(buffer.readInt()));
+                objList.add(Direction.byIndex(buffer.readInt()));
             }
             else if (clazz.equals(BlockPos.class))
             {
                 objList.add(new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt()));
             }
-            else if (clazz.equals(DyeColor.class))
-            {
-                objList.add(DyeColor.byDyeDamage(buffer.readInt()));
-            }
+//            else if (clazz.equals(DyeColor.class))
+//            {
+//                objList.add(DyeColor.byDyeDamage(buffer.readInt()));
+//            }
         }
 
         return objList;
@@ -368,7 +369,7 @@ public class NetworkUtil
         }
         else if (dataValue.equals(String.class))
         {
-            return ByteBufUtils.readUTF8String(buffer);
+            return readUTF8String(buffer);
         }
         else if (dataValue.equals(short.class))
         {
@@ -422,16 +423,16 @@ public class NetworkUtil
         }
         else if (dataValue.equals(Direction.class))
         {
-            return Direction.getFront(buffer.readInt());
+            return Direction.byIndex(buffer.readInt());
         }
         else if (dataValue.equals(BlockPos.class))
         {
             return new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         }
-        else if (dataValue.equals(DyeColor.class))
-        {
-            return DyeColor.byDyeDamage(buffer.readInt());
-        }
+//        else if (dataValue.equals(DyeColor.class))
+//        {
+//            return DyeColor.byDyeDamage(buffer.readInt());
+//        }
         else
         {
             Class<?> c = dataValue;
@@ -458,11 +459,10 @@ public class NetworkUtil
         if (itemID >= 0)
         {
             byte stackSize = buffer.readByte();
-            short meta = buffer.readShort();
-            itemstack = new ItemStack(Item.getItemById(itemID), stackSize, meta);
+            itemstack = new ItemStack(Item.getItemById(itemID), stackSize);
             if (buffer.readBoolean())
             {
-                itemstack.setTagCompound(readNBTTagCompound(buffer));
+                itemstack.setTag(readNBTTagCompound(buffer));
             }
         }
 
@@ -479,18 +479,11 @@ public class NetworkUtil
         {
             buffer.writeShort(Item.getIdFromItem(itemStack.getItem()));
             buffer.writeByte(itemStack.getCount());
-            buffer.writeShort(itemStack.getItemDamage());
-            CompoundNBT nbttagcompound = null;
 
-            if (itemStack.getItem().isDamageable() || itemStack.getItem().getShareTag())
+            buffer.writeBoolean(itemStack.getTag() != null);
+            if (itemStack.getTag() != null)
             {
-                nbttagcompound = itemStack.getTagCompound();
-            }
-
-            buffer.writeBoolean(nbttagcompound != null);
-            if (nbttagcompound != null)
-            {
-                NetworkUtil.writeNBTTagCompound(nbttagcompound, buffer);
+                NetworkUtil.writeNBTTagCompound(itemStack.getTag(), buffer);
             }
         }
     }
@@ -533,13 +526,13 @@ public class NetworkUtil
         if (fluidTank == null)
         {
             buffer.writeInt(0);
-            ByteBufUtils.writeUTF8String(buffer, "");
+            writeUTF8String(buffer, "");
             buffer.writeInt(0);
         }
         else
         {
             buffer.writeInt(fluidTank.getCapacity());
-            ByteBufUtils.writeUTF8String(buffer, fluidTank.getFluid() == null ? "" : fluidTank.getFluid().getFluid().getName());
+            writeUTF8String(buffer, fluidTank.getFluid().getFluid().toString());
             buffer.writeInt(fluidTank.getFluidAmount());
         }
     }
@@ -549,19 +542,12 @@ public class NetworkUtil
         BlockPos pos = new BlockPos(buffer.readInt(), buffer.readInt(), buffer.readInt());
         TileEntity tile = world.getTileEntity(pos);
         int capacity = buffer.readInt();
-        String fluidName = ByteBufUtils.readUTF8String(buffer);
+        String fluidName = readUTF8String(buffer);
         FluidTankGC fluidTank = new FluidTankGC(capacity, tile);
         int amount = buffer.readInt();
 
-        if (fluidName.equals(""))
-        {
-            fluidTank.setFluid(null);
-        }
-        else
-        {
-            Fluid fluid = FluidRegistry.getFluid(fluidName);
-            fluidTank.setFluid(new FluidStack(fluid, amount));
-        }
+        Fluid fluid = Registry.FLUID.getOrDefault(new ResourceLocation(fluidName)); // TODO Better way?
+        fluidTank.setFluid(new FluidStack(fluid, amount));
 
         return fluidTank;
     }
@@ -569,7 +555,7 @@ public class NetworkUtil
     public static FluidTank readFluidTank(ByteBuf buffer) throws IOException
     {
         int capacity = buffer.readInt();
-        String fluidName = ByteBufUtils.readUTF8String(buffer);
+        String fluidName = readUTF8String(buffer);
         FluidTank fluidTank = new FluidTank(capacity);
         int amount = buffer.readInt();
 
@@ -579,7 +565,7 @@ public class NetworkUtil
         }
         else
         {
-            Fluid fluid = FluidRegistry.getFluid(fluidName);
+            Fluid fluid = Registry.FLUID.getOrDefault(new ResourceLocation(fluidName)); // TODO Better way?
             fluidTank.setFluid(new FluidStack(fluid, amount));
         }
 
@@ -636,7 +622,7 @@ public class NetworkUtil
             FluidStack fluidA = a2.getFluid();
             FluidStack fluidB = b2.getFluid();
             return fuzzyEquals(a2.getCapacity(), b2.getCapacity()) &&
-                    fuzzyEquals(fluidA != null ? fluidA.getFluid().getName() : "", fluidB != null ? fluidB.getFluid().getName() : "") &&
+                    fuzzyEquals(fluidA.getFluid().getRegistryName(), fluidB.getFluid().getRegistryName()) &&
                     fuzzyEquals(a2.getFluidAmount(), b2.getFluidAmount());
         }
         else
@@ -665,13 +651,29 @@ public class NetworkUtil
         {
             FluidTank prevTank = (FluidTank)a;
             FluidStack prevFluid = prevTank.getFluid();
-            prevFluid = prevFluid == null ? null : prevFluid.copy();
-            FluidTank tank = new FluidTank(prevFluid, prevTank.getCapacity());
+            prevFluid = prevFluid.copy();
+            FluidTank tank = new FluidTank(prevTank.getCapacity());
+            tank.setFluid(prevFluid);
             return tank;
         }
         else
         {
             return a;
         }
+    }
+
+    public static void writeUTF8String(ByteBuf buffer, String value)
+    {
+        byte[] utf8Bytes = value.getBytes(StandardCharsets.UTF_8);
+        buffer.writeInt(utf8Bytes.length);
+        buffer.writeBytes(utf8Bytes);
+    }
+
+    public static String readUTF8String(ByteBuf buffer)
+    {
+        int len = buffer.readInt();
+        String str = buffer.toString(buffer.readerIndex(), len, StandardCharsets.UTF_8);
+        buffer.readerIndex(buffer.readerIndex() + len);
+        return str;
     }
 }

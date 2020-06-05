@@ -6,17 +6,16 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.IRecipeType;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.Tag;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
-public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRegistryEntry.Impl<IRecipe> implements IRecipeUpdatable
+public class ShapelessOreRecipeGC implements IRecipeUpdatable, IRecipe<CraftingInventory>
 {
     protected ItemStack output = null;
     protected ArrayList<Object> input = new ArrayList<Object>();
@@ -44,7 +43,7 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
             }
             else if (in instanceof String)
             {
-                input.add(OreDictionary.getOres((String)in));
+                input.add(ItemTags.getCollection().getOrCreate(new ResourceLocation("forge", (String)in)));
             }
             else
             {
@@ -59,20 +58,15 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
         }
     }
 
-    @Override
     public boolean canFit(int width, int height)
     {
         return width * height >= input.size();
     }
     
-    @Override
     public ItemStack getRecipeOutput(){ return output; }
 
-    @Override
     public ItemStack getCraftingResult(CraftingInventory var1){ return output.copy(); }
 
-    @SuppressWarnings("unchecked")
-    @Override
     public boolean matches(CraftingInventory var1, World world)
     {
         List<Object> required = new LinkedList<>(input);
@@ -94,15 +88,25 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
 
                     if (next instanceof ItemStack)
                     {
-                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
-                    }
-                    else if (next instanceof List)
-                    {
-                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
-                        while (itr.hasNext() && !match)
-                        {
-                            match = OreDictionary.itemMatches(itr.next(), slot, false);
+                        Collection<ResourceLocation> tags1 = ItemTags.getCollection().getOwningTags(((ItemStack) next).getItem());
+                        Collection<ResourceLocation> tags2 = ItemTags.getCollection().getOwningTags(slot.getItem());
+                        match = false;
+                        for (ResourceLocation res : tags1) {
+                            if (tags2.contains(res)) {
+                                match = true;
+                                break;
+                            }
                         }
+//                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
+                    }
+                    else if (next instanceof Tag)
+                    {
+                        match = ((Tag<Item>) next).contains(slot.getItem());
+//                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
+//                        while (itr.hasNext() && !match)
+//                        {
+//                            match = OreDictionary.itemMatches(itr.next(), slot, false);
+//                        }
                     }
 
                     if (match)
@@ -142,14 +146,31 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
 
                     if (next instanceof ItemStack)
                     {
-                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
+                        Collection<ResourceLocation> tags1 = ItemTags.getCollection().getOwningTags(((ItemStack) next).getItem());
+                        Collection<ResourceLocation> tags2 = ItemTags.getCollection().getOwningTags(slot.getItem());
+                        match = false;
+                        for (ResourceLocation res : tags1) {
+                            if (tags2.contains(res)) {
+                                match = true;
+                                break;
+                            }
+                        }
+//                        match = OreDictionary.itemMatches((ItemStack)next, slot, false);
                     }
-                    else if (next instanceof List)
+                    else if (next instanceof Tag)
                     {
-                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
-                        while (itr.hasNext() && !match)
-                        {
-                            match = OreDictionary.itemMatches(itr.next(), slot, false);
+//                        Iterator<ItemStack> itr = ((List<ItemStack>)next).iterator();
+//                        while (itr.hasNext() && !match)
+//                        {
+//                            match = OreDictionary.itemMatches(itr.next(), slot, false);
+//                        }
+                        Collection<ResourceLocation> tags = ItemTags.getCollection().getOwningTags(slot.getItem());
+                        match = false;
+                        for (ResourceLocation res : tags) {
+                            if (next == ItemTags.getCollection().get(res)) {
+                                match = true;
+                                break;
+                            }
                         }
                     }
 
@@ -176,11 +197,10 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
         return this.input;
     }
 
-    @Override
-    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) //getRecipeLeftovers
-    {
-        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
-    }
+//    public NonNullList<ItemStack> getRemainingItems(CraftingInventory inv) //getRecipeLeftovers
+//    {
+//        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+//    }
 
     @Override
     public void replaceInput(ItemStack inputA, List<ItemStack> inputB)
@@ -220,5 +240,23 @@ public class ShapelessOreRecipeGC extends net.minecraftforge.registries.IForgeRe
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public ResourceLocation getId()
+    {
+        return null;
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer()
+    {
+        return null;
+    }
+
+    @Override
+    public IRecipeType<?> getType()
+    {
+        return null;
     }
 }

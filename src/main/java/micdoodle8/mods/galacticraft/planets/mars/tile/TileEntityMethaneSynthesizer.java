@@ -2,7 +2,7 @@ package micdoodle8.mods.galacticraft.planets.mars.tile;
 
 import mekanism.api.gas.Gas;
 import mekanism.api.gas.GasStack;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.tile.IDisableableMachine;
 import micdoodle8.mods.galacticraft.api.transmission.NetworkType;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
@@ -241,10 +241,10 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
 
     public int getAirProducts()
     {
-        Dimension WP = this.world.provider;
-        if (WP instanceof WorldProviderSpace)
+        Dimension WP = this.world.getDimension();
+        if (WP instanceof DimensionSpace)
         {
-            ArrayList<EnumAtmosphericGas> atmos = ((WorldProviderSpace) WP).getCelestialBody().atmosphere.composition;
+            ArrayList<EnumAtmosphericGas> atmos = ((DimensionSpace) WP).getCelestialBody().atmosphere.composition;
             if (atmos.size() > 0)
             {
                 if (atmos.get(0) == EnumAtmosphericGas.CO2)
@@ -321,19 +321,19 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("smeltingTicks");
+        this.processTicks = nbt.getInt("smeltingTicks");
 
-        if (nbt.hasKey("gasTank"))
+        if (nbt.contains("gasTank"))
         {
             this.gasTank.readFromNBT(nbt.getCompoundTag("gasTank"));
         }
 
-        if (nbt.hasKey("gasTank2"))
+        if (nbt.contains("gasTank2"))
         {
             this.gasTank2.readFromNBT(nbt.getCompoundTag("gasTank2"));
         }
 
-        if (nbt.hasKey("liquidTank"))
+        if (nbt.contains("liquidTank"))
         {
             this.liquidTank.readFromNBT(nbt.getCompoundTag("liquidTank"));
         }
@@ -343,21 +343,21 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
 
         if (this.gasTank.getFluid() != null)
         {
-            nbt.setTag("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank", this.gasTank.writeToNBT(new CompoundNBT()));
         }
 
         if (this.gasTank2.getFluid() != null)
         {
-            nbt.setTag("gasTank2", this.gasTank2.writeToNBT(new CompoundNBT()));
+            nbt.put("gasTank2", this.gasTank2.writeToNBT(new CompoundNBT()));
         }
 
         if (this.liquidTank.getFluid() != null)
         {
-            nbt.setTag("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
+            nbt.put("liquidTank", this.liquidTank.writeToNBT(new CompoundNBT()));
         }
 
         return nbt;
@@ -641,7 +641,7 @@ public class TileEntityMethaneSynthesizer extends TileBaseElectricBlockWithInven
         BlockState state = this.world.getBlockState(getPos());
         if (state.getBlock() instanceof BlockMachineMarsT2)
         {
-            return state.getValue(BlockMachineMarsT2.FACING);
+            return state.get(BlockMachineMarsT2.FACING);
         }
         return Direction.NORTH;
     }

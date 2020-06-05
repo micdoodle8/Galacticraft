@@ -1,33 +1,31 @@
 package micdoodle8.mods.galacticraft.core.entities;
 
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 
 public abstract class InventoryEntity extends NetworkedEntity implements IInventory
 {
     protected NonNullList<ItemStack> stacks = NonNullList.withSize(0, ItemStack.EMPTY);
 
-    public InventoryEntity(World par1World)
+    public InventoryEntity(EntityType<?> type, World world)
     {
-        super(par1World);
+        super(type, world);
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
         ItemStackHelper.loadAllItems(nbt, this.stacks);
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    protected void writeAdditional(CompoundNBT nbt)
     {
         ItemStackHelper.saveAllItems(nbt, this.stacks);
     }
@@ -114,23 +112,6 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     }
 
     @Override
-    public int getField(int id)
-    {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value)
-    {
-    }
-
-    @Override
-    public int getFieldCount()
-    {
-        return 0;
-    }
-
-    @Override
     public void clear()
     {
         for (int i = 0; i < this.stacks.size(); ++i)
@@ -143,11 +124,5 @@ public abstract class InventoryEntity extends NetworkedEntity implements IInvent
     public boolean hasCustomName()
     {
         return false;
-    }
-
-    @Override
-    public ITextComponent getDisplayName()
-    {
-        return this.hasCustomName() ? new StringTextComponent(this.getName()) : new TranslationTextComponent(this.getName(), new Object[0]);
     }
 }

@@ -5,7 +5,7 @@ import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.client.render.item.ItemModelCargoRocket;
 import micdoodle8.mods.galacticraft.planets.mars.entities.EntityCargoRocket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -20,7 +20,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
 {
     private ItemModelCargoRocket rocketModel;
@@ -36,7 +36,7 @@ public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
         if (this.rocketModel == null)
         {
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(GalacticraftPlanets.TEXTURE_PREFIX + "rocket_cargo", "inventory");
-            this.rocketModel = (ItemModelCargoRocket) FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
+            this.rocketModel = (ItemModelCargoRocket) Minecraft.getInstance().getRenderItem().getItemModelMesher().getModelManager().getModel(modelResourceLocation);
         }
     }
 
@@ -53,7 +53,7 @@ public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
         GlStateManager.disableRescaleNormal();
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x, (float) y + entity.getRenderOffsetY(), (float) z);
-        GlStateManager.scale(0.4F, 0.4F, 0.4F);
+        GlStateManager.scalef(0.4F, 0.4F, 0.4F);
         GlStateManager.rotate(180.0F - entityYaw, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(-pitch, 0.0F, 0.0F, 1.0F);
         this.bindEntityTexture(entity);
@@ -76,7 +76,7 @@ public class RenderCargoRocket extends EntityRenderer<EntityCargoRocket>
     @Override
     public boolean shouldRender(EntityCargoRocket rocket, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = rocket.getEntityBoundingBox();
+        AxisAlignedBB axisalignedbb = rocket.getBoundingBox();
         return rocket.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

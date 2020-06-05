@@ -5,32 +5,33 @@ import micdoodle8.mods.galacticraft.core.network.IPacketReceiver;
 import micdoodle8.mods.galacticraft.core.network.PacketDynamic;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 public abstract class NetworkedEntity extends Entity implements IPacketReceiver
 {
-    public NetworkedEntity(World par1World)
+    public NetworkedEntity(EntityType<?> type, World world)
     {
-        super(par1World);
+        super(type, world);
         
-        if (par1World != null && par1World.isRemote)
+        if (world != null && world.isRemote)
         {
             GalacticraftCore.packetPipeline.sendToServer(new PacketDynamic(this));
         }
     }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
-        super.onUpdate();
+        super.tick();
 
         PacketDynamic packet = new PacketDynamic(this);
         if (this.networkedDataChanged())
         {
             if (!this.world.isRemote)
             {
-                GalacticraftCore.packetPipeline.sendToAllAround(packet, new TargetPoint(GCCoreUtil.getDimensionID(this.world), this.posX, this.posY, this.posZ, this.getPacketRange()));
+                GalacticraftCore.packetPipeline.sendToAllAround(packet, new PacketDistributor.TargetPoint(this.posX, this.posY, this.posZ, this.getPacketRange(), GCCoreUtil.getDimensionID(this.world)));
             }
             else
             {

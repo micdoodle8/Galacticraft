@@ -151,7 +151,7 @@
 //        super(builder);
 //    }
 //
-////    @SideOnly(Side.CLIENT)
+////    @OnlyIn(Dist.CLIENT)
 ////    @Override
 ////    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 ////    {
@@ -420,13 +420,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

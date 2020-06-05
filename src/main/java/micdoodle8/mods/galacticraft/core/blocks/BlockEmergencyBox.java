@@ -50,7 +50,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 //        return this.getDefaultState().with(KIT, meta % 2 == 1);
 //    }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
@@ -71,7 +71,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 //    }
 
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //        return BlockRenderLayer.CUTOUT;
@@ -98,7 +98,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
 
 
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return (face == Direction.UP || face == Direction.DOWN) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
 //    } TODO
@@ -131,13 +131,13 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     }
 
     @Override
-    public String getShiftDescription(int meta)
+    public String getShiftDescription(ItemStack stack)
     {
         return GCCoreUtil.translate(this.getTranslationKey() + ".description");
     }
 
     @Override
-    public boolean showDescription(int meta)
+    public boolean showDescription(ItemStack stack)
     {
         return true;
     }
@@ -155,7 +155,7 @@ public class BlockEmergencyBox extends BlockAdvancedTile implements IShiftDescri
     }
     
 //    @Override
-//    public boolean isSideSolid(BlockState state, IBlockAccess world, BlockPos pos, Direction direction)
+//    public boolean isSideSolid(BlockState state, IBlockReader world, BlockPos pos, Direction direction)
 //    {
 //        return direction.ordinal() < 2;
 //    }

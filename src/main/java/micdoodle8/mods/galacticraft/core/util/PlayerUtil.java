@@ -1,18 +1,18 @@
 package micdoodle8.mods.galacticraft.core.util;
 
 import com.mojang.authlib.GameProfile;
-
 import micdoodle8.mods.galacticraft.core.GalacticraftCore;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple;
 import micdoodle8.mods.galacticraft.core.network.PacketSimple.EnumSimplePacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.world.dimension.DimensionType;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -56,7 +56,7 @@ public class PlayerUtil
 
                     entityplayermp = (ServerPlayerEntity) iterator.next();
                 }
-                while (!entityplayermp.getName().equalsIgnoreCase(username));
+                while (!entityplayermp.getName().getString().equalsIgnoreCase(username));
 
                 return entityplayermp;
             }
@@ -79,13 +79,13 @@ public class PlayerUtil
             return (ServerPlayerEntity) player;
         }
 
-        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getName(), ignoreCase);
+        return PlayerUtil.getPlayerBaseServerFromPlayerUsername(player.getName().getString(), ignoreCase);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static ClientPlayerEntity getPlayerBaseClientFromPlayer(PlayerEntity player, boolean ignoreCase)
     {
-        ClientPlayerEntity clientPlayer = FMLClientHandler.instance().getClientPlayerEntity();
+        ClientPlayerEntity clientPlayer = Minecraft.getInstance().player;
 
         if (clientPlayer == null && player != null)
         {
@@ -95,17 +95,17 @@ public class PlayerUtil
         return clientPlayer;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static GameProfile getOtherPlayerProfile(String name)
     {
         return knownSkins.get(name);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public static GameProfile makeOtherPlayerProfile(String strName, String strUUID)
     {
         GameProfile profile = null;
-        for (Object e : FMLClientHandler.instance().getWorldClient().getLoadedEntityList())
+        for (Object e : Minecraft.getInstance().world.getAllEntities())
         {
             if (e instanceof AbstractClientPlayerEntity)
             {
@@ -127,10 +127,10 @@ public class PlayerUtil
         return profile;
     }
 
-    @SideOnly(Side.CLIENT)
-    public static GameProfile getSkinForName(String strName, String strUUID, int dimID)
+    @OnlyIn(Dist.CLIENT)
+    public static GameProfile getSkinForName(String strName, String strUUID, DimensionType dimID)
     {
-        GameProfile profile = FMLClientHandler.instance().getClientPlayerEntity().getGameProfile();
+        GameProfile profile = Minecraft.getInstance().player.getGameProfile();
         if (!strName.equals(profile.getName()))
         {
             profile = PlayerUtil.getOtherPlayerProfile(strName);
@@ -171,7 +171,7 @@ public class PlayerUtil
 
     public static boolean isPlayerOnline(ServerPlayerEntity player)
     {
-        return player.mcServer.getPlayerList().getPlayers().contains(player);
+        return player.server.getPlayerList().getPlayers().contains(player);
     }
     
     public static String getName(PlayerEntity player)

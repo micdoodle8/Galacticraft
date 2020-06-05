@@ -7,21 +7,19 @@ import micdoodle8.mods.galacticraft.core.tile.TileEntityEnergyStorageModule;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.text.StringTextComponent;
 import org.lwjgl.opengl.GL11;
 
-@SideOnly(Side.CLIENT)
-public class GuiEnergyStorageModule extends GuiContainerGC
+public class GuiEnergyStorageModule extends GuiContainerGC<ContainerEnergyStorageModule>
 {
     private static final ResourceLocation batteryBoxTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/gui/energy_storage_module.png");
 
-    private TileEntityEnergyStorageModule tileEntity;
+    private TileEntityEnergyStorageModule storageModule;
 
-    public GuiEnergyStorageModule(PlayerInventory par1InventoryPlayer, TileEntityEnergyStorageModule batteryBox)
+    public GuiEnergyStorageModule(PlayerInventory playerInv, TileEntityEnergyStorageModule storageModule)
     {
-        super(new ContainerEnergyStorageModule(par1InventoryPlayer, batteryBox));
-        this.tileEntity = batteryBox;
+        super(new ContainerEnergyStorageModule(playerInv, storageModule), playerInv, new StringTextComponent(storageModule.getName()));
+        this.storageModule = storageModule;
     }
 
     /**
@@ -31,19 +29,19 @@ public class GuiEnergyStorageModule extends GuiContainerGC
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        this.fontRenderer.drawString(this.tileEntity.getName(), this.xSize / 2 - this.fontRenderer.getStringWidth(this.tileEntity.getName()) / 2, 6, 4210752);
-        float energy = this.tileEntity.getEnergyStoredGC();
-        if (energy + 49 > this.tileEntity.getMaxEnergyStoredGC())
+        this.font.drawString(this.storageModule.getName(), this.xSize / 2 - this.font.getStringWidth(this.storageModule.getName()) / 2, 6, 4210752);
+        float energy = this.storageModule.getEnergyStoredGC();
+        if (energy + 49 > this.storageModule.getMaxEnergyStoredGC())
         {
-            energy = this.tileEntity.getMaxEnergyStoredGC();
+            energy = this.storageModule.getMaxEnergyStoredGC();
         }
         String displayStr = EnergyDisplayHelper.getEnergyDisplayS(energy);
-        this.fontRenderer.drawString(displayStr, 122 - this.fontRenderer.getStringWidth(displayStr) / 2, 25, 4210752);
-        displayStr = GCCoreUtil.translate("gui.message.of.name") + " " + EnergyDisplayHelper.getEnergyDisplayS(this.tileEntity.getMaxEnergyStoredGC());
-        this.fontRenderer.drawString(displayStr, 122 - this.fontRenderer.getStringWidth(displayStr) / 2, 34, 4210752);
-        displayStr = GCCoreUtil.translate("gui.max_output.desc") + ": " + EnergyDisplayHelper.getEnergyDisplayS(this.tileEntity.storage.getMaxExtract()) + "/t";
-        this.fontRenderer.drawString(displayStr, 114 - this.fontRenderer.getStringWidth(displayStr) / 2, 64, 4210752);
-        this.fontRenderer.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.font.drawString(displayStr, 122 - this.font.getStringWidth(displayStr) / 2, 25, 4210752);
+        displayStr = GCCoreUtil.translate("gui.message.of.name") + " " + EnergyDisplayHelper.getEnergyDisplayS(this.storageModule.getMaxEnergyStoredGC());
+        this.font.drawString(displayStr, 122 - this.font.getStringWidth(displayStr) / 2, 34, 4210752);
+        displayStr = GCCoreUtil.translate("gui.max_output.desc") + ": " + EnergyDisplayHelper.getEnergyDisplayS(this.storageModule.storage.getMaxExtract()) + "/t";
+        this.font.drawString(displayStr, 114 - this.font.getStringWidth(displayStr) / 2, 64, 4210752);
+        this.font.drawString(GCCoreUtil.translate("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
 
     /**
@@ -53,15 +51,15 @@ public class GuiEnergyStorageModule extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiEnergyStorageModule.batteryBoxTexture);
+        this.minecraft.textureManager.bindTexture(GuiEnergyStorageModule.batteryBoxTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int containerWidth = (this.width - this.xSize) / 2;
         int containerHeight = (this.height - this.ySize) / 2;
         // Background energy bar
-        this.drawTexturedModalRect(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
+        this.blit(containerWidth, containerHeight, 0, 0, this.xSize, this.ySize);
         // Foreground energy bar
-        int scale = (int) ((this.tileEntity.getEnergyStoredGC() + 49) / this.tileEntity.getMaxEnergyStoredGC() * 72);
-        this.drawTexturedModalRect(containerWidth + 87, containerHeight + 52, 176, 0, scale, 3);
+        int scale = (int) ((this.storageModule.getEnergyStoredGC() + 49) / this.storageModule.getMaxEnergyStoredGC() * 72);
+        this.blit(containerWidth + 87, containerHeight + 52, 176, 0, scale, 3);
     }
 }

@@ -7,7 +7,7 @@ import micdoodle8.mods.galacticraft.core.inventory.IInventoryDefaults;
 import micdoodle8.mods.galacticraft.core.inventory.PersistantInventoryCrafting;
 import micdoodle8.mods.galacticraft.core.util.ConfigManagerCore;
 import micdoodle8.mods.galacticraft.core.util.GCCoreUtil;
-import micdoodle8.mods.miccore.Annotations.NetworkedField;
+import micdoodle8.mods.galacticraft.core.Annotations.NetworkedField;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
@@ -254,16 +254,16 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.processTicks = nbt.getInteger("smeltingTicks");
-        ListNBT var2 = nbt.getTagList("Items", 10);
+        this.processTicks = nbt.getInt("smeltingTicks");
+        ListNBT var2 = nbt.getList("Items", 10);
 
         this.inventory = NonNullList.withSize(this.getSizeInventory() - this.compressingCraftMatrix.getSizeInventory(), ItemStack.EMPTY);
 
-        ListNBT nbttaglist = nbt.getTagList("Items", 10);
+        ListNBT nbttaglist = nbt.getList("Items", 10);
 
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
+        for (int i = 0; i < nbttaglist.size(); ++i)
         {
-            CompoundNBT nbttagcompound = nbttaglist.getCompoundTagAt(i);
+            CompoundNBT nbttagcompound = nbttaglist.getCompound(i);
             int j = nbttagcompound.getByte("Slot") & 255;
 
             if (j >= 0 && j < this.getInventory().size())
@@ -283,7 +283,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("smeltingTicks", this.processTicks);
+        nbt.putInt("smeltingTicks", this.processTicks);
         ListNBT var2 = new ListNBT();
         int i;
 
@@ -309,7 +309,7 @@ public class TileEntityIngotCompressor extends TileEntityAdvanced implements IIn
             }
         }
 
-        nbt.setTag("Items", var2);
+        nbt.put("Items", var2);
         return nbt;
     }
 

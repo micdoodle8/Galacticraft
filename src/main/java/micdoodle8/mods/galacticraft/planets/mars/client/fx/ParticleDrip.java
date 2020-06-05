@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class ParticleDrip extends Particle
 {
     private int bobTimer;
@@ -75,7 +75,7 @@ public class ParticleDrip extends Particle
 
             if (state.getBlock() instanceof BlockLiquid)
             {
-                d0 = BlockLiquid.getLiquidHeightPercent(((Integer) state.getValue(BlockLiquid.LEVEL)).intValue());
+                d0 = BlockLiquid.getLiquidHeightPercent(((Integer) state.get(BlockLiquid.LEVEL)).intValue());
             }
 
             double d1 = MathHelper.floor(this.posY) + 1 - d0;

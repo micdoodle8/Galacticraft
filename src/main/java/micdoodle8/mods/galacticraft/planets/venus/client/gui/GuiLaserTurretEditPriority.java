@@ -45,17 +45,17 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     @Override
     public void initGui()
     {
-        this.buttonList.clear();
+        this.buttons.clear();
         super.initGui();
         this.ySize = 95;
         this.xSize = 222;
         int yTop = (this.height - this.ySize) / 2;
         this.priorityClosest = new GuiElementSpinner(0, this, this.width / 2 - 95, yTop + 21, ColorUtil.to32BitColor(255, 220, 220, 220));
-        this.buttonList.add(this.priorityClosest);
+        this.buttons.add(this.priorityClosest);
         this.priorityLowestHealth = new GuiElementSpinner(1, this, this.width / 2 - 95, yTop + 43, ColorUtil.to32BitColor(255, 220, 220, 220));
-        this.buttonList.add(this.priorityLowestHealth);
+        this.buttons.add(this.priorityLowestHealth);
         this.priorityHighestHealth = new GuiElementSpinner(2, this, this.width / 2 - 95, yTop + 65, ColorUtil.to32BitColor(255, 220, 220, 220));
-        this.buttonList.add(this.priorityHighestHealth);
+        this.buttons.add(this.priorityHighestHealth);
     }
 
     @Override
@@ -78,11 +78,11 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
+    public void render(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(GuiLaserTurretEditPriority.backgroundTexture);
+        this.minecraft.getTextureManager().bindTexture(GuiLaserTurretEditPriority.backgroundTexture);
         final int var5 = (this.width - this.xSize) / 2;
         final int var6 = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(var5, var6, 0, 0, this.xSize, this.ySize - 10);
@@ -91,9 +91,9 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_low.name"), var5 + 6, var6 + 8, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_closest.name"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - mc.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_low.name"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - mc.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
-        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_high.name"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - mc.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_closest.name"), this.priorityClosest.x + 35, this.priorityClosest.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_low.name"), this.priorityLowestHealth.x + 35, this.priorityLowestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
+        this.fontRenderer.drawString(GCCoreUtil.translate("gui.message.priority_health_high.name"), this.priorityHighestHealth.x + 35, this.priorityHighestHealth.y + 10 - minecraft.fontRenderer.FONT_HEIGHT / 2, ColorUtil.to32BitColor(255, 75, 75, 75));
     }
 
     @Override
@@ -105,7 +105,7 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
     @Override
     public void onSelectionChanged(GuiElementSpinner spinner, int newVal)
     {
-        for (Button button : this.buttonList)
+        for (Button button : this.buttons)
         {
             if (button instanceof GuiElementSpinner)
             {
@@ -126,9 +126,9 @@ public class GuiLaserTurretEditPriority extends Screen implements GuiElementSpin
         this.laserTurret.priorityClosest = spinner == priorityClosest ? newVal : priorityClosest.value;
         this.laserTurret.priorityLowestHealth = spinner == priorityLowestHealth ? newVal : priorityLowestHealth.value;
         this.laserTurret.priorityHighestHealth = spinner == priorityHighestHealth ? newVal : priorityHighestHealth.value;
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 3, this.laserTurret.getPos(), this.laserTurret.priorityClosest }));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 4, this.laserTurret.getPos(), this.laserTurret.priorityLowestHealth }));
-        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(mc.world), new Object[] { 5, this.laserTurret.getPos(), this.laserTurret.priorityHighestHealth }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 3, this.laserTurret.getPos(), this.laserTurret.priorityClosest }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 4, this.laserTurret.getPos(), this.laserTurret.priorityLowestHealth }));
+        GalacticraftCore.packetPipeline.sendToServer(new PacketSimpleVenus(PacketSimpleVenus.EnumSimplePacketVenus.S_UPDATE_ADVANCED_GUI, GCCoreUtil.getDimensionID(minecraft.world), new Object[] { 5, this.laserTurret.getPos(), this.laserTurret.priorityHighestHealth }));
     }
 
     @Override

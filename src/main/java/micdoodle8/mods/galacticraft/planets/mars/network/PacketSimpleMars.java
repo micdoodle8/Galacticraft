@@ -123,7 +123,7 @@ public class PacketSimpleMars extends PacketBase
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public void handleClientSide(PlayerEntity player)
     {
@@ -148,7 +148,7 @@ public class PacketSimpleMars extends PacketBase
 
                 if (entity != null && entity instanceof EntitySlimeling)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiSlimelingInventory(player, (EntitySlimeling) entity));
+                    Minecraft.getInstance().displayGuiScreen(new GuiSlimelingInventory(player, (EntitySlimeling) entity));
                 }
 
                 player.openContainer.windowId = (Integer) this.data.get(0);
@@ -159,7 +159,7 @@ public class PacketSimpleMars extends PacketBase
 
                 if (entity != null && entity instanceof EntityCargoRocket)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiCargoRocket(player.inventory, (EntityCargoRocket) entity));
+                    Minecraft.getInstance().displayGuiScreen(new GuiCargoRocket(player.inventory, (EntityCargoRocket) entity));
                 }
 
                 player.openContainer.windowId = (Integer) this.data.get(0);
@@ -180,7 +180,7 @@ public class PacketSimpleMars extends PacketBase
 
                 if (tile != null && tile instanceof TileEntityLaunchController)
                 {
-                    FMLClientHandler.instance().getClient().displayGuiScreen(new GuiLaunchControllerAdvanced(player.inventory, (TileEntityLaunchController) tile));
+                    Minecraft.getInstance().displayGuiScreen(new GuiLaunchControllerAdvanced(player.inventory, (TileEntityLaunchController) tile));
                 }
 
                 player.openContainer.windowId = (Integer) this.data.get(0);

@@ -54,7 +54,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.corner = nbt.getInteger("co");
+        this.corner = nbt.getInt("co");
         if (this.corner != 0)
         {
             this.firstTickCheck = true;
@@ -65,7 +65,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("co", this.corner);
+        nbt.putInt("co", this.corner);
         return nbt;
     }
 
@@ -91,7 +91,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                     BlockPos pos = new BlockPos(x + thisX, thisY, z + thisZ);
                     final TileEntity tile = this.world.isBlockLoaded(pos, false) ? this.world.getTileEntity(pos) : null;
 
-                    if (tile instanceof TileEntityPlatform && !tile.isInvalid() && ((TileEntityPlatform)tile).corner == 0)
+                    if (tile instanceof TileEntityPlatform && !tile.isRemoved() && ((TileEntityPlatform)tile).corner == 0)
                     {
                         final TileEntity tileUp = this.world.getTileEntity(pos.up());
                         final TileEntity tileDown = this.world.getTileEntity(pos.down());
@@ -118,7 +118,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void updateClient()
     {
         this.lightOn  = false;
@@ -146,7 +146,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                 this.lightOn = true;
 
                 // If this player is within the box
-                ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
+                ClientPlayerEntity p = Minecraft.getInstance().player;
                 GCPlayerStatsClient stats = GCPlayerStatsClient.get(p);
                 if (list.contains(p) && !stats.getPlatformControlled() && p.getRidingEntity() == null)
                 {
@@ -164,7 +164,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
                             if (te instanceof TileEntityPlatform)
                             {
                                 TileEntityPlatform tep = (TileEntityPlatform) te;
-                                stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.world.provider instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
+                                stats.startPlatformAscent(this, tep, this.pos.getY() - canDescend + (this.world.getDimension() instanceof IZeroGDimension ? 0.97D : (double) BlockPlatform.HEIGHT));
                                 this.startMove(tep);
                                 tep.startMove(this);
                             }
@@ -196,7 +196,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     private void startMove(TileEntityPlatform te)
     {
         this.moving = true;
@@ -451,12 +451,12 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         this.moving = false;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getYOffset(float partialTicks)
     {
         if (this.moving)
         {
-            ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
+            ClientPlayerEntity p = Minecraft.getInstance().player;
             float playerY = (float)(p.lastTickPosY + (p.posY - p.lastTickPosY) * (double)partialTicks);
             return (playerY - this.pos.getY() - BlockPlatform.HEIGHT);
         }
@@ -465,7 +465,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public AxisAlignedBB getRenderBoundingBox()
     {
         if (this.renderAABB == null)
@@ -475,7 +475,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return this.renderAABB;
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public int getBlendedLight()
     {
         int j = 0, k = 0;
@@ -494,7 +494,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return j / 4 + k * 16384; 
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getMeanLightX(float yOffset)
     {
         float a = (float)(this.lightA % 65536);
@@ -503,7 +503,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return (1 - f) * a + f * b;  
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getMeanLightZ(float yOffset)
     {
         float a = (float)(this.lightA / 65536);
@@ -512,10 +512,10 @@ public class TileEntityPlatform extends TileEntity implements ITickable
         return (1 - f) * a + f * b;  
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public boolean motionObstructed(double y, double velocityY)
     {
-        ClientPlayerEntity p = FMLClientHandler.instance().getClientPlayerEntity();
+        ClientPlayerEntity p = Minecraft.getInstance().player;
         int x = this.pos.getX() + 1;
         int z = this.pos.getZ() + 1;
         double size = 9/16D;
@@ -529,7 +529,7 @@ public class TileEntityPlatform extends TileEntity implements ITickable
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public double getMaxRenderDistanceSquared()
     {
         return Constants.RENDERDISTANCE_MEDIUM;

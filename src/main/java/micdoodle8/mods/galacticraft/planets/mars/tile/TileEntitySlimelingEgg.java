@@ -58,7 +58,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
 
                 if (!this.world.isRemote)
                 {
-                    this.world.spawnEntity(slimeling);
+                    this.world.addEntity(slimeling);
                 }
 
                 slimeling.setTamed(true);
@@ -75,10 +75,10 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     public void readFromNBT(CompoundNBT nbt)
     {
         super.readFromNBT(nbt);
-        this.timeToHatch = nbt.getInteger("TimeToHatch");
+        this.timeToHatch = nbt.getInt("TimeToHatch");
 
         String uuid;
-        if (nbt.hasKey("OwnerUUID", 8))
+        if (nbt.contains("OwnerUUID", 8))
         {
             uuid = nbt.getString("OwnerUUID");
         }
@@ -99,7 +99,7 @@ public class TileEntitySlimelingEgg extends TileEntity implements ITickable
     public CompoundNBT writeToNBT(CompoundNBT nbt)
     {
         super.writeToNBT(nbt);
-        nbt.setInteger("TimeToHatch", this.timeToHatch);
+        nbt.putInt("TimeToHatch", this.timeToHatch);
         nbt.setString("OwnerUUID", this.lastTouchedPlayerUUID);
         nbt.setString("OwnerUsername", this.lastTouchedPlayerName);
         return nbt;

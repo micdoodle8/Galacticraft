@@ -48,7 +48,7 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
         super(builder);
     }
 
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public ItemGroup getCreativeTabToDisplayOn()
 //    {
@@ -105,6 +105,6 @@ public class BlockCrashedProbe extends BlockTileGC implements ISortableBlock, IT
         final double d2 = syncRandom.nextFloat() * f + (1.0F - f) * 0.5D;
         final ItemEntity entityitem = new ItemEntity(worldIn, pos.getX() + d0, pos.getY() + d1, pos.getZ() + d2, new ItemStack(VenusItems.basicItem, 1, 2));
         entityitem.setDefaultPickupDelay();
-        worldIn.spawnEntity(entityitem);
+        worldIn.addEntity(entityitem);
     }
 }

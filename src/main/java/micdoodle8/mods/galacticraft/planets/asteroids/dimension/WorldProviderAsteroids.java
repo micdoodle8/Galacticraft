@@ -1,7 +1,7 @@
 package micdoodle8.mods.galacticraft.planets.asteroids.dimension;
 
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
-import micdoodle8.mods.galacticraft.api.prefab.world.gen.WorldProviderSpace;
+import micdoodle8.mods.galacticraft.api.prefab.world.gen.DimensionSpace;
 import micdoodle8.mods.galacticraft.api.vector.BlockVec3;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.api.world.ISolarLevel;
@@ -27,7 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
 
-public class WorldProviderAsteroids extends WorldProviderSpace implements ISolarLevel
+public class WorldProviderAsteroids extends DimensionSpace implements ISolarLevel
 {
     //Used to list asteroid centres to external code that needs to know them
     private HashSet<AsteroidData> asteroids = new HashSet<>();
@@ -90,7 +90,7 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public float getStarBrightness(float par1)
     {
         return 1.0F;
@@ -214,12 +214,12 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
 
     private void readFromNBT(CompoundNBT nbt)
     {
-        ListNBT coordList = nbt.getTagList("coords", 10);
-        if (coordList.tagCount() > 0)
+        ListNBT coordList = nbt.getList("coords", 10);
+        if (coordList.size() > 0)
         {
-            for (int j = 0; j < coordList.tagCount(); j++)
+            for (int j = 0; j < coordList.size(); j++)
             {
-                CompoundNBT tag1 = coordList.getCompoundTagAt(j);
+                CompoundNBT tag1 = coordList.getCompound(j);
 
                 if (tag1 != null)
                 {
@@ -238,17 +238,17 @@ public class WorldProviderAsteroids extends WorldProviderSpace implements ISolar
             coords.writeToNBT(tag);
             coordList.appendTag(tag);
         }
-        nbt.setTag("coords", coordList);
+        nbt.put("coords", coordList);
         this.datafile.markDirty();
     }
 
     private void addToNBT(CompoundNBT nbt, AsteroidData coords)
     {
-        ListNBT coordList = nbt.getTagList("coords", 10);
+        ListNBT coordList = nbt.getList("coords", 10);
         CompoundNBT tag = new CompoundNBT();
         coords.writeToNBT(tag);
         coordList.appendTag(tag);
-        nbt.setTag("coords", coordList);
+        nbt.put("coords", coordList);
         this.datafile.markDirty();
     }
 

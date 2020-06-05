@@ -44,7 +44,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
 
         if (this.getCanSwim() && this.entity.isInWater())
         {
-            i = (int)this.entity.getEntityBoundingBox().minY;
+            i = (int)this.entity.getBoundingBox().minY;
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(MathHelper.floor(this.entity.posX), i, MathHelper.floor(this.entity.posZ));
 
             for (Block block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock(); block == Blocks.FLOWING_WATER || block == Blocks.WATER; block = this.blockaccess.getBlockState(blockpos$mutableblockpos).getBlock())
@@ -55,7 +55,7 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
         }
         else if (this.entity.onGround)
         {
-            i = MathHelper.floor(this.entity.getEntityBoundingBox().minY + 0.5D);
+            i = MathHelper.floor(this.entity.getBoundingBox().minY + 0.5D);
         }
         else
         {
@@ -75,10 +75,10 @@ public class WalkNodeProcessorCeiling extends NodeProcessor
         if (this.entity.getPathPriority(pathnodetype1) < 0.0F)
         {
             Set<BlockPos> set = Sets.<BlockPos>newHashSet();
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double)i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().minX, (double)i, this.entity.getEntityBoundingBox().maxZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double)i, this.entity.getEntityBoundingBox().minZ));
-            set.add(new BlockPos(this.entity.getEntityBoundingBox().maxX, (double)i, this.entity.getEntityBoundingBox().maxZ));
+            set.add(new BlockPos(this.entity.getBoundingBox().minX, (double)i, this.entity.getBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getBoundingBox().minX, (double)i, this.entity.getBoundingBox().maxZ));
+            set.add(new BlockPos(this.entity.getBoundingBox().maxX, (double)i, this.entity.getBoundingBox().minZ));
+            set.add(new BlockPos(this.entity.getBoundingBox().maxX, (double)i, this.entity.getBoundingBox().maxZ));
 
             for (BlockPos blockpos1 : set)
             {

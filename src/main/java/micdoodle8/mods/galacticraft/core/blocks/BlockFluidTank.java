@@ -20,7 +20,7 @@
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fluids.FluidActionResult;
 //import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -62,7 +62,7 @@
 //        return GalacticraftCore.galacticraftBlocksTab;
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public BlockRenderLayer getBlockLayer()
 //    {
@@ -82,7 +82,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -94,13 +94,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -112,7 +112,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState stateAbove = worldIn.getBlockState(pos.up());
 //        BlockState stateBelow = worldIn.getBlockState(pos.down());
@@ -132,7 +132,7 @@
 //    }
 //
 ////    @Override
-////    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+////    public void setBlockBoundsBasedOnState(IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        this.setBlockBounds((float) BOUNDS.minX, (float) BOUNDS.minY, (float) BOUNDS.minZ, (float) BOUNDS.maxX, (float) BOUNDS.maxY, (float) BOUNDS.maxZ);
 ////    }
@@ -145,7 +145,7 @@
 ////    }
 ////
 ////    @Override
-////    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+////    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        this.setBlockBoundsBasedOnState(worldIn, pos);
 ////        return super.getCollisionBoundingBox(worldIn, pos, state);

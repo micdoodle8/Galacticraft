@@ -18,7 +18,7 @@ public class ItemCanisterMethane extends ItemCanisterGeneric implements ISortabl
 {
 //    protected IIcon[] icons = new IIcon[7];
 
-    public ItemCanisterMethane(String assetName)
+    public ItemCanisterMethane(Item.Properties builder)
     {
         super(assetName);
         this.setAllowedFluid("methane");
@@ -26,7 +26,7 @@ public class ItemCanisterMethane extends ItemCanisterGeneric implements ISortabl
     }
 
     /*@Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void registerIcons(IIconRegister iconRegister)
     {
         for (int i = 0; i < this.icons.length; i++)
@@ -65,7 +65,7 @@ public class ItemCanisterMethane extends ItemCanisterGeneric implements ISortabl
     }*/
 
     @Override
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack par1ItemStack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         if (par1ItemStack.getMaxDamage() - par1ItemStack.getItemDamage() > 0)

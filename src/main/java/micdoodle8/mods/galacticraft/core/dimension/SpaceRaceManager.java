@@ -2,7 +2,6 @@ package micdoodle8.mods.galacticraft.core.dimension;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
 import micdoodle8.mods.galacticraft.api.galaxies.CelestialBody;
 import micdoodle8.mods.galacticraft.api.galaxies.GalaxyRegistry;
 import micdoodle8.mods.galacticraft.api.recipe.SchematicRegistry;
@@ -19,10 +18,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.Style;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.ServerWorld;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -55,7 +54,7 @@ public class SpaceRaceManager
             {
                 if (race.getPlayerNames().contains(PlayerUtil.getName(player)))
                 {
-                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.world.provider.getDimension());
+                    CelestialBody body = GalaxyRegistry.getCelestialBodyFromDimensionID(player.world.getDimension().getType());
 
                     if (body != null)
                     {
@@ -78,11 +77,11 @@ public class SpaceRaceManager
 
     public static void loadSpaceRaces(CompoundNBT nbt)
     {
-        ListNBT tagList = nbt.getTagList("SpaceRaceList", 10);
+        ListNBT tagList = nbt.getList("SpaceRaceList", 10);
 
-        for (int i = 0; i < tagList.tagCount(); i++)
+        for (int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT nbt2 = tagList.getCompoundTagAt(i);
+            CompoundNBT nbt2 = tagList.getCompound(i);
             SpaceRace race = new SpaceRace();
             race.loadFromNBT(nbt2);
             SpaceRaceManager.spaceRaces.add(race);
@@ -97,10 +96,10 @@ public class SpaceRaceManager
         {
             CompoundNBT nbt2 = new CompoundNBT();
             race.saveToNBT(nbt2);
-            tagList.appendTag(nbt2);
+            tagList.add(nbt2);
         }
 
-        nbt.setTag("SpaceRaceList", tagList);
+        nbt.put("SpaceRaceList", tagList);
         return nbt;
     }
 
@@ -148,7 +147,7 @@ public class SpaceRaceManager
             }
             else
             {
-                for (ServerWorld server : theServer.worlds)
+                for (ServerWorld server : theServer.getWorlds())
                 {
                     GalacticraftCore.packetPipeline.sendToDimension(new PacketSimple(EnumSimplePacket.C_UPDATE_SPACE_RACE_DATA, GCCoreUtil.getDimensionID(server), objList), GCCoreUtil.getDimensionID(server));
                 }
@@ -189,10 +188,10 @@ public class SpaceRaceManager
     {
         SpaceRace race = SpaceRaceManager.getSpaceRaceFromPlayer(PlayerUtil.getName(player));
         if (race == null) return;
-        MinecraftServer server = player.mcServer;
+        MinecraftServer server = player.server;
         for (String member : race.getPlayerNames())
         {
-            if (player.getName().equalsIgnoreCase(member)) continue;
+            if (player.getName().getString().equalsIgnoreCase(member)) continue;
             
             ServerPlayerEntity memberObj = PlayerUtil.getPlayerForUsernameVanilla(server, member);
             if (memberObj != null)

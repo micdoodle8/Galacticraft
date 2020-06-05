@@ -6,7 +6,7 @@ import micdoodle8.mods.galacticraft.core.util.ClientUtil;
 import micdoodle8.mods.galacticraft.planets.GalacticraftPlanets;
 import micdoodle8.mods.galacticraft.planets.asteroids.entities.EntityEntryPod;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.culling.ICamera;
@@ -66,8 +66,8 @@ public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
             GlStateManager.shadeModel(GL11.GL_FLAT);
         }
 
-        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
-        GlStateManager.scale(0.65F, 0.6F, 0.65F);
+        GlStateManager.scalef(-1.0F, -1.0F, 1.0F);
+        GlStateManager.scalef(0.65F, 0.6F, 0.65F);
         ClientUtil.drawBakedModel(this.modelEntryPod);
         GlStateManager.popMatrix();
         RenderHelper.enableStandardItemLighting();
@@ -82,7 +82,7 @@ public class RenderEntryPod extends EntityRenderer<EntityEntryPod>
     @Override
     public boolean shouldRender(EntityEntryPod lander, ICamera camera, double camX, double camY, double camZ)
     {
-        AxisAlignedBB axisalignedbb = lander.getEntityBoundingBox().grow(1D, 2D, 1D);
+        AxisAlignedBB axisalignedbb = lander.getBoundingBox().grow(1D, 2D, 1D);
         return lander.isInRangeToRender3d(camX, camY, camZ) && camera.isBoundingBoxInFrustum(axisalignedbb);
     }
 }

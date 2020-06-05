@@ -3,10 +3,12 @@ package micdoodle8.mods.galacticraft.core.tile;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class FluidTankGC extends FluidTank
 {
+    protected TileEntity tile;
+
     public FluidTankGC(int capacity, TileEntity tile)
     {
         super(capacity);
@@ -15,8 +17,8 @@ public class FluidTankGC extends FluidTank
 
     public FluidTankGC(FluidStack stack, int capacity, TileEntity tile)
     {
-        super(stack, capacity);
-        this.tile = tile;
+        this(capacity, tile);
+        setFluid(stack);
     }
 
     public BlockPos getTilePosition()

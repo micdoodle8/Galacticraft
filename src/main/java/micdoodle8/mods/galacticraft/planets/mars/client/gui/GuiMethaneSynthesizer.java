@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class GuiMethaneSynthesizer extends GuiContainerGC
 {
     private static final ResourceLocation refineryTexture = new ResourceLocation(GalacticraftPlanets.ASSET_PREFIX, "textures/gui/methane_synthesizer.png");
@@ -43,7 +43,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
     public GuiMethaneSynthesizer(PlayerInventory par1InventoryPlayer, TileEntityMethaneSynthesizer tileEntity)
     {
-        super(new ContainerMethaneSynthesizer(par1InventoryPlayer, tileEntity, FMLClientHandler.instance().getClient().player));
+        super(new ContainerMethaneSynthesizer(par1InventoryPlayer, tileEntity, Minecraft.getInstance().player));
         this.tileEntity = tileEntity;
         this.ySize = 168;
     }
@@ -112,7 +112,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.buttonList.add(this.buttonDisable = new Button(0, this.width / 2 - 28, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
+        this.buttons.add(this.buttonDisable = new Button(0, this.width / 2 - 28, this.height / 2 - 56, 76, 20, GCCoreUtil.translate("gui.button.liquefy.name")));
     }
 
     @Override
@@ -174,14 +174,14 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
     @Override
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
     {
-        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
+        this.minecraft.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
         int edgeLeft = (this.width - this.xSize) / 2;
         int edgeTop = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(edgeLeft, edgeTop, 0, 0, this.xSize, this.ySize);
 
-        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.gasTextures);
+        this.minecraft.textureManager.bindTexture(GuiMethaneSynthesizer.gasTextures);
         int displayInt = this.tileEntity.getScaledGasLevel(38);
         this.drawTexturedModalRect(edgeLeft + 7, edgeTop + 17 + 49 - displayInt, 1 + 17, 38 - displayInt, 16, displayInt);
         displayInt = this.tileEntity.getScaledGasLevel2(20);
@@ -191,7 +191,7 @@ public class GuiMethaneSynthesizer extends GuiContainerGC
 
         this.addToolTips();
 
-        this.mc.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
+        this.minecraft.textureManager.bindTexture(GuiMethaneSynthesizer.refineryTexture);
 
         if (this.tileEntity.getEnergyStoredGC() > 0)
         {

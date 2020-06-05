@@ -44,6 +44,7 @@ CHANGELOG
 /src/minecraft/mods/fluidmech/
 /src/minecraft/mods/buildcraft/
 /src/minecraft/micdoodle8/mods/galacticraft/mars/
+/src/main/resources/META-INF/accesstransformer.cfg
 
 *.bat
 *.sh
@@ -227,3 +228,23 @@ dependencies/main/java/codechicken/core/CCUpdateChecker.java
 #gradle
 gradle/wrapper/
 gradlew
+build
+.gradle
+
+eclipse
+run
+
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+out
+*.ipr
+*.iws
+*.iml
+.idea
+
+forge*changelog.txt

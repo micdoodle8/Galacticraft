@@ -3,6 +3,7 @@ package micdoodle8.mods.galacticraft.core.client;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import com.mojang.blaze3d.platform.GLX;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
 import micdoodle8.mods.galacticraft.core.Constants;
 import micdoodle8.mods.galacticraft.core.entities.IBubbleProviderColored;
@@ -22,7 +23,7 @@ import java.util.List;
 public class BubbleRenderer
 {
     private static IBakedModel sphere;
-    private static List<IBubbleProviderColored> bubbleProviders = Lists.newArrayList();
+    private static final List<IBubbleProviderColored> bubbleProviders = Lists.newArrayList();
 
     public static void clearBubbles()
     {
@@ -77,9 +78,9 @@ public class BubbleRenderer
         GlStateManager.loadIdentity();
         GlStateManager.matrixMode(GL11.GL_MODELVIEW);
         GlStateManager.depthMask(false);
-        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
-        float lightMapSaveY = OpenGlHelper.lastBrightnessY;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240F, 240F);
+//        float lightMapSaveX = OpenGlHelper.lastBrightnessX;
+//        float lightMapSaveY = OpenGlHelper.lastBrightnessY; TODO Does this need saved in 1.14.4+ ?
+        GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, 240.0F, 240.0F);
 
         for (IBubbleProviderColored provider : bubbleProviders)
         {
@@ -105,7 +106,7 @@ public class BubbleRenderer
             GL11.glPopMatrix();
         }
 
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
+//        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lightMapSaveX, lightMapSaveY);
         GlStateManager.popMatrix();
     }
 }

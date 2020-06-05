@@ -57,42 +57,42 @@ public class SpaceRace
         {
             GCLog.info("Loading spacerace data for team " + this.teamName);
         }
-        this.spaceRaceID = nbt.getInteger("SpaceRaceID");
+        this.spaceRaceID = nbt.getInt("SpaceRaceID");
         this.ticksSpent = (int) nbt.getLong("TicksSpent");  //Deal with legacy error
         this.flagData = FlagData.readFlagData(nbt);
         this.teamColor = new Vector3(nbt.getDouble("teamColorR"), nbt.getDouble("teamColorG"), nbt.getDouble("teamColorB"));
 
-        ListNBT tagList = nbt.getTagList("PlayerList", 10);
-        for (int i = 0; i < tagList.tagCount(); i++)
+        ListNBT tagList = nbt.getList("PlayerList", 10);
+        for (int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT tagAt = tagList.getCompoundTagAt(i);
+            CompoundNBT tagAt = tagList.getCompound(i);
             this.playerNames.add(tagAt.getString("PlayerName"));
         }
 
-        tagList = nbt.getTagList("CelestialBodyList", 10);
-        for (int i = 0; i < tagList.tagCount(); i++)
+        tagList = nbt.getList("CelestialBodyList", 10);
+        for (int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT tagAt = tagList.getCompoundTagAt(i);
+            CompoundNBT tagAt = tagList.getCompound(i);
 
             CelestialBody body = GalaxyRegistry.getCelestialBodyFromUnlocalizedName(tagAt.getString("CelestialBodyName"));
 
             if (body != null)
             {
-                this.celestialBodyStatusList.put(body, tagAt.getInteger("TimeTaken"));
+                this.celestialBodyStatusList.put(body, tagAt.getInt("TimeTaken"));
             }
         }
 
-        tagList = nbt.getTagList("SchList", 10);
-        for (int i = 0; i < tagList.tagCount(); i++)
+        tagList = nbt.getList("SchList", 10);
+        for (int i = 0; i < tagList.size(); i++)
         {
-            CompoundNBT tagAt = tagList.getCompoundTagAt(i);
+            CompoundNBT tagAt = tagList.getCompound(i);
             String name = tagAt.getString("Mem");
-            if (name != null && this.playerNames.contains(name))
+            if (this.playerNames.contains(name))
             {
-                final ListNBT itemList = tagAt.getTagList("Sch", 10);
-                for (int j = 0; j < itemList.tagCount(); ++j)
+                final ListNBT itemList = tagAt.getList("Sch", 10);
+                for (int j = 0; j < itemList.size(); ++j)
                 {
-                    addNewSchematic(name, new ItemStack(itemList.getCompoundTagAt(j)));
+                    addNewSchematic(name, ItemStack.read(itemList.getCompound(j)));
                 }
             }
         }
@@ -109,33 +109,33 @@ public class SpaceRace
         {
             GCLog.info("Saving spacerace data for team " + this.teamName);
         }
-        nbt.setString("TeamName", this.teamName);
-        nbt.setInteger("SpaceRaceID", this.spaceRaceID);
-        nbt.setLong("TicksSpent", this.ticksSpent);
+        nbt.putString("TeamName", this.teamName);
+        nbt.putInt("SpaceRaceID", this.spaceRaceID);
+        nbt.putLong("TicksSpent", this.ticksSpent);
         this.flagData.saveFlagData(nbt);
-        nbt.setDouble("teamColorR", this.teamColor.x);
-        nbt.setDouble("teamColorG", this.teamColor.y);
-        nbt.setDouble("teamColorB", this.teamColor.z);
+        nbt.putDouble("teamColorR", this.teamColor.x);
+        nbt.putDouble("teamColorG", this.teamColor.y);
+        nbt.putDouble("teamColorB", this.teamColor.z);
 
         ListNBT tagList = new ListNBT();
         for (String player : this.playerNames)
         {
             CompoundNBT tagComp = new CompoundNBT();
-            tagComp.setString("PlayerName", player);
-            tagList.appendTag(tagComp);
+            tagComp.putString("PlayerName", player);
+            tagList.add(tagComp);
         }
 
-        nbt.setTag("PlayerList", tagList);
+        nbt.put("PlayerList", tagList);
 
         tagList = new ListNBT();
         for (Entry<CelestialBody, Integer> celestialBody : this.celestialBodyStatusList.entrySet())
         {
             CompoundNBT tagComp = new CompoundNBT();
-            tagComp.setString("CelestialBodyName", celestialBody.getKey().getUnlocalizedName());
-            tagComp.setInteger("TimeTaken", celestialBody.getValue());
-            tagList.appendTag(tagComp);
+            tagComp.putString("CelestialBodyName", celestialBody.getKey().getUnlocalizedName());
+            tagComp.putInt("TimeTaken", celestialBody.getValue());
+            tagList.add(tagComp);
         }
-        nbt.setTag("CelestialBodyList", tagList);
+        nbt.put("CelestialBodyList", tagList);
 
         tagList = new ListNBT();
         for (Entry<String, List<ItemStack>> schematic : this.schematicsToUnlock.entrySet())
@@ -143,19 +143,19 @@ public class SpaceRace
             if (this.playerNames.contains(schematic.getKey()))
             {
                 CompoundNBT tagComp = new CompoundNBT();
-                tagComp.setString("Mem", schematic.getKey());
+                tagComp.putString("Mem", schematic.getKey());
                 final ListNBT itemList = new ListNBT();
                 for (ItemStack stack : schematic.getValue())
                 {
                     final CompoundNBT itemTag = new CompoundNBT();
-                    stack.writeToNBT(itemTag);
-                    itemList.appendTag(itemTag);
+                    stack.write(itemTag);
+                    itemList.add(itemTag);
                 }
-                tagComp.setTag("Sch", itemList);
-                tagList.appendTag(tagComp);
+                tagComp.put("Sch", itemList);
+                tagList.add(tagComp);
             }
         }
-        nbt.setTag("SchList", tagList);
+        nbt.put("SchList", tagList);
 
         if (ConfigManagerCore.enableDebug)
         {

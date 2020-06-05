@@ -35,7 +35,7 @@ public class SchematicCargoRocket implements ISchematicPage
         return new ItemStack(MarsItems.schematic, 1, 1);
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

@@ -59,7 +59,7 @@ public class EventHandlerMars
     @SubscribeEvent
     public void onLivingAttacked(LivingAttackEvent event)
     {
-        if (!event.getEntity().isEntityInvulnerable(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(Effects.FIRE_RESISTANCE)))
+        if (!event.getEntity().isInvulnerableTo(event.getSource()) && !event.getEntity().world.isRemote && event.getEntityLiving().getHealth() <= 0.0F && !(event.getSource().isFireDamage() && event.getEntityLiving().isPotionActive(Effects.FIRE_RESISTANCE)))
         {
             Entity entity = event.getSource().getTrueSource();
 
@@ -84,7 +84,7 @@ public class EventHandlerMars
         BlockState state = player.getEntityWorld().getBlockState(c);
         Block blockID = state.getBlock();
 
-        if (blockID == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
+        if (blockID == MarsBlocks.machine && state.get(BlockMachineMars.TYPE) == EnumMachineType.CRYOGENIC_CHAMBER)
         {
             if (!event.immediately && event.updateWorld && event.setSpawn)
             {
@@ -108,7 +108,7 @@ public class EventHandlerMars
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void onPlayerRotate(RenderPlayerGC.RotatePlayerEvent event)
     {
@@ -116,7 +116,7 @@ public class EventHandlerMars
         if (blockPos != null)
         {
             BlockState state = event.getEntityPlayer().world.getBlockState(blockPos);
-            if (state.getBlock() == GCBlocks.fakeBlock && state.getValue(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
+            if (state.getBlock() == GCBlocks.fakeBlock && state.get(BlockMulti.MULTI_TYPE) == BlockMulti.EnumBlockMultiType.CRYO_CHAMBER)
             {
                 TileEntity tile = event.getEntityPlayer().world.getTileEntity(blockPos);
                 if (tile instanceof TileEntityMulti)
@@ -125,7 +125,7 @@ public class EventHandlerMars
                 }
             }
 
-            if (state.getBlock() == MarsBlocks.machine && state.getValue(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
+            if (state.getBlock() == MarsBlocks.machine && state.get(BlockMachineMars.TYPE) == BlockMachineMars.EnumMachineType.CRYOGENIC_CHAMBER)
             {
                 event.shouldRotate = true;
                 event.vanillaOverride = true;
@@ -143,7 +143,7 @@ public class EventHandlerMars
             this.eggGenerator = new WorldGenEggs(MarsBlocks.rock);
         }
 
-        if (event.world.provider instanceof WorldProviderMars)
+        if (event.world.getDimension() instanceof WorldProviderMars)
         {
             int eggsPerChunk = 2;
             BlockPos blockpos;
@@ -156,7 +156,7 @@ public class EventHandlerMars
         }
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @SubscribeEvent
     public void orientCamera(OrientCameraEvent event)
     {
@@ -196,7 +196,7 @@ public class EventHandlerMars
 
                 GL11.glRotatef(-180, 0.0F, 1.0F, 0.0F);
 
-                GL11.glRotatef(FMLClientHandler.instance().getClientPlayerEntity().sleepTimer - 50, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(Minecraft.getInstance().player.sleepTimer - 50, 0.0F, 1.0F, 0.0F);
                 GL11.glTranslatef(0.0F, 0.3F, 0.0F);
             }
         }

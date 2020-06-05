@@ -14,15 +14,13 @@ import micdoodle8.mods.galacticraft.core.util.WorldUtil;
 import micdoodle8.mods.galacticraft.core.wrappers.PartialCanister;
 import micdoodle8.mods.galacticraft.core.wrappers.PlayerGearData;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.ServerPlayNetHandler;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.world.dimension.DimensionType;
 
 public class CommonProxyCore
 {
@@ -50,11 +48,11 @@ public class CommonProxyCore
         return null;
     }
 
-    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
-    {
-    }
+//    public void spawnParticle(String particleID, Vector3 position, Vector3 motion, Object[] otherInfo)
+//    {
+//    }
 
-    public World getWorldForID(int dimensionID)
+    public World getWorldForID(DimensionType dimensionID)
     {
         return WorldUtil.getWorldForDimensionServer(dimensionID);
     }

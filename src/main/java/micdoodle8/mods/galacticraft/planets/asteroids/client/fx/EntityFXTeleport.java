@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.ref.WeakReference;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class EntityFXTeleport extends Particle
 {
     private float portalParticleScale;
@@ -79,7 +79,7 @@ public class EntityFXTeleport extends Particle
 //    }
 
     @Override
-    public void onUpdate()
+    public void tick()
     {
         TileEntityShortRangeTelepad telepad1 = this.telepad.get();
 

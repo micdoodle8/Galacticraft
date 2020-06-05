@@ -3,18 +3,21 @@ package micdoodle8.mods.galacticraft.core.entities;
 import io.netty.buffer.ByteBuf;
 import micdoodle8.mods.galacticraft.api.entity.IIgnoreShift;
 import micdoodle8.mods.galacticraft.api.vector.Vector3;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
+import net.minecraft.network.IPacket;
+import net.minecraft.network.play.server.SSpawnObjectPacket;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.util.*;
 
@@ -28,10 +31,30 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     private ArrayList prevData;
     private boolean networkDataChanged;
 
-    public EntityCelestialFake(World var1)
+    public EntityCelestialFake(EntityType<EntityCelestialFake> type, World world)
     {
-        super(var1);
-        this.setSize(3.0F, 1.0F);
+        super(type, world);
+    }
+
+    public EntityCelestialFake(World var1, double var2, double var4, double var6)
+    {
+        this(GCEntities.CELESTIAL_FAKE.get(), var1);
+        this.setPosition(var2, var4, var6);
+    }
+
+    public EntityCelestialFake(ServerPlayerEntity player)
+    {
+        this(player.world, player.posX, player.posY, player.posZ);
+
+        this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
+
+        player.startRiding(this, true);
+    }
+
+    @Override
+    public IPacket<?> createSpawnPacket()
+    {
+        return new SSpawnObjectPacket(this);
     }
 
     @Override
@@ -46,36 +69,21 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
         return this.shouldSendAdvancedMotionPacket();
     }
 
-    public EntityCelestialFake(World var1, double var2, double var4, double var6)
-    {
-        this(var1);
-        this.setPosition(var2, var4, var6);
-    }
-
-    public EntityCelestialFake(ServerPlayerEntity player)
-    {
-        this(player.world, player.posX, player.posY, player.posZ);
-
-        this.setPositionAndRotation(player.posX, player.posY, player.posZ, 0, 0);
-
-        player.startRiding(this, true);
-    }
-
     @Override
-    public void onUpdate()
+    public void tick()
     {
         if (this.getPassengers().isEmpty())
         {
-            this.setDead();
+            this.remove();
             return;
         }
-        super.onUpdate();
+        super.tick();
 
         if (this.ticks < 40 && this.posY > 150)
         {
             if (this.getPassengers().isEmpty())
             {
-                final PlayerEntity player = this.world.getClosestPlayerToEntity(this, 5);
+                final PlayerEntity player = this.world.getClosestPlayer(this, 5);
 
                 if (player != null && player.getRidingEntity() == null)
                 {
@@ -84,7 +92,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
             }
         }
 
-        AxisAlignedBB box = this.getEntityBoundingBox().grow(0.2D, 0.4D, 0.2D);
+        AxisAlignedBB box = this.getBoundingBox().grow(0.2D, 0.4D, 0.2D);
 
         final List<Entity> var15 = this.world.getEntitiesWithinAABBExcludingEntity(this, box);
 
@@ -132,16 +140,16 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    protected void readEntityFromNBT(CompoundNBT nbt)
+    protected void readAdditional(CompoundNBT nbt)
     {
-        if (nbt.hasKey("RiderUUID_LSB"))
+        if (nbt.contains("RiderUUID_LSB"))
         {
             this.persistantRiderUUID = new UUID(nbt.getLong("RiderUUID_LSB"), nbt.getLong("RiderUUID_MSB"));
         }
     }
 
     @Override
-    protected void writeEntityToNBT(CompoundNBT nbt)
+    public void writeAdditional(CompoundNBT nbt)
     {
         final ListNBT nbttaglist = new ListNBT();
 
@@ -149,8 +157,8 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         if (id != null)
         {
-            nbt.setLong("RiderUUID_LSB", id.getLeastSignificantBits());
-            nbt.setLong("RiderUUID_MSB", id.getMostSignificantBits());
+            nbt.putLong("RiderUUID_LSB", id.getLeastSignificantBits());
+            nbt.putLong("RiderUUID_MSB", id.getMostSignificantBits());
         }
     }
 
@@ -165,7 +173,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     {
         if (this.world.isRemote)
         {
-            this.motionY = this.motionX = this.motionZ = 0.0F;
+            this.setMotion(0.0, 0.0, 0.0);
 
             this.lastShouldMove = false;
         }
@@ -234,7 +242,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
                 {
                     if (shouldBeMountedId > -1)
                     {
-                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        Entity e = Minecraft.getInstance().world.getEntityByID(shouldBeMountedId);
                         if (e != null)
                         {
                             e.startRiding(this, true);
@@ -249,7 +257,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
                     }
                     else
                     {
-                        Entity e = FMLClientHandler.instance().getWorldClient().getEntityByID(shouldBeMountedId);
+                        Entity e = Minecraft.getInstance().world.getEntityByID(shouldBeMountedId);
                         if (e != null)
                         {
                             e.startRiding(this, true);
@@ -304,7 +312,7 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
 
         if (!this.getPassengers().isEmpty())
         {
-            id = this.getPassengers().get(0).getPersistentID();
+            id = this.getPassengers().get(0).getUniqueID();
 
             this.persistantRiderUUID = id;
         }
@@ -329,34 +337,14 @@ public class EntityCelestialFake extends EntityAdvancedMotion implements IIgnore
     }
 
     @Override
-    public String getName()
-    {
-        return "";
-    }
-
-    @Override
     public boolean hasCustomName()
     {
         return false;
     }
 
     @Override
-    public boolean shouldSpawnParticles()
+    public void spawnParticles()
     {
-        return false;
-    }
-
-    @Override
-    public Map<Vector3, Vector3> getParticleMap()
-    {
-        return null;
-    }
-
-    @Override
-    public Particle getParticle(Random rand, double x, double y, double z,
-                                double motX, double motY, double motZ)
-    {
-        return null;
     }
 
     @Override

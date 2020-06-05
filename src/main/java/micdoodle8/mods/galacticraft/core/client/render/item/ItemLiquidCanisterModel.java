@@ -2,16 +2,24 @@ package micdoodle8.mods.galacticraft.core.client.render.item;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.model.BakedQuad;
+import net.minecraft.client.renderer.model.IBakedModel;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.client.extensions.IForgeBakedModel;
+import net.minecraftforge.client.model.data.IModelData;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Random;
 
 public class ItemLiquidCanisterModel implements IBakedModel
 {
@@ -23,7 +31,7 @@ public class ItemLiquidCanisterModel implements IBakedModel
     }
 
     @Override
-    public List<BakedQuad> getQuads(BlockState state, Direction side, long rand)
+    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, Random rand)
     {
         return iBakedModel.getQuads(state, side, rand);
     }
@@ -38,6 +46,12 @@ public class ItemLiquidCanisterModel implements IBakedModel
     public boolean isAmbientOcclusion()
     {
         return iBakedModel.isAmbientOcclusion();
+    }
+
+    @Override
+    public boolean isAmbientOcclusion(BlockState state)
+    {
+        return isAmbientOcclusion();
     }
 
     @Override
@@ -59,9 +73,9 @@ public class ItemLiquidCanisterModel implements IBakedModel
     }
 
     @Override
-    public ItemCameraTransforms getItemCameraTransforms()
+    public TextureAtlasSprite getParticleTexture(@Nonnull IModelData data)
     {
-        return ItemCameraTransforms.DEFAULT;
+        return iBakedModel.getParticleTexture();
     }
 
     private static final class BakedLiquidCanisterOverrideHandler extends ItemOverrideList
@@ -70,18 +84,18 @@ public class ItemLiquidCanisterModel implements IBakedModel
 
         private BakedLiquidCanisterOverrideHandler()
         {
-            super(ImmutableList.of());
+            super();
         }
 
         @Override
-        public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, LivingEntity entity)
+        public IBakedModel getModelWithOverrides(IBakedModel originalModel, ItemStack stack, World world, LivingEntity entity)
         {
-            if (stack.getTagCompound() == null)
+            if (stack.getTag() == null)
             {
                 ItemStack copy = stack.copy();
-                copy.setTagCompound(new CompoundNBT());
-                copy.getTagCompound().setBoolean("Unbreakable", true);
-                return FMLClientHandler.instance().getClient().getRenderItem().getItemModelMesher().getItemModel(copy);
+                copy.setTag(new CompoundNBT());
+                copy.getTag().putBoolean("Unbreakable", true);
+                return Minecraft.getInstance().getItemRenderer().getItemModelMesher().getItemModel(copy);
             }
             return originalModel;
         }

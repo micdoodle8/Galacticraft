@@ -33,7 +33,7 @@ public class SchematicAdd extends SchematicPage
         return null;  //This null is OK, it's used only as a flag by SchematicRegistry calling code
     }
 
-    @SideOnly(Side.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     @Override
     public Screen getResultScreen(PlayerEntity player, BlockPos pos)
     {

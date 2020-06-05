@@ -1,8 +1,9 @@
 package micdoodle8.mods.galacticraft.api.galaxies;
 
 import com.google.common.collect.*;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.eventbus.api.Event;
 
 import java.util.*;
 
@@ -28,7 +29,7 @@ public class GalaxyRegistry
     static HashMap<CelestialBody, List<Satellite>> satelliteList = Maps.newHashMap();
     static HashMap<SolarSystem, List<Planet>> solarSystemList = Maps.newHashMap();
 
-    public static CelestialBody getCelestialBodyFromDimensionID(int dimensionID)
+    public static CelestialBody getCelestialBodyFromDimensionID(DimensionType dimensionID)
     {
         for (Planet planet : GalaxyRegistry.planets.values())
         {

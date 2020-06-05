@@ -29,7 +29,7 @@
 //import net.minecraft.util.NonNullList;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //import net.minecraftforge.fml.relauncher.Side;
 //import net.minecraftforge.fml.relauncher.SideOnly;
@@ -70,7 +70,7 @@
 //        builder.add(new IProperty[] {MODEL, ROTATION});
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    @Override
 //    public void getSubBlocks(ItemGroup tab, NonNullList<ItemStack> list)
 //    {
@@ -136,7 +136,7 @@
 //    }
 //
 //    @Override
-//    public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, BlockState state, int fortune)
+//    public List<ItemStack> getDrops(IBlockReader world, BlockPos pos, BlockState state, int fortune)
 //    {
 //        ArrayList<ItemStack> ret = new ArrayList<>(1);
 //        ret.add(new ItemStack(this.getItemDropped(state, null, fortune), 1, this.frame.ordinal()));
@@ -162,7 +162,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -184,14 +184,14 @@
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
-//    public boolean shouldSideBeRendered(BlockState blockState, IBlockAccess blockAccess, BlockPos pos, Direction side)
+//    @OnlyIn(Dist.CLIENT)
+//    public boolean shouldSideBeRendered(BlockState blockState, IBlockReader blockAccess, BlockPos pos, Direction side)
 //    {
 //        return true;
 //    }
 //
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public BlockRenderLayer getBlockLayer()
 //    {
 //         return BlockRenderLayer.TRANSLUCENT;
@@ -315,14 +315,14 @@
 //    }
 //    
 //    @Override
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public AxisAlignedBB getSelectedBoundingBox(BlockState bs, World worldIn, BlockPos pos)
 //    {
 //        return this.getBoundingBox(bs, worldIn, pos).offset(pos);
 //    }
 //
 //    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState bs, IBlockAccess worldIn, BlockPos pos)
+//    public AxisAlignedBB getBoundingBox(BlockState bs, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState state = worldIn.getBlockState(pos);
 //        BlockState above = worldIn.getBlockState(pos.up());
@@ -445,7 +445,7 @@
 //    };
 //
 //    @Override
-//    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction dir)
+//    public boolean isSideSolid(BlockState base_state, IBlockReader world, BlockPos pos, Direction dir)
 //    {
 //        BlockState thisBlock = world.getBlockState(pos);
 //        if ((dir == Direction.NORTH || dir == Direction.SOUTH) && this.isConnectedEW(thisBlock, world, pos)) return false;
@@ -454,14 +454,14 @@
 //        return this.buildSolidSide(otherBlock, thisBlock);
 //    }
 //
-//    protected boolean isConnectedEW(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    protected boolean isConnectedEW(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState west = worldIn.getBlockState(pos.west());
 //        BlockState east = worldIn.getBlockState(pos.east());
 //        return this.canPaneConnectToBlock(west, state) || this.canPaneConnectToBlock(east, state);
 //    }
 //
-//    protected boolean isConnectedEWRecursive(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction dir)
+//    protected boolean isConnectedEWRecursive(BlockState state, IBlockReader worldIn, BlockPos pos, Direction dir)
 //    {
 //        boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
 //        boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
@@ -480,14 +480,14 @@
 //        return dir == Direction.DOWN && this.isPreferenceEW(state, worldIn, pos);
 //    }
 //    
-//    protected boolean isConnectedNS(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    protected boolean isConnectedNS(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState north = worldIn.getBlockState(pos.north());
 //        BlockState south = worldIn.getBlockState(pos.south());
 //        return this.canPaneConnectToBlock(north, state) || this.canPaneConnectToBlock(south, state);
 //    }
 //
-//    protected boolean isConnectedNSRecursive(BlockState state, IBlockAccess worldIn, BlockPos pos, Direction dir)
+//    protected boolean isConnectedNSRecursive(BlockState state, IBlockReader worldIn, BlockPos pos, Direction dir)
 //    {
 //        boolean connectN = this.canPaneConnectToBlock(worldIn.getBlockState(pos.north()), state);
 //        boolean connectS = this.canPaneConnectToBlock(worldIn.getBlockState(pos.south()), state);
@@ -506,7 +506,7 @@
 //        return dir == Direction.DOWN && !this.isPreferenceEW(state, worldIn, pos);
 //    }
 //    
-//    protected boolean isPreferenceEW(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    protected boolean isPreferenceEW(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState north = worldIn.getBlockState(pos.north());
 //        BlockState south = worldIn.getBlockState(pos.south());
@@ -527,7 +527,7 @@
 //        return !(off.getBlock() == this);
 //    }
 //
-//    protected boolean buildSolidSideUD(BlockPos pos, Direction testUD, IBlockAccess worldIn, BlockState blockState)
+//    protected boolean buildSolidSideUD(BlockPos pos, Direction testUD, IBlockReader worldIn, BlockState blockState)
 //    {
 //        BlockPos offPos = pos.offset(testUD, 1);
 //        BlockState off = worldIn.getBlockState(offPos);
@@ -585,7 +585,7 @@
 //        return false;
 //    }
 //    
-//    private int identifyHorizConnections(IBlockAccess worldIn, BlockPos pos, BlockState state)
+//    private int identifyHorizConnections(IBlockReader worldIn, BlockPos pos, BlockState state)
 //    {
 //        BlockState north = worldIn.getBlockState(pos.north());
 //        BlockState south = worldIn.getBlockState(pos.south());
@@ -630,7 +630,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        BlockState above = worldIn.getBlockState(pos.up());
 //        BlockState below = worldIn.getBlockState(pos.down());
@@ -884,7 +884,7 @@
 //        this.color = this.frame.defaultColor;
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public static void updateGlassColors(int color1, int color2, int color3)
 //    {
 //        int changes = 0;
@@ -896,7 +896,7 @@
 //            BlockSpaceGlass.updateClientRender();
 //    }
 //
-//    @SideOnly(Side.CLIENT)
+//    @OnlyIn(Dist.CLIENT)
 //    public static void updateClientRender()
 //    {
 //        Minecraft.getInstance().renderGlobal.loadRenderers();
@@ -906,7 +906,7 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        switch (this.type)
 //        {
@@ -922,7 +922,7 @@
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }

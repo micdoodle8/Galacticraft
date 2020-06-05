@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class TileEntityTreasureChestRenderer extends TileEntityRenderer<TileEntityTreasureChest>
 {
     private static final ResourceLocation treasureChestTexture = new ResourceLocation(Constants.MOD_ID_CORE, "textures/model/treasure.png");

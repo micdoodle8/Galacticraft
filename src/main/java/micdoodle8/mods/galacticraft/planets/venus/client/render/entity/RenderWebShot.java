@@ -3,7 +3,7 @@ package micdoodle8.mods.galacticraft.planets.venus.client.render.entity;
 import micdoodle8.mods.galacticraft.planets.venus.entities.EntityWebShot;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
+import com.mojang.blaze3d.platform.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public class RenderWebShot extends EntityRenderer<EntityWebShot>
 {
     public RenderWebShot(EntityRendererManager renderManager)
@@ -31,7 +31,7 @@ public class RenderWebShot extends EntityRenderer<EntityWebShot>
         GlStateManager.translate((float) x, (float) y + 0.5F, (float) z);
         this.bindEntityTexture(entity);
         GlStateManager.rotate((entity.ticksExisted + partialTicks) * 50.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.scale(0.5F, 0.5F, 0.5F);
+        GlStateManager.scalef(0.5F, 0.5F, 0.5F);
         GlStateManager.translate(-0.5F, -1F, 0.5F);
         blockrendererdispatcher.renderBlockBrightness(Blocks.WEB.getDefaultState(), 1.0F);
         GlStateManager.translate(0.0F, 0.0F, 1.0F);

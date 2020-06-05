@@ -28,7 +28,7 @@
 //import net.minecraft.util.math.RayTraceResult;
 //import net.minecraft.util.text.StringTextComponent;
 //import net.minecraft.world.Explosion;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //import java.util.Collection;
@@ -121,13 +121,13 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
 //
 ////    @Override
-////    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+////    public void setBlockBoundsBasedOnState(IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        int meta = getMetaFromState(worldIn.getBlockState(pos));
 ////
@@ -173,7 +173,7 @@
 ////    }
 ////
 ////    @Override
-////    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+////    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockReader worldIn, BlockPos pos)
 ////    {
 ////        this.setBlockBoundsBasedOnState(worldIn, pos);
 ////        return super.getCollisionBoundingBox(worldIn, pos, state);
@@ -326,7 +326,7 @@
 //    }
 //
 //    @Override
-//    public Direction getBedDirection(BlockState state, IBlockAccess world, BlockPos pos)
+//    public Direction getBedDirection(BlockState state, IBlockReader world, BlockPos pos)
 //    {
 //        TileEntity tileEntity = world.getTileEntity(pos);
 //        if (tileEntity instanceof TileEntityMulti)
@@ -344,7 +344,7 @@
 //    }
 //
 //    @Override
-//    public boolean isBed(BlockState state, IBlockAccess world, BlockPos pos, Entity player)
+//    public boolean isBed(BlockState state, IBlockReader world, BlockPos pos, Entity player)
 //    {
 //        TileEntity tileEntity = world.getTileEntity(pos);
 //        if (tileEntity instanceof TileEntityMulti)
@@ -362,7 +362,7 @@
 //    }
 //
 //    @Override
-//    public void setBedOccupied(IBlockAccess world, BlockPos pos, PlayerEntity player, boolean occupied)
+//    public void setBedOccupied(IBlockReader world, BlockPos pos, PlayerEntity player, boolean occupied)
 //    {
 //        TileEntity tileEntity = world.getTileEntity(pos);
 //        BlockPos mainBlockPosition = ((TileEntityMulti) tileEntity).mainBlockPosition;
@@ -378,7 +378,7 @@
 //    }
 //
 //    @Override
-//    public BlockPos getBedSpawnPosition(BlockState state, IBlockAccess world, BlockPos pos, PlayerEntity player)
+//    public BlockPos getBedSpawnPosition(BlockState state, IBlockReader world, BlockPos pos, PlayerEntity player)
 //    {
 //        if (!(world instanceof World))
 //        {
@@ -400,8 +400,8 @@
 //
 //        for (int l = 0; l <= 1; ++l)
 //        {
-//            int i1 = i - enumfacing.getFrontOffsetX() * l - 1;
-//            int j1 = k - enumfacing.getFrontOffsetZ() * l - 1;
+//            int i1 = i - enumfacing.getXOffset() * l - 1;
+//            int j1 = k - enumfacing.getZOffset() * l - 1;
 //            int k1 = i1 + 2;
 //            int l1 = j1 + 2;
 //
@@ -463,7 +463,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        EnumBlockMultiType type = state.get(MULTI_TYPE);
 //        int renderType = 0;
@@ -525,7 +525,7 @@
 //                {
 //                    ServerPlayerEntity player = (ServerPlayerEntity) placer;
 //                    player.sendMessage(new StringTextComponent(EnumColor.RED + GCCoreUtil.translate("gui.warning.noroom")));
-//                    if (!player.capabilities.isCreativeMode)
+//                    if (!player.abilities.isCreativeMode)
 //                    {
 //                        final ItemStack nasaWorkbench = new ItemStack(callingBlock, 1, 0);
 //                        final ItemEntity entityitem = player.dropItem(nasaWorkbench, false);

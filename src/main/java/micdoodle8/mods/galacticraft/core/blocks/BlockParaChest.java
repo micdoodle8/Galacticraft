@@ -22,7 +22,7 @@
 //import net.minecraft.util.Hand;
 //import net.minecraft.util.math.AxisAlignedBB;
 //import net.minecraft.util.math.BlockPos;
-//import net.minecraft.world.IBlockAccess;
+//import net.minecraft.world.IBlockReader;
 //import net.minecraft.world.World;
 //
 //import java.util.Iterator;
@@ -77,7 +77,7 @@
 //    }
 //
 //    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, BlockState state, BlockPos pos, Direction face)
+//    public BlockFaceShape getBlockFaceShape(IBlockReader worldIn, BlockState state, BlockPos pos, Direction face)
 //    {
 //        return BlockFaceShape.UNDEFINED;
 //    }
@@ -144,7 +144,7 @@
 //                    float f1 = syncRandom.nextFloat() * 0.8F + 0.1F;
 //                    ItemEntity entityitem;
 //
-//                    for (float f2 = syncRandom.nextFloat() * 0.8F + 0.1F; !itemstack.isEmpty(); worldIn.spawnEntity(entityitem))
+//                    for (float f2 = syncRandom.nextFloat() * 0.8F + 0.1F; !itemstack.isEmpty(); worldIn.addEntity(entityitem))
 //                    {
 //                        entityitem = new ItemEntity(worldIn, pos.getX() + f, pos.getY() + f1, pos.getZ() + f2, itemstack.splitStack(syncRandom.nextInt(21) + 10));
 //                        float f3 = 0.05F;
@@ -209,13 +209,13 @@
 //    }
 //
 //    @Override
-//    public String getShiftDescription(int meta)
+//    public String getShiftDescription(ItemStack stack)
 //    {
 //        return GCCoreUtil.translate(this.getUnlocalizedName() + ".description");
 //    }
 //
 //    @Override
-//    public boolean showDescription(int meta)
+//    public boolean showDescription(ItemStack stack)
 //    {
 //        return true;
 //    }
@@ -223,7 +223,7 @@
 //    @Override
 //    public BlockState getStateFromMeta(int meta)
 //    {
-//        Direction enumfacing = Direction.getFront(meta);
+//        Direction enumfacing = Direction.byIndex(meta);
 //
 //        if (enumfacing.getAxis() == Direction.Axis.Y)
 //        {
@@ -240,7 +240,7 @@
 //    }
 //
 //    @Override
-//    public BlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos)
+//    public BlockState getActualState(BlockState state, IBlockReader worldIn, BlockPos pos)
 //    {
 //        TileEntity tile = worldIn.getTileEntity(pos);
 //        if (!(tile instanceof TileEntityParaChest))
