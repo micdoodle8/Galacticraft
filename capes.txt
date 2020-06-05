@@ -111,3 +111,4 @@ Sheriffbenny:capeYellow
 Opossum_:capeRainbow
 TeenSarlacc:capeDarkGray
 chemf:capeMagenta
+ROMVoid:capeYellow
